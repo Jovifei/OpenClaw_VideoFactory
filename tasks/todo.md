@@ -664,7 +664,7 @@ External Codex session archives contain active-value copies and are application-
 - [x] Build and run an offline Fake-event Candidate B gateway PoC that reuses existing ingress/analysis contracts without real credentials or network connections.
 - [x] Produce one decision, security/single-consumer/migration/rollback plans, and evidence index; stop before production migration.
 
-### Review — in progress
+### Review — completed; live MP4 retest pending
 
 Candidate A failed its source replacement contract as `OFFICIAL_PLUGIN_CANNOT_REPLACE_CORE_CHANNEL`. Candidate B passed its offline boundary PoC (8/8 combined tests) and is the sole recommendation: `PROJECT_OWNED_FEISHU_GATEWAY_FEASIBLE`. Production Feishu, configuration, Binding, Agent, Cron, models, Gateway lifecycle, R3–R5, the final P0 gate, Git publication, and OpenClaw core source remain out of scope.
 
@@ -1408,3 +1408,4 @@ Detailed execution handoff:
 - The live schema has no top-level `mcp.timeout`; the analyzer server supports `mcp.servers.<name>.requestTimeoutMs`.
 - The latest MP4 event proves safe ingress only; the subsequent analysis timeout remains a live qualification failure, not a passed video result.
 - The effective `analyzers` MCP request timeout is now 120000 ms; config validation, Gateway status, and `mcp probe analyzers` all passed with zero diagnostics. No Gateway restart was needed because the CLI reported hot reload.
+- README and the two change requests are published on `main`; the live MP4 analysis result remains pending a new upload and new Ticket from the original Feishu group.
