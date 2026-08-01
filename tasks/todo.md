@@ -1443,3 +1443,21 @@ Detailed execution handoff:
 - `PROJECT_STATUS.yaml` is unchanged at `P0: not_started`; no final Gate,
   Feishu send, Gateway action, configuration change, P1 implementation, Cron,
   model download, or Ticket replay occurred.
+
+## P0-DIRECT-CODEX-CLI-PREFLIGHT-074
+
+- [x] Read the installed Direct Codex CLI version and supported sandbox flags.
+- [x] Compare it with the existing stopped V2.5 smoke report and P0 acceptance contract.
+- [x] Freeze the precise authorization boundary instead of re-running a predictably incompatible smoke.
+- [x] Update the task history, Obsidian current-state note, and temporary handoff.
+
+### Review — blocked pending user authorization
+
+- The installed CLI remains `0.142.4`; the existing smoke proves this version
+  cannot run the configured model and never reached its workspace-write step.
+- A CLI/application upgrade is an external software-environment change. It is
+  not authorized by the P0 verification scope and must be explicitly approved
+  by Jovi. No model/Runtime/OpenClaw OAuth/profile/auth-order/Gateway/project
+  configuration change is requested or allowed.
+- On approval, record the upgrade mechanism and re-run exactly one read-only
+  smoke, then one bounded workspace-write smoke; do not retry first.

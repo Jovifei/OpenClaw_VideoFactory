@@ -1,0 +1,24 @@
+{
+  "report_id": "P0-DIRECT-CODEX-CLI-PREFLIGHT-074",
+  "change_request_id": "P0-DIRECT-CODEX-CLI-PREFLIGHT-074",
+  "status": "BLOCKED_PENDING_CLI_UPGRADE_AUTHORIZATION",
+  "current_environment": {
+    "codex_cli_version": "0.142.4",
+    "supports_ephemeral": true,
+    "supports_explicit_read_only_sandbox": true,
+    "supports_workspace_write_sandbox": true
+  },
+  "prior_evidence": {
+    "file": "reports/CODEX_CLI_SMOKE.json",
+    "result": "failed safely before workspace-write smoke",
+    "cause": "configured model requires a newer Codex CLI"
+  },
+  "decision": "Do not repeat a predictably incompatible smoke and do not upgrade automatically.",
+  "required_authorization": "Jovi must authorize a controlled official Codex CLI/application upgrade. The upgrade scope must exclude OpenClaw configuration, OAuth, profiles, auth order, models, and Runtime changes.",
+  "after_authorization": [
+    "Record the exact installed CLI version and update mechanism.",
+    "Run one ephemeral read-only smoke with full pre/post workspace manifests.",
+    "Only after its success, run one ephemeral workspace-write smoke that creates exactly reports/codex_cli_smoke.txt.",
+    "Regenerate CODEX_CLI_SMOKE.json and rerun the P0 prereview."
+  ]
+}

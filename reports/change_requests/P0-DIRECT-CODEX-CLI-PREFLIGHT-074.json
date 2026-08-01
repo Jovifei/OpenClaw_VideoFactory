@@ -1,0 +1,22 @@
+{
+  "id": "P0-DIRECT-CODEX-CLI-PREFLIGHT-074",
+  "created_at": "2026-08-01T22:10:00+08:00",
+  "authorization": "Jovi authorized autonomous in-scope verification when no user action is required.",
+  "category": "P0 direct Codex CLI preflight",
+  "scope": [
+    "Read the installed Codex CLI version and local command help.",
+    "Compare the result with the existing stopped smoke evidence and current P0 contract.",
+    "Record the blocker without retrying the known-incompatible smoke."
+  ],
+  "out_of_scope": [
+    "Upgrade or otherwise modify the Codex CLI execution environment.",
+    "Change model, Runtime, OpenClaw OAuth, profile, auth order, Gateway, or project configuration.",
+    "Run a duplicate smoke expected to fail with the known incompatible CLI version."
+  ],
+  "verification": {
+    "installed_cli": "codex-cli 0.142.4",
+    "command_help": "supports --ephemeral and explicit read-only/workspace-write sandboxes",
+    "prior_smoke": "same version recorded an incompatible-model failure before the workspace-write proof"
+  },
+  "status": "completed_blocked_pending_upgrade_authorization"
+}
