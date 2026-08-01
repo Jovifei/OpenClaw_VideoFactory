@@ -1,0 +1,27 @@
+{
+  "report_id": "P0-SINGLE-CONSUMER-PREFLIGHT-076",
+  "change_request_id": "P0-SINGLE-CONSUMER-PREFLIGHT-076",
+  "status": "PARTIAL_OFFLINE_PASS_REAL_CHANNEL_PROOF_PENDING",
+  "offline_contract": {
+    "tests": [
+      "tests.test_project_feishu_gateway",
+      "tests.test_feishu_gateway_runtime"
+    ],
+    "result": "15/15 passed",
+    "proves": [
+      "The candidate Gateway rejects a repeated event_id after a non-retryable route result.",
+      "The candidate Gateway does not mark rpc_timeout as deduplicated before a successful retry.",
+      "The candidate RPC payload binds a single video-factory agent and a privacy-preserving session key."
+    ]
+  },
+  "real_channel_gap": {
+    "existing_report": "reports/FEISHU_SINGLE_CONSUMER_TEST.json",
+    "schema_version": "missing",
+    "feishu_single_consumer": "observed historically but not represented by the V2.5 report contract",
+    "feishu_deduplication": "not proven because supplied runtime observations omitted a real message_id and no same-event replay evidence exists"
+  },
+  "safety_boundary": "The P0 production route remains the OpenClaw Feishu Channel. The candidate Gateway is not started and lark-cli event is not activated as a second consumer.",
+  "next_evidence": "Capture one real OpenClaw Channel event with its redacted message_id plus a controlled, channel-supported replay/dedup observation. Do not fabricate a duplicate or convert the offline test into a live claim.",
+  "p0_gate": "not_run",
+  "project_phase": "P0_not_started"
+}

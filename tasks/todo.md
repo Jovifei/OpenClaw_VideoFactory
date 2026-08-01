@@ -1478,3 +1478,20 @@ Detailed execution handoff:
 - This is an installation/PATH split, not evidence that the desktop app or
   configured model is broken. Do not substitute an older model: it would
   violate the P0 architecture boundary and fail to prove the required smoke.
+
+## P0-SINGLE-CONSUMER-PREFLIGHT-076
+
+- [x] Read the existing single-consumer report, V2.5 Gate contract, candidate Gateway routing code, and offline regressions.
+- [x] Run the candidate Gateway contract tests without starting it or a second Feishu consumer.
+- [x] Freeze the distinction between event-id offline deduplication and real OpenClaw Channel message-id evidence.
+- [x] Update the project memory and temporary handoff with the exact next evidence requirement.
+
+### Review — partial, real evidence pending
+
+- Offline candidate Gateway contracts passed 15/15. They prove a repeated
+  `event_id` does not route twice after success and that retryable timeout
+  handling is not prematurely deduplicated.
+- The P0 Gate remains blocked: its current `FEISHU_SINGLE_CONSUMER_TEST.json`
+  lacks `schema_version: 2.5` and a real Channel `message_id` replay witness.
+  No second consumer, event replay, Feishu message, configuration change, or
+  Gate run occurred in this task.

@@ -1,0 +1,20 @@
+{
+  "id": "P0-SINGLE-CONSUMER-PREFLIGHT-076",
+  "created_at": "2026-08-01T22:40:00+08:00",
+  "category": "P0 single-consumer and deduplication evidence preflight",
+  "scope": [
+    "Read current P0 evidence, candidate Gateway implementation, and offline tests.",
+    "Run only the candidate Gateway offline contract tests.",
+    "Record the difference between offline event-id deduplication and a real OpenClaw Channel message-id proof."
+  ],
+  "out_of_scope": [
+    "Start, configure, or route a second Feishu consumer.",
+    "Send Feishu messages, replay external events, modify OpenClaw configuration, or run the final P0 Gate.",
+    "Treat offline candidate tests as live Channel acceptance evidence."
+  ],
+  "verification": {
+    "offline_contract_tests": "tests.test_project_feishu_gateway and tests.test_feishu_gateway_runtime: 15/15 passed",
+    "evidence_review": "existing FEISHU_SINGLE_CONSUMER_TEST.json lacks schema_version=2.5 and real message_id replay proof"
+  },
+  "status": "completed_partial_real_evidence_pending"
+}
