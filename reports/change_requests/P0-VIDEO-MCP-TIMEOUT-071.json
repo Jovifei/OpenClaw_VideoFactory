@@ -28,7 +28,9 @@
     "mcp_probe_analyzers": "pass",
     "observed_request_timeout_ms": 120000,
     "diagnostics": 0,
-    "restart_required": false
+    "restart_required": false,
+    "restart_performed_after_persistent_timeout": true,
+    "restart_result": "pass"
   },
-  "status": "validated_hot_reload"
+  "status": "validated_after_restart"
 }

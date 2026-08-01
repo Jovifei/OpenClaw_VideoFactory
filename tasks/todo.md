@@ -1407,5 +1407,5 @@ Detailed execution handoff:
 - The user-provided `openclaw.yaml` path is absent on this machine; the effective file is `C:\Users\Admin\.openclaw\openclaw.json`.
 - The live schema has no top-level `mcp.timeout`; the analyzer server supports `mcp.servers.<name>.requestTimeoutMs`.
 - The latest MP4 event proves safe ingress only; the subsequent analysis timeout remains a live qualification failure, not a passed video result.
-- The effective `analyzers` MCP request timeout is now 120000 ms; config validation, Gateway status, and `mcp probe analyzers` all passed with zero diagnostics. No Gateway restart was needed because the CLI reported hot reload.
+- The effective `analyzers` MCP request timeout is now 120000 ms; config validation, Gateway status, and `mcp probe analyzers` all passed with zero diagnostics. After the user still observed a timeout, one controlled Gateway restart was performed; the post-restart status and probe passed.
 - README and the two change requests are published on `main`; the live MP4 analysis result remains pending a new upload and new Ticket from the original Feishu group.
