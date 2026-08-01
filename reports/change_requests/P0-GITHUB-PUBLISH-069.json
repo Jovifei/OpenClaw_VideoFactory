@@ -22,7 +22,9 @@
   ],
   "remote": "https://github.com/Jovifei/OpenClaw_VideoFactory.git",
   "branch": "main",
-  "status": "ready_for_commit",
+  "status": "published",
+  "published_commit": "22ec6066cd9674fc4777bf236e9c552ab5de0371",
+  "published_branch": "main",
   "candidate_files": 990,
   "candidate_bytes": 2925160,
   "pre_commit_checks": {
