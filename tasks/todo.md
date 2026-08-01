@@ -1461,3 +1461,20 @@ Detailed execution handoff:
   configuration change is requested or allowed.
 - On approval, record the upgrade mechanism and re-run exactly one read-only
   smoke, then one bounded workspace-write smoke; do not retry first.
+
+## P0-CODEX-CLI-PATH-DIAGNOSIS-075
+
+- [x] Resolve every local `codex` command candidate and read the invoked CLI version.
+- [x] Confirm that the updated desktop application and PowerShell npm CLI are separate installations.
+- [x] Attempt only a direct version/help read of the desktop package CLI and record the WindowsApps access boundary.
+- [x] Update lessons, Obsidian project memory, and the temporary handoff without changing any runtime.
+
+### Review — completed, no runtime change
+
+- PowerShell resolves `codex` to the npm shim before the desktop package and
+  executes `codex-cli 0.142.4`. The desktop package is present separately as
+  `OpenAI.Codex 26.727.6591.0`; its internal CLI is not callable from this
+  shell because WindowsApps returns access denied.
+- This is an installation/PATH split, not evidence that the desktop app or
+  configured model is broken. Do not substitute an older model: it would
+  violate the P0 architecture boundary and fail to prove the required smoke.

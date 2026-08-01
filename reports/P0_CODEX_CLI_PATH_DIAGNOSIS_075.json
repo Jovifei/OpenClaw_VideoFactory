@@ -1,0 +1,20 @@
+{
+  "report_id": "P0-CODEX-CLI-PATH-DIAGNOSIS-075",
+  "change_request_id": "P0-CODEX-CLI-PATH-DIAGNOSIS-075",
+  "status": "DIAGNOSED_NO_RUNTIME_CHANGE",
+  "findings": {
+    "powershell_first_resolution": "C:/Users/Admin/AppData/Roaming/npm/codex.ps1",
+    "powershell_cli_version": "codex-cli 0.142.4",
+    "desktop_app_package_present": "OpenAI.Codex 26.727.6591.0",
+    "configured_cli_model": "gpt-5.6-sol",
+    "embedded_desktop_cli_direct_execution": "access denied from current WindowsApps shell context"
+  },
+  "interpretation": "The desktop application update and the globally resolved npm CLI are separate installations. Updating the desktop app does not update the npm shim that codex exec currently uses.",
+  "impact": "The current PATH CLI cannot run the configured model; a model override would not prove the required configured-model P0 smoke and is prohibited by the architecture lock.",
+  "non_actions": [
+    "No Codex upgrade or uninstall occurred.",
+    "No PATH, model, Runtime, OAuth, profile, auth-order, Gateway, or OpenClaw configuration change occurred.",
+    "No known-failing smoke was repeated."
+  ],
+  "next_authority": "Explicit approval for a controlled official CLI update, or Jovi can provide an approved CLI executable path that is current and callable from PowerShell."
+}

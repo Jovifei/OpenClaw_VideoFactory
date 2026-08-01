@@ -45,6 +45,17 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Treat `deferred_optional_not_blocking` as an explicit architectural state, not a hidden failure or an invitation to continue diagnosis.
 - When the user corrects a gate architecture, update the gate, acceptance docs, backlog, and active plan together before resuming implementation.
 
+## 2026-08-01 — Desktop Codex update does not imply CLI update
+
+- On Windows, verify `Get-Command codex -All` and `codex --version`; the
+  desktop application's Store package and the npm CLI shim can be different
+  installations with different release ages.
+- Do not assume the desktop application's embedded `codex.exe` is callable
+  from an ordinary PowerShell process: WindowsApps ACLs may deny direct
+  execution. Record the path split before proposing an upgrade.
+- A temporary older-model override cannot satisfy a configured-model P0 CLI
+  smoke and is prohibited when model selection is architecturally locked.
+
 ## 2026-07-14 — User-authorized automatic execution
 
 - Distinguish a user authorization for automatic P0 command execution from an OAuth reauthentication authorization. Do not infer one from the other.
