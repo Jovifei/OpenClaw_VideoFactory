@@ -1,0 +1,34 @@
+{
+  "change_request_id": "P0-VIDEO-MCP-TIMEOUT-071",
+  "created_at": "2026-08-01T21:30:00+08:00",
+  "authorization": "Jovi explicitly requested a longer MCP window so GPU-backed MP4 analysis can complete.",
+  "scope": "Change only the effective local OpenClaw analyzer MCP request timeout from unset/default to 120000 ms, validate, then reload Gateway if validation passes.",
+  "requested_path": "mcp.timeout",
+  "effective_config_path": "mcp.servers.analyzers.requestTimeoutMs",
+  "effective_config_file": "C:\\Users\\Admin\\.openclaw\\openclaw.json",
+  "ignored_path_reason": "C:\\Users\\Admin\\.openclaw\\openclaw.yaml does not exist and the live schema has no top-level mcp.timeout.",
+  "value": 120000,
+  "unit": "milliseconds",
+  "preserve": [
+    "mcp.servers.ingest",
+    "analyzer tool policy",
+    "Feishu credentials and target IDs",
+    "Router and Agent bindings",
+    "PROJECT_STATUS.yaml"
+  ],
+  "rollback": "Restore the pre-change openclaw.json backup, run config validate, and reload Gateway.",
+  "backup_path": "C:\\Users\\Admin\\.openclaw\\backups\\openclaw.json.pre-p0-video-timeout-20260801-210115.bak",
+  "config_sha_before": "96D968E6C160AA2C434F47C22C1CB50F1E32BF26912ECDF77647E62AEB81DC8E",
+  "config_sha_after": "209A393187FDDAA4C05827A020648263808CD6D7943FDD4BCA27CB48E07BBA80",
+  "verification": {
+    "dry_run": "pass",
+    "config_set": "pass",
+    "config_validate": "pass",
+    "gateway_status": "running",
+    "mcp_probe_analyzers": "pass",
+    "observed_request_timeout_ms": 120000,
+    "diagnostics": 0,
+    "restart_required": false
+  },
+  "status": "validated_hot_reload"
+}

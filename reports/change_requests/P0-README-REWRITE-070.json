@@ -1,0 +1,18 @@
+{
+  "change_request_id": "P0-README-REWRITE-070",
+  "created_at": "2026-08-01T21:30:00+08:00",
+  "authorization": "Jovi explicitly requested a complete, logical rewrite of the public GitHub README.",
+  "scope": "Documentation only: explain project purpose, architecture, media protocol, evidence boundaries, repository layout, verification, roadmap, and security boundary.",
+  "out_of_scope": [
+    "business-code changes",
+    "phase-state changes",
+    "runtime configuration",
+    "Gateway lifecycle",
+    "P0 Gate or P1 promotion"
+  ],
+  "status": "completed_local",
+  "verification": {
+    "readme_diff_check": "pass",
+    "high_risk_content_matches": 0
+  }
+}

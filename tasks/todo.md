@@ -1367,7 +1367,7 @@ Detailed execution handoff:
 - [x] Read the current project gates, prior R4 mismatch evidence, and Obsidian handoff.
 - [x] Run the read-only R4 preflight and publish redacted preflight evidence.
 - [x] Observe one fresh WAV ingress and one exact `/vf audio <new-ticket>` command.
-- [ ] Verify one bounded local transcript reply and freeze R4 evidence; stop before R5.
+- [x] Verify one bounded local transcript reply and freeze R4 evidence; stop before R5.
 
 ### Review — preflight ready
 
@@ -1377,20 +1377,34 @@ Detailed execution handoff:
 
 ### Review — live attempt before 068
 
-- The fresh audio Analyzer completed and wrote a top-level `transcript.json`, but
-  the public reply was empty because the presentation loader expected nested
-  `result`. This is frozen as a presentation failure; no old Ticket is replayed.
+- The fresh audio Analyzer completed and wrote a top-level `transcript.json`; after
+  the presentation repair, the public reply returned the complete test transcript.
+  No old Ticket was replayed.
 
 ## P0-R4-AUDIO-RESULT-REMEDIATION-068
 
 - [x] Register Jovi's narrow audio artifact-presentation repair authorization.
 - [x] Add red tests for the real top-level transcript shape and nested-only rejection.
 - [x] Repair the audio loader and run focused, target, compile, and real-artifact checks.
-- [ ] Run one fresh post-repair audio upload/Ticket retest and verify the public reply.
+- [x] Run one fresh post-repair audio upload/Ticket retest and verify the public reply.
 
 ### Review — offline repair complete
 
 - Root cause: `transcribe_audio` writes top-level fields in `transcript.json`, while
   the loader read an invented nested `result` object.
 - Offline result: focused 3/3, target 170/170, compile passed. Live post-repair
-  R4 evidence remains pending; R5 and P0 Gate remain prohibited.
+  R4 returned a complete transcript; R5 and P0 Gate remain prohibited.
+
+## README-AND-VIDEO-TIMEOUT-070
+
+- [x] Rewrite the public README around the project goal, architecture, media protocol, verified capabilities, and staged roadmap.
+- [x] Confirm the real OpenClaw config path and current MCP schema before any timeout change.
+- [x] Apply only the schema-supported analyzer MCP request timeout change, validate it, and record rollback evidence.
+- [x] Confirm Gateway hot reload and analyzer probe; do not claim MP4 analysis passed until a fresh upload and Ticket produces a visible result.
+
+### Review — in progress
+
+- The user-provided `openclaw.yaml` path is absent on this machine; the effective file is `C:\Users\Admin\.openclaw\openclaw.json`.
+- The live schema has no top-level `mcp.timeout`; the analyzer server supports `mcp.servers.<name>.requestTimeoutMs`.
+- The latest MP4 event proves safe ingress only; the subsequent analysis timeout remains a live qualification failure, not a passed video result.
+- The effective `analyzers` MCP request timeout is now 120000 ms; config validation, Gateway status, and `mcp probe analyzers` all passed with zero diagnostics. No Gateway restart was needed because the CLI reported hot reload.
