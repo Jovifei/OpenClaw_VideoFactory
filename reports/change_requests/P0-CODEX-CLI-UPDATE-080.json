@@ -1,0 +1,38 @@
+{
+  "change_request_id": "P0-CODEX-CLI-UPDATE-080",
+  "title": "Update only the npm Codex CLI resolved by the current PATH",
+  "status": "completed",
+  "authorization": {
+    "granted_by": "Jovi",
+    "text": "仅更新当前 PATH 命中的 npm Codex CLI；不改桌面应用、PATH、OpenClaw、OAuth、Profile、模型、Runtime 或项目配置"
+  },
+  "scope": {
+    "in_scope": [
+      "Inspect the current PATH-resolved npm Codex CLI package",
+      "Update that existing npm global package only",
+      "Verify the resolved CLI version and bounded P0 smoke behavior"
+    ],
+    "out_of_scope": [
+      "Desktop Codex application",
+      "PATH edits",
+      "OpenClaw configuration or gateway",
+      "OAuth or Profile changes",
+      "Model or Runtime changes",
+      "Project configuration or source code changes"
+    ]
+  },
+  "verification": {
+    "preflight": "PASS: PATH-first npm shim resolved to @openai/codex@0.142.4; registry target 0.146.0",
+    "update": "PASS: npm install --global @openai/codex@0.146.0",
+    "read_only_smoke": "PASS: exit 0 and CODEX_CLI_READ_OK",
+    "workspace_write_smoke": "PASS: exit 0 and exact CODEX_CLI_WRITE_OK artifact",
+    "non_target_immutability": "PASS: PATH order and .codex/config.toml SHA-256 unchanged; no desktop/OpenClaw/OAuth/Profile/model/Runtime/project configuration changes",
+    "focused_tests": "PASS: 14/14 tests; Python compilation passed",
+    "p0_prereview": "PASS for this evidence: 20 passed / 1 conditional / 2 blocked; overall remains BLOCKED by single-consumer/deduplication and visible egress/idempotency"
+  },
+  "evidence": [
+    "reports/CODEX_CLI_SMOKE.json",
+    "reports/P0_CODEX_CLI_SMOKE_080.json",
+    "reports/codex_cli_smoke.txt"
+  ]
+}

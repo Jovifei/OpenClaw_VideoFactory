@@ -1547,3 +1547,18 @@ Detailed execution handoff:
   compile and JSON parse passed. The prereview now selects the public ingress
   report and is `19 passed / 1 conditional / 3 blocked`. No Feishu message,
   attachment replay, configuration, Gateway, P0 Gate, or phase change occurred.
+
+## P0-CODEX-CLI-UPDATE-080
+
+- [x] Create the bounded change request for the explicitly authorized npm CLI update.
+- [x] Verify the PATH-first npm shim and installed package before changing anything.
+- [x] Update only `@openai/codex` in the existing global npm installation from `0.142.4` to `0.146.0`.
+- [x] Run one `read-only` smoke and one controlled `workspace-write` smoke; stop without model or Runtime substitution.
+- [x] Record redacted evidence, update Obsidian, refresh the handoff, and rerun the relevant P0 checks.
+
+### Review — completed
+
+- The current PATH still resolves first to `C:/Users/Admin/AppData/Roaming/npm/codex.ps1`, now backed by `@openai/codex@0.146.0`; PATH order was not edited.
+- Read-only smoke passed with exit code `0` and `CODEX_CLI_READ_OK`. Workspace-write smoke passed with exit code `0` and an exact 18-byte `CODEX_CLI_WRITE_OK` artifact at `reports/codex_cli_smoke.txt`; no other project status changes were observed.
+- The desktop app, PATH, OpenClaw, OAuth, Profile, model, Runtime, and project configuration were not changed. Existing MCP/skill/plugin warnings and one non-blocking git exclude warning were recorded separately.
+- Evidence: `reports/CODEX_CLI_SMOKE.json` (local legacy path), `reports/P0_CODEX_CLI_SMOKE_080.json` (public redacted report), and `reports/change_requests/P0-CODEX-CLI-UPDATE-080.json`.

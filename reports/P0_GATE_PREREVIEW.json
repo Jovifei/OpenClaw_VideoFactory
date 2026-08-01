@@ -104,7 +104,7 @@
         "status": "passed",
         "detail": {
           "returncode": 0,
-          "stdout_head": "codex-cli 0.142.4\n",
+          "stdout_head": "codex-cli 0.146.0\n",
           "stderr_head": ""
         }
       }
@@ -144,7 +144,7 @@
       },
       {
         "name": "P0 evidence: direct Codex CLI smoke",
-        "status": "blocked",
+        "status": "passed",
         "detail": {
           "file": "CODEX_CLI_SMOKE.json",
           "schema_version": "2.5"
@@ -215,9 +215,9 @@
     ]
   },
   "status_counts": {
-    "passed": 19,
+    "passed": 20,
     "conditional": 1,
-    "blocked": 3
+    "blocked": 2
   },
   "p0_ready": false,
   "can_start_p1": false,
