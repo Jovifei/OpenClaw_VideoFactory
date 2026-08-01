@@ -1495,3 +1495,37 @@ Detailed execution handoff:
   lacks `schema_version: 2.5` and a real Channel `message_id` replay witness.
   No second consumer, event replay, Feishu message, configuration change, or
   Gate run occurred in this task.
+
+## P0-AGENT-BINDING-REGRESSION-077
+
+- [x] Capture current Gateway, Agent, Binding, and existing R3 topology facts through read-only commands and redacted local evidence.
+- [x] Replace the obsolete regression report with the V2.5 Gate contract for Agent and Binding checks only.
+- [x] Preserve the current Gateway plugin-drift and unavailable Cron-list observations as warnings; do not repair or normalize either.
+- [x] Refresh the P0 prereview and update the project memory and handoff.
+
+### Review — completed, read-only
+
+- Current evidence shows 17 Agents, 15 Bindings, all Binding targets existing,
+  exactly one `video-factory` Feishu group Binding, zero Analyzer Bindings, and
+  zero project-Gateway process/listener observations. The V2.5 Agent/Binding
+  checks pass without exposing raw group or account identifiers.
+- Gateway plugin drift and the nonzero empty Cron-list command are retained as
+  nonblocking warnings, not repaired and not presented as healthy. No Agent,
+  Binding, Channel, Gateway, plugin, Cron, configuration, P0 Gate, or phase
+  state was changed.
+
+## P0-PUBLIC-AGENT-BINDING-EVIDENCE-078
+
+- [x] Identify that the Gate read an ignored local regression report while the public-repo evidence policy retains only `P0_*.json` reports.
+- [x] Add a committed, redacted Agent/Binding report and make prereview/Gate prefer it with legacy fallback.
+- [x] Add focused preference/fallback regression tests and compile both scripts.
+- [x] Confirm the actual prereview reads the committed `P0_AGENT_BINDING_REGRESSION_077.json` file.
+
+### Review — completed
+
+- The public V2.5 Agent/Binding report is now selected by the prereview and
+  final Gate before the ignored local report. Legacy local evidence still works
+  only as a fallback, and the Gate still requires both named V2.5 checks.
+- Verification: 13/13 focused tests, Python compilation, JSON parsing, and the
+  actual prereview. The result is `18 passed / 1 conditional / 4 blocked`; P0
+  remains blocked, no final Gate or phase change occurred.

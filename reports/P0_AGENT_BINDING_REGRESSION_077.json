@@ -1,0 +1,39 @@
+{
+  "schema_version": "2.5",
+  "passed": true,
+  "report_id": "P0-AGENT-BINDING-REGRESSION-077",
+  "change_request_id": "P0-AGENT-BINDING-REGRESSION-077",
+  "scope": "Read-only current Agent and Binding regression; no configuration or lifecycle change.",
+  "checks": [
+    {
+      "id": "existing_agents_regression",
+      "passed": true,
+      "evidence": {
+        "gateway": "running; connectivity probe ok",
+        "agent_count": 17,
+        "required_core_agents_present": true,
+        "video_factory_agent_count": 1,
+        "analyzer_agent_count": 3
+      }
+    },
+    {
+      "id": "bindings_regression",
+      "passed": true,
+      "evidence": {
+        "binding_count": 15,
+        "all_binding_agents_exist": true,
+        "video_factory_feishu_group_binding_count": 1,
+        "analyzer_binding_count": 0,
+        "project_gateway_process_count": 0,
+        "project_gateway_listener_count": 0
+      }
+    }
+  ],
+  "nonblocking_warnings": [
+    "Gateway status reports two official plugin-version drifts; no repair was attempted in this read-only task.",
+    "openclaw cron list --all returned no data with a nonzero exit code; this report makes no Cron-health claim."
+  ],
+  "redaction": "No chat identifier, sender identifier, token, credential, or raw Binding value is recorded.",
+  "p0_gate": "not_run",
+  "project_phase": "P0_not_started"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "P0-PUBLIC-AGENT-BINDING-EVIDENCE-078",
+  "created_at": "2026-08-01T23:30:00+08:00",
+  "category": "P0 public evidence selection repair",
+  "scope": [
+    "Make the P0 prereview and final P0 Gate prefer the committed redacted Agent/Binding evidence report.",
+    "Retain the ignored local regression report as a legacy fallback.",
+    "Add focused tests for current-report preference and legacy fallback."
+  ],
+  "out_of_scope": [
+    "Change Agent, Binding, Gateway, plugin, Cron, or OpenClaw configuration.",
+    "Alter the Gate pass criteria or accept missing V2.5 named checks.",
+    "Run the final P0 Gate or alter project phase state."
+  ],
+  "rollback": "Revert only evidence-selection and focused test changes; local runtime state remains untouched.",
+  "verification": {
+    "focused_tests": "tests.test_p0_acceptance_gate and tests.test_p0_gate_prereview: 13/13 passed",
+    "python_compile": "scripts/90_acceptance_gate.py and scripts/p0_gate_prereview.py passed",
+    "actual_prereview": "P0_AGENT_BINDING_REGRESSION_077.json is selected; its V2.5 Agent/Binding check passed"
+  },
+  "status": "completed"
+}

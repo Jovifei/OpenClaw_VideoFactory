@@ -472,7 +472,9 @@ def p0_checks() -> list[dict[str, Any]]:
         codex_cli or "missing",
     )
 
-    regression = evidence_json("OPENCLAW_EXISTING_AGENTS_REGRESSION.json")
+    regression = evidence_json("P0_AGENT_BINDING_REGRESSION_077.json")
+    if regression is None:
+        regression = evidence_json("OPENCLAW_EXISTING_AGENTS_REGRESSION.json")
     add(
         checks,
         "existing agents/bindings regression",

@@ -152,10 +152,10 @@
       },
       {
         "name": "P0 evidence: existing Agent and Binding regression",
-        "status": "blocked",
+        "status": "passed",
         "detail": {
-          "file": "OPENCLAW_EXISTING_AGENTS_REGRESSION.json",
-          "schema_version": null
+          "file": "P0_AGENT_BINDING_REGRESSION_077.json",
+          "schema_version": "2.5"
         }
       },
       {
@@ -215,9 +215,9 @@
     ]
   },
   "status_counts": {
-    "passed": 17,
+    "passed": 18,
     "conditional": 1,
-    "blocked": 5
+    "blocked": 4
   },
   "p0_ready": false,
   "can_start_p1": false,

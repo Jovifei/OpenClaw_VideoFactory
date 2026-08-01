@@ -209,7 +209,11 @@ def acceptance_evidence_checks(reports: Path) -> list[dict[str, Any]]:
     ingress = load_json(reports / "FEISHU_INGRESS_TEST.json")
     egress = load_json(reports / "FEISHU_EGRESS_TEST.json")
     codex = load_json(reports / "CODEX_CLI_SMOKE.json")
-    regression = load_json(reports / "OPENCLAW_EXISTING_AGENTS_REGRESSION.json")
+    regression_source, regression = load_current_report(
+        reports,
+        "P0_AGENT_BINDING_REGRESSION_077.json",
+        "OPENCLAW_EXISTING_AGENTS_REGRESSION.json",
+    )
     skill = load_json(reports / "SKILL_VISIBILITY.json")
 
     def v25_named(evidence: dict[str, Any] | None, *names: str) -> bool:
@@ -275,7 +279,7 @@ def acceptance_evidence_checks(reports: Path) -> list[dict[str, Any]]:
             "P0 evidence: existing Agent and Binding regression",
             v25_named(regression, "existing_agents_regression", "bindings_regression"),
             {
-                "file": "OPENCLAW_EXISTING_AGENTS_REGRESSION.json",
+                "file": regression_source,
                 "schema_version": (regression or {}).get("schema_version"),
             },
         ),

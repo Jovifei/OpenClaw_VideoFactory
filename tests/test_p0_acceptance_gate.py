@@ -111,7 +111,10 @@ class P0GateV25Tests(unittest.TestCase):
                     )
                 ],
             }
-        if name == "OPENCLAW_EXISTING_AGENTS_REGRESSION.json":
+        if name in {
+            "P0_AGENT_BINDING_REGRESSION_077.json",
+            "OPENCLAW_EXISTING_AGENTS_REGRESSION.json",
+        }:
             return {
                 "schema_version": "2.5",
                 "passed": True,
@@ -180,6 +183,22 @@ class P0GateV25Tests(unittest.TestCase):
         self.assertTrue(GATE.evidence_is_v25_passed(evidence))
         self.assertTrue(GATE.named_evidence_passed(evidence, "feishu_single_consumer"))
         self.assertFalse(GATE.named_evidence_passed(evidence, "feishu_deduplication"))
+
+    def test_agent_binding_public_evidence_has_legacy_fallback(self) -> None:
+        def legacy_only(name: str) -> dict[str, object] | None:
+            if name == "P0_AGENT_BINDING_REGRESSION_077.json":
+                return None
+            return self.evidence(name)
+
+        with (
+            patch.object(GATE, "package_checks", return_value=[]),
+            patch.object(GATE, "run", side_effect=self.runtime_result),
+            patch.object(GATE, "evidence_json", side_effect=legacy_only),
+        ):
+            checks = GATE.p0_checks()
+
+        current = {check["name"]: check["passed"] for check in checks}
+        self.assertTrue(current["existing agents/bindings regression"])
 
     def test_dry_run_does_not_satisfy_actual_egress(self) -> None:
         evidence = {

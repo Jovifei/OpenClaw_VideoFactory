@@ -161,6 +161,25 @@ class P0GatePrereviewTests(unittest.TestCase):
         self.assertEqual(current["real media R5 video result"]["status"], "passed")
         self.assertEqual(current["real media R5 video result"]["detail"]["source"], "P0_R5_VIDEO_QUALIFICATION_072.json")
 
+    def test_current_agent_binding_report_is_preferred(self) -> None:
+        repo = self.make_repo()
+        reports = repo / "reports"
+        write_json(
+            reports / "OPENCLAW_EXISTING_AGENTS_REGRESSION.json",
+            named_evidence("existing_agents_regression", "bindings_regression"),
+        )
+        write_json(
+            reports / "P0_AGENT_BINDING_REGRESSION_077.json",
+            named_evidence("existing_agents_regression", "bindings_regression"),
+        )
+
+        checks = MODULE.acceptance_evidence_checks(reports)
+        agent_binding = next(
+            check for check in checks if check["name"] == "P0 evidence: existing Agent and Binding regression"
+        )
+        self.assertEqual(agent_binding["status"], "passed")
+        self.assertEqual(agent_binding["detail"]["file"], "P0_AGENT_BINDING_REGRESSION_077.json")
+
     def test_p1_requires_explicit_p0_ready_artifact(self) -> None:
         repo = self.make_repo()
         reports = repo / "reports"

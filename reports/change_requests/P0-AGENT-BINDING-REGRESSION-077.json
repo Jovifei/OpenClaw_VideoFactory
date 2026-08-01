@@ -1,0 +1,21 @@
+{
+  "id": "P0-AGENT-BINDING-REGRESSION-077",
+  "created_at": "2026-08-01T23:15:00+08:00",
+  "category": "P0 read-only Agent and Binding regression evidence",
+  "scope": [
+    "Replace the obsolete regression report with a V2.5 report based on read-only Gateway, Agent, Binding, and existing R3 topology evidence.",
+    "Run JSON validation and refresh the read-only P0 prereview."
+  ],
+  "out_of_scope": [
+    "Modify Agents, Bindings, Channel configuration, Gateway, plugins, Cron, or OpenClaw configuration.",
+    "Treat the unavailable cron-list query as a successful cron proof or attempt its repair.",
+    "Run the final P0 Gate or change phase state."
+  ],
+  "verification": {
+    "gateway_status": "running with connectivity probe ok",
+    "agents_list": "17 configured Agents; all required core Agents present",
+    "bindings_list": "15 bindings; all target existing Agents; exactly one video-factory Feishu group binding; no Analyzer bindings",
+    "r3_topology": "Core listener present; project Gateway process and listener counts are zero"
+  },
+  "status": "completed"
+}
