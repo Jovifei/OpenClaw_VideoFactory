@@ -1,0 +1,35 @@
+{
+  "report_id": "P0_R5_VIDEO_QUALIFICATION_072",
+  "change_request_id": "P0-R5-REAL-VIDEO-QUALIFICATION-072",
+  "qualification": "PASS_REAL_VISIBLE_COMPLETION",
+  "media_kind": "video/mp4",
+  "user_visible_result": "视频分析完成；媒体处理已完成。",
+  "ffprobe": {
+    "status": "pass",
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "duration_seconds": 4.0,
+    "size_bytes": 8858,
+    "stream_types": ["video"],
+    "stream_count": 1
+  },
+  "analyzer_artifact": {
+    "status": "completed",
+    "tool": "analyze_video",
+    "frames_extracted": 3,
+    "audio_status": "no_audio_stream",
+    "latest_matching_artifact_at": "2026-08-01T21:11:16+08:00"
+  },
+  "timeout_remediation": {
+    "mcp_server": "analyzers",
+    "request_timeout_ms": 120000,
+    "gateway_restart": "pass",
+    "post_restart_probe_diagnostics": 0
+  },
+  "p0_gate": "not_run",
+  "project_phase": "P0_not_started",
+  "notes": [
+    "The visible result proves the real R5 completion path after the timeout remediation.",
+    "The MP4 had no audio stream; this is valid video analysis and does not qualify audio transcription.",
+    "R5 completion does not by itself pass the P0 Gate or authorize P1."
+  ]
+}

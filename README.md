@@ -85,7 +85,7 @@ flowchart LR
 | TXT `text/plain` | 显式 Ticket 分析已修复；目标回归 170/170；真实文本回复已返回摘要和结构信息 |
 | 图片 | 安全入库和图片摘要/OCR 展示链路已有真实样例；仍需按 P0 矩阵补齐完整证据 |
 | 音频 | faster-whisper CUDA 已完成真实转录，完整英文测试句已返回；顶层 `transcript.json` 展示链路已修复 |
-| MP4 视频 | 安全入库已验证；最近一次分析请求超时，尚未把视频分析标记为通过。视频需要 ffprobe、抽帧和可能的 GPU 分析；本机 `analyzers` MCP 请求窗口现已按实时 Schema 设置为 120 秒，下一步必须用新文件/新 Ticket 复测 |
+| MP4 视频 | R5 真实复测已完成：4 秒 MP4 通过 ffprobe，`analyze_video` 完成并抽取 3 帧，用户收到可见完成回复；本机 `analyzers` MCP 请求窗口为 120 秒。 |
 | DOCX/PDF | 只允许元数据、SHA-256 和隔离复制；不解析正文 |
 
 当前项目仍处于 `P0`，`PROJECT_STATUS.yaml` 的 `P0` 保持 `not_started`。P0 Gate、P1 生产流水线和正式 Cron 均不能由单次媒体成功或本地测试直接推断通过。

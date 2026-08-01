@@ -677,7 +677,7 @@ Candidate A failed its source replacement contract as `OFFICIAL_PLUGIN_CANNOT_RE
 - [x] Run focused tests, bytecode checks, JSON validation, and read-only Git checks.
 - [x] Publish 019 implementation, RPC, security, migration, rollback, and V14 evidence; stop before production cutover.
 
-### Review — in progress
+### Review — completed; R5 evidence frozen
 
 Focused gateway tests passed 9/9 and the migration rehearsal passed. Activation remains blocked because the official Lark SDK is absent and the production OpenClaw RPC contract is not yet isolatedly verified. All real Feishu connectivity, production Binding changes, Gateway lifecycle changes, R3–R5, P0 Gate, commits, and pushes remain prohibited.
 
@@ -1406,6 +1406,18 @@ Detailed execution handoff:
 
 - The user-provided `openclaw.yaml` path is absent on this machine; the effective file is `C:\Users\Admin\.openclaw\openclaw.json`.
 - The live schema has no top-level `mcp.timeout`; the analyzer server supports `mcp.servers.<name>.requestTimeoutMs`.
-- The latest MP4 event proves safe ingress only; the subsequent analysis timeout remains a live qualification failure, not a passed video result.
+- The latest MP4 event completed `analyze_video` and returned a visible completion reply; the R5 evidence is frozen separately below.
 - The effective `analyzers` MCP request timeout is now 120000 ms; config validation, Gateway status, and `mcp probe analyzers` all passed with zero diagnostics. After the user still observed a timeout, one controlled Gateway restart was performed; the post-restart status and probe passed.
-- README and the two change requests are published on `main`; the live MP4 analysis result remains pending a new upload and new Ticket from the original Feishu group.
+- README, timeout evidence, and the R5 qualification package are being published on `main`; no exposed Ticket was replayed.
+
+## P0-R5-REAL-VIDEO-QUALIFICATION-072
+
+- [x] Freeze the real MP4 `ffprobe` evidence and completed `analyze_video` artifact.
+- [x] Record the post-timeout visible completion reply without replaying the exposed Ticket.
+- [x] Keep `PROJECT_STATUS.yaml` at `P0: not_started`; do not run the P0 Gate or enter P1 from one R5 result.
+
+### Review — R5 completed; P0 closure remains
+
+- R5 is now `PASS_REAL_VISIBLE_COMPLETION`: 4.0-second video-only MP4, 3 frames extracted, Analyzer status completed, and visible completion reply.
+- The timeout remediation is frozen in `reports/change_requests/P0-VIDEO-MCP-TIMEOUT-071.json`; the analyzer MCP request window is 120000 ms and post-restart probe diagnostics are 0.
+- Next work is P0 evidence closure: refresh the current R0–R5 matrix, complete remaining command/egress/regression evidence, then run the corrected P0 Gate once. No phase-state edit is authorized before a zero-exit Gate with `reports/gates/P0_READY.json`.

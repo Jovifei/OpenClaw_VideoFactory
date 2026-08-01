@@ -1,0 +1,15 @@
+{
+  "change_request_id": "P0-R5-REAL-VIDEO-QUALIFICATION-072",
+  "created_at": "2026-08-01T21:30:00+08:00",
+  "authorization": "Jovi reported that the post-timeout real MP4 analysis completed visibly and requested the project state be committed.",
+  "scope": "Freeze one real R5 video completion, update evidence and handoff documentation, and commit the redacted result.",
+  "out_of_scope": [
+    "P0 Gate execution",
+    "PROJECT_STATUS.yaml phase update",
+    "P1 implementation",
+    "new model or node installation",
+    "automatic Douyin publishing",
+    "Ticket replay"
+  ],
+  "status": "completed_evidence_pending_p0_closure"
+}
