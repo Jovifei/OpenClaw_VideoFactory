@@ -1,0 +1,24 @@
+{
+  "id": "P0-PUBLIC-INGRESS-EVIDENCE-079",
+  "created_at": "2026-08-01T23:55:00+08:00",
+  "category": "P0 safe ingress evidence reconciliation",
+  "scope": [
+    "Read-only rehash quarantined TXT/PNG/MP4 receipts and record only aggregate, redacted results.",
+    "Create a public V2.5 safe-ingress report from real persisted receipt evidence.",
+    "Make prereview and final Gate prefer the public report with legacy local-report fallback.",
+    "Run focused Gate/pre-review and ingress-security regressions."
+  ],
+  "out_of_scope": [
+    "Send Feishu messages or upload/replay attachments.",
+    "Parse attachment content, start a second consumer, modify OpenClaw configuration, or run the final P0 Gate.",
+    "Record message IDs, paths, filenames, hashes, account IDs, chat IDs, sender IDs, or attachment content."
+  ],
+  "rollback": "Revert only public-evidence selection, tests, reports, and task notes; receipt data and runtime state are read-only.",
+  "verification": {
+    "receipt_integrity": "41 persisted TXT/PNG/MP4 quarantined receipts rehashed; every stored copy matched its receipt SHA-256",
+    "pester": "tests/Test-IngestInboundMedia.ps1: 36/36 passed in Pester TestDrive",
+    "focused_gate_tests": "tests.test_p0_acceptance_gate and tests.test_p0_gate_prereview: 14/14 passed",
+    "actual_prereview": "P0_SAFE_INGRESS_EVIDENCE_079.json is selected; safe ingress check passed"
+  },
+  "status": "completed"
+}

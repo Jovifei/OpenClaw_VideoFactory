@@ -69,7 +69,7 @@ class P0GateV25Tests(unittest.TestCase):
                     {"id": "feishu_deduplication", "passed": True},
                 ],
             }
-        if name == "FEISHU_INGRESS_TEST.json":
+        if name in {"P0_SAFE_INGRESS_EVIDENCE_079.json", "FEISHU_INGRESS_TEST.json"}:
             return {
                 "version": "2.5",
                 "passed": True,
@@ -143,7 +143,7 @@ class P0GateV25Tests(unittest.TestCase):
 
     def test_old_or_partial_ingress_evidence_fails_closed(self) -> None:
         def partial_evidence(name: str) -> dict[str, object]:
-            if name == "FEISHU_INGRESS_TEST.json":
+            if name in {"P0_SAFE_INGRESS_EVIDENCE_079.json", "FEISHU_INGRESS_TEST.json"}:
                 return {"passed": True, "checks": []}
             return self.evidence(name)
 

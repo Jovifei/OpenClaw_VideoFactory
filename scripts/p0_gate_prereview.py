@@ -206,7 +206,11 @@ def runtime_checks(
 def acceptance_evidence_checks(reports: Path) -> list[dict[str, Any]]:
     text = load_json(reports / "FEISHU_SMOKE_TEST.json")
     consumer = load_json(reports / "FEISHU_SINGLE_CONSUMER_TEST.json")
-    ingress = load_json(reports / "FEISHU_INGRESS_TEST.json")
+    ingress_source, ingress = load_current_report(
+        reports,
+        "P0_SAFE_INGRESS_EVIDENCE_079.json",
+        "FEISHU_INGRESS_TEST.json",
+    )
     egress = load_json(reports / "FEISHU_EGRESS_TEST.json")
     codex = load_json(reports / "CODEX_CLI_SMOKE.json")
     regression_source, regression = load_current_report(
@@ -243,7 +247,7 @@ def acceptance_evidence_checks(reports: Path) -> list[dict[str, Any]]:
                 "safe_media_ingest",
             ),
             {
-                "file": "FEISHU_INGRESS_TEST.json",
+                "file": ingress_source,
                 "schema_version": (ingress or {}).get("schema_version"),
             },
         ),

@@ -1529,3 +1529,21 @@ Detailed execution handoff:
 - Verification: 13/13 focused tests, Python compilation, JSON parsing, and the
   actual prereview. The result is `18 passed / 1 conditional / 4 blocked`; P0
   remains blocked, no final Gate or phase change occurred.
+
+## P0-PUBLIC-INGRESS-EVIDENCE-079
+
+- [x] Rehash persisted quarantined TXT/PNG/MP4 stored copies without exposing any receipt identifiers, paths, filenames, hashes, or media content.
+- [x] Verify the ingestion Pester suite uses an isolated TestDrive before running it.
+- [x] Publish a redacted V2.5 safe-ingress report and make prereview/Gate prefer it with legacy local-report fallback.
+- [x] Run Pester, focused Gate/pre-review tests, Python compilation, and the actual prereview.
+
+### Review — completed
+
+- Real persisted receipt recheck: TXT 17, PNG 15, MP4 9; all 41 copies were
+  quarantined, unparsed, present, and SHA-256-equal to their receipt. The
+  historical one-hash receipt shape was preserved; storage integrity was
+  independently rechecked rather than inventing missing fields.
+- Verification: ingress Pester 36/36 in TestDrive, Gate/pre-review 14/14,
+  compile and JSON parse passed. The prereview now selects the public ingress
+  report and is `19 passed / 1 conditional / 3 blocked`. No Feishu message,
+  attachment replay, configuration, Gateway, P0 Gate, or phase change occurred.

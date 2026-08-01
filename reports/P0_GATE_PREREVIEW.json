@@ -128,10 +128,10 @@
       },
       {
         "name": "P0 evidence: TXT/PNG/MP4 safe ingress",
-        "status": "blocked",
+        "status": "passed",
         "detail": {
-          "file": "FEISHU_INGRESS_TEST.json",
-          "schema_version": null
+          "file": "P0_SAFE_INGRESS_EVIDENCE_079.json",
+          "schema_version": "2.5"
         }
       },
       {
@@ -215,9 +215,9 @@
     ]
   },
   "status_counts": {
-    "passed": 18,
+    "passed": 19,
     "conditional": 1,
-    "blocked": 4
+    "blocked": 3
   },
   "p0_ready": false,
   "can_start_p1": false,

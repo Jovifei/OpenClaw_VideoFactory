@@ -1,0 +1,65 @@
+{
+  "schema_version": "2.5",
+  "passed": true,
+  "report_id": "P0-PUBLIC-INGRESS-EVIDENCE-079",
+  "change_request_id": "P0-PUBLIC-INGRESS-EVIDENCE-079",
+  "scope": "Read-only aggregate revalidation of persisted quarantined Feishu receipt copies; no attachment content was parsed.",
+  "checks": [
+    {
+      "id": "txt_ingress",
+      "passed": true,
+      "evidence": {
+        "content_type": "text/plain",
+        "receipt_count": 17,
+        "all_quarantined": true,
+        "all_content_unparsed": true,
+        "all_stored_paths_present": true,
+        "all_stored_hashes_match_receipt_sha256": true
+      }
+    },
+    {
+      "id": "png_ingress",
+      "passed": true,
+      "evidence": {
+        "content_type": "image/png",
+        "receipt_count": 15,
+        "all_quarantined": true,
+        "all_content_unparsed": true,
+        "all_stored_paths_present": true,
+        "all_stored_hashes_match_receipt_sha256": true
+      }
+    },
+    {
+      "id": "mp4_ingress",
+      "passed": true,
+      "evidence": {
+        "content_type": "video/mp4",
+        "receipt_count": 9,
+        "all_quarantined": true,
+        "all_content_unparsed": true,
+        "all_stored_paths_present": true,
+        "all_stored_hashes_match_receipt_sha256": true
+      }
+    },
+    {
+      "id": "safe_media_ingest",
+      "passed": true,
+      "evidence": {
+        "receipt_total": 41,
+        "verification": "Recomputed every stored-copy SHA-256 and matched it to the receipt SHA-256; all copies remained quarantined and unparsed.",
+        "real_event_corroboration": [
+          "P0_R1_EVENT_TRACE_20260719.json",
+          "P0_LIVE_MEDIA_R2_QUALIFICATION_012.json",
+          "P0_R5_VIDEO_QUALIFICATION_072.json"
+        ]
+      }
+    }
+  ],
+  "redaction": "No receipt path, message ID, account ID, chat ID, sender ID, filename, SHA-256 value, or media content is recorded.",
+  "limitations": [
+    "This report proves safe ingress and stored-copy integrity only; it does not prove single-consumer message-id deduplication or outbound delivery.",
+    "The historical receipt schema stores one receipt SHA-256; stored-copy integrity was independently rechecked instead of inventing missing source/stored fields."
+  ],
+  "p0_gate": "not_run",
+  "project_phase": "P0_not_started"
+}

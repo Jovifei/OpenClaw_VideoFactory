@@ -427,7 +427,9 @@ def p0_checks() -> list[dict[str, Any]]:
         single_consumer or "missing",
     )
 
-    ingress = evidence_json("FEISHU_INGRESS_TEST.json")
+    ingress = evidence_json("P0_SAFE_INGRESS_EVIDENCE_079.json")
+    if ingress is None:
+        ingress = evidence_json("FEISHU_INGRESS_TEST.json")
     for label, check_id in [
         ("Feishu TXT ingress", "txt_ingress"),
         ("Feishu PNG ingress", "png_ingress"),

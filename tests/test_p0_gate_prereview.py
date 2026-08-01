@@ -180,6 +180,18 @@ class P0GatePrereviewTests(unittest.TestCase):
         self.assertEqual(agent_binding["status"], "passed")
         self.assertEqual(agent_binding["detail"]["file"], "P0_AGENT_BINDING_REGRESSION_077.json")
 
+    def test_current_safe_ingress_report_is_preferred(self) -> None:
+        repo = self.make_repo()
+        reports = repo / "reports"
+        checks = ("txt_ingress", "png_ingress", "mp4_ingress", "safe_media_ingest")
+        write_json(reports / "FEISHU_INGRESS_TEST.json", named_evidence(*checks))
+        write_json(reports / "P0_SAFE_INGRESS_EVIDENCE_079.json", named_evidence(*checks))
+
+        evidence = MODULE.acceptance_evidence_checks(reports)
+        ingress = next(check for check in evidence if check["name"] == "P0 evidence: TXT/PNG/MP4 safe ingress")
+        self.assertEqual(ingress["status"], "passed")
+        self.assertEqual(ingress["detail"]["file"], "P0_SAFE_INGRESS_EVIDENCE_079.json")
+
     def test_p1_requires_explicit_p0_ready_artifact(self) -> None:
         repo = self.make_repo()
         reports = repo / "reports"
