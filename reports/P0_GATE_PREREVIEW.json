@@ -30,6 +30,7 @@
           "mismatch: .env.example",
           "mismatch: .gitignore",
           "mismatch: AGENTS.md",
+          "mismatch: README.md",
           "mismatch: START_HERE_CODEX.md",
           "mismatch: docs/ARCHITECTURE.md",
           "mismatch: docs/IMPLEMENTATION_PHASES.md",
@@ -43,6 +44,11 @@
           "mismatch: runbook/10_FINAL_ACCEPTANCE.md",
           "mismatch: scripts/00_package_check.ps1",
           "mismatch: scripts/90_acceptance_gate.py",
+          "mismatch: scripts/91_update_project_status.py",
+          "mismatch: scripts/factory.py",
+          "mismatch: scripts/scaffolds/factory_scaffold_v23.py",
+          "mismatch: scripts/skill_doctor.py",
+          "mismatch: scripts/validate_handoff.py",
           "mismatch: skills/feishu-video-factory-operator/SKILL.md"
         ]
       }
@@ -184,39 +190,39 @@
       },
       {
         "name": "real media R3 image result",
-        "status": "blocked",
+        "status": "passed",
         "detail": {
-          "source": "P0_REAL_R3_IMAGE_VERIFICATION_054A.json",
-          "verdict": "R3_PARTIAL_PASS:RESULT_REPLY_TOO_THIN"
+          "source": "P0_REAL_R3_RETEST_061.json",
+          "verdict": "R3_IMAGE_ANALYSIS_OK"
         }
       },
       {
         "name": "real media R4 audio result",
-        "status": "blocked",
+        "status": "passed",
         "detail": {
-          "source": "P0_REAL_R4_AUDIO_QUALIFICATION_057.json",
-          "verdict": "missing"
+          "source": "P0_R4_AUDIO_QUALIFICATION_073.json",
+          "verdict": "R4_AUDIO_ANALYSIS_OK"
         }
       },
       {
         "name": "real media R5 video result",
-        "status": "blocked",
+        "status": "passed",
         "detail": {
-          "source": "P0_REAL_R5_VIDEO_QUALIFICATION_058.json",
-          "verdict": "missing"
+          "source": "P0_R5_VIDEO_QUALIFICATION_072.json",
+          "verdict": "PASS_REAL_VISIBLE_COMPLETION"
         }
       }
     ]
   },
   "status_counts": {
-    "passed": 14,
+    "passed": 17,
     "conditional": 1,
-    "blocked": 8
+    "blocked": 5
   },
   "p0_ready": false,
   "can_start_p1": false,
   "minimum_completion_target": "P2_AUTOMATED_DAILY_FACTORY",
   "next_milestone": "P1_DETERMINISTIC_VERTICAL_SLICE",
-  "next_action": "RUN_FRESH_REAL_R3_RETEST",
+  "next_action": "REMEDIATE_P0_EVIDENCE:_SINGLE_CONSUMER_AND_DEDUPLICATION",
   "overall": "BLOCKED"
 }

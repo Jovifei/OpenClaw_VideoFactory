@@ -45,6 +45,22 @@ def load_json(path: Path) -> dict[str, Any] | None:
     return value if isinstance(value, dict) else None
 
 
+def load_current_report(reports: Path, *names: str) -> tuple[str, dict[str, Any] | None]:
+    for name in names:
+        payload = load_json(reports / name)
+        if payload is not None:
+            return name, payload
+    return names[0], None
+
+
+def report_outcome(payload: dict[str, Any] | None) -> str:
+    for field in ("verdict", "result", "qualification", "status"):
+        value = (payload or {}).get(field)
+        if isinstance(value, str) and value:
+            return value
+    return ""
+
+
 def is_v25_passed(evidence: dict[str, Any] | None) -> bool:
     if not evidence or evidence.get("passed") is not True:
         return False
@@ -284,15 +300,26 @@ def _stage_status(payload: dict[str, Any] | None, *path: str) -> str | None:
 
 def media_sequence_checks(reports: Path) -> list[dict[str, Any]]:
     trace = load_json(reports / "P0_LIVE_EVENT_TRACE_R0_R5.json")
-    r3 = load_json(reports / "P0_REAL_R3_RETEST_056.json")
-    if r3 is None:
-        r3 = load_json(reports / "P0_REAL_R3_IMAGE_VERIFICATION_054A.json")
-    r4 = load_json(reports / "P0_REAL_R4_AUDIO_QUALIFICATION_057.json")
-    r5 = load_json(reports / "P0_REAL_R5_VIDEO_QUALIFICATION_058.json")
+    r3_source, r3 = load_current_report(
+        reports,
+        "P0_REAL_R3_RETEST_061.json",
+        "P0_REAL_R3_RETEST_056.json",
+        "P0_REAL_R3_IMAGE_VERIFICATION_054A.json",
+    )
+    r4_source, r4 = load_current_report(
+        reports,
+        "P0_R4_AUDIO_QUALIFICATION_073.json",
+        "P0_REAL_R4_AUDIO_QUALIFICATION_057.json",
+    )
+    r5_source, r5 = load_current_report(
+        reports,
+        "P0_R5_VIDEO_QUALIFICATION_072.json",
+        "P0_REAL_R5_VIDEO_QUALIFICATION_058.json",
+    )
 
-    r3_verdict = str((r3 or {}).get("verdict") or (r3 or {}).get("status") or "")
-    r4_verdict = str((r4 or {}).get("verdict") or (r4 or {}).get("status") or "")
-    r5_verdict = str((r5 or {}).get("verdict") or (r5 or {}).get("status") or "")
+    r3_verdict = report_outcome(r3)
+    r4_verdict = report_outcome(r4)
+    r5_verdict = report_outcome(r5)
     return [
         status_check(
             "real media R0 text",
@@ -313,11 +340,7 @@ def media_sequence_checks(reports: Path) -> list[dict[str, Any]]:
             "real media R3 image result",
             r3_verdict == "R3_IMAGE_ANALYSIS_OK",
             {
-                "source": (
-                    "P0_REAL_R3_RETEST_056.json"
-                    if (reports / "P0_REAL_R3_RETEST_056.json").exists()
-                    else "P0_REAL_R3_IMAGE_VERIFICATION_054A.json"
-                ),
+                "source": r3_source,
                 "verdict": r3_verdict or "missing",
             },
         ),
@@ -325,15 +348,20 @@ def media_sequence_checks(reports: Path) -> list[dict[str, Any]]:
             "real media R4 audio result",
             r4_verdict == "R4_AUDIO_ANALYSIS_OK",
             {
-                "source": "P0_REAL_R4_AUDIO_QUALIFICATION_057.json",
+                "source": r4_source,
                 "verdict": r4_verdict or "missing",
             },
         ),
         status_check(
             "real media R5 video result",
-            r5_verdict in {"R5_VIDEO_ANALYSIS_OK", "P0_REAL_MEDIA_SEQUENCE_COMPLETE"},
+            r5_verdict
+            in {
+                "R5_VIDEO_ANALYSIS_OK",
+                "P0_REAL_MEDIA_SEQUENCE_COMPLETE",
+                "PASS_REAL_VISIBLE_COMPLETION",
+            },
             {
-                "source": "P0_REAL_R5_VIDEO_QUALIFICATION_058.json",
+                "source": r5_source,
                 "verdict": r5_verdict or "missing",
             },
         ),

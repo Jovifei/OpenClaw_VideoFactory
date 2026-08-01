@@ -1421,3 +1421,25 @@ Detailed execution handoff:
 - R5 is now `PASS_REAL_VISIBLE_COMPLETION`: 4.0-second video-only MP4, 3 frames extracted, Analyzer status completed, and visible completion reply.
 - The timeout remediation is frozen in `reports/change_requests/P0-VIDEO-MCP-TIMEOUT-071.json`; the analyzer MCP request window is 120000 ms and post-restart probe diagnostics are 0.
 - Next work is P0 evidence closure: refresh the current R0–R5 matrix, complete remaining command/egress/regression evidence, then run the corrected P0 Gate once. No phase-state edit is authorized before a zero-exit Gate with `reports/gates/P0_READY.json`.
+
+## P0-LANDING-AUDIT-073
+
+- [x] Re-read the current P0 phase boundary, project rules, media reports, and prior project memory.
+- [x] Reconcile the prereview with current R3/R4/R5 report names and their actual outcome fields while preserving legacy fallbacks.
+- [x] Freeze a redacted R4 real-audio qualification from completed CUDA faster-whisper artifacts and the confirmed visible reply.
+- [x] Run focused prereview tests, Python compilation, JSON parsing, diff whitespace validation, and the refreshed read-only prereview.
+- [x] Record the current landing baseline in Obsidian and a temporary handoff for the next bounded P0 task.
+
+### Review — completed
+
+- Real media R0–R5 is now consistently proven in the prereview: R3 image,
+  R4 CUDA audio transcription, and R5 video all report `passed` from their
+  current evidence packages. The refresh is `17 passed / 1 conditional /
+  5 blocked`, not a P0 Gate result.
+- The five remaining blocking evidence packages are: V2.5 single-consumer and
+  deduplication; V2.5 TXT/PNG/MP4 safe ingress; V2.5 Markdown/PNG/TXT/MP4
+  egress plus idempotency; direct Codex CLI smoke; and existing Agent/Binding
+  regression. `SHA256SUMS.txt` remains a conditional release-candidate task.
+- `PROJECT_STATUS.yaml` is unchanged at `P0: not_started`; no final Gate,
+  Feishu send, Gateway action, configuration change, P1 implementation, Cron,
+  model download, or Ticket replay occurred.

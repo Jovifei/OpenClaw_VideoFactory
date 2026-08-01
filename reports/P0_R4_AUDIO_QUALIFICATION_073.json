@@ -1,0 +1,33 @@
+{
+  "report_id": "P0-R4-REAL-AUDIO-QUALIFICATION-073",
+  "change_request_id": "P0-LANDING-AUDIT-073",
+  "qualification": "R4_AUDIO_ANALYSIS_OK",
+  "media_kind": "audio",
+  "evidence_basis": "completed quarantined analyzer artifacts and Jovi-confirmed visible real transcript reply",
+  "analyzer_artifact": {
+    "status": "completed",
+    "tool": "transcribe_audio",
+    "engine": "faster-whisper",
+    "device": "cuda",
+    "language": "en",
+    "transcript_characters": 80,
+    "segment_count": 0
+  },
+  "user_visible_result": {
+    "confirmed": true,
+    "summary": "A complete English test transcript was returned in the group reply.",
+    "ticket_replayed": false
+  },
+  "redaction": {
+    "ticket": "not recorded",
+    "message_id": "not recorded",
+    "job_id": "not recorded",
+    "transcript_text": "not recorded"
+  },
+  "p0_gate": "not_run",
+  "project_phase": "P0_not_started",
+  "limitations": [
+    "This qualification does not prove the remaining P0 single-consumer, ingress, egress, Codex CLI, or regression evidence requirements.",
+    "This qualification does not authorize P1 or change PROJECT_STATUS.yaml."
+  ]
+}

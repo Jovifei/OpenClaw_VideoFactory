@@ -1,0 +1,27 @@
+{
+  "id": "P0-LANDING-AUDIT-073",
+  "created_at": "2026-08-01T21:45:00+08:00",
+  "authorization": "Jovi authorized autonomous in-scope execution when no user action is required.",
+  "category": "P0 evidence reconciliation and prereview maintenance",
+  "scope": [
+    "Read current redacted R3/R4/R5 local evidence.",
+    "Make the prereview select current report names and normalized outcome fields with legacy fallback.",
+    "Add a redacted R4 real-qualification report from completed local artifacts and confirmed visible result.",
+    "Run focused tests, Python compilation, and the read-only prereview.",
+    "Update the project task list, Obsidian project memory, and handoff record."
+  ],
+  "out_of_scope": [
+    "Run the final P0 acceptance gate or create P0_READY.json.",
+    "Change PROJECT_STATUS.yaml or start P1.",
+    "Modify OpenClaw configuration, restart Gateway, send Feishu messages, or replay any Ticket.",
+    "Download models, register Cron, or automate Douyin publishing."
+  ],
+  "rollback": "Revert only the prereview/test/report/documentation files changed by this request; no runtime state is changed.",
+  "verification": {
+    "focused_tests": "tests.test_p0_gate_prereview: 6/6 passed",
+    "python_compile": "scripts/p0_gate_prereview.py passed",
+    "json_parse": "change request and R4 qualification report passed",
+    "prereview": "17 passed, 1 conditional, 5 blocked; R0-R5 media sequence all passed"
+  },
+  "status": "completed"
+}

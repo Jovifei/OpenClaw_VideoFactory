@@ -143,6 +143,24 @@ class P0GatePrereviewTests(unittest.TestCase):
         report = MODULE.build_report(repo, include_runtime=False)
         self.assertTrue(report["next_action"].startswith("REMEDIATE_P0_EVIDENCE:"))
 
+    def test_current_media_reports_use_their_actual_outcome_fields(self) -> None:
+        repo = self.make_repo()
+        reports = repo / "reports"
+        write_real_baseline(reports, r3="R3_PARTIAL_PASS:RESULT_REPLY_TOO_THIN")
+        write_json(reports / "P0_REAL_R3_RETEST_061.json", {"result": "R3_IMAGE_ANALYSIS_OK"})
+        write_json(reports / "P0_R4_AUDIO_QUALIFICATION_073.json", {"qualification": "R4_AUDIO_ANALYSIS_OK"})
+        write_json(
+            reports / "P0_R5_VIDEO_QUALIFICATION_072.json",
+            {"qualification": "PASS_REAL_VISIBLE_COMPLETION"},
+        )
+
+        checks = MODULE.media_sequence_checks(reports)
+        current = {check["name"]: check for check in checks}
+        self.assertEqual(current["real media R3 image result"]["status"], "passed")
+        self.assertEqual(current["real media R4 audio result"]["status"], "passed")
+        self.assertEqual(current["real media R5 video result"]["status"], "passed")
+        self.assertEqual(current["real media R5 video result"]["detail"]["source"], "P0_R5_VIDEO_QUALIFICATION_072.json")
+
     def test_p1_requires_explicit_p0_ready_artifact(self) -> None:
         repo = self.make_repo()
         reports = repo / "reports"
