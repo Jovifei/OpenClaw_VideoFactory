@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw-videofactory.local/schemas/video_workflow/style_profile.schema.json",
+  "title": "Style Profile",
+  "type": "object",
+  "required": [
+    "profile_id",
+    "version",
+    "brand",
+    "narrative",
+    "motion",
+    "caption",
+    "audio",
+    "character",
+    "platform_profiles",
+    "source",
+    "provenance",
+    "status",
+    "schema_version"
+  ],
+  "properties": {
+    "profile_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string",
+      "description": "versioned; changes record reason"
+    },
+    "change_reason": {
+      "type": "string"
+    },
+    "brand": {
+      "type": "object"
+    },
+    "narrative": {
+      "type": "object"
+    },
+    "motion": {
+      "type": "object"
+    },
+    "caption": {
+      "type": "object"
+    },
+    "audio": {
+      "type": "object"
+    },
+    "character": {
+      "type": "object"
+    },
+    "platform_profiles": {
+      "type": "object"
+    },
+    "anti_homogenization": {
+      "type": "object",
+      "properties": {
+        "variants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "openclaw_skill",
+            "provider_adapter",
+            "human",
+            "platform",
+            "synthetic_fixture"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "rejected",
+        "superseded",
+        "deprecated"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "validation_errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "additionalProperties": false
+}

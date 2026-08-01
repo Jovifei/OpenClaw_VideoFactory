@@ -1,0 +1,58 @@
+{
+  "task": "P0-SINGLE-GROUP-MEDIA-ROUTER-007",
+  "scope": "controlled runtime smoke (no real Feishu upload; uses Gateway RPC + openclaw agent turns + staged inbound files)",
+  "overall": "PASS (text + PNG attachment); audio/MP4 share the proven ingest path; pre-ingest understanding config-verified",
+  "gateway": {"reachable": true, "port": 18789, "config_valid": true, "restarts": 3, "restart_reasons": ["initial apply", "group:plugins deny fix", "bundle-mcp allow fix"]},
+  "smoke_text": {
+    "method": "openclaw agent --agent video-factory -m '...' --json",
+    "status": "ok",
+    "reply": "PONG",
+    "model_used": "xiaomimimo/mimo-v2.5-pro",
+    "model_call_count": 1,
+    "session_continuous": true,
+    "result": "PASS"
+  },
+  "smoke_png_attachment": {
+    "method": "openclaw agent --agent video-factory (instructed to call ingest_attachment with a staged PNG in the real inbound root) --json",
+    "status": "ok",
+    "model_used": "xiaomimimo/mimo-v2.5-pro (text-only; did NOT read pixels)",
+    "ingest_attachment_called": true,
+    "receipt_written": true,
+    "receipt_path": "input/feishu/<message-id>/attachment-000/receipt.json",
+    "quarantined": true,
+    "content_parsed": false,
+    "sha256_present": true,
+    "analysis_allowed": true,
+    "router_did_not_fallback_to_multimodal": true,
+    "result": "PASS"
+  },
+  "smoke_mcp_server": {
+    "method": "openclaw mcp probe ingest --json",
+    "tools_exposed": ["ingest__ingest_attachment"],
+    "result": "PASS (1 tool live)"
+  },
+  "smoke_audio_mp4": {
+    "result": "NOT individually smoked; ingest path identical to PNG (proven); analyzers covered by offline Test-SingleGroupMediaRouter internal-analyzer tests (11/11); audio uses faster-whisper CUDA (verified installed); video uses ffprobe+CPU frames+VLM",
+    "note": "audio/video analyzer dispatch tested offline; a real Feishu audio/MP4 event smoke is deferred (requires user upload, forbidden this round)"
+  },
+  "smoke_failure_cases": {
+    "result": "covered offline by test_ingest_attachment_core.py (MIME conflict, signature mismatch, path traversal, oversize, unauthorized route, unsafe filename, missing source, idempotency)",
+    "counts": "17/17 failure-path tests pass"
+  },
+  "pre_ingest_media_understanding_count": {
+    "value": 0,
+    "evidence": "config-verified (tools.media.image/audio/video.scope deny for target group + durable model text-only mimo-v2.5-pro + tool policy deny group:media); behavior-consistent (router called ingest_attachment, not image understanding; model was text-only)",
+    "limitation": "direct live count of applyMediaUnderstandingIfNeeded for a real Feishu attachment event was not measured because injecting a fake Channel attachment event is not available without a real user upload; the scope deny is evaluated inside applyMediaUnderstandingIfNeeded per OpenClaw core call-order evidence (P0_CHANNEL_MIDDLEWARE_FEASIBILITY)"
+  },
+  "metrics": {
+    "router_model_call_count": 1,
+    "ingest_tool_call_count": 1,
+    "image_analysis_count": "not triggered this smoke (analyzer dispatch is offline-tested)",
+    "raw_media_path_forwarded": 0,
+    "stored_path_forwarded": 1,
+    "binding_count": 14,
+    "consumer_count": 1
+  },
+  "anomaly_or_rollback": "none; config valid and invariants hold post-smoke",
+  "evidence_files": ["scripts/smoke_007_ingest.py", "scripts/smoke_007_attachment.py", "reports/P0_SINGLE_GROUP_ROUTER_RUNTIME_SMOKE.md"]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-R3-RESULT-REPLY-REMEDIATION-055",
+  "classification": ["A", "C", "D"],
+  "root_cause": "A completed Analyzer result is persisted, but its content is dropped before the public MCP projection, which then unconditionally emits a generic completion reply.",
+  "analyzer_result_shape": {
+    "completed": true,
+    "provider_output_count": 1,
+    "provider_output_text_present": true
+  },
+  "code_evidence": [
+    "analyzer_mcp._write_result persists payload and returns technical metadata",
+    "media_action_ticket.consume_media_action_ticket returns no presentation payload",
+    "mcp_ingest_attachment._public_consume_result sets a fixed generic reply_template"
+  ],
+  "excluded_causes": [
+    "analyzer_result_absent",
+    "ticket_validation_failure",
+    "receipt_or_stored_sha_failure",
+    "mimo_v2_5_fallback",
+    "duplicate_execution"
+  ],
+  "security_boundary": "Only sanitized presentation text may enter the Router-visible public result."
+}

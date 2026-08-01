@@ -1,0 +1,38 @@
+{
+  "id": "P0-ZHONGSHU-CONTROLLED-CUTOVER-034",
+  "authorized_by": "Jovi explicit maintenance-window authorization on 2026-07-24",
+  "purpose": "Controlled account-level cutover of the existing zhongshu Feishu consumer, with immediate rollback on any required gate failure.",
+  "allowed_paths": [
+    "reports/P0_ZHONGSHU_*_034.md",
+    "reports/P0_ZHONGSHU_*_034.json",
+    "reports/P0_CURRENT_STATUS_V22.md",
+    "reports/P0_EVIDENCE_INDEX_V22.md",
+    "reports/P0_REMAINING_ACTIONS_V22.md",
+    "reports/NEXT_USER_ACTION.md",
+    "reports/command_logs/P0_ZHONGSHU_CUTOVER_034.log",
+    "reports/change_requests/P0-ZHONGSHU-CONTROLLED-CUTOVER-034.json",
+    "tasks/todo.md"
+  ],
+  "allowed_operations": [
+    "fresh sanitized production baseline and preflight collection",
+    "account-scoped OpenClaw RPC channels.stop/channels.start for feishu/zhongshu only after all live prechecks pass",
+    "Project Gateway start/stop only after zero-consumer proof or during mandatory rollback",
+    "one authorized R0-R5 message/file/card sequence in the existing zhongshu bot and existing VideoFactory group",
+    "immediate rollback and sanitized execution evidence"
+  ],
+  "prohibited_actions": [
+    "modify OpenClaw core source, Agent, Binding, Cron, OAuth, model, or PROJECT_STATUS.yaml",
+    "create a second consumer, Feishu App, Bot, or group",
+    "write credentials to command lines, logs, reports, or source",
+    "delete tasks, history, sessions, or user files",
+    "commit, push, tag, P0_READY, P1, or P0 acceptance gate"
+  ],
+  "hard_gates": [
+    "single zhongshu consumer at all times except a proven zero-consumer handoff window",
+    "fresh Core ownership and current consumer count must be proven before stop",
+    "zero consumer must be proven before Project Gateway start",
+    "any required gate failure triggers immediate stop or rollback",
+    "no production action if consumer state is unknown"
+  ],
+  "secrets": "Only redacted identifiers, hashes, counts, timestamps, statuses, and one-way fingerprints may be persisted."
+}

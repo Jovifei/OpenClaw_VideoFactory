@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AssetManifest",
+  "type": "object",
+  "required": [
+    "job_id",
+    "assets"
+  ],
+  "properties": {
+    "job_id": {
+      "type": "string"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "scene_id",
+          "source_type",
+          "rights_basis",
+          "sha256",
+          "classification"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "scene_id": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "source_type": {
+            "type": "string"
+          },
+          "source_url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "workflow": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rights_basis": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          },
+          "classification": {
+            "enum": [
+              "factual",
+              "decorative"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

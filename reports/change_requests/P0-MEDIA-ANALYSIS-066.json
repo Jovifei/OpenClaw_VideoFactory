@@ -1,0 +1,36 @@
+{
+  "change_request_id": "P0-MEDIA-ANALYSIS-066",
+  "created_at": "2026-07-30T23:39:00+08:00",
+  "authorization": "Jovi direct instruction after the live completed TXT artifact was rendered as empty: fix the issue completely and verify it.",
+  "scope": "Offline source and targeted-test repair only: load the established top-level analyze_text artifact fields into the existing bounded public TXT formatter. Preserve Ticket validation, ingress-only behavior, TXT MIME/UTF-8 restrictions, DOCX/PDF exclusion, and all path checks.",
+  "allowed_files": [
+    "scripts/mcp_ingest_attachment.py",
+    "tests/test_two_message_mcp_surface.py",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "reports/P0_MEDIA_ANALYSIS_066_*"
+  ],
+  "required_contracts": [
+    "A completed analyze_text analysis.json with top-level deterministic text fields produces a bounded safe public reply.",
+    "A missing, malformed, wrong-tool, out-of-jobs-root, or nested-only artifact still fails closed.",
+    "No Ticket replay, automatic attachment analysis, DOCX/PDF parsing, configuration/lifecycle action, phase update, or Git operation."
+  ],
+  "prohibited": [
+    "OpenClaw or Feishu configuration changes",
+    "lark-cli messaging or event subscription",
+    "Gateway or Core lifecycle control",
+    "model or node download",
+    "DOCX or PDF body parsing",
+    "automatic attachment analysis",
+    "P0 Gate or phase-state update",
+    "commit, push, tag, or branch action"
+  ],
+  "verification": {
+    "focused_tests": "2/2 passed",
+    "target_tests": "169/169 passed",
+    "target_test_seconds": 27.894,
+    "py_compile": "passed",
+    "live_action": "not_run"
+  },
+  "status": "completed"
+}

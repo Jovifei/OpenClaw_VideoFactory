@@ -1,0 +1,48 @@
+{
+  "id": "P0-SHADOW-FEISHU-PLUGIN-LIFECYCLE-033",
+  "authorized_by": "Jovi explicit task authorization on 2026-07-23",
+  "purpose": "Load the installed production-source Feishu plugin in an isolated no-network Shadow and verify account-scoped channels.start/stop through the real Shadow Gateway RPC.",
+  "allowed_paths": [
+    "reports/change_requests/P0-SHADOW-FEISHU-PLUGIN-LIFECYCLE-033.json",
+    "experiments/core_feishu_control_contract/**",
+    "scripts/migration/core_feishu_control/**",
+    "tests/test_core_feishu_plugin_lifecycle_033.py",
+    "tests/Test-CoreFeishuPluginLifecycle033.ps1",
+    "tests/test_core_feishu_control_contract_032.py",
+    "reports/P0_*_033.md",
+    "reports/P0_*_033.json",
+    "reports/P0_CURRENT_STATUS_V21.md",
+    "reports/P0_EVIDENCE_INDEX_V21.md",
+    "reports/P0_REMAINING_ACTIONS_V21.md",
+    "reports/NEXT_USER_ACTION.md",
+    "tasks/todo.md"
+  ],
+  "allowed_operations": [
+    "read-only installed OpenClaw 2026.7.1 and installed Feishu package origin/source audit",
+    "Shadow-only structured config and state under experiments/core_feishu_control_contract",
+    "read-only reference or junction to the installed Feishu plugin without modifying it",
+    "Shadow process-boundary fake transport with network-deny instrumentation",
+    "real Shadow Gateway RPC/CLI lifecycle checks on non-production loopback ports",
+    "offline tests and sanitized reports",
+    "compatibility-only update of the superseded 032 assertions to read their frozen report"
+  ],
+  "prohibited_actions": [
+    "modify production OpenClaw config, Binding, Agent, Cron, Gateway, zhongshu runtime, or PROJECT_STATUS.yaml",
+    "stop or restart production Core Feishu Binding or Gateway",
+    "start production Project Gateway",
+    "connect to real Feishu or authenticate real RPC",
+    "use or print real App ID, App Secret, token, or complete config",
+    "install/download dependencies or repositories or use network",
+    "modify OpenClaw core or installed Feishu plugin business code",
+    "use a self-made empty plugin as Feishu proof",
+    "replace RPC lifecycle with direct internal function calls",
+    "run P0 Gate, R3/R4/R5, commit, push, or tag"
+  ],
+  "secrets": "Only fake markers, structural fields, counts, hashes, redacted paths, and statuses may be persisted.",
+  "stop_states": [
+    "SHADOW_FEISHU_PLUGIN_LOAD_BLOCKED",
+    "SHADOW_FEISHU_TRANSPORT_ISOLATION_BLOCKED",
+    "CHANNELS_STOP_START_CONTRACT_NOT_PROVEN",
+    "CHANNEL_STOP_SCOPE_BROADER_THAN_ACCOUNT"
+  ]
+}

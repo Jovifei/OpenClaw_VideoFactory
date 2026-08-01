@@ -1,0 +1,46 @@
+{
+  "superseded_by": "reports/P0_CURRENT_STATUS_V2.json",
+  "generated_at": "2026-07-15T02:38:13+08:00",
+  "overall_status": "not_passed",
+  "current_phase": "P0",
+  "passed": [
+    {"id": "package", "evidence": ["reports/package_release_validation.json"]},
+    {"id": "gateway", "evidence": ["reports/OPENCLAW_EXISTING_AGENTS_REGRESSION.json"], "qualification": "running and connectivity probe OK; existing service-version warning retained"},
+    {"id": "video_factory_agent", "evidence": ["reports/OPENCLAW_EXISTING_AGENTS_REGRESSION.json", "reports/FEISHU_MEDIA_TEST_READINESS.json"]},
+    {"id": "skill_visibility", "evidence": ["reports/SKILL_VISIBILITY.json", "reports/OPENCLAW_EXISTING_AGENTS_REGRESSION.json"]},
+    {"id": "text_ingress", "evidence": ["reports/FEISHU_SINGLE_CONSUMER_TEST.json"]},
+    {"id": "image_ingress", "evidence": ["reports/FEISHU_INGRESS_TEST.json"]},
+    {"id": "media_path_remediation", "evidence": ["reports/P0_MEDIA_PATH_REMEDIATION_AUDIT.json"], "qualification": "All 14 requested checks passed; an additional PNG MIME mismatch probe exposed a known review-only gap."}
+  ],
+  "ready_for_user_test": [
+    {"id": "txt_ingress", "evidence": ["reports/P0_FIXTURE_PREPARATION.json", "reports/READY_FOR_FEISHU_MEDIA_TEST.md"]},
+    {"id": "mp4_ingress", "evidence": ["reports/P0_FIXTURE_PREPARATION.json", "reports/READY_FOR_FEISHU_MEDIA_TEST.md"]}
+  ],
+  "conditional": [
+    {"id": "lark_cli_egress", "evidence": ["reports/FEISHU_EGRESS_TEST.json"], "condition": "Retry bounded dry-runs; actual send remains prohibited until every dry-run has a complete exit-0 result."}
+  ],
+  "deferred": [
+    {"id": "codex_cli_upgrade", "evidence": ["reports/CODEX_CLI_UPGRADE_DEFERRED.json"], "resume_phrase": "开始Codex CLI维护窗口"},
+    {"id": "direct_codex_cli_smoke", "evidence": ["reports/CODEX_CLI_UPGRADE_DEFERRED.json"]}
+  ],
+  "blocked": [
+    {"id": "final_p0_gate", "reason": "Direct Codex CLI read/write smoke is deferred and real TXT/MP4 ingress remains pending."},
+    {"id": "p1_entry", "reason": "P0 is not passed."}
+  ],
+  "known_gaps": [
+    "PNG MIME mismatch is accepted by the current inbound-media extension switch; no code repair was authorized in N2.",
+    "The Feishu developer backend's second im.message.receive_v1 subscription state is not locally verifiable.",
+    "The single sender allowlist entry cannot be attributed locally because the expected sender environment value is absent.",
+    "The lark-cli four-command dry-run batch did not complete, so no actual egress was attempted.",
+    "Codex CLI upgrade and direct smoke are deferred until the exact maintenance-window resume phrase."
+  ],
+  "project_status_yaml": {
+    "p0": "not_started",
+    "p1": "blocked_by_P0",
+    "modified": false
+  },
+  "final_p0_gate_run": false,
+  "p0_ready_created": false,
+  "commit_or_tag_created": false,
+  "p1_branch_created": false
+}

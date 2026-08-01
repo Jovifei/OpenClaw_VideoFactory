@@ -1,0 +1,11 @@
+{
+  "restart_attempted": false,
+  "restart_type": "NO_SAFE_RESTART_PATH",
+  "reason": "SAFE_RESTART_ROOT_CAUSE_UNPROVEN;SERVICE_CONFIG_AUDIT_NOT_OK;CRON_OBSERVABILITY_UNAVAILABLE;CORE_CHANNEL_READY_UNPROVEN",
+  "old_pid": 13144,
+  "new_pid": null,
+  "recovery_start_attempted": false,
+  "configuration_changed": false,
+  "project_gateway_started": false,
+  "core_feishu_stopped": false
+}

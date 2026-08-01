@@ -1,0 +1,70 @@
+{
+  "created_at": "2026-07-15T00:04:34+08:00",
+  "updated_at": "2026-07-18T00:00:00+08:00",
+  "contains_sensitive_data": false,
+  "files": [
+    {
+      "filename": "p0-file-test.txt",
+      "mime": "text/plain",
+      "size_bytes": 55,
+      "sha256": "c8a155b4d5eccafd2b36758b9fa67af186174dfe6e99e184b56231bd8382663d",
+      "generation_command": "apply_patch: add the exact approved two-line TXT fixture",
+      "created_at": "2026-07-15T00:04:34+08:00",
+      "contains_sensitive_data": false
+    },
+    {
+      "filename": "p0-image-test.png",
+      "mime": "image/png",
+      "size_bytes": 17247,
+      "sha256": "624223e0f8d14374d40301574b721c9debd46d4168ad4c44d06767e5f74a4214",
+      "generation_command": "ffmpeg -hide_banner -loglevel error -f lavfi -i color=c=0x29465B:s=720x1280:d=1 -vf drawtext=fontfile=C\\:/Windows/Fonts/arial.ttf:text='P0 IMAGE TEST':fontcolor=white:fontsize=64:x=(w-text_w)/2:y=(h-text_h)/2 -frames:v 1 -y p0-image-test.png",
+      "created_at": "2026-07-15T00:04:34+08:00",
+      "contains_sensitive_data": false
+    },
+    {
+      "filename": "p0-video-test.mp4",
+      "mime": "video/mp4",
+      "size_bytes": 8858,
+      "sha256": "ea8ce1539fc1c7520b1bb1d275529749a5f4190e82516f12b3e9b98eba7632cc",
+      "generation_command": "ffmpeg -hide_banner -loglevel error -f lavfi -i color=c=0x324A5F:s=720x1280:r=25:d=4 -vf drawtext=fontfile=C\\:/Windows/Fonts/arial.ttf:text='P0 VIDEO TEST':fontcolor=white:fontsize=64:x=(w-text_w)/2:y=(h-text_h)/2 -c:v libx264 -preset veryfast -crf 28 -pix_fmt yuv420p -movflags +faststart -an -t 4 -y p0-video-test.mp4",
+      "created_at": "2026-07-15T00:04:34+08:00",
+      "contains_sensitive_data": false,
+      "note": "silent (no audio track); use p0-video-analysis-test.mp4 for video analyzer audio path validation"
+    },
+    {
+      "filename": "p0-video-cover.png",
+      "mime": "image/png",
+      "size_bytes": 19582,
+      "sha256": "f1220bcdfac6737239951c49986efd639bdf349553cb85f455ee2ad31207d1b1",
+      "generation_command": "ffmpeg -hide_banner -loglevel error -f lavfi -i color=c=0x8A5A6B:s=720x1280:d=1 -vf drawtext=fontfile=C\\:/Windows/Fonts/arial.ttf:text='P0 VIDEO COVER':fontcolor=white:fontsize=58:x=(w-text_w)/2:y=(h-text_h)/2 -frames:v 1 -y p0-video-cover.png",
+      "created_at": "2026-07-15T00:04:34+08:00",
+      "contains_sensitive_data": false
+    },
+    {
+      "filename": "p0-audio-test.wav",
+      "mime": "audio/wav",
+      "size_bytes": 184674,
+      "sha256": "cc08486c989b5b6004f96ca6c5b102503852c76e709dee165d0e10408c287b6b",
+      "duration_seconds": 5.769625,
+      "format": "pcm_s16le, 16000 Hz, mono",
+      "generation_command": "PowerShell System.Speech.Synthesis.SpeechSynthesizer (Rate=3, Volume=100, 16kHz mono 16-bit PCM), offline .NET TTS, no cloud APIs",
+      "spoken_text": "OpenClaw VideoFactory P zero audio test. The quick brown fox jumps over the lazy dog.",
+      "expected_transcript": "OpenClaw VideoFactory P0 audio test. The quick brown fox jumps over the lazy dog.",
+      "created_at": "2026-07-18T00:00:00+08:00",
+      "contains_sensitive_data": false
+    },
+    {
+      "filename": "p0-video-analysis-test.mp4",
+      "mime": "video/mp4",
+      "size_bytes": 52037,
+      "sha256": "ca844094b316103d6084b59936685c1be8037174044cf4a2d4041db6acb689fc",
+      "duration_seconds": 5.0,
+      "format": "h264 video + aac audio (16kHz mono)",
+      "generation_command": "ffmpeg -f lavfi -i color=c=0x29465B:s=640x360:r=25:d=5 -i p0-audio-test.wav -vf drawtext=...text='P0 VIDEO ANALYSIS'... -c:v libx264 -c:a aac -shortest -y p0-video-analysis-test.mp4",
+      "expected_frame_features": "dark blue (#29465B) background, white centered text 'P0 VIDEO ANALYSIS' (fontsize 48, 640x360)",
+      "expected_transcript": "OpenClaw VideoFactory P0 audio test. The quick brown fox jumps over the lazy dog. (from embedded audio track)",
+      "created_at": "2026-07-18T00:00:00+08:00",
+      "contains_sensitive_data": false
+    }
+  ]
+}

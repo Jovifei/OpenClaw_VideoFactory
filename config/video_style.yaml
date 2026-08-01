@@ -1,0 +1,26 @@
+resolution: "1080x1920"
+fps: 30
+safe_area:
+  top: 150
+  bottom: 300
+  left: 80
+  right: 80
+subtitle:
+  max_lines: 2
+  max_chars_per_line: 18
+  emphasize_keywords: true
+  position: bottom_center
+audio:
+  voice_peak_db: -3
+  music_target_lufs: -28
+  final_target_lufs: -16
+templates:
+  - protocol_frame
+  - flow_diagram
+  - code_explainer
+  - engineering_case
+gpu:
+  whisper_device: cuda
+  whisper_compute_type: float16
+  ffmpeg_encoder: h264_nvenc
+  ai_video_max_seconds: 4

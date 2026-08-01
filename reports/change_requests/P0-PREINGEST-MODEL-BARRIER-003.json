@@ -1,0 +1,60 @@
+{
+  "id": "P0-PREINGEST-MODEL-BARRIER-003",
+  "phase": "P0",
+  "status": "blocked_pre_install_binding_surface_incompatible",
+  "objective": "Enable a fail-closed, video-factory-only pre-ingest attachment barrier before any model invocation.",
+  "authorization": {
+    "allow_openclaw_meta_lastTouchedAt": true,
+    "allowed_openclaw_semantic_paths": [
+      "plugins.allow",
+      "plugins.entries.video-factory-preingest-barrier",
+      "meta.lastTouchedAt"
+    ],
+    "planned_gateway_restarts": 1
+  },
+  "baseline": {
+    "openclaw_config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "temporary_plugin_directory_exists": false,
+    "previous_focused_test_exists": false,
+    "gateway_port_reachable": true,
+    "agent_count": 14,
+    "binding_count": 14,
+    "p0_operating_status": "conditional_not_passed"
+  },
+  "allowed_writes": [
+    "C:/Users/Admin/.openclaw/extensions/video-factory-preingest-barrier/",
+    "C:/Users/Admin/.openclaw/backups/P0-PREINGEST-MODEL-BARRIER-003-*",
+    "E:/project/OpenClaw_VideoFactory/tests/Test-PreIngestModelBarrier.ps1",
+    "E:/project/OpenClaw_VideoFactory/reports/",
+    "E:/project/OpenClaw_VideoFactory/tasks/todo.md"
+  ],
+  "prohibited_changes": [
+    "MiMo model configuration",
+    "model fallback configuration",
+    "OAuth",
+    "Runtime",
+    "Cron",
+    "Binding",
+    "Gateway configuration",
+    "P1 code",
+    "P0 gate",
+    "PROJECT_STATUS.yaml",
+    "real Feishu upload or outbound send"
+  ],
+  "rollback": "Restore the byte-identical OpenClaw config backup, remove or disable the new barrier plugin, restore Gateway service availability, and verify the original configuration SHA-256.",
+  "stop_conditions": [
+    "UNEXPECTED_CONFIG_SEMANTIC_DIFF",
+    "active task prevents restart after the permitted monitoring window",
+    "offline barrier or media regression failure",
+    "runtime mock attachment model_call_count greater than zero",
+    "Gateway restart or plugin-load failure"
+  ],
+  "actual_outcome": {
+    "failure_phase": "pre_install_compatibility_review",
+    "reason": "OpenClaw 2026.7.1 invokes inbound_claim only through runInboundClaimForPluginOutcome for a plugin-owned conversation binding. The existing video-factory binding is an ordinary agent binding, while this authorization permits no Binding semantic change.",
+    "config_changed": false,
+    "gateway_restarted": false,
+    "plugin_created": false,
+    "rollback_required": false
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "p0_shadow_feishu_plugin_runtime_proof_033_v1",
+  "status": "PASS",
+  "plugin_list_seen": true,
+  "gateway_ready": true,
+  "rpc_health_exit": 0,
+  "controlled_shutdown": true,
+  "process_shutdown": true,
+  "expected_probe_terminate_exit": 1,
+  "guard_process_count": 34,
+  "guarded_gateway_process_count": 2,
+  "gateway_unexpected_network_access": 0,
+  "shutdown_preflight_safe": true,
+  "shutdown_total_active": 0,
+  "loaded_plugin_count": 1,
+  "loaded_plugin_id": "feishu",
+  "execution": "SHADOW_ONLY_NOT_PRODUCTION"
+}

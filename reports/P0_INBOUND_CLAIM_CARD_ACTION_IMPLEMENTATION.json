@@ -1,0 +1,14 @@
+{
+  "task": "P0-INBOUND-CLAIM-CARD-ACTION-GATE-016",
+  "status": "NOT_APPLIED",
+  "reason": "Feasibility gate failed before implementation: current core Binding does not invoke generic inbound_claim, and synthetic card metadata is not exposed as a trusted hook event.",
+  "plugin_id": "video-factory-card-action-gate",
+  "requested_directory": "plugins/video-factory-card-action-gate/",
+  "created": false,
+  "files_created": [],
+  "config_changed": false,
+  "binding_changed": false,
+  "consumer_changed": false,
+  "gateway_restarted": false,
+  "next_authority_required": "A supported pre-Router interception seam that preserves trusted card callback fields, explicitly authorized by Jovi without changing the prohibited topology."
+}

@@ -1,0 +1,33 @@
+{
+  "id": "P0-ZHONGSHU-MAINTENANCE-READINESS-031",
+  "authorized_by": "Jovi explicit authorization on 2026-07-23",
+  "purpose": "Add offline, fail-closed consumer-observability verifiers and publish a sanitized maintenance-readiness assessment without a cutover.",
+  "allowed_paths": [
+    "scripts/migration/inspect_zhongshu_consumer.py",
+    "scripts/migration/verify_zhongshu_zero_consumer.py",
+    "scripts/migration/verify_zhongshu_single_consumer.py",
+    "tests/test_zhongshu_maintenance_readiness_031.py",
+    "reports/P0_*_031.md",
+    "reports/P0_*_031.json",
+    "reports/P0_CURRENT_STATUS_V19.md",
+    "reports/P0_EVIDENCE_INDEX_V19.md",
+    "reports/P0_REMAINING_ACTIONS_V19.md",
+    "NEXT_USER_ACTION.md",
+    "tasks/todo.md"
+  ],
+  "allowed_operations": [
+    "read-only OpenClaw, process, SQLite, Git, and secret-scan projections",
+    "offline fixture verification",
+    "sanitized report generation"
+  ],
+  "prohibited_actions": [
+    "stop, start, or restart any Core Binding, OpenClaw Gateway, or Project Gateway",
+    "modify production configuration, Agents, Bindings, Cron, OAuth, models, or PROJECT_STATUS.yaml",
+    "connect to Feishu or OpenClaw RPC",
+    "send a Feishu message, attachment, or card",
+    "emit credentials, raw Feishu identifiers, endpoint values, or local sensitive paths",
+    "commit, push, tag, or create P0_READY"
+  ],
+  "rollback": "All added verifiers are offline and read-only. No runtime or configuration state is changed.",
+  "secrets": "Artifacts retain only hashes, counts, booleans, abstract evidence labels, and redacted timestamps."
+}

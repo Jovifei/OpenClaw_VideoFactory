@@ -1,0 +1,18 @@
+{
+  "task": "P0-LIVE-SEQUENCE-ANALYZER-009",
+  "captured_at": "2026-07-18",
+  "openclaw_config": {"path": "C:\\Users\\Admin\\.openclaw\\openclaw.json", "sha256": "3001ec3b85a882deb382cb08f5ebdb1c6b285964ea9933f5f0d5c99bc7d89810", "config_valid": true, "unchanged_from_008": true},
+  "topology": {"agents": 17, "bindings": 14, "cron": 4, "target_consumer": 1, "analyzers_with_binding": 0},
+  "router": {"durable_model": "xiaomimimo/mimo-v2.5-pro", "tool_policy": "allow 11 / deny 10", "scope_deny": "target group image/audio/video"},
+  "analyzer_tool_policy": {"image": "exec.mode=deny, allow=[read,write]", "audio": "exec.mode=deny, allow=[read,write]", "video": "exec.mode=deny, allow=[read,write]", "gap": "cannot invoke faster-whisper/ffprobe (exec denied); 009 will add deterministic analyzer MCP tools"},
+  "mcp_tools": {"ingest": "1 tool ingest__ingest_attachment (live)", "analyzer_tools": "NOT YET (009 phase C)"},
+  "fixtures": {"p0-file-test.txt": "c8a155b4...", "p0-image-test.png": "624223e0...", "p0-audio-test.wav": "cc08486c...", "p0-video-analysis-test.mp4": "ca844094..."},
+  "gateway": {"port": 18789, "reachable": true, "auth": "token"},
+  "tests": {"router": "45/45", "ingest": "32/32", "ingest_tool": "17/17", "total": "94/94"},
+  "local_runtime": {"faster_whisper_cuda": "1.2.1 + torch 2.11+cu128", "ffmpeg": "8.1.1 at C:\\ffmpeg\\bin (not PATH)", "mimo_v25": "cloud multimodal verified"},
+  "r1_failure": {"diagnosed": "INBOUND_ROOT mismatch (007/008 set ~/.openclaw/media/inbound; Channel stages to workspace media/inbound)", "fix": "code-only multi-root support in mcp_ingest_attachment.py"},
+  "haiku_subagents": "FAILED (429 quota); main agent reviews inline",
+  "p0_status": "conditional_not_passed",
+  "secrets_policy": "all masked",
+  "status": "BASELINE_CAPTURED_009"
+}

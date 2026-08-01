@@ -1,0 +1,34 @@
+{
+  "report_schema_version": "1.0",
+  "change_request_id": "P0-R4-REAL-AUDIO-QUALIFICATION-063",
+  "task": "P0-R4-063",
+  "phase": "real_r4_preflight",
+  "result": "READY_FOR_R4_063_USER_ACTION",
+  "observed_at": "2026-07-30T19:36:47+08:00",
+  "observed": {
+    "core_gateway_listener_18789_count": 1,
+    "project_gateway_executable_path_process_count": 0,
+    "media_ticket_execution_enabled": true,
+    "pending_audio_ticket_count": 0,
+    "audio_fixture_manifest_entry_unique": true,
+    "audio_fixture_size_matches_manifest": true,
+    "audio_fixture_sha256_matches_manifest": true,
+    "audio_fixture_mime_is_audio_wav": true,
+    "audio_result_presentation_source_present": true
+  },
+  "unproven": {
+    "core_zhongshu_account_connected": true,
+    "reason": "A local listener is not authenticated Channel proof; this is established only by the new user-driven group event."
+  },
+  "safety": {
+    "source_changed": false,
+    "configuration_changed": false,
+    "gateway_or_core_lifecycle_controlled": false,
+    "project_gateway_started": false,
+    "lark_cli_called": false,
+    "second_event_consumer_started": false,
+    "ticket_plaintext_recorded": false,
+    "prohibited_actions_performed": false
+  },
+  "next_operator_action": "In the original zhongshu group, upload only the approved WAV fixture. Retain the newly generated ticket in that group and then send exactly /vf audio <new-ticket> as a new message."
+}

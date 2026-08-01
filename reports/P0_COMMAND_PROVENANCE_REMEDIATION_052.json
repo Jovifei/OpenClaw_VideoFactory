@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-CORE-BINDING-COMMAND-PROVENANCE-REMEDIATION-052-052A",
+  "status": "CORE_BINDING_TRUSTED_COMMAND_PROVENANCE_UNAVAILABLE",
+  "phase_a": "completed_static_audit",
+  "phase_b_to_d": "not_implemented_trusted_capability_unavailable",
+  "phase_f": "not_applicable_precondition_failed",
+  "phase_g": "published_unavailable_decision",
+  "phase_h": "not_started_g_success_precondition_not_met",
+  "source_changes": [],
+  "real_media": "not_attempted",
+  "gateway_or_binding_changes": [],
+  "next_decision": "see P0_COMMAND_PROVENANCE_RISK_DECISION_052.md"
+}

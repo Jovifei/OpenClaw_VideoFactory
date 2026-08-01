@@ -1,0 +1,54 @@
+{
+  "task": "P0-ZHONGSHU-RPC-PREFLIGHT-038",
+  "captured_on": "2026-07-26",
+  "timezone": "Asia/Shanghai",
+  "terminal_status": "RPC_PREFLIGHT_FAILED:RPC_AUTH_FAILED",
+  "execution": "READ_ONLY_NOT_APPLIED",
+  "credential_handling": {
+    "current_codex_process_token_present": false,
+    "user_environment_token_present": true,
+    "ephemeral_preflight_child_token_present": true,
+    "credential_value_persisted": false,
+    "credential_metadata_persisted": false,
+    "credential_logging_performed": false
+  },
+  "rpc_production_preflight": {
+    "mode": "production-preflight",
+    "listener_started": false,
+    "feishu_connection_started": false,
+    "rpc_endpoint_available": true,
+    "authentication_successful": false,
+    "session_ready": false,
+    "error_mapping": "RPC_AUTH_FAILED",
+    "adapter_authenticate_status": "rpc_bad_request",
+    "adapter_error_code": "INVALID_REQUEST",
+    "token_correctness": "not_determined: gateway rejected the adapter connect request as invalid before an authentication outcome"
+  },
+  "pre_cutover_baseline": {
+    "rollback_artifact_count": 10,
+    "zhongshu_rollback_plan_present": true,
+    "openclaw_config_sha256": "D6A97F1025698C08F086C1EE565E1AAC1AD30116037E4F135688EDBB1171BE8C",
+    "git_status": {
+      "exit_code": 0,
+      "untracked_entries": 41,
+      "staged_entries": 0,
+      "modified_entries": 0
+    },
+    "scoped_secret_candidate_files": 0,
+    "project_gateway_runtime_processes": 0,
+    "project_gateway_status_file": "absent"
+  },
+  "verification": {
+    "runtime_mode_contract_verified": true,
+    "focused_python_tests": "30/30 passed",
+    "focused_test_output_secret_candidates": 0
+  },
+  "prohibited_actions_not_performed": [
+    "Core Feishu stop",
+    "Project Gateway start",
+    "Feishu message send",
+    "Binding/Agent/Cron/configuration modification",
+    "commit",
+    "push"
+  ]
+}

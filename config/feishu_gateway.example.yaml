@@ -1,0 +1,15 @@
+# Copy outside the repository for a maintenance window. Never add real secrets here.
+feishu:
+  app_id: ${FEISHU_APP_ID}
+  app_secret_ref: env:FEISHU_APP_SECRET
+openclaw:
+  rpc_endpoint: ${OPENCLAW_GATEWAY_URL}
+  rpc_token_ref: env:OPENCLAW_GATEWAY_TOKEN
+  session_mapping: feishu:group:{chat_id}
+runtime:
+  mode: offline
+  host: 127.0.0.1
+  port: 18990
+  log_dir: runtime/logs
+  pid_file: runtime/gateway.pid
+  status_file: runtime/gateway.status.json

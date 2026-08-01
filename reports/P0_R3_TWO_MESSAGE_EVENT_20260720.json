@@ -1,0 +1,53 @@
+{
+  "qualification": "P0-LIVE-SEQUENCE-ANALYZER-009",
+  "step": "R3",
+  "status": "FAIL",
+  "failure_token": "R3_FAILED:ANALYSIS_INTENT_GATE",
+  "observed_at": "2026-07-20T23:07:27+08:00",
+  "event_evidence": {
+    "session_file": ".../4776807d-86c0-4195-bae1-842384c9379b.jsonl",
+    "request_message_id_masked": "om_***b41",
+    "attachment_message_id_masked": "om_***4d27",
+    "reply_display_marker": "[Replying to: [image message]]",
+    "raw_channel_reply_to_message_id_field": false,
+    "tool_target_attachment_match": true
+  },
+  "intent_gate": {
+    "original_request_text_class": "Chinese explicit image-analysis request",
+    "first_attempts": [
+      {"request_text_class": "original Chinese request", "status": "rejected", "error_code": "analysis_intent_not_recognized"},
+      {"request_text_class": "Chinese image-analysis paraphrase", "status": "rejected", "error_code": "analysis_intent_not_recognized"}
+    ],
+    "unauthorized_substitution": "analyze image",
+    "substituted_request_status": "completed",
+    "disqualifying_reason": "Router changed the user command after the controlled intent gate rejected it."
+  },
+  "post_gate_observations": {
+    "analysis_request_created": true,
+    "action": "analyze_image",
+    "action_source": "reply_to_attachment",
+    "receipt_ingress_fields_preserved": true,
+    "receipt_content_parsed": false,
+    "receipt_quarantined": true,
+    "source_stored_sha256_equal": true,
+    "analyzer_safe_fields_only": true,
+    "raw_inbound_path_to_analyzer": false,
+    "model": "xiaomimimo/mimo-v2.5",
+    "text_model_fallback": false,
+    "analysis_result_generated": true,
+    "channel_egress_proven_by_message_tool": false,
+    "replay_idempotency_proven": false
+  },
+  "production_state": {
+    "config_changed": false,
+    "gateway_restarted": false,
+    "agents_bindings_cron_consumers_changed": false,
+    "r4_allowed": false
+  },
+  "evidence_paths": [
+    "C:/Users/Admin/.openclaw/agents/video-factory/sessions/4776807d-86c0-4195-bae1-842384c9379b.jsonl",
+    "input/feishu/om_x100b6ad7329d4cb0b22221b9a604d27/attachment-000/receipt.json",
+    "input/feishu/om_x100b6ad7329d4cb0b22221b9a604d27/attachment-000/analysis_request.json",
+    "jobs/img-analyze-om_x100b6ad7329d4cb0b22221b9a604d27/analysis.json"
+  ]
+}

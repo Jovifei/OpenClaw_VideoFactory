@@ -1,0 +1,49 @@
+{
+  "id": "P0-ZHONGSHU-CUTOVER-PREFLIGHT-UNBLOCK-035",
+  "authorized_by": "Jovi task authorization on 2026-07-24",
+  "purpose": "Prepare secret-safe RPC authentication, read-only Core consumer observability, isolated Gateway runtime modes, production-control requirements, and Maintenance Runbook V6 without entering the cutover.",
+  "allowed_paths": [
+    "services/feishu_gateway/credentials.py",
+    "services/feishu_gateway/runtime_server.py",
+    "scripts/feishu_gateway/start_gateway.ps1",
+    "scripts/feishu_gateway/status_gateway.ps1",
+    "scripts/migration/inspect_core_feishu_runtime.py",
+    "tests/test_cutover_preflight_unblock_035.py",
+    "tests/test_zhongshu_maintenance_readiness_031.py",
+    "tests/Test-CutoverPreflightUnblock035.ps1",
+    "reports/P0_RPC_CREDENTIAL_INJECTION_035.md",
+    "reports/P0_CORE_CONSUMER_OBSERVABILITY_035.md",
+    "reports/P0_GATEWAY_RUNTIME_MODE_CONTRACT_035.md",
+    "reports/P0_PRODUCTION_CONTROL_REQUIREMENTS_035.md",
+    "reports/P0_FEISHU_GATEWAY_MAINTENANCE_RUNBOOK_V6.md",
+    "reports/P0_ZHONGSHU_CUTOVER_PREFLIGHT_UNBLOCK_035.md",
+    "reports/V28_SCHEMA_TESTS.json",
+    "reports/change_requests/P0-ZHONGSHU-CUTOVER-PREFLIGHT-UNBLOCK-035.json",
+    "tasks/todo.md",
+    "tasks/lessons.md"
+  ],
+  "allowed_operations": [
+    "implement project-local credential-provider interfaces that never persist or print a token",
+    "add offline and production-preflight runtime isolation with production fail-closed guard",
+    "add a read-only Core Feishu runtime observer",
+    "add offline unit, Pester, schema, and secret-leak tests",
+    "perform read-only runtime and production-control availability audits",
+    "publish sanitized 035 reports and Runbook V6"
+  ],
+  "prohibited_actions": [
+    "stop or start Core Feishu",
+    "start or restart the production Project Gateway",
+    "send a real Feishu message, attachment, or card",
+    "modify production Binding, Agent, Cron, OAuth, model, OpenClaw core, or PROJECT_STATUS.yaml",
+    "write credentials to command lines, logs, reports, source, Git, or plaintext configuration",
+    "commit, push, tag, mark P0_READY, or advance to P1"
+  ],
+  "hard_gates": [
+    "missing or rejected RPC credentials keep ready=false",
+    "unknown Core consumer state remains fail-closed",
+    "offline mode must not access credentials or network transports",
+    "production mode must remain guarded until a real Feishu transport and explicit maintenance execution are available",
+    "no production control call is permitted in task 035"
+  ],
+  "secrets": "Only provider names, booleans, redacted statuses, hashes, counts, and timestamps may be persisted."
+}

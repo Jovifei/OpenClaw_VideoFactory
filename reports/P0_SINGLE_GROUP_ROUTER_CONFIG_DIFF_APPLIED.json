@@ -1,0 +1,18 @@
+{
+  "applied": true,
+  "new_config_sha256": "68bac2f178752bb8e256fd8433501da5346408720282eee67db4caace9bd224a",
+  "target_id_masked": "oc_***1555",
+  "sender_id_masked": "ou_***ada9",
+  "keyprefix_masked": "agent:video-factory:feishu:group:oc_***1555",
+  "agents_count": 17,
+  "bindings_count": 14,
+  "analyzers_added": [
+    "video-factory-image-analyzer",
+    "video-factory-audio-analyzer",
+    "video-factory-video-analyzer"
+  ],
+  "mcp_server": "ingest",
+  "video_factory_model": "xiaomimimo/mimo-v2.5-pro",
+  "video_factory_allow_count": 10,
+  "video_factory_deny_count": 10
+}

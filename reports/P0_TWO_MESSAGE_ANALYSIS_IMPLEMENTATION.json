@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-TWO-MESSAGE-ANALYSIS-INTENT-013",
+  "status": "OFFLINE_READY",
+  "scope": {
+    "allowed": [
+      "Router Reply association contract",
+      "analysis_request schema and storage",
+      "Analyzer MCP gate",
+      "Agent memory and tool descriptions",
+      "offline tests and reports"
+    ],
+    "not_changed": [
+      "production OpenClaw config",
+      "Gateway",
+      "Binding",
+      "consumer count",
+      "Agent count",
+      "Cron",
+      "models",
+      "media scopes",
+      "PROJECT_STATUS.yaml"
+    ]
+  },
+  "files": {
+    "added": [
+      "scripts/analysis_request.py",
+      "tests/test_analysis_request.py",
+      "tests/test_two_message_flow.py",
+      "tests/test_two_message_mcp_surface.py",
+      "tests/Test-TwoMessageAnalysisIntent.ps1"
+    ],
+    "updated": [
+      "scripts/mcp_ingest_attachment.py",
+      "scripts/analyzer_mcp.py",
+      "tests/test_analyzer_mcp.py",
+      "tests/test_ingest_attachment_core.py",
+      "tests/Test-SingleGroupMediaRouter.ps1",
+      "AGENTS.md"
+    ]
+  },
+  "security": {
+    "attachment_caption_on_public_ingest": "rejected",
+    "reply_metadata_required": true,
+    "receipt_mutation_for_request": false,
+    "analyzer_public_fields": ["receipt_path", "stored_path", "job_id", "analysis_policy"],
+    "raw_media_path_to_analyzer": false,
+    "text_model_fallback_for_multimodal": false,
+    "request_window_seconds": 120
+  },
+  "runtime": {
+    "config_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+    "config_valid": true,
+    "gateway_restarted": false,
+    "live_feishu_r3": "not_run",
+    "topology": {"agents": 17, "bindings": 14, "cron": 4, "target_group_consumers": 1}
+  }
+}

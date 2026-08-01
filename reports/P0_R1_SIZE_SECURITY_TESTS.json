@@ -1,0 +1,52 @@
+{
+  "task": "P0-R1-TRUSTED-SIZE-CONTRACT-010",
+  "status": "pass",
+  "new_size_contract_cases": 25,
+  "coverage": [
+    "Router omits size",
+    "wrong legacy size is untrusted",
+    "R1-style 67 claim with actual 55",
+    "untrusted claim receipt audit",
+    "trusted declaration correct",
+    "trusted declaration mismatch",
+    "string declaration",
+    "negative declaration",
+    "decimal declaration",
+    "null declaration",
+    "zero-byte TXT",
+    "server-owned oversize limit",
+    "source size mutation",
+    "source mtime mutation",
+    "stored size mutation",
+    "stored SHA mutation",
+    "independent multi-attachment sizes",
+    "same message/hash idempotency",
+    "same message/different size conflict",
+    "Chinese filename and UTF-8 bytes",
+    "CRLF/LF byte counts",
+    "UI/model values cannot become trusted",
+    "complete receipt fields",
+    "old receipt repair",
+    "public schema hides size and limit inputs"
+  ],
+  "final_execution": [
+    {"suite": "tests/test_analyzer_mcp.py", "passed": 23, "failed": 0},
+    {"suite": "tests/test_trusted_media_roots.py", "passed": 25, "failed": 0},
+    {"suite": "tests/test_ingest_attachment_core.py", "passed": 39, "failed": 0},
+    {"suite": "Test-IngestInboundMedia.ps1 + Test-SingleGroupMediaRouter.ps1", "passed": 81, "failed": 0, "note": "81 supersedes historical 77 because this task added four Pester cases"},
+    {"suite": "Test-VideoWorkflowV28.ps1", "passed": 4, "failed": 0},
+    {"suite": "reports/V28_SCHEMA_TESTS.json", "passed": 88, "failed": 0}
+  ],
+  "mcp_probe": {
+    "tools": 1,
+    "size_bytes_public": false,
+    "max_bytes_public": false,
+    "legacy_67_result": "quarantined with untrusted audit only"
+  },
+  "r0_regression": {
+    "source": "reports/P0_R0_EVENT_TRACE_20260718.json",
+    "status": "preserved_pass",
+    "no_new_feishu_message_sent": true
+  },
+  "not_run": ["R2", "R3", "R4", "R5", "final P0 Gate", "P0_READY", "P1"]
+}

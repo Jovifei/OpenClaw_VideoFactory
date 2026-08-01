@@ -1,0 +1,17 @@
+{
+  "task": "P0-INBOUND-CLAIM-CARD-ACTION-GATE-016",
+  "status": "NOT_RUN",
+  "decision": "INBOUND_CLAIM_DID_NOT_BLOCK_ROUTER",
+  "probe_card": {
+    "namespace": "video_factory_action_v1",
+    "action": "card_probe",
+    "version": 1,
+    "ticket": "not generated"
+  },
+  "reason": "A fake card probe would only exercise the existing synthetic Router path and cannot prove a claim hook that is not invoked for the current Binding.",
+  "callback_evidence": "not independently observed in local runtime logs",
+  "router_calls": "not measured; probe not sent",
+  "llm_calls": "not measured; probe not sent",
+  "analyzer_calls": 0,
+  "gateway_restarted": false
+}

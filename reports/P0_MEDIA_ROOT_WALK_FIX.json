@@ -1,0 +1,66 @@
+{
+  "change_request": "P0-MEDIA-ROOT-WALK-001",
+  "status": "fixed_and_verified",
+  "completed_at": "2026-07-16T01:20:38+08:00",
+  "parameter_audit": {
+    "channel_session_media_path": "E:\\project\\OpenClaw_VideoFactory\\media\\inbound\\openclaw-staged-477d8565-7c0f-4f8d-b645-58286ec94cd0\\p0-file-test---664c2b58-8c2a-4953-ae2d-a5020633a873.txt",
+    "source_path_matches_channel_media_path": true,
+    "inbound_root": "E:\\project\\OpenClaw_VideoFactory\\media\\inbound",
+    "destination_root": "E:\\project\\OpenClaw_VideoFactory\\input\\feishu",
+    "source_within_inbound_root": true,
+    "same_volume": true,
+    "c_drive_to_e_drive_parameter_error": false
+  },
+  "root_cause": "The original traversal used FileInfo.Directory and then attempted DirectoryInfo.Directory. The temporary GetDirectoryName repair removed that exception but did not make root membership an invariant of Assert-NoReparseEscape.",
+  "implementation": [
+    "Normalize Path and Root inside Test-PathWithinRoot and allow exact root equality or a separator-bounded descendant using OrdinalIgnoreCase.",
+    "Assert root membership inside Assert-NoReparseEscape before walking.",
+    "Check the source item, each ancestor, and AllowedRoot for ReparsePoint.",
+    "Walk FileInfo.Directory and DirectoryInfo.Parent; throw on null or unexpected item types; return only at exact AllowedRoot."
+  ],
+  "validation": {
+    "parser_checks": "passed",
+    "pester_total": 32,
+    "pester_passed": 32,
+    "pester_failed": 0,
+    "original_baseline_tests": "28/28 passed",
+    "new_root_walk_tests": "4/4 passed",
+    "non_admin_reparse_strategy": "Directory junction integration plus AST-loaded function seam; no file symbolic-link privilege required.",
+    "nested_source": "passed",
+    "prefix_confusion": "rejected",
+    "ancestor_reparse": "rejected",
+    "allowed_root_reparse": "rejected",
+    "source_item_reparse": "rejected"
+  },
+  "real_txt_retry": {
+    "message_id": "om_x100b6a4df66ad4a4b2e70284f733cc7",
+    "source_sha256": "c8a155b4d5eccafd2b36758b9fa67af186174dfe6e99e184b56231bd8382663d",
+    "fixture_sha256_match": true,
+    "receipt_path": "input/feishu/om_x100b6a4df66ad4a4b2e70284f733cc7/receipt.json",
+    "receipt_sha256": "778e39cdcff15f77b1e0c25ed6480eb88a613ce9f7421d2ba6bf8c793c25ab64",
+    "first_call_success": true,
+    "first_call_idempotent": false,
+    "second_call_success": true,
+    "second_call_idempotent": true,
+    "single_original": true,
+    "receipt_unchanged_on_duplicate": true,
+    "source_and_stored_sha256_equal": true,
+    "content_parsed": false,
+    "quarantined": true
+  },
+  "hashes": {
+    "script_before": "a8649e59907e2d2f2ba8dd4abc4557aff0e32aae04502df9e15be4cc5d4b880f",
+    "script_after": "10302de702e6c957133c1dbe19404d9ef5d273f289438ea92c049158b57d0afe",
+    "test_before": "679e0a9a8959194672b998a280cf634314741d7f7ed04b1afbf3de185f8957b8",
+    "test_after": "99f35e3f77dbd55b0e1e0f77998d41d3d4cc1d90cdbc8a46a6517a936fffa9c7",
+    "openclaw_config_before": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "openclaw_config_after": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d"
+  },
+  "scope_checks": {
+    "secret_scan": "passed",
+    "openclaw_config_unchanged": true,
+    "png_or_mp4_real_ingress_attempted": false,
+    "p0_gate_run": false,
+    "p1_entered": false
+  }
+}

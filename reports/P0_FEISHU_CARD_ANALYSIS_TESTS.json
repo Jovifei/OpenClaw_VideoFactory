@@ -1,0 +1,17 @@
+{
+  "task": "P0-FEISHU-CARD-ANALYSIS-ACTION-015",
+  "status": "BASELINE_PASS_CARD_SUITE_NOT_IMPLEMENTED",
+  "required_card_cases": 32,
+  "implemented_card_cases": 0,
+  "python_unittest": "122/122",
+  "pester_two_message": "15/15",
+  "pester_router": "46/46",
+  "pester_inbound": "36/36",
+  "pester_v28_wrapper": "4/4",
+  "v28_schema": "88/88",
+  "py_compile": "pass",
+  "mcp_probe": {"ingest": 2, "analyzers": 3, "diagnostics": 0},
+  "missing_groups": ["card rendering", "callback signature/token", "ticket TTL/replay/concurrency", "three-second ack", "card update", "Gateway restart/rollback", "real card event"],
+  "real_channel_card_smoke": "not_run",
+  "production_config_changed": false
+}

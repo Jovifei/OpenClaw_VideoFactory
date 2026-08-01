@@ -1,0 +1,100 @@
+{
+  // Merge this into ~/.openclaw/openclaw.json after preflight.
+  // Feishu bot type/target remains pending. Do not place plaintext bot tokens or webhook secrets here.
+  plugins: {
+    entries: {
+      codex: { enabled: true },
+    },
+  },
+
+  agents: {
+    defaults: {
+      workspace: "E:/project/OpenClaw_VideoFactory",
+      userTimezone: "Asia/Shanghai",
+      model: { primary: "openai/gpt-5.5" },
+      timeoutSeconds: 1800,
+      maxConcurrent: 1,
+      elevatedDefault: "off",
+      skills: [
+        "douyin-video-factory",
+        "topic-intelligence",
+        "script-storyboard-director",
+        "reference-video-analyzer",
+        "reference-video-recreator",
+        "media-asset-curator",
+        "pink-pig-mascot-director",
+        "feishu-video-factory-operator",
+        "lark-shared",
+        "lark-im",
+        "lark-event",
+        "lark-drive",
+        "lark-doc",
+        "lark-markdown",
+        "comfyui-gpu-renderer",
+        "audio-subtitle-engine",
+        "remotion-layout-engine",
+        "video-quality-gate",
+        "jianying-draft-exporter",
+        "codex-template-maintainer",
+      ],
+    },
+    list: [
+      {
+        id: "video-factory",
+        default: true,
+        identity: {
+          name: "龙虾视频工厂",
+          theme: "谨慎、可审计的技术短视频生产助手",
+          emoji: "🦞",
+        },
+      },
+      {
+        id: "codex",
+        name: "Codex执行器",
+        model: { primary: "openai/gpt-5.5" },
+        skills: ["codex-template-maintainer", "remotion-layout-engine", "lark-shared", "lark-im", "lark-event"],
+        elevatedDefault: "off",
+      },
+    ],
+  },
+
+  tools: {
+    allow: ["exec", "process", "read", "write", "edit", "apply_patch"],
+    deny: ["browser", "canvas"],
+    exec: {
+      // Official Codex harness maps auto mode to reviewed approvals/workspace-write when allowed.
+      mode: "auto",
+      backgroundMs: 10000,
+      timeoutSec: 1800,
+      cleanupMs: 1800000,
+    },
+  },
+
+  gateway: {
+    mode: "local",
+    bind: "loopback",
+  },
+
+  cron: {
+    enabled: true,
+    maxConcurrentRuns: 1,
+    sessionRetention: "7d",
+  },
+
+  skills: {
+    install: {
+      allowUploadedArchives: false,
+      nodeManager: "npm",
+    },
+    entries: {
+      "comfyui-gpu-renderer": {
+        enabled: true,
+        config: { endpoint: "http://127.0.0.1:8188" },
+      },
+      "jianying-draft-exporter": {
+        enabled: false,
+        config: { endpoint: "http://127.0.0.1:30000" },
+      },
+    },
+  },
+}

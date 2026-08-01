@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-R3-REAL-RESULT-RETEST-061",
+  "result": "R3_RETEST_NOT_STARTED:CORE_CHANNEL_RUNTIME_UNPROVEN",
+  "observed": {
+    "gateway_service_evidence": true,
+    "gateway_port_18789_listener_count": 1,
+    "project_gateway_process_count": 0,
+    "project_gateway_listener_count": 0,
+    "media_ticket_execution_enabled": true,
+    "pending_image_ticket_count": 0,
+    "active_or_unknown_analysis_request_count": 0,
+    "reply_result_mapping_present": true
+  },
+  "unproven": {
+    "core_zhongshu_runtime": true,
+    "reason": "The official read-only health/status path was authentication-rejected in this Codex process, and the local channel-log projection had no current zhongshu runtime evidence."
+  },
+  "safety": {
+    "core_stopped": false,
+    "project_gateway_started": false,
+    "feishu_message_sent_by_codex": false,
+    "configuration_changed": false,
+    "ticket_plaintext_recorded": false
+  },
+  "next_operator_action": "Obtain one current, redacted confirmation that the original Core Feishu zhongshu account is connected, then rerun only the 061 read-only preflight before uploading."
+}

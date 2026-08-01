@@ -1,0 +1,28 @@
+{
+  "id": "P0-ZHONGSHU-FINAL-MAINTENANCE-EXECUTION-READY-037",
+  "authorized_by": "Jovi task authorization on 2026-07-26",
+  "purpose": "Create final operator documentation and a sanitized read-only execution baseline without changing code or entering the maintenance cutover.",
+  "allowed_paths": [
+    "reports/P0_FINAL_OPERATOR_CHECKLIST_037.md",
+    "reports/P0_RPC_OPERATOR_SETUP_037.md",
+    "reports/P0_FINAL_CUTOVER_COMMAND_REFERENCE_037.md",
+    "reports/P0_FINAL_EXECUTION_BASELINE_037.md",
+    "reports/change_requests/P0-ZHONGSHU-FINAL-MAINTENANCE-EXECUTION-READY-037.json",
+    "tasks/todo.md"
+  ],
+  "allowed_operations": [
+    "read-only Git, process, count, hash, token-presence, status, and secret-pattern audit",
+    "create sanitized operator documentation and final baseline evidence"
+  ],
+  "prohibited_actions": [
+    "modify business code, Gateway architecture, Analyzer, Router, OpenClaw core, Binding, Agent, Cron, OAuth, model, production configuration, or PROJECT_STATUS.yaml",
+    "read, request, print, hash, persist, or pass a token value",
+    "stop Core Feishu, start or restart a production Project Gateway, send real Feishu traffic, commit, push, or tag"
+  ],
+  "hard_gates": [
+    "unknown Core consumer state remains unknown",
+    "a documentation checklist never authorizes a production action",
+    "no command reference may imply a currently disabled control is executed or qualified"
+  ],
+  "secrets": "Only booleans, hashes, counts, statuses, and redacted findings may be persisted."
+}

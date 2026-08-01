@@ -1,0 +1,36 @@
+version: 1
+provider: official_larksuite_cli
+repository: https://github.com/larksuite/cli
+inbound_primary: openclaw_feishu_channel
+cli_roles:
+  lark-shared: 配置、认证、权限与安全规则
+  lark-im: 发送/回复消息，上传下载图片、文件和视频
+  lark-event: 必要时监听消息和卡片事件；默认不与OpenClaw重复消费同一事件
+  lark-drive: 可选的云空间文件管理
+  lark-doc: 可选的运行报告和栏目文档发布
+  lark-markdown: 可选的Markdown状态页维护
+identity:
+  default_send: bot
+  user_identity: 仅访问用户个人Drive/Docs时，且经用户授权后使用
+target:
+  chat_id_secret_ref: null
+  allowed_sender_open_ids_secret_ref: null
+preapproved_actions:
+- 08:30发送候选选题卡
+- 发送自动选择通知
+- 发送制作完成通知
+- 发送失败告警
+- 发送封面、视频、发布文案和质量报告
+- 下载用户明确发送给机器人的参考视频文件
+require_confirmation:
+- 向非白名单会话发送消息
+- 创建或修改群聊
+- 删除飞书文件或文档
+- 扩大应用权限
+- 以用户身份执行写操作
+safety:
+  relative_paths_only: true
+  use_idempotency_keys: true
+  dry_run_before_new_write_flow: true
+  never_auto_append_yes_on_exit_10: true
+  secrets_in_openclaw_secretref_or_os_keychain: true

@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "as_of": "2026-07-16T01:40:00+08:00",
+  "phase": "P0",
+  "overall": "conditional_not_passed",
+  "p0_gate_run": false,
+  "p0_ready_created": false,
+  "project_status_updated": false,
+  "categories": {
+    "passed": [
+      "P0-MEDIA-MIME-001: local MIME/signature policy, 28/28",
+      "P0-MEDIA-ROOT-WALK-001: 32/32 plus real TXT receipt and idempotency",
+      "O3 media local regression: 32/32 plus cross-drive and fixture manifest",
+      "V2.7 documentation-only merge and protected-hash validation",
+      "lark-cli Markdown/PNG/TXT/MP4+cover independent dry-runs"
+    ],
+    "ready_for_user_action": [
+      "Sequential real Feishu PNG ingress using p0-image-test.png",
+      "After PNG confirmation, sequential real Feishu MP4 ingress",
+      "Actual lark-cli egress remains a separate explicitly authorized P0 action"
+    ],
+    "conditional": [
+      "Single-consumer route is structurally one exact video-factory binding; final live PNG/MP4 evidence remains pending",
+      "lark-cli bot can see the unique target group; actual send was prohibited overnight"
+    ],
+    "deferred": [
+      "Codex CLI upgrade: DEFERRED_BY_USER_UNTIL_MAINTENANCE_WINDOW",
+      "OpenClaw Codex Plugin OAuth: deferred_optional_not_blocking"
+    ],
+    "blocked": [
+      "Final P0 Gate until real PNG/MP4 ingress, actual egress and required regressions are complete",
+      "Unified overnight static audit until an approved JSON5 parser path exists"
+    ]
+  },
+  "runtime_policy": "OpenClaw Default Runtime is allowed and is not a P0 failure.",
+  "codex_plugin_status": "deferred_optional_not_blocking",
+  "codex_cli_resume_phrase": "开始Codex CLI维护窗口",
+  "prohibited_until_p0_passes": ["P1 code", "P0_READY", "PROJECT_STATUS phase advance", "commit/tag/P1 branch", "VideoFactory production Cron"]
+}

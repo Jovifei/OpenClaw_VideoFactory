@@ -1,0 +1,28 @@
+version: 2.4
+project_root: E:\project\OpenClaw_VideoFactory
+status: ready_for_codex_p0
+last_updated: null
+current_phase: P0
+phases:
+  PACKAGE:
+    status: passed
+    evidence:
+      - reports/package_release_validation.json
+  P0: {status: not_started, evidence: []}
+  P1: {status: blocked_by_P0, evidence: []}
+  P2: {status: blocked_by_P1, evidence: []}
+  P3: {status: blocked_by_P2, evidence: []}
+  P4: {status: blocked_by_P3, evidence: []}
+  P5: {status: blocked_by_P4, evidence: []}
+known_implementation_gaps:
+  - production factory pipeline is not implemented
+  - SQLite state/event store is not implemented
+  - Remotion templates are not implemented
+  - ComfyUI approved workflows are not selected
+  - Feishu runtime credentials and target IDs are not configured
+  - production cron is not registered
+rules:
+  - never mark a phase passed without evidence
+  - never register production cron before P2 passes
+  - never download models without approval and budget check
+  - never publish to Douyin automatically

@@ -1,0 +1,17 @@
+{
+  "task": "P0-FEISHU-CARD-ANALYSIS-ACTION-015",
+  "status": "NOT_APPLIED_BLOCKED",
+  "implementation_present": false,
+  "project_card_modules_present": false,
+  "ticket_store_present": false,
+  "callback_handler_present": false,
+  "card_builder_present": false,
+  "current_core_card_send": true,
+  "current_core_card_action_registration": true,
+  "current_direct_project_handler": false,
+  "blocker": "Feishu card.action.trigger reaches the built-in synthetic-command path; no supported direct project handler hook is wired.",
+  "production_config_changed": false,
+  "gateway_restarted": false,
+  "code_files_changed": false,
+  "next_required": "Resolve the supported deterministic handler integration path and obtain explicit code-scope authorization."
+}

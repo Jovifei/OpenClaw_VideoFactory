@@ -1,0 +1,16 @@
+{
+  "scope": "shadow_fixture_only",
+  "base": "experiments/core_feishu_control_contract/shadow/openclaw.json",
+  "runtime_overlay": {"plugins.load.paths": "<installed-feishu-plugin-root>", "overlay_lifetime": "transient_and_removed"},
+  "changed_paths": ["plugins.load.paths"],
+  "target_account": "zhongshu",
+  "target_account_enabled_in_fixture": false,
+  "top_level_feishu_enabled_in_fixture": false,
+  "credential_values": "FAKE_MARKERS_ONLY",
+  "secret_values_written": false,
+  "production_config_read": false,
+  "production_config_written": false,
+  "idempotence": "not_run_without_loaded_plugin",
+  "rollback": "transient_overlay_removed_and_shadow_state_cleared",
+  "status": "SHADOW_PLUGIN_LOAD_BLOCKED"
+}

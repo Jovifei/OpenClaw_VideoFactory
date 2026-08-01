@@ -1,0 +1,28 @@
+{
+  "task": "P0-R1-TRUSTED-SIZE-CONTRACT-010",
+  "production_config_mutated": false,
+  "pre_and_post_config_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+  "backup_created": true,
+  "config_validate_exit": 0,
+  "semantic_config_diff": {
+    "agents": {"before": 17, "after": 17},
+    "bindings": {"before": 14, "after": 14},
+    "runtime_cron_jobs": {"before": 4, "after": 4},
+    "target_group_consumers": {"before": 1, "after": 1},
+    "router_model": {"before": "xiaomimimo/mimo-v2.5-pro", "after": "xiaomimimo/mimo-v2.5-pro"},
+    "ingest_mcp_command": {"before": "scripts/mcp_ingest_attachment.py", "after": "scripts/mcp_ingest_attachment.py"}
+  },
+  "code_schema_diff": {
+    "removed_public_inputs": ["size_bytes", "max_bytes"],
+    "removed_public_requirements": ["size_bytes"],
+    "authority": "OPENCLAW_MAX_BYTES server environment and trusted source Path.stat",
+    "legacy_behavior": "cached legacy size_bytes is accepted only as untrusted receipt audit data"
+  },
+  "gateway": {
+    "planned_restart_count": 1,
+    "restart_attempted_once": true,
+    "post_restart_status_exit": 0,
+    "loopback_18789_listening": true,
+    "post_restart_config_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c"
+  }
+}

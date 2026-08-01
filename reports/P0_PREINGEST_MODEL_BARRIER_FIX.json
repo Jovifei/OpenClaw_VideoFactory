@@ -1,0 +1,44 @@
+{
+  "task": "P0-PREINGEST-MODEL-BARRIER-001",
+  "status": "blocked_global_change_approval_required",
+  "root_cause": "OpenClaw core applies media understanding after inbound normalization but before the project-selected ingest script or Agent Skill can run.",
+  "project_scoped_fix_available_without_global_change": false,
+  "why": [
+    "The workspace has no existing pre-agent route, middleware or enabled attachment hook.",
+    "OpenClaw documents inbound_claim as the supported pre-agent interception surface.",
+    "A workspace-origin plugin is disabled by default and this host's exclusive plugins.allow list omits such a plugin.",
+    "Activating it changes C:/Users/Admin/.openclaw/openclaw.json and requires a Gateway restart."
+  ],
+  "production_code_changed": false,
+  "global_openclaw_configuration_changed": false,
+  "other_agent_configuration_changed": false,
+  "o2_json5_status": "blocked_missing_existing_json5_parser",
+  "file_level_change_scope": {
+    "baseline_manifest_sha256": "6637FF0D9B1D0877D7B8858949DEE58874CEDB7FE38EB9846E80142CAB035402",
+    "baseline_file_count": 1473,
+    "after_file_count": 1483,
+    "added_file_count": 10,
+    "modified_or_deleted_baseline_file_count": 0,
+    "expected_project_changes": [
+      "reports/change_requests/P0-PREINGEST-MODEL-BARRIER-001.json",
+      "reports/P0_ATTACHMENT_MODEL_CALL_AUDIT.json",
+      "reports/P0_ATTACHMENT_MODEL_CALL_AUDIT.md",
+      "reports/P0_TXT_RETROSPECTIVE_MODEL_AUDIT.json",
+      "reports/P0_TXT_RETROSPECTIVE_MODEL_AUDIT.md",
+      "reports/P0_PREINGEST_MODEL_BARRIER_TESTS.json",
+      "reports/P0_PREINGEST_MODEL_BARRIER_TESTS.md",
+      "reports/P0_PREINGEST_MODEL_BARRIER_FIX.json",
+      "reports/P0_PREINGEST_MODEL_BARRIER_FIX.md",
+      "reports/P0_PREINGEST_BARRIER_ESCALATION.md"
+    ],
+    "unexpected_source_or_configuration_changes": 0
+  },
+  "p0_gate_run": false,
+  "p0_ready_created": false,
+  "project_status_updated": false,
+  "commit_or_tag_created": false,
+  "png_reupload_ready": false,
+  "txt_reupload_required_after_fix": true,
+  "next_required_response": "GLOBAL_CHANGE_APPROVAL_REQUIRED",
+  "proposal": "reports/P0_PREINGEST_BARRIER_ESCALATION.md"
+}

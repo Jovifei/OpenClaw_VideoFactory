@@ -1,0 +1,54 @@
+{
+  "id": "P0-ZHONGSHU-FINAL-CUTOVER-UNBLOCK-036",
+  "authorized_by": "Jovi task authorization on 2026-07-26",
+  "purpose": "Complete final non-production cutover preparation: detailed RPC preflight, secret-safe injection validation, Core-observability evidence hierarchy, production control contract, final read-only precheck, Runbook V7, independent read-only reviews, and final readiness evidence.",
+  "allowed_paths": [
+    "services/feishu_gateway/runtime_server.py",
+    "scripts/feishu_gateway/start_gateway.ps1",
+    "scripts/feishu_gateway/status_gateway.ps1",
+    "scripts/migration/inspect_core_feishu_runtime.py",
+    "scripts/migration/final_cutover_precheck.py",
+    "tests/test_cutover_preflight_unblock_035.py",
+    "tests/test_final_cutover_unblock_036.py",
+    "tests/Test-CutoverPreflightUnblock035.ps1",
+    "tests/Test-FinalCutoverUnblock036.ps1",
+    "reports/child_claude/RPC_CREDENTIAL_AUDIT_036.md",
+    "reports/child_claude/CORE_OBSERVABILITY_AUDIT_036.md",
+    "reports/child_claude/CUTOVER_RISK_AUDIT_036.md",
+    "reports/P0_RPC_SECRET_INJECTION_036.md",
+    "reports/P0_CORE_CONSUMER_OBSERVABILITY_FINAL_036.md",
+    "reports/P0_CORE_CONTROL_CONTRACT_FINAL_036.md",
+    "reports/P0_FEISHU_GATEWAY_MAINTENANCE_RUNBOOK_V7.md",
+    "reports/P0_FINAL_CUTOVER_READINESS_036.md",
+    "reports/P0_FINAL_CUTOVER_READINESS_036.json",
+    "reports/P0_CURRENT_STATUS_V23.md",
+    "reports/P0_EVIDENCE_INDEX_V23.md",
+    "reports/change_requests/P0-ZHONGSHU-FINAL-CUTOVER-UNBLOCK-036.json",
+    "reports/V28_SCHEMA_TESTS.json",
+    "tasks/todo.md",
+    "tasks/lessons.md"
+  ],
+  "allowed_operations": [
+    "implement fail-closed project-local preflight logic and tests",
+    "perform local installed-source and process-command-line audits without retrieving credential values",
+    "create specified sanitized reports and independent-review files",
+    "run offline test suites and read-only local process inspection"
+  ],
+  "prohibited_actions": [
+    "stop or start Core Feishu",
+    "start or restart the production Project Gateway",
+    "send a real Feishu message, attachment, image, or card",
+    "modify Binding, Agent, Cron, OAuth, model, OpenClaw core, production configuration, or PROJECT_STATUS.yaml",
+    "read, write, print, hash, report, or pass credential values on a command line",
+    "commit, push, tag, mark P0_READY, or enter P1"
+  ],
+  "hard_gates": [
+    "only authenticated RPC health can report RPC_READY",
+    "a missing or invalid token remains unready and never falls back",
+    "a Core consumer is known only from explicit target-specific evidence",
+    "a real production mode remains guarded in task 036",
+    "the final precheck is read-only and fail-closed",
+    "independent reviews are supporting analysis and never substitute for runtime proof"
+  ],
+  "secrets": "Only booleans, statuses, hashes, counts, timestamps, source paths, and redacted evidence classifications may be persisted."
+}

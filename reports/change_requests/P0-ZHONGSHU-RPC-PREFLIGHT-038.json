@@ -1,0 +1,23 @@
+{
+  "id": "P0-ZHONGSHU-RPC-PREFLIGHT-038",
+  "scope": "Read-only final RPC maintenance-window preflight",
+  "authorized_writes": [
+    "reports/P0_RPC_PREFLIGHT_038.md",
+    "reports/P0_RPC_PREFLIGHT_038.json",
+    "reports/change_requests/P0-ZHONGSHU-RPC-PREFLIGHT-038.json",
+    "tasks/todo.md"
+  ],
+  "prohibited_actions": [
+    "stop Core Feishu",
+    "start Project Gateway",
+    "send Feishu messages",
+    "modify Binding, Agent, Cron, or configuration",
+    "commit",
+    "push"
+  ],
+  "credential_handling": "Only a token-present boolean may be observed. No credential value, length, prefix, suffix, or derived value may be persisted or displayed.",
+  "success_statuses": [
+    "RPC_PREFLIGHT_READY",
+    "RPC_PREFLIGHT_FAILED:<reason>"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "task": "P0-PROJECT-FEISHU-GATEWAY-IMPLEMENTATION-019",
+  "rollback": [
+    "Stop the project Feishu Gateway process if running",
+    "Restore the backed-up OpenClaw Feishu Binding and channel configuration from prior redacted backup",
+    "Verify exactly one active Feishu consumer on the dedicated group",
+    "Confirm one visible `/status` reply path and no replayed callbacks are active",
+    "Pause card analyzer state and clear orphaned pending tickets",
+    "Retain original state snapshots, logs, and this plan as rollback evidence"
+  ],
+  "constraints": [
+    "no production data replay",
+    "no dual-consumer coexistence",
+    "do not restart production consumers except during authorized maintenance window"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "P0-CORE-FEISHU-CONTROL-CONTRACT-RESOLUTION-032",
+  "authorized_by": "Jovi explicit task authorization on 2026-07-23",
+  "purpose": "Resolve and Shadow-validate the existing zhongshu Core Feishu control contract on the installed OpenClaw 2026.7.1 without touching production.",
+  "allowed_paths": [
+    "reports/change_requests/P0-CORE-FEISHU-CONTROL-CONTRACT-RESOLUTION-032.json",
+    "experiments/core_feishu_control_contract/**",
+    "scripts/migration/core_feishu_control/**",
+    "tests/test_core_feishu_control_contract_032.py",
+    "tests/Test-CoreFeishuControlContract032.ps1",
+    "reports/P0_*_032.md",
+    "reports/P0_*_032.json",
+    "reports/P0_CURRENT_STATUS_V20.md",
+    "reports/P0_EVIDENCE_INDEX_V20.md",
+    "reports/P0_REMAINING_ACTIONS_V20.md",
+    "reports/NEXT_USER_ACTION.md",
+    "tasks/todo.md"
+  ],
+  "allowed_operations": [
+    "read-only inspection of installed OpenClaw help, schema, source, and local state projections",
+    "structured redacted Shadow configuration generation",
+    "offline or Shadow-only process lifecycle tests on non-production ports",
+    "offline patch, idempotence, rollback, and redaction tests",
+    "sanitized reports and evidence indexing"
+  ],
+  "prohibited_actions": [
+    "read or modify the two user-protected scope paths",
+    "print or persist complete OpenClaw configuration or any Secret",
+    "modify production configuration, Binding, Agent, Cron, OAuth, model, or PROJECT_STATUS.yaml",
+    "stop or restart the production Gateway or Core Feishu Binding",
+    "start a production Project Gateway",
+    "connect to real Feishu or perform real RPC authentication",
+    "send messages, attachments, or cards",
+    "commit, push, or tag"
+  ],
+  "rollback": "Shadow artifacts are isolated under experiments/core_feishu_control_contract and can be removed only in a separately authorized cleanup; production state has no mutation path in this task.",
+  "secrets": "Only structural fields, hashes, counts, abstract statuses, and Fake-token markers are allowed in artifacts; raw identifiers, endpoints, paths outside the approved Shadow root, and credential values are forbidden."
+}

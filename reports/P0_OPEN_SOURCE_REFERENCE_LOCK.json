@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-07-21T14:05:49Z",
+  "purpose": "P0-018 isolated source audit; no dependency installation or source execution",
+  "repositories": [
+    {"repository":"larksuite/openclaw-lark","commit":"dde0be3680d6fd5443cab426c8f4b3216266346a","license":"MIT","relevant_files":["src/channel/plugin.ts","src/channel/monitor.ts","src/channel/event-handlers.ts","src/channel/interactive-dispatch.ts"]},
+    {"repository":"larksuite/oapi-sdk-python","commit":"dcec8e409b46a7830d33584e3690e7719e7a992a","license":"MIT","relevant_files":["samples/ws/sample.py","lark_oapi/ws/client.py"]},
+    {"repository":"NousResearch/hermes-agent","commit":"d3b0e614294e3f1d4f8c99da377a77981d0a5609","license":"MIT","relevant_files":["gateway/session.py"]},
+    {"repository":"chenhg5/cc-connect","commit":"fc315d213b49d62e9d90ea4a510189d4115e636f","license":"README declares MIT; root license file absent","relevant_files":["platform/feishu/ws_shared.go","core/dedup.go","core/bridge.go"]},
+    {"repository":"rookiestar28/ComfyUI-OpenClaw","commit":"f1f221bb6db624641881c3506d25fbafe78e5e68","license":"MIT","relevant_files":["connector/platforms/feishu_long_connection.py","connector/platforms/feishu_ingress_handlers.py","connector/transport_contract.py"]}
+  ],
+  "storage":"vendor_research/ is ignored; these sources are not production modules"
+}

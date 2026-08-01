@@ -1,0 +1,33 @@
+{
+  "task": "P0-FEISHU-CARD-ANALYSIS-ACTION-015",
+  "observed_at": "2026-07-21T00:43:48+08:00",
+  "status": "BASELINE_READ_ONLY",
+  "config": {
+    "path": "C:/Users/Admin/.openclaw/openclaw.json",
+    "sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+    "changed_this_task": false
+  },
+  "topology": {"agents": 17, "bindings": 14, "cron": 4, "target_group_consumers": 1},
+  "router": {"agent": "video-factory", "model": "xiaomimimo/mimo-v2.5-pro", "fallbacks": ["xiaomimimo/mimo-v2.5-pro"]},
+  "gateway": {"version": "2026.7.1", "bind": "127.0.0.1", "port": 18789, "running": true, "restarted_this_task": false},
+  "feishu": {
+    "channel": "feishu",
+    "account": "zhongshu",
+    "configured_and_running": true,
+    "effective_connection_mode": "websocket_default",
+    "webhook_path_configured": false,
+    "verification_token_configured": false,
+    "encrypt_key_configured": false,
+    "core_card_send_support": true,
+    "core_card_action_trigger_registration": true,
+    "local_subscription_proof": "unavailable",
+    "local_card_action_event_evidence": "none",
+    "callback_url": "not configured locally"
+  },
+  "lark_cli": {"version": "1.0.9", "profile": "video-factory", "profile_auth": "no_user_token", "interactive_content_flag": true, "dedicated_card_command": false},
+  "mcp": {"ingest_tools": 2, "analyzer_tools": 3, "diagnostics": 0},
+  "live_sequence": {"R0": "PASS", "R1": "PASS", "R2_PNG": "PASS", "BARE_MP4": "PASS", "R3": "FAIL_PRESERVED", "R4": "NOT_RUN", "R5": "NOT_RUN"},
+  "tests": {"python": "122/122", "pester_two_message": "15/15", "pester_router": "46/46", "pester_inbound": "36/36", "pester_v28_wrapper": "4/4", "v28_schema": "88/88", "py_compile": "pass", "card_tests": "not_present"},
+  "manifest": {"file": "FILE_MANIFEST.txt", "lines": 158, "sha256": "78cf9c0b3950f2e8caa60aa87a34a75e319cf1bd748883c416bc15d210310465"},
+  "secrets": "not recorded"
+}

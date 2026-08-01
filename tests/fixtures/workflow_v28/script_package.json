@@ -1,0 +1,41 @@
+{
+  "script_id": "sp_0",
+  "brief_id": "rb_0",
+  "hook_id": "h_0",
+  "title": "test script",
+  "body": "body",
+  "structure_ratios": {
+    "hook": 0.1,
+    "develop": 0.6,
+    "tech": 0.2,
+    "cta": 0.1
+  },
+  "fact_refs": [
+    "ev_0"
+  ],
+  "human_approved": true,
+  "stages": [
+    {
+      "stage": "hook_gen",
+      "status": "passed",
+      "diff": "d"
+    },
+    {
+      "stage": "final_approve",
+      "status": "passed",
+      "diff": "d"
+    }
+  ],
+  "schema_version": "1.0",
+  "source": {
+    "kind": "synthetic_fixture",
+    "id": "v28-test"
+  },
+  "provenance": {
+    "created_at": "2026-07-30T07:18:14.500889+00:00",
+    "created_by": "test",
+    "tool": "v28_schema_tests"
+  },
+  "status": "active",
+  "confidence": 0.8
+}

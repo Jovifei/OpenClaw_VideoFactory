@@ -1,0 +1,48 @@
+{
+  "skill_id": "sd_0",
+  "name": "hook-first-2s",
+  "problem": "weak hooks",
+  "applicability": [
+    "tutorial"
+  ],
+  "non_applicability": [
+    "drama"
+  ],
+  "inputs": [
+    "script"
+  ],
+  "procedure": [
+    "draft 10 hooks",
+    "review"
+  ],
+  "decision_rules": [
+    "hook<2s"
+  ],
+  "common_failures": [
+    "too long"
+  ],
+  "examples": [
+    "good"
+  ],
+  "counterexamples": [
+    "bad"
+  ],
+  "safety": "no clickbait",
+  "version": "1.0",
+  "evidence": [
+    "ref_0"
+  ],
+  "is_summary_only": false,
+  "schema_version": "1.0",
+  "source": {
+    "kind": "synthetic_fixture",
+    "id": "v28-test"
+  },
+  "provenance": {
+    "created_at": "2026-07-30T07:18:14.500889+00:00",
+    "created_by": "test",
+    "tool": "v28_schema_tests"
+  },
+  "status": "active",
+  "confidence": 0.8
+}

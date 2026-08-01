@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-TWO-MESSAGE-ANALYSIS-INTENT-013",
+  "status": "PASS_OFFLINE",
+  "results": {
+    "python_unittest_discover": {"passed": 122, "failed": 0, "exit_code": 0},
+    "analysis_request": {"passed": 8, "failed": 0, "exit_code": 0},
+    "analyzer_mcp": {"passed": 32, "failed": 0, "exit_code": 0},
+    "mcp_surface": {"passed": 5, "failed": 0, "exit_code": 0},
+    "fake_two_message_flow": {"passed": 2, "failed": 0, "exit_code": 0},
+    "pester_two_message": {"passed": 15, "failed": 0, "exit_code": 0},
+    "pester_router": {"passed": 46, "failed": 0, "exit_code": 0},
+    "pester_inbound": {"passed": 36, "failed": 0, "exit_code": 0},
+    "pester_v28_wrapper": {"passed": 4, "failed": 0, "exit_code": 0},
+    "v28_schema": {"passed": 88, "failed": 0, "exit_code": 0},
+    "py_compile": {"status": "PASS", "exit_code": 0},
+    "openclaw_config_validate": {"status": "PASS", "exit_code": 0},
+    "mcp_probe": {"ingest_tools": 2, "analyzer_tools": 3, "status": "PASS"}
+  },
+  "negative_evidence_preserved": ["old same-message R3 NOT_RUN_INVALID_MESSAGE_SHAPE", "old R2 Analyzer-after-ingest FAIL"],
+  "not_proven": ["real Feishu Reply metadata", "live R3 analyzer call", "final P0 Gate", "production config reload"]
+}

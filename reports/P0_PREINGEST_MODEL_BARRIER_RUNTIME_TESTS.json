@@ -1,0 +1,24 @@
+{
+  "task": "P0-PREINGEST-MODEL-BARRIER-003",
+  "status": "not_run_blocked_before_install",
+  "reason": "A compliant first-layer inbound_claim cannot be attached to the current ordinary agent Binding without a Binding change, which is outside this authorization.",
+  "runtime_cases": [
+    "TXT attachment",
+    "PNG attachment",
+    "MP4 attachment",
+    "caption attachment",
+    "MIME error",
+    "ingest failure",
+    "hook exception",
+    "hook timeout",
+    "plain text",
+    "non-target group",
+    "other agent"
+  ],
+  "model_call_count": "not_observed",
+  "attachment_payload_forwarded": "not_observed",
+  "inbound_claim_handled": "not_observed",
+  "before_agent_run_blocked": "not_observed",
+  "no_real_feishu_upload_requested": true,
+  "no_real_feishu_send_performed": true
+}

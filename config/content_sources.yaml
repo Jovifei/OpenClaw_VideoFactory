@@ -1,0 +1,5 @@
+version: 1
+default_enabled: false
+sources: []
+# Codex只添加用户明确批准的Git仓库或目录。
+# 禁止读取.env、secrets、SSH、浏览器、钱包和非白名单目录。

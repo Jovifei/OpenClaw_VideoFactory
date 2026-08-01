@@ -1,0 +1,49 @@
+{
+  "task": "P0-PROJECT-GATEWAY-DEVICE-PAIRING-REQUEST-047-RETRY",
+  "status": "PROJECT_GATEWAY_DEVICE_PAIRING_BLOCKED:INVALID_REQUEST",
+  "preflight": {
+    "gateway_loopback_listener": true,
+    "gateway_service_status_available_without_rpc_probe": true,
+    "project_gateway_process_count": 0,
+    "private_state_acl": "current_user_and_system",
+    "official_project_identity_loaded_and_verified": true,
+    "pairing_status": "not_requested",
+    "pairing_request_id_absent": true,
+    "device_token_absent": true,
+    "pending_pairing_absent": true,
+    "active_pairing_transaction_absent": true
+  },
+  "connection": {
+    "attempt_count": 1,
+    "connect_request_count": 1,
+    "gateway_url_class": "loopback_127_0_0_1_18789",
+    "operation": "pairing-request",
+    "role": "operator",
+    "scopes": [
+      "operator.read"
+    ],
+    "independent_project_device_identity": true,
+    "challenge_signature_path": true,
+    "shared_token_used": false,
+    "other_device_identity_used": false,
+    "child_token_environment_removed": true,
+    "command_line_contains_credential": false,
+    "child_exit_code": 0,
+    "child_stderr_present": false,
+    "result_top_level_code": "INVALID_REQUEST",
+    "result_detail_code": null,
+    "pairing_required_received": false,
+    "pairing_request_persisted": false,
+    "device_token_issued": false
+  },
+  "postcheck": {
+    "pairing_transaction_persisted": true,
+    "pairing_transaction_status": "blocked",
+    "pairing_transaction_active": false,
+    "pending_pairing_absent": true,
+    "device_token_absent": true,
+    "project_gateway_process_count": 0,
+    "business_rpc_called": false,
+    "agent_tool_analyzer_called": false
+  }
+}

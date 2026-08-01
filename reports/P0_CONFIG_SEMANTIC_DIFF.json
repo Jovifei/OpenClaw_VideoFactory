@@ -1,0 +1,23 @@
+{
+  "task": "P0-PREINGEST-MODEL-BARRIER-003",
+  "status": "no_config_write_performed",
+  "baseline_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+  "current_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+  "semantic_changes": [],
+  "allowed_semantic_paths": [
+    "plugins.allow",
+    "plugins.entries.video-factory-preingest-barrier",
+    "meta.lastTouchedAt"
+  ],
+  "meta_lastTouchedAt": {
+    "before": "2026-07-14T15:47:55.282Z",
+    "after": "2026-07-14T15:47:55.282Z",
+    "changed": false
+  },
+  "barrier_plugin_allowlisted": false,
+  "barrier_plugin_entry_present": false,
+  "finding": {
+    "code": "BINDING_SURFACE_REQUIRED",
+    "detail": "The installed core has zero generic .runInboundClaim calls and invokes the targeted inbound claim API only for plugin-owned conversation bindings."
+  }
+}

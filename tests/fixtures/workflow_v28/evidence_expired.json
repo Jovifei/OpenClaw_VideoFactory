@@ -1,0 +1,30 @@
+{
+  "evidence_id": "ev_expired",
+  "topic_id": "tc_0",
+  "claim": "expired claim",
+  "sources": [
+    {
+      "url": "https://example.com/b",
+      "retrieved_at": "2026-07-30T07:18:14.500889+00:00",
+      "publisher": "B",
+      "license": "cc"
+    }
+  ],
+  "schema_version": "1.0",
+  "source": {
+    "kind": "synthetic_fixture",
+    "id": "v28-test"
+  },
+  "provenance": {
+    "created_at": "2026-07-30T07:18:14.500889+00:00",
+    "created_by": "test",
+    "tool": "v28_schema_tests"
+  },
+  "status": "active",
+  "confidence": 0.4,
+  "freshness": {
+    "observed_at": "2026-07-28T07:18:14.500889+00:00",
+    "expires_at": "2026-07-28T07:18:14.500889+00:00",
+    "decay": "fast"
+  }
+}

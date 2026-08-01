@@ -1,0 +1,27 @@
+{
+  "topic_id": "tc_3",
+  "title": "test topic 3",
+  "summary": "summary 3",
+  "category": "tech",
+  "signals": [
+    "s1"
+  ],
+  "freshness": {
+    "observed_at": "2026-07-30T07:18:14.500889+00:00",
+    "expires_at": "2026-08-01T07:18:14.500889+00:00",
+    "decay": "medium"
+  },
+  "dedup_key": "dk_3",
+  "schema_version": "1.0",
+  "source": {
+    "kind": "synthetic_fixture",
+    "id": "v28-test"
+  },
+  "provenance": {
+    "created_at": "2026-07-30T07:18:14.500889+00:00",
+    "created_by": "test",
+    "tool": "v28_schema_tests"
+  },
+  "status": "active",
+  "confidence": 0.8
+}

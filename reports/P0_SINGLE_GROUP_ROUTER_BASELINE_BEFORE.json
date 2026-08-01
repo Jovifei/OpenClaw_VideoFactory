@@ -1,0 +1,150 @@
+{
+  "task": "P0-SINGLE-GROUP-MEDIA-ROUTER-007",
+  "captured_at": "2026-07-18",
+  "openclaw_version": "2026.7.1 (2d2ddc4)",
+  "openclaw_config": {
+    "path": "C:\\Users\\Admin\\.openclaw\\openclaw.json",
+    "sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "verified_sha256": true,
+    "last_touched_at": "2026-07-14T15:47:55.282Z",
+    "last_touched_version": "2026.7.1"
+  },
+  "gateway": {
+    "mode": "local",
+    "bind": "loopback",
+    "url": "ws://127.0.0.1:18789",
+    "dashboard": "http://127.0.0.1:18789/",
+    "auth_mode": "token",
+    "reachable": true,
+    "port_probe_status": 200,
+    "running_pid": 79912,
+    "service": "Scheduled Task installed/registered/running",
+    "tailscale_exposure": "off"
+  },
+  "models_registry": {
+    "xiaomimimo": {
+      "mimo-v2.5": { "input": ["text", "image"], "capability": "multimodal", "reasoning": true, "contextWindow": 1048576 },
+      "mimo-v2.5-pro": { "input": ["text"], "capability": "text_only", "reasoning": true, "contextWindow": 1048576 }
+    },
+    "deepseek": {
+      "deepseek-chat": { "input": ["text"], "reasoning": false },
+      "deepseek-reasoner": { "input": ["text"], "reasoning": false },
+      "deepseek-v4-pro": { "input": ["text"], "reasoning": true }
+    }
+  },
+  "agents_defaults_model": {
+    "primary": "xiaomimimo/mimo-v2.5",
+    "fallbacks": ["xiaomimimo/mimo-v2.5-pro"]
+  },
+  "agents_defaults_imageModel": "NOT_SET",
+  "video_factory_durable": {
+    "agent_id": "video-factory",
+    "workspace": "E:\\project\\OpenClaw_VideoFactory",
+    "agentDir": "C:\\Users\\Admin\\.openclaw\\agents\\video-factory\\agent",
+    "model": {
+      "primary": "xiaomimimo/mimo-v2.5",
+      "capability": "multimodal_text_image",
+      "fallbacks": ["xiaomimimo/mimo-v2.5-pro"]
+    },
+    "tools": { "exec": { "mode": "full" } },
+    "tools_allow": "NOT_SET",
+    "tools_deny": "NOT_SET",
+    "tools_profile": "NOT_SET",
+    "subagents_allowAgents": "inherited_default_same_agent_only",
+    "sandbox_mode": "inherited_off"
+  },
+  "video_factory_session_override_target_group": {
+    "session_key_masked": "agent:video-factory:feishu:group:<target-id>",
+    "session_key_verified": true,
+    "modelOverride": "mimo-v2.5-pro",
+    "modelOverrideSource": "auto",
+    "fallbackNoticeSelectedModel": "xiaomimimo/mimo-v2.5",
+    "fallbackNoticeActiveModel": "xiaomimimo/mimo-v2.5-pro",
+    "fallbackNoticeReason": "timeout",
+    "note": "durable is multimodal mimo-v2.5; session auto-overrode to text-only pro on timeout. Must be cleared so durable (pro) and session are consistent."
+  },
+  "tools_media": {
+    "status": "NOT_SET",
+    "image_scope": "absent",
+    "audio_scope": "absent",
+    "video_scope": "absent",
+    "image_enabled": "auto",
+    "audio_enabled": "auto",
+    "video_enabled": "auto"
+  },
+  "tools_global": {
+    "sessions_visibility": "all",
+    "agentToAgent_enabled": true,
+    "exec_mode": "full",
+    "elevated_enabled": true,
+    "elevated_allowFrom": { "feishu": ["*"], "cron": ["*"] },
+    "web_search_enabled": true,
+    "web_search_provider": "tavily"
+  },
+  "mcp_servers": "NOT_SET",
+  "agents_count": 14,
+  "agents_list": [
+    "main", "taizi", "zhongshu", "menxia", "shangshu", "hubu", "libu",
+    "bingbu", "xingbu", "gongbu", "libu_hr", "zaochao", "douyin", "video-factory"
+  ],
+  "bindings_count": 14,
+  "bindings_summary": "14 route bindings, one per agent account; last binding is video-factory targeting the dedicated group via zhongshu account",
+  "target_group_binding": {
+    "agentId": "video-factory",
+    "match": { "channel": "feishu", "accountId": "zhongshu", "peer": { "kind": "group", "id": "<target-id>" } },
+    "comment": "P0 Route A: exact Feishu VideoFactory group",
+    "consumer_count_for_target_group": 1,
+    "zhongshu_account_group_policy": "allowlist",
+    "target_group_requireMention": false
+  },
+  "cron_count": 4,
+  "cron_jobs": [
+    { "name": "openclaw-backup", "schedule": "0 7 * * *", "agent": "main", "status": "ok" },
+    { "name": "杭州每日天气", "schedule": "5 8 * * * Asia/Shanghai", "agent": "-", "status": "ok" },
+    { "name": "每日早朝天气播报", "schedule": "10 8 * * * Asia/Shanghai", "agent": "taizi", "status": "ok" },
+    { "name": "每日早朝天气播报", "schedule": "10 8 * * * Asia/Shanghai", "agent": "main", "status": "error_21x_preexisting" }
+  ],
+  "cron_next_run_window": "~22-23h away (morning); 15min no-cron gate satisfiable",
+  "plugins": {
+    "allow": ["memory-core", "clawd-on-desk", "feishu", "deepseek", "codex-supervisor", "codex", "tavily"],
+    "feishu_enabled": true,
+    "deepseek_enabled": true,
+    "codex_enabled": true,
+    "tavily_enabled": true
+  },
+  "skills_enabled": ["find-skills", "agent-browser", "api-calls", "content-summary", "security-audit", "self-evolution", "clawhub"],
+  "project": {
+    "root": "E:\\project\\OpenClaw_VideoFactory",
+    "version": "2.4.0",
+    "git_branch": "phase/p0-gate-correction",
+    "git_head": "no_commits_untracked_tree",
+    "file_manifest": "FILE_MANIFEST.txt present",
+    "sha256sums": "SHA256SUMS.txt present",
+    "project_status_yaml_phase": "P0",
+    "project_status_yaml_p0_status": "not_started (do not modify per task)"
+  },
+  "file_hashes_sha256": {
+    "scripts/07_ingest_inbound_media.ps1": "10302de702e6c957133c1dbe19404d9ef5d273f289438ea92c049158b57d0afe",
+    "tests/Test-SingleGroupMediaRouter.ps1": "df02e974c393607a5eba72483c11dcddb69ab805ad9a6d9943376abb4f9f2547",
+    "tests/Test-IngestInboundMedia.ps1": "99f35e3f77dbd55b0e1e0f77998d41d3d4cc1d90cdbc8a46a6517a936fffa9c7",
+    "AGENTS.md": "179330034a7e15659792b45097cc0e30613a91f4afe190afdc81b9e9ca5d2951"
+  },
+  "test_results_prior": {
+    "single_group_router_offline": "15 passed, 0 failed (Pester 3.4.0)",
+    "inbound_media_regression": "32 passed, 0 failed (Pester 3.4.0)"
+  },
+  "local_runtime": {
+    "python": "3.14.2 (WindowsApps)",
+    "node": "24.18.0",
+    "mcp_python_sdk": "not_reliable (import resolves but no __version__; will use zero-dependency stdlib MCP)",
+    "ffmpeg_ffprobe": "to_be_confirmed_by_haiku_E",
+    "nvidia_cuda": "to_be_confirmed_by_haiku_E",
+    "faster_whisper": "to_be_confirmed_by_haiku_E"
+  },
+  "secrets_policy": "All secrets (apiKeys, appSecrets, gateway token, real group id, file_keys) are masked/omitted from this baseline and all reports. Real target-id is held only in live config/session state and used solely for the actual scope keyPrefix write.",
+  "status": "BASELINE_CAPTURED_BEFORE_ANY_PRODUCTION_CHANGE",
+  "config_changed": false,
+  "gateway_restarted": false,
+  "binding_changed": false,
+  "consumer_topology_changed": false
+}

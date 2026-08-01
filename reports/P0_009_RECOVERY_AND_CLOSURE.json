@@ -1,0 +1,13 @@
+{
+  "status": "READY_FOR_R0",
+  "phase": "P0",
+  "change_request": "P0-LIVE-SEQUENCE-009A-RECOVERY",
+  "parent_change_request_status": "ready_for_real_channel_sequence",
+  "current_config_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+  "baseline_config_sha256": "3001ec3b85a882deb382cb08f5ebdb1c6b285964ea9933f5f0d5c99bc7d89810",
+  "completed": ["007 independent topology review", "008 evidence review", "explicit trusted roots", "deterministic Analyzer MCP", "Analyzer tool policy", "offline regression", "local Gateway/MCP smoke", "one planned restart"],
+  "preserved": ["single group", "single consumer", "zhongshu account", "core Binding", "Router model", "media scope", "17 agents", "14 bindings", "4 Cron"],
+  "not_claimed": ["R0-R5 real Feishu sequence", "final P0 Gate", "P0_READY", "P1", "PROJECT_STATUS update"],
+  "next_action": "User sends P0_TEXT_ROUTER_TEST to the existing VideoFactory Feishu group and waits for R0 verification.",
+  "evidence": ["reports/P0_009_FULL_REGRESSION.json", "reports/P0_009_PRODUCTION_SMOKE.json", "reports/P0_TRUSTED_MEDIA_ROOTS.json", "reports/P0_ANALYZER_MCP_TOOLS.json", "reports/P0_ANALYZER_TOOL_POLICY.json"]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "P0-DEPENDENCY-GATE-FIX-030A",
+  "authorized_by": "Jovi task instruction",
+  "purpose": "Repair the project-local Python dependency gate for the existing jsonschema Gateway dependency and verify the P0 offline Python suite.",
+  "allowed_paths": [
+    "requirements-bootstrap.txt",
+    "scripts/00_package_check.ps1",
+    "reports/P0_DEPENDENCY_GATE_FIX_030A.md",
+    "reports/V28_SCHEMA_TESTS.json",
+    "reports/change_requests/P0-DEPENDENCY-GATE-FIX-030A.json",
+    "tasks/todo.md"
+  ],
+  "allowed_operations": [
+    "install resolved jsonschema wheels and transitive wheels into E:/project/OpenClaw_VideoFactory/.venv only",
+    "download dependency wheels only under E:/Claude_allow/Download",
+    "record package version, source, SHA-256, and license",
+    "run local Schema and P0 Python tests"
+  ],
+  "prohibited_actions": [
+    "modify global or system Python",
+    "modify OpenClaw environment or configuration",
+    "modify Feishu Binding, Agent, Cron, OAuth, model, or Gateway lifecycle",
+    "connect to Feishu or OpenClaw RPC",
+    "send a real message, attachment, or card",
+    "commit, push, tag, change PROJECT_STATUS.yaml, or create P0_READY"
+  ],
+  "rollback": "Uninstall only the packages installed by this change from the project-local .venv; no external runtime state is modified.",
+  "secrets": "The dependency report records package metadata and hashes only. No credentials, tokens, raw Feishu identifiers, or configuration content are read or recorded."
+}

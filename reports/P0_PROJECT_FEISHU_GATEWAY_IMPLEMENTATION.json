@@ -1,0 +1,49 @@
+{
+  "task": "P0-PROJECT-FEISHU-GATEWAY-IMPLEMENTATION-019",
+  "status": "PROJECT_FEISHU_GATEWAY_BLOCKED",
+  "implemented": [
+    "event schemas",
+    "fail-closed environment settings",
+    "persistent fake-state dedupe and ticket validation",
+    "ingest/analyzer adapter boundary",
+    "offline migration rehearsal",
+    "runtime RPC contract and error mapping",
+    "project gateway transport fail-closed",
+    "focused tests",
+    "sender/chat redaction for persisted state",
+    "offline security report and rollback/migration JSON artifacts"
+  ],
+  "blocked_by": [
+    "official_lark_sdk_not_installed",
+    "official_openclaw_rpc_contract_not_isolatedly_verified"
+  ],
+  "production_applied": false,
+  "secrets_persisted": false,
+  "evidence": {
+    "tests": {
+      "offline": "25/25",
+      "python_unittests": [
+        "tests.test_project_feishu_gateway",
+        "tests.test_feishu_gateway_runtime",
+        "tests.test_feishu_gateway_poc"
+      ]
+    },
+    "artifacts": [
+      "reports/P0_GATEWAY_TEST_REPORT.md",
+      "reports/P0_GATEWAY_TEST_REPORT.json",
+      "reports/P0_GATEWAY_SECURITY_REPORT.md",
+      "reports/P0_GATEWAY_SECURITY_REPORT.json",
+      "reports/P0_FEISHU_GATEWAY_RPC_CONTRACT.json",
+      "reports/P0_GATEWAY_MIGRATION_REHEARSAL.md",
+      "reports/P0_GATEWAY_MIGRATION_REHEARSAL.json",
+      "reports/P0_FEISHU_GATEWAY_RPC_CONTRACT.md",
+      "reports/P0_SINGLE_CONSUMER_MIGRATION_PROOF.md",
+      "reports/P0_SINGLE_CONSUMER_MIGRATION_PROOF.json"
+    ]
+  },
+  "final_status": {
+    "implementation_ready": false,
+    "migration_ready": false,
+    "project_status": "PROJECT_FEISHU_GATEWAY_BLOCKED"
+  }
+}

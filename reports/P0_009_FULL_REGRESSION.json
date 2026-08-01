@@ -1,0 +1,15 @@
+{
+  "status": "pass_offline",
+  "current_execution": [
+    {"suite": "tests/test_analyzer_mcp.py", "passed": 23, "failed": 0},
+    {"suite": "tests/test_trusted_media_roots.py", "passed": 25, "failed": 0},
+    {"suite": "tests/test_ingest_attachment_core.py", "passed": 18, "failed": 0},
+    {"suite": "Test-IngestInboundMedia.ps1 + Test-SingleGroupMediaRouter.ps1", "passed": 77, "failed": 0},
+    {"suite": "Test-VideoWorkflowV28.ps1", "passed": 4, "failed": 0}
+  ],
+  "current_total": {"passed": 147, "failed": 0, "note": "sum of current suites; suites overlap contracts and must not be treated as unique test cases"},
+  "historical_counts": {"router": "45/45", "inbound": "32/32", "ingest_core_before_009A": "17/17", "v28_schema_report": "88/88", "p0_old_summary": "94/94"},
+  "separate_new_counts": {"trusted_roots": "25/25", "analyzer_mcp": "23/23", "ingest_core_after_009A": "18/18"},
+  "skipped": ["real Feishu R0-R5", "final P0 Gate", "P0_READY"],
+  "blocked": ["none for offline scope; real Channel remains user-gated"]
+}

@@ -1,0 +1,20 @@
+default_mode: style_and_structure_only
+allow:
+  - pacing
+  - generic_layout
+  - subtitle_position
+  - generic_color_tendency
+  - narrative_structure
+  - shot_duration_distribution
+  - generic_transition_density
+deny:
+  - watermark_reuse
+  - creator_identity_reuse
+  - original_audio_reuse
+  - continuous_frame_reuse
+  - full_script_copy
+  - proprietary_brand_package_copy
+similarity_limits:
+  sentence_level_text: 0.30
+  direct_continuous_shot_reuse: 0.0
+  original_audio_reuse: 0.0

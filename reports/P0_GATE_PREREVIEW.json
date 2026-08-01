@@ -1,0 +1,222 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-MINIMUM-COMPLETION-PLAN-056",
+  "ran_actual_gate": false,
+  "created_p0_ready": false,
+  "checks": {
+    "package": [
+      {
+        "name": "required paths",
+        "status": "passed",
+        "detail": "all present"
+      },
+      {
+        "name": "local skill set",
+        "status": "passed",
+        "detail": {
+          "missing": [],
+          "found_count": 14
+        }
+      },
+      {
+        "name": "factory remains fail-closed before P1",
+        "status": "passed",
+        "detail": "fail-closed marker present"
+      },
+      {
+        "name": "release checksums",
+        "status": "conditional",
+        "detail": [
+          "mismatch: .env.example",
+          "mismatch: .gitignore",
+          "mismatch: AGENTS.md",
+          "mismatch: START_HERE_CODEX.md",
+          "mismatch: docs/ARCHITECTURE.md",
+          "mismatch: docs/IMPLEMENTATION_PHASES.md",
+          "mismatch: handoff/PRD_EXECUTION_SUMMARY.md",
+          "mismatch: handoff/codex/ACCEPTANCE_MATRIX.md",
+          "mismatch: handoff/codex/IMPLEMENTATION_BACKLOG.yaml",
+          "mismatch: requirements-bootstrap.txt",
+          "mismatch: runbook/00_EXECUTION_OVERVIEW.md",
+          "mismatch: runbook/02_OPENCLAW_CODEX_FEISHU_SETUP.md",
+          "mismatch: runbook/04_P1_DETERMINISTIC_MVP.md",
+          "mismatch: runbook/10_FINAL_ACCEPTANCE.md",
+          "mismatch: scripts/00_package_check.ps1",
+          "mismatch: scripts/90_acceptance_gate.py",
+          "mismatch: skills/feishu-video-factory-operator/SKILL.md"
+        ]
+      }
+    ],
+    "runtime": [
+      {
+        "name": "runtime: openclaw",
+        "status": "passed",
+        "detail": {
+          "returncode": 0,
+          "stdout_head": "OpenClaw 2026.7.1 (2d2ddc4)\n",
+          "stderr_head": ""
+        }
+      },
+      {
+        "name": "runtime: config_validate",
+        "status": "passed",
+        "detail": {
+          "returncode": 0,
+          "stdout_head": "Config valid: ~\\.openclaw\\openclaw.json\n",
+          "stderr_head": ""
+        }
+      },
+      {
+        "name": "runtime: ffmpeg",
+        "status": "passed",
+        "detail": {
+          "returncode": 0,
+          "stdout_head": "ffmpeg version 8.1.1-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers\nbuilt with gcc 15.2.0 (Rev13, Built by MSYS2 project)\nconfiguration: ",
+          "stderr_head": ""
+        }
+      },
+      {
+        "name": "runtime: nvidia",
+        "status": "passed",
+        "detail": {
+          "returncode": 0,
+          "stdout_head": "NVIDIA GeForce RTX 4070 SUPER, 12282 MiB\n",
+          "stderr_head": ""
+        }
+      },
+      {
+        "name": "runtime: lark_cli",
+        "status": "passed",
+        "detail": {
+          "returncode": 0,
+          "stdout_head": "lark-cli version 1.0.9\n",
+          "stderr_head": ""
+        }
+      },
+      {
+        "name": "runtime: codex",
+        "status": "passed",
+        "detail": {
+          "returncode": 0,
+          "stdout_head": "codex-cli 0.142.4\n",
+          "stderr_head": ""
+        }
+      }
+    ],
+    "p0_acceptance_evidence": [
+      {
+        "name": "P0 evidence: Feishu text ingress and visible reply",
+        "status": "passed",
+        "detail": {
+          "file": "FEISHU_SMOKE_TEST.json",
+          "passed": false
+        }
+      },
+      {
+        "name": "P0 evidence: single consumer and deduplication",
+        "status": "blocked",
+        "detail": {
+          "file": "FEISHU_SINGLE_CONSUMER_TEST.json",
+          "schema_version": null
+        }
+      },
+      {
+        "name": "P0 evidence: TXT/PNG/MP4 safe ingress",
+        "status": "blocked",
+        "detail": {
+          "file": "FEISHU_INGRESS_TEST.json",
+          "schema_version": null
+        }
+      },
+      {
+        "name": "P0 evidence: Markdown/PNG/TXT/MP4 egress and idempotency",
+        "status": "blocked",
+        "detail": {
+          "file": "FEISHU_EGRESS_TEST.json",
+          "schema_version": null
+        }
+      },
+      {
+        "name": "P0 evidence: direct Codex CLI smoke",
+        "status": "blocked",
+        "detail": {
+          "file": "CODEX_CLI_SMOKE.json",
+          "schema_version": "2.5"
+        }
+      },
+      {
+        "name": "P0 evidence: existing Agent and Binding regression",
+        "status": "blocked",
+        "detail": {
+          "file": "OPENCLAW_EXISTING_AGENTS_REGRESSION.json",
+          "schema_version": null
+        }
+      },
+      {
+        "name": "P0 evidence: Skill visibility",
+        "status": "passed",
+        "detail": {
+          "file": "SKILL_VISIBILITY.json"
+        }
+      }
+    ],
+    "real_media_sequence": [
+      {
+        "name": "real media R0 text",
+        "status": "passed",
+        "detail": {
+          "source": "P0_LIVE_EVENT_TRACE_R0_R5.json"
+        }
+      },
+      {
+        "name": "real media R1 TXT ingress",
+        "status": "passed",
+        "detail": {
+          "source": "P0_LIVE_EVENT_TRACE_R0_R5.json"
+        }
+      },
+      {
+        "name": "real media R2 PNG ingress-only",
+        "status": "passed",
+        "detail": {
+          "source": "P0_LIVE_EVENT_TRACE_R0_R5.json"
+        }
+      },
+      {
+        "name": "real media R3 image result",
+        "status": "blocked",
+        "detail": {
+          "source": "P0_REAL_R3_IMAGE_VERIFICATION_054A.json",
+          "verdict": "R3_PARTIAL_PASS:RESULT_REPLY_TOO_THIN"
+        }
+      },
+      {
+        "name": "real media R4 audio result",
+        "status": "blocked",
+        "detail": {
+          "source": "P0_REAL_R4_AUDIO_QUALIFICATION_057.json",
+          "verdict": "missing"
+        }
+      },
+      {
+        "name": "real media R5 video result",
+        "status": "blocked",
+        "detail": {
+          "source": "P0_REAL_R5_VIDEO_QUALIFICATION_058.json",
+          "verdict": "missing"
+        }
+      }
+    ]
+  },
+  "status_counts": {
+    "passed": 14,
+    "conditional": 1,
+    "blocked": 8
+  },
+  "p0_ready": false,
+  "can_start_p1": false,
+  "minimum_completion_target": "P2_AUTOMATED_DAILY_FACTORY",
+  "next_milestone": "P1_DETERMINISTIC_VERTICAL_SLICE",
+  "next_action": "RUN_FRESH_REAL_R3_RETEST",
+  "overall": "BLOCKED"
+}

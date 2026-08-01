@@ -1,0 +1,43 @@
+{
+  "report_id": "P0-MEDIA-ANALYSIS-064-TEST-RESULTS",
+  "generated_at": "2026-07-30T20:41:00+08:00",
+  "change_request": "P0-MEDIA-ANALYSIS-064",
+  "proof_layer": "offline source, contract, and controlled local-fixture verification",
+  "status": "PASS_OFFLINE_ONLY",
+  "implemented_contracts": [
+    "A silent MP4 with no audio stream continues bounded frame analysis and records audio_status=no_audio_stream, audio_extracted=false, and an empty transcript.",
+    "Image analysis asks the fixed image inference command for structured summary, visible_text, visual, limitations, and conclusion output; public replies include bounded visible text when supplied.",
+    "Only detected_kind=txt with normalized_content_type=text/plain can use the new analyze_text tool; it reads UTF-8 only, has a 64 KiB bound, rejects control bytes, and returns bounded deterministic structure.",
+    "TXT has an opaque text Ticket but is never analyzed by ingress or caption; only an exact later /vf text <ticket> can dispatch it.",
+    "DOCX and PDF body parsing remain unsupported."
+  ],
+  "verification": [
+    {
+      "command": ".venv\\Scripts\\python.exe -m py_compile scripts\\analyzer_mcp.py scripts\\analysis_request.py scripts\\media_action_ticket.py scripts\\mcp_ingest_attachment.py",
+      "result": "PASS"
+    },
+    {
+      "command": ".venv\\Scripts\\python.exe -m unittest tests.test_analyzer_mcp tests.test_analysis_request tests.test_media_action_ticket tests.test_ingest_attachment_core tests.test_two_message_mcp_surface tests.test_two_message_flow tests.test_trusted_media_roots",
+      "result": "PASS",
+      "tests_run": 166
+    },
+    {
+      "command": ".venv\\Scripts\\python.exe -m unittest tests.test_analyzer_mcp.AnalyzerMcpContractTests.test_silent_fixture_continues_frame_analysis_without_transcription",
+      "result": "PASS",
+      "evidence": "The immutable silent MP4 fixture was probed and three frames were extracted through local ffprobe/ffmpeg. Image and transcription functions were controlled test doubles, proving the no-audio branch rather than production model availability."
+    }
+  ],
+  "not_run": [
+    "No Feishu message, attachment, Ticket, or live Analyzer request was sent.",
+    "No model or node was downloaded and no production VLM/OCR availability claim was made.",
+    "No Gateway/Core lifecycle action, configuration change, P0 gate, phase update, Git operation, DOCX parse, or PDF parse was performed."
+  ],
+  "project_status": "PROJECT_STATUS.yaml remains P0/not_started; this report does not promote P0.",
+  "source_hashes_sha256": {
+    "scripts/analyzer_mcp.py": "E52A56066F9BAC80F26AC39D4350D09C2448CC94E9B4D5540C874938C2B7CA1E",
+    "scripts/analysis_request.py": "E1CEA4801DD666B56991BAF22E26953CF140E6483FC123B449437480F3E33B6D",
+    "scripts/media_action_ticket.py": "510B425C7D9CCF096BBB7920927B217C5FF1AD818F0195B35D21D15FBCE32693",
+    "scripts/mcp_ingest_attachment.py": "DF2AD0CE18000C6486523AD5574C2941341A6EA7A4AEFEC3387863762ECFEAFB",
+    "skills/feishu-video-factory-operator/SKILL.md": "605D6AF8871F3721B853045217643BECE0B24A77CC2B46252EBD56FAE91B6F7A"
+  }
+}

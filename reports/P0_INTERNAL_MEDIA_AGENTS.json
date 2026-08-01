@@ -1,0 +1,100 @@
+{
+  "task": "P0-SINGLE-GROUP-MEDIA-ROUTER-007",
+  "scope": "internal media analyzer agents (binding-less, spawned by router)",
+  "status": "prepared_pending_production_gate",
+  "reuse_check": "All 14 existing agents have feishu route bindings; none is a binding-less internal agent. 3 new agents required.",
+  "topology_delta": {
+    "agents_count_before": 14,
+    "agents_count_after": 17,
+    "bindings_count_before": 14,
+    "bindings_count_after": 14,
+    "cron_count_unchanged": 4,
+    "target_group_consumer_count_unchanged": 1,
+    "new_agents_in_bindings": false
+  },
+  "shared_constraints": {
+    "no_feishu_binding": true,
+    "no_message_consumer": true,
+    "spawned_only_by_router": "via sessions_spawn.agentId (router.subagents.allowAgents whitelist)",
+    "subagents": {"allowAgents": [], "note": "analyzers cannot spawn further agents"},
+    "tools": {
+      "exec": {"mode": "off"},
+      "allow": ["read", "write"],
+      "deny": ["exec", "process", "browser", "image", "image_generate", "video_generate", "music_generate", "pdf", "web", "gateway", "nodes", "cron", "feishu", "telegram", "slack", "discord", "whatsapp", "signal", "imessage", "mattermost", "sessions_spawn", "sessions_send"]
+    },
+    "contextInjection": "continuation-skip",
+    "skills": [],
+    "no_identity": true,
+    "no_heartbeat": true,
+    "isolated_workspace": true,
+    "isolated_agentDir": true
+  },
+  "data_flow_contract": {
+    "router_to_analyzer_payload_allowed": ["receipt_path", "stored_path", "job_id", "analysis_policy"],
+    "router_to_analyzer_payload_forbidden": ["MediaPath", "MediaPaths", "url", "base64", "file_key", "raw message_id", "group_id", "secrets"],
+    "analyzer_output": ["jobs/<job_id>/analysis.json", "jobs/<job_id>/analysis.txt"],
+    "analyzer_does_not_reply_to_group": true,
+    "router_replies_to_group": true
+  },
+  "agents": [
+    {
+      "id": "video-factory-image-analyzer",
+      "name": "VF Image Analyzer",
+      "workspace": "C:\\Users\\Admin\\.openclaw\\workspace-vf-image",
+      "agentDir": "C:\\Users\\Admin\\.openclaw\\agents\\video-factory-image-analyzer\\agent",
+      "model": {"primary": "xiaomimimo/mimo-v2.5", "fallbacks": []},
+      "model_note": "multimodal text+image. fallbacks empty: MUST NOT fall back to mimo-v2.5-pro (text-only, cannot see images).",
+      "failure_code": "multimodal_model_unavailable",
+      "analysis_policy_enum": "image_default",
+      "responsibilities": ["read stored_path quarantined image copy only", "produce analysis.json with summary/detections", "no OCR via router; image understanding here only"]
+    },
+    {
+      "id": "video-factory-audio-analyzer",
+      "name": "VF Audio Analyzer",
+      "workspace": "C:\\Users\\Admin\\.openclaw\\workspace-vf-audio",
+      "agentDir": "C:\\Users\\Admin\\.openclaw\\agents\\video-factory-audio-analyzer\\agent",
+      "model": {"primary": "xiaomimimo/mimo-v2.5-pro", "fallbacks": []},
+      "model_note": "text-only; used only to structure faster-whisper output into analysis.json. faster-whisper CUDA runs in the skill/wrapper layer, not as the agent model.",
+      "transcription_backend": "faster-whisper CUDA (verified installed 1.2.1, torch 2.11+cu128, cuda available)",
+      "transcription_default_model": "medium (fp16, ~3.5GB VRAM)",
+      "gpu_lock": "gpu-media (acquired before CUDA transcription, released after)",
+      "failure_codes": ["local_audio_analyzer_unavailable", "gpu_lock_unavailable"],
+      "analysis_policy_enum": "audio_transcribe",
+      "ffmpeg_note": "ffmpeg at C:\\ffmpeg\\bin\\ffmpeg.exe (NOT on PATH); use absolute path in wrapper"
+    },
+    {
+      "id": "video-factory-video-analyzer",
+      "name": "VF Video Analyzer",
+      "workspace": "C:\\Users\\Admin\\.openclaw\\workspace-vf-video",
+      "agentDir": "C:\\Users\\Admin\\.openclaw\\agents\\video-factory-video-analyzer\\agent",
+      "model": {"primary": "xiaomimimo/mimo-v2.5", "fallbacks": []},
+      "model_note": "multimodal for keyframe understanding. fallbacks empty: no pro fallback for vision.",
+      "pipeline": ["ffprobe metadata (CPU, no GPU lock)", "bounded keyframe extraction (CPU ffmpeg, no -hwaccel cuda)", "optional audio track extraction (CPU)", "VLM on keyframes (GPU lock required, mimo-v2.5 or approved local VLM)"],
+      "frame_limits": {"max_frames": 12, "max_long_edge_px": 1024, "max_extract_seconds": 30, "max_temp_mb": 100},
+      "gpu_lock": "gpu-media (only for VLM stage, not for ffprobe/extraction)",
+      "failure_codes": ["video_probe_failed", "video_frame_extract_failed", "gpu_lock_unavailable", "multimodal_model_unavailable"],
+      "analysis_policy_enum": "video_probe_frames_vlm",
+      "ffmpeg_note": "ffprobe/ffmpeg at C:\\ffmpeg\\bin\\ (NOT on PATH); use absolute path"
+    }
+  ],
+  "analysis_json_schema": {
+    "job_id": "string",
+    "receipt_path": "string",
+    "stored_path": "string",
+    "detected_kind": "string",
+    "status": "completed | failed",
+    "error_code": "string (optional)",
+    "summary_text": "string (<=2000 chars)",
+    "detections": "array (optional)",
+    "transcript": "string (optional, audio)",
+    "frames": "array (optional, video: [{path, timestamp, description}])",
+    "duration_seconds": "number (optional, video/audio)",
+    "hashes": {"stored_sha256": "string"},
+    "analyzed_at": "ISO8601"
+  },
+  "stored_path_root_contract": "Analyzers resolve stored_path relative to OPENCLAW_VF_INGEST_ROOT (defaults to E:\\project\\OpenClaw_VideoFactory\\input\\feishu). stored_path must match ^input/feishu/[^/]+/attachment-\\d{3}/original/.+$ relative to project root.",
+  "session_sendPolicy_defense": "Add deny rules for keyPrefix agent:video-factory-image-analyzer:, agent:video-factory-audio-analyzer:, agent:video-factory-video-analyzer: as a second gate so analyzers cannot send to any feishu session even if a tool leaked.",
+  "multimodal_fallback_rule": "image/video vision: mimo-v2.5 -> (none, no approved local VLM available this round) -> multimodal_model_unavailable. NEVER fall back to mimo-v2.5-pro. Router stays text-only.",
+  "local_vlm_status": "No local VLM immediately callable (Ollama CLI not installed; Qwen2.5-VL weights exist at E:\\LocalAI\\Models but not audited/hashed). multimodal_model_unavailable is the compliant default for this round if mimo-v2.5 cloud is unavailable.",
+  "test_coverage": "tests/Test-InternalAnalyzers.ps1 (offline contract: dispatch routing, payload fields, no raw MediaPath, no pro fallback, no binding, single consumer)"
+}

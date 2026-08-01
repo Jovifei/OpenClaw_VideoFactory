@@ -1,0 +1,8 @@
+[
+  {
+    "id": "SAMPLE-CODE-001",
+    "topic": "擦除 Flash 前为什么要先看门狗节拍？",
+    "template": "code-explainer",
+    "purpose": "独立 code-explainer 模板样例"
+  }
+]

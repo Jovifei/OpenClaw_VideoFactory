@@ -1,0 +1,53 @@
+{
+  "id": "P0-PREINGEST-MODEL-BARRIER-002",
+  "status": "rolled_back_not_installed",
+  "openclaw_version": "2026.7.1",
+  "plugin_api": ["definePluginEntry", "inbound_claim", "before_agent_run"],
+  "scope": {
+    "agent": "video-factory",
+    "channel": "feishu",
+    "account": "zhongshu",
+    "chat_id": "oc_***1555"
+  },
+  "configuration": {
+    "backup_path": "C:\\Users\\Admin\\.openclaw\\backups\\P0-PREINGEST-MODEL-BARRIER-002-20260716T225222-openclaw.json",
+    "before_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "attempted_sha256": "707945ffec25789c84af0e637a4edc03baf3bbc3de93101cb0cc12948c231a5a",
+    "restored_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "attempted_semantic_changed_paths": [
+      "meta.lastTouchedAt",
+      "plugins.allow",
+      "plugins.entries.video-factory-preingest-barrier"
+    ],
+    "authorized_changed_paths": [
+      "plugins.allow",
+      "plugins.entries.video-factory-preingest-barrier"
+    ],
+    "stop_condition": "meta.lastTouchedAt was modified outside the approved configuration paths.",
+    "config_validate_after_restore_exit_code": 0
+  },
+  "plugin_files": {
+    "attempted": [
+      "C:\\Users\\Admin\\.openclaw\\extensions\\video-factory-preingest-barrier\\package.json",
+      "C:\\Users\\Admin\\.openclaw\\extensions\\video-factory-preingest-barrier\\openclaw.plugin.json",
+      "C:\\Users\\Admin\\.openclaw\\extensions\\video-factory-preingest-barrier\\index.mjs",
+      "C:\\Users\\Admin\\.openclaw\\extensions\\video-factory-preingest-barrier\\barrier.mjs",
+      "C:\\Users\\Admin\\.openclaw\\extensions\\video-factory-preingest-barrier\\test.mjs"
+    ],
+    "present_after_rollback": false
+  },
+  "gateway_restart": {
+    "performed": false,
+    "reason": "Configuration scope stop condition triggered before restart."
+  },
+  "post_rollback_regression": {
+    "gateway_health_exit_code": 0,
+    "agent_count": 14,
+    "binding_count": 14,
+    "cron_count": 4,
+    "other_13_agents_affected": false
+  },
+  "p0_state": "conditional_not_passed",
+  "reupload_condition": "not_ready; no real TXT or PNG upload is requested until a separately authorized configuration-scope decision is resolved.",
+  "o2_json5_status": "blocked_missing_existing_json5_parser"
+}

@@ -1,0 +1,58 @@
+{
+  "id": "P0-SINGLE-GROUP-MEDIA-ROUTER-006",
+  "phase": "P0",
+  "status": "design_audit_complete_blocked_on_approved_runtime_config",
+  "objective": "Audit and prove offline feasibility of a single-Feishu-group, single-consumer, text-only video-factory media router with deterministic quarantine-first ingestion and post-receipt internal analysis dispatch.",
+  "authorization": {
+    "offline_design_and_tests": true,
+    "production_config_change": false,
+    "gateway_restart": false,
+    "binding_change": false,
+    "consumer_topology_change": false,
+    "model_install_or_download": false
+  },
+  "allowed_writes": [
+    "E:/project/OpenClaw_VideoFactory/reports/P0_SINGLE_GROUP_MEDIA_ROUTER_*.md",
+    "E:/project/OpenClaw_VideoFactory/reports/NEXT_USER_ACTION.md",
+    "E:/project/OpenClaw_VideoFactory/reports/change_requests/P0-SINGLE-GROUP-MEDIA-ROUTER-006.json",
+    "E:/project/OpenClaw_VideoFactory/tests/Test-SingleGroupMediaRouter.ps1",
+    "E:/project/OpenClaw_VideoFactory/tasks/todo.md"
+  ],
+  "prohibited_changes": [
+    "C:/Users/Admin/.openclaw/openclaw.json",
+    "C:/Users/Admin/.openclaw/agents/",
+    "Binding",
+    "Feishu consumer topology",
+    "Gateway restart",
+    "OpenClaw core source",
+    "model installation or download",
+    "real Feishu upload or outbound send",
+    "P1",
+    "PROJECT_STATUS.yaml"
+  ],
+  "baseline": {
+    "openclaw_config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "agent_count": 14,
+    "binding_count": 14,
+    "target_consumer_count": 1
+  },
+  "stop_conditions": [
+    "production_configuration_or_gateway_state_changes",
+    "offline_ingest_or_router_contract_test_failure",
+    "raw_target_group_identifier_written_to_reports",
+    "evidence requires real Feishu traffic"
+  ],
+  "rollback": "Delete only the newly created offline reports, change request, and test file; restore the baseline config SHA-256 if an unauthorized state change is detected."
+  ,"actual_outcome": {
+    "config_changed": false,
+    "gateway_restarted": false,
+    "binding_changed": false,
+    "consumer_topology_changed": false,
+    "agent_count": 14,
+    "binding_count": 14,
+    "offline_router_tests": "15 passed, 0 failed",
+    "inbound_media_regression": "32 passed, 0 failed",
+    "design_result": "SINGLE_GROUP_ROUTER_DESIGN_READY",
+    "next_blocker": "approved production scope/tool-policy change is required before runtime proof"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "task": "P0-LIVE-SEQUENCE-009-RECOVERY-AND-CLOSURE",
+  "change_request": "P0-LIVE-SEQUENCE-009A-RECOVERY",
+  "status": "applied_and_validated",
+  "baseline_config_sha256": "3001ec3b85a882deb382cb08f5ebdb1c6b285964ea9933f5f0d5c99bc7d89810",
+  "result_config_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+  "authorized_scope": [
+    "mcp.servers.ingest.env.OPENCLAW_TRUSTED_INBOUND_ROOTS",
+    "mcp.servers.analyzers",
+    "agents.list[14].tools.allow/deny",
+    "agents.list[15].tools.allow/deny",
+    "agents.list[16].tools.allow/deny"
+  ],
+  "unchanged_scope": [
+    "tools.media.image/audio/video.scope",
+    "video-factory durable model",
+    "video-factory tools and subagents",
+    "bindings",
+    "cron",
+    "other thirteen agents",
+    "auth, OAuth, model catalog, Feishu account and group routing"
+  ],
+  "trusted_roots": [
+    {"root_id": "openclaw_global", "path": "C:\\Users\\Admin\\.openclaw\\media\\inbound"},
+    {"root_id": "video_factory_workspace", "path": "E:\\project\\OpenClaw_VideoFactory\\media\\inbound"}
+  ],
+  "analyzer_server": {
+    "name": "analyzers",
+    "command": "python",
+    "args": ["scripts/analyzer_mcp.py"],
+    "tools": ["analyzers__analyze_image", "analyzers__transcribe_audio", "analyzers__analyze_video"],
+    "fixed_runtime": true,
+    "text_only_fallback": false
+  },
+  "analyzer_agent_policy": {
+    "video-factory-image-analyzer": ["analyzers__analyze_image"],
+    "video-factory-audio-analyzer": ["analyzers__transcribe_audio"],
+    "video-factory-video-analyzer": ["analyzers__analyze_video"]
+  },
+  "pre_apply_checks": {
+    "config_validate": "pass",
+    "config_patch_dry_run": "pass",
+    "agent_policy_batch_dry_run": "pass",
+    "analyzer_mcp_tests": "23/23",
+    "trusted_root_tests": "25/25",
+    "ingest_core_tests": "18/18",
+    "pester_ingest_and_router": "77/77",
+    "pester_v28": "4/4",
+    "gateway_loopback_rpc": "pass",
+    "baseline_hash_rechecked": true
+  },
+  "restart_policy": "at most one planned restart after both writes and validation; no repair of pre-existing service-version drift",
+  "applied": true,
+  "planned_restart_completed": true,
+  "backup_sha256": "3001ec3b85a882deb382cb08f5ebdb1c6b285964ea9933f5f0d5c99bc7d89810",
+  "prohibited": ["real Feishu message", "fake Feishu event", "final P0 Gate", "PROJECT_STATUS.yaml update", "P1 work"]
+}

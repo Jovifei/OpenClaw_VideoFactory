@@ -1,0 +1,25 @@
+{
+  "schema": "p0_feishu_plugin_origin_audit_033_v1",
+  "status": "PASS",
+  "scope": "read_only_installed_production_source",
+  "openclaw_version": "2026.7.1",
+  "plugin": {
+    "id": "feishu",
+    "package": "@openclaw/feishu",
+    "package_version": "2026.6.6",
+    "enabled": true,
+    "source_kind": "installed_production_source",
+    "manifest_sha256": "1443091B8DEA708CB8CDD37CB3FF9CFD8F78E3D79A6042DBF588550E4E092C36",
+    "runtime_entry_sha256": "CF89DFE55DA1D4FDEFF4B576BBEA16092551AC8002D051FC94F61CAFA99641CD",
+    "metadata": {
+      "extensions": ["./index.ts"],
+      "setup_entry": "./setup-entry.ts",
+      "runtime_extensions": ["./dist/index.js"],
+      "runtime_setup_entry": "./dist/setup-entry.js",
+      "channel": "feishu",
+      "compat_plugin_api": ">=2026.6.6"
+    }
+  },
+  "secrets": "not persisted",
+  "production_mutation": false
+}

@@ -1,0 +1,34 @@
+{
+  "task": "P0-R1-TRUSTED-SIZE-CONTRACT-010",
+  "r1_status": "failed_size_contract_preserved",
+  "message_id_hash": "acf1611d84a5cc43",
+  "message_id_masked": "om_***339c",
+  "file_name": "p0-file-test.txt",
+  "feishu_ui_display_size": null,
+  "feishu_ui_display_size_evidence": "not present in retained Channel log or session event",
+  "declared_size_source": "Router MCP tool-call arguments in the retained video-factory session",
+  "declared_size_value": 67,
+  "actual_size_source": "trusted local MediaPath filesystem stat performed by parent evidence audit",
+  "actual_size_value": 55,
+  "router_supplied_value": 67,
+  "model_supplied_security_field_confirmed": true,
+  "classification": "MODEL_SUPPLIED_SECURITY_FIELD_CONFIRMED",
+  "proven_chain": [
+    {"stage": "Feishu event", "evidence": "document name and MIME only; no retained size metadata"},
+    {"stage": "Channel download", "evidence": "Gateway log records successful file download"},
+    {"stage": "normalized attachment", "evidence": "session has MediaPath/MediaPaths and MediaType/MediaTypes; no size field"},
+    {"stage": "Router context", "evidence": "the text-only Router saw the attachment text and MediaPath reference"},
+    {"stage": "MCP tool call", "evidence": "actual tool-call JSON supplied size_bytes=67"},
+    {"stage": "pre-fix MCP", "evidence": "mcp_ingest_attachment.py compared that input against Path.stat().st_size"},
+    {"stage": "filesystem", "evidence": "MediaPath stat returned 55 bytes"},
+    {"stage": "PowerShell/copy", "evidence": "not reached in the original R1 because Python rejected before subprocess; post-fix smoke proves source/stat/copy/SHA path"}
+  ],
+  "old_result": {
+    "error_code": "size_mismatch",
+    "quarantined": false,
+    "analysis_allowed": false,
+    "receipt_exists": false,
+    "analyzer_call_count": 0
+  },
+  "no_speculative_cause": "No UI, encoding, newline, or Content-Length conversion is asserted as the origin of 67. The evidence proves the value entered through the model tool call."
+}

@@ -1,0 +1,237 @@
+{
+  "schema_version": "1.0",
+  "audit_id": "P0-FEISHU-GATEWAY-ARCHITECTURE-AUDIT-023-A",
+  "audit_mode": "read_only_offline_static",
+  "project_phase": {
+    "current_phase": "P0",
+    "status": "not_started"
+  },
+  "result": "ARCHITECTURE_CONCERNS_FOUND",
+  "production_cutover_ready": false,
+  "external_connections": {
+    "feishu": false,
+    "openclaw_rpc": false,
+    "gateway_started_or_restarted": false,
+    "secrets_used": false
+  },
+  "evidence": {
+    "reviewed": [
+      "reports/P0_PROJECT_FEISHU_GATEWAY_IMPLEMENTATION.md",
+      "reports/P0_GATEWAY_RUNTIME_IMPLEMENTATION_022.md",
+      "reports/P0_GATEWAY_RPC_RUNTIME_GAP.md",
+      "reports/P0_FEISHU_GATEWAY_MAINTENANCE_RUNBOOK_V2.md",
+      "services/feishu_gateway/",
+      "schemas/feishu_gateway/",
+      "tests/"
+    ],
+    "offline_tests": [
+      {
+        "command": "python -m unittest discover -s tests -p 'test*feishu*gateway*.py' -v",
+        "passed": 37
+      },
+      {
+        "command": "python -m unittest discover -s tests -p 'test_analysis_request.py' -v",
+        "passed": 8
+      },
+      {
+        "command": "python -m unittest discover -s tests -p 'test_analyzer_mcp.py' -v",
+        "passed": 32
+      },
+      {
+        "command": "python -m unittest discover -s tests -p 'test_ingest_attachment_core.py' -v",
+        "passed": 45
+      }
+    ],
+    "offline_tests_passed_total": 122,
+    "limitations": [
+      "No live Feishu WebSocket, official Lark SDK, OpenClaw RPC or maintenance-window action was exercised.",
+      "Passing tests are component-level offline evidence, not a consumer-cutover or production acceptance result."
+    ]
+  },
+  "architecture_assessment": {
+    "gateway_ingress_only": "partial",
+    "openclaw_orchestration": "fail",
+    "analyzer_compute_only": "partial",
+    "gateway_model_calls": "pass_offline_code",
+    "single_consumer": "fail_or_unproven",
+    "rpc_design": "fail_for_production",
+    "security": "partial",
+    "migration": "partial",
+    "long_term_extensibility": "not_ready"
+  },
+  "severity_summary": {
+    "critical": 2,
+    "high": 5,
+    "medium": 4,
+    "low": 2
+  },
+  "findings": [
+    {
+      "id": "CRITICAL-023A-01",
+      "severity": "critical",
+      "title": "Gateway directly dispatches Analyzer and bypasses OpenClaw orchestration",
+      "evidence": [
+        "services/feishu_gateway/service.py:153-171",
+        "tests/test_feishu_gateway_poc.py:37-46",
+        "tests/test_analysis_request.py:80-145"
+      ],
+      "risk": "Violates the two-message intent protocol and prevents OpenClaw from owning policy, queueing, cancellation, recovery and GPU scheduling.",
+      "required_disposition": "Production Gateway must forward normalized ingress only; OpenClaw must create a valid reply-bound analysis_request and dispatch Analyzer work."
+    },
+    {
+      "id": "CRITICAL-023A-02",
+      "severity": "critical",
+      "title": "Signature verification is optional and defaults to accept",
+      "evidence": [
+        "schemas/feishu_gateway/message_event.schema.json",
+        "schemas/feishu_gateway/card_event.schema.json",
+        "services/feishu_gateway/service.py:80-118"
+      ],
+      "risk": "A future real adapter can feed unsigned or forged events into ingress/RPC/analysis paths if a verifier is omitted.",
+      "required_disposition": "Require official signature and timestamp verification at production factory construction and fail startup if it is absent."
+    },
+    {
+      "id": "HIGH-023A-03",
+      "severity": "high",
+      "title": "Group-only session key can mix users",
+      "evidence": [
+        "services/feishu_gateway/runtime.py:74-87",
+        "config/feishu_gateway.example.yaml",
+        "tests/test_feishu_gateway_runtime.py:25-35"
+      ],
+      "risk": "All senders in one group share an OpenClaw session unless the unverified RPC layer overrides it.",
+      "required_disposition": "Adopt a versioned account/channel/chat/sender session namespace by default, with explicit tested opt-in for shared group sessions."
+    },
+    {
+      "id": "HIGH-023A-04",
+      "severity": "high",
+      "title": "Single-consumer control is simulated only",
+      "evidence": [
+        "services/feishu_gateway/runtime_server.py:55-93",
+        "scripts/migration/verify_consumer_state.py:1-20",
+        "scripts/migration/verify_single_consumer.py:1-25",
+        "experiments/feishu_gateway_migration/simulate_cutover.py:1-16"
+      ],
+      "risk": "No lease, fence or live connection verification prevents overlap or a no-consumer gap during migration.",
+      "required_disposition": "Implement an operator-authorized fenced consumer lease and live owner/socket/event proof before cutover."
+    },
+    {
+      "id": "HIGH-023A-05",
+      "severity": "high",
+      "title": "RPC placeholder embeds unverified protocol semantics",
+      "evidence": [
+        "services/feishu_gateway/runtime.py:19-28",
+        "services/feishu_gateway/rpc_client.py:14-41",
+        "reports/P0_GATEWAY_RPC_RUNTIME_GAP.md"
+      ],
+      "risk": "Hard-coded method names and fields can be incompatible with the official RPC surface and hide orchestration responsibilities in Gateway.",
+      "required_disposition": "Create a versioned adapter from an approved official RPC probe, with documented auth, capability, cancellation, correlation and idempotency semantics."
+    },
+    {
+      "id": "HIGH-023A-06",
+      "severity": "high",
+      "title": "Retry and JSON state handling can produce duplicate work",
+      "evidence": [
+        "services/feishu_gateway/rpc_client.py:29-41",
+        "services/feishu_gateway/service.py:30-37",
+        "services/feishu_gateway/service.py:96-131"
+      ],
+      "risk": "Ambiguous RPC outcomes, concurrent processes or interrupted in-place state writes can duplicate work or lose dedupe/ticket state.",
+      "required_disposition": "Use transactional durable event/outbox state, end-to-end idempotency keys, atomic transitions, retention and one typed retry policy."
+    },
+    {
+      "id": "HIGH-023A-07",
+      "severity": "high",
+      "title": "Runbook omits durable handoff and recovery proof",
+      "evidence": [
+        "reports/P0_FEISHU_GATEWAY_MAINTENANCE_RUNBOOK_V2.md",
+        "reports/P0_GATEWAY_RUNTIME_IMPLEMENTATION_022.md"
+      ],
+      "risk": "The documented stop/start sequence cannot demonstrate no loss, no duplicate consumption, restored state, or bounded rollback time.",
+      "required_disposition": "Add quiesce/drain, boundary ids, backup/restore hashes, replay reconciliation, owner command and measured RTO/RPO acceptance."
+    },
+    {
+      "id": "MEDIUM-023A-08",
+      "severity": "medium",
+      "title": "Secret, log and report protections are partial",
+      "evidence": [
+        "services/feishu_gateway/runtime.py:10-16",
+        "services/feishu_gateway/runtime_server.py:21-29",
+        ".gitignore"
+      ],
+      "risk": "Generic reports remain trackable and have no enforced redaction check; the current branch has no commits, so history cannot be audited.",
+      "required_disposition": "Enforce report/diagnostic redaction in CI or pre-commit and test it with masked secret and identifier fixtures."
+    },
+    {
+      "id": "MEDIUM-023A-09",
+      "severity": "medium",
+      "title": "Error policy and readiness signals are incomplete",
+      "evidence": [
+        "services/feishu_gateway/runtime.py:38-70",
+        "services/feishu_gateway/runtime_server.py:43-82"
+      ],
+      "risk": "Operators cannot reliably classify retryability, ambiguity, split-brain or consumer staleness.",
+      "required_disposition": "Unify typed error mapping, bounded backoff and readiness metrics for owner identity, lease, event age and queue state."
+    },
+    {
+      "id": "MEDIUM-023A-10",
+      "severity": "medium",
+      "title": "Synchronous Analyzer dispatch cannot scale GPU work",
+      "evidence": [
+        "services/feishu_gateway/service.py:171",
+        "tests/test_analyzer_mcp.py:137-151"
+      ],
+      "risk": "GPU work can block event flow and is not centrally queued, cancelled or serialized.",
+      "required_disposition": "OpenClaw must own queued job lifecycle; Analyzer workers must obtain the shared GPU lock and persist job status."
+    },
+    {
+      "id": "MEDIUM-023A-11",
+      "severity": "medium",
+      "title": "Account and channel namespaces are absent",
+      "evidence": [
+        "schemas/feishu_gateway/message_event.schema.json",
+        "schemas/feishu_gateway/card_event.schema.json",
+        "services/feishu_gateway/runtime.py:79-86"
+      ],
+      "risk": "Additional Feishu apps/accounts or channels can collide in identity, session and consumer ownership.",
+      "required_disposition": "Adopt a normalized envelope with channel, account/tenant, adapter version and stable external ids."
+    },
+    {
+      "id": "LOW-023A-12",
+      "severity": "low",
+      "title": "Ticket and dedupe retention are unbounded",
+      "evidence": [
+        "services/feishu_gateway/service.py:39-59",
+        "services/feishu_gateway/service.py:153-171"
+      ],
+      "risk": "Long-running state growth makes recovery files larger despite correct expiry/replay rejection.",
+      "required_disposition": "Add bounded retention and compaction tests."
+    },
+    {
+      "id": "LOW-023A-13",
+      "severity": "low",
+      "title": "Lifecycle scripts trust reusable PIDs",
+      "evidence": [
+        "scripts/feishu_gateway/start_gateway.ps1:9-21",
+        "scripts/feishu_gateway/stop_gateway.ps1:6-14"
+      ],
+      "risk": "A stale PID/status file does not prove process or consumer ownership.",
+      "required_disposition": "Verify process command identity and fenced lease before lifecycle actions."
+    }
+  ],
+  "retained_controls": [
+    "Offline-only runtime and false readiness without verified transports.",
+    "Environment-reference configuration and ignored runtime/credential paths.",
+    "Quarantine and SHA-256 validation with Analyzer raw-path rejection.",
+    "Hashed identifier logs, one-time ticket binding, and local duplicate-event coverage.",
+    "Reply-bound analysis_request tests for identity, expiry, hash and idempotency."
+  ],
+  "architecture_pass_blockers": [
+    "Remove direct Gateway-to-Analyzer dispatch and prove OpenClaw-owned reply-to analysis flow.",
+    "Make official signature/timestamp verification mandatory.",
+    "Verify and version the official OpenClaw RPC adapter.",
+    "Prevent cross-user session sharing by documented tested policy.",
+    "Prove a fenced, observable single-consumer cutover with durable recovery.",
+    "Add transactional event/job state, GPU orchestration and report-redaction enforcement."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-CORE-BINDING-USABLE-MEDIA-LOOP-050",
+  "comparison_type": "offline_source_and_report_audit",
+  "configuration_changes": [],
+  "runtime_actions": [],
+  "invariants": {
+    "agents": {
+      "historical_evidence": 17,
+      "live_rechecked_this_task": false
+    },
+    "bindings": {
+      "historical_evidence": 14,
+      "live_rechecked_this_task": false
+    },
+    "cron": {
+      "historical_evidence": 4,
+      "live_rechecked_this_task": false
+    },
+    "project_gateway_processes": {
+      "historical_evidence": 0,
+      "live_rechecked_this_task": false
+    }
+  },
+  "source_contract_changes": [
+    "hash-only opaque media action ticket",
+    "strict ticket command consumer",
+    "server-owned analyzer selection",
+    "ticket-bound analysis request"
+  ],
+  "deferred": "DEFERRED_TO_P1_CHANNEL_HARDENING",
+  "proof_limit": "Static evidence does not prove runtime MCP tool rediscovery or R3-R5."
+}

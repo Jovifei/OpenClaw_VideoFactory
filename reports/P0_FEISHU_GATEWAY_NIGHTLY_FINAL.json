@@ -1,0 +1,1 @@
+{"task":"P0-PROJECT-FEISHU-GATEWAY-NIGHTLY-HARDENING-020","status":"FEISHU_GATEWAY_NIGHTLY_HARDENING_COMPLETE","p0":"conditional_not_passed","offline_tests":{"passed":32,"failed":0},"sdk":{"package":"lark-oapi","version":"1.7.1","isolated_import":"pass","production_installed":false},"production_operations":false,"next_action":"supervised maintenance window"}

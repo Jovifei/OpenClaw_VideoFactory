@@ -1,0 +1,57 @@
+{
+  "change_request_id": "P0-R2-ANALYSIS-INTENT-GATE-011",
+  "status": "approved_for_offline_fix_and_runtime_validation",
+  "phase": "P0",
+  "authorization": "Jovi authorized the attachment_action intent gate, ingest/receipt contract, deterministic dispatch guard, related tests, Agent memory, and reports only.",
+  "frozen_negative_evidence": {
+    "primary_event_message_id_masked": "om_***337b",
+    "retry_event_message_id_masked": "om_***3d8",
+    "file_name": "image.png",
+    "caption": "empty",
+    "ingest_status": "quarantined",
+    "analysis_allowed": true,
+    "router_analyzer_call": "analyzers__analyze_image",
+    "primary_result": "stored_hash_mismatch",
+    "r2_status": "failed_unexpected_analyzer_dispatch",
+    "preservation": "Keep reports/P0_R2_EVENT_TRACE_20260720.json, Gateway logs, sessions, receipts, and both PNG quarantine copies unchanged."
+  },
+  "allowed_paths": [
+    "scripts/mcp_ingest_attachment.py",
+    "scripts/07_ingest_inbound_media.ps1",
+    "scripts/analyzer_mcp.py",
+    "tests/test_ingest_attachment_core.py",
+    "tests/test_analyzer_mcp.py",
+    "tests/Test-SingleGroupMediaRouter.ps1",
+    "reports/",
+    "tasks/todo.md",
+    "E:/project/OpenClaw_VideoFactory/AGENTS.md"
+  ],
+  "allowed_behavior": [
+    "Add deterministic attachment_action with default ingress_only.",
+    "Require analysis_requested=true and matching attachment_action before analyzer dispatch.",
+    "Record normalized intent fields in message manifest and receipt without raw caption persistence.",
+    "Make Analyzer MCP reject analysis_not_requested and action mismatch even if analysis_allowed=true.",
+    "Add offline intent-gate, prompt-injection, multi-attachment, idempotency, and Router-error tests."
+  ],
+  "prohibited_changes": [
+    "Router durable model",
+    "tools.media image/audio/video scope",
+    "Agent count, Binding, target consumer, Cron, OAuth",
+    "Gateway port, OpenClaw core source, P0 Gate, PROJECT_STATUS.yaml, P1",
+    "model download, new dependency, lark-cli outbound, commit/tag/push"
+  ],
+  "rollback": "Restore only 011-touched source/tests/Agent-memory files from pre-change copies; keep all live R2 evidence and receipts.",
+  "planned_runtime_action": "At most one Gateway restart after offline gates and config validation, only if tool/Agent memory loading requires it.",
+  "acceptance": [
+    "PNG/TXT/MP4/WAV empty or unknown caption produce attachment_action=ingress_only and zero Analyzer calls.",
+    "Explicit normalized image/audio/video commands map to only the matching Analyzer.",
+    "analysis_allowed=true alone never authorizes dispatch.",
+    "Analyzer rejects missing or mismatched intent with deterministic error codes.",
+    "Old R2 remains FAIL; a new PNG message is required after repair."
+  ],
+  "stop_conditions": [
+    "Any automatic dispatch remains possible without explicit intent.",
+    "Any prohibited topology/config/core change appears.",
+    "Any required regression or runtime validation fails."
+  ]
+}

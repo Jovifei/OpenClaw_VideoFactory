@@ -1,0 +1,45 @@
+{
+  "task": "OVERNIGHT-PLUGIN-OWNED-BINDING-004",
+  "captured_at": "2026-07-17",
+  "openclaw_config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+  "agents": {
+    "count": 14,
+    "ids": ["bingbu", "douyin", "gongbu", "hubu", "libu", "libu_hr", "main", "menxia", "shangshu", "taizi", "video-factory", "xingbu", "zaochao", "zhongshu"]
+  },
+  "bindings": {
+    "count": 14,
+    "target": {
+      "agent_id": "video-factory",
+      "channel": "feishu",
+      "account_id": "zho***gshu",
+      "peer_kind": "group",
+      "peer_id": "oc_***1555",
+      "binding_sha256": "cdeab3491b971b3219adfe2d0ab1dfcba5e895386344c0a9cd8a69419a9dc415"
+    },
+    "target_consumer_count": 1,
+    "other_binding_count": 13,
+    "other_binding_hashes_recorded": true
+  },
+  "cron": {
+    "count": 4,
+    "next_15_minutes_clear": true
+  },
+  "gateway": {
+    "port": 18789,
+    "port_reachable": true
+  },
+  "plugin": {
+    "barrier_directory_exists": false,
+    "barrier_allowlisted": false,
+    "barrier_entry_present": false
+  },
+  "sessions": {
+    "video_factory_session_store_exists": true,
+    "session_file_count": 19,
+    "session_key_values_redacted": true
+  },
+  "active_work": {
+    "ingest_process_count": 0,
+    "active_event_not_proven": "No production migration begins until a second pre-migration live check succeeds."
+  }
+}

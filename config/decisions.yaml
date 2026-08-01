@@ -1,0 +1,68 @@
+version: 2
+status: ready_for_p0_secure_runtime_values_pending
+confirmed:
+  deployment_mode: native_windows_cli
+  project_root: E:\project\OpenClaw_VideoFactory
+  timezone: Asia/Shanghai
+  notification_channel: feishu_message_and_file_capable_bot
+  codex_auth_mode: subscription_oauth_already_configured
+  content_source_strategy:
+    mode: git_repositories
+    exact_repositories: []
+    note: 项目资料、Git提交、月报、问题记录可上传到后续确认的Git仓库；只读取白名单仓库。
+  tts_mvp:
+    backend: edge_tts_or_equivalent_ai_tts_baseline
+    goal: 先完成稳定的端到端生产链
+    required_roadmap_improvement: MVP稳定后评估本地CosyVoice、Fish Speech或其他本地中文TTS，形成固定账号音色。
+  comfyui:
+    status: installed
+    path: null
+    path_resolution: codex_preflight_auto_discovery
+  model_budget:
+    max_total_download_gb: 30
+    gpu: RTX 4070 SUPER 12GB
+    rules:
+    - 磁盘预算是全部新增模型合计不超过30GB。
+    - 下载前必须验证模型存在4070 SUPER 12GB可运行的低显存、量化或卸载方案。
+    - 单个模型即使小于30GB，也不能在未经显存实测或可靠配置验证的情况下启用。
+    - 无人值守期间禁止自动下载未知模型或ComfyUI节点。
+  jianying:
+    installed: true
+    phase: post_mvp_codex_evaluation
+    default: 主链先输出MP4、SRT、WAV、封面和素材；Codex在P5评估CapCut Mate或剪映Skill。
+  schedule:
+    topic_candidates: 08:30
+    auto_select_and_start_production: '12:00'
+    timezone: Asia/Shanghai
+    daily_video_limit: 1
+    cancel_window_minutes: 0
+  use_case:
+    current: personal_use
+    future: possible_product_or_service
+    architecture_rule: MVP按单用户单机实现，但保留配置隔离、任务审计和未来多租户扩展边界。
+  account_positioning:
+    primary: embedded_engineering
+    secondary: ai_hot_topics
+    rule: 默认以嵌入式、硬件调试、通信协议、工程经验为主；可按周或按栏目加入 AI 热点解读。
+  mascot:
+    enabled: true
+    name: 小粉猪
+    purpose:
+    - 提高视频辨识度
+    - 增加趣味性
+    - 作为讲解陪伴角色与角标
+    source_repository: https://github.com/Jovifei/ian-fenzhu-illustrations
+    integration_rule: Codex 在 P1/P2 审查该仓库，优先复用其中 skill 或角色素材；若无法直接复用，则提炼为本地 pink-pig-mascot-director
+      skill。
+remaining_non_blocking:
+  git_remote:
+    question: GitHub/Gitee/other private remote can be selected after P0
+    answer: null
+  dedicated_windows_user:
+    question: Create a dedicated unattended Windows user before production
+    recommended: true
+    answer: null
+remaining_secure_runtime_values:
+  feishu_app_credentials: configure locally through official wizard or SecretRef
+  feishu_user_or_chat_id: discover in P0 and store locally
+  private_git_credentials: configure only when a private remote is selected

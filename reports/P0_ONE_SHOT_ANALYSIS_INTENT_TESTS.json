@@ -1,0 +1,23 @@
+{
+  "task": "P0-ONE-SHOT-ANALYSIS-INTENT-014",
+  "status": "BASELINE_PASS_NEW_TESTS_NOT_IMPLEMENTED",
+  "python_unittest": "122/122",
+  "pester_two_message": "15/15",
+  "pester_router": "46/46",
+  "pester_ingest": "36/36",
+  "pester_v28_wrapper": "4/4",
+  "v28_schema": "88/88",
+  "py_compile": "pass",
+  "mcp_probe": {"ingest_tools": 2, "analyzer_tools": 3, "diagnostics": 0},
+  "one_shot_tests": "0/0_not_present",
+  "fake_production_smoke": "not_run",
+  "real_attachment": "not_run_by_instruction",
+  "coverage_gap": [
+    "deterministic command_message_id binding",
+    "TTL and restart persistence",
+    "cancel/status",
+    "atomic consume and concurrent attachment mismatch",
+    "one-shot analysis request idempotency"
+  ],
+  "production_config_changed": false
+}

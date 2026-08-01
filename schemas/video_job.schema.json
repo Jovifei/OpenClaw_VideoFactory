@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VideoJob",
+  "type": "object",
+  "required": [
+    "job_id",
+    "state",
+    "selection_mode",
+    "topic",
+    "created_at",
+    "retry_count"
+  ],
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "state": {
+      "type": "string"
+    },
+    "selection_mode": {
+      "enum": [
+        "USER",
+        "AUTO",
+        "REFERENCE"
+      ]
+    },
+    "topic": {
+      "type": [
+        "object",
+        "string"
+      ]
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "config_snapshot": {
+      "type": "object"
+    },
+    "artifacts": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

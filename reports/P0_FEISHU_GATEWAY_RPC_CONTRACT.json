@@ -1,0 +1,65 @@
+{
+  "task": "P0-PROJECT-FEISHU-GATEWAY-IMPLEMENTATION-019",
+  "status": "PASS_OFFLINE",
+  "contract_owner": "OpenClaw Gateway RPC (official transport)",
+  "version": "1.0",
+  "transport": {
+    "method": "agent",
+    "target_agent_id": "video-factory",
+    "session_key_template": "feishu:group:{chat_id}",
+    "required_fields": [
+      "agent_id",
+      "session_key",
+      "message_id",
+      "chat_id",
+      "sender_id",
+      "text"
+    ]
+  },
+  "gateway_payload_builder": {
+    "module": "services.feishu_gateway.runtime.GatewayPayloadBuilder",
+    "function": "for_text",
+    "notes": "No custom session construction beyond deterministic session_key."
+  },
+  "rpc_runtime": {
+    "module": "services.feishu_gateway.runtime.RpcBridge",
+    "timeout_seconds": 20,
+    "retries": 1,
+    "behavior": [
+      "call official rpc endpoint with explicit payload",
+      "fail-closed on transport exception",
+      "normalize status fields",
+      "retry on timeout status until attempts exhausted"
+    ]
+  },
+  "error_mapping": {
+    "UNAUTHORIZED": "rpc_unauthorized",
+    "FORBIDDEN": "rpc_forbidden",
+    "TIMEOUT": "rpc_timeout",
+    "NETWORK": "rpc_network_error",
+    "BAD_REQUEST": "rpc_bad_request",
+    "NOT_FOUND": "rpc_not_found",
+    "transport_exception": "rpc_transport_error",
+    "missing_status_or_malformed": "rpc_unknown_error/rpc_malformed"
+  },
+  "offline_verification": {
+    "tests": [
+      "tests.test_feishu_gateway_runtime"
+    ],
+    "coverage": [
+      "timeout handling",
+      "retry loop",
+      "status remap",
+      "field builder validation",
+      "malformed result handling"
+    ]
+  },
+  "blocked_for_live": [
+    "official OpenClaw RPC endpoint is intentionally not invoked in this phase",
+    "no live credentialed consumer run was performed"
+  ],
+  "notes": [
+    "Project-owned gateway currently remains an offline/P0 implementation artifact.",
+    "All RPC behavior is fail-closed and deterministic."
+  ]
+}

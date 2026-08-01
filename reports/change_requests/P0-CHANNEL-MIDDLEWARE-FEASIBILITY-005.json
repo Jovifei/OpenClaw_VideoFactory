@@ -1,0 +1,27 @@
+{
+  "id": "P0-CHANNEL-MIDDLEWARE-FEASIBILITY-005",
+  "phase": "P0",
+  "status": "completed_read_only",
+  "objective": "Determine whether OpenClaw 2026.7.1 offers a supported Channel-layer pre-agent middleware that can protect the existing dedicated Feishu core route without changing its Binding.",
+  "allowed_scope": [
+    "Read project reports and existing media tests",
+    "Read installed OpenClaw documentation, declarations, and distribution source",
+    "Write documentation-only evidence under reports and tasks"
+  ],
+  "prohibited_scope": [
+    "Production code",
+    "OpenClaw configuration",
+    "Gateway restart",
+    "Binding or agent changes",
+    "Plugin creation or activation",
+    "Model invocation",
+    "Feishu ingress or egress"
+  ],
+  "result": "not_feasible_via_supported_extension_surface",
+  "reason": "The installed Plugin SDK has no Channel middleware hook for an existing Feishu channel. message_received is observation-only; inbound_claim is the only pre-routing decision hook and remains limited to plugin-owned conversation bindings. Core applies media understanding before the pre-agent message-hook emission.",
+  "verification": {
+    "openclaw_version": "2026.7.1 (2d2ddc4)",
+    "media_regression": "32 passed, 0 failed",
+    "state_changes": false
+  }
+}

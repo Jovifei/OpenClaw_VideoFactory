@@ -1,0 +1,61 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "E:/project/OpenClaw_VideoFactory",
+      "userTimezone": "Asia/Shanghai"
+    },
+    "list": [
+      {
+        "id": "video-factory",
+        "default": true,
+        "skills": [
+          "douyin-video-factory",
+          "topic-intelligence",
+          "script-storyboard-director",
+          "reference-video-analyzer",
+          "reference-video-recreator",
+          "media-asset-curator",
+          "pink-pig-mascot-director",
+          "feishu-video-factory-operator",
+          "comfyui-gpu-renderer",
+          "audio-subtitle-engine",
+          "remotion-layout-engine",
+          "video-quality-gate",
+          "jianying-draft-exporter",
+          "codex-template-maintainer"
+        ],
+        "identity": {
+          "name": "龙虾视频工厂",
+          "theme": "谨慎、可审计的技术短视频生产助手",
+          "emoji": "🦞"
+        }
+      }
+    ]
+  },
+  "plugins": {
+    "entries": {
+      "codex": {
+        "enabled": true,
+        "config": {
+          "appServer": {
+            "homeScope": "user"
+          }
+        }
+      }
+    }
+  },
+  "tools": {
+    "exec": {
+      "mode": "auto"
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "bind": "loopback"
+  },
+  "cron": {
+    "enabled": true,
+    "maxConcurrentRuns": 1,
+    "sessionRetention": "7d"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "status": "offline_tests_passed_feature_rolled_back_before_activation",
+  "test_artifact_removed_after_rollback": true,
+  "syntax_check": {
+    "index_mjs": 0,
+    "barrier_mjs": 0,
+    "test_mjs": 0
+  },
+  "plugin_test": {
+    "pester_total": 1,
+    "pester_passed": 1,
+    "pester_failed": 0,
+    "mock_event_cases": 16,
+    "mock_event_cases_passed": 16,
+    "attachment_model_call_count": 0,
+    "attachment_payload_forwarded": false,
+    "ocr_invoked": 0,
+    "video_decode_invoked": 0,
+    "transcription_invoked": 0,
+    "target_plain_text_model_call_count": 1
+  },
+  "cases": [
+    "ordinary_text_no_claim",
+    "txt_attachment",
+    "png_attachment",
+    "mp4_attachment",
+    "image_with_caption",
+    "mime_conflict",
+    "signature_mismatch",
+    "path_escape",
+    "reparse_point",
+    "ingest_failure",
+    "inbound_claim_exception",
+    "inbound_claim_timeout",
+    "duplicate_message_id",
+    "non_target_group",
+    "other_agent",
+    "target_group_plain_text"
+  ],
+  "existing_ingest_regression": {
+    "pester_total": 32,
+    "pester_passed": 32,
+    "pester_failed": 0
+  },
+  "activation_result": "not_run_due_to_configuration_scope_stop_condition"
+}

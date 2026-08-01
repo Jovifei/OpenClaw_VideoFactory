@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "QualityReport",
+  "type": "object",
+  "required": [
+    "job_id",
+    "technical_checks",
+    "content_checks",
+    "copyright_checks",
+    "score",
+    "decision"
+  ],
+  "properties": {
+    "job_id": {
+      "type": "string"
+    },
+    "technical_checks": {
+      "type": "object"
+    },
+    "content_checks": {
+      "type": "object"
+    },
+    "copyright_checks": {
+      "type": "object"
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "decision": {
+      "enum": [
+        "PASS",
+        "REVISE",
+        "STOP"
+      ]
+    },
+    "revisions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

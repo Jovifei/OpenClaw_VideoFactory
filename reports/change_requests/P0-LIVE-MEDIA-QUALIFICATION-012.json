@@ -1,0 +1,36 @@
+{
+  "change_request_id": "P0-LIVE-MEDIA-QUALIFICATION-012",
+  "task": "P0-LIVE-MEDIA-QUALIFICATION-AND-GIT-PUBLISH-012",
+  "requested_by": "Jovi",
+  "scope": "read-only live qualification, evidence reports, controlled lark-cli egress after R0-R5, and conditional Git audit/publication",
+  "allowed_now": [
+    "read-only inspection of OpenClaw sessions, logs, receipts, fixtures, reports, and repository metadata",
+    "write qualification reports under reports/",
+    "write this change request and task tracking records",
+    "bounded read-only Child-Claude audits"
+  ],
+  "gated_later": [
+    "real R3 image analysis only after a new exact-caption PNG message",
+    "real R4 audio transcription only after R3 PASS",
+    "real R5 video analysis only after R4 PASS",
+    "controlled lark-cli outbound qualification only after R0-R5 PASS",
+    "Git branch/commit/push only after all qualification gates and safe remote audit"
+  ],
+  "prohibited": [
+    "production OpenClaw config changes",
+    "Gateway restart",
+    "Agent, Binding, Cron, consumer, OAuth, model, or tool-policy changes",
+    "model or dependency downloads",
+    "P0 Gate execution before R0-R5 and egress gates",
+    "P1 work",
+    "fake or synthetic Feishu evidence",
+    "force push, tag, merge, unknown remote, or Douyin publishing"
+  ],
+  "stop_conditions": [
+    "any real PNG or MP4 ingress assertion fails",
+    "any evidence source is unavailable or ambiguous",
+    "any unauthorized state change is detected"
+  ],
+  "status": "approved_for_read_only_phase",
+  "created_at": "2026-07-20T00:00:00+08:00"
+}

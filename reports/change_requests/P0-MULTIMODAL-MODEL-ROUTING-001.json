@@ -1,0 +1,12 @@
+{
+  "id": "P0-MULTIMODAL-MODEL-ROUTING-001",
+  "status": "deferred_until_preingest_barrier_passes",
+  "scope": "Record only; no model, provider, fallback, runtime, OAuth, or agent configuration change is authorized in P0-PREINGEST-MODEL-BARRIER-002.",
+  "capability_correction": {
+    "xiaomimimo/mimo-v2.5": "multimodal",
+    "xiaomimimo/mimo-v2.5-pro": "text_only"
+  },
+  "current_incorrect_chain": "selected mimo-v2.5 -> timeout -> fallback mimo-v2.5-pro",
+  "future_rule": "multimodal request -> multimodal provider only -> unavailable returns multimodal_model_unavailable; never fall back to a text-only model",
+  "implementation": "not_started"
+}

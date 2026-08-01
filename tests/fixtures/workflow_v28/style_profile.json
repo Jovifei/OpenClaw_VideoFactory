@@ -1,0 +1,29 @@
+{
+  "profile_id": "sp_0",
+  "version": "0.1",
+  "change_reason": "initial",
+  "brand": {},
+  "narrative": {},
+  "motion": {},
+  "caption": {},
+  "audio": {},
+  "character": {},
+  "platform_profiles": {},
+  "anti_homogenization": {
+    "variants": [
+      "v1"
+    ]
+  },
+  "schema_version": "1.0",
+  "source": {
+    "kind": "synthetic_fixture",
+    "id": "v28-test"
+  },
+  "provenance": {
+    "created_at": "2026-07-30T07:18:14.500889+00:00",
+    "created_by": "test",
+    "tool": "v28_schema_tests"
+  },
+  "status": "active",
+  "confidence": 0.7
+}

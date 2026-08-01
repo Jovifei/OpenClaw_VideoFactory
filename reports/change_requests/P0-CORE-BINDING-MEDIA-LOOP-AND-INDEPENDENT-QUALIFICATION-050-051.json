@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "request_id": "P0-CORE-BINDING-MEDIA-LOOP-AND-INDEPENDENT-QUALIFICATION-050-051",
+  "status": "AUTHORIZED_OFFLINE_REVALIDATION_AND_QUALIFICATION",
+  "authorized_by": "Jovi night-task instruction",
+  "scope": "Revalidate the existing 050 opaque media-action ticket flow, complete its specified static evidence artifacts, independently audit it, and add only fail-closed adversarial hardening and offline coverage for 051.",
+  "serial_gate": {
+    "phase_a": "P0-CORE-BINDING-USABLE-MEDIA-LOOP-050 must return P0_MEDIA_TICKET_FLOW_READY before phase B starts.",
+    "phase_b": "P0-MEDIA-TICKET-INDEPENDENT-QUALIFICATION-051 remains offline and must stop before real R3, R4, or R5."
+  },
+  "authorized_writes": [
+    ".gitignore",
+    "scripts/media_action_ticket.py",
+    "scripts/mcp_ingest_attachment.py",
+    "scripts/analyzer_mcp.py",
+    "scripts/gpu_media_lock.py",
+    "tests/test_media_action_ticket.py",
+    "tests/test_analyzer_mcp.py",
+    "tests/test_two_message_mcp_surface.py",
+    "reports/change_requests/P0-CORE-BINDING-MEDIA-LOOP-AND-INDEPENDENT-QUALIFICATION-050-051.json",
+    "reports/P0_CORE_BINDING_MEDIA_BASELINE_050.md",
+    "reports/P0_CORE_BINDING_MEDIA_BASELINE_050.json",
+    "reports/P0_ROUTE_CORRECTION_050.json",
+    "reports/P0_CORE_BINDING_MEDIA_CONFIG_DIFF_050.json",
+    "reports/child_claude/P0_MEDIA_TICKET_SECURITY_REVIEW_051.md",
+    "reports/child_claude/P0_MEDIA_COMMAND_DETERMINISM_REVIEW_051.md",
+    "reports/child_claude/P0_MEDIA_ANALYZER_BOUNDARY_REVIEW_051.md",
+    "reports/child_claude/P0_REAL_R3_R5_READINESS_REVIEW_051.md",
+    "reports/P0_MEDIA_TICKET_WHITEBOX_AUDIT_051.md",
+    "reports/P0_MEDIA_TICKET_ADVERSARIAL_TESTS_051.md",
+    "reports/P0_MEDIA_TICKET_ADVERSARIAL_TESTS_051.json",
+    "reports/P0_REAL_MEDIA_TEST_RUNBOOK_051.md",
+    "reports/P0_MEDIA_TICKET_GIT_READINESS_051.md",
+    "reports/P0_MEDIA_TICKET_INDEPENDENT_QUALIFICATION_051.md",
+    "reports/P0_MEDIA_TICKET_INDEPENDENT_QUALIFICATION_051.json",
+    "reports/P0_MEDIA_TICKET_ATTACK_SURFACE_051.md",
+    "reports/P0_MEDIA_TICKET_REGRESSION_051.md",
+    "reports/P0_CURRENT_STATUS_V34.md",
+    "reports/P0_EVIDENCE_INDEX_V34.md",
+    "reports/P0_REMAINING_ACTIONS_V34.md",
+    "reports/NEXT_USER_ACTION.md",
+    "reports/V28_SCHEMA_TESTS.json",
+    "tasks/todo.md"
+  ],
+  "prohibited_actions": [
+    "OpenClaw Gateway restart or stop",
+    "Core Feishu stop or restart",
+    "Project Feishu Gateway start",
+    "Device Auth, Device Pairing, Windows Gateway service, token, OAuth, Runtime, model, Binding, Agent, or Cron changes",
+    "OpenClaw core source changes",
+    "real Feishu message or attachment",
+    "real R3, R4, R5, or Analyzer invocation",
+    "P0 gate, P0_READY, or PROJECT_STATUS.yaml update",
+    "commit, push, tag, deletion of historical evidence, protected-path access, session-archive access, or secret output"
+  ],
+  "frozen_and_preserved": [
+    "P0-PROJECT-GATEWAY-OFFICIAL-DEVICE-AUTH-046",
+    "P0-PROJECT-GATEWAY-DEVICE-PAIRING-REQUEST-047",
+    "P0-PROJECT-GATEWAY-DEVICE-IDENTITY-INITIALIZATION-048",
+    "P0-PROJECT-GATEWAY-PAIRING-CONNECT-CONTRACT-049",
+    "Project Gateway replacement, Device Auth, Pairing, Reply association, card.action.trigger, synthetic commands, inbound_claim, and native slash registration: DEFERRED_TO_P1_CHANNEL_HARDENING"
+  ],
+  "acceptance": [
+    "050 is revalidated entirely offline with real R0-R2 baseline and R3-R5 status kept accurately unqualified",
+    "the ticket route rejects Unicode or rewritten commands and all adversarial invalid states before Analyzer dispatch",
+    "ticket state is hash-only, ignored by Git, atomically written, and recovers stale consuming state fail-closed",
+    "all requested 051 reports distinguish static, synthetic, and real evidence and provide a user-controlled R3-R5 runbook",
+    "no prohibited live, configuration, status, or Git action occurs"
+  ],
+  "rollback": "Only scoped offline source, test, ignore, task-plan, and report changes may occur. Reverting those files restores the prior offline 050 state; no runtime or production change exists to roll back.",
+  "secrets": "Do not read, emit, persist, or scan protected credential stores. All reports use only safe status/count/hash-presence facts."
+}

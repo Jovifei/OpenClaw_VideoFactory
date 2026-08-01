@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "request_id": "P0-BOUNDED-TRUST-MEDIA-COMPLETION-053",
+  "status": "AUTHORIZED_BY_JOVI_BOUNDED_TRUST",
+  "authorized_by": "Jovi explicit product decision",
+  "scope": "Complete the existing Core Feishu media-ticket route under the expressly accepted bounded Router-command-forwarder risk. Preserve all ticket, attachment, chat, sender, SHA-256, receipt, Analyzer, and GPU safety gates.",
+  "allowed_writes": [
+    "tasks/todo.md",
+    "reports/change_requests/P0-BOUNDED-TRUST-MEDIA-COMPLETION-053.json",
+    "reports/P0_*_053.*",
+    "reports/NEXT_USER_ACTION.md",
+    "scripts/media_action_ticket.py",
+    "scripts/mcp_ingest_attachment.py",
+    "tests/test_media_action_ticket.py",
+    "tests/test_two_message_mcp_surface.py",
+    "agents/video-factory/agent/*"
+  ],
+  "deferred_to_p1_channel_hardening": [
+    "Project Feishu Gateway", "Device Auth", "Device Pairing", "Windows Gateway service authentication",
+    "Trusted Command Envelope", "Reply association", "card.action.trigger", "inbound_claim",
+    "native Slash Command registration", "non-forgeable message provenance"
+  ],
+  "prohibited": [
+    "real Feishu traffic", "real R3 R4 R5", "OpenClaw Core modification", "Binding Agent Cron OAuth model change",
+    "Project Gateway start", "Core Feishu stop", "P0 Gate", "P0_READY", "PROJECT_STATUS.yaml change",
+    "commit", "push", "tag"
+  ],
+  "restart_policy": "Only if required by an authorized Router or MCP registration update after the required preflight, backup, validation, diff, rollback, and recovery checks. Otherwise no restart.",
+  "acceptance": [
+    "Router risk is documented as bounded rather than strong provenance.",
+    "Ticket execution remains fail-closed and is additionally limited by a five-minute default TTL, one active pending ticket per chat sender media kind, not-before timing, audit records, and a disabled-by-default production execution switch.",
+    "Offline tests and limited-risk review pass without claiming a real-media result."
+  ]
+}

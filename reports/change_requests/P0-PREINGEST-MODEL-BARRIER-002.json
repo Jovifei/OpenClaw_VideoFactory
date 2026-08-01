@@ -1,0 +1,111 @@
+{
+  "id": "P0-PREINGEST-MODEL-BARRIER-002",
+  "status": "rolled_back_configuration_scope_violation",
+  "scope": "Enable a fail-closed, pre-ingest model barrier only for Feishu account zhongshu, the existing dedicated VideoFactory group, and agent video-factory.",
+  "root_cause": "OpenClaw 2026.7.1 reaches automatic media understanding before the project ingest script. The supported interception surfaces are inbound_claim before agent routing and before_agent_run before model input.",
+  "official_plugin_api": [
+    "definePluginEntry",
+    "inbound_claim",
+    "before_agent_run",
+    "plugins.allow",
+    "plugins.entries",
+    "C:\\Users\\Admin\\.openclaw\\extensions"
+  ],
+  "historical_evidence": {
+    "failed_png_message_id": "om_***f107",
+    "failed_png_status": "permanent_failed_no_backfill",
+    "txt_historical_model_barrier_status": "INCONCLUSIVE",
+    "txt_acceptance": "conditional_until_new_message_after_barrier_validation",
+    "attachment_audit": "reports/P0_ATTACHMENT_MODEL_CALL_AUDIT.json",
+    "png_audit": "reports/FEISHU_PNG_INGRESS_TEST.json"
+  },
+  "prechange_baseline": {
+    "checked_at": "2026-07-16T22:36:34.5250073+08:00",
+    "openclaw_version": "2026.7.1",
+    "openclaw_config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "openclaw_config_validate_exit_code": 0,
+    "gateway_healthy": true,
+    "agent_count": 14,
+    "binding_count": 14,
+    "video_factory_binding_count": 1,
+    "zhongshu_video_factory_binding_count": 1,
+    "active_sessions_last_10_minutes": 0,
+    "running_ingest_processes": 0,
+    "cron_count": 4,
+    "cron_within_15_minutes": 0,
+    "script_hashes": {
+      "scripts/07_ingest_inbound_media.ps1": "10302de702e6c957133c1dbe19404d9ef5d273f289438ea92c049158b57d0afe",
+      "reports/P0_PREINGEST_BARRIER_ESCALATION.md": "dafb120f26079d005fa70629620933804feb8059930847849c99550230e183fa"
+    }
+  },
+  "allowed_files": [
+    "C:\\Users\\Admin\\.openclaw\\extensions\\video-factory-preingest-barrier\\package.json",
+    "C:\\Users\\Admin\\.openclaw\\extensions\\video-factory-preingest-barrier\\openclaw.plugin.json",
+    "C:\\Users\\Admin\\.openclaw\\extensions\\video-factory-preingest-barrier\\index.mjs",
+    "C:\\Users\\Admin\\.openclaw\\extensions\\video-factory-preingest-barrier\\barrier.mjs",
+    "C:\\Users\\Admin\\.openclaw\\extensions\\video-factory-preingest-barrier\\test.mjs",
+    "C:\\Users\\Admin\\.openclaw\\openclaw.json",
+    "C:\\Users\\Admin\\.openclaw\\backups\\P0-PREINGEST-MODEL-BARRIER-002-<timestamp>-openclaw.json",
+    "tests/Test-PreIngestModelBarrier.ps1",
+    "reports/change_requests/P0-PREINGEST-MODEL-BARRIER-002.json",
+    "reports/change_requests/P0-MULTIMODAL-MODEL-ROUTING-001.json",
+    "reports/P0_PREINGEST_MODEL_BARRIER_GLOBAL_FIX.json",
+    "reports/P0_PREINGEST_MODEL_BARRIER_GLOBAL_FIX.md",
+    "reports/P0_PREINGEST_MODEL_BARRIER_PLUGIN_TESTS.json",
+    "reports/P0_PREINGEST_MODEL_BARRIER_PLUGIN_TESTS.md",
+    "reports/P0_GATEWAY_RESTART_VALIDATION.json",
+    "reports/P0_GATEWAY_RESTART_VALIDATION.md",
+    "reports/P0_MULTIMODAL_MODEL_CAPABILITY_NOTE.md"
+  ],
+  "allowed_config_paths": [
+    "plugins.allow",
+    "plugins.entries.video-factory-preingest-barrier"
+  ],
+  "prohibited_changes": [
+    "models",
+    "model capability declarations",
+    "fallback chains",
+    "runtime",
+    "OAuth",
+    "agent models",
+    "Gateway port",
+    "Feishu channel accounts",
+    "bot identity",
+    "bindings",
+    "requireMention",
+    "Cron",
+    "other plugins",
+    "other agents",
+    "other Feishu groups",
+    "P0 final gate",
+    "P1"
+  ],
+  "expected_result": {
+    "target_attachment": "claimed by inbound_claim, deterministically ingested, synthetic deterministic reply returned, agent model not run",
+    "target_attachment_failure": "handled deterministic error or before_agent_run block; model call count remains zero",
+    "target_plain_text": "continues to agent model",
+    "non_target_agents_and_groups": "plugin does not claim or block"
+  },
+  "gateway_restart_scope": "one controlled restart only after offline tests, config validation, backup verification, no active sessions, no running ingestion, and no imminent Cron.",
+  "tests": [
+    "offline hook registration and scope tests",
+    "TXT PNG MP4 deterministic-ingest paths",
+    "caption and MIME/signature/path/reparse/oversize failure paths",
+    "claim exception and timeout fallback to before_agent_run",
+    "duplicate message idempotency",
+    "non-target and plain-text regression",
+    "plugin discovery and post-restart Gateway/Agent/Binding/Cron regression"
+  ],
+  "rollback": "Restore the byte-identical timestamped openclaw.json backup, remove the new plugin from plugins.allow and plugins.entries by restoring that backup, remove only the four new plugin files and focused test, restart the Gateway once to restore the prior known-good configuration, and verify hashes plus 14 Agent/14 Binding baseline.",
+  "stop_conditions": [
+    "active task, inbound event, ingest process, or imminent Cron before restart",
+    "installed Plugin API incompatibility",
+    "configuration validation failure",
+    "offline test failure",
+    "plugin load failure",
+    "any config diff outside allowed_config_paths",
+    "Gateway restart or regression failure",
+    "any attachment path reaching a model in a focused test"
+  ],
+  "unaffected_other_agents_proof": "Compare pre/post agent ids and binding summaries (14 each), Cron summary, enabled-plugin ids excluding the one authorized addition, and prove the plugin returns no decision for non-video-factory agents or non-target groups."
+}

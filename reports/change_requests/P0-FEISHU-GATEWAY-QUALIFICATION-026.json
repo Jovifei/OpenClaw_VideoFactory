@@ -1,0 +1,25 @@
+{
+  "id": "P0-FEISHU-GATEWAY-QUALIFICATION-026",
+  "authorized_by": "Jovi task instruction",
+  "purpose": "Create local-only qualification plans, mock experiments, verification scripts, tests, and evidence for the Project Feishu Gateway.",
+  "allowed_paths": [
+    "experiments/runtime_qualification/",
+    "scripts/migration/pre_cutover_check.py",
+    "scripts/migration/post_cutover_check.py",
+    "scripts/migration/rollback_check.py",
+    "tests/test_gateway_qualification_026.py",
+    "reports/",
+    "tasks/todo.md"
+  ],
+  "prohibited_actions": [
+    "production migration",
+    "real Feishu connection",
+    "OpenClaw Binding change",
+    "Gateway start or restart",
+    "Agent Cron OAuth or PROJECT_STATUS change",
+    "commit",
+    "push"
+  ],
+  "rollback": "All introduced artifacts are local-only and can be removed as one scoped change; no runtime or configuration state is modified.",
+  "secrets": "No credentials, tokens, raw identifiers, or production configuration values may be read or recorded."
+}

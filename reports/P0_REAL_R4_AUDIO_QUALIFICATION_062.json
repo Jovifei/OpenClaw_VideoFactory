@@ -1,0 +1,20 @@
+{
+  "report_schema_version": "1.0",
+  "task": "P0-R4-062",
+  "result": "R4_FAILED:audio_ingress",
+  "observed_at": "2026-07-30T19:14:00+08:00",
+  "audio_ticket_issued": false,
+  "audio_ticket_consumed": false,
+  "audio_analysis_request_created": false,
+  "audio_transcript_artifact_created": false,
+  "audio_analyzer_called": false,
+  "audio_result_reply_quality_assessable": false,
+  "observed_terminal_execution_category": "video",
+  "observed_terminal_execution_failed": true,
+  "project_gateway_process_count": 0,
+  "project_status_unchanged": true,
+  "r5_started": false,
+  "ticket_plaintext_recorded": false,
+  "message_identifier_recorded": false,
+  "transcript_text_recorded": false
+}

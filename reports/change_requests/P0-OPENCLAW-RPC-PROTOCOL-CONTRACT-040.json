@@ -1,0 +1,37 @@
+{
+  "id": "P0-OPENCLAW-RPC-PROTOCOL-CONTRACT-040",
+  "scope": "Minimal Project OpenClaw RPC v4 challenge-first handshake contract repair",
+  "authorization": "Jovi authorized only RPC protocol contract repair",
+  "authorized_writes": [
+    "services/feishu_gateway/openclaw_rpc/client.py",
+    "tests/test_openclaw_rpc_client.py",
+    "reports/change_requests/P0-OPENCLAW-RPC-PROTOCOL-CONTRACT-040.json",
+    "reports/P0_OPENCLAW_RPC_PROTOCOL_CONTRACT_040.md",
+    "reports/P0_OPENCLAW_RPC_PROTOCOL_CONTRACT_040.json",
+    "reports/V28_SCHEMA_TESTS.json",
+    "tasks/todo.md"
+  ],
+  "contract": {
+    "required_sequence": [
+      "receive connect.challenge",
+      "send connect with v4 backend client contract",
+      "receive hello-ok",
+      "send health"
+    ],
+    "secret_boundary": "No token, nonce, raw error message, or raw error details may be logged, reported, or exposed through a public result."
+  },
+  "prohibited_actions": [
+    "stop or start Core Feishu",
+    "start or restart Project Gateway",
+    "send Feishu messages",
+    "modify production Binding, Agent, Cron, or configuration",
+    "commit",
+    "push"
+  ],
+  "verification": [
+    "offline fake-transport regression for challenge-first sequencing",
+    "offline fake-transport regression for accepted and rejected handshake classifications",
+    "installed OpenClaw v4 schema validation with synthetic values only",
+    "non-listening health-only preflight only after offline tests pass"
+  ]
+}

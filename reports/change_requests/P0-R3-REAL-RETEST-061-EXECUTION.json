@@ -1,0 +1,20 @@
+{
+  "change_id": "P0-R3-REAL-RETEST-061-EXECUTION",
+  "created_at": "2026-07-30T00:00:00+08:00",
+  "authorization": "Jovi explicitly started P0-R3-061 real retest.",
+  "scope": {
+    "allowed": [
+      "read-only preflight of local Gateway, Core-channel observability, media-ticket state, and Project Gateway process count",
+      "redacted 061 preflight evidence and operator instructions"
+    ],
+    "forbidden": [
+      "code or configuration changes",
+      "Gateway or Core lifecycle control",
+      "Project Gateway start",
+      "Feishu send or replay by Codex",
+      "R4, R5, P0 Gate, commit, push, or tag"
+    ]
+  },
+  "stop_condition": "Do not request a live upload unless the Core Feishu zhongshu runtime is proven healthy by a non-sensitive, real-time source.",
+  "status": "completed_without_production_mutation"
+}

@@ -1,0 +1,10 @@
+{
+  "change_id": "P0-FEISHU-CHANNEL-REPLACEMENT-DECISION-018",
+  "scope": "isolated source audit and Fake-event architecture decision",
+  "user_authorization": "credential rotation acknowledged; vendor source clones, isolated experiments, tests, and reports authorized",
+  "allowed_writes": ["vendor_research/", "experiments/official-lark-plugin-replacement/", "services/feishu_gateway/", "reports/", "tasks/todo.md", "tasks/lessons.md", ".gitignore"],
+  "prohibited_actions": ["production Feishu connection", "real credentials", "production configuration change", "Gateway restart", "Binding/Agent/Cron/model change", "OpenClaw core modification", "R3-R5", "P0 final gate", "P1", "commit", "tag", "push"],
+  "decision_candidates": ["official_lark_plugin_replacement", "project_owned_feishu_gateway"],
+  "rollback": "delete only newly-created isolated experiment directories after explicit authorization; no production state is touched by this task",
+  "secret_handling": "no values collected, printed, or persisted"
+}

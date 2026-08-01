@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "request_id": "P0-FEISHU-CARD-ANALYSIS-ACTION-015",
+  "status": "DESIGN_AUDIT_BLOCKED",
+  "production_changes_authorized": false,
+  "code_changes_authorized": false,
+  "gateway_restart_authorized": false,
+  "scope": "Deterministic Feishu interactive-card post-ingest analysis authorization in the existing single group and single consumer.",
+  "preserve": ["reports/P0_R3_TWO_MESSAGE_EVENT_20260720.json", "R3_FAILED:ANALYSIS_INTENT_GATE"],
+  "prohibited": ["OpenClaw core source changes", "new im.message.receive_v1 consumer", "new Binding", "new group", "Router model change", "media scope change", "Cron", "OAuth", "P0 Gate", "PROJECT_STATUS.yaml", "P1"],
+  "blocker": "OpenClaw core receives card.action.trigger but routes project-unknown actions through synthetic commands; no Feishu-specific direct plugin handler dispatch is wired. A project card handler therefore cannot be proven without core change, competing consumer, or an unapproved replacement transport.",
+  "admin_prerequisite": "Verify or enable card.action.trigger on the existing zhongshu Feishu App using its current WebSocket subscription, without adding a second im.message.receive_v1 subscription.",
+  "required_user_decision": "Authorize an exact project-side write scope only if Jovi accepts a supported deterministic handler integration path that does not violate the single-consumer and no-core-change rules.",
+  "stop_boundary": "No production apply, Gateway restart, real attachment, card send, callback test, R4/R5, final P0 Gate, or P1."
+}

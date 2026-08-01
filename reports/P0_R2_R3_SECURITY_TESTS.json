@@ -1,0 +1,22 @@
+{
+  "task": "P0-R2-INTENT-GATE-AND-HASH-INTEGRITY-011",
+  "status": "PASS_OFFLINE_ONLY",
+  "suites": [
+    {"suite": "tests/test_ingest_attachment_core.py", "passed": 45, "failed": 0},
+    {"suite": "tests/test_analyzer_mcp.py", "passed": 31, "failed": 0},
+    {"suite": "tests/test_trusted_media_roots.py", "passed": 25, "failed": 0},
+    {"suite": "tests/Test-SingleGroupMediaRouter.ps1", "passed": 46, "failed": 0},
+    {"suite": "tests/Test-IngestInboundMedia.ps1", "passed": 36, "failed": 0},
+    {"suite": "scripts/v28_schema_tests.py", "passed": 88, "failed": 0},
+    {"suite": "GPU lock contract", "passed": 4, "failed": 0, "included_in": "Router Pester"}
+  ],
+  "total_python_focused": "101/101",
+  "total_pester": "82/82",
+  "mcp_probes": {"ingest_tools": 1, "analyzer_tools": 3, "diagnostics": 0},
+  "fixture_smoke": {"bare_png": "ingress_only; analyzer_not_requested", "explicit_png": "analyze_image; completed", "hash_provenance_match": true},
+  "intent_cases": ["bare attachment", "empty/whitespace", "unknown caption", "explicit image/audio/video", "type mismatch", "prompt injection", "same-message conflict", "analysis_allowed without request"],
+  "hash_cases": ["uppercase canonicalization", "full 64 hex", "missing", "invalid", "truncated", "sha256 prefix", "source/stored mismatch", "stored missing", "stored size", "TOCTOU", "wrong receipt/path", "idempotency"],
+  "real_channel": "R2 FAIL preserved; no new live qualification performed",
+  "final_gate": false,
+  "project_status_updated": false
+}

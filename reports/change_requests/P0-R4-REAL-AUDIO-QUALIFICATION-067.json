@@ -1,0 +1,45 @@
+{
+  "change_request_id": "P0-R4-REAL-AUDIO-QUALIFICATION-067",
+  "created_at": "2026-08-01T00:00:00+08:00",
+  "authorization": "Jovi exact authorization: 开始新的 P0-R4 音频真实资格验证",
+  "scope": "One fresh user-driven WAV ingress and one exact audio Ticket command through the existing Core Feishu zhongshu binding; read-only preflight, redacted observation, and evidence only.",
+  "allowed": [
+    "read-only R4 preflight",
+    "one user-driven upload of the approved WAV fixture",
+    "one exact /vf audio <new-ticket> command in the original group",
+    "read-only receipt, Ticket, analysis request, artifact, and reply verification",
+    "redacted R4 evidence reports"
+  ],
+  "prohibited": [
+    "source or configuration changes",
+    "Gateway or Core lifecycle control",
+    "Project Gateway start",
+    "lark-cli messaging or event subscription",
+    "Ticket replay or plaintext Ticket recording",
+    "R5 video qualification",
+    "P0 Gate",
+    "PROJECT_STATUS.yaml modification",
+    "commit, push, or tag"
+  ],
+  "preflight": {
+    "result": "READY_FOR_R4_067_USER_ACTION",
+    "observed_at": "2026-08-01T19:46:53+08:00",
+    "core_gateway_listener_18789_count": 1,
+    "project_gateway_process_count": 0,
+    "media_ticket_execution_enabled": true,
+    "audio_fixture_manifest_entry_unique": true,
+    "audio_fixture_size_matches_manifest": true,
+    "audio_fixture_sha256_matches_manifest": true,
+    "audio_fixture_mime_is_audio_wav": true,
+    "pending_audio_ticket_count": 0,
+    "audio_result_presentation_source_present": true
+  },
+  "live_observation": {
+    "audio_ingress_observed": true,
+    "analyzer_result": "completed",
+    "artifact": "top-level transcript.json with non-empty transcript",
+    "public_reply": "empty before P0-R4-AUDIO-RESULT-REMEDIATION-068",
+    "post_repair_retest": "required"
+  },
+  "status": "completed_failed_presentation_before_068"
+}

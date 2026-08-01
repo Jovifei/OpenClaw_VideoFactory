@@ -1,0 +1,19 @@
+{
+  "task": "P0-ONE-SHOT-ANALYSIS-INTENT-014",
+  "status": "NOT_APPLIED_BLOCKED",
+  "implementation_present": false,
+  "pending_intent_module": false,
+  "one_shot_commands": false,
+  "atomic_consume": false,
+  "analysis_request_source": "reply_to_attachment_only_in_013",
+  "current_files_audited": [
+    "scripts/analysis_request.py",
+    "scripts/mcp_ingest_attachment.py",
+    "scripts/analyzer_mcp.py",
+    "skills/feishu-video-factory-operator/SKILL.md"
+  ],
+  "runtime_blocker": "No supported command path supplies the original Feishu command_message_id.",
+  "production_config_changed": false,
+  "gateway_restarted": false,
+  "next_required": "User authorization for the exact deterministic adapter/source and write scope."
+}

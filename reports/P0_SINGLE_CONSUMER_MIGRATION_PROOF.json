@@ -1,0 +1,46 @@
+{
+  "task": "P0-PROJECT-FEISHU-GATEWAY-IMPLEMENTATION-019",
+  "phase": "offline_rehearsal",
+  "single_consumer_goal": "project_gateway_only_after_core_binding_rehearsal",
+  "offline_evidence": [
+    {
+      "source": "services/feishu_gateway/service.py",
+      "checks": [
+        "event_id_dedup_hashed",
+        "ticket_one_shot_usage_guard",
+        "card_identity_matching_guard",
+        "state_sender_chat_redaction"
+      ]
+    },
+    {
+      "source": "experiments/feishu_gateway_migration/rehearsal.py",
+      "checks": [
+        "stop_core_binding",
+        "start_project_gateway",
+        "verify_one_consumer",
+        "route_fake_message",
+        "rollback_core_binding"
+      ]
+    },
+    {
+      "source": "tests/test_project_feishu_gateway.py",
+      "checks": [
+        "duplicate_event_replay",
+        "ticket_invalid_after_replay",
+        "wrong_user_chat_rejection",
+        "invalid_signature_reject"
+      ]
+    }
+  ],
+  "live_proof_pending": [
+    "websocket_consumer_count",
+    "consumer_process_identity",
+    "live_replay_duplicate_reply_suppression",
+    "single_message_cross_account_observation"
+  ],
+  "result": "PASS_OFFLINE",
+  "blocking_issues": [
+    "official_live_consumer_observability_required",
+    "real_event_id_replay_observation_pending"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "id": "P0-INBOUND-CLAIM-CARD-ACTION-GATE-016",
+  "phase": "P0",
+  "status": "blocked_before_implementation",
+  "objective": "Determine whether the existing zhongshu Feishu card.action.trigger path can be claimed deterministically by a native plugin before the video-factory Router/LLM, without changing OpenClaw core, adding a Feishu consumer, changing Binding, or changing production configuration.",
+  "authorization": {
+    "read_only_sdk_runtime_audit": true,
+    "offline_reports": true,
+    "offline_tests": true,
+    "plugin_code_write": false,
+    "production_config_change": false,
+    "gateway_restart": false,
+    "binding_change": false,
+    "consumer_topology_change": false,
+    "core_source_change": false,
+    "model_change": false,
+    "agent_or_cron_change": false,
+    "real_card_probe": false,
+    "analyzer_dispatch": false,
+    "git_commit_tag_push": false
+  },
+  "baseline": {
+    "openclaw_version": "2026.7.1",
+    "gateway": "loopback 127.0.0.1:18789; no restart this round",
+    "config_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+    "agents": 17,
+    "bindings": 14,
+    "cron": 4,
+    "target_group_consumers": 1,
+    "router": "video-factory / xiaomimimo/mimo-v2.5-pro",
+    "prior_015_status": "P0_FEISHU_CARD_ANALYSIS_BLOCKED",
+    "prior_live_status": "R0=PASS; R1=PASS; R2=PASS; R3 old route FAIL; R4-R5 NOT_RUN"
+  },
+  "feasibility_result": {
+    "status": "INBOUND_CLAIM_DID_NOT_BLOCK_ROUTER",
+    "secondary_blocker": "INBOUND_CLAIM_METADATA_INSUFFICIENT",
+    "reason": "The current core dispatch invokes inbound_claim only through a plugin-owned conversation Binding. The existing target route is a core route Binding, so a native plugin hook cannot claim it before the Router. The Feishu card callback is also reduced to a synthetic text event that omits trusted source/action metadata required by this task."
+  },
+  "allowed_reports": [
+    "reports/P0_INBOUND_CLAIM_CARD_ACTION_CONTRACT.md",
+    "reports/P0_INBOUND_CLAIM_SDK_AUDIT.md",
+    "reports/P0_INBOUND_CLAIM_SDK_AUDIT.json",
+    "reports/P0_INBOUND_CLAIM_CARD_ACTION_IMPLEMENTATION.*",
+    "reports/P0_INBOUND_CLAIM_CARD_ACTION_TESTS.*",
+    "reports/P0_CARD_ACTION_PROBE.*",
+    "reports/P0_INBOUND_CLAIM_CONFIG_DIFF.json",
+    "reports/P0_INBOUND_CLAIM_ROLLBACK.md",
+    "reports/P0_CURRENT_STATUS_V11.md",
+    "reports/P0_EVIDENCE_INDEX_V11.md",
+    "reports/P0_REMAINING_ACTIONS_V11.md",
+    "reports/NEXT_USER_ACTION.md",
+    "tasks/todo.md"
+  ],
+  "prohibited": [
+    "overwrite 015 evidence",
+    "OpenClaw core source change",
+    "new Feishu WebSocket client",
+    "new im.message.receive_v1 consumer",
+    "new Binding or plugin-owned Binding",
+    "Agent, Cron, model, media scope, OAuth, Gateway port change",
+    "Analyzer dispatch",
+    "P0 Gate, P0_READY, or P1",
+    "Git commit, tag, or push"
+  ],
+  "stop_conditions": [
+    "CARD_CALLBACK_NOT_RECEIVED",
+    "CARD_ACTION_NOT_EXPOSED_TO_HOOK",
+    "INBOUND_CLAIM_METADATA_INSUFFICIENT",
+    "INBOUND_CLAIM_DID_NOT_BLOCK_ROUTER"
+  ],
+  "created_at": "2026-07-21T00:00:00+08:00"
+}

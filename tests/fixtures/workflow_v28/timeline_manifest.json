@@ -1,0 +1,65 @@
+{
+  "timeline_id": "tm_0",
+  "script_id": "sp_0",
+  "duration_seconds": 30.0,
+  "fps": 30.0,
+  "tracks": [
+    {
+      "track_id": "aud",
+      "kind": "audio",
+      "segments": [
+        {
+          "start": 0,
+          "end": 30,
+          "label": "voiceover"
+        }
+      ]
+    },
+    {
+      "track_id": "sub",
+      "kind": "subtitle",
+      "segments": [
+        {
+          "start": 0.5,
+          "end": 5.0,
+          "text": "hello"
+        }
+      ]
+    },
+    {
+      "track_id": "vis",
+      "kind": "visual",
+      "segments": [
+        {
+          "start": 0,
+          "end": 30,
+          "asset_ref": "a_img"
+        }
+      ]
+    },
+    {
+      "track_id": "bgm",
+      "kind": "bgm",
+      "segments": [
+        {
+          "start": 0,
+          "end": 30
+        }
+      ]
+    }
+  ],
+  "renderer": "remotion",
+  "overlap_allowed": false,
+  "schema_version": "1.0",
+  "source": {
+    "kind": "synthetic_fixture",
+    "id": "v28-test"
+  },
+  "provenance": {
+    "created_at": "2026-07-30T07:18:14.500889+00:00",
+    "created_by": "test",
+    "tool": "v28_schema_tests"
+  },
+  "status": "active",
+  "confidence": 0.9
+}

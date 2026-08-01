@@ -1,0 +1,26 @@
+{
+  "id": "P0-ARCHITECTURE-FREEZE-028A",
+  "authorized_by": "Jovi task instruction",
+  "purpose": "Freeze the current Project Feishu Gateway architecture and document real-environment prerequisites without implementation or runtime action.",
+  "allowed_paths": [
+    "reports/P0_ARCHITECTURE_FREEZE_028A.md",
+    "reports/P0_CAPABILITY_MATRIX_028A.md",
+    "reports/P0_CODE_OWNERSHIP_MAP_028A.md",
+    "reports/P0_REAL_ENV_CHECKLIST_028A.md",
+    "reports/P0_GIT_READINESS_028A.md",
+    "reports/change_requests/P0-ARCHITECTURE-FREEZE-028A.json",
+    "tasks/todo.md"
+  ],
+  "prohibited_actions": [
+    "production configuration change",
+    "Binding change",
+    "Agent change",
+    "Cron change",
+    "real Feishu connection",
+    "secret access",
+    "commit",
+    "push"
+  ],
+  "rollback": "Documentation-only scope; no runtime or configuration state is changed.",
+  "secrets": "No credentials, tokens, chat identifiers, sender identifiers, or file contents may be read or recorded."
+}

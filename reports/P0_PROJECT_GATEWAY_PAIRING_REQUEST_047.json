@@ -1,0 +1,21 @@
+{
+  "task": "P0-PROJECT-GATEWAY-DEVICE-PAIRING-REQUEST-047",
+  "preflight_status": "PROJECT_GATEWAY_PAIRING_NOT_STARTED:PROJECT_DEVICE_IDENTITY_FILE_MISSING",
+  "final_status": "PROJECT_GATEWAY_DEVICE_PAIRING_BLOCKED:PROJECT_DEVICE_IDENTITY_FILE_MISSING",
+  "independent_device_identity_loaded": false,
+  "private_state_acl_current_user_only": true,
+  "pairing_transaction_created": false,
+  "gateway_connected": false,
+  "pairing_required_received": false,
+  "pairing_request_id_persisted": false,
+  "requested_role": "operator",
+  "requested_scopes": ["operator.read"],
+  "auto_approved": false,
+  "project_device_token_generated": false,
+  "business_rpc_called": false,
+  "shared_token_used": false,
+  "project_gateway_process_count": 0,
+  "gateway_listener_18789_present": true,
+  "credential_scan_candidates": 0,
+  "next_user_action": "Authorize a Project-identity-provisioning-only task; do not connect to the Gateway in that task."
+}

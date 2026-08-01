@@ -1,0 +1,10 @@
+{
+  "status": "pass_local_gateway_mcp",
+  "real_feishu": false,
+  "config_validate": true,
+  "gateway": {"rpc": true, "loopback_port": 18789, "listener": "busy", "planned_restart_count": 1, "service_version_drift_repaired": false},
+  "mcp": {"ingest": {"tools": 1, "diagnostics": []}, "analyzers": {"tools": 3, "diagnostics": [], "production_stdio_initialize_tools_list": "pass"}},
+  "config_semantics": {"agents": 17, "bindings": 14, "router_model": "xiaomimimo/mimo-v2.5-pro", "trusted_roots": 2, "target_group_consumer": 1},
+  "offline_fixture_smoke": {"trusted_root_matrix": "25/25", "analyzer_contract": "23/23", "ingest_core": "18/18"},
+  "not_run": ["real Channel upload", "lark-cli outbound", "fake Feishu event", "final P0 Gate"]
+}

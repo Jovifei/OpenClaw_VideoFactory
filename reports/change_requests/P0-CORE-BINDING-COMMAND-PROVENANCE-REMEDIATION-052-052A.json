@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "request_id": "P0-CORE-BINDING-COMMAND-PROVENANCE-REMEDIATION-052-052A",
+  "status": "AUTHORIZED_OFFLINE_CAPABILITY_AUDIT_AND_CONDITIONAL_REMEDIATION",
+  "authorized_by": "Jovi serial-task instruction",
+  "scope": "Audit whether installed OpenClaw Core can provide non-LLM-forgeable current Feishu message provenance to the existing local MCP consumer. Only if the audit proves that capability may this request add a local trusted-command envelope integration and offline tests. Otherwise publish the strict unavailable decision and stop.",
+  "serial_gate": {
+    "phase_a": "Installed Core Feishu event, router, and MCP context evidence must establish a trusted current-message/current-turn binding before any source or test implementation.",
+    "phase_h": "Independent review 052A is permitted only when phase G concludes P0_MEDIA_TICKET_FLOW_REMEDIATED and READY_FOR_R3_IMAGE_INDEPENDENT."
+  },
+  "authorized_writes": [
+    "tasks/todo.md",
+    "reports/change_requests/P0-CORE-BINDING-COMMAND-PROVENANCE-REMEDIATION-052-052A.json",
+    "reports/P0_CORE_BINDING_COMMAND_PROVENANCE_AUDIT_052.md",
+    "reports/P0_CORE_BINDING_COMMAND_PROVENANCE_AUDIT_052.json",
+    "reports/P0_COMMAND_PROVENANCE_RISK_DECISION_052.md",
+    "reports/P0_COMMAND_PROVENANCE_REMEDIATION_052.md",
+    "reports/P0_COMMAND_PROVENANCE_REMEDIATION_052.json",
+    "reports/P0_TRUSTED_COMMAND_ENVELOPE_CONTRACT_052.md",
+    "reports/P0_COMMAND_PROVENANCE_TESTS_052.md",
+    "reports/P0_COMMAND_PROVENANCE_INDEPENDENT_REVIEW_052A.md",
+    "reports/P0_COMMAND_PROVENANCE_INDEPENDENT_REVIEW_052A.json",
+    "reports/P0_CURRENT_STATUS_V35.md",
+    "reports/P0_EVIDENCE_INDEX_V35.md",
+    "reports/P0_REMAINING_ACTIONS_V35.md",
+    "reports/NEXT_USER_ACTION.md",
+    "scripts/mcp_ingest_attachment.py",
+    "scripts/media_action_ticket.py",
+    "scripts/trusted_command_envelope.py",
+    "tests/test_media_action_ticket.py",
+    "tests/test_two_message_mcp_surface.py",
+    "tests/test_trusted_command_envelope.py"
+  ],
+  "implementation_condition": "Local source and test changes are forbidden unless the installed Core audit demonstrates a non-forgeable current Feishu message and current execution binding available at the local MCP boundary without OpenClaw Core or Binding modification.",
+  "prohibited_actions": [
+    "OpenClaw core source or Binding modification",
+    "Gateway or Core consumer restart, stop, or lifecycle action",
+    "Project Feishu Gateway start",
+    "Agent, Cron, OAuth, Runtime, model, configuration, P0 gate, P0_READY, or PROJECT_STATUS.yaml change",
+    "real Feishu message, attachment, Analyzer invocation, R3, R4, or R5",
+    "Reply, card, slash-command, synthetic-command, Project Gateway, session-archive, or latest-session fallback route",
+    "credential-store access or secret output",
+    "commit, push, tag, or deletion of historical evidence"
+  ],
+  "acceptance": [
+    "Trusted provenance is evidenced as runtime-owned and non-forgeable, or the exact CORE_BINDING_TRUSTED_COMMAND_PROVENANCE_UNAVAILABLE outcome is published.",
+    "When capability exists, the MCP consumer must reject caller-supplied provenance and compare the model command against the trusted current message before any Analyzer dispatch.",
+    "When capability does not exist, the risk decision presents only the two user-specified choices and makes no implementation claim.",
+    "All evidence distinguishes static source inspection, offline tests, and unperformed live validation."
+  ],
+  "rollback": "All permitted changes are project-local documentation, tests, and conditional offline source only. No runtime or production mutation is authorized; reverting the scoped files restores the prior state.",
+  "secrets": "Do not read, emit, persist, or derive values from protected credential stores, configuration secrets, Feishu payloads, or Codex session archives."
+}

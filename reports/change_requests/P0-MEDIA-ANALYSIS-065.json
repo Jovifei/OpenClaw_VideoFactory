@@ -1,0 +1,30 @@
+{
+  "change_request_id": "P0-MEDIA-ANALYSIS-065",
+  "created_at": "2026-07-30T22:31:00+08:00",
+  "authorization": "Jovi exact authorization: 授权 P0-MEDIA-ANALYSIS-065：仅修复真实 receipt 的 content_type=text/plain 与 TXT Analyzer MIME 资格校验兼容；保留显式 Ticket、无自动分析、DOCX/PDF 不解析。",
+  "scope": "Offline source and targeted-test repair only: accept the established persisted receipt content_type field only when its normalized value is exactly text/plain and the newer normalized_content_type field is absent. Preserve all TXT Ticket, quarantine, UTF-8, size, hash, and request checks.",
+  "allowed_files": [
+    "scripts/analyzer_mcp.py",
+    "tests/test_analyzer_mcp.py",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "reports/P0_MEDIA_ANALYSIS_065_*"
+  ],
+  "required_contracts": [
+    "A persisted receipt with content_type=text/plain and no normalized_content_type can reach analyze_text only after an explicit valid Ticket request.",
+    "Any present normalized_content_type remains authoritative and must equal text/plain.",
+    "DOCX/PDF and application/octet-stream remain ineligible for analyze_text.",
+    "No automatic attachment analysis, configuration/lifecycle action, model download, phase update, or Git action."
+  ],
+  "prohibited": [
+    "OpenClaw or Feishu configuration changes",
+    "lark-cli messaging or event subscription",
+    "Gateway or Core lifecycle control",
+    "model or node download",
+    "DOCX or PDF body parsing",
+    "automatic attachment analysis",
+    "P0 Gate or phase-state update",
+    "commit, push, tag, or branch action"
+  ],
+  "status": "completed"
+}

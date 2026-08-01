@@ -1,0 +1,52 @@
+{
+  "report_id": "P0-R4-AUDIO-RESULT-REMEDIATION-068",
+  "created_at": "2026-08-01T20:20:00+08:00",
+  "status": "PASS_OFFLINE_REPAIR_LIVE_RETEST_REQUIRED",
+  "scope": "Audio transcript artifact public presentation only",
+  "observed_real_artifact": {
+    "status": "completed",
+    "tool": "transcribe_audio",
+    "output_name": "transcript.json",
+    "artifact_shape": "top-level transcript, language, engine, device, and model",
+    "transcript_present": true,
+    "transcript_length": 80,
+    "engine": "faster-whisper",
+    "device": "cuda",
+    "model": "medium"
+  },
+  "root_cause": "The audio presentation loader read document.result, but the established transcribe_audio writer stores transcript fields at the top level of transcript.json.",
+  "repair": {
+    "file": "scripts/mcp_ingest_attachment.py",
+    "behavior": "Pass the validated top-level completed transcript document to the existing bounded audio formatter."
+  },
+  "contracts": [
+    "The exact completed top-level transcript.json produces a bounded audio transcript reply.",
+    "A nested-only result object is rejected as the wrong artifact shape.",
+    "Existing jobs-root, filename, status, tool, and formatter validation remains unchanged."
+  ],
+  "verification": {
+    "red_contract": "Two audio artifact-shape tests failed before repair: result_content_empty for the real shape and nested-shape acceptance.",
+    "focused": "3/3 passed after repair",
+    "target_suite": "170/170 passed in 29.071 seconds",
+    "compile": "scripts/mcp_ingest_attachment.py passed py_compile",
+    "real_artifact_loader": "ready; reply starts with the audio heading, length 134, and contains no local path"
+  },
+  "environment_probe": {
+    "project_venv_faster_whisper_import": "FAIL: ModuleNotFoundError",
+    "interpretation": "This is a separate project-venv dependency gap. It did not cause the observed empty reply because the real completed artifact proves an Analyzer runtime produced a transcript; the runtime Python provenance is not established by the project venv probe.",
+    "model_install_or_download": "not performed"
+  },
+  "source_sha256": {
+    "scripts/mcp_ingest_attachment.py": "A08EB8E412EC5B71F1933F3CEB3B56141B3F1432CFA3057D23C9A85BA4405DB5",
+    "tests/test_two_message_mcp_surface.py": "DE4E6667383D60F2C7F03B320ABE373B7DA35A33773D6F00405160D298977688"
+  },
+  "live_boundary": "The observed live audio attempt completed analysis but returned an empty public reply before this repair. A fresh upload and new audio Ticket are required to establish post-repair live R4 evidence; the prior Ticket is not replayed.",
+  "not_run": [
+    "faster-whisper installation",
+    "model download",
+    "Ticket replay",
+    "new live Feishu message after repair",
+    "R5 video qualification",
+    "P0 Gate, PROJECT_STATUS update, commit, or push"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-CORE-BINDING-USABLE-MEDIA-LOOP-050",
+  "state": "OFFLINE_IMPLEMENTED_REAL_MEDIA_PENDING",
+  "active_route": "zhongshu -> OpenClaw Core Feishu Binding -> video-factory -> ingest MCP",
+  "authorization": "opaque_hash_only_media_action_ticket",
+  "public_mcp_tools": [
+    "ingest_attachment",
+    "consume_media_action_ticket"
+  ],
+  "deferred": "DEFERRED_TO_P1_CHANNEL_HARDENING",
+  "preserved_deferred_work": [
+    "Project Feishu Gateway replacement",
+    "046-049 device and pairing work",
+    "Reply association",
+    "card.action.trigger",
+    "synthetic commands",
+    "inbound_claim",
+    "native slash-command registration"
+  ],
+  "runtime_or_configuration_change": false,
+  "real_R3_R5_qualification": false,
+  "P0_status_changed": false,
+  "git_publication": false
+}

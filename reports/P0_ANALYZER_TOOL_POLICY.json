@@ -1,0 +1,15 @@
+{
+  "router": {
+    "analyzer_tools": "not allowed directly",
+    "allowed_attachment_tool": "ingest__ingest_attachment",
+    "generic_exec": "denied",
+    "media_understanding": "scope-denied for target group"
+  },
+  "analyzers": {
+    "video-factory-image-analyzer": {"allow": ["analyzers__analyze_image"], "read": "denied", "write": "denied", "exec": "denied"},
+    "video-factory-audio-analyzer": {"allow": ["analyzers__transcribe_audio"], "read": "denied", "write": "denied", "exec": "denied"},
+    "video-factory-video-analyzer": {"allow": ["analyzers__analyze_video"], "read": "denied", "write": "denied", "exec": "denied"}
+  },
+  "unchanged": ["17 agents", "14 bindings", "4 cron", "target group one consumer", "router model", "media scopes", "other 13 agents"],
+  "policy_source": "reports/P0_009_AGENT_POLICY_BATCH.json"
+}

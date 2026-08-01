@@ -1,0 +1,34 @@
+{
+  "task": "P0-OPENCLAW-WINDOWS-SERVICE-AUTH-REPAIR-045",
+  "owner": "windows_scheduled_task",
+  "task_name": "OpenClaw Gateway",
+  "task_state": "Ready",
+  "launcher": { "basename": "gateway.cmd", "exists": true, "content_retained": false },
+  "runtime": {
+    "service_loaded": true,
+    "rpc_probe_ok": true,
+    "listener_count": 1,
+    "gateway_process": "node.exe",
+    "matching_scheduled_task_count": 1,
+    "matching_windows_service_count": 0
+  },
+  "metadata": {
+    "embedded_token_assignment": false,
+    "profile_override": false,
+    "config_override": false,
+    "state_override": false,
+    "wrapper_override": false,
+    "gateway_command_contains_current_token": false,
+    "config_path_matches_default": true,
+    "state_dir_matches_default": true,
+    "cli_version_matches_2026_7_1": true
+  },
+  "service_config_audit": {
+    "ok": false,
+    "issue_count": 1,
+    "issue_codes": ["gateway-service-version-mismatch"],
+    "issue_categories": ["binary_or_wrapper"]
+  },
+  "classification": "SERVICE_BINARY_VERSION_DRIFT",
+  "repair_eligible": true
+}

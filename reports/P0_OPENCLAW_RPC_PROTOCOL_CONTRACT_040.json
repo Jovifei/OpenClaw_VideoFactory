@@ -1,0 +1,67 @@
+{
+  "task": "P0-OPENCLAW-RPC-PROTOCOL-CONTRACT-040",
+  "captured_on": "2026-07-26",
+  "terminal_status": "RPC_PROTOCOL_CONTRACT_FIXED:RPC_TOKEN_AUTH_BLOCKED",
+  "scope": "Project RPC Adapter protocol contract only",
+  "authorization_boundary": {
+    "core_feishu_lifecycle_changed": false,
+    "project_gateway_started": false,
+    "feishu_message_sent": false,
+    "binding_agent_cron_or_configuration_changed": false,
+    "commit_or_push": false
+  },
+  "installed_openclaw_contract": {
+    "version": "2026.7.1",
+    "protocol": 4,
+    "sequence": [
+      "Gateway event connect.challenge",
+      "Project req connect",
+      "Gateway res hello-ok",
+      "Project req health"
+    ],
+    "direct_loopback_backend_device_identity": "omitted by reserved gateway-client/backend path"
+  },
+  "implemented": {
+    "challenge_first_handshake": true,
+    "explicit_connect_contract": {
+      "role": "operator",
+      "scopes": ["operator.read", "operator.write"],
+      "caps": []
+    },
+    "nonce_persisted_or_logged": false,
+    "token_persisted_or_logged": false,
+    "raw_gateway_error_message_or_details_persisted": false,
+    "safe_error_detail_allowlist": [
+      "AUTH_TOKEN_MISSING",
+      "AUTH_TOKEN_MISMATCH",
+      "AUTH_SCOPE_MISMATCH",
+      "DEVICE_IDENTITY_REQUIRED",
+      "PAIRING_REQUIRED",
+      "PROTOCOL_MISMATCH"
+    ]
+  },
+  "verification": {
+    "installed_v4_schema_synthetic_contract": "PASS",
+    "adapter_unit_tests": "11/11 passed",
+    "adapter_and_preflight_python_tests": "21/21 passed",
+    "full_python_tests": "271/271 passed",
+    "pester_preflight_and_final_contract_tests": "10/10 passed",
+    "schema_tests": "88/88 passed",
+    "pip_check": "passed"
+  },
+  "health_only_preflight": {
+    "token_present": true,
+    "challenge_first_contract_reached_authentication": true,
+    "authenticate_status": "rpc_unauthorized",
+    "gateway_error_code": "INVALID_REQUEST",
+    "gateway_error_detail_code": "AUTH_TOKEN_MISMATCH",
+    "health_called": false,
+    "project_gateway_processes_excluding_inspector": 0
+  },
+  "conclusion": {
+    "protocol_contract": "fixed and regression-verified",
+    "credential_state": "the safely injected token does not match the running OpenClaw Gateway",
+    "cutover_ready": false,
+    "next_authority_required": "separate credential remediation authorization; do not provide the token in chat"
+  }
+}

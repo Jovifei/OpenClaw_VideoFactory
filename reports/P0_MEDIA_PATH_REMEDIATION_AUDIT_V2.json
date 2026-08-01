@@ -1,0 +1,47 @@
+{
+  "status": "required_checks_passed_with_mime_gap_fixed",
+  "supersedes": "reports/P0_MEDIA_PATH_REMEDIATION_AUDIT.json",
+  "related_fix": "reports/P0_MEDIA_MIME_FIX.json",
+  "history": {
+    "previous_finding": "A correct PNG signature declared as text/plain was accepted because .png had no explicit MIME consistency rule.",
+    "previous_report_preserved": true,
+    "remediation": "P0-MEDIA-MIME-001 added filename safety, content type normalization, and extension/MIME/signature consistency checks before copy or successful receipt."
+  },
+  "validated_fixture_root": "tests/fixtures/feishu_delivery",
+  "real_business_documents_used": false,
+  "tests": {
+    "command": "Invoke-Pester -Script tests/Test-IngestInboundMedia.ps1 -PassThru",
+    "total": 28,
+    "passed": 28,
+    "failed": 0,
+    "original_regression_count": 8,
+    "new_mime_safety_count": 20
+  },
+  "mime_consistency_matrix": [
+    {"kind": "txt", "positive": ["text/plain", "application/octet-stream"], "negative": ["PNG signature under .txt", "NUL byte"]},
+    {"kind": "png", "positive": ["image/png", "application/octet-stream"], "negative": ["text/plain", "image/jpeg", "invalid signature"]},
+    {"kind": "mp4", "positive": ["video/mp4", "application/octet-stream"], "negative": ["image/png", "missing ftyp"]}
+  ],
+  "negative_png_mime_proof": {
+    "declared_content_type": "text/plain",
+    "result": "rejected",
+    "error_code": "mime_conflict",
+    "successful_original_created": false,
+    "successful_receipt_created": false
+  },
+  "preserved_regressions": [
+    "Chinese filename",
+    "duplicate message_id idempotency",
+    "path traversal rejection",
+    "reparse point rejection",
+    "oversize rejection",
+    "source/quarantine SHA-256 equality",
+    "Git ignore",
+    "content_parsed=false",
+    "quarantined=true"
+  ],
+  "openclaw_config_sha256_before": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+  "openclaw_config_sha256_after": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+  "p0_gate_run": false,
+  "real_feishu_ingress_run": false
+}

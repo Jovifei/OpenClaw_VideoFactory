@@ -1,0 +1,9 @@
+{
+  "change_id": "P0-PROJECT-FEISHU-GATEWAY-IMPLEMENTATION-019",
+  "scope": "isolated project-owned Feishu Gateway implementation, schemas, tests, rehearsal, and reports",
+  "authorization": "user-directed implementation after accepted P0-018 architecture decision",
+  "allowed_writes": ["services/feishu_gateway/", "schemas/feishu_gateway/", "experiments/feishu_gateway_migration/", "tests/", "reports/", "tasks/todo.md", "tasks/lessons.md", ".gitignore"],
+  "prohibited_actions": ["production Binding change", "Gateway restart", "real Feishu connection", "real credentials", "OpenClaw core modification", "second production consumer", "R3-R5", "P0 gate", "commit", "push"],
+  "runtime_secret_policy": "environment variables only; values must not be logged, persisted, or committed",
+  "rollback": "remove only 019-created isolated implementation files after explicit authorization; no production state is changed"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "P0-ZHONGSHU-CONTROLLED-CUTOVER-030-PREPARATION",
+  "authorized_by": "Jovi task instruction",
+  "purpose": "Capture a sanitized read-only baseline for the existing zhongshu entrance and stop before the separately authorized maintenance-window cutover.",
+  "allowed_paths": [
+    "reports/P0_ZHONGSHU_PRE_CUTOVER_SNAPSHOT_030.md",
+    "reports/change_requests/P0-ZHONGSHU-CONTROLLED-CUTOVER-030-PREPARATION.json",
+    "tasks/todo.md"
+  ],
+  "allowed_operations": [
+    "read-only OpenClaw status/config projections",
+    "active configuration SHA-256 calculation without reading configuration content into reports",
+    "read-only Git status summary",
+    "secret-pattern scan that emits counts only"
+  ],
+  "prohibited_actions": [
+    "stop or modify the zhongshu Core Binding",
+    "start, stop, or restart Project Gateway or OpenClaw Gateway",
+    "connect to Feishu or OpenClaw RPC",
+    "send text, attachments, or cards",
+    "modify production configuration, Agent, Cron, OAuth, model, PROJECT_STATUS.yaml",
+    "commit, push, tag, or create P0_READY"
+  ],
+  "rollback": "Read-only snapshot work has no runtime state to restore.",
+  "secrets": "Only hashes, counts, booleans, and safe timeout states are recorded; no config contents, credentials, raw Feishu identifiers, or endpoint values are emitted."
+}

@@ -1,0 +1,49 @@
+{
+  "task": "P0-DEPENDENCY-GATE-WEBSOCKETS-039",
+  "terminal_status": "DEPENDENCY_GATE_READY",
+  "scope": "project .venv only",
+  "root_cause": "The OpenClaw RPC client imports websockets.sync.client, but websockets was neither declared nor installed in the project virtual environment.",
+  "resolved_artifact": {
+    "name": "websockets",
+    "version": "16.1.1",
+    "wheel": "websockets-16.1.1-cp312-cp312-win_amd64.whl",
+    "source_index": "https://pypi.org/simple",
+    "captured_download_directory": "E:/Claude_allow/Download/p0-039-websockets-20260726",
+    "sha256": "B436F6EC4FC3A6B4237C84D3F83170ED2B40BB584222F0AC47A0C8A5921980C7",
+    "license": "BSD-3-Clause"
+  },
+  "declaration": {
+    "manifest": "requirements-bootstrap.txt",
+    "requirement": "websockets==16.1.1",
+    "package_gate_import": "websockets.sync.client"
+  },
+  "installation": {
+    "environment": "E:/project/OpenClaw_VideoFactory/.venv",
+    "network_used_for_install": false,
+    "install_source": "captured local wheel",
+    "global_or_system_python_modified": false,
+    "openclaw_environment_or_configuration_modified": false
+  },
+  "verification": {
+    "package_gate_imports": "yaml, jsonschema, websockets.sync.client: passed",
+    "package_check_powershell_syntax": "passed",
+    "pip_check": "passed",
+    "schema_tests": "88/88 passed",
+    "python_tests": "269/269 passed in isolated module batches",
+    "scoped_secret_candidate_files": 0,
+    "project_gateway_runtime_processes": 0
+  },
+  "shared_package_acceptance": {
+    "status": "NOT_ACCEPTED_UNRELATED_WORKTREE",
+    "reason": "The generic package acceptance scan includes existing third-party/Shadow trees and an already-stale SHA256SUMS manifest. It is not evidence for, nor repaired by, this single dependency gate."
+  },
+  "not_performed": [
+    "live RPC preflight retry",
+    "Core Feishu lifecycle action",
+    "Project Gateway start",
+    "Feishu traffic",
+    "Binding, Agent, Cron, or configuration modification",
+    "commit",
+    "push"
+  ]
+}

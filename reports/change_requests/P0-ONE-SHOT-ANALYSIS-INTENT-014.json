@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "request_id": "P0-ONE-SHOT-ANALYSIS-INTENT-014",
+  "status": "BLOCKED_DETERMINISTIC_COMMAND_SOURCE_UNAVAILABLE",
+  "phase": "P0",
+  "production_changes_authorized": false,
+  "code_changes_authorized": false,
+  "gateway_restart_authorized": false,
+  "reason": "The supported OpenClaw command context exposes raw command text but no real Feishu command_message_id. The installed Feishu command schema has no native command registration surface.",
+  "preserve": ["reports/P0_R3_TWO_MESSAGE_EVENT_20260720.json", "R3_FAILED:ANALYSIS_INTENT_GATE"],
+  "proposed_write_scope": [
+    "scripts/analysis_next_intent.py",
+    "scripts/analysis_request.py",
+    "scripts/analyzer_mcp.py",
+    "scripts/mcp_ingest_attachment.py",
+    "skills/feishu-video-factory-operator/SKILL.md",
+    "tests/*one_shot*",
+    "reports/*P0_ONE_SHOT_ANALYSIS_INTENT*"
+  ],
+  "required_user_decision": "Authorize an exact deterministic adapter/source that supplies the original Feishu command message_id, chat_id, and sender_id, plus the exact code paths above. Do not authorize model-rewritten text as the source.",
+  "stop_boundary": "No production apply, Gateway restart, real attachment upload, R4/R5, final P0 Gate, or P1."
+}

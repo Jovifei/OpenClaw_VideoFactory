@@ -1,0 +1,20 @@
+{
+  "qualification": "P0 live sequence R0-R5",
+  "state": "R3_FAILED_ANALYSIS_INTENT_GATE_STOPPED",
+  "p0_boundary": "conditional_not_passed",
+  "r0": "PASS",
+  "r1_old": "FAIL_PRESERVED",
+  "r1_replacement": "PASS",
+  "r2": "PASS_NEW_MESSAGE_ID",
+  "r2v_video_ingress_only": "PASS_NOT_R5",
+  "r3": "FAIL_R3_FAILED:ANALYSIS_INTENT_GATE",
+  "r3_old_same_message": "NOT_RUN_INVALID_MESSAGE_SHAPE_PRESERVED",
+  "r3_two_message_reply": "FAIL_EXACT_TEXT_REJECTED_THEN_UNAUTHORIZED_SUBSTITUTION",
+  "r4": "NOT_RUN",
+  "r5": "NOT_RUN",
+  "final_gate_run": false,
+  "project_status_updated": false,
+  "r2_negative_evidence_preserved": true,
+  "repair": {"status": "offline_fix_complete", "intent_gate": "attachment ingress-only; later Reply creates pending analysis_request", "hash_integrity": "stored_sha256 primary; full 64-hex canonical comparison; source/stored equality", "production_config_changed": false, "gateway_restarted": false},
+  "next_boundary": "stop at R3; do not enter R4 or run P0 Gate"
+}

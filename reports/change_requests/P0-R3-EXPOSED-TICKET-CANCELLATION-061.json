@@ -1,0 +1,25 @@
+{
+  "change_id": "P0-R3-EXPOSED-TICKET-CANCELLATION-061",
+  "created_at": "2026-07-30T00:00:00+08:00",
+  "authorization_basis": "During the user-authorized P0-R3-061 retest, the newly issued one-time Ticket was pasted into external chat. The established P0 exposed-ticket safety rule requires invalidation without reuse.",
+  "scope": {
+    "allowed": [
+      "locate exactly one latest pending PNG ticket from private ticket state without reading or emitting ticket plaintext",
+      "atomically set only that record to cancelled_exposed after validating receipt and absence of an analysis request",
+      "write redacted cancellation evidence"
+    ],
+    "forbidden": [
+      "ticket reuse or plaintext output",
+      "Analyzer, analysis_request, Feishu, Gateway, Core, configuration, source-code, Agent, Binding, Cron, OAuth, or model action",
+      "R4, R5, gate, commit, push, or tag"
+    ]
+  },
+  "preconditions": [
+    "exactly one pending PNG ticket",
+    "ticket receipt remains quarantined and inside project ingress storage",
+    "no analysis_request exists",
+    "ticket record lock acquired"
+  ],
+  "rollback": "Not applicable: credential-like one-time tickets exposed outside the original Feishu group must remain invalidated.",
+  "status": "approved_for_single_safety_invalidation"
+}

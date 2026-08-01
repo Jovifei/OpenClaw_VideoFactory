@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw-videofactory.local/schemas/video_workflow/topic_candidate.schema.json",
+  "title": "Topic Candidate",
+  "type": "object",
+  "required": [
+    "topic_id",
+    "title",
+    "summary",
+    "source",
+    "provenance",
+    "status",
+    "freshness",
+    "schema_version"
+  ],
+  "properties": {
+    "topic_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 120
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "category": {
+      "type": "string"
+    },
+    "signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "freshness": {
+      "type": "object",
+      "required": [
+        "observed_at",
+        "expires_at"
+      ],
+      "properties": {
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "decay": {
+          "type": "string",
+          "enum": [
+            "fast",
+            "medium",
+            "slow"
+          ]
+        }
+      }
+    },
+    "dedup_key": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "openclaw_skill",
+            "provider_adapter",
+            "human",
+            "platform",
+            "synthetic_fixture"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "rejected",
+        "superseded",
+        "deprecated"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "validation_errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "additionalProperties": false
+}

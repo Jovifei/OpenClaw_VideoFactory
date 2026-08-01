@@ -1,0 +1,16 @@
+{
+  "status": "R2_FAILED_REPAIR_PENDING_REUPLOAD",
+  "p0_boundary": "conditional_not_passed",
+  "project_status_file_updated": false,
+  "final_gate_run": false,
+  "config": {"sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c", "valid": true, "baseline_sha256": "3001ec3b85a882deb382cb08f5ebdb1c6b285964ea9933f5f0d5c99bc7d89810"},
+  "gateway": {"loopback_port": 18789, "rpc": "ok", "historical_planned_restarts": 1, "this_task_restarts": 0, "service_version_drift_repaired": false},
+  "topology": {"agents": 17, "bindings": 14, "cron": 4, "target_group_consumers": 1, "router_model": "xiaomimimo/mimo-v2.5-pro"},
+  "mcp": {"ingest_tools": 1, "analyzer_tools": 3},
+  "tests": {"analyzer": "31/31", "trusted_roots": "25/25", "ingest_core": "45/45", "pester_inbound_router": "82/82", "v28_wrapper": "4/4 prior evidence unchanged", "v28_schema": "88/88"},
+  "real_channel": "R0_PASS; R1_REPLACEMENT_PASS; R2_FAIL_ANALYZER_CALLED; R3-R5_NOT_RUN",
+  "r1_replacement": {"status": "PASS", "message_id_hash": "20fdee581d994e8c", "old_failure_preserved": true, "evidence": "reports/P0_R1_EVENT_TRACE_20260719.json"},
+  "r2_failure": {"status": "FAIL", "failure_token": "R2_FAILED:ANALYZER_CALLED_AFTER_INGEST", "evidence": "reports/P0_R2_EVENT_TRACE_20260720.json"},
+  "repair": {"change_requests": ["P0-R2-ANALYSIS-INTENT-GATE-011", "P0-R3-STORED-HASH-INTEGRITY-012"], "status": "offline_fix_complete_pending_new_png", "config_changed": false, "gateway_restarted": false},
+  "parent_change_request": "r2_failed_stop_preserved"
+}

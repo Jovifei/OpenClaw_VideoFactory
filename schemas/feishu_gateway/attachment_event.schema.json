@@ -1,0 +1,2 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,"required":["message_id","file_key","filename","mime","size","media_type"],"properties":{"message_id":{"type":"string","minLength":1},"file_key":{"type":"string","minLength":1},"filename":{"type":"string","minLength":1},"mime":{"type":"string","minLength":1},"size":{"type":"integer","minimum":0},"media_type":{"type":"string","enum":["txt","png","wav","mp4"]},"local_path":{"type":"string","minLength":1}}
+}

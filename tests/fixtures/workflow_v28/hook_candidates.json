@@ -1,0 +1,36 @@
+{
+  "brief_id": "rb_0",
+  "candidates": [
+    {
+      "hook_id": "h_0",
+      "text": "hook 0",
+      "type": "question",
+      "review_pass": true
+    },
+    {
+      "hook_id": "h_1",
+      "text": "hook 1",
+      "type": "stat",
+      "review_pass": true
+    },
+    {
+      "hook_id": "h_2",
+      "text": "hook 2",
+      "type": "story",
+      "review_pass": true
+    }
+  ],
+  "style_profile_version": "0.1",
+  "schema_version": "1.0",
+  "source": {
+    "kind": "synthetic_fixture",
+    "id": "v28-test"
+  },
+  "provenance": {
+    "created_at": "2026-07-30T07:18:14.500889+00:00",
+    "created_by": "test",
+    "tool": "v28_schema_tests"
+  },
+  "status": "active",
+  "confidence": 0.8
+}

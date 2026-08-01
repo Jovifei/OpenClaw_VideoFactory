@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TopicCandidate",
+  "type": "object",
+  "required": [
+    "topic",
+    "hook",
+    "outline",
+    "visual_plan",
+    "score_breakdown",
+    "total_score",
+    "sources",
+    "risk"
+  ],
+  "properties": {
+    "topic": {
+      "type": "string",
+      "minLength": 3
+    },
+    "hook": {
+      "type": "string",
+      "minLength": 3
+    },
+    "outline": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "string"
+      }
+    },
+    "visual_plan": {
+      "type": "string"
+    },
+    "score_breakdown": {
+      "type": "object"
+    },
+    "total_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "risk": {
+      "type": "string"
+    },
+    "duplicate_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "additionalProperties": true
+}

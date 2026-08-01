@@ -1,0 +1,22 @@
+{
+  "signal_id": "cs_0",
+  "platform": "douyin",
+  "cluster_label": "cluster 0",
+  "representative_text": "representative 0",
+  "count": 5,
+  "sentiment": "positive",
+  "is_hostile": false,
+  "prompt_injection_safe": true,
+  "schema_version": "1.0",
+  "source": {
+    "kind": "synthetic_fixture",
+    "id": "v28-test"
+  },
+  "provenance": {
+    "created_at": "2026-07-30T07:18:14.500889+00:00",
+    "created_by": "test",
+    "tool": "v28_schema_tests"
+  },
+  "status": "active",
+  "confidence": 0.7
+}

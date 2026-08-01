@@ -1,0 +1,39 @@
+{
+  "captured_at": "2026-07-23T00:10:55.6762381Z",
+  "result": "NO_CURRENT_ACTIVE_TASK",
+  "current_task_count": 0,
+  "classifications": {
+    "ACTIVE_TASK": 0,
+    "QUEUED_TASK": 0,
+    "COMPLETED_HISTORY": 26,
+    "FAILED_HISTORY": 7,
+    "STALE_ORPHAN": 0,
+    "UNKNOWN_TASK_STATE": 0
+  },
+  "run_types": [
+    {"runtime": "cron", "scope": "system", "status": "succeeded", "count": 21},
+    {"runtime": "cron", "scope": "system", "status": "failed", "count": 7},
+    {"runtime": "cli", "scope": "session", "status": "succeeded", "count": 5}
+  ],
+  "timeline": {
+    "created_at_range": ["2026-07-16T23:00:00.035000Z", "2026-07-23T00:10:00.022000Z"],
+    "ended_at_range": ["2026-07-16T23:00:20.407000Z", "2026-07-23T00:10:29.604000Z"],
+    "last_event_at_range": ["2026-07-16T23:00:20.407000Z", "2026-07-23T00:10:29.604000Z"],
+    "terminal_records_missing_end": 0,
+    "terminal_records_missing_cleanup": 0
+  },
+  "execution_state": {
+    "active_process_count": 0,
+    "state_lease_count": 0,
+    "active_flow_count": 0,
+    "unfinished_subagent_count": 0,
+    "pending_final_delivery_count": 0,
+    "incomplete_tool_call": "not_applicable_without_a_nonterminal_task"
+  },
+  "zhongshu_relation": {
+    "task_text_or_label_association_count": 0,
+    "status": "no_direct_task_association_observed"
+  },
+  "audit_findings": 0,
+  "maintenance_decision": "terminal_history_is_safe_to_ignore_for_the_active-task_gate_only"
+}

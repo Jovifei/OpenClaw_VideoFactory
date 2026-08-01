@@ -1,0 +1,12 @@
+{
+  "status": "pass_offline_and_local_config",
+  "roots": [
+    {"root_id": "openclaw_global", "path": "C:\\Users\\Admin\\.openclaw\\media\\inbound", "source": "explicit MCP environment"},
+    {"root_id": "video_factory_workspace", "path": "E:\\project\\OpenClaw_VideoFactory\\media\\inbound", "source": "explicit MCP environment"}
+  ],
+  "implicit_roots": "none",
+  "rejected_scope": ["E:\\project", "project root", "user Home", "temp wildcard", "model paths", "arbitrary model-supplied roots"],
+  "controls": ["canonical local-drive paths", "Windows case-insensitive separator boundary", "root IDs", "UNC/device/ADS rejection", "ancestor and file reparse checks", "pre/post copy stat and SHA-256"],
+  "tests": "25/25",
+  "post_apply_config": "OPENCLAW_TRUSTED_INBOUND_ROOTS contains exactly the two listed entries"
+}

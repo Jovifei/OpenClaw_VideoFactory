@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "result": "P0_MEDIA_TICKET_CHANGES_REQUIRED:raw_command_source_provenance_not_bound_to_channel_message",
+  "phase_a_050": "P0_MEDIA_TICKET_FLOW_READY_OFFLINE",
+  "independent_reviews": {
+    "ticket_security": "COMPLETED_REMEDIATED_OFFLINE",
+    "command_determinism": "CHANGES_REQUIRED",
+    "analyzer_boundary": "COMPLETED_REMEDIATED_OFFLINE",
+    "real_R3_R5_readiness": "COMPLETED_STATIC_ONLY"
+  },
+  "final_regression": {
+    "python": "298/298",
+    "pester": "123/123",
+    "schema": "88/88",
+    "pip_check": "PASS",
+    "diff_check": "PASS",
+    "scoped_secret_candidates": 0,
+    "large_files_outside_exclusions": 0
+  },
+  "real_media_executed": false,
+  "P0_status_changed": false,
+  "git_publication": false
+}

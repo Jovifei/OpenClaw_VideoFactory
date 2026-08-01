@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw-videofactory.local/schemas/video_workflow/script_package.schema.json",
+  "title": "Script Package",
+  "type": "object",
+  "required": [
+    "script_id",
+    "brief_id",
+    "hook_id",
+    "title",
+    "body",
+    "structure_ratios",
+    "stages",
+    "source",
+    "provenance",
+    "status",
+    "schema_version"
+  ],
+  "properties": {
+    "script_id": {
+      "type": "string"
+    },
+    "brief_id": {
+      "type": "string"
+    },
+    "hook_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "structure_ratios": {
+      "type": "object",
+      "properties": {
+        "hook": {
+          "type": "number"
+        },
+        "develop": {
+          "type": "number"
+        },
+        "tech": {
+          "type": "number"
+        },
+        "cta": {
+          "type": "number"
+        }
+      }
+    },
+    "fact_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "each fact points to evidence_id"
+    },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "stage",
+          "status",
+          "diff"
+        ],
+        "properties": {
+          "stage": {
+            "type": "string",
+            "enum": [
+              "hook_gen",
+              "hook_review",
+              "script_write",
+              "fact_review",
+              "humanize",
+              "risk_review",
+              "platform_adapt",
+              "final_approve"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "passed",
+              "rejected"
+            ]
+          },
+          "diff": {
+            "type": "string"
+          },
+          "reviewer": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "human_approved": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "openclaw_skill",
+            "provider_adapter",
+            "human",
+            "platform",
+            "synthetic_fixture"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "rejected",
+        "superseded",
+        "deprecated"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "validation_errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "additionalProperties": false
+}

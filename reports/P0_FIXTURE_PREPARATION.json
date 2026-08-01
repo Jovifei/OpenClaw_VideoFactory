@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "created_at": "2026-07-15T00:04:34+08:00",
+  "fixture_directory": "tests/fixtures/feishu_delivery",
+  "network_assets_used": false,
+  "real_business_documents_used": false,
+  "contains_sensitive_data": false,
+  "txt": {
+    "filename": "p0-file-test.txt",
+    "size_bytes": 55,
+    "sha256": "c8a155b4d5eccafd2b36758b9fa67af186174dfe6e99e184b56231bd8382663d",
+    "exact_content_verified": true
+  },
+  "image": {
+    "filename": "p0-image-test.png",
+    "mime": "image/png",
+    "width": 720,
+    "height": 1280,
+    "size_bytes": 17247,
+    "sha256": "624223e0f8d14374d40301574b721c9debd46d4168ad4c44d06767e5f74a4214"
+  },
+  "video": {
+    "filename": "p0-video-test.mp4",
+    "mime": "video/mp4",
+    "codec": "h264",
+    "width": 720,
+    "height": 1280,
+    "duration_seconds": 4.0,
+    "audio_streams": 0,
+    "size_bytes": 8858,
+    "under_5mb": true,
+    "sha256": "ea8ce1539fc1c7520b1bb1d275529749a5f4190e82516f12b3e9b98eba7632cc"
+  },
+  "cover": {
+    "filename": "p0-video-cover.png",
+    "mime": "image/png",
+    "width": 720,
+    "height": 1280,
+    "size_bytes": 19582,
+    "sha256": "f1220bcdfac6737239951c49986efd639bdf349553cb85f455ee2ad31207d1b1"
+  },
+  "git_policy": {
+    "png_ignored": true,
+    "mp4_ignored": true,
+    "txt_ignored": true,
+    "manifest_ignored": false
+  }
+}

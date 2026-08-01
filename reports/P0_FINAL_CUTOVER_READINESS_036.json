@@ -1,0 +1,35 @@
+{
+  "task": "P0-ZHONGSHU-FINAL-CUTOVER-UNBLOCK-036",
+  "terminal_status": "ZHONGSHU_CUTOVER_BLOCKED:RPC_CREDENTIAL_REQUIRED;CORE_CONSUMER_OBSERVABILITY_LIMITED;PRODUCTION_CONTROL_NOT_EXECUTABLE",
+  "execution": "NOT_APPLIED",
+  "live_read_only_evidence": {
+    "openclaw_version": "2026.7.1 (2d2ddc4)",
+    "token_present": false,
+    "rpc_preflight_result": "RPC_CREDENTIAL_REQUIRED",
+    "rpc_ready": false,
+    "core_owner": "unknown",
+    "core_consumer_known": false,
+    "project_gateway_running": false,
+    "project_gateway_processes": 0,
+    "rollback_plan_present": true,
+    "rollback_control_ready": false,
+    "openclaw_config_sha256": "D6A97F1025698C08F086C1EE565E1AAC1AD30116037E4F135688EDBB1171BE8C"
+  },
+  "preparation": {
+    "rpc_preflight_contract": true,
+    "command_line_secret_scan": true,
+    "core_observability_hierarchy": true,
+    "control_contract_documented": true,
+    "runbook_v7": true,
+    "final_precheck": true,
+    "independent_reviews_completed": 3
+  },
+  "verification": {
+    "python_tests": "269/269",
+    "schema_tests": "88/88",
+    "pester_tests": "114/114",
+    "pip_check": "passed",
+    "json_parse_failures": 0,
+    "scoped_secret_candidate_files": 0
+  }
+}

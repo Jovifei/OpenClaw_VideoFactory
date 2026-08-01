@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "review_id": "P0-FEISHU-GATEWAY-FINAL-ARCHITECTURE-REVIEW-025A",
+  "review_mode": "read_only_offline_static",
+  "project_phase": {
+    "current_phase": "P0",
+    "status": "not_started"
+  },
+  "result": "ARCHITECTURE_BLOCKED",
+  "production_migration_authorized": false,
+  "actions_not_performed": {
+    "code_or_configuration_modified": false,
+    "secret_read": false,
+    "feishu_connected": false,
+    "gateway_restarted": false,
+    "commit_or_push": false
+  },
+  "evidence": {
+    "offline_tests": [
+      {"command": "python -m unittest discover -s tests -p 'test*feishu*gateway*.py' -v", "passed": 37},
+      {"command": "python -m unittest discover -s tests -p 'test_openclaw_rpc_client.py' -v", "passed": 9},
+      {"command": "python -m unittest discover -s tests -p 'test_migration_preflight_scripts.py' -v", "passed": 3},
+      {"command": "python -m unittest discover -s tests -p 'test_analysis_request.py' -v", "passed": 8},
+      {"command": "python -m unittest discover -s tests -p 'test_ingest_attachment_core.py' -v", "passed": 45}
+    ],
+    "offline_tests_passed_total": 102,
+    "not_proven": [
+      "Real Feishu connection or signature verification",
+      "Project RPC authentication or Agent request",
+      "Old Binding stop, Project Gateway start, or authenticated WebSocket count",
+      "Live single-consumer cutover, state restoration, rollback RTO/RPO or real message reconciliation"
+    ]
+  },
+  "architecture_assessment": {
+    "gateway_boundary_no_model_analyzer_gpu_agent_management": "pass_static",
+    "rpc_privilege_escalation": "pass_static_no_critical_escalation_found",
+    "session_tenant_chat_sender_thread_isolation": "pass_static",
+    "replay_and_concurrency": "fail",
+    "single_consumer": "fail",
+    "migration_recovery": "fail",
+    "secret_boundary": "partial",
+    "long_term_product_extension": "partial"
+  },
+  "severity_summary": {"critical": 0, "high": 4, "medium": 3, "low": 2},
+  "findings": [
+    {
+      "id": "HIGH-025A-01",
+      "severity": "high",
+      "title": "Card analysis request bypasses durable two-message reply intent",
+      "evidence": ["AGENTS.md:8-10", "scripts/analysis_request.py:201-229", "schemas/feishu_gateway/card_event.schema.json", "services/feishu_gateway/service.py:159-188", "services/feishu_gateway/runtime.py:105-113"],
+      "risk": "A card becomes a parallel analysis-intent path without real reply target, requester message, text intent or durable analysis_request.json admission.",
+      "required_disposition": "Route analysis only from signed later text with reply_to_message_id; OpenClaw must create the sole durable analysis request."
+    },
+    {
+      "id": "HIGH-025A-02",
+      "severity": "high",
+      "title": "Single-consumer lease/verifier is neither runtime-integrated nor atomic",
+      "evidence": ["scripts/migration/verify_single_consumer.py:1-57", "scripts/feishu_gateway/start_gateway.ps1:1-22", "tests/test_feishu_gateway_architecture_024.py:47-64"],
+      "risk": "Caller-supplied snapshots and an unfenced read/write lease cannot prove Binding shutdown, exclusive Project ownership or prevent split-brain.",
+      "required_disposition": "Integrate a fenced atomic ownership control into shutdown/startup and independently observe live authenticated consumer ownership."
+    },
+    {
+      "id": "HIGH-025A-03",
+      "severity": "high",
+      "title": "Validated Gateway envelope has no implemented idempotent adapter to audited RPC client",
+      "evidence": ["services/feishu_gateway/service.py:109-188", "services/feishu_gateway/openclaw_rpc/client.py:124-178", "services/feishu_gateway/policy.py:24-35"],
+      "risk": "Client message API omits complete card/text context and retries ambiguous agent calls with a new request UUID.",
+      "required_disposition": "Implement a narrow policy-validated adapter with durable correlation/idempotency and reconciliation of ambiguous delivery."
+    },
+    {
+      "id": "HIGH-025A-04",
+      "severity": "high",
+      "title": "Migration, state restoration and rollback are simulations rather than recoverable procedure",
+      "evidence": ["scripts/migration/preflight_check.py:1-32", "scripts/migration/rollback_verify.py:1-25", "scripts/migration/rollback_gateway.ps1:1-4", "experiments/feishu_gateway_migration/simulate_cutover.py:1-16", "services/feishu_gateway/service.py:33-54"],
+      "risk": "No loss boundary, duplicate reconciliation, transactional state restore or RTO/RPO proof exists.",
+      "required_disposition": "Add drain, transactional state/outbox, restore hash proof, replay reconciliation and measured controlled rehearsal."
+    },
+    {
+      "id": "MEDIUM-025A-05",
+      "severity": "medium",
+      "title": "General reports and Git history lack enforceable redaction proof",
+      "evidence": [".gitignore:10-65", "reports/P0_CURRENT_STATUS_V18.md:20-26"],
+      "risk": "Runtime paths are ignored but generic reports are trackable and the unborn branch provides no history proof.",
+      "required_disposition": "Enforce report and diagnostic redaction before staging."
+    },
+    {
+      "id": "MEDIUM-025A-06",
+      "severity": "medium",
+      "title": "Lifecycle health does not attest process identity or consumer owner",
+      "evidence": ["scripts/feishu_gateway/start_gateway.ps1:9-22", "scripts/feishu_gateway/status_gateway.ps1:1-5", "scripts/feishu_gateway/stop_gateway.ps1:6-14"],
+      "risk": "PID/status health can be stale or unrelated to active consumer ownership.",
+      "required_disposition": "Bind readiness to process identity, consumer fence and safe event/queue metrics."
+    },
+    {
+      "id": "MEDIUM-025A-07",
+      "severity": "medium",
+      "title": "Multi-channel and durable product work are not yet modeled",
+      "evidence": ["services/feishu_gateway/session.py:13-19", "services/feishu_gateway/policy.py:6-21", "PROJECT_STATUS.yaml"],
+      "risk": "Feishu-specific routing has no normalized channel/account adapter, durable queue, GPU scheduler or extensible Analyzer registry.",
+      "required_disposition": "Keep Gateway compute-free and add normalized durable OpenClaw-owned work in later authorized phases."
+    },
+    {
+      "id": "LOW-025A-08",
+      "severity": "low",
+      "title": "RPC session-creation documentation conflicts with implementation",
+      "evidence": ["reports/P0_RPC_VERIFICATION_023.md:17-29", "services/feishu_gateway/openclaw_rpc/client.py:124-125"],
+      "risk": "Operators may assume a sessions.create path exists though client code returns method not allowed.",
+      "required_disposition": "Document implicit session semantics or remove conflicting acceptance wording."
+    },
+    {
+      "id": "LOW-025A-09",
+      "severity": "low",
+      "title": "Offline fixture acknowledges event before downstream completion",
+      "evidence": ["services/feishu_gateway/gateway.py:37-47"],
+      "risk": "If copied into a live adapter, transient failure could be marked duplicate on redelivery.",
+      "required_disposition": "Keep fixture-only or align acknowledgement ordering with ProjectFeishuGateway."
+    }
+  ],
+  "required_before_architecture_ready_for_runtime": [
+    "Eliminate card-originated analysis intent in favor of reply_to_message_id-bound durable requests.",
+    "Implement atomic fenced runtime-integrated single-consumer ownership and independently observe it.",
+    "Implement Gateway-to-RPC envelope adapter with durable idempotency and correlation.",
+    "Prove drain, restore, replay reconciliation and rollback RTO/RPO in a controlled authorized rehearsal.",
+    "Add report-redaction enforcement and lifecycle owner/lease observability."
+  ]
+}

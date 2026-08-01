@@ -1,0 +1,33 @@
+{
+  "id": "P0-ZHONGSHU-MIGRATION-QUALIFICATION-029",
+  "authorized_by": "Jovi task instruction",
+  "purpose": "Prepare, but do not execute, a controlled maintenance-window qualification that migrates the existing zhongshu Feishu entrance from the OpenClaw Core Binding to the Project Feishu Gateway.",
+  "allowed_paths": [
+    "reports/P0_ZHONGSHU_MIGRATION_PLAN_029.md",
+    "reports/P0_ZHONGSHU_ROLLBACK_PLAN_029.md",
+    "reports/P0_ZHONGSHU_MIGRATION_AUTHORIZATION.md",
+    "reports/P0_ZHONGSHU_MIGRATION_QUALIFICATION_029.md",
+    "reports/change_requests/P0-ZHONGSHU-MIGRATION-QUALIFICATION-029.json",
+    "scripts/migration/zhongshu_preflight.py",
+    "scripts/migration/zhongshu_postcheck.py",
+    "tests/test_zhongshu_migration_029.py",
+    "tasks/todo.md"
+  ],
+  "allowed_operations": [
+    "documentation",
+    "local offline script implementation",
+    "local offline unit tests",
+    "read-only filesystem artifact checks"
+  ],
+  "prohibited_actions": [
+    "stop or edit the current zhongshu Core Feishu Binding",
+    "start, stop, or restart a production Project Feishu Gateway",
+    "connect to Feishu or OpenClaw RPC",
+    "send a real Feishu message, attachment, or card",
+    "modify production configuration",
+    "read or record credentials, tokens, or raw Feishu identifiers",
+    "commit or push"
+  ],
+  "rollback": "Preparation-only work has no runtime state to restore. The produced rollback plan is for a separately authorized maintenance window.",
+  "secrets": "Only sanitized operator snapshots are accepted by the new scripts; reports and test fixtures contain no credentials or raw Feishu identifiers."
+}

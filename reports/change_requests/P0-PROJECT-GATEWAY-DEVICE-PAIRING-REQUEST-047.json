@@ -1,0 +1,25 @@
+{
+  "id": "P0-PROJECT-GATEWAY-DEVICE-PAIRING-REQUEST-047",
+  "authorized_by": "Jovi",
+  "purpose": "Submit exactly one Project-owned official OpenClaw device pairing request after a durable private transaction record exists.",
+  "allowed_writes": [
+    "services/feishu_gateway/openclaw_rpc_official/",
+    "tests/",
+    "reports/",
+    "tasks/todo.md"
+  ],
+  "external_private_state_only": "C:\\Users\\Admin\\.openclaw-video-factory\\device",
+  "network_limit": {
+    "gateway_url": "ws://127.0.0.1:18789",
+    "pairing_connections": 1,
+    "pairing_requests": 1,
+    "allowed_role": "operator",
+    "allowed_scopes": ["operator.read"]
+  },
+  "forbidden": [
+    "approval", "shared_gateway_token", "other_device_identity", "business_session",
+    "agent_or_tool_call", "project_gateway_start", "core_feishu_stop", "feishu_message",
+    "gateway_restart", "openclaw_config_change", "commit", "push", "tag"
+  ],
+  "stop_after": ["pending_approval", "auto_approved", "blocked", "persistence_failed"]
+}

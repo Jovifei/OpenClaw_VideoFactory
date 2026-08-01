@@ -1,0 +1,79 @@
+{
+  "task": "P0-LIVE-SEQUENCE-009-RECOVERY-AND-CLOSURE",
+  "change_request": "P0-LIVE-SEQUENCE-009A-RECOVERY",
+  "captured_at": "2026-07-18",
+  "openclaw": {
+    "config_sha256": "3001ec3b85a882deb382cb08f5ebdb1c6b285964ea9933f5f0d5c99bc7d89810",
+    "config_valid": true,
+    "gateway_cli_version": "2026.7.1",
+    "gateway_port": 18789,
+    "gateway_probe": "ok",
+    "service_warning": "installed by older OpenClaw version; no repair performed"
+  },
+  "topology": {
+    "agents": 17,
+    "bindings": 14,
+    "cron": 4,
+    "target_group_consumers": 1,
+    "router_model": "xiaomimimo/mimo-v2.5-pro",
+    "analyzer_agents": [
+      "video-factory-image-analyzer",
+      "video-factory-audio-analyzer",
+      "video-factory-video-analyzer"
+    ],
+    "analyzer_bindings": 0
+  },
+  "router": {
+    "media_scope": "image/audio/video deny for target group keyPrefix; default allow elsewhere",
+    "tool_policy": "11 allow / 10 deny; exec and generic media groups denied",
+    "subagent_policy": "only the three analyzer agent IDs"
+  },
+  "mcp": {
+    "registered_servers": ["ingest"],
+    "registered_tools": ["ingest__ingest_attachment"],
+    "analyzer_tools": [],
+    "mcp_probe": "ingest server exposes one tool"
+  },
+  "trusted_inbound_roots": {
+    "global": "C:/Users/Admin/.openclaw/media/inbound",
+    "workspace": "E:/project/OpenClaw_VideoFactory/media/inbound",
+    "current_code_behavior": "explicit default root plus configured roots plus CWD/media/inbound auto-detection; pending security tightening to explicit root records"
+  },
+  "fixtures_sha256": {
+    "p0-file-test.txt": "c8a155b4d5eccafd2b36758b9fa67af186174dfe6e99e184b56231bd8382663d",
+    "p0-image-test.png": "624223e0f8d14374d40301574b721c9debd46d4168ad4c44d06767e5f74a4214",
+    "p0-audio-test.wav": "cc08486c989b5b6004f96ca6c5b102503852c76e709dee165d0e10408c287b6b",
+    "p0-video-analysis-test.mp4": "ca844094b316103d6084b59936685c1be8037174044cf4a2d4041db6acb689fc4"
+  },
+  "tests_current": {
+    "router": "45/45",
+    "inbound": "32/32",
+    "ingest_mcp": "17/17",
+    "v28_pester_wrapper": "4/4",
+    "v28_schema_report": "88/88",
+    "p0_total": "94/94; excludes V2.8 schema checks"
+  },
+  "reports": {
+    "file_count": 257,
+    "filename_manifest_sha256": "bbf368e8d759e84eb1a551fd98ca75d6751d89f17a16d13e5815948b78df62e5",
+    "known_009_final_reports_missing": true
+  },
+  "project_manifest": {
+    "FILE_MANIFEST.txt_sha256": "78CF9C0B3950F2E8CAA60AA87A34A75E319CF1BD748883C416BC15D210310465"
+  },
+  "worktree": {
+    "git_head": null,
+    "porcelain_count": 40,
+    "porcelain_sha256": "ea83b550ebee61192fcf5684dd20c784f166aa8fd908d32b7baf3d7ea7f6ff8e"
+  },
+  "p0": {
+    "project_status": "P0 not_started; P1 blocked_by_P0",
+    "gate_ran": false,
+    "p0_ready_created": false,
+    "real_channel_r0_r5": "not complete",
+    "r1_previous_failure": "path_traversal from workspace-staged attachment against single global root",
+    "009_status": "in_progress",
+    "next_user_action": "user sends P0_TEXT_ROUTER_TEST; parent must not send it"
+  },
+  "secrets": "masked; no raw group IDs, sender IDs, file keys, URLs, or credentials recorded"
+}

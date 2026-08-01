@@ -1,0 +1,73 @@
+{
+  "id": "P0-LIVE-SEQUENCE-009A-RECOVERY",
+  "parent_change_request": "P0-LIVE-SEQUENCE-ANALYZER-009",
+  "phase": "P0",
+  "status": "ready_for_real_channel_sequence",
+  "objective": "Recover and close the unfinished 009 work: independently audit the 007/008/009/010 evidence, secure the explicit trusted inbound roots, implement deterministic Analyzer MCP contracts, run offline regressions, and stop ready for user-led R0 without fabricating Feishu events.",
+  "authorization": {
+    "offline_review_and_tests": true,
+    "project_scripts_and_tests": true,
+    "analyzer_mcp_tools": true,
+    "analyzer_tool_policy_apply": "only_after_offline_gates_and_one_planned_restart review",
+    "real_feishu_upload_or_send": false,
+    "fake_feishu_event": false,
+    "final_p0_gate": false,
+    "project_status_update": false,
+    "binding_change": false,
+    "consumer_topology_change": false,
+    "router_model_or_media_scope_change": false,
+    "cron_oauth_gateway_port_change": false,
+    "core_source_change": false,
+    "model_download_or_network_install": false,
+    "commit_tag_push": false,
+    "p1": false
+  },
+  "allowed_writes": [
+    "E:/project/OpenClaw_VideoFactory/scripts/mcp_ingest_attachment.py",
+    "E:/project/OpenClaw_VideoFactory/scripts/analyzer_mcp.py",
+    "E:/project/OpenClaw_VideoFactory/scripts/run_analyzer_safe.ps1",
+    "E:/project/OpenClaw_VideoFactory/scripts/07_ingest_inbound_media.ps1",
+    "E:/project/OpenClaw_VideoFactory/tests/",
+    "E:/project/OpenClaw_VideoFactory/reports/",
+    "E:/project/OpenClaw_VideoFactory/tasks/todo.md"
+  ],
+  "prohibited_changes": [
+    "C:/Users/Admin/.openclaw/openclaw.json except explicitly approved Analyzer MCP/policy fields after gates",
+    "Binding",
+    "Feishu consumer topology",
+    "zhongshu account",
+    "Router durable model",
+    "tools.media scope",
+    "Cron",
+    "OAuth",
+    "Gateway port",
+    "other 13 existing agents",
+    "OpenClaw core source",
+    "P0 Gate",
+    "PROJECT_STATUS.yaml",
+    "P0_READY",
+    "real Feishu outbound",
+    "fake events",
+    "model downloads",
+    "network dependency installation",
+    "commit/tag/push"
+  ],
+  "baseline_expected": {
+    "openclaw_config_sha256": "3001ec3b85a882deb382cb08f5ebdb1c6b285964ea9933f5f0d5c99bc7d89810",
+    "agents": 17,
+    "bindings": 14,
+    "cron": 4,
+    "target_group_consumers": 1,
+    "router_model": "xiaomimimo/mimo-v2.5-pro",
+    "p0_status": "conditional_not_passed"
+  },
+  "stop_conditions": [
+    "trusted_root_test_failure",
+    "analyzer_contract_test_failure",
+    "unauthorized_config_semantic_diff",
+    "raw_path_or_secret_leak",
+    "production failure requiring rollback",
+    "real Feishu event or outbound send would be required for a claimed pass"
+  ],
+  "rollback": "Restore only newly added 009A project scripts, tests, reports, and explicitly approved Analyzer MCP/policy fields from the pre-apply backup; preserve the already accepted 007 single-group router state."
+}

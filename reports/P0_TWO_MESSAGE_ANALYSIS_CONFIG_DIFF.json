@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-TWO-MESSAGE-ANALYSIS-INTENT-013",
+  "production_config_changed": false,
+  "gateway_restarted": false,
+  "before_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+  "after_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+  "validation": "openclaw config validate exit 0",
+  "topology": {"agents": 17, "bindings": 14, "cron": 4, "target_group_consumers": 1},
+  "router": {
+    "model": "xiaomimimo/mimo-v2.5-pro",
+    "live_allowlist_observed": ["ingest_attachment", "ingest__ingest_attachment", "message", "bundle-mcp"],
+    "offline_new_tool": "ingest__create_analysis_request",
+    "runtime_action_required": "Verify the existing MCP bundle exposes the new namespaced tool; if not, add one allow entry and perform at most one separately authorized Gateway reload before R3."
+  },
+  "prohibited_in_this_turn": ["media scope", "model", "Binding", "Cron", "Agent count", "Gateway port", "PROJECT_STATUS.yaml"]
+}

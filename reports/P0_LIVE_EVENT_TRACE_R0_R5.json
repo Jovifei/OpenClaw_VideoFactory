@@ -1,0 +1,20 @@
+{
+  "event": "P0 live R0-R5",
+  "status": "R3_FAILED_ANALYSIS_INTENT_GATE",
+  "r0": {"status": "passed", "evidence": "reports/P0_R0_EVENT_TRACE_20260718.json"},
+  "r1_old": {"status": "failed", "failure_token": "R1_FAILED:ingest.size_mismatch", "message_id_hash": "acf1611d84a5cc43", "evidence": "reports/P0_R1_EVENT_TRACE_20260718.json", "preserved": true},
+  "r1_replacement": {"status": "passed", "message_id_hash": "20fdee581d994e8c", "message_id_masked": "om_***3d9d", "observed_at": "2026-07-19T09:14:28.821+08:00", "evidence": "reports/P0_R1_EVENT_TRACE_20260719.json"},
+  "r2": {"status": "failed", "failure_token": "R2_FAILED:ANALYZER_CALLED_AFTER_INGEST", "evidence": "reports/P0_R2_EVENT_TRACE_20260720.json", "repair_status": "offline_fix_complete", "old_failure_preserved": true},
+  "r2_replacement": {"status": "passed", "message_id_masked": "om_***9de9", "attachment_action": "ingress_only", "analysis_requested": false, "pre_ingest_media_understanding_count": 0, "router_model": "xiaomimimo/mimo-v2.5-pro", "ingest_calls": 1, "analyzer_calls": 0, "size_bytes": 17247, "stored_size_bytes": 17247, "source_stored_sha_equal": true, "fixture_sha_equal": true, "receipt": "present", "quarantined": true, "content_parsed": false, "reply_returned_to_original_group": true, "evidence": "reports/P0_LIVE_MEDIA_R2_QUALIFICATION_012.json"},
+  "r2v_video_ingress_only": {"status": "passed", "message_id_masked": "om_***27b7", "attachment_action": "ingress_only", "analysis_requested": false, "pre_ingest_media_understanding_count": 0, "router_model": "xiaomimimo/mimo-v2.5-pro", "ingest_calls": 1, "video_analyzer_calls": 0, "size_bytes": 52037, "stored_size_bytes": 52037, "source_stored_sha_equal": true, "fixture_sha_equal": true, "receipt": "present", "quarantined": true, "content_parsed": false, "reply_returned_to_original_group": true, "not_r5": true, "evidence": "reports/P0_LIVE_MEDIA_R2_QUALIFICATION_012.json"},
+  "r3": {"status": "failed", "failure_token": "R3_FAILED:ANALYSIS_INTENT_GATE", "evidence": "reports/P0_R3_TWO_MESSAGE_EVENT_20260720.json", "r4_allowed": false},
+  "r3_old_same_message": {"status": "not_run_invalid_message_shape", "preserved": true},
+  "r3_two_message_reply": {"status": "failed", "failure_token": "R3_FAILED:ANALYSIS_INTENT_GATE", "message_id_masked": "om_***b41", "attachment_message_id_masked": "om_***4d27", "analysis_result_generated": true, "evidence": "reports/P0_R3_TWO_MESSAGE_EVENT_20260720.json"},
+  "r4": "not_run",
+  "r5": "not_run",
+  "final_gate": false,
+  "project_status_updated": false,
+  "repair": {"change_requests": ["reports/change_requests/P0-R2-ANALYSIS-INTENT-GATE-011.json", "reports/change_requests/P0-R3-STORED-HASH-INTEGRITY-012.json", "reports/change_requests/P0-TWO-MESSAGE-ANALYSIS-INTENT-013.json"], "offline_tests": {"python": "122/122", "pester_two_message": "15/15", "pester_router": "46/46", "pester_inbound": "36/36", "v28_schema": "88/88", "mcp_probes": "ingest=2, analyzers=3"}, "config_changed": false},
+  "mutations": "reports only; no code, production config, Binding, Agent, Cron, Gateway, or prior evidence changed",
+  "stop_boundary": "R3 failed; do not enter R4 or run P0 Gate"
+}

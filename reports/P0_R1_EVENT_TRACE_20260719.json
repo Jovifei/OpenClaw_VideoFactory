@@ -1,0 +1,15 @@
+{
+  "event": "R1 replacement p0-file-test.txt",
+  "status": "passed",
+  "message_id_hash": "20fdee581d994e8c",
+  "message_id_masked": "om_***3d9d",
+  "old_failure_message_id_hash": "acf1611d84a5cc43",
+  "channel_route": "feishu[zhongshu] -> existing VideoFactory group -> video-factory",
+  "router": {"model": "xiaomimimo/mimo-v2.5-pro", "tool_calls": ["ingest__ingest_attachment"], "tool_call_count": 1, "supplied_size_bytes": false, "supplied_max_bytes": false, "body_read_or_summarized": false},
+  "ingest": {"channel_download": "completed", "actual_size_bytes": 55, "stored_size_bytes": 55, "source_sha256_matches_stored": true, "sha256_matches_fixture_manifest": true, "trusted_root_id": "video_factory_workspace", "receipt_exists": true, "content_parsed": false, "quarantined": true, "analysis_allowed": true, "status": "quarantined"},
+  "analysis": {"analyzer_call_count": 0, "pre_ingest_media_understanding_count": 0},
+  "reply": {"queued_final": true, "replies": 1, "target": "original Feishu group"},
+  "topology": {"agents": 17, "bindings": 14, "cron": 4, "target_group_consumers": 1, "config_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c"},
+  "evidence_sources": ["C:/Users/Admin/AppData/Local/Temp/openclaw/openclaw-2026-07-19.log", "C:/Users/Admin/.openclaw/agents/video-factory/sessions/7e2d73a3-80bc-428d-ae12-79cf952f65b9.jsonl", "input/feishu/om_x100b6af601da5ca4b17724b7abe3d9d/attachment-000/receipt.json", "tests/fixtures/feishu_delivery/fixture_manifest.json"],
+  "mutations": "none to code/config/Gateway; reports only"
+}

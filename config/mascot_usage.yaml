@@ -1,0 +1,59 @@
+version: 1
+canonical_source: https://github.com/Jovifei/ian-fenzhu-illustrations
+character:
+  name: 小粉飞猪
+  visual:
+  - 低饱和雾粉色实心身体
+  - 小圆鼻和点状眼睛
+  - 小耳朵、小翅膀、细小四肢
+  - 手绘略抖轮廓
+  personality:
+  - 认真但不端着
+  - 轻盈但不轻浮
+  - 有点笨拙但可靠
+  - 冷幽默
+  - 先观察再拆解再改装
+  meaning: 普通的东西经过认真改装，也能长出自己的翅膀。
+exposure_policy:
+  brand_signature_video_ratio: 1.0
+  active_character_video_ratio_target:
+  - 0.5
+  - 0.7
+  pig_led_special_ratio_target:
+  - 0.05
+  - 0.12
+  active_appearances_per_video:
+  - 1
+  - 3
+  active_screen_time_seconds:
+  - 2
+  - 8
+modes:
+- opening_corner_mark
+- knowledge_point_worker
+- warning_or_question_reaction
+- transition_bumper
+- ending_signature
+- pig_lab_lead
+preferred_actions:
+- 拆
+- 装
+- 修
+- 拧
+- 搬
+- 拉
+- 推
+- 接
+- 测
+- 焊
+- 标记
+- 盖章
+- 搭桥
+- 搬运数据包
+rules:
+- 角色必须参与观点的核心动作，不能只是飘在角落。
+- 技术信息密集时降级为角标或结尾签名。
+- 不得遮挡代码、报文、图表、字幕和关键操作。
+- 不做粉红佩奇式儿童角色，不使用高饱和粉、不使用闪亮大眼睛。
+- 不要每条都重复飞机、云朵、传送带和同一构图。
+- 角色资产失败不得阻塞主视频输出。

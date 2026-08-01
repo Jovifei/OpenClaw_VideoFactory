@@ -1,0 +1,36 @@
+{
+  "change_request_id": "P0-R4-AUDIO-RESULT-REMEDIATION-068",
+  "created_at": "2026-08-01T20:15:00+08:00",
+  "authorization": "Jovi direct instruction: solve the persistent empty audio parsing result after inspecting the actual completed audio artifact.",
+  "scope": "Repair only server-owned presentation of the established top-level transcribe_audio transcript.json artifact; preserve audio Ticket, receipt, Analyzer, GPU, model, and MIME contracts.",
+  "allowed_files": [
+    "scripts/mcp_ingest_attachment.py",
+    "tests/test_two_message_mcp_surface.py",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "reports/P0_R4_AUDIO_RESULT_REMEDIATION_068.*",
+    "reports/change_requests/P0-R4-AUDIO-RESULT-REMEDIATION-068.json"
+  ],
+  "required_contracts": [
+    "A completed top-level transcribe_audio transcript.json produces one bounded public transcript reply.",
+    "A nested-only result object is rejected as the wrong artifact shape.",
+    "Missing, malformed, wrong-tool, wrong-name, and out-of-jobs artifacts remain fail-closed."
+  ],
+  "prohibited": [
+    "analyzer_mcp.py changes",
+    "media_action_ticket.py or analysis_request.py changes",
+    "Ticket, receipt, SHA, GPU, model, Binding, Agent, Cron, OAuth, or configuration changes",
+    "new live Feishu action or Ticket replay",
+    "R5, P0 Gate, PROJECT_STATUS.yaml, commit, push, or tag"
+  ],
+  "verification": {
+    "real_artifact": "completed transcribe_audio transcript.json; top-level transcript length 80; engine faster-whisper; device cuda; model medium",
+    "focused_tests": "3/3 passed",
+    "target_tests": "170/170 passed in 29.071 seconds",
+    "py_compile": "passed",
+    "real_artifact_loader": "ready; bounded audio heading; no local path",
+    "project_venv_import_probe": "FAIL: faster_whisper is not installed in .venv; no install or model download performed",
+    "live_retest_after_repair": "not_run"
+  },
+  "status": "completed_offline"
+}

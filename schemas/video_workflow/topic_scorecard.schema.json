@@ -1,0 +1,507 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw-videofactory.local/schemas/video_workflow/topic_scorecard.schema.json",
+  "title": "Topic Scorecard (explainable)",
+  "type": "object",
+  "required": [
+    "topic_id",
+    "dimensions",
+    "decision",
+    "source",
+    "provenance",
+    "status",
+    "schema_version"
+  ],
+  "properties": {
+    "topic_id": {
+      "type": "string"
+    },
+    "dimensions": {
+      "type": "object",
+      "required": [
+        "audience_pain",
+        "novelty",
+        "evidence_strength",
+        "account_fit",
+        "visual_potential",
+        "production_cost",
+        "competition",
+        "comment_potential",
+        "copyright_risk",
+        "platform_risk",
+        "freshness",
+        "confidence"
+      ],
+      "properties": {
+        "audience_pain": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "novelty": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "evidence_strength": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "account_fit": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "visual_potential": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "production_cost": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "competition": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "comment_potential": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "copyright_risk": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "platform_risk": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "freshness": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "confidence": {
+          "type": "object",
+          "required": [
+            "score",
+            "weight",
+            "reason"
+          ],
+          "properties": {
+            "score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 10
+            },
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reason": {
+              "type": "string"
+            },
+            "uncertainty": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "data_time": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "auto_shortlist",
+        "manual_review",
+        "hard_reject"
+      ]
+    },
+    "reject_reason": {
+      "type": "string"
+    },
+    "duplicate_of": {
+      "type": "string"
+    },
+    "source_conflict": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "openclaw_skill",
+            "provider_adapter",
+            "human",
+            "platform",
+            "synthetic_fixture"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "rejected",
+        "superseded",
+        "deprecated"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "validation_errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "additionalProperties": false
+}

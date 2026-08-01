@@ -1,0 +1,31 @@
+{
+  "task": "P0-R2-INTENT-GATE-AND-HASH-INTEGRITY-011",
+  "status": "negative_evidence_preserved",
+  "event": {
+    "message_id_masked": "om_***337b",
+    "retry_message_id_masked": "om_***3d8",
+    "caption": "empty (media marker only)",
+    "file_name": "image.png",
+    "detected_kind": "png",
+    "content_type": "image/png",
+    "router_model": "xiaomimimo/mimo-v2.5-pro"
+  },
+  "observed_order": [
+    {"at": "2026-07-20T00:13:48.666+08:00", "event": "Feishu Channel delivered image metadata and MediaPath"},
+    {"at": "2026-07-20T00:13:54.490+08:00", "event": "Router called ingest__ingest_attachment", "size_or_max_supplied": false},
+    {"at": "2026-07-20T00:13:55.148+08:00", "event": "ingest returned quarantined receipt", "analysis_allowed": true, "analysis_requested_field": "absent"},
+    {"at": "2026-07-20T00:14:01.288+08:00", "event": "Router called analyzers__analyze_image", "reason_observed": "PNG type plus successful quarantine"},
+    {"at": "2026-07-20T00:14:01.316+08:00", "event": "Analyzer rejected", "error_code": "stored_hash_mismatch"}
+  ],
+  "redacted_tool_arguments": {
+    "ingest": ["message_id", "attachment_index", "attachment_count", "source_media_path(channel-bound)", "original_file_name", "content_type", "chat_id", "sender_id"],
+    "analyzer": ["job_id", "message_id", "attachment_index", "receipt_path(quarantine)", "stored_path(quarantine)", "analysis_policy"]
+  },
+  "source_findings": {
+    "scripts/mcp_ingest_attachment.py": "analysis_allowed was derived from quarantine safety only and had no intent contract",
+    "scripts/analyzer_mcp.py": "Analyzer enforced analysis_allowed but not analysis_requested or attachment_action",
+    "AGENTS.md": "receipt success was documented as sufficient for dispatch"
+  },
+  "classification": ["missing_intent_field", "receipt_semantics_bug", "model_autonomy"],
+  "preservation": "The real event, session, Gateway log, receipt, and quarantine copies are retained; no PASS relabeling."
+}

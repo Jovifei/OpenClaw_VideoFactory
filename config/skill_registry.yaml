@@ -1,0 +1,155 @@
+version: 2
+policy:
+  vendor_source_code: false
+  auto_run_remote_installers: false
+  require_manual_review_before_enable: true
+  bind_local_services_to_loopback: true
+  pin_versions_when_available: true
+core_external:
+  remotion_best_practices:
+    repository: https://github.com/remotion-dev/skills
+    path: skills/remotion
+    license: review_repository
+    tier: required
+    purpose: Remotion 布局、动画、字幕、音频、转场和渲染规则
+    install_mode: copy_reviewed_skill_only
+    enabled: true
+  video_podcast_maker:
+    repository: https://github.com/Agents365-ai/video-podcast-maker
+    ref: v2.3.0
+    path: skills/video-podcast-maker
+    license: MIT
+    tier: recommended
+    purpose: 选题研究、脚本、TTS、Remotion、字幕、发布资料的工作流参考
+    install_mode: reference_and_selective_adapter
+    enabled: true
+    notes:
+    - 原项目主要测试 macOS/Linux，Windows 下只复用规则、模板思想和可移植脚本
+    - 不让它接管 OpenClaw 的任务状态
+  comfyui_mcp:
+    repository: https://github.com/artokun/comfyui-mcp
+    ref: v0.30.0
+    license: MIT
+    tier: required_for_gpu
+    purpose: 通过 Agent/MCP 控制本地 ComfyUI，运行固定图片、短镜头和增强工作流
+    install_mode: isolated_local_service
+    enabled: true
+    restrictions:
+    - unattended 模式禁止自动下载陌生模型和自定义节点
+    - 只允许调用白名单 workflow
+    - 服务仅监听 127.0.0.1
+  capcut_mate:
+    repository: https://github.com/Hommy-master/capcut-mate
+    ref: v8.0.69
+    license: Apache-2.0
+    tier: preferred_optional
+    purpose: FastAPI 形式生成剪映草稿、添加素材、字幕、特效和关键帧
+    install_mode: isolated_local_service
+    enabled: false
+    restrictions:
+    - 服务仅监听 127.0.0.1
+    - 只生成草稿，不替代主渲染链
+    - 默认不调用云端渲染
+  jianying_editor_skill:
+    repository: https://github.com/luoluoluo22/jianying-editor-skill
+    ref: main
+    license: MIT
+    tier: optional_windows
+    purpose: Windows 剪映草稿、时间线、配音、字幕、特效、录屏和旧版自动导出
+    install_mode: reviewed_local_skill
+    enabled: false
+    restrictions:
+    - 不执行 README 中的远程 PowerShell 一键脚本
+    - 手动 git clone 并审核 scripts
+    - 自动导出只在专用 Windows 用户、剪映 5.9 或更低版本中测试
+    - 日常生产默认只生成草稿，用户手动打开和导出
+  ian_fenzhu_illustrations:
+    repository: https://github.com/Jovifei/ian-fenzhu-illustrations
+    license: review_repository
+    tier: recommended_optional_branding
+    purpose: 作为小粉猪角色系统来源，提高视频辨识度和趣味性
+    install_mode: inspect_and_extract_or_adapt
+    enabled: true
+    notes:
+    - Codex先审查仓库结构、LICENSE、skill 与素材组织。
+    - 优先复用其已有 skill 或角色素材；如不适合直接运行，则提炼为本地 pink-pig-mascot-director skill。
+    - 角色系统不能影响主成片链路稳定性。
+  larksuite_cli:
+    repository: https://github.com/larksuite/cli
+    maintainer: larksuite
+    license: MIT
+    tier: required_for_feishu
+    purpose: 飞书官方CLI和Agent Skills，用于消息、文件、事件、Drive和文档操作
+    install_mode: official_npm_installer_then_pin_version
+    enabled: true
+    skills_used:
+    - lark-shared
+    - lark-im
+    - lark-event
+    - lark-drive
+    - lark-doc
+    - lark-markdown
+    restrictions:
+    - OpenClaw Feishu channel仍是主要入站通道。
+    - 机器人身份为默认发送身份。
+    - 高风险写操作必须显式确认。
+    - 凭据不得进入仓库或日志。
+runtime_tools:
+  faster_whisper:
+    repository: https://github.com/SYSTRAN/faster-whisper
+    version: 1.2.1
+    license: MIT
+    purpose: CUDA 转录、VAD、词级时间戳
+    enabled: true
+  whisperx:
+    repository: https://github.com/m-bain/whisperX
+    ref: main
+    license: BSD-2-Clause
+    purpose: 高精度词级对齐和多说话人分析
+    enabled: false
+    use_when: 参考视频、多角色或字幕对齐要求高
+  pyscenedetect:
+    repository: https://github.com/Breakthrough/PySceneDetect
+    version: '0.7'
+    license: BSD-3-Clause
+    purpose: 参考视频切镜、转场和镜头时长分析
+    enabled: true
+  auto_editor:
+    repository: https://github.com/WyattBlue/auto-editor
+    version: 31.2.0
+    license: Unlicense
+    purpose: 录屏、口播和长素材的静音/静止初剪
+    enabled: false
+  real_esrgan:
+    repository: https://github.com/xinntao/Real-ESRGAN
+    ref: v0.3.0
+    license: BSD-3-Clause
+    purpose: 低分辨率图片和 AI 短镜头放大
+    enabled: true
+experimental_reference_only:
+  openmontage:
+    repository: https://github.com/calesthio/OpenMontage
+    ref: main
+    license: AGPL-3.0
+    purpose: 研究分镜、审批门、参考视频分析、素材检索和质量门禁设计
+    enabled: false
+    install_mode: separate_sandbox_only
+    notes:
+    - 不复制其 AGPL 代码到本项目
+    - 仅参考方法，或作为隔离外部程序运行
+  openreels:
+    repository: https://github.com/tsensei/OpenReels
+    ref: main
+    license: MIT
+    purpose: 快速试验 topic-to-short、风格 archetype 和自动评分
+    enabled: false
+    install_mode: separate_sandbox_only
+  media_crawler:
+    repository: https://github.com/NanmiCoder/MediaCrawler
+    ref: main
+    purpose: 平台公开搜索与评论研究
+    enabled: false
+    install_mode: never_default
+    notes:
+    - 涉及平台条款、登录状态、抓取频率和用途限制
+    - 本项目默认使用公开网页检索、用户提供评论和手工导入数据

@@ -1,0 +1,33 @@
+{
+  "id": "P0-DEFERRED-CONTINUATION-001",
+  "status": "approved_by_user_attachment",
+  "scope": [
+    "Prepare generated non-sensitive Feishu delivery fixtures",
+    "Audit the existing inbound media quarantine implementation",
+    "Prepare real Feishu inbound user instructions and read-only readiness evidence",
+    "Run bounded lark-cli dry-runs and only conditionally run the explicitly authorized target-group smoke",
+    "Run read-only existing-agent regression",
+    "Organize current P0 evidence without running the final gate",
+    "Prepare P1 planning documents without implementing P1"
+  ],
+  "allowed_writes": [
+    "tests/fixtures/feishu_delivery",
+    ".gitignore",
+    "reports",
+    "tasks/todo.md",
+    "tasks/lessons.md"
+  ],
+  "prohibited": [
+    "Any Codex CLI command or version check before the exact resume phrase",
+    "Codex CLI upgrade or login",
+    "OpenClaw configuration or permission changes",
+    "Starting a second Feishu event consumer",
+    "Downloading dependencies, models, or network media",
+    "Registering Cron",
+    "Running the final P0 Gate",
+    "Changing PROJECT_STATUS.yaml",
+    "Implementing P1 code"
+  ],
+  "stop_policy": "Stop only the affected subtask on its hard-stop condition and continue independent N tasks.",
+  "approval_source": "Jovi attachment 7958d85d-21a6-4e86-afb3-ba8f03dc8717"
+}

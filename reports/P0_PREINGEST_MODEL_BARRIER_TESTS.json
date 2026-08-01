@@ -1,0 +1,29 @@
+{
+  "suite": "P0_PREINGEST_MODEL_BARRIER_TESTS",
+  "status": "not_run_global_change_approval_required",
+  "reason": "No project-scoped pre-agent interceptor is active. Creating or activating the only supported interceptor requires a global OpenClaw configuration change, which is explicitly outside this authorization.",
+  "historical_media_ingest_regression": "32/32 previously passed; not re-run because no source change was authorized or applied in this task.",
+  "required_next_suite": [
+    "TXT, PNG and MP4 attachment events: deterministic ingest and pre_ingest_model_call_count=0",
+    "PNG embedded instruction and TXT prompt injection: no OCR, parser, execution or model call",
+    "caption, MIME/signature/size/traversal/reparse/idempotency failure cases: no model call",
+    "plain text without an attachment: model_call_count=1",
+    "success reply: standard ingress status only; tool failure: structured failure only"
+  ],
+  "required_evidence_fields": [
+    "pre_ingest_model_call_count",
+    "attachment_payload_forwarded",
+    "ocr_invoked",
+    "video_decode_invoked",
+    "transcription_invoked",
+    "content_parser_invoked"
+  ],
+  "required_success_values": {
+    "pre_ingest_model_call_count": 0,
+    "attachment_payload_forwarded": false,
+    "ocr_invoked": false,
+    "video_decode_invoked": false,
+    "transcription_invoked": false,
+    "content_parser_invoked": false
+  }
+}

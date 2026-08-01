@@ -1,0 +1,11 @@
+{
+  "status": "unsupported_or_unproven",
+  "result_code": "FULL_AGENT_PROXY_UNSUPPORTED_OR_UNPROVEN",
+  "source_findings": {
+    "public_low_level_capability": "api.runtime.agent.runEmbeddedAgent",
+    "capability_scope": "embedded agent execution with separately supplied session/workspace/prompt parameters",
+    "missing_proof": ["reuse current core agent session", "reuse original host reply dispatcher", "preserve video-factory workspace and all skills/tools", "preserve standard agent behavior for every normal text message", "safe fallback from plugin-owned inbound claim to original core Binding"]
+  },
+  "decision": "Do not implement a manual proxy or claim equivalence.",
+  "production_calls": 0
+}

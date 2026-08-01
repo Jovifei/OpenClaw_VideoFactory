@@ -1,0 +1,24 @@
+{
+  "schema": "p0_zhongshu_cutover_preflight_034_v1",
+  "status": "CUTOVER_PRECHECK_BLOCKED:RPC_CREDENTIAL_INJECTION_MISSING",
+  "gates": {
+    "OPENCLAW_TASK_GATE_CLEAR": "PASS",
+    "CORE_FEISHU_CURRENT_CONSUMER_PROVEN": "BLOCKED",
+    "PROJECT_GATEWAY_STOPPED": "PASS",
+    "ROLLBACK_ARTIFACTS_READY": "BLOCKED",
+    "RPC_CREDENTIAL_INJECTION_READY": "BLOCKED",
+    "CONFIG_SHA_MATCH": "PASS",
+    "CORE_CONTROL_EXECUTE_AVAILABLE": "BLOCKED",
+    "PROJECT_PRODUCTION_GATEWAY_AVAILABLE": "BLOCKED"
+  },
+  "blocking_reasons": [
+    "OPENCLAW_GATEWAY_TOKEN absent from the maintenance environment",
+    "bounded live RPC channels.status probe did not complete; Core consumer state is unknown",
+    "033 control and rollback scripts reject --execute with PRODUCTION_EXECUTION_DISABLED_033",
+    "scripts/feishu_gateway/start_gateway.ps1 starts runtime_server in offline mode"
+  ],
+  "core_stop_performed": false,
+  "project_gateway_started": false,
+  "rollback_invoked": false,
+  "secrets": "not persisted"
+}

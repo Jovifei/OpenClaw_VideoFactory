@@ -1,0 +1,77 @@
+{
+  "task": "P0-LIVE-MEDIA-QUALIFICATION-AND-GIT-PUBLISH-012",
+  "captured_at": "2026-07-20T21:25:00+08:00",
+  "phase": "P0",
+  "production_mutation": false,
+  "gateway_restart": false,
+  "config": {
+    "path": "~/.openclaw/openclaw.json",
+    "sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+    "validate": "pass",
+    "router_model": "xiaomimimo/mimo-v2.5-pro",
+    "router_fallbacks": ["xiaomimimo/mimo-v2.5-pro"],
+    "media_scope": {
+      "image": "deny for target Feishu group key prefix; default allow",
+      "audio": "deny for target Feishu group key prefix; default allow",
+      "video": "deny for target Feishu group key prefix; default allow"
+    }
+  },
+  "topology": {
+    "agents": 17,
+    "bindings": 14,
+    "cron": 4,
+    "target_group_consumers": 1,
+    "video_factory_binding_count": 1,
+    "internal_analyzer_bindings": 0
+  },
+  "mcp": {
+    "ingest_tools": 1,
+    "ingest_diagnostics": 0,
+    "analyzer_tools": 3,
+    "analyzer_diagnostics": 0
+  },
+  "fixtures": {
+    "manifest_path": "tests/fixtures/feishu_delivery/fixture_manifest.json",
+    "manifest_sha256": "954cb82114a4c4336f2b28237104427de98663d415bebd322b2fe877f4ba43f6",
+    "png_sha256": "624223e0f8d14374d40301574b721c9debd46d4168ad4c44d06767e5f74a4214",
+    "mp4_analysis_sha256": "ca844094b316103d6084b59936685c1be8037174044cf4a2d4041db6acb689fc"
+  },
+  "latest_real_events": {
+    "png": {
+      "message_id": "om_***9de9",
+      "file": "image.png",
+      "size_bytes": 17247,
+      "status_before_parent_gate": "pending"
+    },
+    "mp4": {
+      "message_id": "om_***27b7",
+      "file": "p0-video-analysis-test.mp4",
+      "size_bytes": 52037,
+      "status_before_parent_gate": "pending_ingress_only"
+    }
+  },
+  "prior_failure_preserved": "R2_FAILED:ANALYZER_CALLED_AFTER_INGEST",
+  "qualification_before_this_task": {
+    "R0": "PASS",
+    "R1": "PASS",
+    "R2": "pending fresh parent verification",
+    "R2V_VIDEO_INGRESS_ONLY": "pending parent verification",
+    "R3": "NOT_RUN",
+    "R4": "NOT_RUN",
+    "R5": "NOT_RUN",
+    "P0": "conditional_not_passed"
+  },
+  "git": {
+    "is_work_tree": true,
+    "branch": "phase/p0-gate-correction",
+    "head": "UNBORN_NO_COMMITS",
+    "remote": "NONE_REPORTED",
+    "status": "ALL_WORKSPACE_FILES_UNTRACKED"
+  },
+  "child_reviews": {
+    "A": "PASS",
+    "B": "PASS_AFTER_ATTEMPT_2; ATTEMPT_1_COMPLETION_TIMEOUT_RETAINED",
+    "C": "PASS_WITH_EGRESS_SCOPE_GAPS_NOT_YET_ACTIONABLE",
+    "D": "PASS_WITH_PUBLICATION_BLOCKERS_REPORTED"
+  }
+}

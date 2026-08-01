@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw-videofactory.local/schemas/video_workflow/postmortem.schema.json",
+  "title": "Postmortem (immutable)",
+  "type": "object",
+  "required": [
+    "postmortem_id",
+    "publish_id",
+    "successful_patterns",
+    "failed_patterns",
+    "failure_class",
+    "new_topic_signals",
+    "style_adjustments",
+    "skill_update_candidates",
+    "sample_size",
+    "source",
+    "provenance",
+    "status",
+    "schema_version"
+  ],
+  "properties": {
+    "postmortem_id": {
+      "type": "string"
+    },
+    "publish_id": {
+      "type": "string"
+    },
+    "successful_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "failed_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "failure_class": {
+      "type": "string",
+      "enum": [
+        "hook",
+        "title",
+        "ai_flavor",
+        "pacing",
+        "copyright",
+        "other"
+      ]
+    },
+    "new_topic_signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "style_adjustments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dimension": {
+            "type": "string"
+          },
+          "change": {
+            "type": "string"
+          },
+          "evidence_count": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "skill_update_candidates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sample_size": {
+      "type": "integer",
+      "description": "low sample => no global rule change (anti-overfitting)"
+    },
+    "immutable": {
+      "type": "boolean",
+      "const": true
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "openclaw_skill",
+            "provider_adapter",
+            "human",
+            "platform",
+            "synthetic_fixture"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "rejected",
+        "superseded",
+        "deprecated"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "validation_errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "additionalProperties": false
+}

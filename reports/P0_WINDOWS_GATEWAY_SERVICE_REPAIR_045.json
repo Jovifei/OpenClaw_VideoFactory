@@ -1,0 +1,64 @@
+{
+  "task": "P0-OPENCLAW-WINDOWS-SERVICE-AUTH-REPAIR-045",
+  "terminal_status": "WINDOWS_SERVICE_AUTH_REPAIR_BLOCKED:METADATA_OK_BUT_RUNTIME_TOKEN_DIFFERS",
+  "scope": "Windows OpenClaw Gateway service registration only",
+  "credential_handling": {
+    "user_scope_token_present": true,
+    "maintenance_child_inherited_token": true,
+    "command_lines_contained_token": false,
+    "token_value_recorded": false
+  },
+  "preflight": {
+    "project_gateway_process_count": 0,
+    "active_or_unknown_task_count": 0,
+    "gateway_healthy": true,
+    "config_sha_matches_030_baseline": true,
+    "agents_baseline": 17,
+    "bindings_baseline": 14,
+    "cron_baseline": 4
+  },
+  "service_repair": {
+    "drift_classification": "SERVICE_BINARY_VERSION_DRIFT",
+    "private_backup_created": true,
+    "backup_file_count": 4,
+    "official_install_invoked_once": true,
+    "install_command_return": "timeout_unstructured",
+    "post_install_service_config_audit_ok": true,
+    "post_install_node_installer_process_count": 0
+  },
+  "managed_restart": {
+    "invoked_once": true,
+    "old_pid": 67516,
+    "new_pid": 45180,
+    "exit_code": 0,
+    "result": "restarted",
+    "command_elapsed_seconds": 31.505,
+    "port_outage_duration_independently_measured": false,
+    "recovery_start_invoked": false
+  },
+  "post_restart": {
+    "gateway_service_loaded": true,
+    "gateway_rpc_probe_ok": true,
+    "service_config_audit_ok": true,
+    "gateway_listener_count": 1,
+    "project_gateway_process_count": 0,
+    "config_sha256": "D6A97F1025698C08F086C1EE565E1AAC1AD30116037E4F135688EDBB1171BE8C",
+    "config_sha_matches_030_baseline": true,
+    "core_consumer_runtime_state": "unknown"
+  },
+  "rpc_health_only": {
+    "connect_attempted": true,
+    "health_requested": false,
+    "auth_status": "rpc_unauthorized",
+    "auth_error_code": "INVALID_REQUEST",
+    "runtime_cli_auth_classification": "TOKEN_MISMATCH",
+    "business_session_or_agent_call": false
+  },
+  "verification": {
+    "unittest_passed": 31,
+    "pip_check_ok": true,
+    "credential_candidates_in_backup": 0,
+    "gateway_command_line_contains_token": false
+  },
+  "prohibited_actions_performed": false
+}

@@ -1,0 +1,28 @@
+{
+  "task": "P0-ZHONGSHU-MAINTENANCE-READINESS-031",
+  "final_status": "ZHONGSHU_MAINTENANCE_BLOCKED_CONTROL_CONTRACT",
+  "scope": "prepared_only_no_cutover",
+  "gates": {
+    "baseline_captured": true,
+    "active_task_gate": "pass",
+    "consumer_observability": "blocked",
+    "core_binding_control_contract": "blocked",
+    "project_gateway_startup_contract": "blocked",
+    "rpc_credential_injection": "not_ready_for_real_auth",
+    "rollback_execution": "blocked",
+    "maintenance_authorization": "not_received"
+  },
+  "verification": {
+    "focused_python_tests": "31_passed",
+    "full_python_tests": "210_passed",
+    "full_pester_tests": "101_passed",
+    "schema_tests": "88_passed",
+    "pip_check": "passed",
+    "json_artifacts": "5_parsed",
+    "git_diff_check": "0_issues",
+    "secret_scan": "0_candidate_files",
+    "dirty_worktree_excluded_scope_paths": 2
+  },
+  "prohibited_actions_executed": [],
+  "next_required_action": "Qualify a target-specific Core stop/restore and production Project start/stop contract without changing current production state."
+}

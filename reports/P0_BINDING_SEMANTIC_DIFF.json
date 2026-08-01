@@ -1,0 +1,8 @@
+{
+  "status": "no_production_change",
+  "before_config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+  "after_config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+  "semantic_changes": [],
+  "target_binding": {"before":"core route: video-factory / feishu / group oc_***1555","after":"unchanged core route"},
+  "forbidden_change_checks": {"models":false,"runtime":false,"oauth":false,"gateway":false,"channels":false,"agents":false,"cron":false,"tool_policy":false}
+}

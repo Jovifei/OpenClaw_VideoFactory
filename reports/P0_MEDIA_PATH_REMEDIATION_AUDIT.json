@@ -1,0 +1,64 @@
+{
+  "status": "superseded_by_P0_MEDIA_PATH_REMEDIATION_AUDIT_V2",
+  "superseded_by": "reports/P0_MEDIA_PATH_REMEDIATION_AUDIT_V2.json",
+  "superseded_reason": "P0-MEDIA-MIME-001 repaired and verified the PNG MIME-policy gap identified by this audit; original discovery and evidence remain preserved below.",
+  "audited_script": "scripts/07_ingest_inbound_media.ps1",
+  "production_code_modified": false,
+  "real_docx_body_read": false,
+  "fixtures": "tests/fixtures/feishu_delivery",
+  "existing_pester_suite": {
+    "command": "Invoke-Pester -Script tests/Test-IngestInboundMedia.ps1 -PassThru",
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "required_validations": [
+    {"name": "chinese_filename", "passed": true},
+    {"name": "txt", "passed": true, "sha256": "c8a155b4d5eccafd2b36758b9fa67af186174dfe6e99e184b56231bd8382663d"},
+    {"name": "png", "passed": true, "sha256": "624223e0f8d14374d40301574b721c9debd46d4168ad4c44d06767e5f74a4214"},
+    {"name": "mp4", "passed": true, "sha256": "ea8ce1539fc1c7520b1bb1d275529749a5f4190e82516f12b3e9b98eba7632cc"},
+    {"name": "missing_path_rejected", "passed": true, "observed_exit_code": 1},
+    {"name": "over_max_bytes_rejected", "passed": true, "observed_exit_code": 1},
+    {"name": "path_traversal_rejected", "passed": true, "observed_exit_code": 1},
+    {"name": "duplicate_message_id_idempotent", "passed": true, "observed_exit_code": 0},
+    {"name": "reparse_escape_rejected", "passed": true, "observed_exit_code": 1},
+    {"name": "source_and_quarantine_sha256_match", "passed": true, "case_count": 4},
+    {"name": "receipt_fields_complete", "passed": true, "field_count": 18, "case_count": 4},
+    {"name": "content_parsed_false", "passed": true, "case_count": 4},
+    {"name": "quarantined_true", "passed": true, "case_count": 4},
+    {"name": "inbound_and_receipt_git_ignored", "passed": true, "case_count": 4, "tracked_file_count": 0}
+  ],
+  "stored_fixture_paths": [
+    "input/feishu/<generated-message-id>/original/p0-file-test.txt",
+    "input/feishu/<generated-message-id>/original/中文文件.txt",
+    "input/feishu/<generated-message-id>/original/p0-image-test.png",
+    "input/feishu/<generated-message-id>/original/p0-video-test.mp4"
+  ],
+  "receipt_policy": {
+    "fields": [
+      "channel", "account_id", "chat_id", "sender_id", "message_id", "original_name",
+      "source_path", "stored_path", "content_type", "extension", "size_bytes", "sha256",
+      "source_created_at", "source_modified_at", "received_at", "quarantined",
+      "content_parsed", "processing_policy"
+    ],
+    "identifiers_masked": true,
+    "content_parsed": false,
+    "quarantined": true
+  },
+  "additional_safety_probe": {
+    "name": "png_wrong_mime_rejection",
+    "expected": "reject .png with text/plain ContentType",
+    "observed_exit_code": 0,
+    "passed": false,
+    "finding": "The extension switch has no explicit .png MIME rule, so the default metadata-only policy accepts a mismatched PNG ContentType.",
+    "action_taken": "reported_only_no_code_change"
+  },
+  "harness_notes": [
+    "The first supplemental harness stopped after one successful test ingest because Windows PowerShell lacks System.IO.Path.GetRelativePath.",
+    "The second harness completed four positive ingests and then stopped because expected native stderr was promoted to a parent terminating error.",
+    "The final bounded continuation reused those four receipts, captured native exit codes safely, and completed all remaining checks without deleting prior evidence."
+  ],
+  "temporary_source_root": "%TEMP%\\p0_media_audit_20260715001156",
+  "historical_files_deleted": false
+}

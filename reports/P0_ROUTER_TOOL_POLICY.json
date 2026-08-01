@@ -1,0 +1,75 @@
+{
+  "task": "P0-SINGLE-GROUP-MEDIA-ROUTER-007",
+  "scope": "video-factory router tool policy (agents.list[video-factory].tools + subagents)",
+  "status": "prepared_pending_production_gate",
+  "enforceable_by": "OpenClaw tool policy (allow non-empty => everything else blocked; deny always wins). NOT prompt-only.",
+  "durable_model_change": {
+    "agents.list[video-factory].model.primary": "xiaomimimo/mimo-v2.5-pro (text_only)",
+    "agents.list[video-factory].model.fallbacks": ["xiaomimimo/mimo-v2.5-pro"],
+    "rationale": "text-only entry; cannot accept image pixels; attachments arrive as media://inbound/* refs"
+  },
+  "allow": [
+    "ingest_attachment",
+    "message",
+    "sessions_spawn",
+    "sessions_send",
+    "sessions_history",
+    "sessions_list",
+    "session_status",
+    "memory_search",
+    "memory_get"
+  ],
+  "allow_notes": [
+    "ingest_attachment: the only ingestion channel; args bound by Channel adapter, model cannot pass arbitrary paths",
+    "message: reply to original group only; target bound by Channel context (session.sendPolicy + visibleReplies)",
+    "sessions_spawn: restricted by subagents.allowAgents whitelist of 3 analyzers; requireAgentId=true",
+    "sessions_send/history/list/session_status: query/dispatch state; args carry receipt_path/stored_path/job_id/analysis_policy only",
+    "memory_search/memory_get: P0 task management; optional, kept for MVP"
+  ],
+  "deny": [
+    "group:runtime",
+    "group:fs",
+    "group:media",
+    "group:web",
+    "group:ui",
+    "group:agents",
+    "group:automation",
+    "group:plugins",
+    "group:nodes",
+    "sessions_yield",
+    "subagents"
+  ],
+  "deny_notes": [
+    "group:runtime (exec/process/code_execution/bash): no host commands on the router",
+    "group:fs (read/write/edit/apply_patch): no arbitrary file IO; ingest_attachment does controlled fs internally",
+    "group:media (image/image_generate/music_generate/video_generate/tts): no pre-reply media understanding, no generation",
+    "group:web (web_search/x_search/web_fetch): no outbound web from group text",
+    "group:ui (browser/canvas): no browser",
+    "group:agents (agents_list/get_goal/create_goal/update_goal/update_plan/skill_workshop): no agent/skill self-expansion",
+    "group:automation (heartbeat_respond/cron/gateway): no config/cron mutation",
+    "group:plugins (all plugin/MCP tools): the ingest MCP server is allowlisted by exact name ingest__ingest_attachment, not by group:plugins",
+    "group:nodes: no node orchestration",
+    "sessions_yield / subagents: router does not yield; subagents tool blocked, only sessions_spawn allowed"
+  ],
+  "exec_mode_change": "remove agents.list[video-factory].tools.exec.mode=full (avoid audit ambiguity with deny group:runtime)",
+  "subagents": {
+    "allowAgents": [
+      "video-factory-image-analyzer",
+      "video-factory-audio-analyzer",
+      "video-factory-video-analyzer"
+    ],
+    "requireAgentId": true,
+    "maxConcurrent": 3,
+    "maxChildrenPerAgent": 3,
+    "maxSpawnDepth": 1
+  },
+  "elevated_note": "tools.elevated.enabled=true + allowFrom.feishu=[*] is GLOBAL and NOT changed this round. Elevated does NOT override tool deny (docs: 'Elevated is not skill-scoped and does not override tool allow/deny'). With deny group:runtime, elevated cannot grant exec to the router.",
+  "mcp_tool_naming": "The ingest_attachment MCP server is registered as mcp.servers.ingest; its tool is exposed as ingest__ingest_attachment under bundle-mcp. The router allow list must include the exact name ingest__ingest_attachment (OpenClaw may also accept the bare name; both are added to be safe).",
+  "not_prompt_only": "All constraints are enforced by agents.list[video-factory].tools.allow/deny + subagents.allowAgents, not by AGENTS.md or system prompt. AGENTS.md documents the flow rules; tool policy is the hard stop.",
+  "no_global_defaults_change": "agents.defaults.model, agents.defaults.imageModel (unset), tools.exec, tools.elevated, tools.web, tools.sessions.visibility, skills.entries are NOT changed. Only agents.list[video-factory] is tightened. Other 13 agents unaffected.",
+  "verification": [
+    "openclaw sandbox explain --agent video-factory (effective allow/deny)",
+    "openclaw logs (agents/tool-policy audit entries)",
+    "offline Test-SingleGroupMediaRouter.ps1 extended assertions"
+  ]
+}

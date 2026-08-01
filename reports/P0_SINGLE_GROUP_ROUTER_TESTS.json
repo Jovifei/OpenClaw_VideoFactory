@@ -1,0 +1,17 @@
+{
+  "task": "P0-SINGLE-GROUP-MEDIA-ROUTER-007",
+  "test_runner": "Pester 3.4.0 (PowerShell) + Python unittest (stdlib)",
+  "results": {
+    "Test-SingleGroupMediaRouter.ps1": {"passed": 45, "failed": 0, "total": 45, "breakdown": "15 original + 5 scope + 10 router-policy + 11 internal-analyzer + 4 gpu-lock"},
+    "Test-IngestInboundMedia.ps1": {"passed": 32, "failed": 0, "total": 32, "note": "legacy regression, unchanged by multi-attachment extension"},
+    "test_ingest_attachment_core.py": {"passed": 17, "failed": 0, "total": 17, "note": "ingest tool: TXT/PNG/MP4/multi/idempotency/path-traversal/unauthorized/MIME/signature/oversize/unsafe-filename/missing-source/log-masking"}
+  },
+  "total": {"passed": 94, "failed": 0, "total": 94},
+  "task_plan_coverage": {
+    "scope_5": ["target image pre-understanding=0", "target audio=0", "target video=0", "other groups unchanged", "keyPrefix sibling unaffected"],
+    "router_10": ["durable mimo-v2.5-pro", "no multimodal fallback", "text model call=1", "session continuous", "attachment calls ingest first", "ingest fail no dispatch", "receipt success dispatches", "analyzer no raw MediaPath", "router no media tools", "router no exec"],
+    "ingest_tool_16": ["TXT","PNG","MP4","multi-attachment","Chinese filename (via 32-test)","MIME conflict","signature error","path traversal","reparse (via 32-test)","oversize","message_id idempotent","attachment_index idempotent","same name diff hash","same hash diff message","receipt fail","log masking"],
+    "internal_agents_11": ["PNG->image-analyzer only","audio->audio-analyzer only","MP4->video-analyzer only","analyzer input 4 fields only","image fail no pro fallback","GPU lock single concurrency","stale GPU lock recovery","other agents unaffected","internal agents no binding","target group 1 consumer","final reply to original group"]
+  },
+  "metrics_recorded": ["pre_ingest_media_understanding_count", "router_model_call_count", "ingest_tool_call_count", "analysis_agent_call_count", "image_analysis_count", "audio_transcription_count", "video_analysis_count", "raw_media_path_forwarded", "stored_path_forwarded", "gpu_lock_acquired", "binding_count", "consumer_count"]
+}

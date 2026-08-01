@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-MINIMUM-COMPLETION-PLAN-056",
+  "date": "2026-07-29",
+  "current_phase": "P0",
+  "current_status": "BLOCKED",
+  "minimum_complete_target": "P2_AUTOMATED_DAILY_FACTORY",
+  "next_milestone": "P1_DETERMINISTIC_VERTICAL_SLICE",
+  "phase_lock": {
+    "p0_ready": false,
+    "can_start_p1": false,
+    "project_status_modified": false
+  },
+  "waves": [
+    {
+      "id": "wave_0",
+      "name": "P0 qualification and gate",
+      "required": true
+    },
+    {
+      "id": "wave_1",
+      "name": "P1 deterministic vertical video MVP",
+      "required": true
+    },
+    {
+      "id": "wave_2",
+      "name": "P2 automated daily factory",
+      "required": true
+    },
+    {
+      "id": "wave_3",
+      "name": "P3-P5 quality and editing enhancements",
+      "required": false,
+      "deferred_to_obsidian": true
+    }
+  ],
+  "current_blockers": [
+    "P0_SINGLE_CONSUMER_DEDUP_EVIDENCE",
+    "P0_CANONICAL_SAFE_INGRESS_EVIDENCE",
+    "P0_CANONICAL_LARK_EGRESS_EVIDENCE",
+    "P0_DIRECT_CODEX_CLI_SMOKE",
+    "P0_EXISTING_AGENT_BINDING_REGRESSION_EVIDENCE",
+    "REAL_R3_IMAGE_RETEST",
+    "REAL_R4_AUDIO",
+    "REAL_R5_VIDEO"
+  ],
+  "conditional_finalization": [
+    "REFRESH_RELEASE_CHECKSUMS_AFTER_P0_CANDIDATE_FREEZE"
+  ],
+  "implementation": {
+    "evidence_driven_prereview": true,
+    "r0_r1_r2_preserved_as_passed": true,
+    "ordered_next_action": "RUN_FRESH_REAL_R3_RETEST",
+    "p1_phase_lock_enforced": true
+  },
+  "validation": {
+    "python": "319/319",
+    "pester": "123/123",
+    "schema": "88/88",
+    "pip_check": "passed",
+    "focused_readiness_tests": "5/5"
+  },
+  "next_action": "RUN_FRESH_REAL_R3_RETEST"
+}

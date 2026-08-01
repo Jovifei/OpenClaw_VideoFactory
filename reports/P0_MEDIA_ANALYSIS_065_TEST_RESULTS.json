@@ -1,0 +1,39 @@
+{
+  "report_id": "P0-MEDIA-ANALYSIS-065-TEST-RESULTS",
+  "generated_at": "2026-07-30T22:36:00+08:00",
+  "change_request": "P0-MEDIA-ANALYSIS-065",
+  "status": "PASS_OFFLINE_REPAIR",
+  "proof_layer": "live-state diagnosis plus offline source and contract verification",
+  "live_diagnosis": {
+    "observed": "The redacted TXT Ticket audit recorded dispatch_authorized followed by analyzer_failed. The corresponding quarantined receipt had detected_kind=txt, content_type=text/plain, and no normalized_content_type field.",
+    "root_cause": "P0-064 checked only normalized_content_type, although the established PowerShell receipt persists content_type and returns normalized_content_type only in its command result.",
+    "not_retried": "The consumed Ticket was not replayed and no manual Analyzer invocation was attempted."
+  },
+  "repair_contract": [
+    "Use normalized_content_type when present; it remains authoritative.",
+    "Only when it is absent, normalize the established receipt content_type by removing parameters and lower-casing it.",
+    "The resulting value must equal text/plain; application/octet-stream, application/pdf, DOCX, PDF, and all other types remain ineligible.",
+    "All Ticket, request, quarantine, hash, size, UTF-8, content-safety, and no-auto-analysis checks are unchanged."
+  ],
+  "verification": [
+    {
+      "command": ".venv\\Scripts\\python.exe -m unittest tests.test_analyzer_mcp",
+      "result": "PASS",
+      "tests_run": 39
+    },
+    {
+      "command": ".venv\\Scripts\\python.exe -m py_compile scripts\\analyzer_mcp.py; .venv\\Scripts\\python.exe -m unittest tests.test_analyzer_mcp tests.test_analysis_request tests.test_media_action_ticket tests.test_ingest_attachment_core tests.test_two_message_mcp_surface tests.test_two_message_flow tests.test_trusted_media_roots",
+      "result": "PASS",
+      "tests_run": 167
+    }
+  ],
+  "not_run": [
+    "No new Feishu attachment, Ticket command, or live Analyzer request was sent.",
+    "No Gateway/Core lifecycle action, configuration change, model/node download, DOCX/PDF parsing, P0 Gate, phase update, or Git operation was performed."
+  ],
+  "project_status": "PROJECT_STATUS.yaml remains P0/not_started; this repair does not promote P0.",
+  "source_hashes_sha256": {
+    "scripts/analyzer_mcp.py": "EF4C275E5A997534B0D6D86DDA125AFB174A91543CF4FC6F13D87F33AA79CF6A",
+    "tests/test_analyzer_mcp.py": "B0F1C455F29E7A8A8F34DA69B05BAB8E55906C24434FA805AB5C9867FA70EF66"
+  }
+}

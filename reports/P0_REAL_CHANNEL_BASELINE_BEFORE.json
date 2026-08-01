@@ -1,0 +1,24 @@
+{
+  "task": "P0-REAL-CHANNEL-QUALIFICATION-008",
+  "captured_at": "2026-07-18",
+  "openclaw_config": {
+    "path": "C:\\Users\\Admin\\.openclaw\\openclaw.json",
+    "current_sha256": "3001ec3b85a882deb382cb08f5ebdb1c6b285964ea9933f5f0d5c99bc7d89810",
+    "prior_007_final_sha256": "3001ec3b85a882deb382cb08f5ebdb1c6b285964ea9933f5f0d5c99bc7d89810",
+    "prior_007_baseline_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "drift_since_007": false,
+    "config_valid": true,
+    "openclaw_version": "2026.7.1 (2d2ddc4)",
+    "openclaw_pkg_mtime": "2026-07-14 (pre-007, core source unmodified)"
+  },
+  "gateway": {"url": "ws://127.0.0.1:18789", "port_probe": 200, "auth": "token", "agents": 17},
+  "independent_review_20_items": "ALL PASSED (see P0_REAL_CHANNEL_BASELINE_BEFORE.md)",
+  "topology": {"agents": 17, "bindings": 14, "cron": 4, "target_consumer": 1, "analyzers_with_binding": 0, "other_agent_mismatches": 1},
+  "tests": {"router": "45/45", "ingest": "32/32", "ingest_tool": "17/17", "total": "94/94"},
+  "local_runtime": {"python": "3.14.2", "torch": "2.11.0+cu128", "cuda": true, "gpu": "RTX 4070 SUPER", "faster_whisper": "1.2.1", "ffmpeg": "8.1.1 at C:\\ffmpeg\\bin (not PATH)", "local_vlm": "none (Ollama CLI missing)"},
+  "fixtures": {"existing": ["p0-file-test.txt","p0-image-test.png","p0-video-test.mp4","p0-video-cover.png","fixture_manifest.json"], "to_add": ["p0-audio-test.wav","p0-video-analysis-test.mp4 (if needed)"]},
+  "git": {"branch": "phase/p0-gate-correction", "commits": "none (untracked)", "no_commit_tag_push": true},
+  "project": {"version": "2.4.0", "manifest": "FILE_MANIFEST.txt + SHA256SUMS.txt", "project_status_p0": "not_started (do not modify)"},
+  "secrets_policy": "all secrets/ids masked in reports; real ids only in live config + MCP env",
+  "status": "BASELINE_CAPTURED_008"
+}

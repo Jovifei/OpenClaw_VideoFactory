@@ -1,0 +1,14 @@
+{
+  "event": "R2 PNG safe-ingest qualification",
+  "status": "failed",
+  "failure_token": "R2_FAILED:ANALYZER_CALLED_AFTER_INGEST",
+  "observed_at": "2026-07-20T00:13:54.490+08:00",
+  "message_id_masked": "om_***337b",
+  "channel_route": "feishu[zhongshu] -> existing VideoFactory group -> video-factory",
+  "ingest": {"tool": "ingest__ingest_attachment", "tool_call_count_before_failure": 1, "channel_download": "completed", "detected_kind": "png", "normalized_content_type": "image/png", "actual_size_bytes": 17247, "stored_size_bytes": 17247, "source_sha256_matches_stored": true, "trusted_root_id": "video_factory_workspace", "receipt_exists": true, "content_parsed": false, "quarantined": true, "analysis_allowed": true, "status": "quarantined"},
+  "analysis_boundary": {"image_analysis_requested": true, "image_analysis_tool": "analyzers__analyze_image", "image_analysis_call_count": 1, "analysis_result_read": false, "stop_reason": "Router violated the R2 no-analysis boundary immediately after successful ingest"},
+  "root_cause": {"classification": ["missing_intent_field", "receipt_semantics_bug", "model_autonomy"], "evidence": "The receipt exposed analysis_allowed=true but no analysis_requested or attachment_action; Router reasoning explicitly treated successful quarantine and PNG kind as permission to dispatch."},
+  "hash_failure_trace": {"receipt_field_used_by_old_analyzer": "sha256", "receipt_sha_case": "uppercase", "python_computed_case": "lowercase", "stored_sha256_present": true, "source_sha256_equals_stored_sha256": true},
+  "preserved_negative_evidence": true,
+  "mutations": "no production config/Gateway/live evidence changed; this report remains the original R2 FAIL"
+}

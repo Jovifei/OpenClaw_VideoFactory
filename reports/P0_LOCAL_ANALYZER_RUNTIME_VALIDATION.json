@@ -1,0 +1,56 @@
+{
+  "audio": {
+    "ingest_status": "quarantined",
+    "transcript": "Openclaw Video Factory P0 Audio Test The quick brown fox jumps over the lazy dog",
+    "language": "en",
+    "duration_after": 5.769625,
+    "cuda_device": "RTX 4070 SUPER",
+    "vram_before_mb": 2618,
+    "vram_peak_mb": 4781,
+    "transcript_matches_expected": false,
+    "elapsed_seconds": 5.44
+  },
+  "video": {
+    "ingest_status": "quarantined",
+    "probe_ok": true,
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video"
+        },
+        {
+          "codec_name": "aac",
+          "codec_type": "audio"
+        }
+      ],
+      "format": {
+        "duration": "5.000000"
+      }
+    },
+    "frames_extracted": 3,
+    "frame_extraction_cpu": true,
+    "audio_extracted": true,
+    "audio_transcript": "Openclaw Video Factory P0 Audio Test The quick brown fox jumps over the lazy",
+    "audio_transcript_matches": false,
+    "full_video_not_uploaded_to_model": true
+  },
+  "image": {
+    "ingest_status": "quarantined",
+    "infer_exit": 0,
+    "infer_stdout_head": "{\n  \"ok\": true,\n  \"capability\": \"image.describe\",\n  \"transport\": \"local\",\n  \"provider\": \"xiaomimimo\",\n  \"model\": \"mimo-v2.5\",\n  \"attempts\": [],\n  \"outputs\": [\n    {\n      \"path\": \"C:\\\\Users\\\\Admin\\\\AppData\\\\Local\\\\Temp\\\\analyzer_val_7nwdv_zb\\\\project\\\\input\\\\feishu\\\\om_imgval\\\\attachment-000\\\\origin",
+    "model": "xiaomimimo/mimo-v2.5",
+    "did_not_fallback_to_pro": true
+  },
+  "gpu_lock": {
+    "audio_acquired": true,
+    "audio_released": true
+  },
+  "vram": {
+    "final_used_mb": 5124
+  },
+  "no_raw_mediapath_forwarded": true,
+  "failure_no_text_only_fallback": true
+}

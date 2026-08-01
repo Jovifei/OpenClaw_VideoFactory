@@ -1,0 +1,8 @@
+{
+  "schema": "p0_zhongshu_cutover_config_diff_034_v1",
+  "status": "NOT_APPLIED",
+  "before_sha256": "D6A97F1025698C08F086C1EE565E1AAC1AD30116037E4F135688EDBB1171BE8C",
+  "after_sha256": "D6A97F1025698C08F086C1EE565E1AAC1AD30116037E4F135688EDBB1171BE8C",
+  "matches": true,
+  "config_mutations": []
+}

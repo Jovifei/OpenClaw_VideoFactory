@@ -1,0 +1,24 @@
+version: 1
+feishu:
+  primary_channel: openclaw_feishu
+  cli_tool: lark-cli
+  master_send_limit_mb: 25
+  generate_preview_when_master_exceeds_mb: 25
+  preview:
+    max_size_mb: 25
+    preferred_resolution: 720x1280
+    preferred_video_bitrate_mbps: 3.2
+  use_idempotency_key: true
+  default_identity: bot
+  fallback:
+    - send preview video
+    - send cover and report
+    - send local master path
+outputs:
+  - final_master.mp4
+  - feishu_preview.mp4
+  - cover.png
+  - captions.srt
+  - voice.wav
+  - publish_info.md
+  - quality_report.json

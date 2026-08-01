@@ -1,0 +1,14 @@
+{
+  "schema": "p0_zhongshu_cutover_execution_034_v1",
+  "status": "ZHONGSHU_CUTOVER_NOT_STARTED:RPC_CREDENTIAL_INJECTION_MISSING;CORE_CONSUMER_UNPROVEN;PRODUCTION_CONTROL_UNAVAILABLE",
+  "t0_entered": false,
+  "core_stop": "not_called",
+  "zero_consumer_proof": "not_run",
+  "project_gateway_start": "not_called",
+  "single_consumer_proof": "not_run",
+  "r0_r5": "not_run",
+  "rollback": "not_needed",
+  "production_config_sha256_before": "D6A97F1025698C08F086C1EE565E1AAC1AD30116037E4F135688EDBB1171BE8C",
+  "production_config_sha256_after": "D6A97F1025698C08F086C1EE565E1AAC1AD30116037E4F135688EDBB1171BE8C",
+  "secrets": "not persisted"
+}

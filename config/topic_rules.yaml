@@ -1,0 +1,51 @@
+categories:
+- Modbus
+- FreeRTOS
+- MCU
+- 4G模组
+- OTA升级
+- CAN
+- PCB设计
+- 电源设计
+- 调试案例
+- AI热点
+- AI工具实测
+avoid_repeat_days: 90
+minimum_total_score: 80
+minimum_sources: 2
+duration_seconds:
+  min: 25
+  target: 40
+  max: 60
+weights:
+  practicality: 25
+  hook: 20
+  short_video_fit: 15
+  visual_clarity: 15
+  account_fit: 10
+  trend: 10
+  deduplication: 5
+fallback:
+  ai_video_to_image: true
+  image_to_programmatic_animation: true
+  maximum_retries_per_stage: 2
+mascot_default:
+  enabled: true
+  usage_modes:
+  - corner_mark
+  - knowledge_cue
+  - ending_signature
+  disable_when:
+  - diagram_dense
+  - subtitle_conflict
+  - technical_visual_overload
+content_mix_window:
+  window_videos: 28
+  embedded_minimum: 0.65
+  ai_maximum: 0.25
+  community_brand_target: 0.1
+ai_hot_topic_gate:
+  official_or_primary_source_required: true
+  minimum_sources: 2
+  must_include_event_date: true
+  must_explain_engineer_impact: true

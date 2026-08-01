@@ -1,0 +1,75 @@
+{
+  "change_request": "reports/change_requests/P0-MEDIA-MIME-001.json",
+  "status": "fixed_and_verified",
+  "scope": "P0 media extension, declared MIME, and signature consistency only",
+  "affected_files": [
+    "scripts/07_ingest_inbound_media.ps1",
+    "tests/Test-IngestInboundMedia.ps1"
+  ],
+  "baseline": {
+    "script_sha256": "beda0949d13564dc132c44c595f13ce41efd0c9e04a5be24bccb837072938d49",
+    "test_count": 8,
+    "openclaw_config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "git_diff": "empty_before_change"
+  },
+  "implementation": {
+    "uses_channel_source_path": true,
+    "filename_checks": [
+      "reject path separators",
+      "reject control characters",
+      "reject double extensions"
+    ],
+    "content_type_normalization": "case-insensitive; strips parameters",
+    "txt": "requires .txt, accepted text/plain or application/octet-stream or empty/unknown, and rejects NUL/binary content",
+    "png": "requires .png, exact 8-byte PNG signature, and rejects declared conflicting MIME types",
+    "mp4": "requires .mp4, ISO Base Media ftyp box, and rejects declared conflicting MIME types",
+    "failure_fields": [
+      "error_code",
+      "extension",
+      "normalized_content_type",
+      "detected_kind",
+      "expected_kind",
+      "message_id"
+    ],
+    "copy_or_success_receipt_before_validation": false
+  },
+  "tests": {
+    "command": "Invoke-Pester -Script tests/Test-IngestInboundMedia.ps1 -PassThru",
+    "original_count": 8,
+    "original_passed": 8,
+    "added_count": 20,
+    "added_passed": 20,
+    "total": 28,
+    "passed": 28,
+    "failed": 0,
+    "syntax_check": "passed for script and test file"
+  },
+  "known_issue_proof": {
+    "case": "valid PNG fixture declared text/plain",
+    "result": {
+      "error_code": "mime_conflict",
+      "extension": ".png",
+      "normalized_content_type": "text/plain",
+      "detected_kind": "png",
+      "expected_kind": "png",
+      "message_id": "om_pngwrongmime123"
+    },
+    "success_original_exists": false,
+    "success_receipt_exists": false
+  },
+  "regression": {
+    "chinese_filename": "passed",
+    "duplicate_message_id_idempotency": "passed",
+    "path_traversal_rejection": "passed",
+    "reparse_point_rejection": "passed",
+    "oversize_rejection": "passed",
+    "source_and_quarantine_sha256_equal": "passed",
+    "git_ignore": "passed",
+    "content_parsed_false": "passed",
+    "quarantined_true": "passed",
+    "openclaw_config_hash_unchanged": true
+  },
+  "prohibited_systems_modified": false,
+  "real_feishu_called": false,
+  "p0_gate_run": false
+}

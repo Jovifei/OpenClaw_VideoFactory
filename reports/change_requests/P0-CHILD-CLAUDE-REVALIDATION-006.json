@@ -1,0 +1,21 @@
+{
+  "id": "P0-CHILD-CLAUDE-REVALIDATION-006",
+  "phase": "P0",
+  "status": "completed_read_only",
+  "objective": "Correct the classification of prior Child Claude A-D outcomes and revalidate the launcher with a no-tool smoke and one bounded four-file review.",
+  "allowed_scope": [
+    "Read the installed Child Claude launcher and diagnostics",
+    "Run no-tool and read-only Child Claude packages",
+    "Update documentation-only reports and task lessons"
+  ],
+  "prohibited_scope": [
+    "Production code",
+    "OpenClaw configuration",
+    "Gateway restart",
+    "Binding or agent changes",
+    "Plugin activation",
+    "Feishu ingress or egress"
+  ],
+  "result": "launcher_and_bounded_readonly_package_succeeded",
+  "prior_A_to_D_classification": "completion_timeout_not_launch_or_isolation_failure"
+}

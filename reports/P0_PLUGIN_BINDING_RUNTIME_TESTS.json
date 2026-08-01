@@ -1,0 +1,14 @@
+{
+  "task": "OVERNIGHT-PLUGIN-OWNED-BINDING-004",
+  "status": "not_run_design_blocked",
+  "reason": "Production Binding migration and shadow plugin implementation were blocked before safe creation by unsupported atomic allow-once migration, unproven full-agent proxy requirements, and the absence of the expected existing barrier test file.",
+  "executed": {
+    "local_media_regression": {"command":"Invoke-Pester tests/Test-IngestInboundMedia.ps1","exit_code":0,"passed":32},
+    "plugin_runtime_test": "not_run",
+    "existing_preingest_barrier_test": "not_present",
+    "real_feishu_upload": "not_run",
+    "real_feishu_send": "not_run",
+    "gateway_restart": "not_run"
+  },
+  "p0_status": "conditional_not_passed"
+}

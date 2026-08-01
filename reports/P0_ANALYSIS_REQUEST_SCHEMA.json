@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw-videofactory.local/schemas/analysis_request.schema.json",
+  "title": "Feishu Reply analysis request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_message_id",
+    "target_attachment_message_id",
+    "attachment_index",
+    "chat_id",
+    "requester_id",
+    "action",
+    "action_source",
+    "requested_at",
+    "status",
+    "receipt_path",
+    "stored_sha256",
+    "analysis_policy",
+    "completed_at",
+    "result_path",
+    "error_code"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "request_message_id": {"type": "string", "pattern": "^om_[A-Za-z0-9_-]+$"},
+    "target_attachment_message_id": {"type": "string", "pattern": "^om_[A-Za-z0-9_-]+$"},
+    "attachment_index": {"type": "integer", "minimum": 0},
+    "chat_id": {"type": "string", "pattern": "^oc_[A-Za-z0-9_-]+$"},
+    "requester_id": {"type": "string", "pattern": "^ou_[A-Za-z0-9_-]+$"},
+    "action": {"type": "string", "enum": ["analyze_image", "transcribe_audio", "analyze_video"]},
+    "action_source": {"type": "string", "const": "reply_to_attachment"},
+    "requested_at": {"type": "string", "format": "date-time"},
+    "status": {"type": "string", "enum": ["pending", "running", "completed", "failed", "already_completed", "rejected"]},
+    "receipt_path": {"type": "string"},
+    "stored_sha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+    "analysis_policy": {"type": "string", "const": "read_quarantine_copy_only"},
+    "completed_at": {"type": ["string", "null"]},
+    "result_path": {"type": ["string", "null"]},
+    "error_code": {"type": ["string", "null"]}
+  }
+}

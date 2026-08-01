@@ -1,0 +1,25 @@
+{
+  "captured_at": "2026-07-23T00:10:55.6762381Z",
+  "account": "zhongshu",
+  "inspection_output": {
+    "status": "unknown",
+    "binding_owner": "unknown",
+    "consumer_count": null,
+    "feishu_connection_count": null,
+    "owner_pid": null,
+    "owner_start_time": null,
+    "last_heartbeat_at": null,
+    "last_event_at": null,
+    "evidence_sources": [],
+    "confidence": "low",
+    "blocking_reasons": ["no_reliable_consumer_evidence"]
+  },
+  "separate_observations": {
+    "binding_configuration_present": true,
+    "project_offline_runtime_process_count": 0,
+    "generic_node_processes_are_not_feishu_evidence": true,
+    "authenticated_feishu_connection_observed": false,
+    "project_gateway_runtime_observed": false
+  },
+  "conclusion": "CONSUMER_OWNERSHIP_NOT_PROVEN"
+}

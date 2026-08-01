@@ -1,0 +1,39 @@
+{
+  "report_id": "P0-MEDIA-ANALYSIS-066",
+  "created_at": "2026-07-30T23:40:39+08:00",
+  "status": "PASS_OFFLINE_REPAIR",
+  "scope": "TXT completed-artifact public presentation only",
+  "diagnosis": {
+    "observed_state": "The redacted live evidence showed a completed analyze_text artifact and completed audit, but no public result.",
+    "artifact_shape": "The analyzer writes encoding, character_count, line_count, headings, and preview at the top level of analysis.json.",
+    "root_cause": "The presentation loader read an invented nested result object, giving the formatter None."
+  },
+  "repair": {
+    "file": "scripts/mcp_ingest_attachment.py",
+    "behavior": "Pass the validated top-level completed analyze_text document to the existing bounded formatter."
+  },
+  "contracts": [
+    "The exact completed top-level analyze_text artifact produces a public TXT reply without exposing its local path.",
+    "A nested-only text result is rejected as the wrong artifact shape.",
+    "Existing status, tool, jobs-root, filename, JSON, and formatter validation remains unchanged."
+  ],
+  "verification": {
+    "red_contract": "2 targeted tests failed before the repair: one error for result_content_empty and one nested-shape acceptance failure.",
+    "focused": "2/2 passed after repair",
+    "target_suite": "169/169 passed in 27.894 seconds",
+    "compile": "scripts/mcp_ingest_attachment.py passed py_compile"
+  },
+  "source_sha256": {
+    "scripts/mcp_ingest_attachment.py": "F874AC64AECE1EC7E193CD935869C10909475989812787EBD4F485FE6DEE757E",
+    "tests/test_two_message_mcp_surface.py": "D61035A5FAE73147ED2B27543E539E1B735DDE6853CFF9C3B3A82E5C43F00307"
+  },
+  "not_run": [
+    "Ticket replay or a new live Feishu message",
+    "OpenClaw or Feishu configuration",
+    "Gateway or Core lifecycle control",
+    "automatic attachment analysis",
+    "DOCX or PDF parsing",
+    "phase update, P0 Gate, or Git action"
+  ],
+  "phase_state": "PROJECT_STATUS.yaml remains P0/not_started"
+}

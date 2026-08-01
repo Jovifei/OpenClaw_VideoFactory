@@ -1,0 +1,11 @@
+{
+  "task": "P0-PREINGEST-MODEL-BARRIER-003",
+  "status": "not_run",
+  "planned_restart_count": 1,
+  "actual_restart_count": 0,
+  "reason": "Stopped before configuration mutation because the required inbound_claim surface is unreachable without an unauthorized Binding change.",
+  "gateway_port": 18789,
+  "gateway_port_reachable_before_stop": true,
+  "plugin_loaded": false,
+  "rollback_needed": false
+}

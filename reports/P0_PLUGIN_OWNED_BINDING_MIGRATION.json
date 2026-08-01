@@ -1,0 +1,53 @@
+{
+  "task": "OVERNIGHT-PLUGIN-OWNED-BINDING-004",
+  "status": "design_blocked_no_production_changes",
+  "result_code": "OVERNIGHT_PLUGIN_BINDING_DESIGN_BLOCKED",
+  "hard_gates": {
+    "supported_atomic_allow_once_binding_migration": "failed_SUPPORTED_BINDING_API_UNAVAILABLE",
+    "full_agent_proxy_preserving_host_dispatch": "failed_FULL_AGENT_PROXY_UNSUPPORTED_OR_UNPROVEN",
+    "existing_shadow_barrier_test": "failed_SHADOW_BARRIER_TEST_NOT_PRESENT",
+    "direct_internal_binding_edit": "not_used_prohibited"
+  },
+  "baseline_retained": {
+    "config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "agents": 14,
+    "bindings": 14,
+    "target_consumer_count": 1,
+    "crons": 4,
+    "target_binding": {"agent_id":"video-factory","channel":"feishu","peer_id_masked":"oc_***1555"}
+  },
+  "migration_state": {
+    "plugin_files_created": 0,
+    "core_binding_changed": false,
+    "plugin_owned_binding_created": false,
+    "allow_once_request_attempted": false,
+    "persistent_approval_added": 0,
+    "gateway_restart": false,
+    "rollback_performed": false
+  },
+  "runtime_state": {
+    "ordinary_text_proxy_test": "not_run_design_blocked",
+    "attachment_runtime_test": "not_run_design_blocked",
+    "model_call_count": 0,
+    "attachment_payload_forwarded": false
+  },
+  "child_reviews": {
+    "A_binding_semantics": "timed_out_not_evidence",
+    "B_full_agent_proxy": "timed_out_not_evidence",
+    "C_security": "timed_out_not_evidence",
+    "D_rollback": "timed_out_not_evidence"
+  },
+  "verification": {
+    "config_validate_exit_code": 0,
+    "gateway_port_18789_reachable": true,
+    "existing_media_test": "32/32 passed",
+    "preingest_shadow_test_present": false
+  },
+  "not_performed": ["plugin creation", "config modification", "Binding deletion", "Binding creation", "gateway restart", "real Feishu upload", "real Feishu send", "P0 Gate", "P1 work"],
+  "evidence": [
+    "reports/P0_BINDING_BASELINE_BEFORE.json",
+    "reports/P0_FULL_AGENT_PROXY_VALIDATION.json",
+    "reports/P0_BINDING_SEMANTIC_DIFF.json"
+  ],
+  "next_action": "Authorize a separate read-only feasibility review for Channel pre-agent middleware."
+}

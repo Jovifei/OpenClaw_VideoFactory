@@ -1,0 +1,102 @@
+{
+  "tool": "ingest_attachment",
+  "task": "P0-SINGLE-GROUP-MEDIA-ROUTER-007",
+  "status": "implemented_and_tested",
+  "registration_mechanism": "stdio MCP server (mcp.servers.ingest in openclaw.json)",
+  "not_generic_exec_wrapper": true,
+  "implementation_files": [
+    "scripts/mcp_ingest_attachment.py (zero-dependency Python stdlib MCP JSON-RPC server)",
+    "scripts/run_ingest_safe.ps1 (thin try/catch adapter; normalizes PS error JSON to clean single-line stdout)",
+    "scripts/07_ingest_inbound_media.ps1 (single safety implementation; extended for multi-attachment, backward compatible)"
+  ],
+  "single_safety_implementation": "scripts/07_ingest_inbound_media.ps1 (path/MIME/signature/hash/receipt); the MCP server and wrapper are adapters, not a second safety impl",
+  "input_fields": [
+    {"name": "message_id", "required": true, "pattern": "^om_[A-Za-z0-9_-]+$"},
+    {"name": "attachment_index", "required": true, "type": "integer>=0"},
+    {"name": "attachment_count", "required": true, "type": "integer>=1"},
+    {"name": "source_media_path", "required": true, "constraint": "absolute, must resolve inside OPENCLAW_INBOUND_ROOT"},
+    {"name": "original_file_name", "required": true, "constraint": "basename only, no separators/control chars, single extension"},
+    {"name": "content_type", "required": true},
+    {"name": "size_bytes", "required": true, "type": "integer>=1"},
+    {"name": "chat_id", "required": true, "pattern": "^oc_[A-Za-z0-9_-]+$", "constraint": "must be on OPENCLAW_AUTHORIZED_CHAT_IDS allowlist"},
+    {"name": "sender_id", "required": true, "pattern": "^ou_[A-Za-z0-9_-]+$", "constraint": "must be on OPENCLAW_AUTHORIZED_SENDER_IDS allowlist"},
+    {"name": "event_id", "required": false},
+    {"name": "received_at", "required": false},
+    {"name": "max_bytes", "required": false, "default": 5242880}
+  ],
+  "validations_before_ps_invoke": [
+    "message_id/attachment_index/attachment_count format and range",
+    "original_file_name safe (no separators, no control chars, single extension, basename only)",
+    "source_media_path absolute and resolves inside INBOUND_ROOT (path_traversal rejection)",
+    "source file exists and is a regular file (source_not_found)",
+    "chat_id on authorized allowlist (unauthorized_route)",
+    "sender_id on authorized allowlist (unauthorized_route)"
+  ],
+  "validations_in_ps_script": [
+    "approved inbound root existence",
+    "source within root (path escape)",
+    "reparse point escape (walk ancestors)",
+    "safe filename + extension",
+    "size <= max_bytes",
+    "MIME/signature/extension consistency (signature_mismatch, mime_conflict, binary_text_rejected)",
+    "SHA-256 of source and stored copy equal",
+    "message_id+attachment_index idempotency (per-attachment receipt path)"
+  ],
+  "output_fields_success": [
+    "status=quarantined", "message_id", "attachment_index", "attachment_count",
+    "stored_path", "receipt_path", "detected_kind", "normalized_content_type",
+    "size_bytes", "sha256", "content_parsed=false", "quarantined=true",
+    "already_ingested", "analysis_allowed", "manifest_path"
+  ],
+  "output_fields_failure": [
+    "status=rejected", "error_code", "detail", "analysis_allowed=false",
+    "content_parsed=false", "quarantined=false", "message_id", "attachment_index"
+  ],
+  "error_codes": [
+    "invalid_message_id", "invalid_attachment_index", "invalid_attachment_count",
+    "invalid_source_media_path", "unsafe_file_name", "invalid_size_bytes",
+    "invalid_chat_id", "invalid_sender_id", "unauthorized_route",
+    "path_traversal", "source_not_found",
+    "signature_mismatch", "mime_conflict", "binary_text_rejected",
+    "over_size", "ingest_timeout", "powershell_not_found", "ingest_invoke_failed",
+    "ingest_failed"
+  ],
+  "prohibited_behaviors": [
+    "does not read TXT body content as instructions",
+    "does not decode image/audio/video",
+    "does not run OCR",
+    "does not call any model",
+    "does not run arbitrary user commands",
+    "does not accept paths outside inbound root",
+    "does not echo the original inbound MediaPath in the tool result"
+  ],
+  "mcp_protocol": {
+    "transport": "stdio, newline-delimited JSON-RPC 2.0",
+    "protocol_version": "2024-11-05",
+    "methods": ["initialize", "notifications/initialized", "tools/list", "tools/call", "ping"],
+    "tool_name_exposed": "ingest_attachment",
+    "server_info_name": "openclaw-ingest-attachment",
+    "note": "OpenClaw exposes MCP tools under the bundle-mcp plugin with a server-prefixed name (ingest__ingest_attachment). The router tool policy allows ingest__ingest_attachment (or ingest__*)."
+  },
+  "openclaw_config_registration": {
+    "mcp.servers.ingest": {
+      "command": "python",
+      "args": ["scripts/mcp_ingest_attachment.py"],
+      "cwd": "E:\\project\\OpenClaw_VideoFactory",
+      "env": {
+        "OPENCLAW_INBOUND_ROOT": "<inbound root>",
+        "OPENCLAW_PROJECT_ROOT": "E:\\project\\OpenClaw_VideoFactory",
+        "OPENCLAW_INGEST_SCRIPT": "scripts/run_ingest_safe.ps1",
+        "OPENCLAW_AUTHORIZED_CHAT_IDS": "<target-id>",
+        "OPENCLAW_AUTHORIZED_SENDER_IDS": "<allowFrom sender id>",
+        "OPENCLAW_ACCOUNT_ID": "zhongshu"
+      }
+    }
+  },
+  "test_results": {
+    "ingest_attachment_core": "17/17 passed",
+    "legacy_ingest_regression": "32/32 passed (unaffected)",
+    "mcp_stdio_probe": "initialize + tools/list + tools/call all respond correctly"
+  },
+  "secrets_policy": "authorized chat/sender ids are read from env at server start; they are never logged. Receipts mask account/chat/sender ids. The tool result omits source_media_path."
+}

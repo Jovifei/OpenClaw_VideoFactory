@@ -1,0 +1,11 @@
+{
+  "status": "not_run",
+  "restart_count": 0,
+  "reason": "The semantic configuration diff included meta.lastTouchedAt outside the authorized plugin paths; rollback completed before any restart.",
+  "post_rollback_gateway_health_exit_code": 0,
+  "post_rollback_agent_count": 14,
+  "post_rollback_binding_count": 14,
+  "post_rollback_cron_count": 4,
+  "real_attachment_test_performed": false,
+  "p0_gate_performed": false
+}

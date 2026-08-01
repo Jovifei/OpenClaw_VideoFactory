@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-BOUNDED-TRUST-MEDIA-COMPLETION-053",
+  "decision": "ACCEPTED_BY_JOVI_P0_ONLY",
+  "accepted_risk": "The Core Router can theoretically construct a valid historical ticket command without non-forgeable current-message provenance.",
+  "scope": "Jovi-owned zhongshu bot and current private OpenClaw VideoFactory group only",
+  "not_equivalent_to": "trusted Channel-message provenance",
+  "mandatory_controls": [
+    "opaque hash-only ticket store",
+    "chat sender attachment media-kind and action binding",
+    "300-second default TTL",
+    "one pending ticket per chat sender media kind",
+    "one-second not_before",
+    "atomic one-time consumption",
+    "receipt quarantine and stored SHA revalidation",
+    "server-selected Analyzer",
+    "pre-dispatch redacted audit",
+    "fail-closed execution switch"
+  ],
+  "deferred": "DEFERRED_TO_P1_CHANNEL_HARDENING"
+}

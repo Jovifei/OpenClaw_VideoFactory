@@ -1,0 +1,61 @@
+{
+  "message_id_hash": "a2658ccea7d0380d",
+  "message_id_masked": "om_***e008",
+  "stages": {
+    "receipts": [
+      {
+        "attachment_index": 0,
+        "stored_path_masked": "E:\\***.png",
+        "receipt_path": "input\\feishu\\om_obstrace008\\attachment-000\\receipt.json",
+        "sha256": "624223E0F8D14374D40301574B721C9DEBD46D4168AD4C44D06767E5F74A4214",
+        "size_bytes": 17247,
+        "detected_kind": ".png",
+        "content_parsed": false,
+        "quarantined": true,
+        "chat_id_masked": "oc_***1555",
+        "sender_id_masked": "ou_***ada9"
+      }
+    ],
+    "session": {
+      "matched_session": "66b522dd-8d2c-461c-a4a4-121d6111855a.trajectory.jsonl",
+      "session_key_masked": "66b***sonl"
+    },
+    "gpu_locks": [],
+    "analyses": []
+  },
+  "ingest_tool_call_count": 1,
+  "ingest_status": "quarantined",
+  "router_model_call_count": 0,
+  "router_model": null,
+  "router_images_count": 0,
+  "pre_ingest_media_understanding_count": 0,
+  "raw_media_path_forwarded": false,
+  "stored_path_forwarded": false,
+  "tool_calls": [
+    "ingest_attachment",
+    "sessions_spawn",
+    "ingest_attachment",
+    "sessions_spawn",
+    "ingest_attachment",
+    "sessions_spawn",
+    "ingest_attachment",
+    "sessions_spawn",
+    "ingest_attachment",
+    "ingest_attachment",
+    "ingest_attachment",
+    "ingest_attachment",
+    "sessions_spawn",
+    "ingest_attachment",
+    "sessions_spawn",
+    "ingest_attachment",
+    "ingest_attachment",
+    "ingest_attachment"
+  ],
+  "gpu_lock_acquired": false,
+  "analysis_agent_call_count": 0,
+  "final_reply_target": "feishu:group:<target-id>",
+  "final_status": "traced",
+  "run_id": "d86b1e9a-3243-4abf-80ad-294b70cefab4",
+  "router_model_observed": "mimo-v2.5-pro",
+  "router_reply_head": "`status`: **quarantined**"
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-R4-AUDIO-RESULT-REMEDIATION-062A",
+  "status": "R4_AUDIO_RESULT_REPLY_FIXED",
+  "scope": "Offline server-owned public rendering of an already completed local audio transcript.",
+  "implementation": {
+    "completed_artifact": "jobs-only transcript.json",
+    "required_artifact_status": "completed",
+    "required_tool": "transcribe_audio",
+    "public_reply_prefix": "音频转录结果：",
+    "maximum_reply_characters": 220,
+    "translation_or_new_model": false,
+    "audio_generic_success_fallback": false,
+    "image_behavior_preserved": true,
+    "video_behavior_deferred": true
+  },
+  "security": {
+    "path_containment": true,
+    "internal_value_exposure": false,
+    "empty_or_malformed_result_fails_closed": true,
+    "mcp_public_input_expanded": false,
+    "analyzer_input_expanded": false
+  },
+  "independent_read_only_review": "PASS",
+  "next_status": "WAITING_FOR_R4_AUTH",
+  "prohibited_actions_not_taken": [
+    "real Feishu traffic",
+    "Project Gateway",
+    "Gateway/Core lifecycle control",
+    "R5",
+    "P0 Gate",
+    "PROJECT_STATUS.yaml change",
+    "commit, push, tag"
+  ]
+}

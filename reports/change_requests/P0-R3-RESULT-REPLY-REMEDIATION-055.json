@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "request_id": "P0-R3-RESULT-REPLY-REMEDIATION-055",
+  "status": "AUTHORIZED_BY_JOVI",
+  "authorized_by": "Jovi task P0-R3-RESULT-REPLY-REMEDIATION-055",
+  "scope": "Repair only the server-owned rendering and public return of a completed image analysis result to the existing Core Feishu route.",
+  "allowed_writes": [
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "reports/change_requests/P0-R3-RESULT-REPLY-REMEDIATION-055.json",
+    "reports/P0_R3_RESULT_REPLY_*_055.*",
+    "reports/P0_CURRENT_STATUS_V39.md",
+    "reports/P0_EVIDENCE_INDEX_V39.md",
+    "reports/P0_REMAINING_ACTIONS_V39.md",
+    "reports/NEXT_USER_ACTION.md",
+    "scripts/mcp_ingest_attachment.py",
+    "scripts/media_action_ticket.py",
+    "tests/test_media_action_ticket.py",
+    "tests/test_two_message_mcp_surface.py",
+    "skills/feishu-video-factory-operator/SKILL.md"
+  ],
+  "prohibited": [
+    "Project Feishu Gateway", "Device Auth", "Device Pairing", "OpenClaw Core", "Binding", "Agent", "Cron", "OAuth", "model routing",
+    "Ticket policy relaxation", "receipt or SHA validation relaxation", "Router-supplied path or Analyzer selection", "real Feishu traffic",
+    "R4", "R5", "P0 Gate", "PROJECT_STATUS.yaml", "commit", "push", "tag"
+  ],
+  "acceptance": [
+    "A successful image analysis returns a sanitized Chinese summary rather than a generic completion notice.",
+    "Formatter failure or an empty result returns an explicit user-visible rendering error.",
+    "No internal path, receipt, SHA, message ID, chat ID, sender ID, Ticket hash, raw JSON, or model-control field crosses the public result boundary.",
+    "Existing Ticket, receipt, stored SHA, model-route, and media-flow tests remain passing."
+  ]
+}

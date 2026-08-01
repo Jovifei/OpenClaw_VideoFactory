@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "proof_layer": "offline_synthetic",
+  "requested_attack_categories": 30,
+  "fail_closed_covered": 29,
+  "unqualified": [
+    {
+      "category": "Router-rewritten valid command",
+      "reason": "raw_command_source_provenance_not_bound_to_channel_message"
+    }
+  ],
+  "covered_groups": [
+    "ticket guessing and mutation",
+    "identity, group, action, and media-type mismatch",
+    "expiry, replay, concurrency, duplicate ingress, and restart recovery",
+    "forged Router fields and partial state",
+    "receipt, stored file, hash, reparse, and path escape protection",
+    "Unicode, zero-width, full-width, multiple-command, and media-content input",
+    "Analyzer/GPU failures and result idempotency"
+  ],
+  "analyzer_dispatch_on_failed_gate": 0,
+  "real_media_executed": false
+}

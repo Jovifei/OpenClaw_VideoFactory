@@ -1,0 +1,23 @@
+{
+  "id": "P0-PROJECT-GATEWAY-DEVICE-IDENTITY-INITIALIZATION-048",
+  "authorized_by": "Jovi",
+  "purpose": "Create and offline-validate one fresh Project-owned official Ed25519 device identity for later pairing.",
+  "allowed_writes": [
+    "services/feishu_gateway/openclaw_rpc_official/",
+    "tests/",
+    "reports/",
+    "tasks/todo.md",
+    "C:\\Users\\Admin\\.openclaw-video-factory\\device"
+  ],
+  "network": "forbidden",
+  "gateway_interaction": "forbidden",
+  "identity_source": "installed OpenClaw 2026.7.1 official device-identity module",
+  "required_acl_principals": ["current_windows_user", "SYSTEM"],
+  "forbidden": [
+    "shared_gateway_token", "existing_cli_or_codex_identity", "existing_device_token",
+    "pairing", "health", "business_session", "agent", "tool", "analyzer",
+    "project_gateway_start", "core_feishu_stop", "feishu_message", "gateway_restart",
+    "openclaw_configuration_change", "commit", "push", "tag"
+  ],
+  "stop_after": "offline identity initialization and validation"
+}

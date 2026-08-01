@@ -1,0 +1,26 @@
+{
+  "audit": "P0_TXT_RETROSPECTIVE_MODEL_AUDIT",
+  "message_id": "om_***3cc7",
+  "status": "TXT_MODEL_BARRIER_AUDIT=INCONCLUSIVE",
+  "reason": "The historical trajectory proves a model run associated with the message and later safe receipt evidence, but does not retain a redacted, field-level provider-request record capable of proving that the TXT body was absent. The audit did not read the TXT body to fill that gap.",
+  "evidence": {
+    "trajectory": "C:\\Users\\Admin\\.openclaw\\agents\\video-factory\\sessions\\bb9dc50b-feef-4398-970c-49e4112076d6.trajectory.jsonl",
+    "receipt": "input/feishu/om_x100b6a4df66ad4a4b2e70284f733cc7/receipt.json",
+    "receipt_sha256": "778E39CDCFF15F77B1E0C25ED6480EB88A613CE9F7421D2BA6BF8C793C25AB64",
+    "receipt_content_parsed": false,
+    "receipt_quarantined": true,
+    "model_run_seen": true,
+    "model_request_body_absence_proven": false,
+    "automatic_content_extraction_absence_proven": false,
+    "ocr_absence_proven": false,
+    "tool_readback_absence_proven": false,
+    "attachment_object_absence_proven": false
+  },
+  "consequence": {
+    "preserve_existing_receipt": true,
+    "historical_txt_real_acceptance": "conditional",
+    "requires_new_txt_after_barrier_fix": true,
+    "requires_new_message_id": true,
+    "do_not_read_txt_body": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "P0-MINIMUM-COMPLETION-PLAN-056",
+  "requested_by": "Jovi",
+  "requested_at": "2026-07-29",
+  "purpose": "Make the current P0 prereview evidence-driven and publish the shortest truthful path to the deterministic video MVP.",
+  "allowed_changes": [
+    "scripts/p0_gate_prereview.py",
+    "tests/test_p0_gate_prereview.py",
+    "tasks/todo.md",
+    "reports/P0_MINIMUM_COMPLETION_PLAN_056.md",
+    "reports/P0_MINIMUM_COMPLETION_PLAN_056.json",
+    "reports/P0_GATE_PREREVIEW.json",
+    "reports/change_requests/P0-MINIMUM-COMPLETION-PLAN-056.json",
+    "Obsidian project note for deferred improvements"
+  ],
+  "allowed_actions": [
+    "read-only local and OpenClaw status checks already used by the P0 gate",
+    "project-local Python tests",
+    "write readiness reports",
+    "write the explicitly requested Obsidian deferred-improvement note"
+  ],
+  "prohibited_actions": [
+    "send Feishu messages or files",
+    "restart or stop OpenClaw Gateway",
+    "start Project Gateway",
+    "modify OpenClaw configuration, Agent, Binding, Cron, OAuth, or model",
+    "start P1 implementation before P0_READY",
+    "download models or dependencies",
+    "commit, push, or tag",
+    "modify PROJECT_STATUS.yaml",
+    "create P0_READY.json without a passing gate"
+  ],
+  "rollback": "Revert only the listed readiness script, focused test, task plan, and generated readiness reports; Obsidian note remains an explicit project record unless Jovi requests removal."
+}

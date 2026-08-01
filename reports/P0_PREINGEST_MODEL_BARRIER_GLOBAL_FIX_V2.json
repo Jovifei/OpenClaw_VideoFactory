@@ -1,0 +1,41 @@
+{
+  "task": "P0-PREINGEST-MODEL-BARRIER-003",
+  "status": "rolled_back_not_installed",
+  "failure_phase": "pre_install_compatibility_review",
+  "failure_code": "BINDING_SURFACE_REQUIRED",
+  "reason": "The required inbound_claim first layer is not invoked for the current ordinary Agent Binding in installed OpenClaw 2026.7.1. Enabling the plugin without an authorized Binding change would not prove pre-ingest interception.",
+  "child_claude": {
+    "requested": 4,
+    "completed": 0,
+    "timed_out": 4,
+    "used_as_evidence": false
+  },
+  "plugin": {
+    "directory_created": false,
+    "enabled": false,
+    "loaded": false
+  },
+  "configuration": {
+    "before_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "after_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "semantic_changes": [],
+    "meta_lastTouchedAt_changed": false
+  },
+  "gateway": {
+    "restart_count": 0,
+    "port_reachable": true
+  },
+  "tests": {
+    "barrier_16": "not_run",
+    "media_32": "not_run",
+    "runtime": "not_run",
+    "reason": "Tests would not validate the required production hook attachment after the compatibility blocker."
+  },
+  "p0_status": "conditional_not_passed",
+  "rollback": {
+    "required": false,
+    "configuration_sha256_restored": true,
+    "gateway_remained_available": true
+  },
+  "only_next_action": "Authorize a new single-variable task that permits a schema-proven, dedicated-group-only Binding change to the official plugin-owned inbound-claim surface, with backup and rollback."
+}

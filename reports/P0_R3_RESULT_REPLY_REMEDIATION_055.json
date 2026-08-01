@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-R3-RESULT-REPLY-REMEDIATION-055",
+  "status": "R3_RESULT_REPLY_FIXED",
+  "next_status": "READY_FOR_REAL_R3_RETEST",
+  "root_cause": "The public MCP projection replaced a completed image analysis result with a fixed generic completion template.",
+  "repair": {
+    "presentation_owner": "server",
+    "input": "completed image analysis result artifact",
+    "output": "sanitized Chinese image result reply_template",
+    "generic_image_success_fallback": "rejected",
+    "formatter_failure": "explicit_presentation_failed_reply"
+  },
+  "preserved_boundaries": {
+    "ticket_policy": true,
+    "receipt_and_stored_sha_validation": true,
+    "server_selected_analyzer": true,
+    "quarantined_input_only": true,
+    "image_model_route": "xiaomimimo/mimo-v2.5",
+    "mimo_v25_pro_fallback": false,
+    "project_gateway_processes": 0,
+    "real_feishu_action_performed": false
+  },
+  "validation": {
+    "focused_python": "44/44",
+    "full_python": "314/314",
+    "full_pester": "123/123 across 10 scripts",
+    "schema": "88/88",
+    "pip_check": "passed",
+    "py_compile": "passed",
+    "git_diff_check": "passed",
+    "scoped_secret_candidates": 0,
+    "scoped_large_files_over_5mb": 0
+  },
+  "real_retest_required": true
+}

@@ -1,0 +1,30 @@
+{
+  "id": "P0-PROJECT-GATEWAY-PAIRING-CONNECT-CONTRACT-049",
+  "status": "approved_by_task_instruction",
+  "purpose": "Diagnose the prior Project-device connect rejection from safe evidence, validate against installed OpenClaw 2026.7.1 protocol contracts, and make only an evidence-backed minimal connect-frame repair.",
+  "allowed_writes": [
+    "services/feishu_gateway/openclaw_rpc_official/",
+    "reports/",
+    "tasks/todo.md"
+  ],
+  "allowed_runtime_action": "at most one final loopback Project-device pairing connection after every offline acceptance gate passes",
+  "prohibited_actions": [
+    "project_device_identity_rotation_or_replacement",
+    "other_device_identity_or_token_read",
+    "shared_gateway_token_use_or_change",
+    "gateway_restart_or_reinstall",
+    "openclaw_configuration_change",
+    "project_gateway_start",
+    "core_feishu_stop",
+    "feishu_traffic",
+    "business_session_agent_tool_or_analyzer_call",
+    "automatic_pairing_approval",
+    "connection_retry_loop",
+    "commit_push_tag"
+  ],
+  "credential_policy": {
+    "reports_and_logs": "safe structural projections only",
+    "command_lines": "no credentials",
+    "project_files": "no private key, token, request id, public key, signature, or nonce material"
+  }
+}

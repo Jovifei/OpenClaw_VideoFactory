@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw-videofactory.local/schemas/video_workflow/timeline_manifest.schema.json",
+  "title": "Timeline Manifest (single timeline source)",
+  "type": "object",
+  "required": [
+    "timeline_id",
+    "script_id",
+    "duration_seconds",
+    "fps",
+    "tracks",
+    "source",
+    "provenance",
+    "status",
+    "schema_version"
+  ],
+  "properties": {
+    "timeline_id": {
+      "type": "string"
+    },
+    "script_id": {
+      "type": "string"
+    },
+    "duration_seconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "fps": {
+      "type": "number",
+      "minimum": 1
+    },
+    "tracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "track_id",
+          "kind",
+          "segments"
+        ],
+        "properties": {
+          "track_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "audio",
+              "subtitle",
+              "visual",
+              "animation",
+              "transition",
+              "bgm",
+              "sfx",
+              "character_action"
+            ]
+          },
+          "segments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "start",
+                "end"
+              ],
+              "properties": {
+                "start": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "end": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "label": {
+                  "type": "string"
+                },
+                "asset_ref": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "renderer": {
+      "type": "string",
+      "enum": [
+        "remotion",
+        "hyperframes",
+        "ffmpeg"
+      ]
+    },
+    "overlap_allowed": {
+      "type": "boolean",
+      "default": false
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "openclaw_skill",
+            "provider_adapter",
+            "human",
+            "platform",
+            "synthetic_fixture"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "rejected",
+        "superseded",
+        "deprecated"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "validation_errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "additionalProperties": false,
+  "description": "Single source of truth for audio/subtitle/visual/animation/transition/BGM/SFX/character-action timing. Consumed by Remotion/HyperFrames/FFmpeg. Subtitles are derived (last), not driving."
+}

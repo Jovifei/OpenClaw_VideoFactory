@@ -1,0 +1,26 @@
+[
+  {
+    "path": "agents.list[14].tools.allow",
+    "value": ["analyzers__analyze_image"]
+  },
+  {
+    "path": "agents.list[14].tools.deny",
+    "value": ["exec", "process", "browser", "image", "image_generate", "video_generate", "music_generate", "pdf", "web", "gateway", "nodes", "cron", "feishu", "sessions_spawn", "sessions_send", "read", "write", "group:fs", "group:media"]
+  },
+  {
+    "path": "agents.list[15].tools.allow",
+    "value": ["analyzers__transcribe_audio"]
+  },
+  {
+    "path": "agents.list[15].tools.deny",
+    "value": ["exec", "process", "browser", "image", "image_generate", "video_generate", "music_generate", "pdf", "web", "gateway", "nodes", "cron", "feishu", "sessions_spawn", "sessions_send", "read", "write", "group:fs", "group:media"]
+  },
+  {
+    "path": "agents.list[16].tools.allow",
+    "value": ["analyzers__analyze_video"]
+  },
+  {
+    "path": "agents.list[16].tools.deny",
+    "value": ["exec", "process", "browser", "image", "image_generate", "video_generate", "music_generate", "pdf", "web", "gateway", "nodes", "cron", "feishu", "sessions_spawn", "sessions_send", "read", "write", "group:fs", "group:media"]
+  }
+]

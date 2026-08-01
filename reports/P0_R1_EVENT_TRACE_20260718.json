@@ -1,0 +1,43 @@
+{
+  "event": "R1 p0-file-test.txt",
+  "status": "failed",
+  "failure_token": "R1_FAILED:ingest.size_mismatch",
+  "observed_at": "2026-07-18T22:25:32+08:00",
+  "message_id_hash": "acf1611d84a5cc43",
+  "message_id_masked": "om_***339c",
+  "channel_route": "feishu[zhongshu] -> existing VideoFactory group -> video-factory",
+  "channel_download": "completed",
+  "session": {
+    "key_pattern": "agent:video-factory:feishu:group:<target-group>",
+    "continuous": true,
+    "session_file": "be7a49a2-f4aa-40e4-a6bd-13f293db93e7.jsonl"
+  },
+  "ingest": {
+    "tool": "ingest__ingest_attachment",
+    "tool_call_count": 1,
+    "expected_size_bytes": 67,
+    "actual_size_bytes": 55,
+    "status": "rejected",
+    "error_code": "size_mismatch",
+    "quarantined": false,
+    "content_parsed": false,
+    "analysis_allowed": false,
+    "receipt_exists": false
+  },
+  "analyzer": {
+    "call_count": 0,
+    "dispatch_allowed": false
+  },
+  "reply": {
+    "dispatch_complete": true,
+    "queued_final": true,
+    "replies": 1,
+    "target": "original Feishu group"
+  },
+  "evidence_sources": [
+    "C:/Users/Admin/AppData/Local/Temp/openclaw/openclaw-2026-07-18.log",
+    "C:/Users/Admin/.openclaw/agents/video-factory/sessions/be7a49a2-f4aa-40e4-a6bd-13f293db93e7.jsonl"
+  ],
+  "mutations": "none",
+  "stop_reason": "R1 failed; no repair, retry, or next upload requested"
+}

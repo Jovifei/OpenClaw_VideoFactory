@@ -1,0 +1,53 @@
+{
+  "task": "P0-INBOUND-CLAIM-CARD-ACTION-GATE-016",
+  "status": "INBOUND_CLAIM_DID_NOT_BLOCK_ROUTER",
+  "scope": "installed OpenClaw 2026.7.1 SDK, type declarations, and dispatch runtime only",
+  "sources": {
+    "dist_root": "C:/Users/Admin/AppData/Roaming/npm/node_modules/openclaw/dist",
+    "plugin_entry_types": "plugin-entry-R9cUrV0y.d.ts:125-166",
+    "plugin_entry_runtime": "plugin-entry-CM_XK0Yw.js:23-40",
+    "plugin_api": "types-DaHgOqFX.d.ts:12067-12094;12298-12300",
+    "hook_types": "hook-types-DQ9eTy2x.d.ts:144-235;551-555;1103",
+    "hook_runner": "hook-runner-global-Cucx8m-W.js:689-696",
+    "mapper": "message-hook-mappers-BK8VuspZ.js:143-226",
+    "dispatch": "dispatch-V82RCNJs.js:1301-1307;1501-1508",
+    "feishu_monitor": "monitor.account-BE_Pfm_n.js:3411-3449;3532-3694;5634-5668"
+  },
+  "sdk_contract": {
+    "native_plugin_entry": "supported",
+    "definePluginEntry": "supported",
+    "openclaw_plugin_json": "supported manifest surface; no project plugin created",
+    "api_on_inbound_claim": "typed and supported",
+    "inbound_claim_context": ["channelId", "accountId", "conversationId", "sessionKey", "agentId", "parentConversationId", "senderId", "messageId", "runId", "replyToId", "replyToIdFull", "replyToBody", "replyToSender", "replyToIsQuote", "pluginBinding"],
+    "inbound_claim_event": ["content", "body", "bodyForAgent", "transcript", "timestamp", "channel", "accountId", "conversationId", "parentConversationId", "senderId", "senderName", "senderUsername", "replyToId", "threadId", "messageId", "sessionKey", "runId", "isGroup", "commandAuthorized", "wasMentioned", "metadata"],
+    "result": ["handled", "reply"],
+    "reply_can_be_synthetic": true,
+    "priority_and_timeout": "api.on accepts priority and timeoutMs; no registration was performed",
+    "raw_message": false,
+    "typed_channel_context_on_inbound_claim": false
+  },
+  "runtime_order": {
+    "generic_runner_exists": true,
+    "generic_runner_definition": "hook-runner-global-Cucx8m-W.js:689",
+    "generic_dispatch_call_count_in_installed_dispatch": 0,
+    "targeted_dispatch_call": "dispatch-V82RCNJs.js:1501-1508 runInboundClaimForPluginOutcome",
+    "guard": "pluginOwnedBinding must resolve at dispatch-V82RCNJs.js:1301-1307",
+    "current_target_binding": "core route Binding video-factory, not a plugin-owned conversation Binding",
+    "claim_before_agent_proven_for_current_route": false,
+    "router_block_proven": false
+  },
+  "feishu_card_transformation": {
+    "callback_parser": "monitor.account-BE_Pfm_n.js:5634-5668 extracts operator, token, action.tag/value, open_message_id, and chat_id",
+    "synthetic_event": "monitor.account-BE_Pfm_n.js:3411-3429 creates sender, message_id card-action-<token>, chat_id, chat_type, message_type=text, and text content",
+    "forwarded_to_claim": ["channel=feishu after canonical mapping", "operator-derived senderId", "chat-derived conversationId", "messageId=card-action-<token>", "ordinary text body"],
+    "not_forwarded_to_claim": ["source=card.action.trigger", "original callback object", "action.tag", "action.value", "operator.open_id as a named field", "callback token as a named field", "open_chat_id as a named field"],
+    "conclusion": "The hook cannot prove the required trusted card source and action fields, even on a route where it is invoked."
+  },
+  "decision": {
+    "primary": "INBOUND_CLAIM_DID_NOT_BLOCK_ROUTER",
+    "secondary": "INBOUND_CLAIM_METADATA_INSUFFICIENT",
+    "probe_allowed": false,
+    "plugin_implementation_allowed": false,
+    "production_change_allowed": false
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "id": "P0-MEDIA-MIME-001",
+  "status": "approved_by_user",
+  "problem": "The existing media-path audit proved that a PNG with a correct signature but an explicitly conflicting ContentType such as text/plain can be accepted by scripts/07_ingest_inbound_media.ps1.",
+  "current_evidence": [
+    "reports/P0_MEDIA_PATH_REMEDIATION_AUDIT.json",
+    "reports/P0_MEDIA_PATH_REMEDIATION_AUDIT.md",
+    "reports/P0_CURRENT_STATUS.json"
+  ],
+  "affected_file": "scripts/07_ingest_inbound_media.ps1",
+  "baseline": {
+    "script_sha256": "beda0949d13564dc132c44c595f13ce41efd0c9e04a5be24bccb837072938d49",
+    "test_file": "tests/Test-IngestInboundMedia.ps1",
+    "test_sha256": "89ceff7be2e2125ae04b482b5d64568838ab22fb43c02279e4d4c0cf8f57e8a5",
+    "test_count": 8,
+    "git_diff_binary": "empty",
+    "openclaw_config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d"
+  },
+  "allowed_changes": [
+    "Media type identification and consistency validation for P0 TXT, PNG and MP4 fixtures",
+    "Corresponding tests in tests/Test-IngestInboundMedia.ps1",
+    "This change request, backup and P0-MEDIA-MIME-001 reports"
+  ],
+  "prohibited_changes": [
+    "OpenClaw configuration",
+    "Feishu configuration or bindings",
+    "Codex CLI, OAuth or login",
+    "model, Agent Runtime or Gateway",
+    "Cron",
+    "P1 code",
+    "lark-cli egress timeout handling",
+    "other media workflows",
+    "real business documents or DOCX body parsing",
+    "final P0 Gate"
+  ],
+  "expected_result": "TXT, PNG and MP4 are accepted only when extension, normalized ContentType and minimal safe signature/probe agree; conflicting MIME or signature failures return a redacted structured failure before any quarantined copy or success receipt is created.",
+  "rollback": {
+    "backup_directory": "reports/backups/P0-MEDIA-MIME-001",
+    "method": "Restore scripts/07_ingest_inbound_media.ps1 and tests/Test-IngestInboundMedia.ps1 from the exact baseline copies, then rerun the original eight tests and stop."
+  },
+  "exact_test_commands": [
+    "Invoke-Pester -Script tests/Test-IngestInboundMedia.ps1 -PassThru",
+    "$errors = $null; [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path scripts/07_ingest_inbound_media.ps1), [ref]$null, [ref]$errors); if ($errors.Count -gt 0) { throw $errors }",
+    "git diff --binary",
+    "rg -l --hidden --pcre2 --glob '!.git/**' --glob '!.venv/**' --glob '!**/__pycache__/**' --glob '!*.docx' --glob '!*.zip' --glob '!*.png' --glob '!*.mp4' -e 'sk-[A-Za-z0-9_-]{16,}' -e '\\b\\d{9,}:[A-Za-z0-9_-]{20,}\\b' -e '(?i)(app[_-]?secret|access[_-]?token|refresh[_-]?token|api[_-]?key|password)\\s*[:=]\\s*[''\"]?[A-Za-z0-9_./+\\-=]{12,}' .",
+    "Get-FileHash $env:USERPROFILE\\.openclaw\\openclaw.json -Algorithm SHA256"
+  ],
+  "stop_conditions": [
+    "Any original test fails.",
+    "Any new MIME/signature test fails after the single approved implementation change.",
+    "The fix writes a quarantined original or success receipt on a MIME/signature failure.",
+    "Any file outside the allowed change set changes.",
+    "OpenClaw configuration hash changes.",
+    "A command requires a Codex upgrade/login, OpenClaw configuration change, administrator approval, dependency download or final P0 Gate."
+  ]
+}

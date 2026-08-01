@@ -1,0 +1,56 @@
+{
+  "change_request": "P0-PREINGEST-MODEL-BARRIER-001",
+  "status": "escalated_no_change_applied",
+  "scope": "Prevent video-factory Feishu attachments from reaching model or content-analysis components before deterministic ingestion.",
+  "real_png": {
+    "message_id": "om_***f107",
+    "chat_id": "oc_***1555",
+    "sender_id": "ou_***ada9",
+    "source_media_path": "E:\\project\\OpenClaw_VideoFactory\\media\\inbound\\openclaw-staged-9a8d67db-4ba3-4d1b-a42b-bc2073d63dba\\p0-image-test---6534957b-07d0-4997-9987-4e860102a453.png",
+    "actual_agent_reply": "收到，P0 图片测试 — 深灰蓝底，白色无衬线字体，居中显示「P0 IMAGE TEST」。图像传输正常，分辨率清晰，色彩均匀无噪点。\n\n需要我做其他处理吗？比如存档、作为渲染模板参考、或者跑其他测试？",
+    "status": "failed_pre_ingest_model_analysis",
+    "evidence": {
+      "session_file": "C:\\Users\\Admin\\.openclaw\\agents\\video-factory\\sessions\\6641df2f-60dd-48d5-a19f-41a3ba880d54.jsonl",
+      "trajectory_file": "C:\\Users\\Admin\\.openclaw\\agents\\video-factory\\sessions\\6641df2f-60dd-48d5-a19f-41a3ba880d54.trajectory.jsonl",
+      "model_prompt_submitted_at": "2026-07-16T13:12:52.493Z",
+      "image_tool_call_count": 1,
+      "image_tool_result_count": 1,
+      "ingest_script_invocation_count": 0,
+      "original_copy_created": false,
+      "receipt_created": false
+    }
+  },
+  "frozen_hashes": {
+    "project_manifest_sha256": "6637FF0D9B1D0877D7B8858949DEE58874CEDB7FE38EB9846E80142CAB035402",
+    "project_file_count": 1473,
+    "scripts/07_ingest_inbound_media.ps1": "10302DE702E6C957133C1DBE19404D9EF5D273F289438EA92C049158B57D0AFE",
+    "tests/Test-IngestInboundMedia.ps1": "99F35E3F77DBD55B0E1E0F77998D41D3D4CC1D90CDBC8A46A6517A936FFFA9C7",
+    "scripts/90_acceptance_gate.py": "C37D46CD4C6ADECCC46A846B33479AF4B34BB24D2740C608FE41DD59126B62D6",
+    "PROJECT_STATUS.yaml": "5B9E55CD2D6C9939A606B55E6AD41339A057AE814AFF4613974472BBEC763046",
+    "C:/Users/Admin/.openclaw/openclaw.json": "C7098B2238C8C2816D96D724B39FE5D43E135445034331E574EA2A1CB2C5660D"
+  },
+  "allowed_changes_if_project_scoped": [
+    "video-factory-only pre-ingest handler or plugin source in this workspace",
+    "project media-ingest wrapper",
+    "targeted tests",
+    "reports and this change request"
+  ],
+  "prohibited_changes": [
+    "other agents or groups",
+    "global OpenClaw configuration",
+    "OpenClaw core or channel plugin source",
+    "model, runtime, OAuth, binding, gateway, cron, P1, lark-cli, Codex CLI"
+  ],
+  "rollback": "No production change was applied. Delete only this task's reports if the user explicitly requests report cleanup; do not modify historical PNG/TXT evidence.",
+  "test_commands": [
+    "Invoke-Pester .\\tests\\Test-IngestInboundMedia.ps1",
+    "project-scoped fake-model barrier tests (not created because activation requires global configuration)",
+    "OpenClaw configuration SHA-256 comparison",
+    "project manifest comparison"
+  ],
+  "stop_conditions": [
+    "Project-scoped pre-agent interception is unavailable.",
+    "Workspace plugin activation requires changes to C:/Users/Admin/.openclaw/openclaw.json.",
+    "Do not compensate by changing prompts, skills, model/runtime, or core/channel code."
+  ]
+}

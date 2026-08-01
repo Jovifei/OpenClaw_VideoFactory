@@ -1,0 +1,36 @@
+{
+  "change_request_id": "P0-TWO-MESSAGE-ANALYSIS-INTENT-013",
+  "task": "P0-TWO-MESSAGE-ANALYSIS-INTENT-013",
+  "requested_by": "Jovi",
+  "scope": "two-message Feishu reply-to analysis intent, analysis_request schema/storage, Router association, Analyzer gate, tests, and reports",
+  "authorized_code_areas": [
+    "Router reply association logic",
+    "analysis_request schema and storage",
+    "Analyzer MCP validation gate",
+    "Agent memory/tool descriptions",
+    "tests and reports"
+  ],
+  "preserve": [
+    "original receipts and their received_at, attachment_action, analysis_requested, SHA, and quarantine fields",
+    "R0 PASS, R1 PASS, R2 PNG ingress PASS, MP4 ingress-only PASS",
+    "prior R3 NOT_RUN_INVALID_MESSAGE_SHAPE evidence"
+  ],
+  "prohibited": [
+    "new consumer",
+    "Binding changes",
+    "media scope changes",
+    "Agent count changes",
+    "Cron changes",
+    "model, OAuth, Gateway core, or Gateway port changes",
+    "production R3 execution before offline proof",
+    "P0 Gate, P0_READY, PROJECT_STATUS update, P1, egress, Git commit/push"
+  ],
+  "production_change_policy": "No production config mutation. If MCP schema registration requires it, at most one planned Gateway restart after offline tests and explicit report evidence.",
+  "failure_tokens": [
+    "FEISHU_ATTACHMENT_REPLY_METADATA_UNAVAILABLE",
+    "P0_TWO_MESSAGE_ANALYSIS_ROLLED_BACK"
+  ],
+  "success_token": "P0_TWO_MESSAGE_ANALYSIS_READY",
+  "status": "approved_for_offline_implementation_and_test",
+  "created_at": "2026-07-20T21:40:00+08:00"
+}

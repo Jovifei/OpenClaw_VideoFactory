@@ -1,0 +1,49 @@
+{
+  "id": "P0-LIVE-SEQUENCE-ANALYZER-009",
+  "phase": "P0",
+  "status": "ready_for_real_channel_sequence",
+  "objective": "Complete real Feishu R0-R5 qualification and close the analyzer production-execution gap. Phase A: fix the 007/008 INBOUND_ROOT config bug (R1 path_traversal). Phase B: real R0-R2 (user uploads). Phase C: build deterministic analyzer MCP tools (analyze_image/transcribe_audio/analyze_video) + apply analyzer tool policy. Phase D: real R3-R5. Phase E: idempotency + negative tests + reports.",
+  "prior_rounds": {"007": "SINGLE_GROUP_ROUTER_PRODUCTION_READY", "008": "READY_FOR_REAL_CHANNEL_SEQUENCE"},
+  "r1_failure_diagnosis": {
+    "symptom": "R1 TXT upload returned 'path_traversal - 文件路径不在允许的入站根目录内'",
+    "root_cause": "007/008 set mcp.servers.ingest.env.OPENCLAW_INBOUND_ROOT = C:\\Users\\Admin\\.openclaw\\media\\inbound, but the Feishu Channel stages video-factory attachments to the workspace media/inbound (E:\\project\\OpenClaw_VideoFactory\\media\\inbound\\openclaw-staged-<guid>\\<file>). The MCP server's single-root check rejected the workspace path.",
+    "evidence": "R1 staged file found at E:\\project\\OpenClaw_VideoFactory\\media\\inbound\\openclaw-staged-fb220a08-...\\p0-file-test---0d251b0c-....txt (55B) AND C:\\Users\\Admin\\.openclaw\\media\\inbound\\p0-file-test---0d251b0c-....txt (55B). Router passed the workspace path -> rejected by the ~/.openclaw root.",
+    "fix": "Explicit trusted-root contract in scripts/mcp_ingest_attachment.py and scripts/07_ingest_inbound_media.ps1: OPENCLAW_TRUSTED_INBOUND_ROOTS registers only the global and VideoFactory workspace inbound directories with stable root_id values. No implicit CWD or project-root trust is used.",
+    "fix_verified": "18/18 ingest-core tests, 25/25 trusted-root tests, 32/32 inbound Pester tests, and post-apply MCP probes pass; workspace-root and global-root paths are covered without a real Feishu event."
+  },
+  "authorization": {
+    "offline_review_and_tests": true,
+    "bug_fix_project_code": true,
+    "analyzer_mcp_tools_build": true,
+    "analyzer_tool_policy_apply": "after R0-R2 pass; max 1 planned restart",
+    "real_feishu_outbound_send": false,
+    "fake_real_feishu_event": false,
+    "binding_change": false,
+    "consumer_topology_change": false,
+    "core_source_change": false,
+    "router_durable_model_change": false,
+    "tools_media_scope_change": false,
+    "model_install_or_download": false,
+    "new_dependencies": false,
+    "commit_tag_push": false,
+    "p0_ready_creation": false,
+    "project_status_update": false,
+    "p1_work": false,
+    "actual_lark_outbound": false,
+    "p0_gate_run": false
+  },
+  "restarts": {
+    "bug_fix_restart": "1 (relaunch MCP server with INBOUND_ROOT fix code; code-only, no config change)",
+    "analyzer_tools_restart": "1 (single 009A planned restart after offline gates and configuration validation)",
+    "total_planned": 1,
+    "justification": "009A applied the explicit trusted roots and deterministic Analyzer MCP policy in one approved production change, followed by one planned restart; no real Feishu sequence has been claimed."
+  },
+  "haiku_subagents": "FAILED - weekly quota exceeded (429, resets 2026-07-20). Main agent performs reviews inline per task rule 'sub-agent failure must not stop main task'.",
+  "prohibited_changes": ["Binding","Cron","OAuth","gateway.port","other 13 agents","Router durable model","tools.media scope","core source","P0 Gate write","PROJECT_STATUS","P0_READY","P1","model download","new dependency","real Feishu outbound","fake real event","commit/tag/push"],
+  "final_status_tokens": {
+    "all_R0_R5_pass": "P0_LIVE_SEQUENCE_COMPLETE",
+    "R0_R2_pass_analyzer_blocked": "P0_INGRESS_LIVE_PASS_ANALYZER_BLOCKED",
+    "production_failure_rolled_back": "P0_LIVE_SEQUENCE_ROLLED_BACK",
+    "ready_for_user_R0": "READY_FOR_R0"
+  }
+}

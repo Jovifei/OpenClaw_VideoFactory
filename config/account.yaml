@@ -1,0 +1,18 @@
+account_name: embedded_engineering
+positioning: 嵌入式工程主线 + AI热点副线 + 小粉飞猪品牌角色
+audience:
+- 嵌入式初学者
+- 单片机工程师
+- 硬件工程师
+language: zh-CN
+platform: douyin
+publish_mode: manual
+timezone: Asia/Shanghai
+selection_deadline: '12:00'
+daily_candidate_count: 5
+daily_video_limit: 1
+mascot:
+  enabled: true
+  name: 小粉猪
+content_plan: config/account_columns.yaml
+mascot_plan: config/mascot_usage.yaml

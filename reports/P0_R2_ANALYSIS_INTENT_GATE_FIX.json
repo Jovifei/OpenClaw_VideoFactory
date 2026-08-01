@@ -1,0 +1,42 @@
+{
+  "task": "P0-R2-INTENT-GATE-AND-HASH-INTEGRITY-011",
+  "change_request": "P0-R2-ANALYSIS-INTENT-GATE-011",
+  "status": "offline_fix_complete_pending_new_png",
+  "old_real_r2": {
+    "status": "FAIL_PRESERVED",
+    "failure_token": "R2_FAILED:ANALYZER_CALLED_AFTER_INGEST",
+    "message_id_masked": "om_***337b",
+    "retry_message_id_masked": "om_***3d8",
+    "caption": "empty",
+    "evidence": "reports/P0_R2_EVENT_TRACE_20260720.json"
+  },
+  "root_cause": {
+    "classification": ["missing_intent_field", "receipt_semantics_bug", "model_autonomy"],
+    "finding": "analysis_allowed was treated as dispatch permission. No attachment_action or analysis_requested field existed, and the Router selected the image Analyzer solely from detected_kind after quarantine.",
+    "call_order": ["Feishu image event", "ingest__ingest_attachment", "quarantine receipt", "analyzers__analyze_image", "stored_hash_mismatch rejection"]
+  },
+  "contract": {
+    "attachment_action_values": ["ingress_only", "analyze_image", "transcribe_audio", "analyze_video", "unsupported_action"],
+    "default": "ingress_only",
+    "empty_or_unknown_caption": "ingress_only",
+    "dispatch_gate": "analysis_allowed=true AND analysis_requested=true AND attachment_action matches analyzer",
+    "caption_persistence": "raw caption is not persisted; only controlled action, source, and normalized-text SHA-256 are recorded"
+  },
+  "implementation": [
+    "scripts/mcp_ingest_attachment.py derives a deterministic action from a Channel-bound normalized caption",
+    "receipt and message_manifest record the seven intent/analysis lifecycle fields",
+    "same message_id with a changed action is rejected as intent_conflict",
+    "scripts/analyzer_mcp.py rejects analysis_not_requested and analysis_action_mismatch",
+    "tests/Test-SingleGroupMediaRouter.ps1 requires explicit action before any analyzer call"
+  ],
+  "verification": {
+    "python_ingest_core": "45/45",
+    "router_pester": "46/46",
+    "inbound_pester": "36/36",
+    "mcp_probe": "ingest=1 tool, analyzers=3 tools, diagnostics=0",
+    "production_config_changed": false,
+    "gateway_restarted": false,
+    "old_r2_relabeled": false
+  },
+  "next_action": "Require a new PNG Feishu message_id with no caption for real R2 requalification."
+}

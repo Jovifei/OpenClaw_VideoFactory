@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VideoScript",
+  "type": "object",
+  "required": [
+    "title",
+    "cover_text",
+    "duration_target",
+    "hook",
+    "scenes",
+    "publish"
+  ],
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "cover_text": {
+      "type": "string"
+    },
+    "duration_target": {
+      "type": "number",
+      "minimum": 25,
+      "maximum": 60
+    },
+    "hook": {
+      "type": "string"
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "duration",
+          "voice",
+          "subtitle",
+          "visual_type",
+          "fallback_visual"
+        ],
+        "properties": {
+          "id": {
+            "type": [
+              "integer",
+              "string"
+            ]
+          },
+          "duration": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "voice": {
+            "type": "string"
+          },
+          "subtitle": {
+            "type": "string"
+          },
+          "visual_type": {
+            "type": "string"
+          },
+          "fallback_visual": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "publish": {
+      "type": "object",
+      "required": [
+        "caption",
+        "hashtags"
+      ]
+    }
+  }
+}

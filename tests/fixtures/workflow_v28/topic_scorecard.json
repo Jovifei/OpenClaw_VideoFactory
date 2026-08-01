@@ -1,0 +1,78 @@
+{
+  "topic_id": "tc_0",
+  "dimensions": {
+    "audience_pain": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "novelty": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "evidence_strength": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "account_fit": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "visual_potential": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "production_cost": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "competition": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "comment_potential": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "copyright_risk": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "platform_risk": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "freshness": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    },
+    "confidence": {
+      "score": 7,
+      "weight": 0.5,
+      "reason": "ok"
+    }
+  },
+  "decision": "auto_shortlist",
+  "schema_version": "1.0",
+  "source": {
+    "kind": "synthetic_fixture",
+    "id": "v28-test"
+  },
+  "provenance": {
+    "created_at": "2026-07-30T07:18:14.500889+00:00",
+    "created_by": "test",
+    "tool": "v28_schema_tests"
+  },
+  "status": "active",
+  "confidence": 0.8
+}

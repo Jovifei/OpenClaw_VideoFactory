@@ -1,0 +1,78 @@
+{
+  "change_request_id": "P0-R1-TRUSTED-SIZE-CONTRACT-010",
+  "status": "implemented_and_verified_waiting_for_new_r1_message",
+  "phase": "P0",
+  "authorization": "Jovi authorized only the trusted attachment-size source and verification contract repair.",
+  "original_r1_negative_evidence": {
+    "event_id": "not retained in report",
+    "message_id_hash": "acf1611d84a5cc43",
+    "message_id_masked": "om_***339c",
+    "file_name": "p0-file-test.txt",
+    "feishu_ui_display_size": null,
+    "feishu_ui_display_size_evidence": "not present in the retained gateway or session event",
+    "router_supplied_size_bytes": 67,
+    "filesystem_actual_size_bytes": 55,
+    "result": "size_mismatch",
+    "receipt_created": false,
+    "analyzer_call_count": 0,
+    "r1_status": "failed_size_contract",
+    "preservation": "reports/P0_R1_EVENT_TRACE_20260718.json and .md are immutable negative evidence for this task."
+  },
+  "prechange_invariants": {
+    "openclaw_config_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+    "agents": 17,
+    "bindings": 14,
+    "cron": 4,
+    "target_group_consumers": 1,
+    "r0": "pass",
+    "r2_to_r5": "not_run"
+  },
+  "allowed_paths": [
+    "scripts/mcp_ingest_attachment.py",
+    "scripts/07_ingest_inbound_media.ps1",
+    "scripts/run_ingest_safe.ps1",
+    "tests/test_ingest_attachment_core.py",
+    "tests/test_trusted_media_roots.py",
+    "tests/Test-IngestInboundMedia.ps1",
+    "reports/",
+    "tasks/todo.md"
+  ],
+  "required_contract": {
+    "actual_size_bytes": "MCP-owned Path.stat value; the only size-limit authority.",
+    "stored_size_bytes": "post-copy stat; must equal actual_size_bytes.",
+    "declared_size_bytes": "optional audit-only value; public Router input is always untrusted.",
+    "hash": "source and stored SHA-256 must match.",
+    "source_stability": "source size and mtime must be stable across validation and copy.",
+    "trusted_declared_provenance": "only a non-public Channel/Gateway adapter API may set it."
+  },
+  "prohibited_changes": [
+    "Router durable model or media scope",
+    "Analyzer MCP or analyzer permissions",
+    "agent count, Binding, consumer, Cron, OAuth, Gateway port, OpenClaw core",
+    "P0 Gate, PROJECT_STATUS.yaml, P1 entry, model install, network dependency, commit, tag, push"
+  ],
+  "planned_runtime_action": "At most one Gateway restart, only if schema/tool registration requires it and all pre-restart safety checks pass.",
+  "rollback": {
+    "code": "Restore only 010-touched source and test files from the pre-change copies after a failed validation.",
+    "configuration": "No configuration mutation is planned. If a restart occurs, retain the validated unchanged configuration hash and stop on any semantic difference.",
+    "evidence": "Never remove or overwrite the original R1 failure report."
+  },
+  "acceptance": [
+    "Old Router size 67 with actual 55 is accepted only as untrusted audit data; actual stat remains authoritative.",
+    "Trusted declared mismatch rejects with trusted_declared_size_mismatch.",
+    "No success receipt lacks the required size, SHA, stability, and trusted-root fields.",
+    "All required regressions are rerun in this task; R2-R5 remain not run."
+  ],
+  "completion": {
+    "result": "P0_R1_SIZE_CONTRACT_FIXED",
+    "gateway_restart_count": 1,
+    "config_sha256_unchanged": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+    "final_regression": "Analyzer 23/23; trusted roots 25/25; ingest core 39/39; combined Pester 81/81; V2.8 schema 88/88",
+    "next_action": "REUPLOAD_TXT_REQUIRED with a new message id"
+  },
+  "stop_conditions": [
+    "No secure server-side actual-size calculation is possible.",
+    "A required safety invariant fails or any unintended configuration/topology change appears.",
+    "The single permitted Gateway restart fails validation."
+  ]
+}

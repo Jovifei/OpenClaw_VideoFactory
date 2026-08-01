@@ -1,0 +1,17 @@
+{
+  "status": "ready_for_real_channel_sequence",
+  "server": "analyzers",
+  "registration": "mcp.servers.analyzers",
+  "command": "python",
+  "args": ["scripts/analyzer_mcp.py"],
+  "tools": [
+    {"name": "analyze_image", "model": "xiaomimimo/mimo-v2.5", "fallback": "none", "output": "jobs/<job_id>/analysis.json"},
+    {"name": "transcribe_audio", "engine": "faster-whisper", "device": "cuda", "fallback": "none", "output": "jobs/<job_id>/transcript.json"},
+    {"name": "analyze_video", "pipeline": ["ffprobe", "bounded_frames", "audio_extract", "faster_whisper", "mimo_v2_5_keyframes"], "fallback": "none", "output": "jobs/<job_id>/analysis.json"}
+  ],
+  "common_input": ["job_id", "message_id", "attachment_index", "receipt_path", "stored_path", "analysis_policy"],
+  "common_rejections": ["raw inbound path", "URL", "file_key", "base64", "command", "model name", "output directory", "ffmpeg arguments"],
+  "receipt_requirements": ["quarantined=true", "content_parsed=false", "analysis_allowed=true", "SHA-256 match", "detected_kind match", "message/index match"],
+  "mcp_probe": {"ingest": 1, "analyzers": 3, "diagnostics": []},
+  "source": "scripts/analyzer_mcp.py"
+}

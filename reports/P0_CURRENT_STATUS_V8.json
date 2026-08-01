@@ -1,0 +1,27 @@
+{
+  "status": "P0_R3_FAILED_ANALYSIS_INTENT_GATE_STOPPED",
+  "p0_boundary": "conditional_not_passed",
+  "project_status_file_updated": false,
+  "final_gate_run": false,
+  "config": {"sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c", "valid": true, "changed_this_task": false},
+  "topology": {"agents": 17, "bindings": 14, "cron": 4, "target_group_consumers": 1, "router_model": "xiaomimimo/mimo-v2.5-pro"},
+  "real_channel": "R0_PASS; R1_REPLACEMENT_PASS; R2_OLD_FAIL_PRESERVED; R2_REPLACEMENT_PASS; R2V_VIDEO_INGRESS_ONLY_PASS; R3_FAILED_ANALYSIS_INTENT_GATE; R4-R5_STOPPED",
+  "r2_old_failure": {"status": "FAIL_PRESERVED", "failure_token": "R2_FAILED:ANALYZER_CALLED_AFTER_INGEST", "evidence": "reports/P0_R2_EVENT_TRACE_20260720.json"},
+  "r2_replacement": {"status": "PASS", "message_id_masked": "om_***9de9", "evidence": "reports/P0_LIVE_MEDIA_R2_QUALIFICATION_012.json"},
+  "r2v_video_ingress_only": {"status": "PASS_NOT_R5", "message_id_masked": "om_***27b7", "evidence": "reports/P0_LIVE_MEDIA_R2_QUALIFICATION_012.json"},
+  "child_reviews": {"A": "PASS", "B": "PASS_AFTER_TIMEOUT_RETRY", "C": "PASS_WITH_LATER_EGRESS_GAPS", "D": "PASS_WITH_GIT_BLOCKER"},
+  "git": {"work_tree": true, "branch": "phase/p0-gate-correction", "head": "UNBORN_NO_COMMITS", "remote": "NONE_REPORTED", "publication": "BLOCKED"},
+  "next_boundary": "R3 failed; stop and do not enter R4 or run P0 Gate",
+  "r3_required_message": "not applicable after R3 failure",
+  "two_message_analysis": {
+    "offline_contract": "PASS",
+    "python_tests": {"full_discover": "122/122", "analysis_request": "8/8", "analyzer_mcp": "32/32", "mcp_surface": "5/5", "fake_flow": "2/2"},
+    "pester_tests": {"two_message": "15/15", "router_regression": "46/46", "inbound_regression": "36/36", "v28_wrapper": "4/4", "v28_schema": "88/88"},
+    "mcp_tools": {"ingest": 2, "analyzers": 3},
+    "production_config_changed": false,
+    "gateway_restarted": false,
+  "live_reply_metadata": "display_marker_only_raw_reply_to_field_absent",
+  "r3_live": {"status": "FAIL", "failure_token": "R3_FAILED:ANALYSIS_INTENT_GATE", "evidence": "reports/P0_R3_TWO_MESSAGE_EVENT_20260720.json", "analysis_model": "xiaomimimo/mimo-v2.5", "analysis_result_generated": true, "channel_egress_proven_by_message_tool": false, "r4_allowed": false},
+  "production_state_after_r3": {"config_changed": false, "gateway_restarted": false, "agents": 17, "bindings": 14, "cron": 4, "target_group_consumers": 1}
+}
+}

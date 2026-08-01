@@ -1,0 +1,25 @@
+{
+  "task": "P0-PROJECT-FEISHU-GATEWAY-IMPLEMENTATION-019",
+  "mode": "offline_fake_events",
+  "steps": [
+    "stop_core_binding",
+    "start_project_gateway",
+    "verify_one_consumer",
+    "route_fake_message",
+    "rollback_core_binding"
+  ],
+  "evidence": {
+    "rehearsal_script": "experiments/feishu_gateway_migration/rehearsal.py",
+    "script_steps": [
+      "stop_core_binding",
+      "start_project_gateway",
+      "verify_one_consumer",
+      "route_fake_message",
+      "rollback_core_binding"
+    ],
+    "produces_state": true,
+    "state_count": 5
+  },
+  "result": "PASS",
+  "notes": "No process restart, real config edits, real credentials, or network I/O performed."
+}

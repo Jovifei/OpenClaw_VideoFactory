@@ -1,0 +1,45 @@
+{
+  "audit": "P0_ATTACHMENT_MODEL_CALL_AUDIT",
+  "status": "failed_pre_ingest_model_analysis_confirmed",
+  "message_id": "om_***f107",
+  "source": {
+    "session": "C:\\Users\\Admin\\.openclaw\\agents\\video-factory\\sessions\\6641df2f-60dd-48d5-a19f-41a3ba880d54.jsonl",
+    "trajectory": "C:\\Users\\Admin\\.openclaw\\agents\\video-factory\\sessions\\6641df2f-60dd-48d5-a19f-41a3ba880d54.trajectory.jsonl",
+    "session_sha256": "not_recorded_in_report; source retained read-only",
+    "event_time": "2026-07-16T13:12:52.498Z"
+  },
+  "observed_sequence": [
+    "Channel normalized the attachment into a user session entry with MediaPath, MediaPaths and MediaTypes=image/png.",
+    "Trajectory context.compiled recorded imagesCount and attachment-bearing context at 2026-07-16T13:12:52.478Z.",
+    "Trajectory prompt.submitted occurred at 2026-07-16T13:12:52.493Z.",
+    "The model emitted one image tool call at 2026-07-16T13:12:57.750Z.",
+    "The image tool returned a visual/text description at 2026-07-16T13:13:06.321Z.",
+    "The assistant produced a free-form visual reply at 2026-07-16T13:13:10.288Z.",
+    "No scripts/07_ingest_inbound_media.ps1 invocation, original copy, input/feishu message directory or receipt exists for this message."
+  ],
+  "root_cause": {
+    "component": "Installed OpenClaw 2026.7.1 core reply pipeline",
+    "entry_file": "C:/Users/Admin/AppData/Roaming/npm/node_modules/openclaw/dist/get-reply-CknL88Yv.js",
+    "entry_function": "applyMediaUnderstandingIfNeeded",
+    "call_site": "The reply pipeline stages remote media and then calls applyMediaUnderstandingIfNeeded when hasInboundMediaForUnderstanding(finalized) is true, before the agent reply path.",
+    "detection_file": "C:/Users/Admin/AppData/Roaming/npm/node_modules/openclaw/dist/inbound-media-BABB4m9T.js",
+    "detection_behavior": "A present MediaPath, MediaPaths or MediaTypes makes hasInboundMediaForUnderstanding true unless a narrow sticker-only condition applies.",
+    "why_ingest_did_not_run": "The existing project ingest script is model-selected downstream work. Core media understanding and prompt construction happen first, so a Skill/AGENTS instruction cannot form a pre-model boundary."
+  },
+  "required_intercept": {
+    "supported_surface": "OpenClaw plugin inbound_claim",
+    "semantics": "Claims an inbound message before agent routing and can return a synthetic ReplyPayload.",
+    "metadata_available": ["mediaPath", "mediaPaths", "mediaType", "mediaTypes", "messageId", "senderId", "conversationId", "agentId"],
+    "activation_constraint": "A workspace-origin plugin is disabled by default. This installation uses an exclusive global plugins.allow list and has no enabled hooks, so activation requires a global configuration write and Gateway restart."
+  },
+  "safety_result": {
+    "pre_ingest_model_call_count": 1,
+    "attachment_payload_forwarded": true,
+    "ocr_invoked": "not_observed; image analysis tool was invoked",
+    "video_decode_invoked": false,
+    "transcription_invoked": false,
+    "content_parser_invoked": false,
+    "ingest_invoked": false,
+    "passed": false
+  }
+}

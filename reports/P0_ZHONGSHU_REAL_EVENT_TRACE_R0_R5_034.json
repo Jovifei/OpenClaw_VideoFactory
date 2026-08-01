@@ -1,0 +1,15 @@
+{
+  "schema": "p0_zhongshu_real_event_trace_r0_r5_034_v1",
+  "status": "NOT_RUN_PRECHECK_BLOCKED",
+  "stages": {
+    "R0_text": "not_run",
+    "R1_txt": "not_run",
+    "R2_png": "not_run",
+    "R3_image_card": "not_run",
+    "R4_audio": "not_run",
+    "R5_video": "not_run"
+  },
+  "real_message_ids": "none",
+  "real_rpc_request_ids": "none",
+  "reason": "cutover never entered"
+}

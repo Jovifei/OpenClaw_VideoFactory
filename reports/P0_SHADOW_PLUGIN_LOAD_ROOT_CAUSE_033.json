@@ -1,0 +1,38 @@
+{
+  "schema": "p0_shadow_plugin_load_root_cause_033_v1",
+  "status": "RESOLVED_IN_SHADOW",
+  "findings": [
+    {
+      "id": "missing_explicit_enablement",
+      "observed": "Shadow plugin discovery returned zero plugins when only a load path was supplied",
+      "cause": "External plugins require explicit plugins.entries.feishu.enabled=true",
+      "fix": "Shadow-only explicit entry enablement"
+    },
+    {
+      "id": "invalid_install_record",
+      "observed": "An early Shadow probe attempted package auto-repair",
+      "cause": "A custom non-npm install source did not satisfy the installed-plugin index contract",
+      "fix": "Valid npm-shaped Shadow install record plus seeded Shadow SQLite index; no production state changed"
+    },
+    {
+      "id": "peer_runtime_link",
+      "observed": "Copied plugin peer resolved to itself",
+      "cause": "The byte-for-byte reference copy had a self-targeting openclaw peer",
+      "fix": "Shadow-only junction to the installed OpenClaw runtime"
+    },
+    {
+      "id": "transport_seam",
+      "observed": "Real plugin imports the Feishu SDK directly",
+      "cause": "No plugin-code modification is allowed in this task",
+      "fix": "Process-boundary ESM loader providing a fake SDK and a loopback-only network guard"
+    },
+    {
+      "id": "startup_update_check",
+      "observed": "The first aggregated run caught one Gateway fetch to the npm registry",
+      "cause": "OpenClaw update.checkOnStart defaults to enabled",
+      "fix": "Shadow-only runtime overlay sets update.checkOnStart=false; production configuration is unchanged"
+    }
+  ],
+  "final_external_network_access": 0,
+  "production_mutation": false
+}

@@ -1,0 +1,33 @@
+{
+  "change_request_id": "P0-GITHUB-PUBLISH-069",
+  "created_at": "2026-08-02T00:00:00+08:00",
+  "authorization": "Jovi explicit instruction to publish the project to https://github.com/Jovifei/OpenClaw_VideoFactory.git while ignoring personal/runtime data, docs, and non-core articles.",
+  "scope": "Prepare a privacy-safe first repository commit on main, then push only the reviewed non-runtime source, tests, templates, runbooks, tasks, Codex handoff, and selected redacted P0 reports.",
+  "keep": [
+    "root execution and policy files",
+    "config excluding local/private runtime configuration",
+    "scripts, src, services, skills, schemas, templates, tests, runbook, tasks",
+    "handoff/codex",
+    "root P0 reports and P0 change requests that pass the sensitive-name ignore rules",
+    "README.md and .gitignore"
+  ],
+  "ignore": [
+    "personal credentials and local environment files",
+    "input, jobs, media, output, state, runtime, data, external, experiments",
+    "docs and office/PDF article sources",
+    "handoff product/research/archive/overnight/history",
+    "vendor_research and nested repositories",
+    "node_modules, model caches, build output, and generated media",
+    "credential, secret, token, auth, exposure, diagnostic, or transcript reports"
+  ],
+  "remote": "https://github.com/Jovifei/OpenClaw_VideoFactory.git",
+  "branch": "main",
+  "status": "ready_for_commit",
+  "candidate_files": 990,
+  "candidate_bytes": 2925160,
+  "pre_commit_checks": {
+    "docs_and_runtime_paths": 0,
+    "handoff_codex_office_documents": 0,
+    "high_risk_content_matches": 0
+  }
+}

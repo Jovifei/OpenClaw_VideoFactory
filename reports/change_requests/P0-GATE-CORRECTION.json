@@ -1,0 +1,63 @@
+{
+  "id": "P0-GATE-CORRECTION",
+  "version": "2.5",
+  "problem": "P0 incorrectly treats OpenClaw Codex Plugin OAuth, slash Codex commands, and OpenAI Codex Runtime as mandatory for the VideoFactory infrastructure gate.",
+  "current_evidence": [
+    "handoff/plan-corrections/v2.5/P0_RECOVERY_AND_P1_PLAN_V2.5.md",
+    "handoff/plan-corrections/v2.5/GATE_MATRIX_V2.5.yaml",
+    "reports/gate_p0.json",
+    "reports/CODEX_RUNTIME_TEST.json",
+    "reports/FEISHU_SMOKE_TEST.json"
+  ],
+  "proposed_change": [
+    "Remove OpenClaw Codex Plugin OAuth and slash Codex command evidence from P0.",
+    "Require direct Codex CLI read and workspace-write smoke evidence.",
+    "Require real TXT, PNG, and MP4 ingress, safe media receipts, controlled lark-cli egress, idempotency, single-consumer proof, existing-agent regression, and absence of a VideoFactory production Cron.",
+    "Mark the OpenClaw Codex Plugin as deferred_optional_not_blocking.",
+    "Align P0 and P1 documentation with the V2.5 small-step architecture."
+  ],
+  "exact_files_or_config_paths": [
+    "scripts/90_acceptance_gate.py",
+    "tests/test_p0_acceptance_gate.py",
+    "START_HERE_CODEX.md",
+    "AGENTS.md",
+    "runbook/00_EXECUTION_OVERVIEW.md",
+    "runbook/02_OPENCLAW_CODEX_FEISHU_SETUP.md",
+    "runbook/04_P1_DETERMINISTIC_MVP.md",
+    "runbook/10_FINAL_ACCEPTANCE.md",
+    "handoff/codex/ACCEPTANCE_MATRIX.md",
+    "handoff/codex/IMPLEMENTATION_BACKLOG.yaml",
+    "handoff/plan-corrections/v2.5/P0_RECOVERY_AND_P1_PLAN_V2.5.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "reports/CODEX_CLI_SMOKE.json",
+    "reports/CODEX_CLI_SMOKE.md"
+  ],
+  "expected_result": "The corrected P0 gate ignores OpenClaw Codex Plugin OAuth and slash Codex commands, accepts OpenClaw Default Runtime, validates direct Codex CLI smoke plus the real Feishu/media/egress/regression evidence, and remains failed until every newly required P0 item is proven.",
+  "rollback": {
+    "backup_root": "C:/Users/Admin/.openclaw/backups/OpenClaw_VideoFactory/P0-GATE-CORRECTION-20260714-202941",
+    "gate_sha256": "E9C3041EAA340DF8BB4B846A7A2B64A0A43C492CF55578EA857B5A4B46CC72D2",
+    "project_status_sha256": "5B9E55CD2D6C9939A606B55E6AD41339A057AE814AFF4613974472BBEC763046",
+    "openclaw_config_sha256": "F84284A1F1300D23A8AA636E1CC4ED3601300CFA074F30D24427CBCECB84891B",
+    "note": "Restore only the affected project file from the external backup. The OpenClaw configuration is a read-only snapshot and is not changed by this request."
+  },
+  "commands": [
+    "codex exec --ephemeral \"Return exactly CODEX_CLI_READ_OK and do not edit any files.\"",
+    "codex exec --ephemeral --sandbox workspace-write \"Create reports/codex_cli_smoke.txt containing exactly CODEX_CLI_WRITE_OK. Do not change any other file.\"",
+    ".venv/Scripts/python.exe scripts/90_acceptance_gate.py --gate p0"
+  ],
+  "approval_required": true,
+  "approval": {
+    "status": "approved",
+    "source": "Jovi V2.5 correction request in the current Codex task",
+    "scope": "Plan correction, P0 gate changes, documentation alignment, direct Codex CLI smoke, and a corrected P0 gate run only"
+  },
+  "prohibited_actions": [
+    "OpenClaw Codex Plugin OAuth diagnosis or login",
+    "Codex or OpenClaw OAuth profile deletion",
+    "OpenAI auth order changes",
+    "video-factory Runtime or model changes",
+    "VideoFactory production Cron creation",
+    "P1 video development"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "task": "P0-ZHONGSHU-MAINTENANCE-READINESS-031",
+  "captured_at": "2026-07-23T00:10:55.6762381Z",
+  "capture_mode": "read_only_sanitized",
+  "openclaw_config_sha256": "D6A97F1025698C08F086C1EE565E1AAC1AD30116037E4F135688EDBB1171BE8C",
+  "gateway": {
+    "service_loaded": true,
+    "pid": null,
+    "pid_reason": "safe_no_probe_status_does_not_emit_a_pid",
+    "status": "managed_service_loaded"
+  },
+  "inventory": {
+    "agents": 17,
+    "bindings": 14,
+    "cron_jobs_total": 5,
+    "cron_jobs_enabled": 4,
+    "zhongshu_config_present": true,
+    "zhongshu_target_binding_configured": true
+  },
+  "tasks": {
+    "total": 33,
+    "active": 0,
+    "terminal": 33,
+    "succeeded": 26,
+    "failed": 7,
+    "queued": 0,
+    "running": 0,
+    "lost": 0
+  },
+  "git": {
+    "branch": "phase/p0-gate-correction",
+    "remote_count": 0,
+    "porcelain_count": 40,
+    "diff_check_issues": 0
+  },
+  "secret_scan": {
+    "candidate_file_count": 0,
+    "raw_files_emitted": false
+  },
+  "limitations": [
+    "No authenticated Feishu connection, TLS ownership, or consumer count was observed.",
+    "No configuration content, credential, raw identifier, endpoint, or local sensitive path was retained."
+  ]
+}

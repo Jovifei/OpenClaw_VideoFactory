@@ -1,0 +1,140 @@
+version: 1
+account:
+  working_positioning: 嵌入式工程主线 + AI热点副线 + 小粉飞猪品牌角色
+  one_sentence_promise: 把复杂的嵌入式问题和真正有影响的AI变化，拆成能看懂、能复现、能避坑的短视频。
+  tone:
+  - 专业
+  - 克制
+  - 清楚
+  - 冷幽默
+  - 不卖弄
+  - 不标题党
+  audiences:
+  - segment: 嵌入式初学者
+    priority: 1
+  - segment: 单片机/固件/硬件工程师
+    priority: 1
+  - segment: 希望提高效率的工程师
+    priority: 2
+  - segment: 关注AI但反感空泛炒作的技术用户
+    priority: 2
+content_mix_28_videos:
+  embedded_mainline:
+    count: 20
+    ratio: 0.714
+  ai_secondary:
+    count: 5
+    ratio: 0.179
+  community_and_brand:
+    count: 3
+    ratio: 0.107
+columns:
+- id: pig-frame
+  name: 飞猪拆帧
+  line: embedded_mainline
+  purpose: 逐字节解释协议、寄存器、报文和时序
+  templates:
+  - protocol-frame
+  target_share: 0.18
+- id: pig-debug
+  name: 飞猪排故
+  line: embedded_mainline
+  purpose: 真实故障现象、定位路径、根因、修复和通用经验
+  templates:
+  - engineering-case
+  - flow-diagram
+  target_share: 0.2
+- id: pig-mcu
+  name: 飞猪讲原理
+  line: embedded_mainline
+  purpose: MCU、FreeRTOS、Flash、看门狗、中断、内存与并发
+  templates:
+  - flow-diagram
+  - code-explainer
+  target_share: 0.18
+- id: pig-hardware
+  name: 飞猪测硬件
+  line: embedded_mainline
+  purpose: 电源、PCB、接口、示波器、万用表和硬件调试
+  templates:
+  - engineering-case
+  - comparison
+  target_share: 0.12
+- id: pig-build
+  name: 飞猪改工具
+  line: embedded_mainline
+  purpose: 把开源工具、脚本、自动化和项目经验改成自己的系统
+  templates:
+  - engineering-case
+  - code-explainer
+  target_share: 0.1
+- id: pig-ai-news
+  name: 飞猪看AI
+  line: ai_secondary
+  purpose: 只讲对工程师有实际影响的AI热点、模型、工具和政策变化
+  templates:
+  - ai-hot-topic
+  - comparison
+  target_share: 0.11
+- id: pig-ai-test
+  name: 飞猪实测AI
+  line: ai_secondary
+  purpose: AI工具实测、工程工作流、边缘AI和AI+嵌入式
+  templates:
+  - engineering-case
+  - comparison
+  target_share: 0.07
+- id: pig-answers
+  name: 飞猪答疑
+  line: community_and_brand
+  purpose: 评论区问题、纠错、周复盘和观众共创
+  templates:
+  - comparison
+  - flow-diagram
+  target_share: 0.07
+- id: pig-lab
+  name: 小粉飞猪实验室
+  line: community_and_brand
+  purpose: 角色主导的轻量实验、工作流改装、幕后和品牌故事
+  templates:
+  - pig-lab
+  target_share: 0.04
+weekly_rhythm:
+- day: Monday
+  preferred:
+  - pig-frame
+  - pig-mcu
+- day: Tuesday
+  preferred:
+  - pig-debug
+- day: Wednesday
+  preferred:
+  - pig-mcu
+  - pig-build
+- day: Thursday
+  preferred:
+  - pig-hardware
+  - pig-debug
+- day: Friday
+  preferred:
+  - pig-build
+  - pig-frame
+- day: Saturday
+  preferred:
+  - pig-ai-news
+  - pig-ai-test
+- day: Sunday
+  preferred:
+  - pig-answers
+  - pig-lab
+  - pig-ai-news
+selection_rules:
+  mainline_floor_last_28: 0.65
+  ai_ceiling_last_28: 0.25
+  same_column_max_consecutive: 2
+  ai_hot_topic_requires:
+  - 至少两个可靠来源，其中至少一个为官方、论文或原始发布
+  - 明确发生日期
+  - 明确对工程师的实际影响
+  - 不把传闻、融资估值或模型榜单当成唯一价值
+  auto_select_minimum_score: 80

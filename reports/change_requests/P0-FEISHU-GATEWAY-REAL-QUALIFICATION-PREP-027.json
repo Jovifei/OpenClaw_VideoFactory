@@ -1,0 +1,21 @@
+{
+  "id": "P0-FEISHU-GATEWAY-REAL-QUALIFICATION-PREP-027",
+  "authorized_by": "Jovi task instruction",
+  "purpose": "Prepare, but do not execute, a non-production real-environment qualification for the Project Feishu Gateway.",
+  "allowed_paths": [
+    "reports/",
+    "tasks/todo.md"
+  ],
+  "prohibited_actions": [
+    "production cutover",
+    "real Feishu connection",
+    "real OpenClaw RPC authentication",
+    "stop or modify the current Binding",
+    "Gateway start or restart",
+    "Agent Cron OAuth or PROJECT_STATUS change",
+    "commit",
+    "push"
+  ],
+  "secrets": "Record types and approval states only; never read, print, or persist credentials, tokens, chat identifiers, sender identifiers, or file contents.",
+  "rollback": "Documentation-only change; no runtime or configuration state is changed."
+}

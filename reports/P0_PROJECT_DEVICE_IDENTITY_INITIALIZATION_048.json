@@ -1,0 +1,53 @@
+{
+  "task": "P0-PROJECT-GATEWAY-DEVICE-IDENTITY-INITIALIZATION-048",
+  "status": "PROJECT_GATEWAY_DEVICE_IDENTITY_READY",
+  "next_status": "READY_TO_RETRY_PAIRING_REQUEST",
+  "implementation": {
+    "identity_provider": "installed_openclaw_official_identity",
+    "protocol_version": "2026.7.1",
+    "identity_format": "official_v1_identity_device_json",
+    "state_root_external": true,
+    "state_root_local_non_unc": true,
+    "state_acl": "current_user_and_system",
+    "initialization_transaction_persisted": true,
+    "initialization_transaction_status": "ready"
+  },
+  "identity": {
+    "created": true,
+    "private_key_material_persisted": true,
+    "public_key_material_persisted": true,
+    "device_id_consistent": true,
+    "display_name": "Project Feishu Gateway",
+    "requested_role": "operator",
+    "requested_scopes": [
+      "operator.read"
+    ],
+    "pairing_status": "not_requested",
+    "pending_pairing_request": false,
+    "device_token_present": false
+  },
+  "offline_validation": {
+    "reload": true,
+    "signature_verifies": true,
+    "modified_nonce_rejected": true,
+    "official_client_constructor_accepts_identity": true,
+    "official_client_started": false
+  },
+  "safety": {
+    "gateway_connection_count": 0,
+    "websocket_connection_count": 0,
+    "business_rpc_called": false,
+    "shared_token_used": false,
+    "other_device_identity_used": false,
+    "project_gateway_process_count": 0,
+    "credential_scan_candidates": 0
+  },
+  "verification": {
+    "node": "14/14",
+    "pester": "9/9",
+    "python": "6/6",
+    "schema": "88/88",
+    "pip_check": "passed",
+    "git_diff_check": "passed"
+  }
+}

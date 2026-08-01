@@ -1,0 +1,14 @@
+{
+  "status": "CORE_FEISHU_SHADOW_VALIDATION_BLOCKED",
+  "static_control_contract": "ACCOUNT_LEVEL_DISABLE",
+  "runtime_commands": ["channels.stop(feishu, zhongshu)", "channels.start(feishu, zhongshu)"],
+  "production_execution": false,
+  "shadow_execution": "gateway_rpc_only_feishu_plugin_not_loaded",
+  "scripts_created": false,
+  "scripts_creation_reason": "Shadow proof required before command scripts",
+  "independent_review": "COMPLETED_STATIC_BLOCKED",
+  "real_feishu": false,
+  "messages_sent": false,
+  "config_changed": false,
+  "next_gate": "load_installed_feishu_plugin_in_no-network_shadow_and_repeat_account_stop_restore"
+}

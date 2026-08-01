@@ -1,0 +1,33 @@
+{
+  "task": "P0-R1-TRUSTED-SIZE-CONTRACT-010",
+  "status": "P0_R1_SIZE_CONTRACT_FIXED",
+  "old_r1": {
+    "status": "failed_size_contract",
+    "router_supplied_size_bytes": 67,
+    "filesystem_actual_size_bytes": 55,
+    "error_code": "size_mismatch",
+    "receipt": false,
+    "analyzer_calls": 0,
+    "preserved_negative_evidence": "reports/P0_R1_EVENT_TRACE_20260718.json"
+  },
+  "root_cause": "MODEL_SUPPLIED_SECURITY_FIELD_CONFIRMED",
+  "public_mcp_schema": {
+    "removed": ["size_bytes", "max_bytes"],
+    "router_cannot_set": ["actual size", "maximum size", "trusted flag", "validation mode"]
+  },
+  "contract": {
+    "actual_size_bytes": "trusted source Path.stat; sole hard-limit authority",
+    "stored_size_bytes": "post-copy stat; must equal actual_size_bytes",
+    "trusted_declared_size": "only keyword-only internal Channel/Gateway API with allowlisted provenance",
+    "untrusted_legacy_size": "optional receipt audit only; never a rejection basis",
+    "integrity": "source pre/post size+mtime checks, source/stored SHA-256 comparison, partial-copy deletion",
+    "failure_codes": ["file_too_large", "trusted_declared_size_mismatch", "source_changed_during_read", "stored_size_mismatch", "stored_hash_mismatch", "invalid_declared_size", "missing_source"]
+  },
+  "receipt_required_fields": ["declared_size_bytes", "declared_size_trusted", "declared_size_source", "actual_size_bytes", "stored_size_bytes", "size_match", "source_sha256", "stored_sha256", "source_stable_during_read", "trusted_root_id"],
+  "gateway_restart_count": 1,
+  "config_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+  "topology": {"agents": 17, "bindings": 14, "cron": 4, "target_group_consumers": 1},
+  "r0": "pass_preserved",
+  "r2_to_r5": "not_run",
+  "ready_for": "new real R1 TXT message with a new message_id only"
+}

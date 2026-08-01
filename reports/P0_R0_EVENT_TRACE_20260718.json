@@ -1,0 +1,48 @@
+{
+  "event": "P0_TEXT_ROUTER_TEST",
+  "status": "pass",
+  "observed_at": "2026-07-18T22:21:01+08:00",
+  "message_id_hash": "172ce02bd1120174",
+  "message_id_masked": "om_***b243",
+  "channel_route": "feishu[zhongshu] -> existing VideoFactory group -> video-factory",
+  "session": {
+    "key_pattern": "agent:video-factory:feishu:group:<target-group>",
+    "continuous": true,
+    "trajectory_events": ["session.started", "prompt.submitted", "model.completed", "session.ended"],
+    "session_file": "be7a49a2-f4aa-40e4-a6bd-13f293db93e7.jsonl"
+  },
+  "router": {
+    "model": "xiaomimimo/mimo-v2.5-pro",
+    "router_model_call_count": 1,
+    "model_start_count": 1,
+    "model_response_count": 1,
+    "pre_ingest_media_understanding_count": 0,
+    "router_images_count": 0,
+    "tool_call_count": 0,
+    "ingest_tool_call_count": 0,
+    "analyzer_call_count": 0
+  },
+  "reply": {
+    "dispatch_complete": true,
+    "queued_final": true,
+    "replies": 1,
+    "target": "original Feishu group"
+  },
+  "topology_invariant": {
+    "agents": 17,
+    "bindings": 14,
+    "cron": 4,
+    "target_group_consumers": 1,
+    "target_consumer": "video-factory",
+    "analyzer_bindings": 0
+  },
+  "config_sha256": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+  "evidence_sources": [
+    "C:/Users/Admin/AppData/Local/Temp/openclaw/openclaw-2026-07-18.log",
+    "C:/Users/Admin/.openclaw/agents/video-factory/sessions/be7a49a2-f4aa-40e4-a6bd-13f293db93e7.jsonl",
+    "openclaw sessions tail --session-key <redacted> --tail 60",
+    "read-only config/topology inspection"
+  ],
+  "mutations": "none",
+  "next_step": "stop and wait for R1; do not accept an upload until explicitly instructed"
+}

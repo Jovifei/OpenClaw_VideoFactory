@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-07-27",
+  "route": "zhongshu -> OpenClaw Core Feishu Binding -> video-factory -> ingest MCP",
+  "qualification": {
+    "R0_text": "PASS",
+    "R1_txt_secure_ingress": "PASS",
+    "R2_png_secure_ingress": "PASS",
+    "R3_image_analysis": "NOT_PASSED",
+    "R4_audio_analysis": "NOT_RUN",
+    "R5_video_analysis": "NOT_RUN",
+    "project_gateway": "DEFERRED_TO_P1_CHANNEL_HARDENING",
+    "P0": "conditional_not_passed"
+  },
+  "historical_only": {
+    "bare_mp4_ingress": "PASS_NOT_R5",
+    "topology": {
+      "agents": 17,
+      "bindings": 14,
+      "cron": 4,
+      "target_group_consumers": 1
+    }
+  },
+  "evidence": [
+    "reports/P0_LIVE_MEDIA_R2_QUALIFICATION_012.md",
+    "reports/P0_R3_TWO_MESSAGE_EVENT_20260720.md",
+    "reports/P0_CURRENT_STATUS_V33.md"
+  ],
+  "live_action_performed": false,
+  "secrets_or_channel_identifiers_recorded": false
+}

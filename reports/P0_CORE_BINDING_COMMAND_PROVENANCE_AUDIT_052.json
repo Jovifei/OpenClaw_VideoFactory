@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-CORE-BINDING-COMMAND-PROVENANCE-REMEDIATION-052-052A",
+  "evidence_level": "static_installed_core_and_local_mcp_source",
+  "installed_core": {
+    "package_root": "C:\\Users\\Admin\\AppData\\Roaming\\npm\\node_modules\\openclaw",
+    "package_version": "2026.7.1"
+  },
+  "feishu_plugin": {
+    "documented_as": "external @openclaw/feishu plugin",
+    "source_under_installed_core_root": false,
+    "protected_profile_or_config_inspection": "not_performed"
+  },
+  "trusted_core_inbound_facts": {
+    "source": "dist/types-DaHgOqFX.d.ts:7914-7991,1963-1989",
+    "facts": ["raw_body", "message_id", "chat_id", "sender_id", "session_key", "timestamp"],
+    "classification": "runtime_owned_before_mcp_materialization"
+  },
+  "mcp_boundary": {
+    "sources": [
+      "dist/selection-8ixiqbew.js:11925-11934",
+      "dist/agent-bundle-mcp-materialize-MreR0YX9.js:275-278",
+      "dist/agent-bundle-mcp-runtime-DGeRg_-o.js:74-90,623-636,694-700,1314-1321"
+    ],
+    "result": "only_model_selected_mcp_arguments_are_delivered_per_call"
+  },
+  "local_consumer": {
+    "source": "scripts/mcp_ingest_attachment.py:826-843,923-943,962-979; scripts/media_action_ticket.py:284-304,467-490",
+    "result": "raw_command_chat_and_sender_are_caller_controlled_without_implicit_channel_binding"
+  },
+  "trusted_envelope_available": false,
+  "missing_nonforgeable_binding": ["current_message_raw_bytes", "message_or_event_id_at_consume", "current_turn_or_run_binding", "runtime_issued_hash_or_one_time_handle"],
+  "decision": "CORE_BINDING_TRUSTED_COMMAND_PROVENANCE_UNAVAILABLE",
+  "prohibited_actions_performed": [],
+  "live_validation": "not_performed"
+}

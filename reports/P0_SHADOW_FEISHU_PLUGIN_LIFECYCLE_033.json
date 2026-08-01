@@ -1,0 +1,59 @@
+{
+  "schema": "p0_shadow_feishu_plugin_lifecycle_033_v1",
+  "status": "SHADOW_FEISHU_PLUGIN_LIFECYCLE_READY",
+  "shadow_only": true,
+  "plugin": {
+    "id": "feishu",
+    "package_version": "2026.6.6",
+    "plugin_list_seen": true,
+    "manifest_sha256": "1443091B8DEA708CB8CDD37CB3FF9CFD8F78E3D79A6042DBF588550E4E092C36",
+    "runtime_entry_sha256": "CF89DFE55DA1D4FDEFF4B576BBEA16092551AC8002D051FC94F61CAFA99641CD"
+  },
+  "gateway": {
+    "config_validate_exit": 0,
+    "ready": true,
+    "rpc_health_exit": 0,
+    "controlled_shutdown": true,
+    "process_shutdown": true,
+    "expected_probe_terminate_exit": 1,
+    "guarded_gateway_processes": 2,
+    "startup_log": "http server listening (1 plugin: feishu)"
+  },
+  "account_control": {
+    "target": "zhongshu",
+    "secondary": "shadow-secondary",
+    "start": true,
+    "start_repeat": true,
+    "stop": true,
+    "stop_repeat": true,
+    "start_after_stop": true,
+    "stop_final": true,
+    "target_running_after_start": true,
+    "target_stopped_after_stop": true,
+    "secondary_never_running": true,
+    "shutdown_preflight_safe": true,
+    "active_tasks_at_shutdown": 0,
+    "shutdown_counts": {
+      "queueSize": 0,
+      "pendingReplies": 0,
+      "embeddedRuns": 0,
+      "cronRuns": 0,
+      "activeTasks": 0,
+      "totalActive": 0
+    }
+  },
+  "transport": {
+    "loopback_only": true,
+    "unexpected_network_access": 0,
+    "fake_sdk": "fake-feishu-sdk",
+    "connect_count": 2,
+    "close_count": 2,
+    "active_connections": 0,
+    "duplicate_connect_detected": false,
+    "identity_requests": 1,
+    "guard_process_count": 34,
+    "guard_connect_count": 14,
+    "guard_gateway_unexpected_network_access": 0
+  },
+  "execution": "SHADOW_ONLY_NOT_PRODUCTION"
+}

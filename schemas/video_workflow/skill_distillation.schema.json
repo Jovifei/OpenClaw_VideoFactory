@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw-videofactory.local/schemas/video_workflow/skill_distillation.schema.json",
+  "title": "Skill Distillation (NOT a summary)",
+  "type": "object",
+  "required": [
+    "skill_id",
+    "name",
+    "problem",
+    "applicability",
+    "non_applicability",
+    "inputs",
+    "procedure",
+    "decision_rules",
+    "common_failures",
+    "examples",
+    "counterexamples",
+    "safety",
+    "version",
+    "evidence",
+    "source",
+    "provenance",
+    "status",
+    "schema_version"
+  ],
+  "properties": {
+    "skill_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "problem": {
+      "type": "string"
+    },
+    "applicability": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "non_applicability": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "applicability boundaries required"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "procedure": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decision_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "common_failures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "counterexamples": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "safety": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deprecated_by": {
+      "type": "string"
+    },
+    "is_summary_only": {
+      "type": "boolean",
+      "const": false,
+      "description": "a video summary is NOT a skill; this must be false"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "openclaw_skill",
+            "provider_adapter",
+            "human",
+            "platform",
+            "synthetic_fixture"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "rejected",
+        "superseded",
+        "deprecated"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "validation_errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  },
+  "additionalProperties": false
+}

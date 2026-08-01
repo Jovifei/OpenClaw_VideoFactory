@@ -1,0 +1,32 @@
+{
+  "id": "P0-PROJECT-GATEWAY-DEVICE-PAIRING-REQUEST-047-RETRY",
+  "status": "approved_by_task_instruction",
+  "purpose": "Make one official Project-device pairing request to the local OpenClaw Gateway after durable private transaction persistence.",
+  "allowed_writes": [
+    "reports/",
+    "tasks/todo.md"
+  ],
+  "external_private_state": "C:\\Users\\Admin\\.openclaw-video-factory\\device",
+  "allowed_runtime_action": "one loopback official-device pairing connection requesting operator.read only",
+  "prohibited_actions": [
+    "automatic_pairing_approval",
+    "shared_gateway_token_use",
+    "other_device_identity_use",
+    "business_session_or_rpc",
+    "agent_tool_or_analyzer_call",
+    "project_gateway_start",
+    "core_feishu_stop",
+    "feishu_traffic",
+    "gateway_restart",
+    "openclaw_configuration_change",
+    "commit_push_tag",
+    "zhongshu_migration",
+    "p0_gate"
+  ],
+  "credential_policy": {
+    "pairing_child_environment": "OPENCLAW_GATEWAY_TOKEN removed",
+    "project_files": "no_private_key_or_device_token",
+    "reports": "redacted_metadata_only",
+    "command_lines": "no_credentials"
+  }
+}

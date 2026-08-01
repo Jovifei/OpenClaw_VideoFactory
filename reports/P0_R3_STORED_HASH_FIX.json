@@ -1,0 +1,38 @@
+{
+  "task": "P0-R2-INTENT-GATE-AND-HASH-INTEGRITY-011",
+  "change_request": "P0-R3-STORED-HASH-INTEGRITY-012",
+  "status": "offline_fix_complete_pending_new_png",
+  "old_real_failure": {
+    "status": "R2_FAIL_PRESERVED",
+    "analyzer_error": "stored_hash_mismatch",
+    "receipt_sha256_case": "uppercase",
+    "python_hexdigest_case": "lowercase",
+    "stored_sha256": "624223E0F8D14374D40301574B721C9DEBD46D4168AD4C44D06767E5F74A4214",
+    "source_sha256_equals_stored_sha256": true
+  },
+  "root_cause": [
+    "Analyzer compared receipt.sha256 instead of receipt.stored_sha256 as the primary stored-copy field.",
+    "PowerShell emitted uppercase hexadecimal while Python hexdigest returned lowercase and comparison was case-sensitive."
+  ],
+  "correct_contract": {
+    "receipt_expected_hash": "full 64-hex stored_sha256, canonical lowercase",
+    "analyzer_computed_hash": "fresh SHA-256 of stored_path, canonical lowercase",
+    "source_sha256": "required secondary consistency field",
+    "comparison": "stored copy equals stored_sha256; source_sha256 equals stored_sha256; optional legacy sha256 must also agree",
+    "prefixes_or_truncation": "rejected",
+    "manifest_or_ui_hash": "never trusted",
+    "path": "receipt-bound stored_path under input/feishu quarantine root only",
+    "stability": "stat/hash/stat before analysis and revalidation after GPU lock"
+  },
+  "error_codes": ["receipt_hash_missing", "receipt_hash_invalid", "stored_file_missing", "stored_hash_mismatch", "source_stored_hash_mismatch", "stored_file_changed", "stored_size_mismatch"],
+  "verification": {
+    "analyzer_tests": "31/31",
+    "uppercase_hash_acceptance": true,
+    "malformed_hash_cases": true,
+    "source_stored_negative": true,
+    "idempotent_completed_output": true,
+    "config_changed": false,
+    "gateway_restarted": false
+  },
+  "real_r3": "NOT_RUN"
+}

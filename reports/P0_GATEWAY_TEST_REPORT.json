@@ -1,0 +1,43 @@
+{
+  "task": "P0-PROJECT-FEISHU-GATEWAY-IMPLEMENTATION-019",
+  "status": "PASS_OFFLINE",
+  "scope": "offline Gateway message/attachment/card bridge with no production network",
+  "suites": [
+  {
+    "name": "tests.test_project_feishu_gateway.py",
+    "passed": 13,
+    "failed": 0
+  },
+    {
+      "name": "tests.test_feishu_gateway_runtime.py",
+      "passed": 6,
+      "failed": 0
+    },
+    {
+      "name": "tests.test_feishu_gateway_poc.py",
+      "passed": 7,
+      "failed": 0
+    },
+    {
+      "name": "services/feishu_gateway schema validation",
+      "passed": 3,
+      "failed": 0,
+      "details": "message/card/attachment schemas parsed as valid JSON"
+    }
+  ],
+  "coverage": {
+    "text_event": true,
+    "attachment_event": true,
+    "card_action_event": true,
+    "duplicate_event": true,
+    "retry": true,
+    "timeout": true,
+    "reconnect": true,
+    "invalid_signature": true,
+    "invalid_ticket": true,
+    "wrong_user": true,
+    "wrong_chat": true,
+    "py_compile": true
+  },
+  "notes": "Tests execute via fake handlers only; no real OpenClaw Gateway call, attachment download, or Feishu I/O."
+}

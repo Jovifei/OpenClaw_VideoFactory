@@ -1,0 +1,7 @@
+# P0 Current Status V7
+
+`R2_FAILED_REPAIR_PENDING_REUPLOAD` is the current handoff state. R0 is a real PASS. The original R1 TXT remains a permanent FAIL caused by a model-supplied size field; the replacement R1 TXT is a separate PASS. R2 ingress quarantined the PNG, but Router then called `analyzers__analyze_image` on an empty-caption attachment. That real failure remains immutable negative evidence. P0 remains `conditional_not_passed`; the final Gate and `PROJECT_STATUS.yaml` were intentionally left untouched.
+
+The current config is valid after one authorized restart. It preserves 17 agents, 14 bindings, 4 Cron, one target-group consumer, the durable text-only router, scope denies, and the existing single-group Binding topology. The ingest server has two explicit trusted roots; the Analyzer server exposes three deterministic tools; each internal Analyzer has an exact tool allowlist and no generic file or exec access.
+
+The two R2/R3 defects are repaired offline under independent change requests: default `ingress_only` intent with a deterministic Analyzer gate, and full canonical stored-hash validation using `stored_sha256` plus source/stored equality. Focused evidence is Python 101/101, Pester 82/82, V2.8 schema 88/88, and MCP probes with zero diagnostics. No Gateway restart occurred in this task and the production config SHA is unchanged. A new `p0-image-test.png` with a new Feishu message_id and no caption is now required; R3–R5 remain `NOT_RUN`.

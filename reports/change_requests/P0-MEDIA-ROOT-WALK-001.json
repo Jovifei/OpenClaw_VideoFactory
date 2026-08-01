@@ -1,0 +1,81 @@
+{
+  "id": "P0-MEDIA-ROOT-WALK-001",
+  "status": "completed",
+  "scope": "Fix only Assert-NoReparseEscape root-boundary traversal for safe media ingestion.",
+  "current_exception": {
+    "type": "PropertyNotFoundException",
+    "location": "Assert-NoReparseEscape",
+    "observed_behavior": "After the source FileInfo is replaced by its parent DirectoryInfo, the function accesses .Directory again. DirectoryInfo has .Parent, not .Directory, so safe ingestion exits 1 before copy and receipt creation.",
+    "txt_ingress_status": "FAILED",
+    "receipt_created": false
+  },
+  "actual_parameters": {
+    "message_id": "om_x100b6a4df66ad4a4b2e70284f733cc7",
+    "channel_session_media_path": "E:\\project\\OpenClaw_VideoFactory\\media\\inbound\\openclaw-staged-477d8565-7c0f-4f8d-b645-58286ec94cd0\\p0-file-test---664c2b58-8c2a-4953-ae2d-a5020633a873.txt",
+    "source_path": "E:\\project\\OpenClaw_VideoFactory\\media\\inbound\\openclaw-staged-477d8565-7c0f-4f8d-b645-58286ec94cd0\\p0-file-test---664c2b58-8c2a-4953-ae2d-a5020633a873.txt",
+    "inbound_root": "E:\\project\\OpenClaw_VideoFactory\\media\\inbound",
+    "destination_root": "E:\\project\\OpenClaw_VideoFactory\\input\\feishu",
+    "source_exists": true,
+    "source_within_inbound_root": true,
+    "source_and_inbound_root_same_volume": true,
+    "c_drive_source_misconfigured_with_e_drive_root": false,
+    "source_sha256": "c8a155b4d5eccafd2b36758b9fa67af186174dfe6e99e184b56231bd8382663d"
+  },
+  "baseline": {
+    "script_sha256": "a8649e59907e2d2f2ba8dd4abc4557aff0e32aae04502df9e15be4cc5d4b880f",
+    "test_sha256": "679e0a9a8959194672b998a280cf634314741d7f7ed04b1afbf3de185f8957b8",
+    "openclaw_config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d"
+  },
+  "allowed_files": [
+    "scripts/07_ingest_inbound_media.ps1",
+    "tests/Test-IngestInboundMedia.ps1",
+    "reports/change_requests/P0-MEDIA-ROOT-WALK-001.json",
+    "reports/backups/P0-MEDIA-ROOT-WALK-001/*",
+    "reports/P0_MEDIA_ROOT_WALK_FIX.json",
+    "reports/P0_MEDIA_ROOT_WALK_FIX.md"
+  ],
+  "prohibited_changes": [
+    "OpenClaw configuration, Binding, Gateway, OAuth, models, Runtime, or Cron",
+    "PNG or MP4 real ingress",
+    "lark-cli egress",
+    "Codex CLI upgrade or smoke",
+    "P0 Gate, PROJECT_STATUS, P1, dependencies, and TXT body access"
+  ],
+  "expected_behavior": [
+    "Normalize SourcePath and AllowedRoot to absolute paths and compare with OrdinalIgnoreCase.",
+    "Accept only AllowedRoot itself or a separator-bounded real descendant; E:\\safe2 must not match E:\\safe.",
+    "Check the source item, every parent directory, and AllowedRoot itself for ReparsePoint.",
+    "Return success only when the current directory equals AllowedRoot.",
+    "Throw if traversal reaches a null parent or a drive root before AllowedRoot.",
+    "The same real TXT source ingests once and writes one successful receipt without reading its body."
+  ],
+  "rollback": "Restore the script and test file from reports/backups/P0-MEDIA-ROOT-WALK-001, verify the baseline SHA-256 values, and leave the real TXT receipt absent.",
+  "execution_outcome": {
+    "parser_checks": "passed",
+    "pester_total": 32,
+    "pester_passed": 32,
+    "pester_failed": 0,
+    "privileged_file_symlink_test_replaced": true,
+    "replacement_test": "Unprivileged directory-junction function seam using the production function AST.",
+    "script_sha256": "10302de702e6c957133c1dbe19404d9ef5d273f289438ea92c049158b57d0afe",
+    "test_sha256": "99f35e3f77dbd55b0e1e0f77998d41d3d4cc1d90cdbc8a46a6517a936fffa9c7",
+    "real_txt_receipt_created": true,
+    "real_txt_idempotency_passed": true,
+    "openclaw_config_unchanged": true
+  },
+  "tests": [
+    "PowerShell parser checks for the script and Pester file",
+    "Invoke-Pester -Script tests/Test-IngestInboundMedia.ps1 -PassThru",
+    "Negative prefix-confusion path test",
+    "Negative source/ancestor/AllowedRoot reparse-point tests",
+    "Real TXT retry using the same message_id, SourcePath, and InboundRoot",
+    "OpenClaw configuration SHA-256 comparison and scoped file review"
+  ],
+  "stop_conditions": [
+    "SourcePath and InboundRoot resolve to different volumes or SourcePath is not a separator-bounded descendant.",
+    "Any root-walk negative test is accepted.",
+    "Existing MIME, path traversal, size, hash, receipt, or idempotency regression fails.",
+    "Any prohibited configuration or project file changes.",
+    "The real TXT retry does not produce the expected single safe receipt."
+  ]
+}

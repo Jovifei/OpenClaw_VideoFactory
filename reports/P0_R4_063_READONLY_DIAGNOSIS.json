@@ -1,0 +1,34 @@
+{
+  "report_schema_version": "1.0",
+  "change_request_id": "P0-R4-REAL-AUDIO-QUALIFICATION-063",
+  "task": "P0-R4-063 read-only diagnosis",
+  "result": "DIAGNOSED_VIDEO_INPUT_WITHOUT_AUDIO_STREAM",
+  "observed_at": "2026-07-30T20:00:18+08:00",
+  "real_r4_projection": {
+    "receipt_detected_kind": "mp4",
+    "receipt_content_type": "video/mp4",
+    "ticket_allowed_action": "video",
+    "analysis_action": "analyze_video",
+    "analysis_status": "failed",
+    "stable_failure_code": "video_frame_extract_failed"
+  },
+  "quarantined_media_probe": {
+    "ffprobe_succeeded": true,
+    "positive_duration": true,
+    "video_stream_present": true,
+    "audio_stream_present": false,
+    "no_write_frame_decode_succeeded": true,
+    "no_write_audio_extract_failure": "missing_required_stream"
+  },
+  "deterministic_regression": {
+    "ticket_routing_tests": "3 passed",
+    "wav_ingest_tests": "42 passed",
+    "controlled_mp4_no_write_frame_probe": "passed"
+  },
+  "root_cause": "The current video analyzer returns video_frame_extract_failed for either frame extraction or audio extraction. The observed MP4 has no audio stream, so audio extraction fails and terminates video analysis although frame decode succeeds.",
+  "douyin_to_obsidian_comparison": {
+    "behavior": "Its existing-video flow catches audio extraction failure, skips ASR, and may continue visual processing.",
+    "not_safe_to_copy_directly": "Its script is a hard-coded Obsidian pipeline with unrelated configuration, paths, and write behavior."
+  },
+  "recommended_minimal_repair": "Make audio extraction optional after a successful video probe/frame extraction; report no_audio_stream distinctly; allow the existing visual path to continue; add a silent-MP4 regression test."
+}

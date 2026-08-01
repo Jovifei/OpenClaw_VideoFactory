@@ -1,0 +1,26 @@
+{
+  "task": "P0-R2-INTENT-GATE-AND-HASH-INTEGRITY-011",
+  "status": "NO_PRODUCTION_CONFIG_CHANGE",
+  "openclaw_config": {
+    "path": "C:/Users/Admin/.openclaw/openclaw.json",
+    "sha256_before_and_after": "d6a97f1025698c08f086c1ee565e1aac1ad30116037e4f135688edbb1171be8c",
+    "semantic_diff": "none"
+  },
+  "topology_readback": {"agents": 17, "bindings": 14, "cron": 4, "target_group_consumers": 1, "router_model": "xiaomimimo/mimo-v2.5-pro"},
+  "mcp_readback": {"ingest_tools": 1, "analyzer_tools": 3, "diagnostics": 0},
+  "gateway": {"restarted_this_task": false, "loopback_port_changed": false},
+  "changed_paths": [
+    "scripts/mcp_ingest_attachment.py",
+    "scripts/analyzer_mcp.py",
+    "tests/test_ingest_attachment_core.py",
+    "tests/test_analyzer_mcp.py",
+    "tests/test_trusted_media_roots.py",
+    "tests/Test-SingleGroupMediaRouter.ps1",
+    "AGENTS.md",
+    "tasks/lessons.md",
+    "tasks/todo.md",
+    "reports/"
+  ],
+  "prohibited_changes_verified": ["media scope", "Agent count", "Binding", "Cron", "OAuth", "Gateway port", "OpenClaw core", "P0 Gate", "PROJECT_STATUS.yaml", "model download", "dependency install"],
+  "old_r2_evidence_preserved": true
+}

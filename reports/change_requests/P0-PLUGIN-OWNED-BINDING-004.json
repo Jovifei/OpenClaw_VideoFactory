@@ -1,0 +1,67 @@
+{
+  "id": "P0-PLUGIN-OWNED-BINDING-004",
+  "phase": "P0",
+  "status": "design_blocked_no_production_changes",
+  "objective": "Replace only the dedicated VideoFactory group's existing core route Binding with a plugin-owned conversation Binding, but only after proving safe full-agent text forwarding and fail-closed attachment ingress.",
+  "baseline": {
+    "openclaw_config_sha256": "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "agent_count": 14,
+    "binding_count": 14,
+    "cron_count": 4,
+    "target_binding": {
+      "agent_id": "video-factory",
+      "channel": "feishu",
+      "account_id": "zho***gshu",
+      "peer_kind": "group",
+      "peer_id": "oc_***1555",
+      "binding_sha256": "cdeab3491b971b3219adfe2d0ab1dfcba5e895386344c0a9cd8a69419a9dc415"
+    },
+    "target_consumer_count": 1,
+    "gateway_port": 18789,
+    "gateway_port_reachable": true,
+    "barrier_plugin_present": false,
+    "p0_operating_status": "conditional_not_passed"
+  },
+  "allowed_configuration_semantic_paths": [
+    "plugins.allow",
+    "plugins.entries.video-factory-preingest-barrier",
+    "plugins.entries.video-factory-preingest-barrier.hooks.allowConversationAccess",
+    "plugins.load.paths (only the barrier plugin directory if live schema requires it)",
+    "meta.lastTouchedAt"
+  ],
+  "allowed_production_binding_change": "Exactly one existing dedicated-group core route Binding may be replaced by exactly one video-factory-preingest-barrier plugin-owned conversation Binding through an official supported API and allow-once approval only.",
+  "prohibited_changes": [
+    "other Bindings",
+    "other Agents",
+    "other groups or bot accounts",
+    "models or fallbacks",
+    "Runtime",
+    "OAuth",
+    "Gateway port",
+    "Channel credentials",
+    "requireMention",
+    "Cron",
+    "tool policy",
+    "skill visibility",
+    "P1",
+    "P0 Gate",
+    "PROJECT_STATUS.yaml",
+    "actual Feishu send or user upload"
+  ],
+  "rollback": "No production change was made. If a future approved migration occurs, delete the plugin-owned Binding through the same official API, restore the original core Binding, restore the byte-identical configuration backup, disable or remove the plugin, recover Gateway only if required, then prove baseline counts and SHA-256.",
+  "outcome": {
+    "production_change_attempted": false,
+    "reason": "The supported request API rejects a conversation already bound by core routing; removing that binding would then require a real interactive allow-once approval. A supported, proven full-agent forwarding API that preserves the current host dispatch/session/reply route was not found.",
+    "required_stop_codes": ["SUPPORTED_BINDING_API_UNAVAILABLE", "FULL_AGENT_PROXY_UNSUPPORTED_OR_UNPROVEN", "SHADOW_BARRIER_TEST_NOT_PRESENT"]
+  },
+  "stop_conditions": [
+    "official Binding API unavailable",
+    "only direct internal-state editing could create Binding",
+    "full Agent proxy unsupported",
+    "allow-always or persistent approval required",
+    "unauthorized config semantic diff",
+    "active work or Cron proximity blocks migration",
+    "plugin or runtime test failure",
+    "count, consumer, session, workspace, skills, tools, reply route, or attachment model-call regression"
+  ]
+}

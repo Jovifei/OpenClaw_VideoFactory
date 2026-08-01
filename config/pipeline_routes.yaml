@@ -1,0 +1,97 @@
+version: 2
+orchestrator: openclaw
+code_maintainer: codex
+routes:
+  topic_request:
+    skills:
+    - topic-intelligence
+    - script-storyboard-director
+    output:
+    - candidate_topics.json
+    - topic_cards.md
+    delivery_skill: feishu-video-factory-operator
+  user_selected_topic:
+    skills:
+    - script-storyboard-director
+    - media-asset-curator
+    - comfyui-gpu-renderer
+    - pink-pig-mascot-director
+    - remotion-layout-engine
+    - audio-subtitle-engine
+    - video-quality-gate
+    optional_finalizer:
+    - jianying-draft-exporter
+  selection_timeout:
+    preconditions:
+      minimum_score: 80
+      sources_verified: true
+      duplicate_check_passed: true
+    then: user_selected_topic
+  shared_reference_video:
+    skills:
+    - reference-video-analyzer
+    - reference-video-recreator
+    - script-storyboard-director
+    - media-asset-curator
+    - comfyui-gpu-renderer
+    - pink-pig-mascot-director
+    - remotion-layout-engine
+    - audio-subtitle-engine
+    - video-quality-gate
+    optional_finalizer:
+    - jianying-draft-exporter
+    ingress_skill: feishu-video-factory-operator
+  remotion_template_change:
+    skills:
+    - codex-template-maintainer
+    - remotion-layout-engine
+  deterministic_visuals:
+    examples:
+    - 协议帧
+    - 代码
+    - 寄存器
+    - 电路
+    - 时序图
+    - 流程图
+    engine: remotion_svg_html
+    never_use_text_to_image: true
+  creative_visuals:
+    engine_priority:
+    - local_asset_library
+    - licensed_stock
+    - comfyui_image
+    - comfyui_short_video
+    - deterministic_fallback
+  mascot_system:
+    repository: https://github.com/Jovifei/ian-fenzhu-illustrations
+    required_for:
+    - brand_recognition
+    - fun_overlay
+    - end_signature
+    fallback: disable_mascot_or_use_static_corner_mark
+  delivery:
+    skills:
+    - video-quality-gate
+    - feishu-video-factory-operator
+    artifacts:
+    - topic_card
+    - cover
+    - final_video
+    - publish_info
+    - quality_report
+services:
+  comfyui:
+    url: http://127.0.0.1:8188
+    timeout_seconds: 900
+  capcut_mate:
+    url: http://127.0.0.1:30000
+    timeout_seconds: 120
+  remotion:
+    mode: local_cli
+  codex:
+    mode: delegated_only
+  feishu:
+    provider: larksuite_cli
+    inbound: openclaw_channel
+    outbound: lark_cli_im
+    event_fallback: lark_cli_event

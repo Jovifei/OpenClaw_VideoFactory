@@ -1,0 +1,43 @@
+{
+  "schema": "p0_zhongshu_cutover_baseline_034_v1",
+  "captured_at": "2026-07-24T09:35:46.9763039Z",
+  "status": "CUTOVER_PRECHECK_BLOCKED",
+  "openclaw": {
+    "version": "2026.7.1",
+    "config_sha256": "D6A97F1025698C08F086C1EE565E1AAC1AD30116037E4F135688EDBB1171BE8C",
+    "authorized_baseline_sha_match": true,
+    "agents": 17,
+    "bindings": 14,
+    "cron": 4
+  },
+  "gateway": {
+    "token_in_maintenance_environment": false,
+    "health": "not_proven",
+    "rpc_channels_status": "timed_out_or_unavailable"
+  },
+  "core_zhongshu": {
+    "owner": "unknown",
+    "consumer_count": "unknown",
+    "feishu_connection_count": "unknown",
+    "runtime_state": "unknown"
+  },
+  "project_gateway": {
+    "running": false,
+    "health": "unknown",
+    "production_launcher": "unavailable_offline_only"
+  },
+  "tasks": {
+    "active_or_unknown": 0,
+    "terminal_counts": {"succeeded": 26, "failed": 7}
+  },
+  "rollback": {
+    "plan_present": true,
+    "script_present": true,
+    "production_execute_available": false
+  },
+  "workspace": {
+    "git_diff_check_exit": 0,
+    "scoped_secret_scan_candidate_count": 0
+  },
+  "secrets": "not persisted"
+}

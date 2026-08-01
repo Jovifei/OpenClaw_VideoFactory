@@ -1,0 +1,41 @@
+generated_after_preflight: false
+rules:
+  - Do not use floating latest in production after smoke test.
+  - Record source URL, exact version or commit, license, install command and checksum where available.
+
+runtime:
+  windows: null
+  powershell: null
+  nvidia_driver: null
+  cuda_runtime_used_by_pytorch: null
+  node: "24.x recommended by current OpenClaw documentation"
+  python: "3.11.x recommended for broad ML compatibility"
+  git: null
+  ffmpeg: null
+  openclaw: null
+  codex_cli: null
+
+python:
+  faster_whisper: null
+  torch: null
+  pyyaml: null
+  jsonschema: null
+  pyscenedetect: null
+  real_esrgan: null
+
+node:
+  remotion: null
+  react: null
+  typescript: null
+
+external:
+  comfyui_commit: null
+  comfyui_mcp_commit: null
+  capcut_mate_commit: null
+  jianying_editor_skill_commit: null
+
+models:
+  tts_model: null
+  whisper_model: null
+  image_model: null
+  upscale_model: null

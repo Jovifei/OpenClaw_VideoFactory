@@ -1,0 +1,17 @@
+{
+  "status": "pass_offline_contract",
+  "current_execution": {
+    "analyzer_mcp_contract": "23/23",
+    "trusted_root_matrix": "25/25",
+    "ingest_core": "18/18",
+    "pester_ingest_router": "77/77",
+    "v28_pester": "4/4"
+  },
+  "prior_008_evidence": {
+    "local_faster_whisper_cuda": "validated in P0_LOCAL_ANALYZER_RUNTIME_VALIDATION.md",
+    "ffprobe_frames_audio_vlm": "validated in P0_LOCAL_ANALYZER_RUNTIME_VALIDATION.md"
+  },
+  "mcp_probe": {"analyzers": "3 tools, diagnostics=[]", "ingest": "1 tool, diagnostics=[]"},
+  "not_claimed": ["real Feishu R0-R5", "final P0 Gate", "P0_READY"],
+  "test_mode_boundary": "OPENCLAW_ANALYZER_TEST_MODE=1 is used only by the 23 contract tests; production config does not set it."
+}

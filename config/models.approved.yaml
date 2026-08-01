@@ -1,0 +1,12 @@
+version: 1
+total_new_download_budget_gb: 30
+gpu:
+  name: RTX 4070 SUPER
+  vram_gb: 12
+approved_models: []
+approval_rules:
+  - record source, version, license, size and sha256
+  - prove a 12GB VRAM path before unattended use
+  - no automatic custom-node or model downloads
+  - one heavy GPU task at a time
+  - keep a deterministic non-AI fallback

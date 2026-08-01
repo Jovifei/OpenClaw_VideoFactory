@@ -1,0 +1,58 @@
+{
+  "change_request_id": "P0-R3-STORED-HASH-INTEGRITY-012",
+  "status": "approved_for_offline_fix_and_runtime_validation",
+  "phase": "P0",
+  "authorization": "Jovi authorized Analyzer MCP hash validation, receipt/manifest contract, tests, related Agent memory, and reports only.",
+  "frozen_negative_evidence": {
+    "primary_event_message_id_masked": "om_***337b",
+    "retry_event_message_id_masked": "om_***3d8",
+    "file_name": "image.png",
+    "receipt_stored_sha256_case": "uppercase",
+    "analyzer_computed_sha256_case": "lowercase",
+    "analyzer_error": "stored_hash_mismatch",
+    "r3_status": "not_run",
+    "preservation": "Keep both receipts, quarantine copies, Gateway logs, sessions, and old reports unchanged."
+  },
+  "allowed_paths": [
+    "scripts/analyzer_mcp.py",
+    "scripts/07_ingest_inbound_media.ps1",
+    "scripts/mcp_ingest_attachment.py",
+    "tests/test_analyzer_mcp.py",
+    "tests/test_ingest_attachment_core.py",
+    "tests/test_trusted_media_roots.py",
+    "reports/",
+    "tasks/todo.md"
+  ],
+  "required_contract": {
+    "receipt_expected_hash": "Use receipt stored_sha256 as the stored-copy security field; legacy sha256/source_sha256 are secondary consistency fields.",
+    "normalization": "Require exactly 64 hexadecimal characters and normalize to lowercase before comparison.",
+    "actual_file_read": "Recompute SHA-256 from stored_path; never trust UI prefix, manifest summary, source-only hash, base64, or raw inbound path.",
+    "path_binding": "Receipt path, stored path, message_id, attachment_index, trusted root, and stored copy must bind exactly.",
+    "TOCTOU": "Stat/hash and stability checks must remain enforced before analysis."
+  },
+  "allowed_behavior": [
+    "Fix stored hash comparison and error classification.",
+    "Reject missing/invalid/truncated/prefixed/non-hex hashes deterministically.",
+    "Reject source/stored mismatch, changed stored file, wrong receipt, and wrong attachment.",
+    "Keep idempotent already_analyzed behavior and GPU-lock ordering."
+  ],
+  "prohibited_changes": [
+    "Router durable model or intent-gate policy (owned by CR 011)",
+    "tools.media scope, Agent count, Binding, target consumer, Cron, OAuth",
+    "Gateway port, OpenClaw core source, P0 Gate, PROJECT_STATUS.yaml, P1",
+    "model download, new dependency, lark-cli outbound, commit/tag/push"
+  ],
+  "rollback": "Restore only 012-touched Analyzer/receipt source and tests; preserve all live failure evidence and quarantine artifacts.",
+  "planned_runtime_action": "No restart unless the final integrated tool schema requires it; total task budget allows at most one planned restart shared with CR 011.",
+  "acceptance": [
+    "The existing 64-character uppercase receipt hash passes after canonical lowercase normalization.",
+    "All malformed, mismatch, wrong-path, changed-file, and source/stored-negative cases fail closed.",
+    "Analyzer output records receipt_expected_hash and analyzer_computed_hash provenance without exposing secrets.",
+    "Old R2 remains FAIL and R3 remains unrun until a new PNG ingress is requested."
+  ],
+  "stop_conditions": [
+    "Any hash comparison trusts a non-stored field or shortened hash.",
+    "Any required integrity regression fails.",
+    "Any prohibited topology/config/core change appears."
+  ]
+}

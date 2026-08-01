@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "request_id": "P0-R4-AUDIO-RESULT-REMEDIATION-062A",
+  "status": "AUTHORIZED_BY_JOVI",
+  "implementation_status": "completed_offline",
+  "independent_read_only_review": "PASS",
+  "scope": "Repair only the server-owned public rendering of a completed audio transcription for the existing Core Feishu route, then verify it offline.",
+  "allowed_writes": [
+    "tasks/plans/2026-07-30-p0-r4-audio-result-remediation-and-qualification-062.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "reports/change_requests/P0-R4-AUDIO-RESULT-REMEDIATION-062A.json",
+    "reports/P0_R4_AUDIO_*_062.*",
+    "reports/P0_CURRENT_STATUS_V41.md",
+    "reports/P0_EVIDENCE_INDEX_V41.md",
+    "reports/P0_REMAINING_ACTIONS_V41.md",
+    "reports/NEXT_USER_ACTION.md",
+    "scripts/mcp_ingest_attachment.py",
+    "tests/test_two_message_mcp_surface.py",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/待验证的项目/2026-07-30-P0-R4-062音频真实验证清单.md"
+  ],
+  "prohibited": [
+    "media_action_ticket.py changes",
+    "analysis_request.py changes",
+    "analyzer_mcp.py changes",
+    "Ticket, receipt, SHA, GPU, model, Binding, Agent, Cron, OAuth, or configuration changes",
+    "real Feishu traffic before the exact 062B start phrase",
+    "Project Gateway, Gateway/Core lifecycle actions, R5, P0 Gate, PROJECT_STATUS.yaml, commit, push, tag"
+  ],
+  "acceptance": [
+    "Successful audio completion produces a bounded, sanitized Chinese transcript reply rather than a generic completion notice.",
+    "Malformed or empty transcript output gives an explicit presentation error and cannot fall back to generic success.",
+    "Image behavior is unchanged and video behavior remains intentionally deferred.",
+    "Focused and full offline regressions pass; independent review finds no unresolved public-boundary issue."
+  ],
+  "rollback": "If a required 062A validation fails, reverse only the declared 062A source and test edits using apply_patch; retain reports and prior evidence."
+}

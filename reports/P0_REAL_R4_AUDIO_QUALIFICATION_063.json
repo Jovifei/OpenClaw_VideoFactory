@@ -1,0 +1,30 @@
+{
+  "report_schema_version": "1.0",
+  "change_request_id": "P0-R4-REAL-AUDIO-QUALIFICATION-063",
+  "task": "P0-R4-063",
+  "result": "R4_FAILED:observed_video_action_mismatch",
+  "observed_at": "2026-07-30T19:40:00+08:00",
+  "evidence_source": "Jovi group-visible response report",
+  "observed": {
+    "audio_ingress_qualified": false,
+    "audio_ticket_or_request_observed": false,
+    "audio_transcript_or_result_observed": false,
+    "video_action_response_observed": true,
+    "video_analyzer_unavailable_response_observed": true
+  },
+  "security": {
+    "ticket_plaintext_recorded": false,
+    "pasted_ticket_treated_as_exposed": true,
+    "ticket_reused_or_replayed": false
+  },
+  "boundary": {
+    "source_changed": false,
+    "configuration_changed": false,
+    "gateway_or_core_lifecycle_controlled": false,
+    "project_gateway_started": false,
+    "r5_started": false,
+    "p0_gate_started": false,
+    "git_operation_started": false
+  },
+  "next_action": "Read-only diagnosis of media classification, Ticket binding, and analyzer routing. Any new real R4 attempt requires a new authorization and a newly issued Ticket."
+}

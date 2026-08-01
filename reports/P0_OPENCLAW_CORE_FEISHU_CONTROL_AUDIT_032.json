@@ -1,0 +1,35 @@
+{
+  "task": "P0-CORE-FEISHU-CONTROL-CONTRACT-RESOLUTION-032",
+  "openclaw_version": "2026.7.1",
+  "feishu_plugin_version": "2026.6.6",
+  "control_method_candidate": "ACCOUNT_LEVEL_DISABLE",
+  "control_method": "channels.stop/start with channel=feishu and accountId=zhongshu",
+  "config_mutation": false,
+  "static_contract": "RESOLVED",
+  "shadow_gateway_rpc": "PASS",
+  "shadow_config_validate": "PASS",
+  "shadow_feishu_plugin_loaded": "BLOCKED",
+  "shadow_feishu_account_stop_restore": "NOT_RUN",
+  "shadow_websocket_cleanup": "NOT_PROVEN",
+  "status": "CORE_FEISHU_SHADOW_VALIDATION_BLOCKED",
+  "independent_control_review": "COMPLETED_STATIC_BLOCKED",
+  "real_feishu_used": false,
+  "production_changed": false,
+  "candidate_methods": {
+    "ACCOUNT_LEVEL_DISABLE": "STATIC_SUPPORTED_SHADOW_BLOCKED",
+    "BINDING_LEVEL_DISABLE": "NOT_PROVEN",
+    "CHANNEL_PLUGIN_DISABLE": "REJECTED_WHOLE_CHANNEL_SCOPE",
+    "CONFIG_PATCH_PLUS_GATEWAY_RESTART": "NOT_SELECTED",
+    "FULL_GATEWAY_STOP_ONLY": "REJECTED_BROAD_SCOPE",
+    "UNSUPPORTED": "NOT_APPLICABLE"
+  },
+  "evidence_bundles": [
+    {"basename": "server-channels-Dr5TYlu-.js", "sha256": "AFF723303533DD076CBB199D0E978C8D99C70531E9C32B1D1AE1997A9116A62A"},
+    {"basename": "channels-hpSo8J3l.js", "sha256": "D76B5C9310AAB46ABB1F30F328CC56655208883B59657A87EF4F39061097402F"},
+    {"basename": "schema-BuOFpc7K.js", "sha256": "B5B672DD1CE3579E2B030567EF192355374C052934CB4E252B793E08647D54AB"},
+    {"basename": "channel-YrfEVd9X.js", "sha256": "591AB289B89743C8C74E8E105AA5817062D08146219ECDAB2DEBCE7D10D994DE"},
+    {"basename": "monitor-vUjP0O1m.js", "sha256": "6F8A1663B72670C2E9D75D4F36A5FC87799BDFB8AF3229E4873980AB242141E8"},
+    {"basename": "monitor.account-BE_Pfm_n.js", "sha256": "5246B85122D1E9AFA0A95D70AF86171332C8E1D1FEC3703B0DBF450A259CBE40"}
+  ],
+  "prohibitions_honored": ["no production stop/restart", "no real Feishu/RPC authentication", "no messages/attachments/cards", "no production config or secret output", "no commit/push/tag"]
+}

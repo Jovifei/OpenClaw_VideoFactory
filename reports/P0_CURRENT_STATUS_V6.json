@@ -1,0 +1,18 @@
+{
+  "task": "P0-REAL-CHANNEL-QUALIFICATION-008",
+  "p0_status": "conditional_not_passed",
+  "round_status": "READY_FOR_REAL_CHANNEL_SEQUENCE",
+  "openclaw_sha256": "3001ec3b85a882deb382cb08f5ebdb1c6b285964ea9933f5f0d5c99bc7d89810",
+  "production_change_this_round": false,
+  "independent_review_20_items": "ALL PASSED",
+  "tests": "94/94 (Router 45, Ingest 32, IngestTool 17)",
+  "observability": {"demo_pre_ingest_count": 0, "demo_router_images": 0, "demo_raw_path_forwarded": false, "demo_router_model": "mimo-v2.5-pro"},
+  "fixtures_added": ["p0-audio-test.wav (5.77s, offline TTS)", "p0-video-analysis-test.mp4 (5.0s, h264+aac)"],
+  "local_analyzer_validation": {"audio_faster_whisper_cuda": "PASS", "video_ffprobe_frames_whisper": "PASS", "image_mimo_v25_no_pro_fallback": "PASS"},
+  "lark_cli_dry_run": "4/4 exit 0, no actual send",
+  "p0_gate_prereview": {"passed": 11, "conditional": 2, "deferred": 2, "blocked": 11, "overall": "BLOCKED", "p0_ready_created": false, "actual_gate_run": false},
+  "remaining_blockers": ["real Channel R0-R5 (user uploads)", "real lark-cli outbound (user auth)", "ffmpeg PATH (maintenance)", "Codex CLI (deferred)"],
+  "finding": "analyzer agent-exec gap (exec denied; needs deterministic analysis MCP tool for production agent-level execution) - P1 refinement, not a runtime failure",
+  "prohibited_honored": ["no commit/tag/push","no PROJECT_STATUS update","no P0_READY","no P0 Gate run","no P1","no model download","no real Feishu outbound","no fake real Feishu event","no OAuth/Binding/Cron change","no core source change","no new dependency"],
+  "user_next_action": "send P0_TEXT_ROUTER_TEST to VideoFactory Feishu group (R0)"
+}

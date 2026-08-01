@@ -1,0 +1,26 @@
+{
+  "task": "P0-PROJECT-FEISHU-GATEWAY-IMPLEMENTATION-019",
+  "secret_scan": {
+    "status": "PASS",
+    "source": "reports/SECURITY_GIT_SECRET_SCAN.json",
+    "active_secret_hits": 0,
+    "unresolved_secrets": 0
+  },
+  "runtime_requirements": {
+    "env_only": [
+      "FEISHU_APP_ID",
+      "FEISHU_APP_SECRET",
+      "OPENCLAW_GATEWAY_URL",
+      "OPENCLAW_GATEWAY_TOKEN"
+    ],
+    "token_in_repo": false,
+    "state_persistence": "file-backed state contains only event_id/ticket digests and expires fields"
+  },
+  "redaction": {
+    "event_logs": "hashed (sha256)",
+    "sender_chat": "hashed (sha256)",
+    "tickets": "sha256 digest only",
+    "runtime_output": "no raw secret values"
+  },
+  "notes": "No real Feishu or RPC credentials were loaded or used in this phase."
+}

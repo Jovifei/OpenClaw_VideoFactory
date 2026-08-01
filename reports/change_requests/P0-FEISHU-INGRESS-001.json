@@ -1,0 +1,74 @@
+{
+  "id": "P0-FEISHU-INGRESS-001",
+  "status": "approved_by_user_for_execution",
+  "scope": "real Feishu TXT, PNG, and MP4 ingress acceptance only",
+  "target_group": "oc_9384fcd89ae529754392324b1a941555",
+  "receiving_account": "zhongshu",
+  "expected_route": "video-factory",
+  "allowed_sender": {
+    "description": "the sole runtime-approved owner in the target group's allowFrom list",
+    "count": 1,
+    "identifier": "redacted"
+  },
+  "expected_files": [
+    {
+      "filename": "p0-file-test.txt",
+      "mime": "text/plain",
+      "sha256": "c8a155b4d5eccafd2b36758b9fa67af186174dfe6e99e184b56231bd8382663d"
+    },
+    {
+      "filename": "p0-image-test.png",
+      "mime": "image/png",
+      "sha256": "624223e0f8d14374d40301574b721c9debd46d4168ad4c44d06767e5f74a4214"
+    },
+    {
+      "filename": "p0-video-test.mp4",
+      "mime": "video/mp4",
+      "sha256": "ea8ce1539fc1c7520b1bb1d275529749a5f4190e82516f12b3e9b98eba7632cc"
+    }
+  ],
+  "allowed_writes": [
+    "input/feishu/<real-message-id>/",
+    "reports/FEISHU_INGRESS*",
+    "reports/change_requests/P0-FEISHU-INGRESS-001.json",
+    "reports/command_logs/feishu_ingress_redacted/"
+  ],
+  "prohibited_writes": [
+    "scripts/",
+    "config/",
+    "AGENTS.md",
+    "skills/",
+    "PROJECT_STATUS.yaml",
+    "C:/Users/Admin/.openclaw/openclaw.json",
+    "OpenClaw Binding/Gateway/OAuth/model/Runtime/Cron state",
+    "P1 code"
+  ],
+  "acceptance_fields": [
+    "message_id",
+    "message_type",
+    "masked_sender_id",
+    "masked_chat_id",
+    "masked_source_media_path",
+    "stored_path",
+    "original_name",
+    "normalized_content_type",
+    "detected_kind",
+    "size_bytes",
+    "sha256",
+    "fixture_sha256_match",
+    "receipt_path",
+    "content_parsed",
+    "quarantined",
+    "git_ignored",
+    "duplicate_test",
+    "consumer_count",
+    "passed"
+  ],
+  "rollback": "No production change is authorized. On any failure, stop after preserving redacted evidence; do not resend, alter configuration, or continue to the next file.",
+  "stop_conditions": [
+    "Target group, route, sender allowlist, or exact consumer count does not match the approved topology.",
+    "Fixture existence, size, SHA-256, MIME, or sensitivity declaration differs from the approved manifest.",
+    "Any real attachment fails event, download, MediaPath, MIME, hash, ingest, receipt, idempotency, or manifest-scope validation.",
+    "The post-test manifest shows a modification outside the allowed write scope."
+  ]
+}

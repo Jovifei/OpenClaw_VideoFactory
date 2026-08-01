@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "task": "P0-R3-REAL-RESULT-RETEST-061",
+  "result": "R3_EXPOSED_TICKET_CANCELLED",
+  "reason": "The newly issued one-time Ticket was pasted outside the original Feishu group and was invalidated without reuse.",
+  "runtime_evidence": {
+    "core_zhongshu_user_visible_ingress_reply": true,
+    "project_gateway_process_count": 0
+  },
+  "cancellation": {
+    "unique_pending_png_ticket": true,
+    "final_ticket_status": "cancelled_exposed",
+    "analysis_request_created": false,
+    "analyzer_invocation_count": 0,
+    "receipt_quarantined": true,
+    "receipt_unchanged": true,
+    "ticket_plaintext_recorded": false
+  },
+  "next_status": "READY_FOR_FRESH_R3_UPLOAD",
+  "preserved_boundaries": [
+    "no code or configuration change",
+    "no Gateway or Core lifecycle action",
+    "no Feishu message sent by Codex",
+    "no R4 or R5"
+  ]
+}

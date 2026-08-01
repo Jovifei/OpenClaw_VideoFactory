@@ -1,0 +1,32 @@
+{
+  "id": "P0-DEPENDENCY-GATE-WEBSOCKETS-039",
+  "scope": "Repair only the project-local Python dependency gate for the OpenClaw RPC WebSocket client.",
+  "authorized_writes": [
+    "requirements-bootstrap.txt",
+    "scripts/00_package_check.ps1",
+    "reports/P0_DEPENDENCY_GATE_FIX_039.md",
+    "reports/P0_DEPENDENCY_GATE_FIX_039.json",
+    "reports/V28_SCHEMA_TESTS.json",
+    "reports/change_requests/P0-DEPENDENCY-GATE-WEBSOCKETS-039.json",
+    "tasks/todo.md",
+    ".venv/"
+  ],
+  "permitted_download_directory": "E:/Claude_allow/Download",
+  "prohibited_actions": [
+    "global or system Python installation",
+    "OpenClaw environment or configuration modification",
+    "Core Feishu stop/start",
+    "Project Gateway start",
+    "Feishu message send",
+    "Binding, Agent, or Cron modification",
+    "commit",
+    "push"
+  ],
+  "acceptance": [
+    "websockets.sync.client imports from the project .venv",
+    "package gate imports yaml, jsonschema, and websockets",
+    "pip check passes",
+    "version, source, SHA-256, and license are recorded",
+    "focused offline Python tests pass"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "report_schema_version": "1.0",
+  "task": "P0-R4-062",
+  "trace_result": "audio_event_not_observed",
+  "preflight_passed": true,
+  "audio_ingress_observed": false,
+  "audio_ticket_observed": false,
+  "audio_command_execution_observed": false,
+  "non_audio_terminal_execution_observed": true,
+  "evidence_redacted": true
+}

@@ -1,0 +1,83 @@
+﻿{
+    "schema_version":  1,
+    "batch_id":  "OVERNIGHT-BATCH-001",
+    "status":  "passed",
+    "commands":  [
+                     {
+                         "command":  "Invoke-Pester -Script tests/Test-IngestInboundMedia.ps1 -PassThru",
+                         "exit_code":  0,
+                         "total":  32,
+                         "passed":  32,
+                         "failed":  0
+                     },
+                     {
+                         "command":  "PowerShell Parser AST for production and test scripts",
+                         "exit_code":  0
+                     },
+                     {
+                         "command":  "Function-level cross-drive root membership test",
+                         "exit_code":  0,
+                         "rejected":  true
+                     },
+                     {
+                         "command":  "Fixture manifest size/SHA-256/sensitive flag validation",
+                         "exit_code":  0
+                     }
+                 ],
+    "coverage":  [
+                     "path traversal",
+                     "MIME and signatures",
+                     "root walk",
+                     "reparse point",
+                     "separator-prefix sibling",
+                     "cross-drive",
+                     "Chinese filename",
+                     "TXT",
+                     "PNG",
+                     "MP4",
+                     "oversize",
+                     "message_id idempotency",
+                     "receipt fields",
+                     "Git ignore",
+                     "content_parsed=false",
+                     "quarantined=true",
+                     "source/stored SHA-256 equality"
+                 ],
+    "fixture_checks":  [
+                           {
+                               "name":  "p0-file-test.txt",
+                               "exists":  true,
+                               "size_match":  true,
+                               "sha256_match":  true,
+                               "contains_sensitive_data":  false
+                           },
+                           {
+                               "name":  "p0-image-test.png",
+                               "exists":  true,
+                               "size_match":  true,
+                               "sha256_match":  true,
+                               "contains_sensitive_data":  false
+                           },
+                           {
+                               "name":  "p0-video-test.mp4",
+                               "exists":  true,
+                               "size_match":  true,
+                               "sha256_match":  true,
+                               "contains_sensitive_data":  false
+                           },
+                           {
+                               "name":  "p0-video-cover.png",
+                               "exists":  true,
+                               "size_match":  true,
+                               "sha256_match":  true,
+                               "contains_sensitive_data":  false
+                           }
+                       ],
+    "txt_body_read_by_verifier":  false,
+    "png_or_mp4_analyzed":  false,
+    "real_business_docx_used":  false,
+    "production_code_changed":  false,
+    "script_sha256":  "10302de702e6c957133c1dbe19404d9ef5d273f289438ea92c049158b57d0afe",
+    "openclaw_config_sha256":  "c7098b2238c8c2816d96d724b39fe5d43e135445034331e574ea2a1cb2c5660d",
+    "real_feishu_upload_readiness":  "ready_for_sequential_png_then_mp4_user_upload_after explicit user action"
+}

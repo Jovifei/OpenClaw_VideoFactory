@@ -1,0 +1,31 @@
+{
+  "task": "P0-OPENCLAW-MANAGED-RESTART-AUTH-RECOVERY-044",
+  "user_scope_token_present": true,
+  "maintenance_child_token_present": true,
+  "maintenance_child_command_line_contains_token": false,
+  "gateway": {
+    "listener_count": 1,
+    "pid": 13144,
+    "service_loaded": true,
+    "rpc_probe_ok": true,
+    "service_config_audit_ok": false
+  },
+  "tasks": { "active_or_queued": 0, "unknown": 0 },
+  "config_sha_matches_030": true,
+  "agents": 17,
+  "bindings": 14,
+  "cron_count": null,
+  "cron_observability": "unavailable",
+  "project_gateway_process_count": 0,
+  "core_zhongshu_ready": null,
+  "rollback_artifact_present": true,
+  "safe_restart_command_supported": true,
+  "git": { "is_clean": false, "porcelain_entry_count": 41 },
+  "can_execute": false,
+  "blockers": [
+    "SAFE_RESTART_ROOT_CAUSE_UNPROVEN",
+    "SERVICE_CONFIG_AUDIT_NOT_OK",
+    "CRON_OBSERVABILITY_UNAVAILABLE",
+    "CORE_CHANNEL_READY_UNPROVEN"
+  ]
+}

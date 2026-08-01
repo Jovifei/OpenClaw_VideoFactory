@@ -1,0 +1,40 @@
+{
+  "change_request_id": "P0-MEDIA-ANALYSIS-064",
+  "created_at": "2026-07-30T20:18:36+08:00",
+  "authorization": "Jovi exact authorization: 授权 P0-MEDIA-ANALYSIS-064：视频无音轨降级 + 图片OCR + text/plain显式Ticket分析；不解析DOCX/PDF，不自动分析附件。",
+  "scope": "Offline source and targeted-test change only: preserve quarantine ingress-only handling; add explicit text/plain Ticket analysis; make silent video audio extraction non-fatal; and provide structured image OCR output.",
+  "allowed_files": [
+    "scripts/analyzer_mcp.py",
+    "scripts/analysis_request.py",
+    "scripts/media_action_ticket.py",
+    "scripts/mcp_ingest_attachment.py",
+    "skills/feishu-video-factory-operator/SKILL.md",
+    "services/feishu_gateway/policy.py",
+    "tests/test_analyzer_mcp.py",
+    "tests/test_analysis_request.py",
+    "tests/test_ingest_attachment_core.py",
+    "tests/test_media_action_ticket.py",
+    "tests/test_two_message_mcp_surface.py",
+    "tasks/todo.md",
+    "reports/P0_MEDIA_ANALYSIS_064_*"
+  ],
+  "required_contracts": [
+    "attachments remain ingress_only until an exact subsequent Ticket command",
+    "only text/plain UTF-8 TXT is newly eligible; DOCX and PDF bodies remain unparsed",
+    "no raw Ticket, inbound path, identifier, credential, model download, network call, Gateway/Core lifecycle action, phase promotion, or Git operation",
+    "silent MP4 continues safe frame analysis and reports no_audio_stream distinctly",
+    "image and text outputs are bounded and sanitize internal paths and identifiers"
+  ],
+  "prohibited": [
+    "OpenClaw or Feishu configuration changes",
+    "lark-cli messaging or event subscription",
+    "Gateway or Core lifecycle control",
+    "Project Gateway start",
+    "model or node download",
+    "DOCX or PDF body parsing",
+    "automatic attachment analysis",
+    "P0 Gate or phase-state update",
+    "commit, push, tag, or branch action"
+  ],
+  "status": "completed"
+}

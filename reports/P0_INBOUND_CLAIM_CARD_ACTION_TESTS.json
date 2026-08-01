@@ -1,0 +1,31 @@
+{
+  "task": "P0-INBOUND-CLAIM-CARD-ACTION-GATE-016",
+  "status": "CARD_PROBE_BLOCKED_OFFLINE_REGRESSIONS_PASS",
+  "reason": "The card probe cannot be meaningful until a trusted pre-Router claim seam is proven.",
+  "planned_tests": [
+    "ordinary text is not claimed",
+    "ordinary attachment is not claimed",
+    "other OpenClaw cards are not claimed",
+    "valid card_probe is claimed",
+    "operator/chat/namespace/action/ticket validation",
+    "ticket expiry and single-use replay",
+    "receipt and stored hash validation",
+    "Router/LLM/Analyzer counts remain zero for a claim",
+    "plugin disable rollback",
+    "17 Agents, 14 Bindings, 4 Cron, one consumer unchanged"
+  ],
+  "executed": [
+    {"suite": "Python unittest discover", "passed": 122, "failed": 0},
+    {"suite": "Test-TwoMessageAnalysisIntent.ps1", "passed": 15, "failed": 0},
+    {"suite": "Test-SingleGroupMediaRouter.ps1", "passed": 46, "failed": 0},
+    {"suite": "Test-IngestInboundMedia.ps1", "passed": 36, "failed": 0},
+    {"suite": "Test-VideoWorkflowV28.ps1", "passed": 4, "failed": 0},
+    {"suite": "V2.8 schema test", "passed": 88, "failed": 0},
+    {"suite": "py_compile", "status": "pass"},
+    {"suite": "MCP ingest probe", "tools": 2, "diagnostics": 0},
+    {"suite": "MCP analyzers probe", "tools": 3, "diagnostics": 0},
+    {"suite": "GPU lock contract", "status": "covered by Router 46/46; CLI help smoke pass"}
+  ],
+  "live_probe": "NOT_RUN",
+  "analyzer": "NOT_CALLED"
+}
