@@ -1,0 +1,34 @@
+{
+  "change_request_id": "P0-SINGLE-CONSUMER-OBSERVABILITY-084",
+  "title": "Run read-only runtime observability for the remaining P0 single-consumer gate",
+  "status": "completed",
+  "authorization": {
+    "granted_by": "Jovi",
+    "text": "执行吧",
+    "scope": "Remaining P0 single-consumer/deduplication verification"
+  },
+  "scope": {
+    "in_scope": [
+      "Read-only OpenClaw Gateway service and RPC status",
+      "Read-only Feishu Channel status and channel-log query",
+      "Record a fail-closed result when the active consumer cannot be observed"
+    ],
+    "out_of_scope": [
+      "Reading or changing Gateway tokens",
+      "OpenClaw configuration, Gateway lifecycle, OAuth, or profile changes",
+      "Starting lark-cli event or any second inbound consumer",
+      "Sending another Feishu message or replaying an event without Channel support"
+    ]
+  },
+  "verification": {
+    "gateway_service": "PASS: service registered and runtime state running",
+    "channel_observability": "BLOCKED: channels.status rejected with gateway token mismatch",
+    "single_consumer": "BLOCKED: active consumer ownership not independently observable",
+    "deduplication": "BLOCKED: no controlled same-event replay witness",
+    "safety": "PASS: no configuration, lifecycle, OAuth/profile, listener, second consumer, or message state changed"
+  },
+  "evidence": [
+    "reports/P0_SINGLE_CONSUMER_OBSERVABILITY_084.json",
+    "reports/P0_SINGLE_CONSUMER_REAL_TRACE_081.json"
+  ]
+}

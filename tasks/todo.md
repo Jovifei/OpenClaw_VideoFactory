@@ -1602,3 +1602,16 @@ Detailed execution handoff:
 - Dry-run passed 4/4 first and produced no actual message IDs. No `--yes` was appended, no `lark-cli event` consumer started, and no OpenClaw/Gateway configuration changed.
 - The local V2.5 egress report is `reports/FEISHU_EGRESS_TEST.json`; the public redacted report is `reports/P0_FEISHU_EGRESS_083.json`. The actual prereview is now `21 passed / 1 conditional / 1 blocked`.
 - Project regression verification: `python -m pytest -q tests` passed `401`, skipped `1`, with `75` subtests passed; only two existing deprecation warnings were reported.
+
+## P0-SINGLE-CONSUMER-OBSERVABILITY-084
+
+- [x] Run read-only Gateway service, RPC, Channel status, and Feishu channel-log checks.
+- [x] Confirm that no event listener, second consumer, lifecycle operation, configuration, OAuth/profile, or message state change occurred.
+- [x] Record the fail-closed boundary when Channel status is rejected by the local Gateway authentication mismatch.
+
+### Review — completed with blocker
+
+- Gateway service status is running and the general status probe is reachable, but `channels.status` and `channels status` cannot authenticate because the local Gateway reports a token mismatch.
+- The safe core-consumer probe therefore returns `CORE_CONSUMER_RUNTIME_OBSERVABILITY_UNAVAILABLE`; Feishu channel logs returned zero lines. This does not prove zero consumers and cannot unlock the P0 gate.
+- No token was read or recorded, no OpenClaw configuration was changed, and `lark-cli event` was not started because it would create a second inbound consumer.
+- Evidence: `reports/P0_SINGLE_CONSUMER_OBSERVABILITY_084.json` and `reports/change_requests/P0-SINGLE-CONSUMER-OBSERVABILITY-084.json`.

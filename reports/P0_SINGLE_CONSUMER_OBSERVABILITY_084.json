@@ -1,0 +1,50 @@
+{
+  "schema_version": "2.5",
+  "report_id": "P0_SINGLE_CONSUMER_OBSERVABILITY_084",
+  "qualification": "BLOCKED_RUNTIME_OBSERVABILITY",
+  "observed_at": "2026-08-02T20:28:14+08:00",
+  "scope": "Read-only runtime and Channel observability; no lifecycle, configuration, or second-consumer action",
+  "checks": {
+    "gateway_service": {
+      "passed": true,
+      "runtime_state": "running",
+      "config_audit": "ok"
+    },
+    "gateway_status_probe": {
+      "passed": true,
+      "rpc_reachable": true,
+      "scope": "operator.read"
+    },
+    "channel_status": {
+      "passed": false,
+      "reason": "gateway_token_mismatch",
+      "detail": "The read-only channels.status request was rejected by the local Gateway authentication boundary. No token was read or recorded."
+    },
+    "core_feishu_runtime_probe": {
+      "passed": false,
+      "result": "CORE_CONSUMER_RUNTIME_OBSERVABILITY_UNAVAILABLE"
+    },
+    "feishu_channel_logs": {
+      "passed": true,
+      "lines_returned": 0
+    },
+    "single_consumer_ownership": {
+      "passed": false,
+      "reason": "The active Channel consumer cannot be independently enumerated while the read-only status call is unauthorized."
+    },
+    "channel_deduplication": {
+      "passed": false,
+      "reason": "No channel-supported controlled same-event replay was attempted or observed."
+    }
+  },
+  "safety": {
+    "event_listener_started": false,
+    "second_consumer_started": false,
+    "gateway_lifecycle_changed": false,
+    "openclaw_configuration_modified": false,
+    "oauth_or_profile_modified": false,
+    "raw_token_or_secret_included": false,
+    "raw_message_or_chat_ids_included": false
+  },
+  "decision": "BLOCKED. A user-authorized OpenClaw authentication/configuration repair or a supported operator-mediated Channel observation is required before a real single-consumer/deduplication claim can be made."
+}
