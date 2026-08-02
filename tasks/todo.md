@@ -1615,3 +1615,17 @@ Detailed execution handoff:
 - The safe core-consumer probe therefore returns `CORE_CONSUMER_RUNTIME_OBSERVABILITY_UNAVAILABLE`; Feishu channel logs returned zero lines. This does not prove zero consumers and cannot unlock the P0 gate.
 - No token was read or recorded, no OpenClaw configuration was changed, and `lark-cli event` was not started because it would create a second inbound consumer.
 - Evidence: `reports/P0_SINGLE_CONSUMER_OBSERVABILITY_084.json` and `reports/change_requests/P0-SINGLE-CONSUMER-OBSERVABILITY-084.json`.
+
+## P0-DOUYIN-PIPELINE-CONCURRENCY-085
+
+- [x] Diagnose the user-supplied 19:39 Feishu[douyin] trace without exposing IDs or secrets.
+- [x] Add a cross-process lock to the external Douyin `pipeline3.py` workspace.
+- [x] Bound real-time video analysis to 12 frames and strengthen the agent's no-duplicate-launch rule.
+- [x] Verify lock contention, lock release, channel health, and no residual pipeline process.
+
+### Review — completed and verified
+
+- The trace shows Feishu received and dispatched the message; the failure mode was duplicate `pipeline3.py` launches plus a 22-frame run exceeding the 300-second per-chat queue budget. The run eventually completed with two replies.
+- Repair scope was limited to `C:\Users\Admin\.openclaw\workspace-douyin\pipeline3.py` and `SOUL.md`; no Gateway, OAuth, profile, Binding, model, or Runtime configuration changed.
+- Concurrent launch now fails closed with `PIPELINE_BUSY` / exit 75, the lock can be reacquired after release, and `MAX_VIDEO_ANALYSIS_FRAMES` is 12. Feishu[douyin] is running with no last error; no pipeline3 process remains.
+- Evidence and authorization: `reports/change_requests/P0-DOUYIN-PIPELINE-CONCURRENCY-085.json`.

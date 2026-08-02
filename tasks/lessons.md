@@ -204,3 +204,8 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   transcript can coexist with an empty user reply when the presentation loader
   is wrong. The project venv import probe is separate evidence and does not
   explain a completed artifact from another runtime.
+
+# 2026-08-02 — External agent concurrency must be proven separately
+
+- A healthy Feishu Channel can still appear broken when one agent launches duplicate long-running subprocesses. Diagnose Channel receipt, dispatch, process concurrency, and queue-cap eviction separately before changing Gateway configuration.
+- For external agent workspaces, add an OS-level single-run lock and a bounded real-time budget; prompt rules alone are not a concurrency control.

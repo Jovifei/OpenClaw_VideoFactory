@@ -1,0 +1,47 @@
+{
+  "change_request_id": "P0-DOUYIN-PIPELINE-CONCURRENCY-085",
+  "title": "Repair Douyin pipeline duplicate launches and Feishu per-chat starvation",
+  "status": "completed",
+  "authorization": {
+    "granted_by": "Jovi",
+    "text": "是不是你给我弄坏了，请修复",
+    "scope": "Repair the observed Feishu[douyin] pipeline behavior"
+  },
+  "observed_root_cause": {
+    "channel": "Feishu[douyin] received and dispatched the 19:39 message successfully",
+    "failure_mode": "Multiple pipeline3.py processes were started for one direct chat; the active run exceeded the 300000ms per-chat queue cap",
+    "evidence": "C:\\Users\\Admin\\.codex\\attachments\\03ea1195-2367-4983-8d77-ba1a62daeb3d\\pasted-text.txt"
+  },
+  "scope": {
+    "in_scope": [
+      "Add a process-level lock to C:\\Users\\Admin\\.openclaw\\workspace-douyin\\pipeline3.py",
+      "Bound real-time video frame analysis to a Feishu-safe maximum",
+      "Strengthen the Douyin agent instructions against duplicate process launches"
+    ],
+    "out_of_scope": [
+      "OpenClaw Gateway configuration, token, OAuth, profile, model, or Runtime changes",
+      "Feishu account or Binding changes",
+      "Starting another Feishu event consumer",
+      "Changing VideoFactory source code or P0 phase state",
+      "Publishing to Douyin"
+    ]
+  },
+  "verification": {
+    "pipeline_compile": "PASS: pipeline3.py py_compile and import completed",
+    "lock_contention": "PASS: second process failed closed; CLI returned exit 75 with PIPELINE_BUSY",
+    "lock_release": "PASS: a new run acquired the lock after the owner released it",
+    "frame_budget": "PASS: MAX_VIDEO_ANALYSIS_FRAMES=12",
+    "douyin_channel": "PASS: Feishu[douyin] configured=true, running=true, lastError=null, restartPending=false",
+    "residual_processes": "PASS: no active pipeline3.py process remained after verification",
+    "project_tests": "PASS: targeted P0 Gate tests 14 passed"
+  },
+  "safety": {
+    "gateway_configuration_modified": false,
+    "oauth_or_profile_modified": false,
+    "feishu_binding_modified": false,
+    "second_consumer_started": false,
+    "external_media_run_started": false,
+    "raw_secrets_recorded": false
+  },
+  "result": "REPAIRED_AND_VERIFIED"
+}
