@@ -1562,3 +1562,16 @@ Detailed execution handoff:
 - Read-only smoke passed with exit code `0` and `CODEX_CLI_READ_OK`. Workspace-write smoke passed with exit code `0` and an exact 18-byte `CODEX_CLI_WRITE_OK` artifact at `reports/codex_cli_smoke.txt`; no other project status changes were observed.
 - The desktop app, PATH, OpenClaw, OAuth, Profile, model, Runtime, and project configuration were not changed. Existing MCP/skill/plugin warnings and one non-blocking git exclude warning were recorded separately.
 - Evidence: `reports/CODEX_CLI_SMOKE.json` (local legacy path), `reports/P0_CODEX_CLI_SMOKE_080.json` (public redacted report), and `reports/change_requests/P0-CODEX-CLI-UPDATE-080.json`.
+
+## P0-SINGLE-CONSUMER-REAL-TRACE-081
+
+- [x] Read existing local `video-factory` session records without starting a second consumer or sending Feishu messages.
+- [x] Count real inbound `message_id` observations without retaining or exposing raw IDs, chat IDs, sender IDs, paths, or attachment content.
+- [x] Distinguish a repeated tool call from a channel-supported same-event replay/deduplication witness.
+- [x] Publish the partial evidence and keep the P0 blocker open when the required replay/ownership proof is absent.
+
+### Review — completed, partial evidence only
+
+- Two recent local session records parsed cleanly: 15 `ingest_attachment` calls exposed a real `message_id` field, with 14 distinct redacted values and one repeated call whose second tool result was an error.
+- This is not sufficient to claim Channel deduplication or single-consumer ownership: no `event_id`, controlled replay, independent delivery count, or all-consumer inventory was present.
+- No lark event listener, second consumer, Feishu send, Gateway/configuration change, or project source change occurred. Evidence: `reports/P0_SINGLE_CONSUMER_REAL_TRACE_081.json` and its change request.

@@ -1,0 +1,47 @@
+{
+  "schema_version": "2.5",
+  "report_id": "P0_SINGLE_CONSUMER_REAL_TRACE_081",
+  "qualification": "PARTIAL_REAL_MESSAGE_ID_TRACE",
+  "observed_at": "2026-08-02T19:43:50+08:00",
+  "source": {
+    "kind": "local OpenClaw video-factory session records",
+    "window": "records modified on or after 2026-07-25",
+    "records_parsed": 2,
+    "lines_parsed": 169,
+    "parse_errors": 0
+  },
+  "checks": {
+    "inbound_message_id_presence": {
+      "passed": true,
+      "ingest_attachment_calls": 15,
+      "distinct_redacted_message_ids": 14
+    },
+    "repeated_message_id_observation": {
+      "observed": true,
+      "repeated_calls": 1,
+      "second_tool_result_error": true,
+      "controlled_replay": false
+    },
+    "event_id_observation": {
+      "observed": false,
+      "event_id_fields": 0
+    },
+    "channel_deduplication": {
+      "passed": false,
+      "reason": "The repeated call was not a channel-supported same-event replay with an independent delivery/reply count."
+    },
+    "single_consumer_ownership": {
+      "passed": false,
+      "reason": "Session records do not independently enumerate all active Feishu Channel consumers."
+    }
+  },
+  "safety": {
+    "raw_message_ids_included": false,
+    "raw_chat_or_sender_ids_included": false,
+    "attachment_content_included": false,
+    "listener_started": false,
+    "message_sent": false,
+    "configuration_modified": false
+  },
+  "decision": "PARTIAL. Real message_id presence is now evidenced, but P0 remains blocked pending a channel-supported controlled replay/deduplication witness and independent single-consumer ownership observation."
+}

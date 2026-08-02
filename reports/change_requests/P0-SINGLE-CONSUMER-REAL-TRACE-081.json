@@ -1,0 +1,31 @@
+{
+  "change_request_id": "P0-SINGLE-CONSUMER-REAL-TRACE-081",
+  "title": "Audit existing OpenClaw video-factory session records for real message_id trace evidence",
+  "status": "completed",
+  "scope": {
+    "in_scope": [
+      "Read existing local video-factory session records",
+      "Count redacted inbound message_id observations",
+      "Record whether a controlled replay/dedup proof already exists"
+    ],
+    "out_of_scope": [
+      "Starting lark-cli event or another consumer",
+      "Sending Feishu messages",
+      "OpenClaw configuration, Gateway, Binding, or process changes",
+      "Replaying or fabricating a Channel event",
+      "Changing Gate logic or project source code"
+    ]
+  },
+  "verification": {
+    "session_records": "PASS: 2 local video-factory JSONL records, 169 lines, 0 parse errors",
+    "message_id_presence": "PASS: 15 ingest_attachment calls, 14 distinct redacted inbound message_id values",
+    "repeated_observation": "OBSERVED: 1 repeated inbound message_id call; second tool result was an error",
+    "controlled_replay": "NOT_PROVEN: no channel-supported same-event replay witness or event_id was available",
+    "single_consumer": "NOT_PROVEN: local session records do not independently identify all active Channel consumers",
+    "external_state": "UNCHANGED: no listener started, no message sent, no configuration changed",
+    "offline_regression": "PASS: tests.test_project_feishu_gateway and tests.test_feishu_gateway_runtime 15/15"
+  },
+  "evidence": [
+    "reports/P0_SINGLE_CONSUMER_REAL_TRACE_081.json"
+  ]
+}
