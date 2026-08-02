@@ -1,0 +1,45 @@
+{
+  "change_request_id": "P0-FEISHU-VISIBLE-EGRESS-083",
+  "title": "Run the authorized visible Feishu egress and idempotency qualification",
+  "status": "completed",
+  "authorization": {
+    "granted_by": "Jovi",
+    "text": "允许测试；使用 larksuite/cli 操控进行测试",
+    "target": "OpenClaw VideoFactory private group"
+  },
+  "scope": {
+    "in_scope": [
+      "Resolve the existing exact video-factory group binding without exposing its raw chat ID",
+      "Dry-run and then send one Markdown, PNG, TXT, and MP4-with-cover message",
+      "Retry each same artifact with the same idempotency key and record the result",
+      "Record redacted message/result evidence"
+    ],
+    "out_of_scope": [
+      "Starting lark-cli event or any second inbound consumer",
+      "OpenClaw/Gateway/Binding/configuration changes",
+      "OAuth or profile changes",
+      "Sending to any recipient other than the configured target group",
+      "Automatic Douyin publishing"
+    ]
+  },
+  "fixtures": {
+    "working_directory": "tests/fixtures/feishu_delivery",
+    "markdown": "P0 visible egress qualification",
+    "png": "p0-image-test.png",
+    "txt": "p0-file-test.txt",
+    "mp4": "p0-video-test.mp4",
+    "mp4_cover": "p0-video-cover.png"
+  },
+  "verification": {
+    "cli": "PASS: lark-cli 1.0.9, @larksuite/cli@1.0.9, video-factory bot profile",
+    "target_resolution": "PASS: exact OpenClaw VideoFactory group name match count 1; raw chat ID not recorded",
+    "dry_run": "PASS: Markdown, PNG, TXT, MP4+cover all exit 0 with no actual message IDs",
+    "actual_send": "PASS: all four artifact types returned ok=true and a message ID",
+    "idempotency_replay": "PASS: all four same-key retries returned the same message ID",
+    "external_state": "PASS within authorization: only the four visible test messages were sent; no event listener, second consumer, configuration, OAuth, or profile change"
+  },
+  "evidence": [
+    "reports/FEISHU_EGRESS_TEST.json",
+    "reports/P0_FEISHU_EGRESS_083.json"
+  ]
+}

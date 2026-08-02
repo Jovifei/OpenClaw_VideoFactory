@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "lark-event": {
+      "source": "larksuite/cli",
+      "sourceType": "github",
+      "skillPath": "skills/lark-event/SKILL.md",
+      "computedHash": "a26d5e513342f01106acf60a98a2093ac1b6a905d663046bcda260c5d7b83cea"
+    },
+    "lark-im": {
+      "source": "larksuite/cli",
+      "sourceType": "github",
+      "skillPath": "skills/lark-im/SKILL.md",
+      "computedHash": "0e4c2e3b3fc9333c3c234bf044a687a9ae5d8b56954ca579e45e92f918ecb21a"
+    },
+    "lark-shared": {
+      "source": "larksuite/cli",
+      "sourceType": "github",
+      "skillPath": "skills/lark-shared/SKILL.md",
+      "computedHash": "212ea2d19e28f9859a8689838c3c36f062be548f3524349ad19d38c7f984f478"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "2.5",
+  "report_id": "P0_FEISHU_EGRESS_083",
+  "qualification": "PASS_REAL_VISIBLE_EGRESS_AND_IDEMPOTENCY",
+  "observed_at": "2026-08-02T19:58:19+08:00",
+  "target_group": "OpenClaw VideoFactory",
+  "cli": {
+    "version": "1.0.9",
+    "package": "@larksuite/cli@1.0.9",
+    "profile": "video-factory",
+    "identity": "bot"
+  },
+  "checks": {
+    "lark_cli_markdown_egress": {"passed": true, "same_message_id_on_replay": true},
+    "lark_cli_png_egress": {"passed": true, "same_message_id_on_replay": true},
+    "lark_cli_txt_egress": {"passed": true, "same_message_id_on_replay": true},
+    "lark_cli_mp4_egress": {"passed": true, "video_cover_supplied": true, "same_message_id_on_replay": true},
+    "egress_idempotency": {"passed": true, "artifact_count": 4, "same_message_id_replays": 4}
+  },
+  "dry_run": {"passed": true, "artifact_count": 4},
+  "safety": {
+    "raw_message_ids_included": false,
+    "raw_chat_or_sender_ids_included": false,
+    "event_listener_started": false,
+    "second_consumer_started": false,
+    "configuration_modified": false
+  }
+}

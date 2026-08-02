@@ -1,0 +1,26 @@
+{
+  "change_request_id": "P0-FEISHU-CLI-SKILLS-082",
+  "title": "Install the official larksuite/cli Feishu skills at project scope",
+  "status": "completed",
+  "authorization": {
+    "granted_by": "Jovi",
+    "text": "允许测试。另外项目级别还可以安装飞书cli larksuite/cli"
+  },
+  "scope": {
+    "in_scope": [
+      "Install lark-shared, lark-im, and lark-event from larksuite/cli into this project's skills directory",
+      "Verify skill frontmatter and CLI availability"
+    ],
+    "out_of_scope": [
+      "OpenClaw configuration or Gateway changes",
+      "OAuth/profile changes",
+      "Starting an event consumer",
+      "Sending Feishu messages"
+    ]
+  },
+  "verification": {
+    "installed": "PASS: 3 official skills copied into root skills/; 69 files and skills-lock.json recorded",
+    "frontmatter": "PASS: lark-shared, lark-im, and lark-event frontmatter and required lark-cli bin declarations verified",
+    "cli": "PASS: lark-cli 1.0.9 already installed"
+  }
+}

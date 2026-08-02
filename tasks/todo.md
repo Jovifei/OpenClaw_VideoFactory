@@ -1575,3 +1575,30 @@ Detailed execution handoff:
 - Two recent local session records parsed cleanly: 15 `ingest_attachment` calls exposed a real `message_id` field, with 14 distinct redacted values and one repeated call whose second tool result was an error.
 - This is not sufficient to claim Channel deduplication or single-consumer ownership: no `event_id`, controlled replay, independent delivery count, or all-consumer inventory was present.
 - No lark event listener, second consumer, Feishu send, Gateway/configuration change, or project source change occurred. Evidence: `reports/P0_SINGLE_CONSUMER_REAL_TRACE_081.json` and its change request.
+
+## P0-FEISHU-CLI-SKILLS-082
+
+- [x] Verify that the existing PATH-resolved `lark-cli` is available before installing anything.
+- [x] Install the official `lark-shared`, `lark-im`, and `lark-event` skills from `larksuite/cli` at project scope.
+- [x] Move the installer output into the required root `skills/` discovery path and retain `skills-lock.json`.
+- [x] Read the complete security, IM, and event-consumer instructions before any Feishu action.
+
+### Review — completed
+
+- `lark-cli 1.0.9` and `@larksuite/cli@1.0.9` were already installed; no global CLI update was needed.
+- The official skills are now committed under `skills/lark-shared`, `skills/lark-im`, and `skills/lark-event` (69 files total) with `skills-lock.json`. No `.agents` project files remain.
+- No OpenClaw configuration, OAuth/profile, event listener, or message state changed in this install task.
+
+## P0-FEISHU-VISIBLE-EGRESS-083
+
+- [x] Resolve exactly one configured `OpenClaw VideoFactory` group using the bot profile without recording its raw chat ID.
+- [x] Dry-run Markdown, PNG, TXT, and MP4+cover sends with relative fixture paths.
+- [x] Send each artifact once and retry it with the same idempotency key.
+- [x] Verify `ok=true`, message-ID presence, and same message ID on every retry; update the P0 prereview.
+
+### Review — completed, real visible evidence
+
+- Four visible sends passed: Markdown, PNG, TXT, and MP4+cover. Each initial response and same-key replay returned exit code `0`, `ok=true`, and a message ID; all four replayed IDs matched their initial IDs.
+- Dry-run passed 4/4 first and produced no actual message IDs. No `--yes` was appended, no `lark-cli event` consumer started, and no OpenClaw/Gateway configuration changed.
+- The local V2.5 egress report is `reports/FEISHU_EGRESS_TEST.json`; the public redacted report is `reports/P0_FEISHU_EGRESS_083.json`. The actual prereview is now `21 passed / 1 conditional / 1 blocked`.
+- Project regression verification: `python -m pytest -q tests` passed `401`, skipped `1`, with `75` subtests passed; only two existing deprecation warnings were reported.

@@ -15,7 +15,7 @@
         "status": "passed",
         "detail": {
           "missing": [],
-          "found_count": 14
+          "found_count": 17
         }
       },
       {
@@ -136,10 +136,10 @@
       },
       {
         "name": "P0 evidence: Markdown/PNG/TXT/MP4 egress and idempotency",
-        "status": "blocked",
+        "status": "passed",
         "detail": {
           "file": "FEISHU_EGRESS_TEST.json",
-          "schema_version": null
+          "schema_version": "2.5"
         }
       },
       {
@@ -215,9 +215,9 @@
     ]
   },
   "status_counts": {
-    "passed": 20,
+    "passed": 21,
     "conditional": 1,
-    "blocked": 2
+    "blocked": 1
   },
   "p0_ready": false,
   "can_start_p1": false,
