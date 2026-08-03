@@ -1,0 +1,45 @@
+{
+  "schema_version": "2.5",
+  "report_id": "P0_FEISHU_GROUP_CONFIG_086",
+  "observed_at": "2026-08-03T00:27:11+08:00",
+  "scope": "Read-only P0 group configuration and second-consumer preflight",
+  "checks": {
+    "video_factory_agent": {
+      "passed": true,
+      "agent_count": 1,
+      "workspace_matches_project": true
+    },
+    "video_factory_group_binding": {
+      "passed": true,
+      "binding_count": 1,
+      "exact_feishu_group_binding_count": 1
+    },
+    "zhongshu_channel_account": {
+      "passed": true,
+      "configured": true,
+      "running": true,
+      "last_error_present": false
+    },
+    "lark_cli_group_resolution": {
+      "passed": true,
+      "cli_version": "1.0.9",
+      "profile": "video-factory",
+      "identity": "bot",
+      "exact_group_match_count": 1
+    },
+    "uncoordinated_lark_event_consumer": {
+      "passed": true,
+      "observed_process_count": 0
+    }
+  },
+  "qualification": "PRECHECK_PASS_REAL_REPLAY_PENDING",
+  "safety": {
+    "persistent_configuration_changed": false,
+    "gateway_lifecycle_changed": false,
+    "message_sent": false,
+    "raw_message_or_chat_ids_included": false,
+    "raw_secrets_included": false,
+    "gateway_token_environment_override": "temporary_process_only"
+  },
+  "next_required_evidence": "One ordinary-user group event and one official same-event replay with exactly one video-factory dispatch and one visible reply."
+}

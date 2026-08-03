@@ -1,3 +1,21 @@
+# P0-FEISHU-SINGLE-CONSUMER-086 — IN PROGRESS
+
+Execution handoff: `reports/change_requests/P0-FEISHU-SINGLE-CONSUMER-086.json`.
+
+- [x] Register the bounded evidence-only Change Request.
+- [x] Capture the redacted group/Binding/Channel/lark-cli preflight in `reports/P0_FEISHU_GROUP_CONFIG_086.json`.
+- [ ] Obtain one fresh ordinary-user group event and one official same-event replay; do not start a second consumer. **BLOCKED:** local logs do not retain a verifiable two-delivery `message_id`/`event_id` pair.
+- [ ] Write V2.5 `reports/FEISHU_SINGLE_CONSUMER_TEST.json` with both single-consumer and deduplication checks passed. **NOT_PERFORMED:** evidence contract is not met.
+- [ ] Refresh the existing candidate `SHA256SUMS.txt` scope and run regression, skills, prereview, and P0 Gate. **NOT_PERFORMED:** downstream P0 work remains gated.
+- [ ] Update `PROJECT_STATUS.yaml` only through the status script after a zero-exit P0 Gate; then record the terminal result in Obsidian. **NOT_PERFORMED.**
+
+### Review — P0-FEISHU-SINGLE-CONSUMER-086 checkpoint
+
+- Preflight is `PASS_REAL_REPLAY_PENDING`: the project agent, exact group Binding, `zhongshu` runtime, and lark-cli group resolution are healthy.
+- No Gateway/Feishu configuration, lifecycle, OAuth/Profile, Binding, model, Runtime, Cron, or message state was changed.
+- Jovi reported the replay as completed. The available runtime evidence still has only one inbound and one dispatch, no retained `message_id`/`event_id` replay pair, and no independently readable visible-reply count; see `reports/P0_FEISHU_SINGLE_CONSUMER_REPLAY_086.json`.
+- Terminal result is `BLOCKED_EVIDENCE_INSUFFICIENT`; no Gate, status update, Git commit, or push is authorized by this result.
+
 # P1-059F AUDIT HARDENING — AUTHORIZED
 
 Detailed execution handoff:

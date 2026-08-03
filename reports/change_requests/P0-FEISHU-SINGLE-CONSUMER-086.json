@@ -1,0 +1,51 @@
+{
+  "change_request_id": "P0-FEISHU-SINGLE-CONSUMER-086",
+  "title": "Qualify the VideoFactory Feishu group single consumer and deduplication boundary",
+  "status": "blocked",
+  "authorization": {
+    "granted_by": "Jovi",
+    "scope": "Implement the approved P0 Feishu group closure plan",
+    "boundary": "Evidence, task tracking, Obsidian synchronization, and P0 gate verification only"
+  },
+  "in_scope": [
+    "Capture redacted runtime, binding, and lark-cli group-resolution evidence",
+    "Observe one new ordinary-user group event and one official same-event replay",
+    "Produce the V2.5 FEISHU_SINGLE_CONSUMER_TEST.json gate input",
+    "Refresh the existing SHA256SUMS.txt candidate manifest after evidence is frozen",
+    "Run regression, skill, prereview, and P0 gate checks",
+    "Update task and Obsidian records with the terminal result"
+  ],
+  "out_of_scope": [
+    "OpenClaw Gateway or Feishu configuration changes",
+    "OAuth, profile, model, Runtime, Binding, or Cron changes",
+    "Starting lark-cli event or any second event consumer",
+    "Media requalification, P1 implementation, model downloads, or Douyin publishing"
+  ],
+  "acceptance": {
+    "single_consumer_check_ids": [
+      "feishu_single_consumer",
+      "feishu_deduplication"
+    ],
+    "required_gate_artifact": "reports/gates/P0_READY.json",
+    "required_gate_exit_code": 0
+  },
+  "safety": {
+    "persistent_environment_change": false,
+    "gateway_lifecycle_change": false,
+    "second_consumer_started": false,
+    "raw_message_or_chat_ids_recorded": false,
+    "raw_secrets_recorded": false
+  },
+  "result": {
+    "qualification": "BLOCKED_EVIDENCE_INSUFFICIENT",
+    "report": "reports/P0_FEISHU_SINGLE_CONSUMER_REPLAY_086.json",
+    "reason": "The post-replay local Channel evidence shows one inbound and one video-factory dispatch, but has no independently observable same-event delivery pair, message_id/event_id, or visible-reply count.",
+    "not_performed": [
+      "FEISHU_SINGLE_CONSUMER_TEST.json creation",
+      "SHA256SUMS.txt refresh",
+      "P0 prereview and P0 Gate",
+      "PROJECT_STATUS.yaml update",
+      "Git commit or push"
+    ]
+  }
+}

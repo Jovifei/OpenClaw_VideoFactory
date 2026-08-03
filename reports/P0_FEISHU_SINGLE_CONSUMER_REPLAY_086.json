@@ -1,0 +1,51 @@
+{
+  "schema_version": "2.5",
+  "report_id": "P0_FEISHU_SINGLE_CONSUMER_REPLAY_086",
+  "observed_at": "2026-08-03T22:55:02+08:00",
+  "scope": "Read-only verification after Jovi reported an official same-event replay",
+  "operator_action": {
+    "reported": true,
+    "reported_by": "Jovi",
+    "claim": "A fresh ordinary-user group event was replayed unchanged through the Feishu developer console."
+  },
+  "checks": {
+    "target_group_channel_session": {
+      "passed": true,
+      "channel": "feishu",
+      "account": "zhongshu",
+      "chat_type": "group",
+      "session_status": "done"
+    },
+    "local_agent_execution": {
+      "passed": true,
+      "user_message_records": 1,
+      "gateway_inbound_log_records": 1,
+      "gateway_dispatch_log_records": 1,
+      "unrelated_agent_execution_observed": false
+    },
+    "channel_same_event_replay": {
+      "passed": false,
+      "reason": "The locally available Gateway records do not retain a message_id or event_id for two delivery attempts, and contain no explicit replay or deduplication record."
+    },
+    "visible_reply_count": {
+      "passed": false,
+      "reason": "The bot profile's read-only group-history request was denied by its current Feishu permission boundary; no permission change was attempted."
+    },
+    "deduplication": {
+      "passed": false,
+      "reason": "One routed user record is compatible with successful deduplication, but does not independently prove that the same Channel event reached the runtime twice."
+    }
+  },
+  "safety": {
+    "second_consumer_started": false,
+    "gateway_configuration_modified": false,
+    "gateway_lifecycle_changed": false,
+    "oauth_or_profile_modified": false,
+    "feishu_binding_modified": false,
+    "lark_cli_message_sent": false,
+    "raw_message_or_chat_ids_included": false,
+    "raw_secrets_included": false
+  },
+  "decision": "BLOCKED_EVIDENCE_INSUFFICIENT. Do not create FEISHU_SINGLE_CONSUMER_TEST.json, refresh SHA256SUMS.txt, run P0 Gate, or update PROJECT_STATUS.yaml.",
+  "required_next_evidence": "A redacted developer-console delivery record proving two deliveries of one message_id/event_id, paired with an independently observable one-route/one-visible-reply count."
+}
