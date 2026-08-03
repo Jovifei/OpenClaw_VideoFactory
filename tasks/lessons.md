@@ -209,3 +209,9 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 
 - A healthy Feishu Channel can still appear broken when one agent launches duplicate long-running subprocesses. Diagnose Channel receipt, dispatch, process concurrency, and queue-cap eviction separately before changing Gateway configuration.
 - For external agent workspaces, add an OS-level single-run lock and a bounded real-time budget; prompt rules alone are not a concurrency control.
+
+# 2026-08-04 — Use available Feishu CLI test paths before asking Jovi to test
+
+- Do not treat a real user-originated inbound test as a reason to stop before checking the installed `lark-cli` profiles and identity modes.
+- Under Jovi's authorization, run the allowed target's dry-run, bot-identity send, idempotency retry, and read-only outcome checks autonomously; use `--as user` only when an authorized user token is actually available.
+- Keep sender identity explicit: a bot-originated message can prove CLI egress and any observed Router behavior, but it cannot be mislabeled as user-originated ingress or P0 single-consumer/deduplication proof.

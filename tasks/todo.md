@@ -1647,3 +1647,25 @@ Detailed execution handoff:
 - Repair scope was limited to `C:\Users\Admin\.openclaw\workspace-douyin\pipeline3.py` and `SOUL.md`; no Gateway, OAuth, profile, Binding, model, or Runtime configuration changed.
 - Concurrent launch now fails closed with `PIPELINE_BUSY` / exit 75, the lock can be reacquired after release, and `MAX_VIDEO_ANALYSIS_FRAMES` is 12. Feishu[douyin] is running with no last error; no pipeline3 process remains.
 - Evidence and authorization: `reports/change_requests/P0-DOUYIN-PIPELINE-CONCURRENCY-085.json`.
+
+## P0-FEISHU-STATUS-ROUTER-087
+
+- [x] Record Jovi's narrowly scoped authorization and Change Request.
+- [x] Confirm the active `video-factory` workspace Router receives `SOUL.md`; do not activate the legacy project Gateway.
+- [x] Add an exact `/status` no-tool guard and an argument-rejection guard.
+- [x] Run dedicated offline regression and full project regression.
+- [x] Re-plan after Jovi's correction: autonomously use available lark-cli identity paths before requesting user intervention.
+- [x] Inventory authorized `lark-cli` identity paths without exposing credentials; only the configured bot identity is available.
+- [x] Run target-only bot dry-run and real exact `/status` same-key retry; both CLI sends passed idempotently.
+- [x] Read only the resulting Router/session evidence; bot-originated message was correctly absent under loop protection, and no second consumer was started.
+- [ ] Obtain the minimal Feishu user identity needed to send the two real inbound command forms without manual group typing — BLOCKED: this app currently exposes only `offline_access`, not IM user scopes.
+- [ ] Send and verify both user-identity command forms after the app has the minimum IM user scopes.
+- [x] Record the redacted local-runtime and bot-identity outcomes; keep P0-086 single-consumer/deduplication blocked unless its independent evidence exists.
+
+### Review — partial: local runtime and bot egress verified; user-channel scope unavailable
+
+- Offline contract passed 2/2; full project regression passed 403, skipped 1, with 75 subtests passed. The two existing `jsonschema.RefResolver` deprecation warnings remain unrelated.
+- `video-factory` still resolves to this workspace with its unchanged configured model; no Binding or OpenClaw configuration write was attempted.
+- lark-cli has one active `video-factory` profile with bot identity only. It resolved exactly one target group; both dry-runs passed, and the exact `/status` real send plus same-key retry returned the same message record. Its message ID was absent from the Router session, which is the expected bot-loop-protection boundary and not user-ingress evidence.
+- Two isolated real `openclaw agent --agent video-factory` turns passed: exact `/status` emitted the fixed P0 reply; `/status P0-087` emitted only `用法：/status`; neither returned a tool-call marker. The profile's app user scopes contain only `offline_access`, so device authorization for user-originated IM sends cannot start. This is an external app-scope blocker, not a Gateway or Router failure.
+- Gateway, OpenClaw configuration, OAuth/Profile, Binding, model, Runtime, Cron, media routing, and `services/feishu_gateway` remain out of scope.

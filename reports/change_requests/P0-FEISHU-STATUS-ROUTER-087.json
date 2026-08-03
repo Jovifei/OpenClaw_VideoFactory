@@ -1,0 +1,34 @@
+{
+  "change_id": "P0-FEISHU-STATUS-ROUTER-087",
+  "schema_version": "1.0",
+  "status": "approved",
+  "approved_at": "2026-08-04",
+  "authorization": "仅修复 video-factory 的 /status 路由，禁止 /status 派发默认子代理或检索工作区；不改 Gateway、OAuth、Binding、模型、Runtime、Cron 或媒体路由。",
+  "change_category": "project_router_instruction_and_regression",
+  "targets": [
+    "SOUL.md",
+    "tests/test_status_router_policy.py",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "reports/P0_FEISHU_STATUS_ROUTER_087.json",
+    "reports/change_requests/P0-FEISHU-STATUS-ROUTER-087.json"
+  ],
+  "out_of_scope": [
+    "OpenClaw Gateway",
+    "OpenClaw configuration",
+    "OAuth and profiles",
+    "Feishu bindings",
+    "models and runtime",
+    "Cron",
+    "media ingress and analysis routing",
+    "services/feishu_gateway"
+  ],
+  "acceptance_criteria": [
+    "exact /status produces the fixed no-tool status reply",
+    "/status with any trailing text produces only the fixed usage reply",
+    "neither form may search the workspace or dispatch a sub-agent",
+    "offline regression and one real group-message check pass"
+  ],
+  "rollback": "Revert only the P0-FEISHU-STATUS-ROUTER-087 changes to SOUL.md and its dedicated regression test; no runtime configuration rollback is required.",
+  "p0_gate_effect": "does_not_unlock_p0"
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "report_id": "P0-FEISHU-STATUS-ROUTER-087",
+  "status": "PARTIAL_LOCAL_RUNTIME_PROVEN_USER_CHANNEL_SCOPE_UNAVAILABLE",
+  "generated_at": "2026-08-04",
+  "scope": "project Router instruction and regression contract only",
+  "offline_verification": {
+    "status_router_contract": {
+      "command": "python -m pytest -q tests/test_status_router_policy.py",
+      "result": "PASS",
+      "passed": 2
+    },
+    "project_regression": {
+      "command": "python -m pytest -q tests",
+      "result": "PASS",
+      "passed": 403,
+      "skipped": 1,
+      "subtests_passed": 75,
+      "warnings": 2
+    },
+    "scope_projection": {
+      "video_factory_workspace_is_project": true,
+      "video_factory_model_unchanged": true,
+      "binding_change_attempted": false,
+      "openclaw_config_write_attempted": false
+    }
+  },
+  "live_verification": {
+    "bot_identity": {
+      "dry_run_exact_status": "PASS",
+      "dry_run_status_with_trailing_text": "PASS",
+      "exact_status_send": "PASS",
+      "exact_status_same_key_retry": "PASS_SAME_MESSAGE",
+      "router_correlation": "NOT_DELIVERED_BOT_LOOP_PROTECTION"
+    },
+    "user_identity": {
+      "status": "BLOCKED_APP_USER_SCOPES_UNAVAILABLE",
+      "reason": "the configured lark-cli profile exposes only offline_access and cannot start the requested IM device authorization"
+    }
+  },
+  "local_runtime_verification": {
+    "command": "openclaw agent --agent video-factory --session-key <isolated> --message <command> --json",
+    "exact_status": {
+      "result": "PASS",
+      "reply_exact": true,
+      "tool_call_markers": false
+    },
+    "status_with_trailing_text": {
+      "result": "PASS",
+      "reply_exact": true,
+      "tool_call_markers": false
+    }
+  },
+  "required_live_expectations": {
+    "user @bot /status": "项目状态：P0 验证进行中；P0-086 的真实同事件去重证据仍待补齐，尚未进入 P1。",
+    "user @bot /status any-text": "用法：/status"
+  },
+  "forbidden_behavior": [
+    "tool call",
+    "workspace search or read",
+    "sub-agent dispatch",
+    "Gateway or OpenClaw configuration change"
+  ],
+  "p0_gate_effect": "does_not_unlock_p0",
+  "next_autonomous_work": "preserve P0-087 evidence and continue only read-only P0 evidence work; do not restart media qualification or fabricate the P0-086 same-event replay witness",
+  "privacy": "raw chat IDs, message IDs, sender IDs, OAuth URLs, device codes, and credentials are not retained in this report"
+}
