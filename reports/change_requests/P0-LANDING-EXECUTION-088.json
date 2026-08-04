@@ -1,0 +1,36 @@
+{
+  "change_id": "P0-LANDING-EXECUTION-088",
+  "schema_version": "1.0",
+  "status": "superseded",
+  "approved_at": "2026-08-04",
+  "authorization": "Jovi requested an actionable project landing plan and standing autonomous execution within existing P0 phase gates.",
+  "change_category": "planning_and_project_memory_only",
+  "targets": [
+    "tasks/todo.md",
+    "reports/change_requests/P0-LANDING-EXECUTION-088.json",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/03-MVP完成路径与待完善清单.md",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/04-落地状态与执行计划.md"
+  ],
+  "out_of_scope": [
+    "PROJECT_STATUS.yaml",
+    "OpenClaw Gateway and configuration",
+    "OAuth and profiles",
+    "Feishu bindings and event consumers",
+    "models and runtime",
+    "Cron",
+    "media ingress and analysis routing",
+    "P1 implementation",
+    "final P0 Gate"
+  ],
+  "superseded_at": "2026-08-04",
+  "superseded_by": "P0-FEISHU-EVIDENCE-STRATEGY-089",
+  "superseded_reason": "The plan incorrectly required a manual developer-console replay record. Official Feishu event delivery uses automatic retry rather than a documented manual replay control.",
+  "acceptance_criteria": [
+    "the then-current external P0-086 proof requirement is recorded without relaxation",
+    "P0, P1, and P2 have separately checkable outcomes and ownership",
+    "the minimum implementation target is a deterministic vertical MP4, not automatic Douyin publishing",
+    "no phase status or runtime configuration is changed"
+  ],
+  "rollback": "Revert only this planning entry and its matching task and Obsidian text. No runtime rollback is required.",
+  "p0_gate_effect": "does_not_unlock_p0"
+}

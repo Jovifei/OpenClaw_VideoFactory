@@ -1,0 +1,96 @@
+schema_version: '2.0'
+status: proposed_not_applied
+owner: Jovi
+purpose: >-
+  P0 acceptance proposal that keeps single-consumer and duplicate-effect safety
+  while removing operator-manufactured Feishu retry as a hard gate.
+phase_state_rule:
+  current_project_status: P0_not_started
+  p0_ready_requires: all_required_rows_passed_and_gate_exit_zero
+  status_update: scripts/91_update_project_status.py_only
+  prohibited_shortcuts:
+    - manual_feishu_replay
+    - ack_fault_injection
+    - second_event_consumer
+    - bot_loopback_as_user_ingress
+    - fabricated_event_or_message_id
+required_rows:
+  - id: single_consumer
+    requirement: One video-factory group Binding, no analyzer Binding, and no second event consumer process.
+    evidence_class: static_topology
+    current_evidence: P0_AGENT_BINDING_REGRESSION_077.json and P0_FEISHU_GROUP_CONFIG_086.json
+    fresh_evidence: Redacted topology snapshot at Gate time.
+    required_tests: Binding/topology regression plus process observation.
+    gate: blocking
+  - id: real_message_entry
+    requirement: One fresh ordinary-user group text event routes once and receives one visible fixed reply.
+    evidence_class: real_feishu
+    current_evidence: partial_historical_only
+    fresh_evidence: Redacted event-to-session-to-visible-reply correlation.
+    required_tests: One controlled normal-user message; no media or retry injection.
+    gate: blocking
+  - id: event_id_idempotency
+    requirement: The same canonical event_id envelope persisted twice creates one ingress effect.
+    evidence_class: integration
+    current_evidence: not_yet_versioned_for_v2
+    fresh_evidence: V2 duplicate-event contract report containing only keyed hashes and counts.
+    required_tests: Two identical event_id inputs, one receipt/job/route effect.
+    gate: blocking
+  - id: duplicate_event_protection
+    requirement: Duplicate message/resource/delivery identifiers do not create a second analysis request or delivery.
+    evidence_class: integration
+    current_evidence: egress_idempotency_passed_for_outbound_only
+    fresh_evidence: Input, analysis-request and delivery duplicate-path report.
+    required_tests: Duplicate message/resource and delivery-key contract cases.
+    gate: blocking
+  - id: safe_media_ingress
+    requirement: TXT, PNG, audio and MP4 are quarantined, hash-verified, unparsed at ingress and non-executable.
+    evidence_class: real_feishu_plus_regression
+    current_evidence: P0_SAFE_INGRESS_EVIDENCE_079.json covers TXT/PNG/MP4 only.
+    fresh_evidence: Reuse TXT/PNG/MP4 after readback; add audio receipt integrity evidence.
+    required_tests: Ingest regression and receipt integrity readback for all four kinds.
+    gate: blocking
+  - id: image_analysis
+    requirement: Explicit reply/Ticket intent permits one PNG analysis and records a classified result.
+    evidence_class: real_feishu
+    current_evidence: R3_real_qualification
+    fresh_evidence: Reusable if receipt/analyzer contract remains unchanged; otherwise fresh qualification.
+    required_tests: Analyzer and two-message intent regression.
+    gate: blocking
+  - id: audio_analysis
+    requirement: Explicit intent permits one audio transcription under GPU lock with classified empty/fallback behaviour.
+    evidence_class: real_feishu
+    current_evidence: R4_real_qualification
+    fresh_evidence: Reusable if runtime contract remains unchanged; otherwise fresh qualification.
+    required_tests: Audio analyzer, GPU-lock and fallback regression.
+    gate: blocking
+  - id: video_analysis
+    requirement: Explicit intent permits one MP4 probe/sample analysis with no-audio and failure classification.
+    evidence_class: real_feishu
+    current_evidence: R5_real_qualification
+    fresh_evidence: Reusable if runtime contract remains unchanged; otherwise fresh qualification.
+    required_tests: Video analyzer and ffprobe/frame regression.
+    gate: blocking
+  - id: restart_recovery
+    requirement: One ordinary managed Gateway restart preserves topology and next fresh text routes/replies once.
+    evidence_class: real_feishu_plus_topology
+    current_evidence: recovery_restart_health_only
+    fresh_evidence: New controlled restart recovery report under this contract.
+    required_tests: Pre/post topology observation and one fresh normal-user text event.
+    gate: blocking
+non_blocking_observations:
+  - id: platform_retry_observation
+    status_if_absent: NOT_PROVEN_PLATFORM_RETRY
+    rationale: Feishu automatic retry is platform-controlled and no manual replay control is assumed.
+  - id: project_gateway_replacement
+    status_if_absent: DEFERRED_HARDENING
+  - id: device_auth_or_rpc_provenance
+    status_if_absent: DEFERRED_HARDENING
+required_outputs:
+  - reports/FEISHU_SINGLE_CONSUMER_TEST.json
+  - reports/FEISHU_INGRESS_TEST.json
+  - reports/FEISHU_EGRESS_TEST.json
+  - reports/P0_EVENT_IDEMPOTENCY_V2.json
+  - reports/P0_DUPLICATE_EFFECT_PROTECTION_V2.json
+  - reports/P0_RESTART_RECOVERY_V2.json
+  - reports/gates/P0_READY.json

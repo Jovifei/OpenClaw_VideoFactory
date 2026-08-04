@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "task_id": "P0-FEISHU-EVIDENCE-STRATEGY-089",
+  "status": "PREPARED_AWAITING_EXPLICIT_LIVE_AUTHORIZATION",
+  "recorded_at": "2026-08-04",
+  "correction": {
+    "retired_assumption": "A developer-console manual replay can be requested as the P0 same-event witness.",
+    "replacement": "Use Feishu's documented automatic retry after a controlled, one-event acknowledgement failure in the actual receive path."
+  },
+  "official_feishu_contract": {
+    "event_version": "2.0",
+    "platform_deduplication_key": "event_id",
+    "automatic_retry": "A failed or late acknowledgement causes automatic retry; no generic manual replay control was found in the reviewed official documentation.",
+    "event_log_signal": "retry_cnt greater than one identifies a retry.",
+    "sources": [
+      "https://open.feishu.cn/document/server-docs/event-subscription-guide/overview",
+      "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/event-subscription-guide/event-subscriptions/faq",
+      "https://open.feishu.cn/document/event-subscription-guide/event-subscriptions/event-callback-optimization-guide?lang=zh-CN"
+    ]
+  },
+  "read_only_runtime_findings": {
+    "connection_mode": "websocket",
+    "feishu_plugin": {
+      "id": "feishu",
+      "version": "2026.6.6",
+      "status": "loaded"
+    },
+    "plugin_message_deduplication": {
+      "key": "message_id plus media resource keys where applicable",
+      "position": "before Router dispatch",
+      "observable_duplicate_log": "dropping duplicate event for message"
+    },
+    "lark_cli": {
+      "manual_replay_command": "not_available",
+      "event_consumer_started": false
+    }
+  },
+  "future_live_test_acceptance": {
+    "same_platform_event_id_arrivals": 2,
+    "same_plugin_message_id_arrivals": 2,
+    "router_dispatches": 1,
+    "visible_group_replies": 1,
+    "competing_event_consumers": 0,
+    "test_fault": "one-event, test-only acknowledgement failure removed immediately after observation"
+  },
+  "not_performed": [
+    "Gateway restart",
+    "plugin source change",
+    "Feishu permission or OAuth change",
+    "Binding change",
+    "event consumer start",
+    "user or bot test message send",
+    "synthetic event replay",
+    "P0 Gate",
+    "PROJECT_STATUS.yaml update"
+  ],
+  "p0_gate_effect": "does_not_unlock_p0"
+}

@@ -1,0 +1,33 @@
+{
+  "change_id": "P0-PRODUCT-ROADMAP-RESET-092",
+  "status": "approved_documentation_only",
+  "authorized_by": "Jovi",
+  "recorded_at": "2026-08-04",
+  "purpose": "Reset the product roadmap and P0 acceptance design so unsupported Feishu retry reproduction no longer dominates the MVP path.",
+  "allowed_changes": [
+    "reports/PROJECT_CURRENT_STATE_092.md",
+    "reports/P0_ACCEPTANCE_REBASELINE_092.md",
+    "reports/P0_ACCEPTANCE_MATRIX_V2.yaml",
+    "reports/PRODUCT_ROADMAP_2026.md",
+    "reports/AIVIDEO_FACTORY_MVP_SPEC.md",
+    "reports/NEXT_EXECUTION_BACKLOG.md",
+    "reports/OPEN_SOURCE_TECH_REVIEW_092.md",
+    "reports/TEST_STRATEGY_092.md",
+    "reports/P0_LANDING_PLAN_092.md",
+    ".gitignore",
+    "tasks/todo.md",
+    "Obsidian OpenClaw VideoFactory progress notes"
+  ],
+  "prohibited_changes": [
+    "production code",
+    "OpenClaw configuration, Binding, Gateway, OAuth, Runtime, model, or Cron",
+    "real Feishu tests or message sending",
+    "dependency installation or model download",
+    "Git commit, push, tag, or branch change"
+  ],
+  "evidence_method": [
+    "read-only repository, report, and Git audit",
+    "official upstream documentation and repository review",
+    "structured-document validation and reader review"
+  ]
+}

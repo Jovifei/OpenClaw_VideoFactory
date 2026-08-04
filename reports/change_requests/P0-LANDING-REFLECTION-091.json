@@ -1,0 +1,24 @@
+{
+  "change_id": "P0-LANDING-REFLECTION-091",
+  "status": "approved_documentation_only",
+  "recorded_at": "2026-08-04",
+  "purpose": "Record the project landing reflection, separate official phase evidence from the offline P1 candidate, and publish the shortest safe completion plan after P0-090 failed to observe a retry.",
+  "allowed_changes": [
+    "reports/P0_LANDING_REFLECTION_091.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "Obsidian OpenClaw VideoFactory progress notes"
+  ],
+  "prohibited_changes": [
+    "source code",
+    "Gateway or Feishu plugin",
+    "configuration, Binding, OAuth, model, Runtime, Cron, or media routing",
+    "P0/P1 Gate or PROJECT_STATUS.yaml",
+    "Git commit, push, or tag",
+    "message send or live test"
+  ],
+  "verification": [
+    "Markdown files are tracked as documentation only",
+    "No runtime command is run by this change request"
+  ]
+}

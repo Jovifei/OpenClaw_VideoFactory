@@ -1,0 +1,30 @@
+{
+  "change_id": "P0-GITHUB-PUBLISH-093",
+  "status": "approved_by_jovi",
+  "authorized_scope": {
+    "include": [
+      "Stage and commit the current redacted P0-089 through P0-092 reports, Change Requests, task records, and report-tracking ignore exceptions",
+      "Push the archival commit to the configured GitHub origin",
+      "Create, push, and switch to codex/product-optimization-093"
+    ],
+    "exclude": [
+      "Production code",
+      "OpenClaw configuration, Binding, Gateway, OAuth, Cron, model, Runtime, or media routing",
+      "P0 Gate or PROJECT_STATUS.yaml promotion",
+      "Live Feishu testing",
+      "Automatic Douyin publication"
+    ]
+  },
+  "base_branch": "codex/p0-feishu-single-consumer-086",
+  "next_branch": "codex/product-optimization-093",
+  "commit_message": "docs: publish P0 evidence and product roadmap",
+  "validation": [
+    "Explicit staged-file inventory",
+    "Secret-pattern scan of staged documentation",
+    "YAML/JSON parse checks",
+    "git diff --check",
+    "Remote branch and commit verification"
+  ],
+  "phase_effect": "none",
+  "created_at": "2026-08-04"
+}

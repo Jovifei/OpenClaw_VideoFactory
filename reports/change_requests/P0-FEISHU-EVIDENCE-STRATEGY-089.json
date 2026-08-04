@@ -1,0 +1,37 @@
+{
+  "change_id": "P0-FEISHU-EVIDENCE-STRATEGY-089",
+  "schema_version": "1.0",
+  "status": "approved",
+  "approved_at": "2026-08-04",
+  "authorization": "Jovi corrected the infeasible manual-replay assumption and authorized autonomous work that does not change runtime code, Gateway, permissions, bindings, or event consumers before later explicit authorization.",
+  "change_category": "evidence_strategy_and_project_memory_only",
+  "targets": [
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "reports/P0_FEISHU_EVIDENCE_STRATEGY_089.json",
+    "reports/change_requests/P0-LANDING-EXECUTION-088.json",
+    "reports/change_requests/P0-FEISHU-EVIDENCE-STRATEGY-089.json",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/03-MVP完成路径与待完善清单.md",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/04-落地状态与执行计划.md"
+  ],
+  "out_of_scope": [
+    "PROJECT_STATUS.yaml",
+    "OpenClaw Gateway and configuration",
+    "OAuth and profiles",
+    "Feishu bindings and event consumers",
+    "OpenClaw plugin source",
+    "models and runtime",
+    "Cron",
+    "media ingress and analysis routing",
+    "P1 implementation",
+    "final P0 Gate"
+  ],
+  "acceptance_criteria": [
+    "the unsupported manual-replay premise is explicitly retired",
+    "the official automatic-retry and event_id deduplication mechanism is recorded",
+    "the replacement live-test protocol is test-only, bounded, and rollback-first",
+    "no runtime state, permissions, configuration, or code is changed"
+  ],
+  "rollback": "Revert only the P0-089 documentation and restore the prior P0-088 status annotation. No runtime rollback is required.",
+  "p0_gate_effect": "does_not_unlock_p0"
+}

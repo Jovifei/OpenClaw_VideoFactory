@@ -215,3 +215,15 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Do not treat a real user-originated inbound test as a reason to stop before checking the installed `lark-cli` profiles and identity modes.
 - Under Jovi's authorization, run the allowed target's dry-run, bot-identity send, idempotency retry, and read-only outcome checks autonomously; use `--as user` only when an authorized user token is actually available.
 - Keep sender identity explicit: a bot-originated message can prove CLI egress and any observed Router behavior, but it cannot be mislabeled as user-originated ingress or P0 single-consumer/deduplication proof.
+
+# 2026-08-04 — P0-089: Verify platform controls before making an external-evidence prerequisite
+
+- Do not invent a developer-console action from an abstract test requirement. Before asking Jovi for an external replay, verify the official platform's actual retry, logging, and replay controls.
+- For Feishu event delivery, distinguish unsupported manual replay from supported automatic retry: v2 events use `event_id` for idempotency, and retry is platform-triggered after failed/late acknowledgement.
+- When a gate's evidence collection method is infeasible, preserve the gate's safety objective, retire the false collection path, and design a bounded real test before changing either the Gate or production routing.
+
+# 2026-08-04 — P0-091: Keep the project outcome ahead of an infeasible subtest
+
+- Do not repeatedly retest a supporting evidence mechanism after its authorized run has shown that the required observable is unavailable. Stop and classify whether the blocker is runtime, platform capability, or acceptance-contract design.
+- Report official phase status separately from offline candidate capability. A qualified offline MP4 pipeline is valuable implementation progress, but it is not P1 or production until the live boundaries and formal Gate pass.
+- Re-plan from the product dependency chain after every terminal evidence failure: P0 admissibility, P1 deterministic delivery, P2 daily automation, then optional GPU/reference/Jianying work. Do not let one unproductive P0 probe dominate the work queue.

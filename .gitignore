@@ -108,6 +108,14 @@ handoff/**
 reports/**
 !reports/P0_*.json
 !reports/P0_*.md
+# Retain the concise, redacted 092 product reset package; verbose reports stay ignored.
+!reports/PROJECT_CURRENT_STATE_092.md
+!reports/P0_ACCEPTANCE_MATRIX_V2.yaml
+!reports/PRODUCT_ROADMAP_2026.md
+!reports/AIVIDEO_FACTORY_MVP_SPEC.md
+!reports/NEXT_EXECUTION_BACKLOG.md
+!reports/OPEN_SOURCE_TECH_REVIEW_092.md
+!reports/TEST_STRATEGY_092.md
 !reports/change_requests/
 !reports/change_requests/P0-*.json
 reports/**/*credential*

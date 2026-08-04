@@ -1,0 +1,46 @@
+{
+  "change_id": "P0-FEISHU-AUTO-RETRY-090",
+  "schema_version": "1.0",
+  "status": "executed_fail_rollback_complete",
+  "approved_at": "2026-08-04",
+  "authorization": "仅允许在当前已加载的 @openclaw/feishu 插件中加入并在验证后移除一次性 ACK 失败测试点；允许一次受控 Gateway 重启、一次真实用户来源的群消息测试、脱敏日志采集与回滚核验。不改 Binding、OAuth、模型、Runtime、Cron 或媒体路由；不启动第二事件消费者、不自动发布抖音。",
+  "change_category": "one_shot_global_feishu_plugin_ack_retry_test",
+  "targets": [
+    "C:/Users/Admin/.openclaw/npm/projects/openclaw-feishu-dc69f44688/node_modules/@openclaw/feishu/dist/monitor.account-Cl-QnhPV.js",
+    "E:/Claude_allow/Download/P0-FEISHU-AUTO-RETRY-090/",
+    "tasks/todo.md",
+    "reports/P0_FEISHU_AUTO_RETRY_090.json",
+    "reports/change_requests/P0-FEISHU-AUTO-RETRY-090.json",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/03-MVP完成路径与待完善清单.md",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/04-落地状态与执行计划.md"
+  ],
+  "baseline": {
+    "connection_mode": "websocket",
+    "plugin_sha256": "1e67b66c4ba5b37d577dcedbdaacf81ae71cef135d41da44ce01143180c9e642",
+    "plugin_bytes": 220710,
+    "gateway_running": true,
+    "video_factory_binding_mentions": 1,
+    "second_event_consumer_processes": 0,
+    "lark_cli_user_identity_available": false
+  },
+  "out_of_scope": [
+    "OpenClaw configuration and bindings",
+    "OAuth, profiles, app scopes, and credentials",
+    "models and runtime selection",
+    "Cron",
+    "media ingress and analysis routing",
+    "P1 implementation",
+    "automatic Douyin publication"
+  ],
+  "acceptance_criteria": [
+    "the original plugin bytes are backed up and SHA-256 verified before modification",
+    "the temporary test point is one-shot and only reacts to the explicitly chosen marker event",
+    "a real user-originated event yields two observed deliveries of one redacted event/message identity, one Router dispatch, and one visible group reply",
+    "no second event consumer is started",
+    "the plugin is restored byte-for-byte to the baseline SHA-256 and Gateway health returns after the test",
+    "the final report states PASS, FAIL, or BLOCKED without advancing P0 prematurely"
+  ],
+  "rollback": "Restore the exact backup to the target plugin file, verify the baseline SHA-256, restart the Gateway once, confirm the Feishu channel is running, and preserve only redacted evidence.",
+  "execution_result": "The one-shot fault reached the WebSocket SDK but no automatic retry arrival or plugin duplicate-drop observation was seen. Disk bytes were restored to the baseline SHA-256, then separately authorized recovery restart reloaded those bytes; Gateway and the Feishu plugin are healthy.",
+  "p0_gate_effect": "does_not_unlock_p0"
+}

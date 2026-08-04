@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "task_id": "P0-FEISHU-AUTO-RETRY-090",
+  "status": "FAIL_RUNTIME_RETRY_NOT_OBSERVED_ROLLBACK_COMPLETE",
+  "recorded_at": "2026-08-04",
+  "authorization_scope": "one-shot active Feishu plugin ACK-failure test, one controlled Gateway restart, one real user group message, redacted evidence, and rollback only",
+  "baseline": {
+    "connection_mode": "websocket",
+    "gateway_running": true,
+    "video_factory_binding_mentions": 1,
+    "second_event_consumer_processes": 0,
+    "plugin_sha256": "1e67b66c4ba5b37d577dcedbdaacf81ae71cef135d41da44ce01143180c9e642"
+  },
+  "test_execution": {
+    "real_user_event_received": true,
+    "one_shot_ack_fault_log_occurrences": 1,
+    "sdk_failure_signal": "P0_AUTO_RETRY_090_ONCE",
+    "automatic_retry_arrivals_observed": 0,
+    "plugin_duplicate_drop_observed": false,
+    "test_correlated_router_dispatch_count": "INCONCLUSIVE",
+    "test_correlated_visible_reply_count": "INCONCLUSIVE",
+    "event_id_observed": false,
+    "result": "FAIL"
+  },
+  "interpretation": {
+    "passed": false,
+    "reason": "The controlled handler failure reached the WebSocket SDK, but no second delivery or plugin duplicate-drop observation appeared in the bounded retry window. The required real automatic-retry and single-consumer proof is therefore absent.",
+    "prohibited_substitutes_not_used": [
+      "second lark-cli event consumer",
+      "bot loopback",
+      "synthetic event replay",
+      "manual developer-console replay claim"
+    ]
+  },
+  "rollback": {
+    "disk_plugin_sha256_restored": "1e67b66c4ba5b37d577dcedbdaacf81ae71cef135d41da44ce01143180c9e642",
+    "disk_plugin_syntax": "PASS",
+    "second_event_consumer_processes": 0,
+    "runtime_reload": "PASS",
+    "gateway_running_after_recovery_restart": true,
+    "connection_mode_after_recovery_restart": "websocket",
+    "feishu_plugin_loaded_after_recovery_restart": true,
+    "second_event_consumer_processes_after_recovery_restart": 0
+  },
+  "not_performed": [
+    "second fault-injection attempt",
+    "P0 Gate",
+    "PROJECT_STATUS.yaml update",
+    "Binding, OAuth, profile, scope, model, Runtime, Cron, or media route change",
+    "automatic Douyin publication"
+  ],
+  "p0_gate_effect": "does_not_unlock_p0"
+}

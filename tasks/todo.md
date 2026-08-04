@@ -1669,3 +1669,106 @@ Detailed execution handoff:
 - lark-cli has one active `video-factory` profile with bot identity only. It resolved exactly one target group; both dry-runs passed, and the exact `/status` real send plus same-key retry returned the same message record. Its message ID was absent from the Router session, which is the expected bot-loop-protection boundary and not user-ingress evidence.
 - Two isolated real `openclaw agent --agent video-factory` turns passed: exact `/status` emitted the fixed P0 reply; `/status P0-087` emitted only `用法：/status`; neither returned a tool-call marker. The profile's app user scopes contain only `offline_access`, so device authorization for user-originated IM sends cannot start. This is an external app-scope blocker, not a Gateway or Router failure.
 - Gateway, OpenClaw configuration, OAuth/Profile, Binding, model, Runtime, Cron, media routing, and `services/feishu_gateway` remain out of scope.
+
+## P0-LANDING-EXECUTION-088
+
+- [x] Record Jovi's request for an autonomous, phase-gated project landing plan and a planning-only Change Request.
+- [x] Reconcile `PROJECT_STATUS.yaml`, the current P0 prereview, P0-086/P0-087 evidence, and both Obsidian project notes.
+- [x] Publish one ordered P0 → P1 → P2 execution queue with concrete outcomes, verification gates, and external ownership boundaries.
+- [x] Retire the infeasible manual developer-console replay requirement after verifying the official automatic-retry mechanism; do not ask Jovi to provide a non-existent control.
+- [ ] Superseded: do not collect the former manual-replay material. P0-089 defines the replacement test protocol and later authorization boundary.
+- [ ] Only after `reports/gates/P0_READY.json` exists with a zero-exit Gate, start P1 as separately authorized small implementation packages.
+
+### Review — execution plan published; P0 evidence remains external
+
+- This review is superseded by P0-089. The immediate technical blocker remains independent Channel proof for P0-086, but the former manual developer-console replay path is not a real Feishu capability. A local bot send, a synthetic replay, or a second event consumer still cannot replace it.
+- The replacement is a later, explicitly authorized test-only automatic-retry experiment against the actual Channel receive path. Codex can then autonomously validate its redacted evidence, run the Gate, and begin P1 only if the Gate passes.
+- The P1 outcome is one deterministic 1080x1920 MP4 from fixed JSON with SQLite state, TTS, captions, Remotion visuals, a quality report, and one idempotent Feishu delivery. P2 alone adds the 08:30/12:00 daily workflow and seven-day trial. Douyin publication remains manual.
+- No code, Gateway/configuration, OAuth/Profile, Binding, model, Runtime, Cron, media routing, P0 Gate, phase status, commit, or push is included in this planning-only task.
+
+## P0-FEISHU-EVIDENCE-STRATEGY-089
+
+- [x] Record Jovi's correction: the assumed manual developer-console replay workflow is not available and must not be requested again.
+- [x] Verify the official Feishu model: failed or late event acknowledgement triggers automatic retry; v2 event idempotency is keyed by `event_id`; event logs expose retry count.
+- [x] Verify the installed Feishu CLI's safe boundary: it can list, inspect, or consume events, but has no replay command; starting a consumer remains prohibited because OpenClaw is the sole inbound consumer.
+- [x] Preserve the existing P0 safety objective and gate shape: exactly one configured consumer, two observed arrivals of one real event, one route, and one visible reply.
+- [x] Read-only inspect the active transport and plugin receive path: this account uses WebSocket; the loaded Feishu plugin deduplicates message events by `message_id` (plus media resource keys) before route dispatch.
+- [ ] Await explicit authorization for the bounded live change: inspect the active plugin receive path, implement a one-event test-only acknowledgement-failure seam, run one normal-user marker event, record the automatic retry and deduplication outcome, remove the seam, and verify rollback.
+- [ ] After the live test passes, emit the V2.5 `FEISHU_SINGLE_CONSUMER_TEST.json`, refresh the frozen candidate checksum, run P0 Gate once, and only then decide P1 eligibility.
+
+### Review — corrected evidence strategy; no live behavior changed
+
+- Official documentation distinguishes automatic retry from manual replay. The platform can retry a failed/late acknowledgement, and its event logs record retry count; no documented manual replay control was found. The former P0-086 collection requirement is therefore invalid and superseded.
+- The active Channel is WebSocket and the loaded Feishu plugin deduplicates incoming message events by `message_id` (and media resource keys) before Router dispatch. The future report must therefore bind the platform's redacted `event_id` to the same redacted `message_id`, then prove two arrivals but one plugin dispatch and reply.
+- The live replacement must be a deliberately bounded fault-injection test against the actual OpenClaw receive acknowledgement boundary, not a second lark-cli listener, a bot loopback, or a fabricated payload. Its technical implementation and Gateway/plugin touch points require Jovi's later explicit authorization.
+- Evidence: `reports/P0_FEISHU_EVIDENCE_STRATEGY_089.json` records the official contract, current WebSocket/plugin findings, and explicit `not_performed` boundary.
+- This task performed only documentation, source, and capability research. Gateway/configuration, OAuth/Profile, Binding, event consumers, plugin source, media routing, Gate inputs, phase status, commit, and push remain unchanged.
+
+## P0-FEISHU-AUTO-RETRY-090（P0-090）
+
+- [x] Record Jovi's explicit authorization, the active plugin target, and the immutable runtime baseline.
+- [x] Copy and verify the exact original plugin bytes in the approved backup directory before any modification.
+- [x] Add and statically validate a one-shot ACK-failure test point that can only match the selected normal-user marker event.
+- [x] Restart the Gateway once, reconfirm no second event consumer, and receive the single normal-user group message through the active Feishu Channel.
+- [x] Collect only redacted runtime signals and remove the test point from disk immediately: the fault occurred once, but automatic retry and duplicate-drop observations were absent.
+- [x] Complete runtime rollback with one separately authorized Gateway restart; verify Gateway/Feishu health and record the already determined `FAIL` without changing phase state.
+
+### Review — authorized, baseline captured; live test not yet started
+
+- Baseline: Gateway running; `connectionMode=websocket`; one `video-factory` binding mention; no `lark-cli event consume` process; active plugin SHA-256 is recorded in the Change Request.
+- The real user event did reach the one-shot test point and the WebSocket SDK recorded the controlled error. No second arrival or `dropping duplicate event` log was observed in the bounded retry window, so the result is `FAIL`, not P0 proof. No second injection was attempted.
+- Disk rollback is complete and its SHA-256 matches baseline. P0-090-RB restarted Gateway under separate authorization; Gateway is running, the Feishu plugin is loaded, WebSocket mode is unchanged, and no second event consumer exists.
+- Evidence: `reports/P0_FEISHU_AUTO_RETRY_090.json` and `reports/change_requests/P0-FEISHU-AUTO-RETRY-090-RB.json`. No P0 Gate, phase state, configuration, Binding, OAuth/Profile, model, Runtime, Cron, media, P1, commit, or push action occurred.
+
+## P0-FEISHU-AUTO-RETRY-090-RB
+
+- [x] Record Jovi's separate recovery-only authorization and confirm the restored plugin's baseline SHA-256 with zero second consumers.
+- [x] Restart Gateway once to reload the restored plugin bytes.
+- [x] Read only Gateway/Feishu health, configured WebSocket mode, plugin load state, and second-consumer count; preserve P0-090 as `FAIL`.
+
+### Review — recovery restart authorized
+
+- This task is limited to the restart that P0-090 could not perform under its single-restart authorization. It does not retest retry behavior, send a message, modify plugin bytes, or run P0 Gate.
+- Gateway restart exited 0; Gateway reports running, Feishu plugin is loaded, the restored plugin SHA-256 equals baseline, `connectionMode=websocket`, and no `lark-cli event consume` process exists. P0-090 remains `FAIL`.
+
+## P0-LANDING-REFLECTION-091
+
+- [x] Reconcile the authoritative phase state, P0-090 terminal evidence, and latest offline P1 requalification before describing project completion.
+- [x] Separate the implemented offline video candidate from formal P0/P1/production status.
+- [x] Record the root cause of repeated retry testing and prohibit another retry injection without a new acceptance decision.
+- [x] Publish the shortest P0 → P1 → P2 landing queue, with P3–P5 explicitly deferred from the first MP4 MVP.
+- [ ] Await authorization for P0 acceptance rebaseline only. Do not modify the Gate, prereview, configuration, or runtime before that authorization.
+
+### Review — landing plan reset
+
+- Official state remains `P0 not passed` and `P1 blocked_by_P0`; `reports/gates/P0_READY.json` does not exist. P0-090 is terminal `FAIL`, because its controlled acknowledgement fault did not yield observable retry evidence.
+- The offline candidate is nevertheless complete and independently requalified: SQLite control plane, TTS/captions, four portrait templates, mascot assets, five candidate jobs, NVENC/CPU artifacts and quality packages. Its evidence is `PASS_OFFLINE_ONLY`, not promotion.
+- The next decision is not another Feishu retry test. It is whether to approve a transparent P0 acceptance rebaseline that retains the one-consumer safety objective while replacing an unsupported manual-retry observation with supported integration evidence. See `reports/P0_LANDING_REFLECTION_091.md`.
+
+## P0-PRODUCT-ROADMAP-RESET-092
+
+- [x] Audit current code, reports, Git state, phase state and Obsidian records without runtime actions.
+- [x] Create `PROJECT_CURRENT_STATE_092.md` with real capability, offline candidate, blocker and deferred-work separation.
+- [x] Propose a P0 rebaseline and V2 matrix with single consumer, real entry, event-ID idempotency, duplicate protection, safe ingress, three media analyzers and restart recovery.
+- [x] Publish P0–P4 roadmap, MVP specification, ordered Backlog, open-source review and layered test strategy.
+- [x] Publish `P0_LANDING_PLAN_092.md` with `PROJECT_DIRECTION_RESET_COMPLETE` and a 30-day sequence.
+- [ ] Await a separate authorization for Gate/prereview/evidence-schema implementation. This documentation task does not apply the new contract.
+
+### Review — direction reset complete
+
+- No production code, OpenClaw configuration, Binding, Gateway, OAuth, Cron, live Feishu test, dependency install, commit or push occurred.
+- Active route: P0 safe media entry → P1 real deterministic delivery → P2 daily automation. Retry injection, Project Gateway replacement, Device Auth and RPC provenance are deferred hardening, not active MVP work.
+- The old P0 Gate remains active until a separately authorized, tested rebaseline implementation replaces it.
+
+## P0-GITHUB-PUBLISH-093
+
+- [x] Freeze the publish scope: P0-089–P0-092 redacted reports, Change Requests, task records, and report-tracking ignore exceptions only.
+- [ ] Scan the exact publish set for secrets, validate document syntax, and verify the remote target before staging.
+- [ ] Commit the frozen evidence and product-roadmap package on `codex/p0-feishu-single-consumer-086`.
+- [ ] Push that archival commit to `origin` and verify the remote object.
+- [ ] Create, push, and switch to `codex/product-optimization-093` for the next authorized optimization task.
+- [ ] Update Obsidian with the commit, branch boundary, and unchanged formal phase state.
+
+### Review — pending GitHub publication
+
+- Jovi authorized this task to publish the currently visible project records and open a fresh optimization branch. No production code, OpenClaw configuration, Binding, Gateway, OAuth, Cron, model, Runtime, media route, Gate, or phase-state change is in scope.

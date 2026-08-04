@@ -1,0 +1,43 @@
+{
+  "change_id": "P0-FEISHU-AUTO-RETRY-090-RB",
+  "schema_version": "1.0",
+  "status": "completed",
+  "approved_at": "2026-08-04",
+  "authorization": "仅允许重启 Gateway 一次以重新加载已恢复的原始 Feishu 插件；随后只读核对 Gateway/Feishu Channel 健康与零第二消费者。不改配置、Binding、OAuth、模型、Runtime、Cron 或媒体路由，不发送消息。",
+  "change_category": "recovery_gateway_restart_only",
+  "targets": [
+    "OpenClaw Gateway process",
+    "tasks/todo.md",
+    "reports/P0_FEISHU_AUTO_RETRY_090.json",
+    "reports/change_requests/P0-FEISHU-AUTO-RETRY-090-RB.json",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/03-MVP完成路径与待完善清单.md",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/04-落地状态与执行计划.md"
+  ],
+  "preconditions": {
+    "restored_plugin_sha256": "1e67b66c4ba5b37d577dcedbdaacf81ae71cef135d41da44ce01143180c9e642",
+    "second_event_consumer_processes": 0
+  },
+  "out_of_scope": [
+    "OpenClaw configuration",
+    "Feishu bindings",
+    "OAuth, profiles, app scopes, and credentials",
+    "plugin source modification",
+    "models and runtime selection",
+    "Cron",
+    "media ingress and analysis routing",
+    "Feishu message send",
+    "P0 Gate",
+    "PROJECT_STATUS.yaml"
+  ],
+  "acceptance_criteria": [
+    "Gateway restart exits successfully",
+    "Gateway reports running after restart",
+    "the restored plugin hash remains equal to the baseline",
+    "the Feishu plugin remains loaded and WebSocket mode remains configured",
+    "no second event consumer exists",
+    "P0-090 remains a FAIL and does not advance P0"
+  ],
+  "rollback": "If restart health fails, stop and report the exact health state. Do not alter configuration or plugin bytes; the plugin file is already restored to the baseline hash.",
+  "execution_result": "Gateway restart exited 0; Gateway running, Feishu plugin loaded, WebSocket mode unchanged, restored plugin SHA-256 matched baseline, and no second event consumer was present.",
+  "p0_gate_effect": "does_not_unlock_p0"
+}
