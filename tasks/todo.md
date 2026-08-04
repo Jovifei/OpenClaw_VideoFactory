@@ -1763,12 +1763,14 @@ Detailed execution handoff:
 ## P0-GITHUB-PUBLISH-093
 
 - [x] Freeze the publish scope: P0-089–P0-092 redacted reports, Change Requests, task records, and report-tracking ignore exceptions only.
-- [ ] Scan the exact publish set for secrets, validate document syntax, and verify the remote target before staging.
-- [ ] Commit the frozen evidence and product-roadmap package on `codex/p0-feishu-single-consumer-086`.
-- [ ] Push that archival commit to `origin` and verify the remote object.
-- [ ] Create, push, and switch to `codex/product-optimization-093` for the next authorized optimization task.
-- [ ] Update Obsidian with the commit, branch boundary, and unchanged formal phase state.
+- [x] Scan the exact publish set for secrets, validate document syntax, and verify the remote target before staging.
+- [x] Commit the frozen evidence and product-roadmap package on `codex/p0-feishu-single-consumer-086`.
+- [x] Push that archival commit to `origin` and verify the remote object.
+- [x] Create, push, and switch to `codex/product-optimization-093` for the next authorized optimization task.
+- [x] Update Obsidian with the commit, branch boundary, and unchanged formal phase state.
 
-### Review — pending GitHub publication
+### Review — GitHub publication complete
 
-- Jovi authorized this task to publish the currently visible project records and open a fresh optimization branch. No production code, OpenClaw configuration, Binding, Gateway, OAuth, Cron, model, Runtime, media route, Gate, or phase-state change is in scope.
+- Jovi authorized this task to publish the currently visible project records and open a fresh optimization branch. The exact 22-file archive passed JSON/YAML, secret-pattern and `git diff --check` validation, then committed as `717ef8cf043fcdb6fa69fab4b084467204f194e5` (`docs: publish P0 evidence and product roadmap`).
+- `origin/codex/p0-feishu-single-consumer-086` was verified at that exact commit. GitHub then created `origin/codex/product-optimization-093` from the same commit; the local workspace is switched to it with upstream tracking and a clean worktree.
+- No production code, OpenClaw configuration, Binding, Gateway, OAuth, Cron, model, Runtime, media route, Gate, or phase-state change occurred. `PROJECT_STATUS.yaml` is unchanged: P0 remains not passed.

@@ -1,6 +1,6 @@
 {
   "change_id": "P0-GITHUB-PUBLISH-093",
-  "status": "approved_by_jovi",
+  "status": "completed",
   "authorized_scope": {
     "include": [
       "Stage and commit the current redacted P0-089 through P0-092 reports, Change Requests, task records, and report-tracking ignore exceptions",
@@ -18,6 +18,9 @@
   "base_branch": "codex/p0-feishu-single-consumer-086",
   "next_branch": "codex/product-optimization-093",
   "commit_message": "docs: publish P0 evidence and product roadmap",
+  "published_commit": "717ef8cf043fcdb6fa69fab4b084467204f194e5",
+  "published_branch": "codex/p0-feishu-single-consumer-086",
+  "new_branch_base": "717ef8cf043fcdb6fa69fab4b084467204f194e5",
   "validation": [
     "Explicit staged-file inventory",
     "Secret-pattern scan of staged documentation",
