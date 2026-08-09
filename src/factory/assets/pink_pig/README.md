@@ -49,6 +49,16 @@ Poses without PNGs have `render_ready: false` and a `fallback_asset_id` pointing
 a render-ready alternative. The compiler follows fallback chains automatically
 (max 3 hops).
 
+## Knowledge illustration assets
+
+The registry also records five repository-owned Modbus RTU knowledge
+illustrations under `asset_role: knowledge_illustration`. These are 1672×941
+body images and are selected by explicit asset ID; they do not expand the
+closed eight-pose character vocabulary. The transparent
+`pink_pig.signature.v1` asset is a 400×400 RGBA PNG with a recorded SHA-256 and
+is reserved for the lower signature area of the `knowledge_illustration`
+composition.
+
 ## Pose Verification Status
 
 | Asset ID | Confidence | Evidence |

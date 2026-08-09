@@ -34,6 +34,9 @@ def build_render_report(
     timeline: dict[str, Any],
     subtitle_path: Path,
     captions_count: int,
+    composition: dict[str, Any] | None = None,
+    style_evidence: dict[str, Any] | None = None,
+    signature_asset_id: str | None = None,
 ) -> dict[str, Any]:
     """Build a deterministic report from real probe data and pipeline evidence."""
     if ffprobe_meta.get("error") or not ffprobe_meta.get("has_audio") and "video" not in ffprobe_meta:
@@ -67,7 +70,7 @@ def build_render_report(
     asset_ids = [str(scene["asset_id"]) for scene in scenes]
 
     subtitle_present = subtitle_path.is_file() and captions_count > 0
-    return {
+    report = {
         "schema_version": "1.0",
         "duration": round(float(ffprobe_meta.get("duration", 0.0)), 3),
         "resolution": {
@@ -88,3 +91,36 @@ def build_render_report(
         },
         "asset_ids": asset_ids,
     }
+    if composition is not None:
+        regions = composition.get("regions")
+        subtitle_region = regions.get("subtitle_area") if isinstance(regions, dict) else None
+        if not isinstance(subtitle_region, dict):
+            raise FactoryContractError(
+                "render_report_invalid",
+                "Composition has no subtitle region for quality reporting.",
+                {"field": "composition.regions.subtitle_area"},
+            )
+        layout_mode = str(composition.get("layout_mode") or composition.get("layout") or composition.get("composition_id", ""))
+        if not layout_mode:
+            raise FactoryContractError(
+                "render_report_invalid",
+                "Composition has no layout mode for quality reporting.",
+                {"field": "composition.layout_mode"},
+            )
+        assets_used = list(asset_ids)
+        if signature_asset_id:
+            assets_used.append(str(signature_asset_id))
+        report.update(
+            {
+                "assets_used": assets_used,
+                "subtitle_region": {
+                    "x": int(subtitle_region["x"]),
+                    "y": int(subtitle_region["y"]),
+                    "width": int(subtitle_region["width"]),
+                    "height": int(subtitle_region["height"]),
+                },
+                "layout_mode": layout_mode,
+                "style_profile": dict(style_evidence or {}),
+            }
+        )
+    return report

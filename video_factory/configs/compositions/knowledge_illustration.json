@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "composition_id": "knowledge_illustration",
+  "layout": "knowledge_illustration",
+  "canvas": {
+    "width": 1080,
+    "height": 1920,
+    "background_color": "0xF7E4EA"
+  },
+  "regions": {
+    "brand_area": {
+      "x": 90,
+      "y": 80,
+      "width": 900,
+      "height": 100
+    },
+    "content_area": {
+      "x": 0,
+      "y": 240,
+      "width": 1080,
+      "height": 800
+    },
+    "subtitle_area": {
+      "x": 90,
+      "y": 1120,
+      "width": 900,
+      "height": 460
+    },
+    "signature_area": {
+      "x": 90,
+      "y": 1760,
+      "width": 900,
+      "height": 100
+    }
+  },
+  "subtitle_style": {
+    "layout": "knowledge_illustration",
+    "font_name": "Microsoft YaHei",
+    "font_size": 56,
+    "margin_left": 90,
+    "margin_right": 90,
+    "margin_vertical": 400,
+    "min_chars_per_line": 14,
+    "max_chars_per_line": 18,
+    "max_lines": 2,
+    "alignment": 2,
+    "outline": 1,
+    "shadow": 0,
+    "border_style": 1,
+    "primary_colour": "&H00151515",
+    "outline_colour": "&H00F7E4EA"
+  },
+  "signature": {
+    "asset_id": "pink_pig.signature.v1",
+    "max_height": 80
+  }
+}

@@ -6,6 +6,7 @@ This directory contains **JSON Schemas for a single video synthesis pipeline** �
 - **Storyboard** (director semantics layer) → AI Director's output format
 - **Timeline** (render execution layer) → Renderer's input format
 - **VideoRenderJob** (job entry point) → Complete synthesis job definition
+- **Composition** (safe-region layout layer) → Knowledge illustration renderer/subtitle layout
 
 ## Responsibility Boundary (CRITICAL)
 
@@ -42,6 +43,20 @@ The new schemas deliberately avoid the name `VideoJob` (already occupied by the 
 - `Timeline` — in `timeline.schema.json`
 - `DirectorDraft` — in `director_draft.schema.json`
 - `DirectorRunReport` — in `director_run_report.schema.json`
+- `KnowledgeIllustrationComposition` — in `composition.schema.json`
+
+`composition.schema.json` is the shared optional composition contract referenced
+by Storyboard and Timeline. The shipped
+`video_factory/configs/compositions/knowledge_illustration.json` reserves a
+central content area, a non-overlapping subtitle safe band, and a lower
+signature area. Geometry is contract data; pixel-level overlap/occlusion review
+remains a render-quality check.
+
+The Pink Pig Registry also records the five repository-owned Modbus RTU
+knowledge illustrations. They are content assets (`asset_role:
+knowledge_illustration`), not replacements for the eight character poses. The
+transparent signature entry is a repository-owned 400×400 RGBA PNG with a
+recorded SHA-256 and the existing normal SVG as provenance.
 
 ## Schema Conventions
 
@@ -51,3 +66,11 @@ The new schemas deliberately avoid the name `VideoJob` (already occupied by the 
 - All schemas use `additionalProperties: false` unless explicitly extended
 - Failed `video_job_state` snapshots carry a structured `error` object with
   `code`, `message`, and `context`.
+
+## Composition scene metadata
+
+Storyboard scenes may carry `asset_id`, `layout_mode`, `subtitle_layout`,
+`character_position`, and `content_region`. These fields are optional for
+legacy storyboards and are copied deterministically to Timeline scenes when
+present. The shipped `knowledge_illustration` contract remains the single
+source for the 1080×1920 safe regions; it does not create a second renderer.

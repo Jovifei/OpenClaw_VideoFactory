@@ -1,0 +1,54 @@
+{
+  "id": "PINK-PIG-FACTORY-PHASE1-5-COMPOSITION-ENGINE",
+  "task": "PINK_PIG_FACTORY_PHASE1_5_COMPOSITION_ENGINE",
+  "branch": "codex/pink-pig-phase1-5-composition",
+  "repository_root": "E:/project/OpenClaw_VideoFactory",
+  "allowed_paths": [
+    "video_factory/",
+    "schemas/video/",
+    "src/factory/assets/pink_pig/",
+    "assets/pink_pig/",
+    "assets/modbus_rtu_illustrations/",
+    "examples/pink_pig_modbus_demo/",
+    "examples/pink_pig_story_demo/",
+    "tests/video/",
+    "docs/PINK_PIG_PHASE1_ARCHITECTURE.md",
+    "video_factory/README.md",
+    "schemas/video/README.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "handoff/codex/IMPLEMENTATION_BACKLOG.yaml",
+    ".gitignore",
+    "reports/change_requests/PINK-PIG-FACTORY-PHASE1-5-COMPOSITION-ENGINE.json",
+    "reports/PINK_PIG_FACTORY_PHASE1_5_COMPOSITION.md",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/04-落地状态与执行计划.md"
+  ],
+  "forbidden_surfaces": [
+    "OpenClaw",
+    "Feishu",
+    "Gateway",
+    "Binding",
+    "OAuth",
+    "Cron",
+    "PROJECT_STATUS.yaml",
+    "src/factory/director/"
+  ],
+  "preexisting_unrelated_dirty_files": [
+    "PROJECT_STATUS.yaml",
+    "reports/P0_ACCEPTANCE_MATRIX_V2.yaml",
+    "scripts/analysis_request.py",
+    "scripts/analyzer_mcp.py",
+    "scripts/mcp_ingest_attachment.py",
+    "scripts/media_action_ticket.py"
+  ],
+  "does_not_imply_phase_pass": true,
+  "does_not_authorize": [
+    "commit before acceptance",
+    "push",
+    "reset",
+    "clean",
+    "AI Director implementation",
+    "Feishu or OpenClaw integration",
+    "formal P0/P1 phase promotion"
+  ]
+}

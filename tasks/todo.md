@@ -1888,3 +1888,24 @@ Execution handoff: `reports/change_requests/PINK-PIG-FACTORY-AI-DIRECTOR-003.jso
   validation. `tests/video` passed 258 tests and `video_factory/tests` passed
   5 tests; both MP4s decoded successfully.  The legacy demo now measures
   `mean_volume=-17.3 dB` after normalization.
+
+## PINK_PIG_FACTORY_PHASE1_5_COMPOSITION_ENGINE
+
+- [x] Freeze Phase1.5 branch, Change Request, forbidden-surface hashes, and dirty-worktree boundary.
+- [x] Add and validate the knowledge_illustration Composition Contract.
+- [x] Register Modbus knowledge illustrations and transparent Pink Pig signature asset.
+- [x] Add Pink Pig quality validator and enforce the knowledge-video Skill gate.
+- [x] Extend Storyboard/Timeline layout fields and compiler propagation.
+- [x] Implement SubtitleLayoutEngine with safe-region overlap failure.
+- [x] Integrate composition-aware rendering, signature overlay, and per-scene audio integrity.
+- [x] Generate the four-scene pink_pig_modbus_demo.mp4 and inspect evidence frames.
+- [x] Run targeted tests, full tests/video, legacy tests, ffprobe, decode, and cloneable-path/import smoke.
+- [x] Update docs, Obsidian, final report, and stop without AI Director/Feishu/P0 work.
+
+### Review — PINK_PIG_FACTORY_PHASE1_5_COMPOSITION_ENGINE
+
+- Composition and Pink Pig style gates are enforced on the existing `--job` path; legacy `--config` remains unchanged and its five-image regression passes.
+- Offline Modbus evidence: four distinct Registry knowledge assets, subtitle safe-region evidence, transparent signature overlay, BGM audio, and `render_report.json` agree with the 27.8s 1080×1920 H.264/AAC MP4.
+- Verification: `tests/video` 273 passed; `video_factory/tests` 5 passed; offline fixture, legacy demo, and Modbus demo exit 0; all three MP4s decode successfully.
+- Official `PROJECT_STATUS.yaml` remains P0 `not_started` / P1 `blocked_by_P0`; no OpenClaw, Feishu, Gateway, Binding, OAuth, Cron, AI Director, commit, push, reset, or clean action was performed.
+- A fresh Git clone smoke is intentionally deferred until the user-authorized commit; the current worktree has pre-existing dirty files that were preserved. Core-path/import and full regression smoke passed in the current repository.

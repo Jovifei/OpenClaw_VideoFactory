@@ -8,6 +8,7 @@ import pytest
 
 from video_factory.pipeline.errors import FactoryContractError
 from video_factory.pipeline.render_report import build_render_report
+from video_factory.pipeline.composition import load_composition
 
 from . import ROOT
 
@@ -86,6 +87,23 @@ def test_report_is_json_serializable(tmp_path: Path) -> None:
         captions_count=1,
     )
     json.dumps(report, ensure_ascii=False)
+
+
+def test_composition_report_contains_safe_region_and_assets(tmp_path: Path) -> None:
+    subtitle = tmp_path / "subtitle.srt"
+    subtitle.write_text("1\n00:00:00,000 --> 00:00:01,000\n字幕\n", encoding="utf-8")
+    report = build_render_report(
+        ffprobe_meta=_probe(),
+        timeline=_timeline(),
+        subtitle_path=subtitle,
+        captions_count=1,
+        composition=load_composition(),
+        style_evidence={"status": "pass", "style_profile_version": "1.0"},
+        signature_asset_id="pink_pig.signature.v1",
+    )
+    assert report["layout_mode"] == "knowledge_illustration"
+    assert report["subtitle_region"] == {"x": 90, "y": 1120, "width": 900, "height": 460}
+    assert report["assets_used"][-1] == "pink_pig.signature.v1"
 
 
 def test_generated_offline_render_report_matches_real_mp4() -> None:

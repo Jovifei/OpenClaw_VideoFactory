@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/composition.schema.json",
+  "title": "KnowledgeIllustrationComposition",
+  "description": "Safe-region composition contract for the knowledge-illustration layout. It validates geometry and style values only; it does not inspect rendered pixels.",
+  "type": "object",
+  "required": ["schema_version", "composition_id", "layout", "canvas", "regions", "subtitle_style", "signature"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "pattern": "^\\d+\\.\\d+$"},
+    "composition_id": {"const": "knowledge_illustration"},
+    "layout": {"const": "knowledge_illustration"},
+    "canvas": {"$ref": "#/$defs/canvas"},
+    "regions": {"$ref": "#/$defs/regions"},
+    "subtitle_style": {"$ref": "#/$defs/subtitle_style"},
+    "signature": {"$ref": "#/$defs/signature"}
+  },
+  "$defs": {
+    "canvas": {
+      "type": "object",
+      "required": ["width", "height", "background_color"],
+      "additionalProperties": false,
+      "properties": {
+        "width": {"const": 1080},
+        "height": {"const": 1920},
+        "background_color": {
+          "type": "string",
+          "pattern": "^(?:0x|#)[0-9A-Fa-f]{6}$"
+        }
+      }
+    },
+    "regions": {
+      "type": "object",
+      "required": ["brand_area", "content_area", "subtitle_area", "signature_area"],
+      "additionalProperties": false,
+      "properties": {
+        "brand_area": {
+          "allOf": [
+            {"$ref": "#/$defs/rect"},
+            {"properties": {"x": {"const": 90}, "y": {"const": 80}, "width": {"const": 900}, "height": {"const": 100}}}
+          ]
+        },
+        "content_area": {
+          "allOf": [
+            {"$ref": "#/$defs/rect"},
+            {"properties": {"x": {"const": 0}, "y": {"const": 240}, "width": {"const": 1080}, "height": {"const": 800}}}
+          ]
+        },
+        "subtitle_area": {
+          "allOf": [
+            {"$ref": "#/$defs/rect"},
+            {"properties": {"x": {"const": 90}, "y": {"const": 1120}, "width": {"const": 900}, "height": {"const": 460}}}
+          ]
+        },
+        "signature_area": {
+          "allOf": [
+            {"$ref": "#/$defs/rect"},
+            {"properties": {"x": {"const": 90}, "y": {"const": 1760}, "width": {"const": 900}, "height": {"const": 100}}}
+          ]
+        }
+      }
+    },
+    "rect": {
+      "type": "object",
+      "required": ["x", "y", "width", "height"],
+      "additionalProperties": false,
+      "properties": {
+        "x": {"type": "number", "minimum": 0, "maximum": 1080},
+        "y": {"type": "number", "minimum": 0, "maximum": 1920},
+        "width": {"type": "number", "exclusiveMinimum": 0, "maximum": 1080},
+        "height": {"type": "number", "exclusiveMinimum": 0, "maximum": 1920}
+      }
+    },
+    "subtitle_style": {
+      "type": "object",
+      "required": [
+        "layout",
+        "font_name",
+        "font_size",
+        "margin_left",
+        "margin_right",
+        "margin_vertical",
+        "min_chars_per_line",
+        "max_chars_per_line",
+        "max_lines"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "layout": {"const": "knowledge_illustration"},
+        "font_name": {"type": "string", "minLength": 1, "maxLength": 80},
+        "font_size": {"type": "integer", "minimum": 52, "maximum": 60},
+        "margin_left": {"type": "integer", "minimum": 40, "maximum": 1080},
+        "margin_right": {"type": "integer", "minimum": 40, "maximum": 1080},
+        "margin_vertical": {"type": "integer", "minimum": 180, "maximum": 420},
+        "min_chars_per_line": {"type": "integer", "minimum": 1, "maximum": 80},
+        "max_chars_per_line": {"type": "integer", "minimum": 1, "maximum": 80},
+        "max_lines": {"const": 2},
+        "alignment": {"type": "integer", "enum": [2]},
+        "outline": {"type": "integer", "minimum": 0, "maximum": 4},
+        "shadow": {"type": "integer", "minimum": 0, "maximum": 4},
+        "border_style": {"type": "integer", "enum": [1]},
+        "primary_colour": {"type": "string", "pattern": "^&H[0-9A-Fa-f]{8}$"},
+        "outline_colour": {"type": "string", "pattern": "^&H[0-9A-Fa-f]{8}$"}
+      },
+      "allOf": [
+        {
+          "if": {"required": ["min_chars_per_line", "max_chars_per_line"]},
+          "then": {
+            "properties": {
+              "max_chars_per_line": {"minimum": 1}
+            }
+          }
+        }
+      ]
+    },
+    "signature": {
+      "type": "object",
+      "required": ["asset_id", "max_height"],
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {"type": "string", "pattern": "^pink_pig\\.[a-z_]+\\.v[0-9]+$"},
+        "max_height": {"type": "integer", "minimum": 1, "maximum": 240}
+      }
+    }
+  }
+}

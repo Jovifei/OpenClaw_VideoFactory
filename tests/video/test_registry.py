@@ -111,7 +111,7 @@ class TestRegistrySchema:
     def test_loader_rejects_invalid_registry_instead_of_swallowing_schema_errors(self, raw_registry: dict) -> None:
         """The loader builds the valid registry and fails closed for invalid data."""
         reg = load_registry()
-        assert reg.registry_version == "1.0.0"
+        assert reg.registry_version == "1.1.0"
         assert reg.verify(repo_root=ROOT) == []
 
 
@@ -178,7 +178,7 @@ class TestAssetFiles:
 class TestRegistryStructure:
     def test_identity_fields(self, registry: PinkPigRegistry) -> None:
         assert registry.schema_version == "1.0"
-        assert registry.registry_version == "1.0.0"
+        assert registry.registry_version == "1.1.0"
         assert registry.character_id == "pink_pig"
         assert registry.default_asset_id == "pink_pig.normal.v1"
 

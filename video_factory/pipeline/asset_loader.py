@@ -9,6 +9,10 @@ from pathlib import Path
 
 
 IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp"}
+# Registry-owned branding overlays are not legacy scene inputs.  Keeping this
+# exclusion explicit preserves the original five-frame demo when the shared
+# assets directory also contains the Phase 1.5 transparent signature.
+RESERVED_NON_SCENE_FILENAMES = {"signature.png"}
 
 
 class AssetLoadError(ValueError):
@@ -42,7 +46,13 @@ def build_asset_manifest(asset_dir: Path) -> dict[str, object]:
     if not asset_dir.is_dir():
         raise AssetLoadError("asset_directory_missing")
     paths = sorted(
-        (path for path in asset_dir.iterdir() if path.is_file() and path.suffix.casefold() in IMAGE_SUFFIXES),
+        (
+            path
+            for path in asset_dir.iterdir()
+            if path.is_file()
+            and path.suffix.casefold() in IMAGE_SUFFIXES
+            and path.name.casefold() not in RESERVED_NON_SCENE_FILENAMES
+        ),
         key=_natural_key,
     )
     if not paths:

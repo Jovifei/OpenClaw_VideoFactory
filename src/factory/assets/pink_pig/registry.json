@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "registry_version": "1.0.0",
+  "registry_version": "1.1.0",
   "character": {
     "character_id": "pink_pig",
     "display_name": "小粉飞猪",
@@ -129,6 +129,90 @@
       "fallback_asset_id": "pink_pig.normal.v1",
       "pose_confidence": "verified",
       "tags": ["finish", "close"]
+    },
+    {
+      "asset_id": "pink_pig.knowledge_master_slave.v1",
+      "asset_role": "knowledge_illustration",
+      "pose": "normal",
+      "moods": ["focused"],
+      "path": "assets/modbus_rtu_illustrations/01-master-slave.png",
+      "source_svg": null,
+      "width": 1672,
+      "height": 941,
+      "render_ready": true,
+      "sha256": "9cae4c6973eb3be8a0df0b90deb8d2300f8a6cf4add3da71c0c8f25253bdaedf",
+      "pose_confidence": "verified",
+      "tags": ["knowledge_illustration", "modbus_rtu", "master_slave"]
+    },
+    {
+      "asset_id": "pink_pig.knowledge_frame_layout.v1",
+      "asset_role": "knowledge_illustration",
+      "pose": "thinking",
+      "moods": ["focused"],
+      "path": "assets/modbus_rtu_illustrations/02-frame-layout.png",
+      "source_svg": null,
+      "width": 1672,
+      "height": 941,
+      "render_ready": true,
+      "sha256": "7bee0f4a766a254d11f8f2207b1fc8580360ef764d076bb54a04a8d7174feabc",
+      "pose_confidence": "verified",
+      "tags": ["knowledge_illustration", "modbus_rtu", "frame_layout"]
+    },
+    {
+      "asset_id": "pink_pig.knowledge_serial_parameters.v1",
+      "asset_role": "knowledge_illustration",
+      "pose": "measure",
+      "moods": ["focused"],
+      "path": "assets/modbus_rtu_illustrations/03-serial-parameters.png",
+      "source_svg": null,
+      "width": 1672,
+      "height": 941,
+      "render_ready": true,
+      "sha256": "69bdc5364cd81cb24a3615a1dbfe9f4d067e797573a5a38213fed7389c2a179a",
+      "pose_confidence": "verified",
+      "tags": ["knowledge_illustration", "modbus_rtu", "serial_parameters"]
+    },
+    {
+      "asset_id": "pink_pig.knowledge_troubleshooting.v1",
+      "asset_role": "knowledge_illustration",
+      "pose": "repair",
+      "moods": ["focused"],
+      "path": "assets/modbus_rtu_illustrations/04-troubleshooting.png",
+      "source_svg": null,
+      "width": 1672,
+      "height": 941,
+      "render_ready": true,
+      "sha256": "e3f288680d759d3154e4089f3a81c2c8b16f60cbfa9946a56e2372f11fdf3980",
+      "pose_confidence": "verified",
+      "tags": ["knowledge_illustration", "modbus_rtu", "troubleshooting"]
+    },
+    {
+      "asset_id": "pink_pig.knowledge_summary.v1",
+      "asset_role": "knowledge_illustration",
+      "pose": "success",
+      "moods": ["calm"],
+      "path": "assets/modbus_rtu_illustrations/05-summary.png",
+      "source_svg": null,
+      "width": 1672,
+      "height": 941,
+      "render_ready": true,
+      "sha256": "78b49611e27786a3b231460f15f4cab28eb5b1e47c4aeb56ed91d562d0d1fe93",
+      "pose_confidence": "verified",
+      "tags": ["knowledge_illustration", "modbus_rtu", "summary"]
+    },
+    {
+      "asset_id": "pink_pig.signature.v1",
+      "asset_role": "signature",
+      "pose": "normal",
+      "moods": ["calm"],
+      "path": "assets/pink_pig/signature.png",
+      "source_svg": "src/factory/assets/mascot/normal.svg",
+      "width": 400,
+      "height": 400,
+      "render_ready": true,
+      "sha256": "2e949a41911ef9c0e9e74845a6521a5101c598bf51dbdf83d7abfc4099643e26",
+      "pose_confidence": "verified",
+      "tags": ["signature", "transparent", "render_ready"]
     }
   ],
   "pose_index": {

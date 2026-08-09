@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "storyboard_id": "pink_pig_modbus_demo",
+  "title": "小粉猪讲 Modbus RTU",
+  "ip": {
+    "character_id": "pink_pig",
+    "registry_version": "1.1.0"
+  },
+  "globals": {
+    "aspect_ratio": "9:16",
+    "fps": 30,
+    "default_scene_seconds": 7.0,
+    "default_transition": "fade",
+    "transition_seconds": 0.4,
+    "narration_cps": 5.0,
+    "min_scene_seconds": 1.2,
+    "max_scene_seconds": 8.0
+  },
+  "scenes": [
+    {
+      "scene_id": "s01",
+      "order": 1,
+      "narration": "为什么同一条 RS-485 总线上，设备有时能听懂，有时却像没接线？小粉猪先从主站和从站讲起。",
+      "caption": "先分清主站和从站，通信才有秩序。",
+      "mood": "curious",
+      "pose": "normal",
+      "asset_id": "pink_pig.knowledge_master_slave.v1",
+      "layout_mode": "knowledge_illustration",
+      "subtitle_layout": "knowledge_illustration",
+      "character_position": "bottom_right",
+      "content_region": {"x": 0, "y": 240, "width": 1080, "height": 800},
+      "duration_intent": {"mode": "fixed", "seconds": 7.0},
+      "transition_out": "fade",
+      "director_notes": "小粉猪介绍主站发起请求、从站响应的问题。"
+    },
+    {
+      "scene_id": "s02",
+      "order": 2,
+      "narration": "Modbus RTU 是请求—响应协议：主站发起一问，从站只在被点名后回答，其他设备保持安静。",
+      "caption": "主站发请求，从站按地址响应。",
+      "mood": "focused",
+      "pose": "thinking",
+      "asset_id": "pink_pig.knowledge_frame_layout.v1",
+      "layout_mode": "knowledge_illustration",
+      "subtitle_layout": "knowledge_illustration",
+      "character_position": "bottom_right",
+      "content_region": {"x": 0, "y": 240, "width": 1080, "height": 800},
+      "duration_intent": {"mode": "fixed", "seconds": 7.0},
+      "transition_out": "zoom",
+      "director_notes": "小粉猪解释地址、功能码、数据和 CRC 的顺序。"
+    },
+    {
+      "scene_id": "s03",
+      "order": 3,
+      "narration": "一帧数据通常包含设备地址、功能码、数据区和 CRC 校验。字段顺序错了，可靠通信也会变成沉默。",
+      "caption": "地址、功能码、数据、CRC排列正确。",
+      "mood": "focused",
+      "pose": "measure",
+      "asset_id": "pink_pig.knowledge_serial_parameters.v1",
+      "layout_mode": "knowledge_illustration",
+      "subtitle_layout": "knowledge_illustration",
+      "character_position": "bottom_right",
+      "content_region": {"x": 0, "y": 240, "width": 1080, "height": 800},
+      "duration_intent": {"mode": "fixed", "seconds": 8.0},
+      "transition_out": "slide",
+      "director_notes": "小粉猪测量串口参数并提醒 CRC 校验。"
+    },
+    {
+      "scene_id": "s04",
+      "order": 4,
+      "narration": "排查 Modbus RTU 时，先确认主从角色，再核对串口参数、地址、功能码和 CRC。按顺序检查，问题就不会藏起来。",
+      "caption": "依次核对角色、参数、地址和 CRC。",
+      "mood": "positive",
+      "pose": "success",
+      "asset_id": "pink_pig.knowledge_summary.v1",
+      "layout_mode": "knowledge_illustration",
+      "subtitle_layout": "knowledge_illustration",
+      "character_position": "bottom_right",
+      "content_region": {"x": 0, "y": 240, "width": 1080, "height": 800},
+      "duration_intent": {"mode": "fixed", "seconds": 7.0},
+      "transition_out": null,
+      "director_notes": "小粉猪用清单式动作收尾。"
+    }
+  ]
+}

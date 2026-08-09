@@ -350,3 +350,31 @@ phases:
       - P5-02
       output: reports/gates/P5_READY.json
       acceptance: p5 gate exits 0 with evidence.
+
+  P1.5_COMPOSITION:
+    name: Pink Pig Phase1.5 composition engine
+    status: candidate_only
+    does_not_imply_phase_pass: true
+    depends_on:
+    - P1
+    tasks:
+    - id: P1.5-01
+      title: Add knowledge illustration composition contract and safe regions
+      output: schemas/video/composition.schema.json
+      acceptance: schema and semantic region validation pass.
+    - id: P1.5-02
+      title: Add Pink Pig quality gate and registry-backed knowledge assets
+      output: video_factory/pipeline/pink_pig_quality.py
+      acceptance: unregistered assets, missing style profile, and character mismatch fail closed.
+    - id: P1.5-03
+      title: Add subtitle layout engine and composition-aware renderer
+      output: video_factory/pipeline/subtitle.py
+      acceptance: captions stay in subtitle_area and content overlap fails before render.
+    - id: P1.5-04
+      title: Render and verify the four-scene Modbus composition demo
+      output: dist/pink_pig_modbus_demo.mp4
+      acceptance: MP4, audio, subtitles, ffprobe, and report agree.
+    - id: P1.5-99
+      title: Record Phase1.5 candidate report
+      output: reports/PINK_PIG_FACTORY_PHASE1_5_COMPOSITION.md
+      acceptance: READY is written only after every declared local gate passes; official P0/P1 remains unchanged.

@@ -25,6 +25,7 @@ _SCHEMA_MAP: dict[str, str] = {
     "video_job_state": "schemas/video/video_job_state.schema.json",
     "director_draft": "schemas/video/director_draft.schema.json",
     "director_run_report": "schemas/video/director_run_report.schema.json",
+    "composition": "schemas/video/composition.schema.json",
     "pink_pig_registry": "src/factory/assets/pink_pig/registry.schema.json",
 }
 
@@ -36,6 +37,7 @@ _SCHEMA_ERROR_CODES: dict[str, str] = {
     "video_job_state": "video_job_state_invalid",
     "director_draft": "director_draft_invalid",
     "director_run_report": "director_run_report_invalid",
+    "composition": "composition_schema_invalid",
 }
 
 _SCHEMA_ERROR_MESSAGES: dict[str, str] = {
@@ -46,6 +48,7 @@ _SCHEMA_ERROR_MESSAGES: dict[str, str] = {
     "video_job_state": "Video job state failed schema validation.",
     "director_draft": "Director draft failed schema validation.",
     "director_run_report": "Director run report failed schema validation.",
+    "composition": "Composition failed schema validation.",
 }
 
 # Lazy-loaded cache

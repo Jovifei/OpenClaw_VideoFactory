@@ -1,5 +1,19 @@
 # PINK_PIG_VIDEO_FACTORY_PRODUCTIZATION_001 — Phase 1 系统设计
 
+## Phase 1.5 Composition Engine（2026-08-09）
+
+本加固把知识类视频的渲染约束提升为可验证合同，继续复用现有
+`video_factory/`，不创建第二条 pipeline。
+
+- `schemas/video/composition.schema.json` 固定 1080×1920 画布与四个安全区域：brand `y=80..180`、content `y=240..1040`、subtitle `y=1120..1580`、signature `y=1760..1860`。
+- `SubtitleLayoutEngine` 在 FFmpeg 前验证字幕区域，使用 52–60px、左右 90px、最多两行的字幕样式；content/subtitle 冲突以 `subtitle_overlap_content` 失败。
+- Registry 增加五张本地 Modbus RTU 知识插图和透明 `pink_pig.signature.v1`；上游 `ian-fenzhu-illustrations` 只提供 style DNA、persona 与 composition rules。
+- Pink Pig quality gate 验证 registry asset、style profile、角色一致性、skill 加载、core action 和签名资产。
+- `render_report.json` 增加 `assets_used`、`subtitle_region`、`layout_mode` 与 `style_profile`，并保留真实 ffprobe 字段。
+- 可复核示例：`examples/pink_pig_modbus_demo/job.yaml` 生成四幕 Modbus RTU 视频；字幕只出现在 subtitle_area，知识插图只出现在 content_area。
+
+本轮不实现 AI Director 新能力，不接入 Feishu/OpenClaw/Gateway/Binding/OAuth/Cron，也不改变 `PROJECT_STATUS.yaml` 的正式 P0/P1 状态。完整验收记录见 `reports/PINK_PIG_FACTORY_PHASE1_5_COMPOSITION.md`。
+
 - 任务 ID: `PINK_PIG_VIDEO_FACTORY_PRODUCTIZATION_001`
 - 架构师: 高见远 (Gao)
 - 分支: `codex/product-optimization-093`

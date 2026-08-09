@@ -325,6 +325,49 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
     write_json(work_dir / "timeline.json", tl_doc)
     t_compile = round(time.perf_counter() - t2, 3)
 
+    # Knowledge composition is activated by explicit scene layout metadata or
+    # the required Pink Pig mode. Legacy jobs without either signal retain
+    # their historical full-frame renderer behavior.
+    raw_scenes = sb_doc.get("scenes", [])
+    explicit_layouts = {
+        str(scene.get("layout_mode"))
+        for scene in raw_scenes
+        if isinstance(scene, dict) and scene.get("layout_mode")
+    }
+    composition = None
+    style_evidence: dict[str, object] | None = None
+    signature_asset_id: str | None = None
+    signature_path: Path | None = None
+    if explicit_layouts or mascot_contract.get("mode") == "required":
+        if len(explicit_layouts) > 1:
+            raise FactoryContractError(
+                "composition_region_invalid",
+                "A render job cannot mix composition layout modes.",
+                {"field": "scenes.layout_mode"},
+            )
+        from video_factory.pipeline.composition import load_composition
+        from video_factory.pipeline.pink_pig_quality import validate_pink_pig_quality
+
+        layout_mode = next(iter(explicit_layouts), "knowledge_illustration")
+        composition = load_composition(layout_mode, repo_root=ROOT)
+        style_evidence = validate_pink_pig_quality(
+            storyboard=sb_doc,
+            timeline=tl_doc,
+            registry=registry,
+            composition=composition,
+            mascot_contract=mascot_contract,
+            repo_root=ROOT,
+        )
+        signature_asset_id = str(style_evidence.get("signature_asset_id", "pink_pig.signature.v1"))
+        signature_asset = registry.get(signature_asset_id)
+        if signature_asset is None or not signature_asset.path:
+            raise FactoryContractError(
+                "pink_pig_style_missing",
+                "Pink Pig signature asset is not renderable.",
+                {"field": "signature_asset_id"},
+            )
+        signature_path = (ROOT / signature_asset.path).resolve()
+
     # --- Stage E: Audio planning ---
     from video_factory.pipeline.audio_planner import plan_audio
     t3 = time.perf_counter()
@@ -334,12 +377,22 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
         audio_config=audio_cfg,
         repo_root=ROOT,
     )
+    if bool(audio_cfg.get("require_narration", False)):
+        segments = tuple(audio_plan.segments)
+        if audio_plan.mode != "tts" or len(segments) != len(tl_doc.get("scenes", [])) or any(
+            float(segment.get("actual_duration", 0.0)) <= 0 for segment in segments
+        ):
+            raise FactoryContractError(
+                "audio_narration_incomplete",
+                "The job requires a non-empty narration segment for every scene.",
+                {"mode": audio_plan.mode, "segments": len(segments)},
+            )
     t_audio = round(time.perf_counter() - t3, 3)
 
     # --- Stage F: Subtitles ---
     t4 = time.perf_counter()
     srt_path = work_dir / "subtitle.srt"
-    captions = build_srt_from_timeline(tl_doc, srt_path)
+    captions = build_srt_from_timeline(tl_doc, srt_path, composition=composition)
     t_sub = round(time.perf_counter() - t4, 3)
 
     # --- Stage G: Render ---
@@ -358,6 +411,8 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
         subtitle_style=job.get("subtitle", {}).get("style") if isinstance(job.get("subtitle"), dict) else None,
         audio_gain=float(job.get("audio", {}).get("gain", 1.0)) if isinstance(job.get("audio"), dict) else 1.0,
         audio_sample_rate=24000 if audio_plan.mode == "tts" else (48000 if audio_plan.path else None),
+        composition=composition,
+        signature_path=signature_path,
     )
     t_render = round(time.perf_counter() - t5, 3)
 
@@ -401,6 +456,9 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
         timeline=tl_doc,
         subtitle_path=srt_path,
         captions_count=len(captions),
+        composition=composition,
+        style_evidence=style_evidence,
+        signature_asset_id=signature_asset_id,
     )
     render_report_path = work_dir / "render_report.json"
     write_json(render_report_path, render_report)

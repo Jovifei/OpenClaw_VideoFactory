@@ -227,3 +227,10 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Do not repeatedly retest a supporting evidence mechanism after its authorized run has shown that the required observable is unavailable. Stop and classify whether the blocker is runtime, platform capability, or acceptance-contract design.
 - Report official phase status separately from offline candidate capability. A qualified offline MP4 pipeline is valuable implementation progress, but it is not P1 or production until the live boundaries and formal Gate pass.
 - Re-plan from the product dependency chain after every terminal evidence failure: P0 admissibility, P1 deterministic delivery, P2 daily automation, then optional GPU/reference/Jianying work. Do not let one unproductive P0 probe dominate the work queue.
+
+# 2026-08-09 — Phase1.5 composition correction
+
+- A knowledge-video renderer must treat content, subtitle, brand, and signature regions as a single contract. A passing MP4 is not enough when captions can cover the illustration.
+- The Pink Pig upstream repository is a style/persona/composition source, not a picture directory. Use Registry-owned local knowledge illustrations and keep the upstream reference in provenance.
+- Registry branding overlays must be excluded from the legacy directory-scanning scene manifest; otherwise adding a signature asset silently changes the legacy scene count.
+- Composition subtitle style is authoritative over old job overrides. Normalize final-video pixel values to the libass virtual canvas and inspect at least one extracted frame before claiming layout correctness.

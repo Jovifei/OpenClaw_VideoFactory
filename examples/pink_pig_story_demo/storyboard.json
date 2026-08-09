@@ -1,1 +1,23 @@
-{"schema_version": "1.0", "storyboard_id": "pink_pig_story_demo", "title": "小粉飞猪的第一条产品化视频", "ip": {"character_id": "pink_pig", "registry_version": "1.0.0"}, "globals": {"aspect_ratio": "9:16", "fps": 30, "default_scene_seconds": 2.5, "default_transition": "fade", "transition_seconds": 0.4, "narration_cps": 5.0, "min_scene_seconds": 1.2, "max_scene_seconds": 8.0}, "scenes": [{"scene_id": "s01", "order": 1, "narration": "小粉飞猪准备好今天的创作任务。", "caption": null, "mood": "calm", "pose": "normal", "asset_id": null, "duration_intent": {"mode": "auto"}, "transition_out": "fade", "director_notes": "开场，建立角色"}, {"scene_id": "s02", "order": 2, "narration": "先仔细思考一下需要做什么。", "caption": null, "mood": "focused", "pose": "thinking", "asset_id": null, "duration_intent": {"mode": "narration"}, "transition_out": "zoom", "director_notes": "思考阶段"}, {"scene_id": "s03", "order": 3, "narration": "拿出尺子测量每个细节的尺寸。", "caption": null, "mood": "focused", "pose": "measure", "asset_id": null, "duration_intent": {"mode": "narration"}, "transition_out": "slide", "director_notes": "测量动作"}, {"scene_id": "s04", "order": 4, "narration": "发现了一个小问题，开始动手修理。", "caption": null, "mood": "focused", "pose": "repair", "asset_id": null, "duration_intent": {"mode": "narration"}, "transition_out": "fade", "director_notes": "修复过程"}, {"scene_id": "s05", "order": 5, "narration": "任务圆满完成！", "caption": null, "mood": "positive", "pose": "success", "asset_id": null, "duration_intent": {"mode": "fixed", "seconds": 3.0}, "transition_out": "fade", "director_notes": "成功收尾"}]}
+{
+  "schema_version": "1.0",
+  "storyboard_id": "pink_pig_story_demo",
+  "title": "小粉飞猪的第一条产品化视频",
+  "ip": {"character_id": "pink_pig", "registry_version": "1.1.0"},
+  "globals": {
+    "aspect_ratio": "9:16",
+    "fps": 30,
+    "default_scene_seconds": 2.5,
+    "default_transition": "fade",
+    "transition_seconds": 0.4,
+    "narration_cps": 5.0,
+    "min_scene_seconds": 1.2,
+    "max_scene_seconds": 8.0
+  },
+  "scenes": [
+    {"scene_id": "s01", "order": 1, "narration": "小粉飞猪准备好今天的创作任务。", "caption": null, "mood": "calm", "pose": "normal", "asset_id": null, "duration_intent": {"mode": "auto"}, "transition_out": "fade", "director_notes": "开场，建立角色"},
+    {"scene_id": "s02", "order": 2, "narration": "先仔细思考一下需要做什么。", "caption": null, "mood": "focused", "pose": "thinking", "asset_id": null, "duration_intent": {"mode": "narration"}, "transition_out": "zoom", "director_notes": "思考阶段"},
+    {"scene_id": "s03", "order": 3, "narration": "拿出尺子测量每个细节的尺寸。", "caption": null, "mood": "focused", "pose": "measure", "asset_id": null, "duration_intent": {"mode": "narration"}, "transition_out": "slide", "director_notes": "测量动作"},
+    {"scene_id": "s04", "order": 4, "narration": "发现了一个小问题，开始动手修理。", "caption": null, "mood": "focused", "pose": "repair", "asset_id": null, "duration_intent": {"mode": "narration"}, "transition_out": "fade", "director_notes": "修复过程"},
+    {"scene_id": "s05", "order": 5, "narration": "任务圆满完成！", "caption": null, "mood": "positive", "pose": "success", "asset_id": null, "duration_intent": {"mode": "fixed", "seconds": 3.0}, "transition_out": "fade", "director_notes": "成功收尾"}
+  ]
+}

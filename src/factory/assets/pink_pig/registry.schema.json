@@ -64,6 +64,7 @@
       "additionalProperties": false,
       "properties": {
         "asset_id": {"type": "string", "pattern": "^pink_pig\\.[a-z_]+\\.v[0-9]+$"},
+        "asset_role": {"type": "string", "enum": ["character", "knowledge_illustration", "signature"]},
         "pose": {"type": "string"},
         "moods": {"type": "array", "items": {"type": "string"}},
         "path": {"type": ["string", "null"]},

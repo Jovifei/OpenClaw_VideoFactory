@@ -1,5 +1,22 @@
 # Pink Pig Local Video Factory MVP
 
+## Phase 1.5 knowledge composition
+
+Knowledge videos opt into `knowledge_illustration` with `mascot.mode: required`.
+The existing job path then loads `schemas/video/composition.schema.json`, keeps
+the illustration inside `content_area` (`y=240..1040`), burns subtitles only in
+`subtitle_area` (`y=1120..1580`), and places the small Pink Pig signature in
+`signature_area` (`y=1760..1860`). `SubtitleLayoutEngine` rejects overlapping
+regions before FFmpeg. Composition style values are authoritative over legacy
+job subtitle overrides, so the old oversized 44px style cannot reappear in a
+knowledge render.
+
+The registry contains five local Modbus RTU knowledge illustrations plus the
+transparent `pink_pig.signature.v1`. The upstream
+[`ian-fenzhu-illustrations`](https://github.com/Jovifei/ian-fenzhu-illustrations)
+repository is used for style DNA, persona and composition rules, not as the
+image library. See `examples/pink_pig_modbus_demo/` for the four-scene example.
+
 This module is a local FFmpeg pipeline: image directory → manifest → timeline
 → SRT subtitles → playable portrait MP4. It has no OpenClaw, Feishu, network,
 agent-orchestration or model dependency.

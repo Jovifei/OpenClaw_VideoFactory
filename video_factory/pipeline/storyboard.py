@@ -144,8 +144,7 @@ def compile_storyboard(
         image_path = asset.path or ""
         image_name = Path(image_path).name if image_path else ""
 
-        compiled_scenes.append(
-            {
+        compiled_scene = {
                 "order": scene["order"],
                 "scene_id": scene.get("scene_id", f"s{idx+1:02d}"),
                 "asset_id": asset.asset_id,
@@ -156,12 +155,17 @@ def compile_storyboard(
                 "narration": scene.get("narration", ""),
                 "caption": caption,
             }
-        )
+        # Preserve optional composition intent for downstream quality/reporting
+        # while keeping legacy timelines byte-compatible when fields are absent.
+        for key in ("layout_mode", "subtitle_layout", "character_position", "content_region"):
+            if key in scene:
+                compiled_scene[key] = scene[key]
+        compiled_scenes.append(compiled_scene)
 
     # R7 — Total duration (reuse existing function)
     total = rendered_duration_seconds(compiled_scenes, transition_seconds)
 
-    return {
+    result = {
         "schema_version": "1.0",
         "source_storyboard_id": doc.get("storyboard_id", ""),
         "registry_version": registry.registry_version,
@@ -172,6 +176,9 @@ def compile_storyboard(
         "total_duration_seconds": round(total, 3),
         "scenes": compiled_scenes,
     }
+    if isinstance(doc.get("composition"), dict):
+        result["composition"] = doc["composition"]
+    return result
 
 
 # ---------------------------------------------------------------------------

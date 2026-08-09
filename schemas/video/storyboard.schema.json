@@ -1,1 +1,85 @@
-{"$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "https://openclaw.local/schemas/video/storyboard.schema.json", "title": "Storyboard", "description": "AI Director output contract: director semantics (scene/narration/mood/pose/duration intent/transition). This is the input to the StoryboardCompiler.", "type": "object", "required": ["schema_version", "storyboard_id", "title", "ip", "globals", "scenes"], "additionalProperties": false, "properties": {"schema_version": {"type": "string", "pattern": "^\\d+\\.\\d+$"}, "storyboard_id": {"type": "string", "pattern": "^[a-z0-9_]+$"}, "title": {"type": "string", "minLength": 1}, "ip": {"$ref": "#/$defs/ip_ref"}, "globals": {"$ref": "#/$defs/globals"}, "scenes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/scene"}}}, "$defs": {"ip_ref": {"type": "object", "required": ["character_id", "registry_version"], "additionalProperties": false, "properties": {"character_id": {"type": "string"}, "registry_version": {"type": "string"}}}, "globals": {"type": "object", "required": ["aspect_ratio", "fps", "default_scene_seconds", "default_transition", "transition_seconds", "narration_cps", "min_scene_seconds", "max_scene_seconds"], "additionalProperties": false, "properties": {"aspect_ratio": {"type": "string"}, "fps": {"type": "integer", "minimum": 1}, "default_scene_seconds": {"type": "number", "minimum": 0.01}, "default_transition": {"type": "string", "enum": ["fade", "zoom", "slide"]}, "transition_seconds": {"type": "number", "minimum": 0.001}, "narration_cps": {"type": "number", "minimum": 0.1}, "min_scene_seconds": {"type": "number", "minimum": 0.25}, "max_scene_seconds": {"type": "number", "maximum": 30}}}, "scene": {"type": "object", "required": ["scene_id", "order", "narration", "pose", "duration_intent", "transition_out"], "additionalProperties": false, "properties": {"scene_id": {"type": "string", "pattern": "^s\\d{2,}$"}, "order": {"type": "integer", "minimum": 1}, "narration": {"type": "string", "minLength": 1}, "caption": {"type": ["string", "null"], "default": null}, "mood": {"type": ["string", "null"], "default": null}, "pose": {"type": "string", "description": "One of the 8 poses in the registry pose vocabulary."}, "asset_id": {"type": ["string", "null"], "default": null, "description": "Explicit asset override; if null, resolved from pose/mood."}, "duration_intent": {"$ref": "#/$defs/duration_intent"}, "transition_out": {"type": ["string", "null"], "enum": ["fade", "zoom", "slide", null], "default": null}, "director_notes": {"type": "string", "default": ""}}}, "duration_intent": {"type": "object", "required": ["mode"], "additionalProperties": false, "properties": {"mode": {"type": "string", "enum": ["fixed", "auto", "narration"]}, "seconds": {"type": "number", "minimum": 0.25, "description": "Required when mode=fixed."}}}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/storyboard.schema.json",
+  "title": "Storyboard",
+  "description": "AI Director output contract: director semantics (scene/narration/mood/pose/duration intent/transition). This is the input to the StoryboardCompiler.",
+  "type": "object",
+  "required": ["schema_version", "storyboard_id", "title", "ip", "globals", "scenes"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "pattern": "^\\d+\\.\\d+$"},
+    "storyboard_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "ip": {"$ref": "#/$defs/ip_ref"},
+    "globals": {"$ref": "#/$defs/globals"},
+    "composition": {"$ref": "composition.schema.json"},
+    "scenes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/scene"}}
+  },
+  "$defs": {
+    "ip_ref": {
+      "type": "object",
+      "required": ["character_id", "registry_version"],
+      "additionalProperties": false,
+      "properties": {
+        "character_id": {"type": "string"},
+        "registry_version": {"type": "string"}
+      }
+    },
+    "globals": {
+      "type": "object",
+      "required": ["aspect_ratio", "fps", "default_scene_seconds", "default_transition", "transition_seconds", "narration_cps", "min_scene_seconds", "max_scene_seconds"],
+      "additionalProperties": false,
+      "properties": {
+        "aspect_ratio": {"type": "string"},
+        "fps": {"type": "integer", "minimum": 1},
+        "default_scene_seconds": {"type": "number", "minimum": 0.01},
+        "default_transition": {"type": "string", "enum": ["fade", "zoom", "slide"]},
+        "transition_seconds": {"type": "number", "minimum": 0.001},
+        "narration_cps": {"type": "number", "minimum": 0.1},
+        "min_scene_seconds": {"type": "number", "minimum": 0.25},
+        "max_scene_seconds": {"type": "number", "maximum": 30}
+      }
+    },
+    "scene": {
+      "type": "object",
+      "required": ["scene_id", "order", "narration", "pose", "duration_intent", "transition_out"],
+      "additionalProperties": false,
+      "properties": {
+        "scene_id": {"type": "string", "pattern": "^s\\d{2,}$"},
+        "order": {"type": "integer", "minimum": 1},
+        "narration": {"type": "string", "minLength": 1},
+        "caption": {"type": ["string", "null"], "default": null},
+        "mood": {"type": ["string", "null"], "default": null},
+        "pose": {"type": "string", "description": "One of the 8 poses in the registry pose vocabulary."},
+        "asset_id": {"type": ["string", "null"], "default": null, "description": "Explicit asset override; if null, resolved from pose/mood."},
+        "layout_mode": {"type": "string", "enum": ["knowledge_illustration", "full_frame"], "default": "knowledge_illustration"},
+        "subtitle_layout": {"type": "string", "enum": ["knowledge_illustration", "bottom_safe_band", "disabled"], "default": "knowledge_illustration"},
+        "character_position": {"type": "string", "enum": ["left", "center", "right", "top_left", "top_right", "bottom_left", "bottom_right"], "default": "bottom_right"},
+        "content_region": {"$ref": "#/$defs/content_region"},
+        "duration_intent": {"$ref": "#/$defs/duration_intent"},
+        "transition_out": {"type": ["string", "null"], "enum": ["fade", "zoom", "slide", null], "default": null},
+        "director_notes": {"type": "string", "default": ""}
+      }
+    },
+    "duration_intent": {
+      "type": "object",
+      "required": ["mode"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"type": "string", "enum": ["fixed", "auto", "narration"]},
+        "seconds": {"type": "number", "minimum": 0.25, "description": "Required when mode=fixed."}
+      }
+    },
+    "content_region": {
+      "type": "object",
+      "required": ["x", "y", "width", "height"],
+      "additionalProperties": false,
+      "properties": {
+        "x": {"type": "number", "minimum": 0, "maximum": 1080},
+        "y": {"type": "number", "minimum": 0, "maximum": 1920},
+        "width": {"type": "number", "exclusiveMinimum": 0, "maximum": 1080},
+        "height": {"type": "number", "exclusiveMinimum": 0, "maximum": 1920}
+      }
+    }
+  }
+}

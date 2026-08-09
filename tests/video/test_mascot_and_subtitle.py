@@ -8,6 +8,8 @@ from video_factory.pipeline.errors import FactoryContractError
 from video_factory.pipeline.mascot import load_mascot_contract
 from video_factory.pipeline.renderer import build_render_command
 from video_factory.pipeline.subtitle import build_srt
+from video_factory.pipeline.subtitle import build_srt_from_timeline
+from video_factory.pipeline.composition import load_composition
 
 
 def _timeline() -> list[dict[str, object]]:
@@ -81,6 +83,21 @@ def test_subtitle_cues_do_not_stack_during_scene_crossfade(tmp_path: Path) -> No
         transition_seconds=0.4,
     )
     assert captions[0]["end"] <= captions[1]["start"]
+
+
+def test_composition_subtitles_fail_before_render_when_regions_overlap(tmp_path: Path) -> None:
+    composition = load_composition()
+    composition["regions"]["subtitle_area"]["y"] = composition["regions"]["content_area"]["y"]
+    with pytest.raises(FactoryContractError) as caught:
+        build_srt_from_timeline(
+            {
+                "transition_seconds": 0.4,
+                "scenes": [{"scene_id": "s01", "duration": 3.0, "caption": "安全区测试"}],
+            },
+            tmp_path / "subtitle.srt",
+            composition=composition,
+        )
+    assert caught.value.code == "subtitle_overlap_content"
 
 
 def test_audio_gain_is_explicit_in_render_command(tmp_path: Path) -> None:

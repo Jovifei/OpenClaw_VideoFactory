@@ -149,6 +149,8 @@ docs/*
 !reports/PINK_PIG_FACTORY_RENDER_HARDENING_002.md
 !reports/change_requests/PINK-PIG-FACTORY-RENDER-HARDENING-002.json
 !reports/change_requests/PINK-PIG-FACTORY-REPO-HYGIENE-004.json
+!reports/PINK_PIG_FACTORY_PHASE1_5_COMPOSITION.md
+!reports/change_requests/PINK-PIG-FACTORY-PHASE1-5-COMPOSITION-ENGINE.json
 
 # Local session memory, prepared handoff bundles, and one-off probes are not
 # part of the cloneable Video Factory baseline.
