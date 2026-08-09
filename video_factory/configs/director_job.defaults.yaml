@@ -1,0 +1,32 @@
+schema_version: "1.0"
+job_kind: video_render
+registry_ref: src/factory/assets/pink_pig/registry.json
+
+render:
+  width: 1080
+  height: 1920
+  fps: 30
+  transition_seconds: 0.4
+  pad_color: "0xF7E4EA"
+
+audio:
+  strategy: tts_with_offline_fallback
+  allow_network: true
+  gain: 1.0
+  fallback_bgm: assets/pink_pig/demo_music.wav
+
+subtitle:
+  enabled: true
+  source: scene_caption
+  style:
+    layout: bottom_safe_band
+    font_name: Microsoft YaHei
+    font_size: 44
+    margin_left: 90
+    margin_right: 90
+    margin_vertical: 250
+
+mascot:
+  mode: required
+  skill_ref: skills/pink-pig-mascot-director/SKILL.md
+  style_profile_ref: src/factory/assets/pink_pig/style_profile.json

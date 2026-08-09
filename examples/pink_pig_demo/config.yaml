@@ -1,0 +1,14 @@
+asset_dir: ../../assets/pink_pig
+script: script.txt
+audio: ../../assets/pink_pig/demo_music.wav
+audio_normalize: true
+output: dist/pink_pig_demo.mp4
+asset_manifest: dist/asset_manifest.json
+timeline: dist/video_timeline.json
+subtitle: dist/subtitle.srt
+image_duration_seconds: 1.5
+transition_seconds: 0.4
+transitions:
+  - fade
+  - zoom
+  - slide

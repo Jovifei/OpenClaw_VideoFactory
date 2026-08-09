@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/video_job_state.schema.json",
+  "title": "VideoRenderJobState",
+  "description": "Lifecycle snapshot for one video-factory job. This schema does not implement persistence or transitions.",
+  "type": "object",
+  "required": ["schema_version", "job_id", "topic", "state"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "pattern": "^\\d+\\.\\d+$"},
+    "job_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "topic": {"type": "string", "minLength": 1},
+    "state": {"type": "string", "enum": ["draft", "validated", "compiled", "rendering", "completed", "failed"]},
+    "storyboard_ref": {"type": ["string", "null"], "$comment": "Repository-relative storyboard reference."},
+    "timeline_ref": {"type": ["string", "null"], "$comment": "Repository-relative timeline reference."},
+    "output_ref": {"type": ["string", "null"], "$comment": "Repository-relative rendered output reference."},
+    "render_report_ref": {"type": ["string", "null"], "$comment": "Repository-relative render report reference."},
+    "error": {"$ref": "#/$defs/error"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"state": {"const": "validated"}}, "required": ["state"]},
+      "then": {"required": ["storyboard_ref"], "properties": {"storyboard_ref": {"type": "string", "minLength": 1}}}
+    },
+    {
+      "if": {"properties": {"state": {"enum": ["compiled", "rendering"]}}, "required": ["state"]},
+      "then": {
+        "required": ["storyboard_ref", "timeline_ref"],
+        "properties": {
+          "storyboard_ref": {"type": "string", "minLength": 1},
+          "timeline_ref": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"state": {"const": "completed"}}, "required": ["state"]},
+      "then": {
+        "required": ["storyboard_ref", "timeline_ref", "output_ref", "render_report_ref"],
+        "properties": {
+          "storyboard_ref": {"type": "string", "minLength": 1},
+          "timeline_ref": {"type": "string", "minLength": 1},
+          "output_ref": {"type": "string", "minLength": 1},
+          "render_report_ref": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"state": {"const": "failed"}}, "required": ["state"]},
+      "then": {"required": ["error"], "properties": {"error": {"$ref": "#/$defs/error"}}}
+    }
+  ],
+  "$defs": {
+    "error": {
+      "type": ["object", "null"],
+      "required": ["code", "message", "context"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {"type": "string", "minLength": 1},
+        "message": {"type": "string", "minLength": 1},
+        "context": {"type": "object"}
+      }
+    }
+  }
+}

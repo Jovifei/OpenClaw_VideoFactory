@@ -111,6 +111,7 @@ reports/**
 # Retain the concise, redacted 092 product reset package; verbose reports stay ignored.
 !reports/PROJECT_CURRENT_STATE_092.md
 !reports/P0_ACCEPTANCE_MATRIX_V2.yaml
+!reports/P0_GATE_CONTRACT_V2.yaml
 !reports/PRODUCT_ROADMAP_2026.md
 !reports/AIVIDEO_FACTORY_MVP_SPEC.md
 !reports/NEXT_EXECUTION_BACKLOG.md
@@ -118,6 +119,8 @@ reports/**
 !reports/TEST_STRATEGY_092.md
 !reports/change_requests/
 !reports/change_requests/P0-*.json
+!reports/gates/
+!reports/gates/P0_FAILED.json
 reports/**/*credential*
 reports/**/*secret*
 reports/**/*token*
@@ -132,3 +135,58 @@ reports/runtime/
 
 # Office documents remain excluded even under the retained Codex handoff.
 handoff/codex/*.docx
+
+# Phase 1 hardening documents and its bounded authorization record.
+!docs/
+docs/*
+!docs/PINK_PIG_PHASE1_ARCHITECTURE.md
+!reports/PINK_PIG_PHASE1_HARDENING_002.md
+!reports/change_requests/PINK-PIG-FACTORY-PHASE1-HARDENING-002.json
+!reports/PINK_PIG_FACTORY_AI_DIRECTOR_003.md
+!reports/change_requests/PINK-PIG-FACTORY-AI-DIRECTOR-003.json
+!reports/PINK_PIG_FACTORY_CONTENT_ILLUSTRATION_REMAKE_001.md
+!reports/change_requests/PINK-PIG-FACTORY-CONTENT-ILLUSTRATION-REMAKE-001.json
+!reports/PINK_PIG_FACTORY_RENDER_HARDENING_002.md
+!reports/change_requests/PINK-PIG-FACTORY-RENDER-HARDENING-002.json
+!reports/change_requests/PINK-PIG-FACTORY-REPO-HYGIENE-004.json
+
+# Local session memory, prepared handoff bundles, and one-off probes are not
+# part of the cloneable Video Factory baseline.
+.workbuddy/
+handoff_prepared/
+scripts/_probe_cli*.py
+scripts/_capture_live_dispatch_*.py
+
+# Historical local P0 V2 candidate evidence and probes are retained on this
+# machine but are not part of the cloneable Pink Pig Factory baseline.
+reports/P0_CURRENT_STATUS_093.md
+reports/P0_DUPLICATE_EFFECT_PROTECTION_V2.json
+reports/P0_EVENT_IDEMPOTENCY_V2.json
+reports/P0_EVIDENCE_CLOSURE_BASELINE_094.*
+reports/P0_EVIDENCE_MIGRATION_093.md
+reports/P0_EVIDENCE_SCHEMA_093.md
+reports/P0_GATE_CONTRACT_V2.yaml
+reports/P0_GATE_FAILURE_DECOMPOSITION_094.*
+reports/P0_GATE_TOOL_RESULT_093.md
+reports/P0_IMPLEMENTATION_RESULT_093.md
+reports/P0_IMPLEMENTATION_STATUS_093.md
+reports/P0_NEXT_EXECUTION_093.md
+reports/P0_REMAINING_BLOCKERS_093.md
+reports/P0_RESTART_RECOVERY_V2.json
+reports/P0_V2_*.json
+reports/P0_V2_*.md
+reports/change_requests/P0-EVIDENCE-CLOSURE-094.json
+reports/change_requests/P0-IMPLEMENTATION-EXECUTION-093.json
+reports/gates/P0_FAILED.json
+scripts/gen_p0v2_fixtures.py
+scripts/p0_evidence_v2.py
+scripts/p0_gate_v2.py
+scripts/probe_p0v2_topology.py
+scripts/reply_effect_audit.py
+tests/fixtures/p0_v2_live/
+tests/global_review.py
+tests/t03_error_codes.py
+tests/test_p0_gate_v2.py
+tests/test_p0_v2_event_idempotency.py
+tests/test_reply_effect_audit.py
+schemas/p0_evidence_v2/

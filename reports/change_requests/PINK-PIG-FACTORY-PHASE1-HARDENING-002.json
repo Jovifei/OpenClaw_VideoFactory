@@ -1,0 +1,37 @@
+{
+  "id": "PINK-PIG-FACTORY-PHASE1-HARDENING-002",
+  "scope": "offline_phase1_hardening",
+  "granted_by": "user",
+  "summary": "Harden the existing video_factory Phase 1 contracts, Pink Pig style registry, job lifecycle schema, director interface stub, and render quality report.",
+  "does_not_imply_phase_pass": true,
+  "allowed_paths": [
+    "video_factory/",
+    "src/factory/assets/pink_pig/",
+    "src/factory/director/",
+    "schemas/video/",
+    "tests/video/",
+    "examples/pink_pig_story_demo/",
+    "docs/PINK_PIG_PHASE1_ARCHITECTURE.md",
+    ".gitignore",
+    "tasks/todo.md",
+    "reports/change_requests/PINK-PIG-FACTORY-PHASE1-HARDENING-002.json",
+    "reports/PINK_PIG_PHASE1_HARDENING_002.md"
+  ],
+  "forbidden_surfaces": [
+    "OpenClaw",
+    "Feishu",
+    "Gateway",
+    "Binding",
+    "OAuth",
+    "Cron",
+    "PROJECT_STATUS.yaml phase state",
+    "model downloads",
+    "Git commit/push/reset/cleanup"
+  ],
+  "acceptance": {
+    "preserve_existing_video_tests": true,
+    "minimum_video_test_count": 159,
+    "legacy_tests_required": 5,
+    "final_status": "PINK_PIG_FACTORY_PHASE1_HARDENED"
+  }
+}

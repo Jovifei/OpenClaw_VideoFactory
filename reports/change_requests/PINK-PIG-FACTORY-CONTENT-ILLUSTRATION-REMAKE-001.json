@@ -1,0 +1,30 @@
+{
+  "task_id": "PINK-PIG-FACTORY-CONTENT-ILLUSTRATION-REMAKE-001",
+  "title": "Remake Modbus RTU video with Pink Pig body illustrations",
+  "objective": "Replace the single-character-only visual sequence with five distinct 16:9 Pink Pig technical body illustrations and render a new local MP4 through the existing Video Factory.",
+  "skill": "pink-pig-mascot-director",
+  "upstream_reference": "https://github.com/Jovifei/ian-fenzhu-illustrations",
+  "allowed_paths": [
+    "assets/modbus_rtu_illustrations/",
+    "examples/modbus_rtu_illustrations/",
+    "dist/modbus_rtu_illustrations/",
+    "reports/change_requests/PINK-PIG-FACTORY-CONTENT-ILLUSTRATION-REMAKE-001.json",
+    "tasks/todo.md"
+  ],
+  "forbidden": [
+    "OpenClaw",
+    "Feishu",
+    "Gateway",
+    "Binding",
+    "OAuth",
+    "Cron",
+    "PROJECT_STATUS.yaml",
+    "second_pipeline"
+  ],
+  "controls": {
+    "use_existing_video_factory": true,
+    "use_skill_shot_list_and_qa": true,
+    "does_not_imply_phase_pass": true,
+    "no_commit_push_reset_clean": true
+  }
+}

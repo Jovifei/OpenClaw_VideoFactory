@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/pink_pig_registry.schema.json",
+  "title": "PinkPigRegistry",
+  "description": "IP asset registry for the Pink Pig character. Style rules are referenced from one external profile.",
+  "type": "object",
+  "required": ["schema_version", "registry_version", "character", "provenance", "style_profile_ref", "ip_constraints", "assets", "pose_index", "mood_index", "default_asset_id"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string"},
+    "registry_version": {"type": "string"},
+    "character": {"$ref": "#/$defs/character"},
+    "provenance": {"$ref": "#/$defs/provenance"},
+    "style_profile_ref": {"$ref": "#/$defs/repo_relative_path"},
+    "ip_constraints": {"$ref": "#/$defs/ip_constraints"},
+    "assets": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/asset"}},
+    "pose_index": {"type": "object", "additionalProperties": {"type": "string"}},
+    "mood_index": {"type": "object", "additionalProperties": {"type": "string"}},
+    "default_asset_id": {"type": "string"}
+  },
+  "$defs": {
+    "repo_relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9_./-]+$"
+    },
+    "character": {
+      "type": "object",
+      "required": ["character_id", "display_name", "persona"],
+      "additionalProperties": false,
+      "properties": {
+        "character_id": {"type": "string"},
+        "display_name": {"type": "string"},
+        "persona": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["upstream_repo", "upstream_commit", "upstream_license", "local_path", "content_kind"],
+      "additionalProperties": true,
+      "properties": {
+        "upstream_repo": {"type": "string", "format": "uri"},
+        "upstream_commit": {"type": "string"},
+        "upstream_license": {"type": "string"},
+        "local_path": {"type": "string"},
+        "content_kind": {"type": "string"}
+      }
+    },
+    "ip_constraints": {
+      "type": "object",
+      "required": ["must_have", "character_must_perform_core_action", "min_whitespace_ratio", "max_subject_ratio", "no_repeated_composition"],
+      "additionalProperties": false,
+      "properties": {
+        "must_have": {"type": "array", "items": {"type": "string"}},
+        "character_must_perform_core_action": {"type": "boolean"},
+        "min_whitespace_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "max_subject_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "no_repeated_composition": {"type": "boolean"}
+      }
+    },
+    "asset": {
+      "type": "object",
+      "required": ["asset_id", "pose", "moods", "path", "width", "height", "render_ready", "sha256", "pose_confidence", "tags"],
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {"type": "string", "pattern": "^pink_pig\\.[a-z_]+\\.v[0-9]+$"},
+        "pose": {"type": "string"},
+        "moods": {"type": "array", "items": {"type": "string"}},
+        "path": {"type": ["string", "null"]},
+        "source_svg": {"type": ["string", "null"]},
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1},
+        "render_ready": {"type": "boolean"},
+        "sha256": {"type": "string"},
+        "fallback_asset_id": {"type": ["string", "null"]},
+        "pose_confidence": {"type": "string", "enum": ["verified", "assigned_by_order"]},
+        "tags": {"type": "array", "items": {"type": "string"}}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"render_ready": {"const": true}}, "required": ["render_ready"]},
+          "then": {
+            "required": ["path"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "sha256": {"pattern": "^[0-9a-f]{64}$"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"render_ready": {"const": false}}, "required": ["render_ready"]},
+          "then": {
+            "required": ["fallback_asset_id"],
+            "properties": {
+              "sha256": {"const": ""}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

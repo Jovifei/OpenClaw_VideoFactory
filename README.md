@@ -6,6 +6,22 @@ OpenClaw VideoFactory 是一个运行在 Windows 本机上的、由 OpenClaw 编
 
 GitHub：<https://github.com/Jovifei/OpenClaw_VideoFactory>
 
+## Cloneable local Pink Pig Video Factory
+
+The cloneable offline baseline lives under `video_factory/` and does not
+require OpenClaw, Feishu, Gateway, OAuth, Binding, or Cron. After installing
+Python dependencies and ensuring `ffmpeg`/`ffprobe` are on `PATH`, run:
+
+```powershell
+python -m pip install -r requirements-bootstrap.txt -r requirements-p1-candidate.txt
+python generate_video.py --config examples/pink_pig_demo/config.yaml
+```
+
+See [`video_factory/README.md`](video_factory/README.md) for legacy, job, and
+AI Director topic-mode commands. Runtime outputs under `dist/`, local session
+memory, historical probes, and control-plane state are intentionally excluded
+from the cloneable baseline.
+
 ## 1. 工程目标
 
 最终目标是让 OpenClaw 在固定飞书群中长期编排一条稳定的短视频生产链：

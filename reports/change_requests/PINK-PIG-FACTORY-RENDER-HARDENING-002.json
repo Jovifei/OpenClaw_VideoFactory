@@ -1,0 +1,37 @@
+{
+  "task_id": "PINK-PIG-FACTORY-RENDER-HARDENING-002",
+  "title": "Harden Pink Pig subtitle layout and narration audio",
+  "objective": "Prevent subtitles from covering Pink Pig body illustrations and ensure knowledge videos have audible narration with controlled fallback audio.",
+  "skill": "pink-pig-mascot-director",
+  "allowed_paths": [
+    "video_factory/pipeline/renderer.py",
+    "video_factory/pipeline/subtitle.py",
+    "video_factory/pipeline/mascot.py",
+    "generate_video.py",
+    "schemas/video/video_job.schema.json",
+    "video_factory/configs/director_job.defaults.yaml",
+    "examples/modbus_rtu_illustrations/",
+    "tests/video/",
+    "video_factory/tests/",
+    "tasks/todo.md",
+    "reports/PINK_PIG_FACTORY_RENDER_HARDENING_002.md",
+    "reports/change_requests/PINK-PIG-FACTORY-RENDER-HARDENING-002.json"
+  ],
+  "forbidden": [
+    "OpenClaw",
+    "Feishu",
+    "Gateway",
+    "Binding",
+    "OAuth",
+    "Cron",
+    "PROJECT_STATUS.yaml",
+    "second_pipeline"
+  ],
+  "controls": {
+    "knowledge_subtitle_layout": "bottom_safe_band",
+    "mascot_mode_switch": ["required", "optional", "off"],
+    "audio_strategy": "tts_with_offline_fallback",
+    "no_commit_push_reset_clean": true,
+    "does_not_imply_phase_pass": true
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/video_job.schema.json",
+  "title": "VideoRenderJob",
+  "description": "Complete input for a single video synthesis job: storyboard reference + render params + audio strategy + output paths.",
+  "type": "object",
+  "required": ["schema_version", "job_id", "job_kind", "storyboard_ref", "registry_ref", "render", "audio", "outputs"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "pattern": "^\\d+\\.\\d+$"},
+    "job_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "job_kind": {"type": "string", "const": "video_render"},
+    "storyboard_ref": {"type": "string", "description": "Path to storyboard JSON, relative to job file directory."},
+    "registry_ref": {"type": "string", "description": "Path to registry JSON, relative to repo root."},
+    "render": {"$ref": "#/$defs/render_params"},
+    "audio": {"$ref": "#/$defs/audio_config"},
+    "subtitle": {"$ref": "#/$defs/subtitle_config"},
+    "mascot": {"$ref": "#/$defs/mascot_config"},
+    "outputs": {"$ref": "#/$defs/outputs_config"}
+  },
+  "$defs": {
+    "render_params": {
+      "type": "object",
+      "required": ["width", "height", "fps", "transition_seconds", "pad_color"],
+      "additionalProperties": false,
+      "properties": {
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1},
+        "fps": {"type": "integer", "minimum": 1},
+        "transition_seconds": {"type": "number", "minimum": 0.001},
+        "pad_color": {"type": "string", "pattern": "^0x[0-9A-Fa-f]{6}$"}
+      }
+    },
+    "audio_config": {
+      "type": "object",
+      "required": ["strategy"],
+      "additionalProperties": false,
+      "properties": {
+        "strategy": {"type": "string", "enum": ["tts_with_offline_fallback", "bgm_only", "silent"]},
+        "allow_network": {"type": "boolean", "default": true},
+        "gain": {"type": "number", "minimum": 0.1, "maximum": 8.0, "default": 1.0},
+        "tts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "provider": {"type": "string", "const": "edge-tts"},
+            "voice": {"type": "string"}
+          }
+        },
+        "fallback_bgm": {"type": "string", "description": "Repo-relative path to fallback BGM WAV file."}
+      }
+    },
+    "subtitle_config": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {"type": "boolean", "default": true},
+        "source": {"type": "string", "const": "scene_caption"},
+        "style": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "layout": {"type": "string", "const": "bottom_safe_band"},
+            "font_name": {"type": "string"},
+            "font_size": {"type": "integer", "minimum": 32, "maximum": 60},
+            "margin_left": {"type": "integer", "minimum": 40},
+            "margin_right": {"type": "integer", "minimum": 40},
+            "margin_vertical": {"type": "integer", "minimum": 180, "maximum": 420}
+          }
+        }
+      }
+    },
+    "mascot_config": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"type": "string", "enum": ["required", "optional", "off"]},
+        "skill_ref": {"type": "string"},
+        "style_profile_ref": {"type": "string"}
+      }
+    },
+    "outputs_config": {
+      "type": "object",
+      "required": ["video", "work_dir"],
+      "additionalProperties": false,
+      "properties": {
+        "video": {"type": "string"},
+        "work_dir": {"type": "string"}
+      }
+    }
+  }
+}

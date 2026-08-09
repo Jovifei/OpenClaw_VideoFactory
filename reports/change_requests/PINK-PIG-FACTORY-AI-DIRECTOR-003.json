@@ -1,0 +1,53 @@
+{
+  "task_id": "PINK-PIG-FACTORY-AI-DIRECTOR-003",
+  "title": "Local AI Director for Pink Pig Video Factory",
+  "phase": "P1_preresearch_phase2_interface",
+  "objective": "Add a provider-neutral topic-to-Storyboard Director with a constrained Direct Codex CLI adapter and reuse the existing Video Factory for topic-to-MP4 evidence.",
+  "allowed_paths": [
+    "src/factory/director/",
+    "video_factory/",
+    "schemas/video/",
+    "tests/video/",
+    "generate_video.py",
+    "examples/pink_pig_director_demo/",
+    "docs/PINK_PIG_PHASE1_ARCHITECTURE.md",
+    "video_factory/README.md",
+    "schemas/video/README.md",
+    ".gitignore",
+    "tasks/todo.md",
+    "reports/change_requests/PINK-PIG-FACTORY-AI-DIRECTOR-003.json",
+    "reports/PINK_PIG_FACTORY_AI_DIRECTOR_003.md"
+  ],
+  "read_only_inputs": [
+    "config/account.yaml",
+    "config/account_columns.yaml",
+    "config/topic_rules.yaml",
+    "config/mascot_usage.yaml",
+    "src/factory/assets/pink_pig/registry.json",
+    "src/factory/assets/pink_pig/style_profile.json",
+    "PROJECT_STATUS.yaml"
+  ],
+  "forbidden_paths": [
+    "OpenClaw configuration and runtime",
+    "Feishu and larksuite integration",
+    "Gateway",
+    "Binding",
+    "OAuth and profiles",
+    "Cron and scheduler",
+    "PROJECT_STATUS.yaml",
+    "P0/P1/P2 Gate implementation"
+  ],
+  "provider": {
+    "selected": "direct_codex_cli",
+    "sandbox": "read-only",
+    "ephemeral": true,
+    "model_or_profile_mutation": false,
+    "network_or_model_download": false
+  },
+  "controls": {
+    "no_second_pipeline": true,
+    "no_commit_push_reset_clean": true,
+    "does_not_imply_phase_pass": true,
+    "stop_on_failed_stage_verification": true
+  }
+}

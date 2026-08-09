@@ -1,0 +1,7 @@
+# Copy this minimal local configuration, then point asset_dir at your images.
+asset_dir: ../../assets/pink_pig
+script: ../../examples/pink_pig_demo/script.txt
+output: dist/pink_pig_video.mp4
+image_duration_seconds: 3
+transition_seconds: 0.5
+transitions: [fade, zoom, slide]

@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "brand_identity": {
+    "character_id": "pink_pig",
+    "display_name": "小粉飞猪",
+    "persona": ["认真", "冷静", "略笨拙", "冷幽默"],
+    "role": "embedded_engineering_mascot"
+  },
+  "character_rules": {
+    "required_features": [
+      "small_wings",
+      "round_snout_two_dots",
+      "dot_eyes",
+      "deadpan_serious"
+    ],
+    "core_action_required": true,
+    "allowed_core_actions": [
+      "disassemble",
+      "assemble",
+      "measure",
+      "repair",
+      "solder",
+      "carry_information"
+    ],
+    "content_visibility_required": true
+  },
+  "color_rules": {
+    "background": "pure_white",
+    "primary_pink": {
+      "reference_hex": "#E7C7CD",
+      "allowed_range": ["#E3C0C7", "#EDD3D7"],
+      "max_area_ratio": 0.2
+    },
+    "accent_usage": {
+      "orange": "main_path",
+      "red": "problem_or_result",
+      "blue": "supplement"
+    }
+  },
+  "pose_rules": {
+    "allowed_poses": [
+      "normal",
+      "thinking",
+      "question",
+      "measure",
+      "repair",
+      "success",
+      "warning",
+      "ending"
+    ],
+    "fallback_pose": "normal",
+    "pose_must_match_scene_action": true
+  },
+  "forbidden_rules": [
+    "realistic_pig",
+    "random_character_replacement",
+    "unrelated_mascot",
+    "generic_cute_mascot",
+    "neon_pink",
+    "candy_pink",
+    "3d_render",
+    "gradient",
+    "paper_texture",
+    "content_obstruction"
+  ],
+  "quality_checks": [
+    {
+      "check_id": "identity_features_present",
+      "required": true,
+      "mode": "manual",
+      "description": "Small wings, round snout with two dots, dot eyes, and serious persona remain identifiable."
+    },
+    {
+      "check_id": "core_action_visible",
+      "required": true,
+      "mode": "manual",
+      "description": "The character performs or carries the scene's core engineering action."
+    },
+    {
+      "check_id": "content_not_obscured",
+      "required": true,
+      "mode": "manual",
+      "description": "The mascot does not cover code, protocol frames, charts, or subtitles."
+    },
+    {
+      "check_id": "style_forbidden_rules_clear",
+      "required": true,
+      "mode": "manual",
+      "description": "No forbidden rendering style, replacement character, or unrelated mascot is present."
+    }
+  ]
+}

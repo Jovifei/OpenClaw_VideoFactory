@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/director_draft.schema.json",
+  "title": "DirectorDraft",
+  "description": "Constrained, provider-facing draft produced by the AI Director before deterministic Storyboard assembly.",
+  "type": "object",
+  "required": ["title", "content_scope", "scenes"],
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "content_scope": {
+      "type": "string",
+      "const": "evergreen_embedded_mainline"
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 9,
+      "items": {
+        "$ref": "#/$defs/scene"
+      }
+    }
+  },
+  "$defs": {
+    "scene": {
+      "type": "object",
+      "required": [
+        "purpose",
+        "core_action",
+        "narration",
+        "caption",
+        "mood",
+        "pose",
+        "transition_out"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "core_action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "narration": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "caption": {
+          "type": ["string", "null"],
+          "maxLength": 160
+        },
+        "mood": {
+          "type": ["string", "null"],
+          "maxLength": 64
+        },
+        "pose": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "thinking",
+            "question",
+            "measure",
+            "repair",
+            "success",
+            "warning",
+            "ending"
+          ]
+        },
+        "transition_out": {
+          "type": ["string", "null"],
+          "enum": ["fade", "zoom", "slide", null]
+        }
+      }
+    }
+  }
+}

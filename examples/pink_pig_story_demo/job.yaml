@@ -1,0 +1,31 @@
+# Pink Pig Story Demo — Phase 1 Productization Job Definition
+# Usage: python generate_video.py --job examples/pink_pig_story_demo/job.yaml
+
+schema_version: "1.0"
+job_id: pink_pig_story_demo
+job_kind: video_render
+storyboard_ref: storyboard.json
+registry_ref: src/factory/assets/pink_pig/registry.json
+
+render:
+  width: 1080
+  height: 1920
+  fps: 30
+  transition_seconds: 0.4
+  pad_color: "0xF7E4EA"
+
+audio:
+  strategy: tts_with_offline_fallback
+  allow_network: true
+  tts:
+    provider: edge-tts
+    voice: zh-CN-XiaoxiaoNeural
+  fallback_bgm: assets/pink_pig/demo_music.wav
+
+subtitle:
+  enabled: true
+  source: scene_caption
+
+outputs:
+  video: dist/pink_pig_story_demo.mp4
+  work_dir: dist/story_demo

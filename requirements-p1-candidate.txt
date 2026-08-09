@@ -1,2 +1,5 @@
 # Offline P1 candidate runtime dependency. No credentials are required.
 edge-tts==7.2.8
+
+# Phase 1 productization: YAML config/job parsing (generate_video.py, job.yaml)
+PyYAML>=6.0,<7

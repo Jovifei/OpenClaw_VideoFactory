@@ -1,0 +1,48 @@
+{
+  "id": "PINK-PIG-FACTORY-REPO-HYGIENE-004",
+  "task": "prepare_cloneable_phase_baseline",
+  "scope": {
+    "retain": [
+      "video_factory/",
+      "src/factory/assets/pink_pig/",
+      "src/factory/director/",
+      "schemas/video/",
+      "tests/video/",
+      "generate_video.py",
+      "examples/pink_pig_demo/",
+      "examples/pink_pig_story_demo/",
+      "examples/modbus_rtu_illustrations/",
+      "assets/modbus_rtu_illustrations/",
+      "assets/pink_pig/",
+      "docs/PINK_PIG_PHASE1_ARCHITECTURE.md",
+      "reports/PINK_PIG_*.md",
+      "reports/change_requests/PINK-PIG-FACTORY-*.json",
+      "skills/pink-pig-mascot-director/SKILL.md"
+    ],
+    "ignore": [
+      ".workbuddy/",
+      "dist/",
+      "handoff_prepared/",
+      "temporary P0 probes and local runtime artifacts"
+    ],
+    "delete_exact": [
+      "handoff_prepared/",
+      "scripts/_probe_cli.py",
+      "scripts/_probe_cli2.py",
+      "scripts/_probe_cli3.py",
+      "scripts/_capture_live_dispatch_094.py"
+    ]
+  },
+  "forbidden": [
+    "OpenClaw runtime/configuration",
+    "Feishu",
+    "Gateway",
+    "Binding",
+    "OAuth",
+    "Cron",
+    "PROJECT_STATUS.yaml phase values",
+    "unrelated P0 evidence and user-owned modifications"
+  ],
+  "does_not_imply_phase_pass": true,
+  "commit_policy": "stage only the cloneable Pink Pig Video Factory baseline and this hygiene record; leave unrelated user changes unstaged"
+}

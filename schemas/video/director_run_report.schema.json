@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/director_run_report.schema.json",
+  "title": "DirectorRunReport",
+  "description": "Sanitized, deterministic evidence for one Director generation attempt. Raw prompts, model output, credentials, and absolute paths are intentionally excluded.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "provider",
+    "provider_version",
+    "prompt_version",
+    "topic_digest",
+    "attempts",
+    "draft_validation",
+    "storyboard_validation",
+    "semantic_validation",
+    "storyboard_id",
+    "storyboard_sha256",
+    "compiled_duration_seconds",
+    "factual_review_required",
+    "error"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$"
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9_.-]+$"
+    },
+    "provider_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\\r\\n]+$"
+    },
+    "prompt_version": {
+      "type": "string",
+      "pattern": "^pink_pig_director_v[0-9]+$"
+    },
+    "topic_digest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "attempts": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3
+    },
+    "draft_validation": {
+      "$ref": "#/$defs/validation_result"
+    },
+    "storyboard_validation": {
+      "$ref": "#/$defs/validation_result"
+    },
+    "semantic_validation": {
+      "$ref": "#/$defs/validation_result"
+    },
+    "storyboard_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "storyboard_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "compiled_duration_seconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "factual_review_required": {
+      "const": true
+    },
+    "error": {
+      "anyOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/error"}
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "validation_result": {
+      "type": "object",
+      "required": ["status"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["pass", "fail"]
+        },
+        "error_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "validator": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "required": ["code", "message", "context"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 96,
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "provider": {"type": "string", "maxLength": 64},
+            "attempt": {"type": "integer", "minimum": 1, "maximum": 3},
+            "exit_code": {"type": "integer"},
+            "schema": {"type": "string", "maxLength": 96},
+            "path": {"type": "string", "maxLength": 160},
+            "validator": {"type": "string", "maxLength": 64},
+            "reason": {"type": "string", "maxLength": 240},
+            "status": {"type": "string", "maxLength": 32}
+          }
+        }
+      }
+    }
+  }
+}

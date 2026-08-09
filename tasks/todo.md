@@ -1774,3 +1774,117 @@ Detailed execution handoff:
 - Jovi authorized this task to publish the currently visible project records and open a fresh optimization branch. The exact 22-file archive passed JSON/YAML, secret-pattern and `git diff --check` validation, then committed as `717ef8cf043fcdb6fa69fab4b084467204f194e5` (`docs: publish P0 evidence and product roadmap`).
 - `origin/codex/p0-feishu-single-consumer-086` was verified at that exact commit. GitHub then created `origin/codex/product-optimization-093` from the same commit; the local workspace is switched to it with upstream tracking and a clean worktree.
 - No production code, OpenClaw configuration, Binding, Gateway, OAuth, Cron, model, Runtime, media route, Gate, or phase-state change occurred. `PROJECT_STATUS.yaml` is unchanged: P0 remains not passed.
+
+## P0-IMPLEMENTATION-EXECUTION-093
+
+- [x] Read 092 acceptance, MVP, backlog, test and landing artifacts; confirm the sole execution objective is P0 completion without phase promotion.
+- [x] Capture the P0 V2 implementation baseline: implemented capability, reusable evidence, code gaps and real-Feishu gaps.
+- [x] Add the V2 acceptance contract, JSON Schemas and a fail-closed `scripts/p0_gate_v2.py`.
+- [x] Add focused contract tests for required evidence, `event_id` duplicate effects and Gate output behavior.
+- [x] Migrate only semantically compatible, redacted historical evidence into V2 evidence; do not label offline or historical evidence as a fresh real Channel pass.
+- [x] Run Python, Pester, schema, `pip check`, diff and secret validations; run the V2 Gate and preserve its actual result.
+- [x] Obtain read-only audit review, update Obsidian and publish the required 093 implementation/status/blocker/result artifacts.
+
+### Review — implementation in progress; real evidence and visible-delivery correlation pending
+
+- V2 implementation is now in the repository: a filesystem-atomic, hash-only `event_id` ingress lease/ledger; route-sidecar → Ticket → analysis-request correlation; V2 evidence Schema; source-verifying evidence generator; trusted-path fail-closed matrix reader; and focused tests. The first event is persisted once, a concurrent duplicate waits then is ignored, rebinding is rejected, and the ledger remains effective after module reload.
+- This-run verification: focused V2 tests 11 passed; full Python 414 passed / 1 skipped / 75 subtests; Pester 127 passed; schema 88 passed; V2 JSON Schema 9/9 passed; project `.venv` `pip check` passed; diff/secret checks passed. The global Python `pip check` has pre-existing `cryptography` conflicts and the project venv lacks pytest, both recorded without dependency changes.
+- `scripts/p0_gate_v2.py` exited 2 and wrote `reports/gates/P0_FAILED.json`: real entry, one visible-delivery event correlation, WAV ingress readback, audio-bearing video Whisper/Vision qualification, and managed restart recovery remain blocked. No `P0_READY.json`, phase change, Gateway/Binding/OAuth/Cron/Runtime/configuration change or production action occurred.
+
+## PINK-PIG-AI-VIDEO-FACTORY-MVP-001
+
+- [x] Freeze local-only scope and record the change request; exclude every OpenClaw/Feishu control-plane surface.
+- [x] Implement modular asset-to-MP4 pipeline under `video_factory/`.
+- [x] Build the five-image pink-pig demo from repository-owned mascot assets and render `dist/pink_pig_demo.mp4`.
+- [x] Verify unit contracts and playable MP4 metadata, then update project/Obsidian records.
+
+### Review — local video MVP ready
+
+- Implemented a small local pipeline for natural-order image manifests, timeline generation, SRT construction, FFmpeg H.264 rendering, optional audio validation and an optional edge-tts adapter. No OpenClaw, Feishu, Gateway, Binding, OAuth, Cron, model or Runtime surface changed.
+- Prepared five local pink-pig demo images from repository-owned SVG artwork using the existing Chrome contact-sheet helper and FFmpeg crops; no asset/model download occurred. The demo output is `dist/pink_pig_demo.mp4`.
+- This-run verification passed: five unit tests, complete FFmpeg decode, and ffprobe reporting H.264, 1080x1920, 30 fps, AAC audio and 5.900 seconds. Caption cues are burned into the MP4 and end at the rendered duration.
+# PINK-PIG-FACTORY-PHASE1-HARDENING-002 — IN PROGRESS
+
+Execution handoff: `reports/change_requests/PINK-PIG-FACTORY-PHASE1-HARDENING-002.json`.
+
+- [x] Freeze current worktree, branch, phase state, and baseline test collection (158 video / 5 legacy).
+- [x] Register the bounded offline Phase 1 hardening Change Request.
+- [x] Implement structured error contract and migrate schema validation codes.
+- [x] Externalize the Pink Pig style profile and harden registry references/validation.
+- [x] Add the Video Job lifecycle state schema and contract tests.
+- [x] Add the non-AI Director interface stub and contract tests.
+- [x] Add `render_report.json` generation and quality-report tests.
+- [x] Update architecture documentation and `.gitignore` tracking exceptions.
+- [x] Run targeted tests, full video regression, legacy regression, offline render, and legacy smoke.
+- [x] Write `reports/PINK_PIG_PHASE1_HARDENING_002.md` and stop without phase promotion.
+
+### Review — PINK-PIG-FACTORY-PHASE1-HARDENING-002 checkpoint
+
+- Baseline is frozen without cleaning or resetting the user worktree.
+- Formal `PROJECT_STATUS.yaml` remains P0/not started; this task is offline hardening only.
+- Structured error contract, external style profile, lifecycle schema, Director stub, and render report are implemented.
+- Final verification: `tests/video` 198 passed; legacy 5 passed; legacy CLI smoke and offline MP4 decode passed.
+- Final status is `PINK_PIG_FACTORY_PHASE1_HARDENED`; no AI Director implementation or control-plane work was started.
+
+# PINK-PIG-FACTORY-AI-DIRECTOR-003 — COMPLETE
+
+Execution handoff: `reports/change_requests/PINK-PIG-FACTORY-AI-DIRECTOR-003.json`.
+
+- [x] Freeze 003 worktree, forbidden-surface hashes, and execution controls.
+- [x] Add DirectorDraft and Director run-report schemas.
+- [x] Build deterministic Director context and prompt contract.
+- [x] Implement the read-only Direct Codex CLI provider.
+- [x] Implement AIDirector topic normalization, assembly, validation, and bounded retries.
+- [x] Integrate `--topic` with the existing `run_job()` pipeline.
+- [x] Add offline fake-provider, provider safety, and topic-pipeline tests.
+- [x] Run the real Modbus RTU Director render and independent media evidence.
+- [x] Run full video, legacy, decode, diff, and forbidden-surface regression checks.
+- [x] Write the 003 report and stop before Feishu/004.
+
+### Review — PINK_PIG_FACTORY_AI_DIRECTOR_003_COMPLETE
+
+- Targeted Director contracts: 56 passed.
+- `tests/video`: 251 passed; `video_factory/tests`: 5 passed; legacy demo and offline job both exited successfully.
+- Real `codex-cli 0.146.0` generated the stable Modbus RTU job directory; Storyboard, Timeline, MP4, ffprobe and render report agree at 51.6 seconds.
+- `PROJECT_STATUS.yaml` hash and forbidden control-plane surface remained unchanged; no commit, push, reset, clean or phase promotion.
+- Final report: `reports/PINK_PIG_FACTORY_AI_DIRECTOR_003.md`.
+
+## PINK-PIG-FACTORY-CONTENT-ILLUSTRATION-REMAKE-001
+
+- [x] Read and apply `skills/pink-pig-mascot-director/SKILL.md` and inspect the upstream illustration skill.
+- [x] Generate five distinct Modbus RTU body illustrations using separate shot-list compositions.
+- [x] Render the illustrations through the existing legacy FFmpeg pipeline.
+- [x] Verify five unique assets, timeline order, ffprobe metadata and complete MP4 decode.
+- [x] Write the remake report and stop without touching the control plane.
+
+### Review — content illustration remake complete
+
+- Five unique 16:9 images are used instead of one repeated mascot PNG.
+- Output: `dist/modbus_rtu_illustrations.mp4`, 23.4 seconds, five visual scenes, decode passed.
+- Report: `reports/PINK_PIG_FACTORY_CONTENT_ILLUSTRATION_REMAKE_001.md`.
+
+## PINK-PIG-FACTORY-RENDER-HARDENING-002
+
+- [x] Load and apply `skills/pink-pig-mascot-director/SKILL.md` for the
+  knowledge-video rerender and record the required/optional/off switch.
+- [x] Diagnose the oversized SRT/libass font and move subtitles into the
+  bottom pink safe band without covering the central illustration.
+- [x] Wrap captions to two lines and prevent cross-fade cue stacking.
+- [x] Replace near-silent BGM-only audio with TTS and an offline BGM fallback.
+- [x] Add opt-in FFmpeg `loudnorm` for legacy/BGM tracks that contain a valid
+  stream but are effectively inaudible.
+- [x] Rerender `dist/modbus_rtu_illustrations.mp4` and verify frames, audio,
+  ffprobe metadata, and complete FFmpeg decode.
+- [x] Run the full `tests/video` and `video_factory/tests` regression before
+  closing this task.
+
+### Review — render hardening checkpoint
+
+- Root cause confirmed: SRT/libass uses a 384×288 virtual canvas, so the
+  previous style values were scaled into a huge font and a top-positioned
+  caption.  Renderer now converts final-video pixel values to libass values.
+- Current rerender has five distinct Pink Pig knowledge illustrations, small
+  bottom-band captions, TTS audio (`audio_mode: tts`), and mascot skill/profile
+  validation. `tests/video` passed 258 tests and `video_factory/tests` passed
+  5 tests; both MP4s decoded successfully.  The legacy demo now measures
+  `mean_volume=-17.3 dB` after normalization.

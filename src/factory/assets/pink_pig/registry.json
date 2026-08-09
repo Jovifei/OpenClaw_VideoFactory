@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.0",
+  "registry_version": "1.0.0",
+  "character": {
+    "character_id": "pink_pig",
+    "display_name": "小粉飞猪",
+    "persona": ["认真", "冷静", "略笨拙", "不卖萌", "冷幽默"]
+  },
+  "provenance": {
+    "upstream_repo": "https://github.com/Jovifei/ian-fenzhu-illustrations",
+    "upstream_commit": "99ab94973b4d9b01d1f1ddb2737acf70c89b7c52",
+    "upstream_license": "MIT",
+    "local_path": "external/ian-fenzhu-illustrations",
+    "content_kind": "prompt_style_spec",
+    "note": "上游为 Prompt/风格规范 Skill 仓库，不含可用图集；图像资产来自本仓库自有资源"
+  },
+  "style_profile_ref": "src/factory/assets/pink_pig/style_profile.json",
+  "ip_constraints": {
+    "must_have": ["small_wings", "round_snout_two_dots", "dot_eyes", "deadpan_serious"],
+    "character_must_perform_core_action": true,
+    "min_whitespace_ratio": 0.35,
+    "max_subject_ratio": 0.6,
+    "no_repeated_composition": true
+  },
+  "assets": [
+    {
+      "asset_id": "pink_pig.normal.v1",
+      "pose": "normal",
+      "moods": ["calm", "neutral"],
+      "path": "assets/pink_pig/pig01.png",
+      "source_svg": "src/factory/assets/mascot/normal.svg",
+      "width": 1080,
+      "height": 1920,
+      "render_ready": true,
+      "sha256": "e1cf5e3093a30be05f451b5c97d839d1d6d036fd452f7c4ab2a0c2232f09bd60",
+      "pose_confidence": "verified",
+      "tags": ["idle", "observe"]
+    },
+    {
+      "asset_id": "pink_pig.thinking.v1",
+      "pose": "thinking",
+      "moods": ["focused", "curious"],
+      "path": "assets/pink_pig/pig02.png",
+      "source_svg": "src/factory/assets/mascot/thinking.svg",
+      "width": 1080,
+      "height": 1920,
+      "render_ready": true,
+      "sha256": "5bc65a04569a225d0f24a4f44461c00945a8c2a4f4ad880f67232b4e35737ae1",
+      "pose_confidence": "verified",
+      "tags": ["observe", "analyze"]
+    },
+    {
+      "asset_id": "pink_pig.repair.v1",
+      "pose": "repair",
+      "moods": ["focused"],
+      "path": "assets/pink_pig/pig03.png",
+      "source_svg": "src/factory/assets/mascot/repair.svg",
+      "width": 1080,
+      "height": 1920,
+      "render_ready": true,
+      "sha256": "988bd3a4d15f960d2d8513d9c8924a4ac6a37b5b229e7282c62cc48e2d22a3a2",
+      "pose_confidence": "verified",
+      "tags": ["fix", "modify"]
+    },
+    {
+      "asset_id": "pink_pig.measure.v1",
+      "pose": "measure",
+      "moods": ["focused"],
+      "path": "assets/pink_pig/pig04.png",
+      "source_svg": "src/factory/assets/mascot/measure.svg",
+      "width": 1080,
+      "height": 1920,
+      "render_ready": true,
+      "sha256": "8979cb3559e111e7bfc8edc47edc700ff51bd993bc34de236578c49b03bc645c",
+      "pose_confidence": "verified",
+      "tags": ["check", "evaluate"]
+    },
+    {
+      "asset_id": "pink_pig.success.v1",
+      "pose": "success",
+      "moods": ["calm", "positive"],
+      "path": "assets/pink_pig/pig05.png",
+      "source_svg": "src/factory/assets/mascot/success.svg",
+      "width": 1080,
+      "height": 1920,
+      "render_ready": true,
+      "sha256": "8aa8abdee1a4cc84bb793352e997be453d126b930ea9b253ab4ed55546489f1b",
+      "pose_confidence": "verified",
+      "tags": ["complete", "done"]
+    },
+    {
+      "asset_id": "pink_pig.question.v1",
+      "pose": "question",
+      "moods": ["curious"],
+      "path": null,
+      "source_svg": "src/factory/assets/mascot/question.svg",
+      "width": 1080,
+      "height": 1920,
+      "render_ready": false,
+      "sha256": "",
+      "fallback_asset_id": "pink_pig.normal.v1",
+      "pose_confidence": "verified",
+      "tags": ["ask", "clarify"]
+    },
+    {
+      "asset_id": "pink_pig.warning.v1",
+      "pose": "warning",
+      "moods": ["caution"],
+      "path": null,
+      "source_svg": "src/factory/assets/mascot/warning.svg",
+      "width": 1080,
+      "height": 1920,
+      "render_ready": false,
+      "sha256": "",
+      "fallback_asset_id": "pink_pig.normal.v1",
+      "pose_confidence": "verified",
+      "tags": ["alert", "notice"]
+    },
+    {
+      "asset_id": "pink_pig.ending.v1",
+      "pose": "ending",
+      "moods": ["calm"],
+      "path": null,
+      "source_svg": "src/factory/assets/mascot/ending.svg",
+      "width": 1080,
+      "height": 1920,
+      "render_ready": false,
+      "sha256": "",
+      "fallback_asset_id": "pink_pig.normal.v1",
+      "pose_confidence": "verified",
+      "tags": ["finish", "close"]
+    }
+  ],
+  "pose_index": {
+    "normal": "pink_pig.normal.v1",
+    "thinking": "pink_pig.thinking.v1",
+    "question": "pink_pig.question.v1",
+    "measure": "pink_pig.measure.v1",
+    "repair": "pink_pig.repair.v1",
+    "success": "pink_pig.success.v1",
+    "warning": "pink_pig.warning.v1",
+    "ending": "pink_pig.ending.v1"
+  },
+  "mood_index": {
+    "calm": "normal",
+    "curious": "question",
+    "focused": "measure"
+  },
+  "default_asset_id": "pink_pig.normal.v1"
+}

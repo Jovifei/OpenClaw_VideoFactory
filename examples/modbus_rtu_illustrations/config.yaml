@@ -1,0 +1,37 @@
+asset_dir: ../../assets/modbus_rtu_illustrations
+script: script.txt
+audio: ../../assets/pink_pig/demo_music.wav
+audio_mode: tts_with_offline_fallback
+audio_normalize: true
+audio_work_dir: dist/modbus_rtu_illustrations_audio
+audio_config:
+  strategy: tts_with_offline_fallback
+  allow_network: true
+  tts:
+    provider: edge-tts
+    voice: zh-CN-XiaoxiaoNeural
+  fallback_bgm: assets/pink_pig/demo_music.wav
+output: dist/modbus_rtu_illustrations.mp4
+asset_manifest: dist/modbus_rtu_illustrations_manifest.json
+timeline: dist/modbus_rtu_illustrations_timeline.json
+subtitle: dist/modbus_rtu_illustrations.srt
+image_duration_seconds: 5.0
+transition_seconds: 0.4
+transitions:
+  - fade
+  - slide
+  - zoom
+  - fade
+subtitle_max_chars_per_line: 18
+subtitle_style:
+  layout: bottom_safe_band
+  font_name: Microsoft YaHei
+  font_size: 44
+  margin_left: 90
+  margin_right: 90
+  margin_vertical: 250
+mascot:
+  mode: required
+  skill_ref: skills/pink-pig-mascot-director/SKILL.md
+  style_profile_ref: src/factory/assets/pink_pig/style_profile.json
+audio_gain: 1.0
