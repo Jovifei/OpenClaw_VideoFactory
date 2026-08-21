@@ -53,6 +53,15 @@ python -m pytest tests/video -q               273 passed
 python -m pytest video_factory/tests -q       5 passed
 ```
 
-Fresh-clone and final feature-branch commit evidence is appended after those
-checks complete. This report is not a publication or authorization decision;
-Jovi must still perform the final human review of any real authorized source.
+Fresh-clone evidence was saved to
+`E:/Claude_allow/Download/OpenClaw_VideoFactory-phase1-reference-fresh-clone-20260821.json`.
+The clone checked out commit `6536ab94ba4d45489b37f36babb3580e8fdd0dcb`,
+installed the locked wheels with `--no-index`, regenerated the ignored legacy
+video fixtures, and passed the same 17/6+skip/47/273/5 core suites. Its
+synthetic reference run produced source SHA
+`d707d6add89556d272be5858ed02c60ef3cdb24d2d3004529fb16dc6e56a0b11`, output
+SHA `d578bc3e8e837392c6b41dfa5756e8d43aecd646ac2134363ae9ca34bde08981`, an
+11-artifact package, and ffprobe-confirmed 1080×1920/30 FPS/H.264/AAC media.
+
+This report is not a publication or authorization decision; Jovi must still
+perform the final human review of any real authorized source.
