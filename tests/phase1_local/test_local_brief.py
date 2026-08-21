@@ -81,7 +81,6 @@ def test_topic_brief_builds_deterministic_existing_director_artifacts(tmp_path: 
 @pytest.mark.parametrize(
     ("mode", "extra"),
     [
-        ("local_reference", {"reference_sha256": "a" * 64}),
         ("authorized_public_research", {"research_authorization_id": "JOVI-RESEARCH-001"}),
     ],
 )
@@ -94,6 +93,40 @@ def test_future_input_modes_are_schema_valid_but_fail_closed(mode: str, extra: d
         build_local_plan(brief, ROOT)
     assert caught.value.code == "phase1_local_input_mode_unsupported"
     assert caught.value.context == {"input_mode": mode, "reason": "not_implemented"}
+
+
+def test_local_reference_requires_verified_analyzer_context(tmp_path: Path) -> None:
+    value = _brief()
+    value.update(
+        {
+            "input_mode": "local_reference",
+            "reference_sha256": "a" * 64,
+            "reference_abstraction": {
+                "pace": "medium",
+                "scene_count_band": "2-4",
+                "median_shot_duration_seconds": 3.0,
+                "shot_density_per_second": 0.1,
+                "structure": ["hook", "explain", "evidence", "repair", "summary"],
+                "duration_target_seconds": 40,
+            },
+        }
+    )
+    brief = load_local_brief(_write_brief(tmp_path, value))
+    with pytest.raises(FactoryContractError) as caught:
+        build_local_plan(brief, ROOT)
+    assert caught.value.code == "phase1_reference_context_required"
+
+    plan = build_local_plan(
+        brief,
+        ROOT,
+        reference_context={
+            "source_sha256": "a" * 64,
+            "policy_version": "reference-analysis-v1",
+            "analysis_verified": True,
+        },
+    )
+    assert plan["job_id"].startswith("phase1_ref_")
+    assert plan["script"]["duration_target_seconds"] == 40
 
 
 @pytest.mark.parametrize("field", ["asset_id", "path", "render", "provider_prompt"])

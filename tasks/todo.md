@@ -6,11 +6,11 @@ Change Requests: `reports/change_requests/PHASE1-LOCAL-BASELINE-PUBLISH-001.json
 
 - [x] Read current product phase, Obsidian decision page, open-source matrix, and repository contracts.
 - [x] Freeze the implementation boundary: conservative Phase 1, optional offline faster-whisper, no WhisperX/provider/model download.
-- [ ] Audit and publish the existing local baseline in scoped commits.
-- [ ] Create `codex/phase1-reference-video-analysis-001` from the clean baseline.
-- [ ] Add reference receipt/rights/report/original-brief/difference schemas and policy.
-- [ ] Add safe MP4 ingest, deterministic PySceneDetect analysis, optional offline ASR, and CLI lifecycle.
-- [ ] Integrate original brief and conditional review-package evidence through the existing renderer.
+- [x] Audit and publish the existing local baseline in scoped commits.
+- [x] Create `codex/phase1-reference-video-analysis-001` from the clean baseline.
+- [x] Add reference receipt/rights/report/original-brief/difference schemas and policy.
+- [x] Add safe MP4 ingest, deterministic PySceneDetect analysis, optional offline ASR, and CLI lifecycle.
+- [x] Integrate original brief and conditional review-package evidence through the existing renderer.
 - [ ] Run targeted tests, synthetic E2E, full regression, fresh-clone smoke, and push the feature branch.
 
 ### Review — execution pending
@@ -18,6 +18,10 @@ Change Requests: `reports/change_requests/PHASE1-LOCAL-BASELINE-PUBLISH-001.json
 - Current branch before baseline publication: `codex/ai-director-video-factory-phase2-001`.
 - Current HEAD before baseline publication: `76180a59ea662bdf168d88baaeb777d3e8eb59ef`.
 - Existing worktree is intentionally dirty and must be staged only by Change Request ownership.
+- Baseline commits: `57cfca3`, `c90fb94`, `640745e`; baseline branch pushed to `origin`.
+- Feature branch: `codex/phase1-reference-video-analysis-001`, created from `640745e`.
+- Synthetic local-reference E2E produced a 1080x1920/30fps H.264/AAC MP4 and an 11-artifact review package; no source MP4/frame/audio entered the package.
+- Targeted regression currently green: phase1 local 17, reference 6 (one environment-dependent symlink skip), director 47, video 273, video_factory 5.
 
 # P0-FEISHU-SINGLE-CONSUMER-086 — IN PROGRESS
 
