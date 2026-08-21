@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProviderQualificationFinalReview",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "profile",
+    "run_id",
+    "verdict",
+    "source_freeze_sha256",
+    "prelaunch_reviewer_result_sha256",
+    "protected_boundary_sha256",
+    "review_report_file",
+    "review_report_sha256",
+    "reviewed_at_utc",
+    "boundary"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "task_id": {"const": "AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V"},
+    "profile": {"const": "005V"},
+    "run_id": {"type": "string", "pattern": "^session_[A-Za-z0-9_.-]+$"},
+    "verdict": {"enum": ["APPROVED", "FAIL_REVIEW"]},
+    "source_freeze_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "prelaunch_reviewer_result_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "protected_boundary_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "protected_boundary_evidence_file": {"const": "FINAL_REVIEW_BOUNDARY_EVIDENCE.json"},
+    "review_report_file": {"const": "INDEPENDENT_FINAL_REVIEW_REPORT.json"},
+    "review_report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "reviewed_at_utc": {"type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,7})?Z$"},
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["branch", "head", "index_empty", "protected_dirty_sha256"],
+      "properties": {
+        "branch": {"const": "codex/ai-director-video-factory-phase2-001"},
+        "head": {"const": "76180a59ea662bdf168d88baaeb777d3e8eb59ef"},
+        "index_empty": {"const": true},
+        "protected_dirty_sha256": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "PROJECT_STATUS.yaml",
+            "reports/P0_ACCEPTANCE_MATRIX_V2.yaml",
+            "scripts/analysis_request.py",
+            "scripts/analyzer_mcp.py",
+            "scripts/mcp_ingest_attachment.py",
+            "scripts/media_action_ticket.py"
+          ],
+          "properties": {
+            "PROJECT_STATUS.yaml": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "reports/P0_ACCEPTANCE_MATRIX_V2.yaml": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "scripts/analysis_request.py": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "scripts/analyzer_mcp.py": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "scripts/mcp_ingest_attachment.py": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "scripts/media_action_ticket.py": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        }
+      }
+    }
+  }
+}

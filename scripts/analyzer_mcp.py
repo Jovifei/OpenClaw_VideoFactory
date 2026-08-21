@@ -218,6 +218,14 @@ def _validate_analysis_request(
         "sender_id_sha256"
     ) != identity_digest(requester_id):
         return None, _error("analysis_request_identity_mismatch")
+    ingress_event_id_hash = request.get("ingress_event_id_hash")
+    if ingress_event_id_hash is not None:
+        if (
+            not isinstance(ingress_event_id_hash, str)
+            or not re.fullmatch(r"[0-9a-f]{64}", ingress_event_id_hash)
+            or binding.get("ingress_event_id_hash") != ingress_event_id_hash
+        ):
+            return None, _error("analysis_request_event_mismatch")
     ticket_hash = _canonical_hash(request.get("ticket_hash"))
     if ticket_hash is None:
         return None, _error("analysis_request_ticket_invalid")

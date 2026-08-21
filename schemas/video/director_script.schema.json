@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/director_script.schema.json",
+  "title": "DirectorScript",
+  "description": "Provider-facing script contract. It contains semantic intent only; asset IDs, paths, registry data, and render parameters are forbidden.",
+  "type": "object",
+  "required": ["schema_version", "script_id", "topic_digest", "title", "hook", "narration", "duration_target_seconds", "style", "beats"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "script_id": {"type": "string", "pattern": "^script_[a-z0-9]{16}$"},
+    "topic_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "title": {"type": "string", "minLength": 1, "maxLength": 160},
+    "hook": {"type": "string", "minLength": 1, "maxLength": 240},
+    "narration": {"type": "string", "minLength": 1, "maxLength": 4000},
+    "duration_target_seconds": {"type": "number", "minimum": 25, "maximum": 60},
+    "style": {
+      "type": "object",
+      "required": ["language", "tone", "content_scope"],
+      "additionalProperties": false,
+      "properties": {
+        "language": {"type": "string", "const": "zh-CN"},
+        "tone": {"type": "string", "const": "technical_calm_dry_humor"},
+        "content_scope": {"type": "string", "const": "evergreen_embedded_mainline"}
+      }
+    },
+    "beats": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 9,
+      "items": {"$ref": "#/$defs/beat"}
+    }
+  },
+  "$defs": {
+    "beat": {
+      "type": "object",
+      "required": ["purpose", "narration", "subtitle", "visual_intent", "pose", "required_tags", "fact_refs"],
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {"type": "string", "minLength": 1, "maxLength": 64},
+        "narration": {"type": "string", "minLength": 1, "maxLength": 800},
+        "subtitle": {"type": ["string", "null"], "maxLength": 160},
+        "visual_intent": {"type": "string", "minLength": 1, "maxLength": 240},
+        "pose": {
+          "type": "string",
+          "enum": ["normal", "thinking", "question", "measure", "repair", "success", "warning", "ending"]
+        },
+        "required_tags": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "uniqueItems": true
+        },
+        "fact_refs": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[a-z0-9_.-]+$"},
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

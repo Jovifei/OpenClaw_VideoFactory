@@ -52,6 +52,7 @@
         "mood": {"type": ["string", "null"], "default": null},
         "pose": {"type": "string", "description": "One of the 8 poses in the registry pose vocabulary."},
         "asset_id": {"type": ["string", "null"], "default": null, "description": "Explicit asset override; if null, resolved from pose/mood."},
+        "asset_tags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true, "default": []},
         "layout_mode": {"type": "string", "enum": ["knowledge_illustration", "full_frame"], "default": "knowledge_illustration"},
         "subtitle_layout": {"type": "string", "enum": ["knowledge_illustration", "bottom_safe_band", "disabled"], "default": "knowledge_illustration"},
         "character_position": {"type": "string", "enum": ["left", "center", "right", "top_left", "top_right", "bottom_left", "bottom_right"], "default": "bottom_right"},

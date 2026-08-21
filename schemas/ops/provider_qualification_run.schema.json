@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProviderQualificationRun",
+  "description": "Versioned state snapshots for the isolated Codex Provider qualification control plane.",
+  "oneOf": [
+    {"$ref": "#/$defs/v1_0"},
+    {"$ref": "#/$defs/v1_1"}
+  ],
+  "$defs": {
+    "sha256": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "sha256", "size_bytes"],
+      "properties": {
+        "kind": {"type": "string", "minLength": 1, "maxLength": 96},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "size_bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "context"],
+      "properties": {
+        "code": {"type": "string", "minLength": 1, "maxLength": 96},
+        "message": {"type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\\\/\\r\\n]+$"},
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["stage", "reason"],
+          "properties": {
+            "stage": {"type": "string", "pattern": "^[a-z0-9_]{1,64}$"},
+            "reason": {"type": "string", "pattern": "^[a-z0-9_]{1,96}$"}
+          }
+        }
+      }
+    },
+    "command_ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "attempt_count", "command_fingerprint"],
+      "properties": {
+        "status": {"enum": ["not_started", "claimed", "succeeded", "failed", "outcome_unknown"]},
+        "attempt_count": {"enum": [0, 1]},
+        "command_fingerprint": {"$ref": "#/$defs/sha256"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "not_started"}}},
+          "then": {"properties": {"attempt_count": {"const": 0}, "command_fingerprint": {"const": null}}}
+        },
+        {
+          "if": {"properties": {"status": {"enum": ["claimed", "succeeded", "failed", "outcome_unknown"]}}},
+          "then": {"properties": {"attempt_count": {"const": 1}, "command_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
+        }
+      ]
+    },
+    "v1_0": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version", "task_id", "run_id", "revision", "state", "stage",
+        "desktop_quiescent", "original_cache_sha256", "active_cache_sha256",
+        "smoke_attempted", "acceptance_attempted", "artifacts", "error"
+      ],
+      "properties": {
+        "schema_version": {"const": "1.0"},
+        "task_id": {"const": "AI-DIRECTOR-PHASE2-DESKTOP-DETACHED-PROVIDER-QUALIFICATION-005R"},
+        "run_id": {"type": "string", "minLength": 8, "pattern": "^[A-Za-z0-9_.-]+$"},
+        "revision": {"type": "integer", "minimum": 1},
+        "state": {"enum": ["prepared", "waiting_for_desktop_exit", "desktop_quiescent", "cache_stable", "cache_quarantined", "smoke_started", "smoke_passed", "acceptance_started", "acceptance_passed", "verification_passed", "complete_pending_review", "completed", "failed", "blocked"]},
+        "stage": {"type": "string", "minLength": 1, "maxLength": 64},
+        "desktop_quiescent": {"type": "boolean"},
+        "original_cache_sha256": {"$ref": "#/$defs/sha256"},
+        "active_cache_sha256": {"$ref": "#/$defs/sha256"},
+        "smoke_attempted": {"type": "boolean"},
+        "acceptance_attempted": {"type": "boolean"},
+        "artifacts": {"type": "array", "items": {"$ref": "#/$defs/artifact"}},
+        "error": {"anyOf": [{"$ref": "#/$defs/error"}, {"type": "null"}]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"state": {"enum": ["smoke_started", "smoke_passed", "acceptance_started", "acceptance_passed", "verification_passed", "complete_pending_review", "completed"]}}},
+          "then": {"properties": {"smoke_attempted": {"const": true}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["acceptance_started", "acceptance_passed", "verification_passed", "complete_pending_review", "completed"]}}},
+          "then": {"properties": {"acceptance_attempted": {"const": true}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["failed", "blocked"]}}},
+          "then": {"properties": {"error": {"$ref": "#/$defs/error"}}},
+          "else": {"properties": {"error": {"type": "null"}}}
+        }
+      ]
+    },
+    "v1_1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version", "task_id", "qualification_profile", "run_id", "revision",
+        "state", "stage", "desktop_quiescent", "desktop_seen_before_quiescence",
+        "worker_generation", "worker_launch_count", "supervisor_pid", "worker_pid",
+        "supervisor_token_sha256", "worker_token_sha256", "lease_id", "lease_expires_utc", "heartbeat_sequence", "last_checkpoint",
+        "cache_mutation_started", "rollback_required", "cache_strategy",
+        "original_cache_sha256", "active_cache_sha256", "source_freeze_sha256",
+        "cache_backup_sha256", "quarantine_cache_sha256", "raw_cleanup_verified", "review_result_sha256",
+        "prelaunch_review_result_sha256", "final_review_result_sha256",
+        "smoke", "acceptance", "artifacts", "error"
+      ],
+      "properties": {
+        "schema_version": {"const": "1.1"},
+        "task_id": {"enum": ["AI-DIRECTOR-PHASE2-RESUMABLE-PROVIDER-QUALIFICATION-005S", "AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T", "AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V"]},
+        "qualification_profile": {"enum": ["005S", "005T", "005V"]},
+        "run_id": {"type": "string", "minLength": 8, "pattern": "^session_[A-Za-z0-9_.-]+$"},
+        "revision": {"type": "integer", "minimum": 1},
+        "state": {"enum": ["prepared", "prelaunch_validated", "source_frozen", "supervisor_started", "worker_started", "supervisor_ready", "worker_armed", "waiting_for_desktop_exit", "desktop_quiescent", "cache_stable", "cache_backed_up", "cache_quarantined", "smoke_started", "smoke_passed", "acceptance_started", "acceptance_passed", "verification_passed", "complete_pending_review", "completed", "rehearsal_completed", "failed", "blocked"]},
+        "stage": {"type": "string", "pattern": "^[a-z0-9_]{1,64}$"},
+        "desktop_quiescent": {"type": "boolean"},
+        "desktop_seen_before_quiescence": {"type": "boolean"},
+        "worker_generation": {"type": "integer", "minimum": 0, "maximum": 3},
+        "worker_launch_count": {"type": "integer", "minimum": 0, "maximum": 3},
+        "supervisor_pid": {"type": "integer", "minimum": 0},
+        "worker_pid": {"type": "integer", "minimum": 0},
+        "supervisor_token_sha256": {"$ref": "#/$defs/sha256"},
+        "worker_token_sha256": {"$ref": "#/$defs/sha256"},
+        "lease_id": {"anyOf": [{"type": "null"}, {"type": "string", "pattern": "^[a-f0-9]{32}$"}]},
+        "lease_expires_utc": {
+          "anyOf": [
+            {"type": "null"},
+            {"type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,7})?Z$"}
+          ]
+        },
+        "heartbeat_sequence": {"type": "integer", "minimum": 0},
+        "last_checkpoint": {"type": "string", "pattern": "^[a-z_]{1,64}$"},
+        "cache_mutation_started": {"type": "boolean"},
+        "rollback_required": {"type": "boolean"},
+        "cache_strategy": {"enum": ["none", "backup_only", "quarantine_rebuild"]},
+        "original_cache_sha256": {"$ref": "#/$defs/sha256"},
+        "active_cache_sha256": {"$ref": "#/$defs/sha256"},
+        "source_freeze_sha256": {"$ref": "#/$defs/sha256"},
+        "cache_backup_sha256": {"$ref": "#/$defs/sha256"},
+        "quarantine_cache_sha256": {"$ref": "#/$defs/sha256"},
+        "raw_cleanup_verified": {"type": "boolean"},
+        "review_result_sha256": {"$ref": "#/$defs/sha256"},
+        "prelaunch_review_result_sha256": {"$ref": "#/$defs/sha256"},
+        "final_review_result_sha256": {"$ref": "#/$defs/sha256"},
+        "smoke": {"$ref": "#/$defs/command_ledger"},
+        "acceptance": {"$ref": "#/$defs/command_ledger"},
+        "artifacts": {"type": "array", "items": {"$ref": "#/$defs/artifact"}},
+        "error": {"anyOf": [{"$ref": "#/$defs/error"}, {"type": "null"}]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"task_id": {"const": "AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T"}}},
+          "then": {"properties": {
+            "worker_generation": {"maximum": 1},
+            "worker_launch_count": {"maximum": 1}
+          }}
+        },
+        {
+          "if": {"properties": {"task_id": {"const": "AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V"}}},
+          "then": {"properties": {
+            "worker_generation": {"maximum": 1},
+            "worker_launch_count": {"maximum": 1}
+          }}
+        },
+        {
+          "if": {"properties": {"task_id": {"const": "AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T"}}},
+          "then": {"properties": {"qualification_profile": {"const": "005T"}}}
+        },
+        {
+          "if": {"properties": {"qualification_profile": {"const": "005T"}}},
+          "then": {"properties": {"task_id": {"const": "AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T"}}}
+        },
+        {
+          "if": {"properties": {"task_id": {"const": "AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V"}}},
+          "then": {"properties": {"qualification_profile": {"const": "005V"}}}
+        },
+        {
+          "if": {"properties": {"qualification_profile": {"const": "005V"}}},
+          "then": {"properties": {"task_id": {"const": "AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V"}}}
+        },
+        {
+          "if": {"properties": {"state": {"const": "supervisor_started"}}},
+          "then": {"properties": {
+            "supervisor_pid": {"minimum": 1},
+            "supervisor_token_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }}
+        },
+        {
+          "if": {"properties": {"state": {"const": "worker_started"}}},
+          "then": {
+            "properties": {
+              "worker_generation": {"minimum": 1},
+              "worker_launch_count": {"minimum": 1},
+              "worker_pid": {"const": 0},
+              "supervisor_pid": {"minimum": 1},
+              "supervisor_token_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+              "worker_token_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+              "lease_id": {"type": "string", "pattern": "^[a-f0-9]{32}$"},
+              "lease_expires_utc": {"type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,7})?Z$"}
+            },
+            "allOf": [
+              {
+                "anyOf": [
+                  {"properties": {"worker_generation": {"const": 1}, "worker_launch_count": {"const": 1}}},
+                  {"properties": {"worker_generation": {"const": 2}, "worker_launch_count": {"const": 2}}},
+                  {"properties": {"worker_generation": {"const": 3}, "worker_launch_count": {"const": 3}}}
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["supervisor_ready", "worker_armed", "waiting_for_desktop_exit", "desktop_quiescent", "cache_stable", "cache_backed_up", "cache_quarantined", "smoke_started", "smoke_passed", "acceptance_started", "acceptance_passed", "verification_passed", "complete_pending_review", "completed"]}}},
+          "then": {"properties": {
+            "worker_generation": {"minimum": 1},
+            "worker_launch_count": {"minimum": 1},
+            "supervisor_pid": {"minimum": 1},
+            "worker_pid": {"minimum": 1},
+            "supervisor_token_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "worker_token_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "lease_id": {"type": "string", "pattern": "^[a-f0-9]{32}$"},
+            "lease_expires_utc": {"type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,7})?Z$"}
+          }}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["smoke_started", "smoke_passed", "acceptance_started", "acceptance_passed", "verification_passed", "complete_pending_review", "completed"]}}},
+          "then": {"properties": {"smoke": {"properties": {"attempt_count": {"const": 1}}}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["smoke_passed", "acceptance_started", "acceptance_passed", "verification_passed", "complete_pending_review", "completed"]}}},
+          "then": {"properties": {"smoke": {"properties": {"status": {"const": "succeeded"}}}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["acceptance_started", "acceptance_passed", "verification_passed", "complete_pending_review", "completed"]}}},
+          "then": {"properties": {"acceptance": {"properties": {"attempt_count": {"const": 1}}}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["acceptance_passed", "verification_passed", "complete_pending_review", "completed"]}}},
+          "then": {"properties": {"acceptance": {"properties": {"status": {"const": "succeeded"}}}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["source_frozen", "supervisor_started", "worker_started", "supervisor_ready", "worker_armed", "waiting_for_desktop_exit", "desktop_quiescent", "cache_stable", "cache_backed_up", "cache_quarantined", "smoke_started", "smoke_passed", "acceptance_started", "acceptance_passed", "verification_passed", "complete_pending_review", "completed"]}}},
+          "then": {"properties": {"source_freeze_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["failed", "blocked"]}}},
+          "then": {"properties": {"error": {"$ref": "#/$defs/error"}}},
+          "else": {"properties": {"error": {"type": "null"}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["complete_pending_review", "completed"]}}},
+          "then": {"properties": {"prelaunch_review_result_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
+        },
+        {
+          "if": {"properties": {"state": {"const": "completed"}}},
+          "then": {"properties": {"final_review_result_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
+        },
+        {
+          "if": {"properties": {"state": {"const": "rehearsal_completed"}}},
+          "then": {"properties": {
+            "desktop_quiescent": {"const": true},
+            "desktop_seen_before_quiescence": {"const": true},
+            "heartbeat_sequence": {"minimum": 3},
+            "source_freeze_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "worker_generation": {"minimum": 1},
+            "worker_launch_count": {"minimum": 1},
+            "supervisor_pid": {"minimum": 1},
+            "worker_pid": {"minimum": 1},
+            "supervisor_token_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "worker_token_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "lease_id": {"type": "string", "pattern": "^[a-f0-9]{32}$"},
+            "lease_expires_utc": {"type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,7})?Z$"}
+          }}
+        }
+      ]
+    }
+  }
+}

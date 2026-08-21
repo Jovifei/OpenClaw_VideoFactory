@@ -494,6 +494,10 @@ def _validate_ticket_material(
         return None, "stored_hash_mismatch"
     if not CHAT_RE.fullmatch(chat_id) or not SENDER_RE.fullmatch(sender_id):
         return None, "receipt_invalid"
+    binding = _load_json(receipt_path.parent / "route_binding.json")
+    event_id_hash = binding.get("ingress_event_id_hash") if binding else None
+    if event_id_hash is not None and not HASH_RE.fullmatch(str(event_id_hash).lower()):
+        return None, "receipt_invalid"
     return {
         "issue": True,
         "message_id": message_id,
@@ -506,6 +510,7 @@ def _validate_ticket_material(
         "analyzer_action": ACTION_TO_ANALYZER[action],
         "chat_id": chat_id,
         "uploader_id": sender_id,
+        "ingress_event_id_hash": str(event_id_hash).lower() if event_id_hash else None,
     }, None
 
 
@@ -632,6 +637,7 @@ def issue_media_action_ticket(
                 "analysis_request_path": None,
                 "idempotency_key": f"ticket-{ticket_hash}",
                 "analysis_status": None,
+                "ingress_event_id_hash": material.get("ingress_event_id_hash"),
             }
             _atomic_write(record_path, record)
             _atomic_write(active_path, {"schema_version": "1.0", "ticket_hash": ticket_hash})

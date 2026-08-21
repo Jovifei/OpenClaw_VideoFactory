@@ -7,7 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from src.factory.db import CandidateStore
-from src.factory.pipeline import cancel_job, run_job
+from src.factory.legacy_candidate_control import cancel_job
 
 
 class CandidatePipelineTests(unittest.TestCase):
@@ -24,18 +24,19 @@ class CandidatePipelineTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temp_dir.cleanup()
 
-    def test_completed_stage_can_resume_from_the_next_stage(self) -> None:
-        job = self.store.create_job("FIX-001", "recovery-key", "protocol-frame", "Modbus")["job_id"]
-        with patch.dict(os.environ, {**self.env, "P1_CANDIDATE_INTERRUPT_AFTER": "RESEARCHING"}, clear=False), patch(
-            "src.factory.pipeline.PROJECT_ROOT", self.root
-        ):
-            result = run_job(self.store, job, "cpu", "sapi")
+    def test_retired_pipeline_module_is_not_importable(self) -> None:
+        with self.assertRaises(ModuleNotFoundError):
+            __import__("src.factory.pipeline")
 
-        self.assertEqual(result["status"], "interrupted_for_recovery_test")
-        recovered = self.store.status(job)
-        self.assertEqual(recovered["state"], "SCRIPTING")
-        self.assertEqual(recovered["last_completed_state"], "RESEARCHING")
-        self.assertTrue((self.root / "jobs" / job / "sources.json").exists())
+    def test_cancel_control_remains_importable_from_legacy_control(self) -> None:
+        from src.factory.legacy_candidate_control import cancel_job as preserved_cancel
+
+        self.assertIs(preserved_cancel, cancel_job)
+
+    def test_cancel_control_does_not_require_render_module(self) -> None:
+        job = self.store.create_job("FIX-001", "cancel-control-only", "protocol-frame", "Modbus")["job_id"]
+        cancelled = cancel_job(self.store, job)
+        self.assertEqual(cancelled["state"], "CANCELLED")
 
     def test_render_cancel_removes_partial_render_outputs(self) -> None:
         job = self.store.create_job("FIX-001", "cancel-render-key", "protocol-frame", "Modbus")["job_id"]
@@ -50,7 +51,7 @@ class CandidatePipelineTests(unittest.TestCase):
         runtime.mkdir(parents=True)
         (runtime / "voice.wav").write_bytes(b"runtime")
 
-        with patch.dict(os.environ, self.env, clear=False), patch("src.factory.pipeline.PROJECT_ROOT", temp_project):
+        with patch.dict(os.environ, self.env, clear=False), patch("src.factory.legacy_candidate_control.PROJECT_ROOT", temp_project):
             cancelled = cancel_job(self.store, job)
 
         self.assertEqual(cancelled["state"], "CANCELLED")

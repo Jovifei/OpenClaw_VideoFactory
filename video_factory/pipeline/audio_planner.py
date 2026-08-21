@@ -59,6 +59,7 @@ def plan_audio(
     allow_network = bool(audio_config.get("allow_network", True))
     tts_cfg = audio_config.get("tts", {})
     voice = tts_cfg.get("voice", "zh-CN-XiaoxiaoNeural")
+    provider = tts_cfg.get("provider", "edge-tts")
     bgm_rel = audio_config.get("fallback_bgm", "")
 
     # Strategy override shortcuts
@@ -69,9 +70,12 @@ def plan_audio(
         return _plan_bgm(work_dir, bgm_rel, repo_root, fallback_reason="strategy_bgm_only")
 
     # --- Level 1: TTS ---
-    if strategy == "tts_with_offline_fallback" and allow_network:
+    # Windows SAPI is an OS-local engine.  `allow_network: false` blocks the
+    # remote edge-tts route but must not suppress this explicitly local path.
+    local_tts = provider == "windows-sapi"
+    if strategy == "tts_with_offline_fallback" and (allow_network or local_tts):
         try:
-            return _plan_tts(timeline_doc, work_dir, voice)
+            return _plan_tts(timeline_doc, work_dir, voice, provider)
         except Exception as exc:
             # Fall through to BGM
             reason = f"tts_failed:{_safe_error(exc)}"
@@ -86,7 +90,12 @@ def plan_audio(
 # ---------------------------------------------------------------------------
 
 
-def _plan_tts(timeline_doc: dict, work_dir: Path, voice: str) -> AudioPlan:
+def _plan_tts(
+    timeline_doc: dict,
+    work_dir: Path,
+    voice: str,
+    provider: str = "edge-tts",
+) -> AudioPlan:
     """Level 1: Synthesize TTS per scene, align to scene durations, concat."""
     scenes = timeline_doc.get("scenes", [])
     work_dir = Path(work_dir)
@@ -98,10 +107,11 @@ def _plan_tts(timeline_doc: dict, work_dir: Path, voice: str) -> AudioPlan:
     for idx, scene in enumerate(scenes):
         narration = scene.get("narration", "")
         duration = float(scene["duration"])
-        seg_path = work_dir / f"seg_{idx:03d}.mp3"
+        suffix = ".wav" if provider == "windows-sapi" else ".mp3"
+        seg_path = work_dir / f"seg_{idx:03d}{suffix}"
 
         try:
-            generate_voice(narration, seg_path, voice=voice)
+            generate_voice(narration, seg_path, voice=voice, provider=provider)
         except Exception as exc:
             raise RuntimeError(f"tts_scene_{idx}_failed:{exc}") from exc
 

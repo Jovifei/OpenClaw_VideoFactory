@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/ops/provider_qualification_preflight_error.schema.json",
+  "title": "Provider Qualification Preflight Error",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["code", "message", "context"],
+  "properties": {
+    "code": {
+      "const": "provider_qualification_preflight_failed"
+    },
+    "message": {
+      "const": "Provider preflight stopped."
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stage", "gate", "substep", "reason", "exit_code"],
+      "properties": {
+        "stage": {
+          "const": "preflight"
+        },
+        "gate": {
+          "enum": [
+            "authorization",
+            "source_freeze",
+            "external_root",
+            "active_lock",
+            "fresh_job",
+            "fresh_evidence",
+            "git_boundary",
+            "codex_cli",
+            "media_tools",
+            "immutable_005t",
+            "cache_snapshot",
+            "environment_hashes",
+            "desktop_snapshot"
+          ]
+        },
+        "substep": {
+          "enum": [
+            "change_request",
+            "source_freeze_hash",
+            "external_root_path",
+            "active_lock_probe",
+            "job_path",
+            "external_root_entries",
+            "git_index",
+            "git_branch",
+            "git_head",
+            "dirty_files",
+            "path_resolution",
+            "version_probe",
+            "help_probe",
+            "required_flags",
+            "tool_path",
+            "tool_hash",
+            "evidence_identity",
+            "evidence_hash",
+            "json_parse",
+            "health",
+            "baseline_hash",
+            "config_hash",
+            "auth_hash",
+            "process_probe"
+          ]
+        },
+        "reason": {
+          "enum": [
+            "change_request_missing",
+            "change_request_invalid",
+            "change_request_not_authorized",
+            "source_freeze_drift",
+            "active_run_exists",
+            "fresh_job_required",
+            "fresh_evidence_required",
+            "git_index_changed",
+            "git_branch_changed",
+            "git_head_changed",
+            "dirty_file_changed",
+            "cli_not_npm",
+            "cli_version_unsupported",
+            "cli_help_unavailable",
+            "cli_flag_missing",
+            "media_tool_unavailable",
+            "media_tool_changed",
+            "immutable_005t_invalid",
+            "immutable_005t_drift",
+            "cache_missing",
+            "cache_invalid",
+            "cache_unhealthy",
+            "environment_baseline_missing",
+            "config_changed",
+            "auth_changed",
+            "desktop_probe_failed",
+            "unexpected_error"
+          ]
+        },
+        "exit_code": {
+          "type": ["integer", "null"]
+        }
+      }
+    }
+  }
+}

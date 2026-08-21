@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from video_factory.pipeline.errors import FactoryContractError
+from video_factory.pipeline.failure_contract import sanitize_error_payload
 from video_factory.pipeline.storyboard import StoryboardError, compile_storyboard, validate_storyboard
 from video_factory.pipeline.validation import validate as validate_schema
 
@@ -28,6 +29,8 @@ from .context import (
 )
 from .director_contract import Director
 from .provider import CodexCliDirectorProvider, DirectorProvider
+from .script_planner import ScriptPlanner
+from .factual import FactualBrief
 
 
 DEFAULT_GLOBALS: dict[str, object] = {
@@ -52,6 +55,7 @@ _ALLOWED_SCENE_FIELDS = {
     "transition_out",
 }
 _REPORT_ERROR_CONTEXT_KEYS = {
+    "stage",
     "provider",
     "attempt",
     "exit_code",
@@ -77,7 +81,7 @@ def _json_sha256(value: object) -> str:
 
 
 def _safe_report_error(exc: FactoryContractError, *, attempt: int) -> dict[str, object]:
-    detail = exc.to_dict()
+    detail = sanitize_error_payload(exc)
     raw_context = detail.get("context", {})
     context = {
         str(key): value
@@ -288,6 +292,7 @@ class AIDirector(Director):
         repo_root: Path | None = None,
         context: DirectorContext | None = None,
         max_attempts: int = 3,
+        workflow: str = "auto",
     ) -> None:
         if max_attempts < 1 or max_attempts > 3:
             raise ValueError("director_attempts_invalid")
@@ -296,7 +301,14 @@ class AIDirector(Director):
         self.provider = provider or CodexCliDirectorProvider()
         self.context = context
         self.max_attempts = max_attempts
+        if workflow not in {"auto", "legacy", "phase2"}:
+            raise ValueError("director_workflow_invalid")
+        self.workflow = workflow
         self.last_report: dict[str, object] | None = None
+        self.last_script: dict[str, object] | None = None
+        self.last_score: dict[str, object] | None = None
+        self.last_asset_selection: dict[str, object] | None = None
+        self.factual_brief: FactualBrief | None = None
 
     def _context(self) -> DirectorContext:
         if self.context is None:
@@ -311,6 +323,7 @@ class AIDirector(Director):
         return str(value).replace("\r", "").replace("\n", "")[:128] or "unknown"
 
     def _report_base(self, topic: str, attempts: int) -> dict[str, object]:
+        factual_required = not (self.factual_brief is not None and self.factual_brief.verified)
         return {
             "schema_version": "1.0",
             "provider": self._provider_name(),
@@ -324,11 +337,79 @@ class AIDirector(Director):
             "storyboard_id": stable_storyboard_id(topic),
             "storyboard_sha256": _json_sha256({}),
             "compiled_duration_seconds": 0.0,
-            "factual_review_required": True,
+            "factual_review_required": factual_required,
             "error": None,
         }
 
+    def _reset_run_state(self) -> None:
+        """Drop artifacts from a prior invocation before starting a run."""
+
+        self.last_report = None
+        self.last_script = None
+        self.last_score = None
+        self.last_asset_selection = None
+
+    def create_script(self, topic: str, *, factual_brief: FactualBrief | None = None) -> dict[str, object]:
+        """Generate a deterministic DirectorScript for the Phase 2 path."""
+
+        self._reset_run_state()
+        if factual_brief is not None:
+            self.factual_brief = factual_brief
+        context = self._context()
+        planner = ScriptPlanner(
+            self.provider,
+            repo_root=self.repo_root,
+            context=context,
+            max_attempts=self.max_attempts,
+        )
+        script = planner.create_script(topic, factual_brief=factual_brief)
+        self.last_script = script
+        self.last_score = planner.last_result.score if planner.last_result else None
+        return script
+
+    def _create_phase2_storyboard(self, topic: str, *, factual_brief: FactualBrief | None = None) -> dict[str, object]:
+        normalized = normalize_topic(topic)
+        context = self._context()
+        factual_brief = factual_brief if factual_brief is not None else self.factual_brief
+        script = self.create_script(normalized, factual_brief=factual_brief)
+        from .storyboard_assembler import StoryboardAssembler
+        from .asset_selector import AssetSelector
+
+        assembler = StoryboardAssembler(repo_root=self.repo_root, registry=context.registry)
+        storyboard = assembler.from_script(script)
+        selection = AssetSelector(repo_root=self.repo_root, registry=context.registry).select_assets(
+            storyboard, context.registry
+        )
+        storyboard = selection.storyboard
+        validate_schema(storyboard, "storyboard")
+        validate_storyboard(storyboard)
+        timeline = compile_storyboard(storyboard, context.registry, repo_root=self.repo_root)
+        total = float(timeline.get("total_duration_seconds", 0.0))
+        if not 25.0 <= total <= 60.0:
+            raise FactoryContractError(
+                "director_storyboard_invalid",
+                "Director storyboard duration is outside the approved range.",
+                {"path": "timeline.total_duration_seconds", "reason": "duration_range"},
+            )
+        self.last_asset_selection = selection.report
+        self.last_report = {
+            **self._report_base(normalized, 1),
+            "draft_validation": {"status": "pass", "error_count": 0, "validator": "jsonschema"},
+            "storyboard_validation": {"status": "pass", "error_count": 0, "validator": "jsonschema"},
+            "semantic_validation": {"status": "pass", "error_count": 0, "validator": "director_semantics"},
+            "storyboard_id": storyboard["storyboard_id"],
+            "storyboard_sha256": _json_sha256(storyboard),
+            "compiled_duration_seconds": round(total, 3),
+        }
+        validate_schema(self.last_report, "director_run_report")
+        return storyboard
+
     def create_storyboard(self, topic: str) -> dict[str, object]:
+        self._reset_run_state()
+        if self.workflow == "phase2" or (
+            self.workflow == "auto" and isinstance(self.provider, CodexCliDirectorProvider)
+        ):
+            return self._create_phase2_storyboard(topic)
         normalized = normalize_topic(topic)
         context = self._context()
         prompt = build_director_prompt(normalized, context)

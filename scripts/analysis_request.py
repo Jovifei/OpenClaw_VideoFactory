@@ -420,6 +420,14 @@ def create_ticket_analysis_request(ticket: Dict[str, Any]) -> Dict[str, Any]:
         return _error("chat_mismatch")
     if binding.get("sender_id_sha256") != identity_digest(requester_id):
         return _error("sender_mismatch")
+    ingress_event_id_hash = ticket.get("ingress_event_id_hash")
+    if ingress_event_id_hash is not None:
+        ingress_event_id_hash = str(ingress_event_id_hash).lower()
+        if (
+            not HASH_RE.fullmatch(ingress_event_id_hash)
+            or binding.get("ingress_event_id_hash") != ingress_event_id_hash
+        ):
+            return _error("receipt_invalid")
 
     request_dir = receipt_path.parent / "analysis_requests"
     request_key = f"ticket-{ticket_hash}"
@@ -442,6 +450,7 @@ def create_ticket_analysis_request(ticket: Dict[str, Any]) -> Dict[str, Any]:
         "action": action,
         "action_source": "media_action_ticket",
         "ticket_hash": ticket_hash,
+        "ingress_event_id_hash": ingress_event_id_hash,
         "ticket_expires_at": ticket["expires_at"],
         "requested_at": _utc_now(),
         "status": "pending",
@@ -502,12 +511,22 @@ def update_request_status(
 
 
 def route_binding_payload(
-    message_id: str, attachment_index: int, chat_id: str, sender_id: str
+    message_id: str,
+    attachment_index: int,
+    chat_id: str,
+    sender_id: str,
+    *,
+    ingress_event_id_hash: Optional[str] = None,
 ) -> Dict[str, Any]:
-    return {
+    payload = {
         "schema_version": SCHEMA_VERSION,
         "message_id": message_id,
         "attachment_index": int(attachment_index),
         "chat_id_sha256": identity_digest(chat_id),
         "sender_id_sha256": identity_digest(sender_id),
     }
+    if ingress_event_id_hash is not None:
+        if not HASH_RE.fullmatch(ingress_event_id_hash):
+            raise ValueError("ingress_event_hash_invalid")
+        payload["ingress_event_id_hash"] = ingress_event_id_hash.lower()
+    return payload

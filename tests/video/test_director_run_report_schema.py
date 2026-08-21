@@ -106,7 +106,6 @@ def test_report_requires_all_contract_fields(schema: dict, field: str) -> None:
         ("storyboard_sha256", "z" * 64),
         ("attempts", 4),
         ("prompt_version", "v1"),
-        ("factual_review_required", False),
         ("draft_validation", {"status": "unknown"}),
     ],
 )
@@ -114,6 +113,12 @@ def test_report_rejects_unstable_or_invalid_values(schema: dict, field: str, val
     report = _valid_report()
     report[field] = value
     assert _errors(schema, report)
+
+
+def test_report_accepts_verified_factual_review_without_required_human_review(schema: dict) -> None:
+    report = _valid_report()
+    report["factual_review_required"] = False
+    assert _errors(schema, report) == []
 
 
 def test_report_rejects_raw_prompt_paths_and_unknown_fields(schema: dict) -> None:

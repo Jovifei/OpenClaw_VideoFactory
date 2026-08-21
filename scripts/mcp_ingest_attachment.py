@@ -52,6 +52,9 @@ PROJECT_ROOT = Path(os.environ.get("OPENCLAW_PROJECT_ROOT", str(SCRIPT_DIR.paren
 INGEST_SCRIPT = Path(
     os.environ.get("OPENCLAW_INGEST_SCRIPT", str(SCRIPT_DIR / "run_ingest_safe.ps1"))
 ).resolve()
+EVENT_LEDGER_DIRNAME = ".event-idempotency"
+EVENT_LOCK_TIMEOUT_SECONDS = 15.0
+EVENT_STALE_LOCK_SECONDS = 60.0
 from analysis_request import (
     configure_storage,
     create_ticket_analysis_request,
@@ -62,6 +65,12 @@ from media_action_ticket import (
     consume_media_action_ticket,
     issue_media_action_ticket,
 )  # noqa: E402
+from reply_effect_audit import (  # noqa: E402
+    begin_reply,
+    commit_reply,
+    effect_key,
+    has_delivered_reply,
+)
 
 RESULT_REPLY_MAX_ANALYSIS_CHARS = 112
 RESULT_REPLY_MAX_FIELD_CHARS = 48
@@ -124,6 +133,156 @@ def _clip_visible_text(value: str, limit: int) -> str:
     if len(compact) > limit:
         compact = compact[: max(1, limit - 1)].rstrip() + "…"
     return compact
+
+
+def _event_digest(kind: str, value: str) -> str:
+    """Create a domain-separated, non-reversible event-ledger identifier."""
+    return hashlib.sha256(f"p0-v2/{kind}\0{value}".encode("utf-8")).hexdigest()
+
+
+def _event_ledger_path(event_id: str) -> Path:
+    return PROJECT_ROOT / "input" / "feishu" / EVENT_LEDGER_DIRNAME / f"{_event_digest('event', event_id)}.json"
+
+
+def _event_lock_path(event_id: str) -> Path:
+    """Return the per-event, filesystem-atomic lease directory."""
+    return _event_ledger_path(event_id).with_suffix(".lock")
+
+
+def _release_event_lock(lock_path: Optional[Path]) -> None:
+    if lock_path is None:
+        return
+    try:
+        lock_path.rmdir()
+    except OSError:
+        # A lease is only an ingress serialization primitive.  Never delete a
+        # non-empty or replaced path during cleanup.
+        pass
+
+
+def _acquire_event_lock(clean: Dict[str, Any]) -> Tuple[Optional[Path], Optional[str]]:
+    """Serialize one event across processes, with bounded stale-lock recovery.
+
+    ``mkdir`` is atomic on the supported Windows filesystem.  The lock stays
+    held across quarantine, route binding, manifest, ticket issuance and the
+    event ledger write, so a second delivery observes the completed ledger
+    instead of creating another ingress effect.
+    """
+    event_id = clean.get("event_id", "")
+    if not event_id:
+        return None, None
+    lock_path = _event_lock_path(event_id)
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    deadline = time.monotonic() + EVENT_LOCK_TIMEOUT_SECONDS
+    while True:
+        try:
+            lock_path.mkdir()
+            return lock_path, None
+        except FileExistsError:
+            try:
+                if time.time() - lock_path.stat().st_mtime >= EVENT_STALE_LOCK_SECONDS:
+                    lock_path.rmdir()
+                    continue
+            except OSError:
+                pass
+            if time.monotonic() >= deadline:
+                return None, "event_id_in_progress"
+            time.sleep(0.02)
+        except OSError:
+            return None, "event_id_lease_unavailable"
+
+
+def _load_event_ledger(clean: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
+    """Return whether this attachment has already completed for its event id.
+
+    The ledger never stores a raw event or message identifier.  It is optional
+    for legacy Channel calls that do not provide an event id.
+    """
+    event_id = clean.get("event_id", "")
+    if not event_id:
+        return False, None
+    path = _event_ledger_path(event_id)
+    if not path.exists():
+        return False, None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            return False, "event_id_ledger_invalid"
+        if payload.get("event_id_hash") != _event_digest("event", event_id):
+            return False, "event_id_ledger_invalid"
+        if payload.get("message_id_hash") != _event_digest("message", clean["message_id"]):
+            return False, "event_id_identity_conflict"
+        if payload.get("attachment_count") != clean["attachment_count"]:
+            return False, "event_id_identity_conflict"
+        attachments = payload.get("attachments")
+        if not isinstance(attachments, dict):
+            return False, "event_id_ledger_invalid"
+        return str(clean["attachment_index"]) in attachments, None
+    except (OSError, ValueError, TypeError):
+        return False, "event_id_ledger_invalid"
+
+
+def _record_event_effect(clean: Dict[str, Any], result: Dict[str, Any]) -> Optional[str]:
+    """Atomically record one quarantined attachment effect for a Channel event."""
+    event_id = clean.get("event_id", "")
+    if not event_id:
+        return None
+    path = _event_ledger_path(event_id)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload: Dict[str, Any] = {
+        "event_id_hash": _event_digest("event", event_id),
+        "message_id_hash": _event_digest("message", clean["message_id"]),
+        "attachment_count": clean["attachment_count"],
+        "attachments": {},
+    }
+    if path.exists():
+        duplicate, error = _load_event_ledger(clean)
+        if error is not None:
+            return error
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError, TypeError):
+            return "event_id_ledger_invalid"
+        if duplicate:
+            return None
+    attachments = payload.get("attachments")
+    if not isinstance(attachments, dict):
+        return "event_id_ledger_invalid"
+    attachments[str(clean["attachment_index"])] = {
+        "effect": "quarantined",
+        "stored_sha256": str(result.get("stored_sha256", "")).lower(),
+    }
+    payload["attachments"] = attachments
+    temp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+    try:
+        temp.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+        os.replace(temp, path)
+        return None
+    except OSError:
+        if temp.exists():
+            temp.unlink()
+        return "event_id_ledger_write_failed"
+
+
+def _record_ingress_reply_audit(result: Dict[str, Any]) -> None:
+    """Stage 2 (094): bind the single visible ingress reply to the event hash.
+
+    The ingress confirmation is one user-visible reply per Channel event.  We
+    reserve it under ``ingress_event_id_hash`` so a duplicate event (same hash)
+    cannot produce a second egress.  The router must honor
+    ``visible_reply_suppressed`` returned here.
+    """
+    event_hash = result.get("ingress_event_id_hash")
+    if not event_hash:
+        return
+    route_key = effect_key("ingress", event_hash)
+    reply_key = effect_key("ingress_reply", event_hash)
+    begun = begin_reply(event_hash, route_key, reply_key)
+    if begun.get("status") == "duplicate":
+        result["visible_reply_suppressed"] = True
+        return
+    committed = commit_reply(event_hash)
+    result["visible_reply_audit"] = committed.get("status", "pending")
 
 
 def _as_visible_text(value: Any) -> Optional[str]:
@@ -1075,7 +1234,13 @@ def _write_route_binding(clean: Dict[str, Any], result: Dict[str, Any]) -> Optio
         return None
     binding_path = attachment_root / "route_binding.json"
     payload = route_binding_payload(
-        clean["message_id"], clean["attachment_index"], clean["chat_id"], clean["sender_id"]
+        clean["message_id"],
+        clean["attachment_index"],
+        clean["chat_id"],
+        clean["sender_id"],
+        ingress_event_id_hash=_event_digest("event", clean["event_id"])
+        if clean.get("event_id")
+        else None,
     )
     if binding_path.exists():
         try:
@@ -1123,6 +1288,49 @@ def ingest_attachment(
             "status": "rejected",
             "error_code": err["error_code"],
             "detail": err.get("detail", ""),
+            "analysis_allowed": False,
+            "content_parsed": False,
+            "quarantined": False,
+            "attachment_action": "unsupported_action",
+            "analysis_requested": False,
+        }
+
+    event_lock, event_error = _acquire_event_lock(clean)
+    if event_error is not None:
+        return {
+            "status": "rejected",
+            "error_code": event_error,
+            "analysis_allowed": False,
+            "content_parsed": False,
+            "quarantined": False,
+            "attachment_action": "unsupported_action",
+            "analysis_requested": False,
+        }
+    try:
+        return _ingest_validated_attachment(clean)
+    finally:
+        _release_event_lock(event_lock)
+
+
+def _ingest_validated_attachment(clean: Dict[str, Any]) -> Dict[str, Any]:
+    """Ingest one validated attachment while its event lease is held."""
+    duplicate_event, event_error = _load_event_ledger(clean)
+    if event_error is not None:
+        return {
+            "status": "rejected",
+            "error_code": event_error,
+            "analysis_allowed": False,
+            "content_parsed": False,
+            "quarantined": False,
+            "attachment_action": "unsupported_action",
+            "analysis_requested": False,
+        }
+    if duplicate_event:
+        return {
+            "status": "duplicate",
+            "duplicate_event": True,
+            "message_id": clean["message_id"],
+            "attachment_index": clean["attachment_index"],
             "analysis_allowed": False,
             "content_parsed": False,
             "quarantined": False,
@@ -1198,10 +1406,14 @@ def ingest_attachment(
         "untrusted_size_claim_source": clean["untrusted_size_claim_source"],
         "content_parsed": False,
         "quarantined": True,
+        "duplicate_event": False,
         "already_ingested": already,
         "analysis_allowed": analysis_allowed,
         "manifest_path": manifest_path,
         "route_binding_path": route_binding_path,
+        "ingress_event_id_hash": _event_digest("event", clean["event_id"])
+        if clean.get("event_id")
+        else None,
     }
     ticket_result = issue_media_action_ticket(
         internal_result,
@@ -1219,6 +1431,20 @@ def ingest_attachment(
             "ticket_action": ticket_result.get("allowed_action"),
         }
     )
+    event_error = _record_event_effect(clean, internal_result)
+    if event_error is not None:
+        return {
+            "status": "rejected",
+            "error_code": event_error,
+            "message_id": clean["message_id"],
+            "attachment_index": clean["attachment_index"],
+            "analysis_allowed": False,
+            "content_parsed": False,
+            "quarantined": True,
+            "attachment_action": "unsupported_action",
+            "analysis_requested": False,
+        }
+    _record_ingress_reply_audit(internal_result)
     return internal_result
 
 

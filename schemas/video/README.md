@@ -74,3 +74,24 @@ Storyboard scenes may carry `asset_id`, `layout_mode`, `subtitle_layout`,
 legacy storyboards and are copied deterministically to Timeline scenes when
 present. The shipped `knowledge_illustration` contract remains the single
 source for the 1080×1920 safe regions; it does not create a second renderer.
+## Phase 2 Director contracts
+
+- `director_script.schema.json`: provider-facing semantic script (5–9 beats;
+  no asset IDs, paths, registry data, scene IDs, or render parameters).
+- `director_factual_brief.schema.json`: source-linked claims and metadata;
+  verified status requires at least two sources in the loader policy.
+- `asset_selection_report.schema.json`: deterministic Registry asset decisions,
+  hashes, rights basis, classification, and fallback evidence.
+- `director_quality_report.schema.json`: pre/post-render checks and factual
+  review status.
+- `video_job_state.schema.json` version `1.0` retains the original six-state
+  contract; version `2.0` adds the Director lifecycle and script/quality refs.
+
+These schemas validate snapshots and artifacts only. They do not implement a
+database, transition executor, retry engine, or external orchestration.
+
+`director_run_report.schema.json` permits `factual_review_required` to be a
+boolean: verified factual briefs use `false`, while topic-only reports use
+`true`. The same flag is carried by `video_job_state` so lifecycle and Director
+evidence cannot disagree. Remediation 004 errors remain limited to stable,
+non-sensitive `code`, `message`, and `context` fields.

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/director_quality_report.schema.json",
+  "title": "DirectorQualityReport",
+  "description": "Sanitized pre-render and post-render quality evidence for a Director job.",
+  "type": "object",
+  "required": ["schema_version", "job_id", "status", "score", "checks", "factual_review_required", "factual_review_status", "render_report_ref", "error"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "job_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "status": {"type": "string", "enum": ["completed", "review_required", "revision_required", "failed"]},
+    "score": {"type": "integer", "minimum": 0, "maximum": 100},
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check_id", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "check_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "status": {"type": "string", "enum": ["pass", "fail", "review_required"]},
+          "detail": {"type": "string", "maxLength": 240}
+        }
+      }
+    },
+    "factual_review_required": {"type": "boolean"},
+    "factual_review_status": {"type": "string", "enum": ["verified", "review_required", "not_applicable"]},
+    "render_report_ref": {"type": ["string", "null"], "pattern": "^(|[^/][^:]*\\.json)$"},
+    "error": {
+      "anyOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "required": ["code", "message", "context"],
+          "additionalProperties": false,
+          "properties": {
+            "code": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+            "message": {"type": "string", "minLength": 1, "maxLength": 240},
+            "context": {"type": "object", "additionalProperties": false}
+          }
+        }
+      ]
+    }
+  }
+}

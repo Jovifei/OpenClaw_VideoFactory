@@ -34,7 +34,7 @@
       "render_ready": true,
       "sha256": "e1cf5e3093a30be05f451b5c97d839d1d6d036fd452f7c4ab2a0c2232f09bd60",
       "pose_confidence": "verified",
-      "tags": ["idle", "observe"]
+      "tags": ["idle", "observe", "education"]
     },
     {
       "asset_id": "pink_pig.thinking.v1",
@@ -47,7 +47,7 @@
       "render_ready": true,
       "sha256": "5bc65a04569a225d0f24a4f44461c00945a8c2a4f4ad880f67232b4e35737ae1",
       "pose_confidence": "verified",
-      "tags": ["observe", "analyze"]
+      "tags": ["observe", "analyze", "education", "explain"]
     },
     {
       "asset_id": "pink_pig.repair.v1",
@@ -60,7 +60,7 @@
       "render_ready": true,
       "sha256": "988bd3a4d15f960d2d8513d9c8924a4ac6a37b5b229e7282c62cc48e2d22a3a2",
       "pose_confidence": "verified",
-      "tags": ["fix", "modify"]
+      "tags": ["fix", "modify", "repair"]
     },
     {
       "asset_id": "pink_pig.measure.v1",
@@ -73,7 +73,7 @@
       "render_ready": true,
       "sha256": "8979cb3559e111e7bfc8edc47edc700ff51bd993bc34de236578c49b03bc645c",
       "pose_confidence": "verified",
-      "tags": ["check", "evaluate"]
+      "tags": ["check", "evaluate", "measure"]
     },
     {
       "asset_id": "pink_pig.success.v1",
@@ -86,7 +86,7 @@
       "render_ready": true,
       "sha256": "8aa8abdee1a4cc84bb793352e997be453d126b930ea9b253ab4ed55546489f1b",
       "pose_confidence": "verified",
-      "tags": ["complete", "done"]
+      "tags": ["complete", "done", "summary"]
     },
     {
       "asset_id": "pink_pig.question.v1",
@@ -100,7 +100,7 @@
       "sha256": "",
       "fallback_asset_id": "pink_pig.normal.v1",
       "pose_confidence": "verified",
-      "tags": ["ask", "clarify"]
+      "tags": ["ask", "clarify", "explain"]
     },
     {
       "asset_id": "pink_pig.warning.v1",
@@ -114,7 +114,7 @@
       "sha256": "",
       "fallback_asset_id": "pink_pig.normal.v1",
       "pose_confidence": "verified",
-      "tags": ["alert", "notice"]
+      "tags": ["alert", "notice", "education", "warning"]
     },
     {
       "asset_id": "pink_pig.ending.v1",
@@ -128,7 +128,7 @@
       "sha256": "",
       "fallback_asset_id": "pink_pig.normal.v1",
       "pose_confidence": "verified",
-      "tags": ["finish", "close"]
+      "tags": ["finish", "close", "summary"]
     },
     {
       "asset_id": "pink_pig.knowledge_master_slave.v1",
@@ -142,7 +142,7 @@
       "render_ready": true,
       "sha256": "9cae4c6973eb3be8a0df0b90deb8d2300f8a6cf4add3da71c0c8f25253bdaedf",
       "pose_confidence": "verified",
-      "tags": ["knowledge_illustration", "modbus_rtu", "master_slave"]
+      "tags": ["knowledge_illustration", "modbus_rtu", "master_slave", "education", "explain"]
     },
     {
       "asset_id": "pink_pig.knowledge_frame_layout.v1",
@@ -156,7 +156,7 @@
       "render_ready": true,
       "sha256": "7bee0f4a766a254d11f8f2207b1fc8580360ef764d076bb54a04a8d7174feabc",
       "pose_confidence": "verified",
-      "tags": ["knowledge_illustration", "modbus_rtu", "frame_layout"]
+      "tags": ["knowledge_illustration", "modbus_rtu", "frame_layout", "education", "protocol_frame", "explain"]
     },
     {
       "asset_id": "pink_pig.knowledge_serial_parameters.v1",
@@ -170,7 +170,7 @@
       "render_ready": true,
       "sha256": "69bdc5364cd81cb24a3615a1dbfe9f4d067e797573a5a38213fed7389c2a179a",
       "pose_confidence": "verified",
-      "tags": ["knowledge_illustration", "modbus_rtu", "serial_parameters"]
+      "tags": ["knowledge_illustration", "modbus_rtu", "serial_parameters", "education", "measure"]
     },
     {
       "asset_id": "pink_pig.knowledge_troubleshooting.v1",
@@ -184,7 +184,7 @@
       "render_ready": true,
       "sha256": "e3f288680d759d3154e4089f3a81c2c8b16f60cbfa9946a56e2372f11fdf3980",
       "pose_confidence": "verified",
-      "tags": ["knowledge_illustration", "modbus_rtu", "troubleshooting"]
+      "tags": ["knowledge_illustration", "modbus_rtu", "troubleshooting", "education", "warning", "repair"]
     },
     {
       "asset_id": "pink_pig.knowledge_summary.v1",
@@ -198,7 +198,7 @@
       "render_ready": true,
       "sha256": "78b49611e27786a3b231460f15f4cab28eb5b1e47c4aeb56ed91d562d0d1fe93",
       "pose_confidence": "verified",
-      "tags": ["knowledge_illustration", "modbus_rtu", "summary"]
+      "tags": ["knowledge_illustration", "modbus_rtu", "summary", "education"]
     },
     {
       "asset_id": "pink_pig.signature.v1",
