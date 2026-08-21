@@ -84,6 +84,21 @@ def test_ingest_rejects_source_sha_mismatch(tmp_path: Path) -> None:
     assert caught.value.code == "reference_rights_sha_mismatch"
 
 
+def test_ingest_rejects_source_changed_during_ffprobe(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    source = tmp_path / "source.mp4"
+    _make_mp4(source)
+    rights = _rights(source)
+
+    def mutate_then_probe(path: Path) -> dict[str, object]:
+        path.write_bytes(path.read_bytes() + b"changed")
+        return {"duration_seconds": 1.2, "width": 320, "height": 180, "has_audio": False, "fps": 30.0}
+
+    monkeypatch.setattr(reference_video, "_run_ffprobe", mutate_then_probe)
+    with pytest.raises(FactoryContractError) as caught:
+        reference_video.ingest_reference(source, rights)
+    assert caught.value.code == "reference_source_changed"
+
+
 def test_ingest_rejects_symlink_source(tmp_path: Path) -> None:
     source = tmp_path / "source.mp4"
     _make_mp4(source)

@@ -7,7 +7,7 @@ from pathlib import Path
 import jsonschema
 import pytest
 
-from src.factory.reference_video import build_original_brief
+from src.factory.reference_video import build_difference_report, build_original_brief
 from video_factory.pipeline.errors import FactoryContractError
 
 
@@ -72,3 +72,53 @@ def test_original_brief_blocks_source_path_injection() -> None:
     with pytest.raises(FactoryContractError) as caught:
         build_original_brief(brief, _report())
     assert caught.value.code == "original_brief_invalid"
+
+
+@pytest.mark.parametrize(
+    "injected",
+    [
+        {"sources": [{"source_id": "source_a", "title": "A", "publisher": "A", "url": "file:///E:/private/reference.mp4", "kind": "standard"},
+                    {"source_id": "source_b", "title": "B", "publisher": "B", "url": "https://example.test/b", "kind": "official_document"}]},
+        {"facts": [{"fact_id": "fact_one", "claim": "input/reference_videos/source.mp4", "source_ids": ["source_a"]}]},
+    ],
+)
+def test_original_brief_blocks_nested_source_path_injection(injected: dict[str, object]) -> None:
+    topic = "原创工程主题"
+    brief = {"topic": topic, "factual_brief": _factual(topic)}
+    brief["factual_brief"] = {**brief["factual_brief"], **injected}  # type: ignore[arg-type]
+    with pytest.raises(FactoryContractError) as caught:
+        build_original_brief(brief, _report())
+    assert caught.value.code == "original_brief_invalid"
+
+
+def test_difference_report_scans_render_and_audio_manifests(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    source_sha = "b" * 64
+    runtime = tmp_path / "runtime"
+    runtime.mkdir()
+    report = _report()
+    report["source_sha256"] = source_sha
+    (runtime / "reference_report.json").write_text(json.dumps(report), encoding="utf-8")
+    work_dir = tmp_path / "work"
+    work_dir.mkdir()
+    output = work_dir / "final_master.mp4"
+    output.write_bytes(b"new-output")
+    (work_dir / "render_job.yaml").write_text(
+        "audio:\n  tts:\n    provider: windows-sapi\n", encoding="utf-8"
+    )
+    (work_dir / "render_manifest.json").write_text(
+        json.dumps({"asset_path": "input/reference_videos/" + source_sha + ".mp4"}), encoding="utf-8"
+    )
+    bundle = {
+        "job_id": "phase1_ref_test",
+        "runtime_root": runtime,
+        "receipt": {"source_sha256": source_sha, "source_name": "source.mp4"},
+    }
+    monkeypatch.setattr("src.factory.reference_video._asset_registry_map", lambda: {"asset": "assets/pink_pig/pig01.png"})
+    result = build_difference_report(
+        bundle=bundle,
+        work_dir=work_dir,
+        output_path=output,
+        asset_selection={"selections": [{"asset_id": "asset", "relative_path": "assets/pink_pig/pig01.png"}]},
+    )
+    assert result["status"] == "blocked"
+    assert result["checks"]["reference_path_absent"] == "blocked"

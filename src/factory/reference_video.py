@@ -31,6 +31,9 @@ MAX_BYTES = 1 << 30
 MAX_DURATION_SECONDS = 180.0
 REFERENCE_STORAGE_ROOT = PROJECT_ROOT / "input" / "reference_videos"
 REFERENCE_RUNTIME_ROOT = PROJECT_ROOT / "state" / "phase1_local" / "reference_jobs"
+_FORBIDDEN_BRIEF_KEYS = frozenset(
+    {"path", "source_path", "frame_path", "audio_path", "transcript", "asset_id", "render", "provider", "provider_prompt"}
+)
 
 
 def _fail(code: str, message: str, **context: object) -> FactoryContractError:
@@ -201,6 +204,8 @@ def ingest_reference(video_path: Path, rights_path: Path) -> dict[str, Any]:
         os.chmod(stored, stat.S_IREAD)
     except OSError as exc:
         raise _fail("reference_readonly_failed", "Reference private copy could not be made read-only.", field="stored_path") from exc
+    if _sha256(source) != source_sha:
+        raise _fail("reference_source_changed", "Reference source changed during ingest.", field="video")
 
     reference_id = f"ref_{source_sha[:24]}"
     receipt = {
@@ -395,9 +400,30 @@ def _scene_count_band(count: int) -> str:
     return "1" if count == 1 else "2-4" if count <= 4 else "5-8" if count <= 8 else "9+"
 
 
+def _contains_forbidden_brief_reference(value: object) -> bool:
+    """Reject source paths/control fields even when nested in factual input."""
+
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if str(key).lower() in _FORBIDDEN_BRIEF_KEYS:
+                return True
+            if _contains_forbidden_brief_reference(item):
+                return True
+        return False
+    if isinstance(value, list):
+        return any(_contains_forbidden_brief_reference(item) for item in value)
+    if not isinstance(value, str):
+        return False
+    normalized = value.replace("\\", "/").lower()
+    if normalized.startswith(("file://", "//", "/")):
+        return True
+    if len(normalized) >= 3 and normalized[1:3] == ":/" and normalized[0].isalpha():
+        return True
+    return any(marker in normalized for marker in ("input/reference_videos", "state/phase1_local/reference_jobs"))
+
+
 def _user_brief(value: dict[str, Any]) -> tuple[str, dict[str, Any], str | None]:
-    forbidden = {"path", "source_path", "frame_path", "audio_path", "transcript", "asset_id", "render", "provider", "provider_prompt"}
-    if any(key in value for key in forbidden):
+    if _contains_forbidden_brief_reference(value):
         raise _fail("original_brief_invalid", "Original brief input contains a forbidden source or renderer field.", field="brief")
     topic = normalize_topic(value.get("topic")) if isinstance(value.get("topic"), str) else ""
     factual = value.get("factual_brief")
@@ -539,7 +565,18 @@ def build_difference_report(*, bundle: dict[str, Any], work_dir: Path, output_pa
     report = _read_object(Path(bundle["runtime_root"]) / "reference_report.json", "reference_report")
     output_sha = _sha256(output_path)
     text_values: list[str] = []
-    for name in ("render_job.yaml", "asset_selection_report.json", "storyboard.json", "timeline.json", "run_report.json"):
+    for name in (
+        "render_job.yaml",
+        "asset_selection_report.json",
+        "storyboard.json",
+        "timeline.json",
+        "run_report.json",
+        "render_manifest.json",
+        "audio_manifest.json",
+        "quality_report.json",
+        "script.json",
+        "video_job_state.json",
+    ):
         path = Path(work_dir) / name
         if path.is_file():
             try:
@@ -547,8 +584,15 @@ def build_difference_report(*, bundle: dict[str, Any], work_dir: Path, output_pa
             except (OSError, UnicodeError):
                 pass
     joined = "\n".join(text_values)
-    source_markers = ("input/reference_videos", "input\\reference_videos", str(receipt["source_sha256"]))
-    reference_path_absent = "blocked" if any(marker in joined for marker in source_markers[:2]) else "passed"
+    normalized_joined = joined.replace("\\", "/").lower()
+    source_markers = (
+        "input/reference_videos",
+        "state/phase1_local/reference_jobs",
+        str(receipt["source_sha256"]).lower(),
+        str(receipt.get("source_name", "")).lower(),
+        "reference_audio",
+    )
+    reference_path_absent = "blocked" if any(marker and marker in normalized_joined for marker in source_markers) else "passed"
     registry_map = _asset_registry_map()
     selections = asset_selection.get("selections") if isinstance(asset_selection, dict) else None
     registry_assets_only = "passed"
@@ -571,8 +615,8 @@ def build_difference_report(*, bundle: dict[str, Any], work_dir: Path, output_pa
     audio_provider = ""
     if isinstance(render_job.get("audio"), dict) and isinstance(render_job["audio"].get("tts"), dict):
         audio_provider = str(render_job["audio"]["tts"].get("provider", ""))
-    local_sapi = "passed" if audio_provider == "windows-sapi" and "input/reference_videos" not in joined.replace("\\", "/") else "blocked"
-    source_audio_absent = "passed" if str(receipt.get("source_name", "")) not in joined and "reference_audio" not in joined.replace("\\", "/") else "blocked"
+    local_sapi = "passed" if audio_provider == "windows-sapi" and "input/reference_videos" not in normalized_joined else "blocked"
+    source_audio_absent = "passed" if str(receipt.get("source_name", "")).lower() not in normalized_joined and "reference_audio" not in normalized_joined else "blocked"
     text_check = _text_similarity(report, Path(work_dir))
     automatic = [output_sha != receipt["source_sha256"], reference_path_absent == "passed", registry_assets_only == "passed", local_sapi == "passed", source_audio_absent == "passed", text_check["status"] in {"passed", "unavailable"}]
     result = {

@@ -1,4 +1,4 @@
-# PHASE1-REFERENCE-VIDEO-ANALYSIS-001 — IN PROGRESS
+# PHASE1-REFERENCE-VIDEO-ANALYSIS-001 — REVIEWED / READY FOR HUMAN REVIEW
 
 Execution plan: `tasks/plans/2026-08-21-phase1-reference-video-analysis-001.md`.
 Change Requests: `reports/change_requests/PHASE1-LOCAL-BASELINE-PUBLISH-001.json`,
@@ -13,7 +13,7 @@ Change Requests: `reports/change_requests/PHASE1-LOCAL-BASELINE-PUBLISH-001.json
 - [x] Integrate original brief and conditional review-package evidence through the existing renderer.
 - [x] Run targeted tests, synthetic E2E, full regression, fresh-clone smoke, and push the feature branch.
 
-### Review — execution pending
+### Review — implementation and verification complete
 
 - Current branch before baseline publication: `codex/ai-director-video-factory-phase2-001`.
 - Current HEAD before baseline publication: `76180a59ea662bdf168d88baaeb777d3e8eb59ef`.
@@ -21,8 +21,9 @@ Change Requests: `reports/change_requests/PHASE1-LOCAL-BASELINE-PUBLISH-001.json
 - Baseline commits: `57cfca3`, `c90fb94`, `640745e`; baseline branch pushed to `origin`.
 - Feature branch: `codex/phase1-reference-video-analysis-001`, created from `640745e`.
 - Synthetic local-reference E2E produced a 1080x1920/30fps H.264/AAC MP4 and an 11-artifact review package; no source MP4/frame/audio entered the package.
-- Targeted regression currently green: phase1 local 17, reference 6 (one environment-dependent symlink skip), director 47, video 273, video_factory 5.
-- Fresh-clone offline wheel install and core-suite rerun passed; external evidence is `E:\Claude_allow\Download\OpenClaw_VideoFactory-phase1-reference-fresh-clone-20260821.json`.
+- Targeted regression currently green: phase1 local 17, reference 10 (one environment-dependent symlink skip), director 47, video 273, video_factory 5.
+- Final-commit fresh-clone offline wheel install and core-suite rerun passed (`352 passed, 1 skipped`); external evidence is `E:\Claude_allow\Download\OpenClaw_VideoFactory-phase1-reference-fresh-clone-final-20260821.json`.
+- Final feature HEAD and remote branch were rechecked during audit; the exact commit is recorded in the external fresh-clone JSON.
 
 # P0-FEISHU-SINGLE-CONSUMER-086 — IN PROGRESS
 

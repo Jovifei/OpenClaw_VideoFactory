@@ -47,21 +47,29 @@ Targeted regression evidence:
 
 ```text
 python -m pytest tests/phase1_local -q       17 passed
-python -m pytest tests/reference -q          6 passed, 1 symlink skip
+python -m pytest tests/reference -q          10 passed, 1 symlink skip
 python -m pytest tests/director -q            47 passed
 python -m pytest tests/video -q               273 passed
 python -m pytest video_factory/tests -q       5 passed
 ```
 
-Fresh-clone evidence was saved to
-`E:/Claude_allow/Download/OpenClaw_VideoFactory-phase1-reference-fresh-clone-20260821.json`.
-The clone checked out commit `6536ab94ba4d45489b37f36babb3580e8fdd0dcb`,
-installed the locked wheels with `--no-index`, regenerated the ignored legacy
-video fixtures, and passed the same 17/6+skip/47/273/5 core suites. Its
-synthetic reference run produced source SHA
-`d707d6add89556d272be5858ed02c60ef3cdb24d2d3004529fb16dc6e56a0b11`, output
-SHA `d578bc3e8e837392c6b41dfa5756e8d43aecd646ac2134363ae9ca34bde08981`, an
+Final-commit fresh-clone evidence was saved to
+`E:/Claude_allow/Download/OpenClaw_VideoFactory-phase1-reference-fresh-clone-final-20260821.json`.
+The clone checked out the final pushed `codex/phase1-reference-video-analysis-001`
+commit recorded in that JSON, installed all 28 locked wheels with `--no-index`,
+regenerated the ignored legacy video fixtures, and passed `352 passed, 1 skipped`
+across the Phase 1 local, reference, Director, video, and `video_factory` suites.
+Its synthetic reference run produced source SHA
+`2927df80be54df4081d9318de36d05900b408872d20ddd492ddfbeef740f1ed7`, output
+SHA `6f0ffb9f2cd5ac1edbe5720a33d90fd4de838fedb7571d67a7e4ad063be98fa3`, an
 11-artifact package, and ffprobe-confirmed 1080×1920/30 FPS/H.264/AAC media.
+The full decode exited 0, no reference-path strings were found in the review
+package, the stored source mode was `0444`, and the exact temporary clone was
+sent to the Recycle Bin after verification.
+
+The follow-up audit also covers nested original-brief path injection, source
+mutation during ffprobe/copy, and reference-path injection into render/audio
+manifests; these negative cases fail closed.
 
 This report is not a publication or authorization decision; Jovi must still
 perform the final human review of any real authorized source.
