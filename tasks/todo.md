@@ -21,8 +21,8 @@ Change Requests: `reports/change_requests/PHASE1-LOCAL-BASELINE-PUBLISH-001.json
 - Baseline commits: `57cfca3`, `c90fb94`, `640745e`; baseline branch pushed to `origin`.
 - Feature branch: `codex/phase1-reference-video-analysis-001`, created from `640745e`.
 - Synthetic local-reference E2E produced a 1080x1920/30fps H.264/AAC MP4 and an 11-artifact review package; no source MP4/frame/audio entered the package.
-- Targeted regression currently green: phase1 local 17, reference 10 (one environment-dependent symlink skip), director 47, video 273, video_factory 5.
-- Final-commit fresh-clone offline wheel install and core-suite rerun passed (`352 passed, 1 skipped`); external evidence is `E:\Claude_allow\Download\OpenClaw_VideoFactory-phase1-reference-fresh-clone-final-20260821.json`.
+- Targeted regression currently green: phase1 local 17, reference 13 (one environment-dependent symlink skip), director 47, video 273, video_factory 5.
+- Final-commit fresh-clone offline wheel install and core-suite rerun passed (`355 passed, 1 skipped`); external evidence is `E:\Claude_allow\Download\OpenClaw_VideoFactory-phase1-reference-fresh-clone-final-20260821.json`.
 - Final feature HEAD and remote branch were rechecked during audit; the exact commit is recorded in the external fresh-clone JSON.
 
 # P0-FEISHU-SINGLE-CONSUMER-086 — IN PROGRESS

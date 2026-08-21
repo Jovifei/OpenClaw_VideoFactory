@@ -47,7 +47,7 @@ Targeted regression evidence:
 
 ```text
 python -m pytest tests/phase1_local -q       17 passed
-python -m pytest tests/reference -q          10 passed, 1 symlink skip
+python -m pytest tests/reference -q          13 passed, 1 symlink skip
 python -m pytest tests/director -q            47 passed
 python -m pytest tests/video -q               273 passed
 python -m pytest video_factory/tests -q       5 passed
@@ -57,7 +57,7 @@ Final-commit fresh-clone evidence was saved to
 `E:/Claude_allow/Download/OpenClaw_VideoFactory-phase1-reference-fresh-clone-final-20260821.json`.
 The clone checked out the final pushed `codex/phase1-reference-video-analysis-001`
 commit recorded in that JSON, installed all 28 locked wheels with `--no-index`,
-regenerated the ignored legacy video fixtures, and passed `352 passed, 1 skipped`
+regenerated the ignored legacy video fixtures, and passed `355 passed, 1 skipped`
 across the Phase 1 local, reference, Director, video, and `video_factory` suites.
 Its synthetic reference run produced source SHA
 `2927df80be54df4081d9318de36d05900b408872d20ddd492ddfbeef740f1ed7`, output
