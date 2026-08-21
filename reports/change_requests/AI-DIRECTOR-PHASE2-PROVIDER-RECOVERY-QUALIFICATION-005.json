@@ -1,0 +1,52 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-PROVIDER-RECOVERY-QUALIFICATION-005",
+  "mode": "provider_recovery_and_real_qualification",
+  "repository": "E:/project/OpenClaw_VideoFactory",
+  "allowed_repository_paths": [
+    "reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-RECOVERY-QUALIFICATION-005.json",
+    "tasks/todo.md",
+    "tasks/plans/2026-08-10-ai-director-phase2-provider-recovery-005.md",
+    "examples/ai_director_provider_qualification_005/",
+    ".gitignore",
+    "handoff/codex/IMPLEMENTATION_BACKLOG.yaml",
+    "video_factory/README.md",
+    "src/factory/director/README.md",
+    "reports/CODEX_PROVIDER_ENVIRONMENT_AUDIT_005.json",
+    "reports/CODEX_PROVIDER_RECOVERY_EVIDENCE_005.json",
+    "reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005.md"
+  ],
+  "allowed_external_path": "E:/Claude_allow/Download/codex-provider-recovery-005/<cache_sha256_prefix>/",
+  "provider_cache_target": "C:/Users/Admin/.codex/models_cache.json",
+  "does_not_imply_phase_pass": true,
+  "does_not_authorize_project_implementation_changes": true,
+  "does_not_authorize_oauth_profile_model_config_changes": true,
+  "does_not_authorize_openclaw_or_feishu_changes": true,
+  "does_not_authorize_commit_or_push": true,
+  "maximum_isolated_smoke_commands": 1,
+  "maximum_real_acceptance_commands": 1,
+  "forbidden_surfaces": [
+    "OpenClaw",
+    "Feishu",
+    "Gateway",
+    "Binding",
+    "OAuth",
+    "Profile",
+    "Codex model selection",
+    "Cron",
+    "PROJECT_STATUS.yaml",
+    "formal P0/P1/P2 gates",
+    "commit",
+    "push",
+    "model download"
+  ],
+  "execution_status": "blocked_provider_cache_writer_respawned_after_authorized_stop",
+  "blocker": "provider_cache_changed_after_codex_app_server_respawn",
+  "resume_attempt": {
+    "baseline_tests": "47/273/5; legacy 56 passed, 1 skipped",
+    "stopped_child_pid": 13596,
+    "respawned_child_pid": 11968,
+    "cache_sha_before_resume": "adf1ec59c488c1b91f3b3d358962b2464e624c16ceb9c2dfdd56d8f6d84911db",
+    "cache_sha_after_respawn": "81c33af97ff7bca6aa01ef08a2ef1357ffa842dfe40888ca7df63b2595863230",
+    "backup_or_provider_run": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-DESKTOP-DETACHED-PROVIDER-QUALIFICATION-005R",
+  "mode": "desktop_detached_provider_qualification",
+  "repository": "E:/project/OpenClaw_VideoFactory",
+  "allowed_repository_paths": [
+    "tasks/plans/2026-08-10-ai-director-phase2-detached-provider-qualification-005r.md",
+    "scripts/provider_qualification_005r.ps1",
+    "scripts/lib/ProviderQualification005R.psm1",
+    "tests/Test-ProviderQualification005R.ps1",
+    "schemas/ops/provider_qualification_run.schema.json",
+    "examples/ai_director_provider_qualification_005r/",
+    "tasks/todo.md",
+    "reports/CODEX_DESKTOP_QUIESCENCE_AUDIT_005R.json",
+    "reports/CODEX_PROVIDER_DETACHED_RUN_005R.json",
+    "reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005R.md",
+    "reports/change_requests/AI-DIRECTOR-PHASE2-DESKTOP-DETACHED-PROVIDER-QUALIFICATION-005R.json",
+    ".gitignore",
+    "handoff/codex/IMPLEMENTATION_BACKLOG.yaml"
+  ],
+  "allowed_external_paths": [
+    "C:/Users/Admin/.codex/models_cache.json",
+    "E:/Claude_allow/Download/codex-provider-recovery-005r/"
+  ],
+  "does_not_imply_formal_phase_pass": true,
+  "does_not_authorize_oauth_profile_model_changes": true,
+  "does_not_authorize_openclaw_or_feishu_changes": true,
+  "does_not_authorize_commit_or_push": true,
+  "maximum_smoke_commands": 1,
+  "maximum_acceptance_commands": 1,
+  "worker_must_not_terminate_desktop": true,
+  "execution_status": "blocked_detached_worker_died"
+}

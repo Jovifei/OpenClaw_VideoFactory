@@ -1,0 +1,62 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-FINAL-QUALIFICATION-003",
+  "task": "Phase 2 Final Audit and Provider Isolation",
+  "repository_root": "E:/project/OpenClaw_VideoFactory",
+  "expected_branch": "codex/ai-director-video-factory-phase2-001",
+  "expected_head": "76180a59ea662bdf168d88baaeb777d3e8eb59ef",
+  "mode": "read_only_qualification",
+  "allowed_writes": [
+    "reports/change_requests/AI-DIRECTOR-PHASE2-FINAL-QUALIFICATION-003.json",
+    "reports/PHASE2_GIT_AUDIT_003.md",
+    "reports/CODEX_PROVIDER_BLOCKER_003.md",
+    "reports/CODEX_PROVIDER_RECOVERY_PLAN_003.md",
+    "reports/PHASE2_FINAL_QUALIFICATION_003.md",
+    "tasks/todo.md",
+    ".gitignore",
+    "E:/AI_Tools/Obsidian/Data/notes-personal/codex_memory/03-项目记忆/OpenClaw_VideoFactory/05-AI-Director与素材智能.md"
+  ],
+  "read_only_surfaces": [
+    "generate_video.py",
+    "src/factory/director/",
+    "video_factory/",
+    "schemas/",
+    "tests/",
+    "dist/director/",
+    "C:/Users/Admin/.codex/models_cache.json"
+  ],
+  "forbidden_surfaces": [
+    "PROJECT_STATUS.yaml",
+    "OpenClaw",
+    "Feishu",
+    "Gateway",
+    "Binding",
+    "OAuth",
+    "Cron",
+    "Codex config",
+    "Codex models cache",
+    "Codex model or Profile",
+    "formal P0/P1/P2 Gate"
+  ],
+  "forbidden_commands": [
+    "codex exec",
+    "codex login",
+    "git reset",
+    "git clean",
+    "git checkout",
+    "git commit",
+    "git push",
+    "git merge",
+    "git rebase"
+  ],
+  "preexisting_unrelated_dirty_files": [
+    "PROJECT_STATUS.yaml",
+    "reports/P0_ACCEPTANCE_MATRIX_V2.yaml",
+    "scripts/analysis_request.py",
+    "scripts/analyzer_mcp.py",
+    "scripts/mcp_ingest_attachment.py",
+    "scripts/media_action_ticket.py"
+  ],
+  "does_not_imply_phase_pass": true,
+  "does_not_authorize_provider_recovery": true,
+  "does_not_authorize_commit_or_push": true
+}

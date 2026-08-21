@@ -1,0 +1,19 @@
+{
+  "id": "PHASE1-LOCAL-BASELINE-PUBLISH-001",
+  "mode": "existing_local_video_factory_baseline_publication",
+  "granted_by": "user",
+  "goal": "Audit, stage, commit, and push already completed local VideoFactory work before creating the reference-video feature branch.",
+  "does_not_imply_phase_pass": true,
+  "scope": {
+    "allowed_branch": "codex/ai-director-video-factory-phase2-001",
+    "target_remote": "origin",
+    "target_ref": "codex/ai-director-video-factory-phase2-001",
+    "allowed_actions": ["read_status", "classify_existing_changes", "stage_allowlisted_paths", "commit", "push"],
+    "forbidden_actions": ["git_add_all", "reset", "checkout_discard", "clean", "merge_main", "pull", "phase_promotion", "openclaw", "feishu", "cron", "provider", "model_download", "publication"]
+  },
+  "stage_policy": {
+    "include_only": "files attributable to an existing completed Change Request or the Phase 1 local minimum slice",
+    "exclude": ["private_media", "input", "state", "jobs", "dist", "output", "runtime", "cache", "pytest_temp", "unattributed_files"],
+    "stop_if": ["unattributed_unignored_file_remains", "staged_diff_contains_private_media", "baseline_regression_fails", "push_fails"]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "topic_digest": "1224cb6eb1e538f6b33f25664d19c8c22469ddff8b972e81b10404e81fc915d5",
+  "review_status": "verified",
+  "facts": [
+    {
+      "fact_id": "client_server_serial",
+      "claim": "Modbus RTU 在串行线路上采用请求与响应的客户端/服务器通信方式，串行线路规范描述了主站与从站的传统角色。",
+      "source_ids": ["modbus_serial_v102", "modbus_application_v11b3"]
+    },
+    {
+      "fact_id": "frame_and_crc",
+      "claim": "RTU 帧由地址、功能码、数据和 CRC 校验等字段组成，串行线路指南包含帧描述与错误检查方法。",
+      "source_ids": ["modbus_serial_v102"]
+    },
+    {
+      "fact_id": "serial_parameters",
+      "claim": "工程调试需要核对串口物理层、传输模式、信号速率和接口要求，而不能只检查应用层功能码。",
+      "source_ids": ["modbus_serial_v102"]
+    },
+    {
+      "fact_id": "function_codes",
+      "claim": "Modbus 应用协议规范定义了事务框架中的功能码类别及其请求和响应语义。",
+      "source_ids": ["modbus_application_v11b3"]
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "modbus_application_v11b3",
+      "title": "MODBUS APPLICATION PROTOCOL SPECIFICATION V1.1b3",
+      "publisher": "Modbus Organization",
+      "url": "https://www.modbus.org/docs/Modbus_Application_Protocol_V1_1b3.pdf",
+      "kind": "official_document",
+      "published_date": "2012-04-26"
+    },
+    {
+      "source_id": "modbus_serial_v102",
+      "title": "MODBUS over Serial Line Specification and Implementation Guide V1.02",
+      "publisher": "Modbus Organization",
+      "url": "https://www.modbus.org/file/secure/modbusoverserial.pdf",
+      "kind": "official_document",
+      "published_date": "2006-12-20"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-OBSERVABILITY-REMEDIATION-005V3",
+  "mode": "local_preflight_observability_remediation",
+  "execution_status": "prepared_pending_contract_review",
+  "does_not_imply_real_provider_pass": true,
+  "does_not_authorize_preflight_execution": true,
+  "does_not_authorize_worker_start": true,
+  "does_not_authorize_provider_execution": true,
+  "does_not_authorize_cache_or_auth_access": true,
+  "does_not_authorize_desktop_operation": true,
+  "does_not_authorize_smoke_or_acceptance": true,
+  "does_not_authorize_oauth_profile_model_config_changes": true,
+  "does_not_authorize_openclaw_feishu_changes": true,
+  "does_not_authorize_commit_or_push": true,
+  "parent_terminal_bridge": "AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-005V2",
+  "max_local_diagnostic_preflight_commands": 1,
+  "max_worker_generations": 0,
+  "max_smoke_commands": 0,
+  "max_acceptance_commands": 0,
+  "allow_rehearsal": false
+}

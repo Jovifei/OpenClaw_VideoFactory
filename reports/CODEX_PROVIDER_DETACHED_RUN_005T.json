@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "task_id": "AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T",
+  "qualification_profile": "005T",
+  "run_id": "session_20260811T175916Z_43092",
+  "state": "blocked",
+  "terminal_status": "BLOCKED_DETACHED_WORKER_DIED",
+  "state_error": {
+    "code": "WORKER_CONTRACT_FAILED",
+    "stage": "qualification",
+    "reason": "provider_qualification_state_schema_invalid"
+  },
+  "desktop_quiescent": false,
+  "cache_mutation_started": false,
+  "cache_operation": "not_performed",
+  "smoke": { "status": "not_started", "attempt_count": 0 },
+  "acceptance": { "status": "not_started", "attempt_count": 0 },
+  "media": { "mp4_created": false, "ffprobe_performed": false },
+  "provider": { "codex_exec_started": false, "real_provider_qualified": false },
+  "artifact_refs": [
+    "session_20260811T175916Z_43092/state.json",
+    "session_20260811T175916Z_43092/BLOCKED.txt",
+    ".qualification.terminal.session_20260811T175916Z_43092.lock"
+  ],
+  "original_cache_backup_retained": false,
+  "config_auth_modified": false,
+  "protected_dirty_hashes_unchanged": true,
+  "git_index_empty": true,
+  "formal_project_status_modified": false,
+  "does_not_imply_formal_phase_pass": true
+}

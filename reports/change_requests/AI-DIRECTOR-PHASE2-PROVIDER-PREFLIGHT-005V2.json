@@ -1,0 +1,32 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-005V2",
+  "mode": "single_read_only_provider_preflight",
+  "profile": "005V",
+  "parent_profile_task_id": "AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V",
+  "execution_status": "preflight_blocked",
+  "parent_local_remediation": "AI-DIRECTOR-PHASE2-PROVIDER-LOCAL-GATE-REMEDIATION-005V1",
+  "source_freeze_sha256": "a5345643436890e75816d6c24c51b12f7d81d12935afd8a3fe1e51240aa08dde",
+  "does_not_imply_real_provider_pass": true,
+  "maximum_preflight_commands": 1,
+  "maximum_worker_generations": 0,
+  "maximum_smoke_commands": 0,
+  "maximum_acceptance_commands": 0,
+  "allow_rehearsal": false,
+  "does_not_authorize_worker_start": true,
+  "does_not_authorize_provider_execution": true,
+  "does_not_authorize_cache_mutation": true,
+  "does_not_authorize_oauth_profile_model_config_changes": true,
+  "does_not_authorize_commit_or_push": true,
+  "result": {
+    "status": "PREFLIGHT_BLOCKED",
+    "command_count": 1,
+    "exit_code": 1,
+    "sanitized_reason": "unexpected_error",
+    "worker_started": false,
+    "provider_executed": false,
+    "smoke_attempts": 0,
+    "acceptance_attempts": 0,
+    "mp4_count": 0,
+    "report": "reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_005V2.md"
+  }
+}

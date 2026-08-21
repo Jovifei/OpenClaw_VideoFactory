@@ -1,75 +1,50 @@
-# OpenClaw VideoFactory Product Roadmap — 2026
+# OpenClaw VideoFactory Product Roadmap — 2026-08-14
 
-Status: `PROPOSED_PRODUCT_SEQUENCE`
-This roadmap replaces no code or formal gate. It defines the order for future
-authorized work.
+Status: `USER_ALIGNED_PRODUCT_SEQUENCE`
 
-## P0 — Stable AI media entry
+This roadmap records Jovi's product decision. It is a planning document only:
+it does not change runtime configuration, historical evidence, or any phase-pass result.
 
-| Item | Definition |
-| --- | --- |
-| Goal | A secure, observable Feishu media entry with explicit analysis intent and no duplicate application effects |
-| Inputs | Ordinary-user text, TXT/PNG/audio/MP4 attachments, explicit reply/Ticket analysis request |
-| Outputs | Quarantined receipts, classified image/audio/video analysis, redacted ingress/egress/topology evidence |
-| Technology | OpenClaw Feishu Channel, `larksuite/cli` egress, receipt isolation, analyzers, GPU lock, event-ID/delivery idempotency contract |
-| Acceptance | All rows of the proposed P0 matrix, zero-exit P0 Gate and `P0_READY.json` |
-| Risks | Platform retry is not externally controllable; raw identifiers/attachments are sensitive; second consumers cause duplicate effects |
-
-P0 explicitly excludes Project Gateway replacement, Device Auth experiments,
-RPC provenance hardening, daily Cron and automatic publishing.
-
-## P1 — AI video factory MVP
+## Phase 1 — Local Codex Video Factory
 
 | Item | Definition |
 | --- | --- |
-| Goal | From one manually approved topic to one reviewable 25–60 second vertical MP4 delivered once through Feishu |
-| Inputs | Topic plus minimum source context, selected template, optional approved media, stable job key |
-| Outputs | Script, storyboard, WAV, SRT, master MP4, Feishu preview, cover, quality report and delivery record |
-| Technology | SQLite state/events, Edge TTS with fallback policy, Remotion/FFmpeg, NVENC with CPU fallback, mascot SVG, factory delivery adapter |
-| Acceptance | Three fixed fixtures; clean run/rerun/cancel/retry/restart recovery; human visual/listening review; real idempotent factory delivery; P1 Gate |
-| Risks | Candidate artifacts are offline only; renderer/browser drift, voice quality and delivery integration can fail |
+| Goal | Turn a Jovi-provided topic, a Jovi-provided local reference video, or explicitly authorized public-topic research into one reviewable original 25–60 second vertical MP4. |
+| Inputs | Topic plus source context; local reference video; or a bounded approved public-research request. |
+| Outputs | Topic/factual or reference report, original script, storyboard, assets, WAV, captions, master MP4, render manifest, quality report and local review checklist. |
+| Technology | Local Codex workflow, `video_factory`, TTS, subtitles, deterministic SVG/HTML/Remotion/FFmpeg, optional approved local GPU, CPU fallback. |
+| Acceptance | A topic fixture and a local-reference-video fixture each produce a decodable original MP4 with traceable inputs and human visual/listening review. |
+| Excludes | Feishu, OpenClaw/Gateway, lark-cli, Cron, automatic topic choice, automatic upload/publication, cookies and restricted-platform scraping. |
+| Risks | Factual errors, weak source rights, renderer drift, voice quality and weak originality boundaries. |
 
-P1 reuses the existing candidate rather than rebuilding it. No automated topic
-selection, production Cron, new model download, reference-video recreation or
-Jianying dependency is required.
+Reference input means theme/structure/general-expression analysis followed by new work. It never means reusing original audio, watermarks, continuous footage, full scripts or a platform account.
 
-## P2 — Automated operation
-
-| Item | Definition |
-| --- | --- |
-| Goal | Safely operate one daily candidate-to-review package cycle while preserving user control |
-| Inputs | Allowed sources, account history, quota rules, user selection or time-based fallback |
-| Outputs | At least 10 raw topics, 3–5 scored cards at 08:30, one selected job or a 12:00 qualified fallback, run history |
-| Technology | Source adapters, citations, scoring/dedup store, OpenClaw commands, idempotent scheduler and cancellation state machine |
-| Acceptance | Source/date/engineering-impact rules, 28-video quota, duplicate/cancel/retry tests, one scheduled dry-run, seven-day trial >=90% completion and zero duplicate jobs |
-| Risks | Weak source quality, stale trends, schedule duplication and unbounded provider/model costs |
-
-Cron registration begins only after the P2 paths pass their non-scheduled tests.
-
-## P3 — Advanced video production
+## Phase 2 — Feishu Topic Automation and Controlled Delivery
 
 | Item | Definition |
 | --- | --- |
-| Goal | Improve visual/audio quality and local GPU efficiency without making stable delivery fragile |
-| Inputs | Approved workflow manifest, model budget, benchmark corpus and explicit asset rights |
-| Outputs | Versioned ComfyUI workflows, GPU queue telemetry, optional 2–4 second AI inserts, advanced subtitle alignment and fallback reports |
-| Technology | RTX 4070 SUPER queue, faster-whisper improvements, ComfyUI API, optional WhisperX evaluation, NVENC telemetry, static/SVG fallback |
-| Acceptance | Model/workflow hashes, serialized heavy jobs, OOM/timeout fallback, no unapproved download, measured quality/latency improvement |
-| Risks | VRAM exhaustion, model licenses, unstable custom nodes and nondeterministic visuals |
+| Goal | Safely operate one daily candidate-to-review-package cycle after local video creation is proven. |
+| Inputs | Allowed sources, account history, quota rules, a Phase 1 renderer, user selection or a time-based qualified fallback. |
+| Outputs | 10+ raw topics, 3–5 scored cards at 08:30, one selected job or a 12:00 qualified fallback, Feishu review delivery and run history. |
+| Technology | Historical P0 Feishu safety work, OpenClaw commands/state, lark-cli controlled egress, source adapters, scoring/dedup, cancellation and idempotent scheduler. |
+| Acceptance | Real Feishu safety/ingress/egress evidence, source/date/engineering-impact rules, 28-video quota, duplicate/cancel/retry tests, non-scheduled proof, then seven-day trial. |
+| Excludes | Automatic Douyin publishing and uncontrolled third-party downloads/scraping. |
+| Risks | Weak sources, stale trends, schedule duplication, credentials and unbounded provider/model costs. |
 
-## P4 — Publishing assistance
+The former `P0` is retained as a Phase 2 technical prerequisite. It is no longer a reason to delay Phase 1 local video creation.
 
-| Item | Definition |
-| --- | --- |
-| Goal | Make human review and manual Douyin publishing easier without automating the final publish action |
-| Inputs | P1/P2 delivery package and optional approved reference material |
-| Outputs | Publish checklist, cover/caption bundle, optional editable Jianying draft, originality/copyright report |
-| Technology | Artifact manifest, optional Jianying exporter, reference-video analysis/recreation controls |
-| Acceptance | Draft opens locally when enabled; source/rights checks pass; failure never changes MP4 delivery status; Jovi remains final publisher |
-| Risks | Copyright leakage, watermarks, fragile editor integrations and accidental publication |
+## Phase 3 — Advanced Video Production
+
+Improve visual/audio quality and local GPU efficiency: serialized 4070S queue, approved ComfyUI workflows, optional 2–4 second inserts, word-level subtitle experiments and documented fallbacks. No model or node is downloaded without approval.
+
+## Phase 4 — Advanced Reference-Video Original Re-creation
+
+Phase 1 supports basic topic extraction from user-provided local reference video. Phase 4 adds richer transcript, cut, keyframe and style analysis under source-rights and originality checks. No raw audio, watermark or continuous source footage is reused.
+
+## Phase 5 — Publishing Assistance
+
+Provide a publish checklist, cover/caption bundle and optional editable Jianying draft. The MP4 remains primary, and Jovi remains the final Douyin publisher.
 
 ## Sequencing rule
 
-`P0_READY → P1_READY → P2_READY` is the only path to daily operation. P3 and
-P4 enhance a working base; neither may become an excuse to delay the first
-deterministic MP4.
+`PHASE_1_LOCAL_VIDEO_FACTORY_READY → PHASE_2_FEISHU_AUTOMATION_READY → PRODUCTION` is the only route to scheduled operation. Phase 3–5 enhance a working base; they must not delay the first local, human-reviewable MP4.

@@ -1344,3 +1344,43 @@ exceptions:
 - 本轮新增 `director_report.json`，记录 provider、prompt 版本、验证状态、
   digest 和编译时长，不保存原始 prompt、模型输出或绝对路径。
 - 003 完成不进入 004。
+## Phase 2 incremental implementation
+
+Phase 2 adds a compatible local planning layer before the existing factory; it
+does not create a second renderer or change the Phase 1/1.5 contracts:
+
+`topic -> DirectorScript + factual brief -> deterministic StoryboardAssembler
+-> Registry AssetSelector -> existing compiler/run_job -> MP4 + reports`.
+
+The new contracts are `director_script`, `director_factual_brief`,
+`asset_selection_report`, `director_quality_report`, and Video Job State 2.0.
+Python injects stable IDs, Pink Pig registry/IP data, Composition safe regions,
+scene order, and asset IDs. Provider output is semantic-only. The local
+`VideoJobStateMachine` is an atomic snapshot writer; there is no database,
+scheduler, cancellation, or distributed retry engine.
+
+Knowledge videos with a verified two-source factual brief may reach
+`completed`. Topic-only candidates intentionally remain `review_required` at
+`quality_check`. This increment does not modify OpenClaw, Feishu, Gateway,
+Binding, OAuth, Cron, `PROJECT_STATUS.yaml`, or formal phase gate state.
+
+## Remediation 004 — local Phase 2 qualification repair
+
+Ordinary Phase 2 exceptions now become sanitized `video_job_execution_failed`
+errors and atomic `failed` snapshots. Reused Director instances cannot publish
+a prior topic's report. Verified factual briefs align state and Director
+reports at `factual_review_required: false`; topic-only output remains a
+human-review candidate.
+
+The historical `src.factory` Candidate media chain (render, TTS, captions,
+quality, and benchmark) is retired and no longer importable. Its control
+surface remains for database/status/inventory/cancel inspection only. The
+canonical executable path is:
+
+```text
+generate_video.py -> video_factory.pipeline -> FFmpeg Renderer
+```
+
+This is local remediation evidence, not a Phase 2 Ready promotion. Provider
+recovery is deferred to 005; OpenClaw, Feishu, Gateway, Binding, OAuth, Cron,
+and `PROJECT_STATUS.yaml` remain unchanged.

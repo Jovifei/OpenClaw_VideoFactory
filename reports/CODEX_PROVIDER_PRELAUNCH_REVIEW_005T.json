@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "task_id": "AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T",
+  "qualification_profile": "005T",
+  "verdict": "APPROVED",
+  "scope": "local_contract_prelaunch_only",
+  "real_provider_started": false,
+  "worker_started": false,
+  "source_freeze_sha256": "aac8bdb6eb173e211bded9c9caaa4e76358479f4dfd35e2bf0b1eccb134e8c37",
+  "source_files": {
+    "scripts/provider_qualification.ps1": "deb1ad5f29ae140786f945f515e65479186a76aae5dc94903ff31c11d51e40aa",
+    "scripts/lib/ProviderQualification.psm1": "7ab8835cd22cbb76560bd03b5cfc7721ef0831162d4627a0c115b9647b791d6b",
+    "schemas/ops/provider_qualification_run.schema.json": "8cc893aa9f534c1016a2993994e1aa6e803e8182a00b60facfea89aceba5abbe",
+    "tests/Test-ProviderQualification005T.ps1": "5f910d7ce4ebd23368ee66e38c56bd8bc2237b50e1c685a7897c8e4e123e4700"
+  },
+  "reviewers": [
+    { "role": "provider_contract", "verdict": "APPROVED" },
+    { "role": "lifecycle", "verdict": "APPROVED" },
+    { "role": "security", "verdict": "APPROVED" }
+  ],
+  "tests": {
+    "pester_005r_005s_005t": { "passed": 39, "failed": 0, "skipped": 0 },
+    "tests/director": { "passed": 47, "failed": 0 },
+    "tests/video": { "passed": 273, "failed": 0 },
+    "video_factory/tests": { "passed": 5, "failed": 0 },
+    "legacy_candidate": { "passed": 56, "skipped": 1, "subtests": 13, "failed": 0 }
+  },
+  "security_controls": {
+    "no_provider_or_worker_run": true,
+    "no_cache_move": true,
+    "no_config_auth_write": true,
+    "no_forbidden_command_scan_hits": true,
+    "index_empty": true,
+    "does_not_imply_formal_phase_pass": true
+  },
+  "artifact_refs": [
+    "reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T.json",
+    "tasks/plans/2026-08-11-ai-director-phase2-provider-qualification-005t.md"
+  ]
+}

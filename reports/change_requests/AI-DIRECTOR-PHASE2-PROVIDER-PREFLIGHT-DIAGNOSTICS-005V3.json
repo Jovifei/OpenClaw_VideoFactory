@@ -1,0 +1,80 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-DIAGNOSTICS-005V3",
+  "mode": "single_read_only_preflight_diagnostic",
+  "profile": "005V3",
+  "task_id": "AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-DIAGNOSTICS-005V3",
+  "parent_profile_task_id": "AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V",
+  "parent_terminal_bridge": "AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-005V2",
+  "execution_status": "preflight_blocked",
+  "source_freeze_sha256": "a5970bccfde34a907f485ed76154048b6c227093783ac42600d298c20d2c266f",
+  "protected_boundary": {
+    "branch": "codex/ai-director-video-factory-phase2-001",
+    "head": "76180a59ea662bdf168d88baaeb777d3e8eb59ef",
+    "index_empty": true,
+    "protected_dirty_sha256": {
+      "PROJECT_STATUS.yaml": "76fb81f8d9e32aca3fa73fe547deff8961ea130bd6e8d3e043179b03d5900acd",
+      "reports/P0_ACCEPTANCE_MATRIX_V2.yaml": "acccf9e9440776583857c67ba15094ef461f1b61dfe0ebd436fa68b4e3b6905e",
+      "scripts/analysis_request.py": "68bdd12ebc45d92fff17ae01dec7f6c4efcd0cef3e89aeb68434ec9ebed9ea1d",
+      "scripts/analyzer_mcp.py": "bcf09db631eed87316c4d2b0664abc159470860b0d3e84c7e8c3460071e09d90",
+      "scripts/mcp_ingest_attachment.py": "313f00b8f855faaf2ad22cd01a61d987670d0ff02ff4c9de3d57970039a7d52b",
+      "scripts/media_action_ticket.py": "794b0ed4dea1fb18eb52371d1fcddc4724d8d781b141b09214545e5af19699e5"
+    }
+  },
+  "protected_boundary_provenance": {
+    "PROJECT_STATUS.yaml": {
+      "classification": "user_authorized_preexisting_dirty",
+      "source_change_request": "PRODUCT-PHASE-REALIGNMENT-014",
+      "scope": "product_phase_model_realignment_only"
+    },
+    "scripts/analysis_request.py": {
+      "classification": "preexisting_feishu_ingress_security_dirty",
+      "source_evidence": [
+        "scripts/analyzer_mcp.py",
+        "scripts/mcp_ingest_attachment.py",
+        "scripts/media_action_ticket.py"
+      ],
+      "scope": "ingress_event_id_hash_binding_only"
+    }
+  },
+  "external_root": "E:/Claude_allow/Download/codex-provider-preflight-diagnostics-005v3/",
+  "does_not_imply_formal_phase_pass": true,
+  "does_not_imply_real_provider_pass": true,
+  "maximum_preflight_commands": 1,
+  "maximum_worker_generations": 0,
+  "maximum_smoke_commands": 0,
+  "maximum_acceptance_commands": 0,
+  "allow_rehearsal": false,
+  "does_not_authorize_worker_start": true,
+  "does_not_authorize_provider_execution": true,
+  "allows_read_only_preflight_probes": true,
+  "allows_read_only_metadata_probes": true,
+  "allows_read_only_hash_probes": true,
+  "allows_read_only_process_probes": true,
+  "does_not_authorize_cache_mutation": true,
+  "does_not_authorize_config_auth_mutation": true,
+  "does_not_authorize_desktop_control": true,
+  "does_not_authorize_oauth_profile_model_config_changes": true,
+  "does_not_authorize_desktop_operation": true,
+  "does_not_authorize_commit_or_push": true,
+  "result": {
+    "status": "PREFLIGHT_DIAGNOSTIC_BLOCKED:cache_snapshot:cache_unhealthy",
+    "command_count": 1,
+    "exit_code": 1,
+    "worker_started": false,
+    "provider_executed": false,
+    "smoke_attempts": 0,
+    "acceptance_attempts": 0,
+    "mp4_count": 0,
+    "diagnostic_error": {
+      "code": "provider_qualification_preflight_failed",
+      "message": "Provider preflight stopped.",
+      "context": {
+        "stage": "preflight",
+        "gate": "cache_snapshot",
+        "substep": "json_parse",
+        "reason": "cache_unhealthy",
+        "exit_code": null
+      }
+    }
+  }
+}

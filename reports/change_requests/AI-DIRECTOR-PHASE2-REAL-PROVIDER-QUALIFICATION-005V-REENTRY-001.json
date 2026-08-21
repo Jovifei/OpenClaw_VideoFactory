@@ -1,0 +1,19 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V-REENTRY-001",
+  "mode": "local_provider_gate_reentry",
+  "parent_evidence": "AI-DIRECTOR-PHASE2-LEGACY-CHROME-HOST-BASELINE-005W",
+  "profile": "005V",
+  "execution_status": "prepared_pending_contract_review",
+  "does_not_imply_real_provider_pass": true,
+  "does_not_authorize_preflight": true,
+  "does_not_authorize_worker_start": true,
+  "does_not_authorize_provider_execution": true,
+  "does_not_authorize_cache_config_auth_or_desktop_access": true,
+  "does_not_authorize_openclaw_feishu_gateway_binding_or_cron": true,
+  "does_not_authorize_commit_or_push": true,
+  "maximum_worker_generations": 0,
+  "maximum_smoke_commands": 0,
+  "maximum_acceptance_commands": 0,
+  "historical_005t_immutable": true,
+  "expected_terminal_status": "READY_FOR_PROVIDER_PREFLIGHT"
+}

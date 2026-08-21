@@ -1,0 +1,25 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-WORKER-MARKER-INTEGRATION-REMEDIATION-005U1",
+  "mode": "local_marker_integration_test_remediation",
+  "does_not_imply_real_provider_pass": true,
+  "does_not_authorize_worker_start": true,
+  "does_not_authorize_provider_execution": true,
+  "does_not_authorize_cache_auth_or_desktop_access": true,
+  "does_not_authorize_005v": true,
+  "does_not_authorize_commit_or_push": true,
+  "allowed_repository_paths": [
+    "scripts/provider_qualification.ps1",
+    "scripts/lib/ProviderQualification.psm1",
+    "tests/Test-ProviderQualification005U.ps1",
+    "tests/Test-ProviderQualification005U1.ps1",
+    "tasks/plans/2026-08-13-ai-director-phase2-worker-marker-integration-remediation-005u1.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "handoff/codex/IMPLEMENTATION_BACKLOG.yaml",
+    "reports/AI_DIRECTOR_PHASE2_WORKER_STATE_CONTRACT_REMEDIATION_005U.md",
+    "reports/AI_DIRECTOR_PHASE2_WORKER_MARKER_INTEGRATION_REMEDIATION_005U1.md",
+    "reports/change_requests/AI-DIRECTOR-PHASE2-WORKER-MARKER-INTEGRATION-REMEDIATION-005U1.json",
+    ".gitignore"
+  ],
+  "does_not_imply_phase_pass": true
+}

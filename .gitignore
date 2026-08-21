@@ -28,6 +28,9 @@ logs/
 runtime/
 cache/
 tmp/
+.test-tmp/
+.pytest-tmp-*/
+.venv-reference-analysis/
 state/token*/
 state/oauth*/
 state/*credential*/
@@ -106,6 +109,8 @@ handoff/**
 
 # Keep only selected redacted P0 evidence; exclude sensitive or verbose reports.
 reports/**
+!reports/PHASE1_LOCAL_VIDEO_MINIMUM_SLICE_001.md
+!reports/change_requests/PHASE1-LOCAL-VIDEO-MINIMUM-SLICE-001.json
 !reports/P0_*.json
 !reports/P0_*.md
 # Retain the concise, redacted 092 product reset package; verbose reports stay ignored.
@@ -151,6 +156,11 @@ docs/*
 !reports/change_requests/PINK-PIG-FACTORY-REPO-HYGIENE-004.json
 !reports/PINK_PIG_FACTORY_PHASE1_5_COMPOSITION.md
 !reports/change_requests/PINK-PIG-FACTORY-PHASE1-5-COMPOSITION-ENGINE.json
+!reports/AI_DIRECTOR_PHASE2_IMPLEMENTATION.md
+!reports/change_requests/AI-DIRECTOR-VIDEO-FACTORY-PHASE2-001.json
+!docs/superpowers/
+!docs/superpowers/plans/
+!docs/superpowers/plans/2026-08-09-ai-director-phase2-final-qualification-003.md
 
 # Local session memory, prepared handoff bundles, and one-off probes are not
 # part of the cloneable Video Factory baseline.
@@ -192,3 +202,71 @@ tests/test_p0_gate_v2.py
 tests/test_p0_v2_event_idempotency.py
 tests/test_reply_effect_audit.py
 schemas/p0_evidence_v2/
+
+# AI Director Phase 2 final qualification evidence (explicitly trackable).
+!reports/PHASE2_GIT_AUDIT_003.md
+!reports/CODEX_PROVIDER_BLOCKER_003.md
+!reports/CODEX_PROVIDER_RECOVERY_PLAN_003.md
+!reports/PHASE2_FINAL_QUALIFICATION_003.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-FINAL-QUALIFICATION-003.json
+!docs/superpowers/plans/2026-08-10-ai-director-phase2-remediation-004.md
+!reports/AI_DIRECTOR_PHASE2_REMEDIATION_004.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-IMPLEMENTATION-REMEDIATION-004.json
+!tasks/plans/2026-08-10-ai-director-phase2-provider-recovery-005.md
+!reports/CODEX_PROVIDER_ENVIRONMENT_AUDIT_005.json
+!reports/CODEX_PROVIDER_RECOVERY_EVIDENCE_005.json
+!reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-RECOVERY-QUALIFICATION-005.json
+!tasks/plans/2026-08-10-ai-director-phase2-detached-provider-qualification-005r.md
+!reports/CODEX_DESKTOP_QUIESCENCE_AUDIT_005R.json
+!reports/CODEX_PROVIDER_DETACHED_RUN_005R.json
+!reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005R.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-DESKTOP-DETACHED-PROVIDER-QUALIFICATION-005R.json
+!tasks/plans/2026-08-11-ai-director-phase2-resumable-provider-qualification-005s.md
+!reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005S.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-RESUMABLE-PROVIDER-QUALIFICATION-005S.json
+!tasks/plans/2026-08-11-ai-director-phase2-provider-qualification-005t.md
+!reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005T.md
+!reports/CODEX_DESKTOP_QUIESCENCE_AUDIT_005T.json
+!reports/CODEX_PROVIDER_DETACHED_RUN_005T.json
+!reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T.json
+!reports/CODEX_PROVIDER_PRELAUNCH_REVIEW_005T.json
+!reports/CODEX_PROVIDER_PRELAUNCH_AUDIT_005T.json
+!tasks/plans/2026-08-12-ai-director-phase2-worker-state-contract-remediation-005u.md
+!reports/AI_DIRECTOR_PHASE2_WORKER_STATE_CONTRACT_REMEDIATION_005U.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-WORKER-STATE-CONTRACT-REMEDIATION-005U.json
+!tasks/plans/2026-08-13-ai-director-phase2-worker-marker-integration-remediation-005u1.md
+!reports/AI_DIRECTOR_PHASE2_WORKER_MARKER_INTEGRATION_REMEDIATION_005U1.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-WORKER-MARKER-INTEGRATION-REMEDIATION-005U1.json
+!tasks/plans/2026-08-13-ai-director-phase2-real-provider-qualification-005v.md
+!schemas/ops/provider_qualification_final_review.schema.json
+!tests/Test-ProviderQualification005V.ps1
+!examples/ai_director_provider_qualification_005v/
+!reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005V.md
+!reports/AI_DIRECTOR_PHASE2_PROVIDER_FINAL_REVIEW_005V.md
+!reports/CODEX_PROVIDER_PRELAUNCH_REVIEW_005V.json
+!reports/CODEX_PROVIDER_PRELAUNCH_AUDIT_005V.json
+!reports/CODEX_DESKTOP_QUIESCENCE_AUDIT_005V.json
+!reports/CODEX_PROVIDER_DETACHED_RUN_005V.json
+!reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005V.json
+!tasks/plans/2026-08-13-ai-director-phase2-legacy-chrome-host-baseline-005w.md
+!reports/CHROME_HOST_BASELINE_005W.json
+!reports/AI_DIRECTOR_PHASE2_LEGACY_CHROME_HOST_BASELINE_005W.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-LEGACY-CHROME-HOST-BASELINE-005W.json
+!tasks/plans/2026-08-13-ai-director-phase2-real-provider-qualification-005v-reentry-001.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V-REENTRY-001.json
+!reports/AI_DIRECTOR_PHASE2_PROVIDER_LOCAL_GATE_REENTRY_005V.md
+!reports/CODEX_PROVIDER_LOCAL_REENTRY_AUDIT_005V.json
+!tasks/plans/2026-08-13-ai-director-phase2-provider-local-gate-remediation-005v1.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-LOCAL-GATE-REMEDIATION-005V1.json
+!reports/AI_DIRECTOR_PHASE2_PROVIDER_LOCAL_GATE_REMEDIATION_005V1.md
+!reports/CODEX_PROVIDER_LOCAL_REENTRY_AUDIT_005V1.json
+!tasks/plans/2026-08-14-ai-director-phase2-provider-preflight-005v2.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-005V2.json
+!reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_005V2.md
+!tasks/plans/2026-08-14-ai-director-phase2-provider-preflight-observability-remediation-005v3.md
+!reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-OBSERVABILITY-005V3.json
+!reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-OBSERVABILITY-REMEDIATION-005V3.json
+!reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_OBSERVABILITY_REMEDIATION_005V3.md
+!reports/CODEX_PROVIDER_PREFLIGHT_DIAGNOSTIC_005V3.json
+!reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-DIAGNOSTICS-005V3.json

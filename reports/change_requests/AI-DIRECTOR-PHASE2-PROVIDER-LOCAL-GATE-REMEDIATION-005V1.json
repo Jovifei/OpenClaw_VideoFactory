@@ -1,0 +1,42 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-PROVIDER-LOCAL-GATE-REMEDIATION-005V1",
+  "mode": "local_provider_gate_contract_remediation",
+  "execution_status": "completed_local_remediation",
+  "parent_task": "AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V-REENTRY-001",
+  "does_not_imply_real_provider_pass": true,
+  "does_not_authorize_preflight": true,
+  "does_not_authorize_worker_start": true,
+  "does_not_authorize_provider_execution": true,
+  "does_not_authorize_cache_config_auth_or_desktop_access": true,
+  "does_not_authorize_openclaw_feishu_gateway_binding_or_cron": true,
+  "does_not_authorize_commit_or_push": true,
+  "historical_005t_immutable": true,
+  "source_freeze_sha256": "ecef232e59eda9f020bb7feb18dfda6b685e1cbfba8377d0728f4a04f4b1a800",
+  "pester": "78 passed, 0 failed, 0 skipped",
+  "python": {
+    "director": "47 passed",
+    "video": "273 passed",
+    "video_factory": "5 passed",
+    "legacy": "56 passed, 1 skipped, 13 subtests"
+  },
+  "reviewers": {
+    "contract": "APPROVED_FOR_LOCAL_GATE_REMEDIATION",
+    "security": "APPROVED_FOR_LOCAL_GATE_REMEDIATION",
+    "final": "APPROVED_FOR_LOCAL_GATE_REMEDIATION_FINAL"
+  },
+  "provider_actions": {
+    "preflight": 0,
+    "worker": 0,
+    "codex_exec": 0,
+    "smoke": 0,
+    "acceptance": 0,
+    "mp4": 0,
+    "cache_read": 0,
+    "config_auth_read": 0
+  },
+  "allowed_source_paths": [
+    "scripts/provider_qualification.ps1",
+    "scripts/lib/ProviderQualification.psm1",
+    "tests/Test-ProviderQualification005V.ps1"
+  ]
+}

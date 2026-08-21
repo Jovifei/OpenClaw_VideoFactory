@@ -1,35 +1,44 @@
-# 10 — 最终验收
+# 10 — 最终验收（Phase 1 本地优先）
 
 ## 静态
 
-结构正确；YAML/JSON/JSON5有效；Skill有效；无密钥；版本锁完整；文档配置一致。
+结构正确；YAML/JSON/JSON5 有效；Skill 有效；无密钥；版本锁完整；文档、
+`PROJECT_STATUS.yaml` 与 [`docs/PRODUCT_PHASES.md`](../docs/PRODUCT_PHASES.md) 一致。
 
-## P0
+## Phase 1 — 本地视频工厂
 
-OpenClaw版本满足飞书；Schema捕获；workspace正确；OpenClaw Default Runtime允许；Direct Codex CLI 只读/受控写 smoke；飞书单消费者；TXT/PNG/MP4真实入站和安全入库；lark-cli四类真实出站与幂等；原有Agent/Binding回归；无VideoFactory正式Cron；本地Skill可见。OpenClaw Codex Plugin OAuth为`deferred_optional_not_blocking`。
+- Jovi 给主题的模式产生原创、可解码的竖屏母版；
+- Jovi 给本地参考视频的模式产生主题/结构报告和原创、可解码的竖屏母版；
+- 明确授权公开研究时，来源、日期和事实边界可追溯；
+- 脚本、分镜、音频、字幕、素材清单、render manifest、质量报告和人工审阅清单完整；
+- 字幕安全、音轨、首屏、黑屏、角色遮挡、CPU/NVENC 回退和失败快照通过；
+- 无飞书、OpenClaw/Gateway、lark-cli、Cron、自动上传或自动发布动作。
 
-## P1
+## Phase 2 — 飞书自动化
 
-三fixture生成母版/预览；字幕音频封面文案报告完整；幂等、重启恢复、CPU回退和角色一致。
+- 历史 P0 飞书安全门通过：OpenClaw Schema、allowlist、单消费者、真实安全入站、
+  receipt/MIME/SHA、两消息意图、受控 lark-cli 出站与幂等；
+- 08:30 候选、飞书选择、12:00 合格兜底、低分暂停、每日一条、恢复与取消可验证；
+- 正式 Cron 只在非定时验证和 Phase 2 Gate 后注册；
+- 飞书交付只发送审阅包，抖音仍由 Jovi 人工发布。
 
-## P2
+## Phase 3
 
-08:30候选；飞书选择；12:00兜底；低分暂停；每日一条；28条配额；AI来源；Cron history。
+CUDA 字幕、Comfy 白名单、预算、OOM、NVENC、无 GPU 并发。
 
-## P3
+## Phase 4
 
-CUDA字幕、Comfy白名单、预算、OOM、NVENC、无GPU并发。
+高级参考视频的安全入站、三类分析、原创检查与无原音/水印/连续原镜头。它补充而不替代
+Phase 1 的基础参考视频主题提取。
 
-## P4
+## Phase 5
 
-安全入站、三参考视频、原创检查、无原音/水印/连续镜头。
+草稿可开、失败不阻塞 MP4、不自动发布。
 
-## P5
+## 七天生产试运行
 
-草稿可开、失败不阻塞MP4、不自动发布。
+仅在 Phase 2 通过后评估：完成率≥90%；重复 0；高风险事实错误 0；人工修改中位≤15 分钟；
+GPU 整单失败 0；合格候选兜底成功≥95%。
 
-## 七天
-
-完成率≥90%；重复0；高风险事实错误0；人工修改中位≤15分钟；GPU整单失败0；合格候选兜底成功≥95%。
-
-最后运行production gate，只有全部必需阶段和七天报告通过才创建PRODUCTION_READY。抖音仍人工发布。
+最后运行 production gate。只有 Phase 1、Phase 2、所需增强阶段和七天报告均通过，
+才能创建 `PRODUCTION_READY`；抖音仍人工发布。

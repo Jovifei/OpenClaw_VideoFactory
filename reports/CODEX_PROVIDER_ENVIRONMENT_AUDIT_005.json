@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "task": "AI-DIRECTOR-PHASE2-PROVIDER-RECOVERY-QUALIFICATION-005",
+  "status": "BLOCKED_PROVIDER_CACHE_DRIFT",
+  "branch": "codex/ai-director-video-factory-phase2-001",
+  "head": "76180a59ea662bdf168d88baaeb777d3e8eb59ef",
+  "index_empty": true,
+  "cli": {
+    "provider": "codex-cli",
+    "distribution": "npm_codex_cli",
+    "version": "0.146.0",
+    "path_resolution": "first_path_is_npm_cli; additional_desktop_path_not_selected",
+    "required_flags": {
+      "ephemeral": true,
+      "sandbox_read_only": true,
+      "skip_git_repo_check": true,
+      "ignore_user_config": true,
+      "color_never": true,
+      "output_schema": true,
+      "output_last_message": true,
+      "cd": true,
+      "stdin_dash": true
+    }
+  },
+  "cache": {
+    "path_class": "codex_models_cache",
+    "exists": true,
+    "json_valid": true,
+    "top_level_shape": "object_with_models_list",
+    "models_count": 9,
+    "missing_base_instructions_count": 9,
+    "size_bytes": 215773,
+    "sha256_at_step_2": "046b9dd60f2d0f1cf97c5b99195e2a5231799e6d8b98a8f0c54d30f9685d9ec3",
+    "sha256_at_read_only_reviewer_sample": "60d56ed239b4f23aaddcecba84daebe4dafe5068d94bd95135c10c672054eb22",
+    "sha256_at_pre_move_recheck": "98bb3e3ac1cc0417544a8f795940c2707b14b2007c9d097489f42440da5cc090",
+    "sha256_at_followup_read_only_recheck": "89dc71bf54cb192dd1d8ccc4b9c511d5c920373674f338f6e4947d0fa4a2533f",
+    "size_bytes_at_followup_read_only_recheck": 215770,
+    "sha256_at_final_read_only_recheck": "d0cc1bc450d2541ae63d059bf71f1e947c7e671244f7082e1458fa2f1f82d1c1",
+    "size_bytes_at_final_read_only_recheck": 215773,
+    "sha256_after_authorized_resume_preflight": "81c33af97ff7bca6aa01ef08a2ef1357ffa842dfe40888ca7df63b2595863230",
+    "size_bytes_after_authorized_resume_preflight": 215773,
+    "same_size_bytes": false,
+    "stable_after_recheck_samples": 3,
+    "hash_binding_before_move": "FAIL_DRIFT"
+  },
+  "codex_files": {
+    "config_toml": {
+      "exists": true,
+      "size_bytes": 9671,
+      "sha256": "802f4237d7b7bd1d4eb08d54d4523338e2aa09dc563b43baf03c41e7140b4c1b"
+    },
+    "auth_json": {
+      "exists": true,
+      "size_bytes": 4393,
+      "sha256": "b5cfd4115b139d27df4a165a370692b2342ec9fa6d950150206525576c0cc946"
+    }
+  },
+  "preserved_dirty_files": {
+    "PROJECT_STATUS.yaml": "cd0dc97280ed86abac748dceaff73a45587a92656d4481e782b37aa33002785d",
+    "reports/P0_ACCEPTANCE_MATRIX_V2.yaml": "acccf9e9440776583857c67ba15094ef461f1b61dfe0ebd436fa68b4e3b6905e",
+    "scripts/analysis_request.py": "68bdd12ebc45d92fff17ae01dec7f6c4efcd0cef3e89aeb68434ec9ebed9ea1d",
+    "scripts/analyzer_mcp.py": "bcf09db631eed87316c4d2b0664abc159470860b0d3e84c7e8c3460071e09d90",
+    "scripts/mcp_ingest_attachment.py": "313f00b8f855faaf2ad22cd01a61d987670d0ff02ff4c9de3d57970039a7d52b",
+    "scripts/media_action_ticket.py": "794b0ed4dea1fb18eb52371d1fcddc4724d8d781b141b09214545e5af19699e5"
+  },
+  "forbidden_surface_mutation_observed": false,
+  "provider_commands_executed": {
+    "isolated_smoke": 0,
+    "real_acceptance": 0
+  },
+  "raw_cache_or_provider_output_retained": false,
+  "blocker": {
+    "code": "provider_cache_changed_before_hash_bound_move",
+    "reason": "codex_desktop_app_server_respawned_after_child_stop_and_cache_hash_changed_again",
+    "required_next_action": "close_or_freeze_the_parent_codex_desktop_writer_then_start_a_fresh_authorized_attempt",
+    "cache_mutated_by_this_task": false
+  }
+}

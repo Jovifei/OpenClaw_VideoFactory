@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "task_id": "AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-DIAGNOSTICS-005V3",
+  "qualification_profile": "005V3",
+  "status": "PREFLIGHT_DIAGNOSTIC_BLOCKED:cache_snapshot:cache_unhealthy",
+  "execution_status": "preflight_blocked",
+  "source_freeze_sha256": "a5970bccfde34a907f485ed76154048b6c227093783ac42600d298c20d2c266f",
+  "command_count": 1,
+  "maximum_preflight_commands": 1,
+  "worker_started": false,
+  "provider_executed": false,
+  "smoke_attempts": 0,
+  "acceptance_attempts": 0,
+  "mp4_count": 0,
+  "exit_code": 1,
+  "diagnostic_error": {
+    "code": "provider_qualification_preflight_failed",
+    "message": "Provider preflight stopped.",
+    "context": {
+      "stage": "preflight",
+      "gate": "cache_snapshot",
+      "substep": "json_parse",
+      "reason": "cache_unhealthy",
+      "exit_code": null
+    }
+  },
+  "reason": "cache_unhealthy",
+  "does_not_imply_real_provider_pass": true,
+  "does_not_imply_formal_phase_pass": true
+}

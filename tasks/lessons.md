@@ -234,3 +234,165 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - The Pink Pig upstream repository is a style/persona/composition source, not a picture directory. Use Registry-owned local knowledge illustrations and keep the upstream reference in provenance.
 - Registry branding overlays must be excluded from the legacy directory-scanning scene manifest; otherwise adding a signature asset silently changes the legacy scene count.
 - Composition subtitle style is authoritative over old job overrides. Normalize final-video pixel values to the libass virtual canvas and inspect at least one extracted frame before claiming layout correctness.
+
+# 2026-08-09 — Phase 2 provider evidence boundary
+
+- Keep fake-provider, schema, media, and real-provider evidence in separate
+  categories. A deterministic local MP4 cannot be promoted to AI Director
+  READY when the single real provider acceptance returns nonzero.
+- When a provider fails before producing a report, overwrite the job's
+  `director_report.json` with a sanitized structured failure report; never
+  leave a previous successful provider report as if it described the failed
+  attempt.
+
+# 2026-08-10 — Phase 2 remediation lifecycle and retirement boundary
+
+- Every Phase 2 stage must normalize non-contract exceptions to
+  `video_job_execution_failed` and atomically persist a sanitized `failed`
+  snapshot; an ordinary Python exception must never leave a job in
+  `rendering` or `storyboard_ready`.
+- A stable-topic job directory must be reset before a retry, and a reused
+  Director must clear `last_report`, script, score, and asset-selection
+  outputs before planning. Current topic digest and error code are required
+  before accepting a failure report.
+- Retiring a legacy media chain means removing its callable source modules,
+  not merely returning a no-op response. Keep only database/state/inventory/
+  cancellation controls and make retired CLI commands fail closed with
+  `code/message/context` and exit 2.
+- `factual_review_required` is a boolean contract: verified factual briefs
+  set state and Director reports to `false`; topic-only candidates remain
+  review-required. Error paths must redact Windows drive-letter paths such as
+  `C:/...` as well as slash/backslash variants.
+- A detached Provider runtime must be fully reviewed and source-hash frozen before launch. Worker generations may recover only at explicit lease/checkpoint boundaries; once a smoke or acceptance command is claimed, its one-shot outcome must never be guessed or rerun.
+- A Provider retry must use a new task ID, external run namespace, fixture/job ID, reports, and Change Request. Never restart or overwrite a terminal blocked run to manufacture continuity.
+
+# 2026-08-11 — Detached qualification handoff boundary
+
+- A Desktop close/reopen is an explicit human interlock for a detached-worker
+  qualification, not a normal video-generation step. Do not ask Jovi to close
+  or reopen the app until the Worker contract, source freeze, and prelaunch
+  reviewer have all passed; explain that the close proves Worker survival and
+  the reopen is only for read-only Verify and independent review.
+- If the manual interlock is not completed before the bounded wait expires,
+  record the run as `BLOCKED_DETACHED_WORKER_DIED` or the more specific
+  quiescence blocker and do not start another Worker under the same task.
+- Restarting Codex Desktop after a detached Worker has died does not reset the
+  qualification ledger. Preserve the blocked run and require a new task ID,
+  namespace, fixture, source freeze, and explicit one-Worker authorization
+  before another real-provider attempt.
+
+# 2026-08-12 - 005T detached provider execution gate
+
+- A restarted Desktop is only an environmental prerequisite. It is not proof
+  that a detached Worker survived, that the cache is quiescent, or that a real
+  Provider command ran. Keep the 005T Worker, smoke, and acceptance counters
+  zero until the bound handoff marker and independent approvals exist.
+- Profiles without an authorized rehearsal must reject `Rehearse` before any
+  preflight reads cache/config/auth. Production qualification still requires
+  the single bounded Worker path and the exact run-bound human close marker.
+- Source-freeze digests must use the exact production canonicalization,
+  including the Profile's literal relative path separators; a manually
+  normalized equivalent path can fail prelaunch binding before any Worker.
+- A successful Preflight does not imply Worker readiness. Preserve the first
+  pre-ready Worker exit as terminal `BLOCKED_DETACHED_WORKER_DIED` evidence and
+  never retry smoke or acceptance in that qualification namespace.
+
+# 2026-08-12 - 005U worker reservation state contract
+
+- `worker_started` is a reservation checkpoint: generation, tokens and lease are bound, but the child PID may still be zero. Require a positive PID only from `supervisor_ready` onward, and never emit readiness markers before PID persistence.
+- Keep the historical 005S multi-generation recovery PID-zero debt separate; do not expand a one-generation 005U repair or reuse that recovery path for 005V.
+
+# 2026-08-12 - 005U fault-injection review correction
+
+- A passing state/schema suite is not sufficient evidence for a launch-order fix. Every newly added process guard must have TestDrive fault injection for throw, null/PID-zero, persistence/CAS failure, token cleanup, marker suppression, and the structured blocked snapshot before the final reviewer may approve the remediation.
+
+# 2026-08-13 - Marker evidence must exercise production ownership
+
+- A failure assertion against an arbitrary file that production never writes is
+  vacuous. Marker-suppression tests must use the exact production leaf names and
+  the same production-used seam, plus a positive control that proves the seam
+  can create every marker with its expected content and order.
+- Static transaction review is not production integration proof. Keep the
+  Supervisor and Worker entrypoints wired to dependency-injected seams that the
+  TestDrive fault matrix invokes directly; do not maintain a second inline
+  readiness path.
+
+# 2026-08-13 - Browser-backed legacy baseline must fail closed at the host boundary
+
+- A Chrome contact-sheet crash (`STATUS_BREAKPOINT`) is neither a Python contract
+  pass nor evidence to relax browser sandbox flags. Preserve the existing
+  `--no-sandbox` prohibition and classify the run as an environment baseline
+  blocker until a clean, approved host execution proves the same legacy suite.
+- Redirecting `TEMP`/`TMP` can remove one filesystem-denial hypothesis, but it
+  does not justify treating a persistent browser crash as a product-code defect
+  or continuing a one-shot Provider qualification.
+
+# 2026-08-13 - 005W legacy Chrome host baseline
+
+- A clean, attributable external host run is valid evidence only when current
+  source/test hashes, Chrome binary hash, isolated profile/temp root, and exact
+  one-shot counts are recorded together.
+- The contact-sheet target test may clean its PNG through TemporaryDirectory;
+  report the test internal PNG/1360x780 assertions and explicitly say when no
+  PNG is retained. Never invent an artifact hash.
+- Passing the legacy host baseline only reopens a fresh 005V local
+  source-freeze/prelaunch review. It does not authorize Provider, Worker,
+  smoke, acceptance, MP4, 006, Feishu, Cron, or formal phase promotion.
+- Keep 005T immutable hashes and 005V BASELINE_BLOCKED zero counters in every
+  host-baseline Change Request so a later reviewer can prove the boundary
+  without inspecting raw logs.
+
+# 2026-08-14 - 005V3 Preflight observability
+
+- A generic sanitized `unexpected_error` is safe against leakage but is not an
+  auditable diagnostic. Preflight failures must carry only fixed gate,
+  substep, reason, and optional exit-code enums; the original exception and
+  command context must never enter the envelope.
+- A consumed one-shot bridge remains terminal evidence. A diagnostic profile
+  needs a new task ID, external namespace, counter, and authorization gate;
+  it must not revive or reinterpret the prior bridge.
+- Local observability remediation ends before Preflight execution. A passing
+  TestDrive/Python suite does not authorize cache/config/auth reads, Desktop
+  interaction, Worker start, smoke, acceptance, MP4 generation, or 006.
+## 2026-08-13 - 005V local gate re-entry
+
+- A prose Change Request prohibition is not a runtime gate. Operational modes
+  must load the canonical CR and fail closed on its execution status.
+- Historical evidence must bind to an exact run ID, not merely a session-shaped
+  string; source freeze must include every runtime byte that can affect output.
+- A recursive cleanup is not safe merely because its parent was checked:
+  validate containment and reparse state at every node during deletion.
+
+## 2026-08-14 - 005V2 one-shot Preflight observability
+
+- A one-shot read-only Preflight must emit a stable, auditable sub-gate reason;
+  converting every unexpected exception to `unexpected_error` is safe for
+  secrecy but insufficient for diagnosis. Record the command as consumed,
+  preserve the sanitized envelope, and require a new authorization for any
+  diagnostic or retry plan.
+- A failed Preflight that creates no external run root, active lock, job, marker,
+  Worker, smoke, acceptance or MP4 is a terminal preflight blocker, not evidence
+  that the Provider is healthy and not permission to advance to 006.
+
+# 2026-08-14 - Product delivery order must not inherit internal historical labels
+
+- Do not let historical P0/P1/P2 implementation labels redefine the user-facing
+  product sequence. Before planning work, write the direct user input, required
+  output, excluded integrations, and phase boundary in the canonical phase map.
+- A local reference-video theme-analysis path is not advanced reference-video
+  recreation. Keep the former conservative and original in Phase 1; treat any
+  near-copy of pacing, shot order, visual packaging, or identifiable expression
+  as a Phase 4 authorization and originality-review question.
+- “AI TTS” and “GPU acceleration” are capability descriptions, not permission
+  to invoke remote Providers or download models. State the local baseline and
+  require a separate approved scope for external services or optional hardware
+  integrations.
+
+# 2026-08-15 - Execute the current product phase, not the longest historical blocker
+
+- After a product-phase realignment, re-read the canonical phase map before
+  continuing a historical Provider-remediation chain. A terminal Provider
+  diagnostic can remain preserved while independent local-video work advances.
+- The first useful Phase 1 proof is a real, locally narrated MP4 plus a human
+  review package and idempotent local job record. Passing that slice is progress,
+  not permission to mark the whole phase ready or enter Feishu/Cron.

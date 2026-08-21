@@ -1,8 +1,17 @@
-# 04 — P1 确定性视频MVP
+# 04 — Phase 1 本地确定性视频 MVP
 
 ## 目标
 
-不依赖AI视频和剪映，严格按 P1-A 到 P1-G 小步构建确定性视频 MVP。一次只增加一个类别；前一步未验证通过，不进入下一步。
+不依赖飞书、OpenClaw、Cron、AI 视频和剪映，严格按本地增量构建确定性视频 MVP。输入可以是 Jovi 给出的主题、Jovi 提供的本地参考视频，或 Jovi 明确授权的公开主题研究。一次只增加一个类别；前一步未验证通过，不进入下一步。
+
+## Phase 1-0 — 输入与原创边界
+
+- 主题模式：记录主题、受众、时长和最小来源上下文；
+- 本地参考视频模式：原文件只读，只提取主题、结构、节奏和通用表达线索；
+- 授权研究模式：只检索获准的公开资料，记录来源和日期；
+- 不抓取受限平台，不使用 Cookie/账号/验证码，不复用原音、水印、连续镜头或完整文案。
+
+三个模式都要产出可追溯的 `topic_brief` / `reference_report`（如适用），然后生成原创脚本与分镜。
 
 ## P1-A — SQLite 与 CLI
 
@@ -10,9 +19,9 @@
 
 CLI：doctor、create-topic、run、status、retry、cancel。`scripts/factory.py`只作薄包装。
 
-至少：jobs、job_events、artifacts、topic_history、source_records、inbound_messages、deliveries、stage_attempts、locks。
+至少：jobs、job_events、artifacts、topic_history、source_records、stage_attempts、locks。
 
-唯一键：job_id、source_message_id、每日自动键、delivery幂等键、阶段尝试号。
+唯一键：job_id、本地输入 digest、阶段尝试号。
 
 状态：NEW→RESEARCHING→SCRIPTING→VOICE→CAPTIONS→ASSETS→RENDERING→QUALITY_CHECK→PENDING_REVIEW；失败/重试/取消都写事件。
 
@@ -51,22 +60,22 @@ CLI：doctor、create-topic、run、status、retry、cancel。`scripts/factory.p
 
 每个 fixture 都要从零、重跑、取消、失败重试和 CPU/NVENC 回退验证。
 
-## P1-G — 最后接飞书交付
+## P1-G — 本地审阅包与人工检查
 
-只有三个 fixture 都通过后，才增加 cover、preview MP4、report 和幂等交付。OpenClaw 继续负责飞书与任务状态；Codex CLI 负责代码实施。
+只有三个 fixture 都通过后，才增加 cover、`final_master.mp4`、report 和本地人工审阅清单。不得发送飞书；Phase 2 才实现受控交付、消息幂等和 OpenClaw 日常状态。
 
 ## Job产物
 
-每个job有job/config/topic/research/sources/script/storyboard/style/asset_manifest/voice/captions/render_manifest/final_master/feishu_preview/cover/publish_info/quality/logs，全部Schema校验。
+每个 job 有 job/config/topic/research/sources/reference_report（如适用）/script/storyboard/style/asset_manifest/voice/captions/render_manifest/final_master/cover/publish_info/quality/logs，全部 Schema 校验。
 
 ## FFmpeg
 
-输出母版和≤25MB飞书预览。优先h264_nvenc，CPU libx264回退，AAC，记录编码器。
+输出本地母版。优先 h264_nvenc，CPU libx264 回退，AAC，记录编码器。Phase 2 才额外生成飞书大小受限的预览版。
 
 ## 质量
 
-检查分辨率、FPS、时长、音轨、首2秒、字幕安全、黑屏、音量、来源、角色遮挡、可解码和预览大小。
+检查分辨率、FPS、时长、音轨、首 2 秒、字幕安全、黑屏、音量、来源、参考视频原创边界、角色遮挡和可解码性。
 
 ## P1 禁止项
 
-通过 `python .\scripts\90_acceptance_gate.py --gate p1` 前，禁止自动选题、Cron、ComfyUI模型、AI视频、参考视频、剪映、抖音发布和继续排查 OpenClaw Codex Plugin OAuth。
+通过未来的 Phase 1 本地验收前，禁止飞书、自动选题、Cron、ComfyUI 模型、AI 视频、剪映、抖音发布和继续排查 OpenClaw Codex Plugin OAuth。允许按本文件的隔离与原创规则处理 Jovi 提供的本地参考视频。

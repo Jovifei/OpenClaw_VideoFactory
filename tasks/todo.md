@@ -1,3 +1,24 @@
+# PHASE1-REFERENCE-VIDEO-ANALYSIS-001 — IN PROGRESS
+
+Execution plan: `tasks/plans/2026-08-21-phase1-reference-video-analysis-001.md`.
+Change Requests: `reports/change_requests/PHASE1-LOCAL-BASELINE-PUBLISH-001.json`,
+`reports/change_requests/PHASE1-REFERENCE-VIDEO-ANALYSIS-001.json`.
+
+- [x] Read current product phase, Obsidian decision page, open-source matrix, and repository contracts.
+- [x] Freeze the implementation boundary: conservative Phase 1, optional offline faster-whisper, no WhisperX/provider/model download.
+- [ ] Audit and publish the existing local baseline in scoped commits.
+- [ ] Create `codex/phase1-reference-video-analysis-001` from the clean baseline.
+- [ ] Add reference receipt/rights/report/original-brief/difference schemas and policy.
+- [ ] Add safe MP4 ingest, deterministic PySceneDetect analysis, optional offline ASR, and CLI lifecycle.
+- [ ] Integrate original brief and conditional review-package evidence through the existing renderer.
+- [ ] Run targeted tests, synthetic E2E, full regression, fresh-clone smoke, and push the feature branch.
+
+### Review — execution pending
+
+- Current branch before baseline publication: `codex/ai-director-video-factory-phase2-001`.
+- Current HEAD before baseline publication: `76180a59ea662bdf168d88baaeb777d3e8eb59ef`.
+- Existing worktree is intentionally dirty and must be staged only by Change Request ownership.
+
 # P0-FEISHU-SINGLE-CONSUMER-086 — IN PROGRESS
 
 Execution handoff: `reports/change_requests/P0-FEISHU-SINGLE-CONSUMER-086.json`.
@@ -1909,3 +1930,406 @@ Execution handoff: `reports/change_requests/PINK-PIG-FACTORY-AI-DIRECTOR-003.jso
 - Verification: `tests/video` 273 passed; `video_factory/tests` 5 passed; offline fixture, legacy demo, and Modbus demo exit 0; all three MP4s decode successfully.
 - Official `PROJECT_STATUS.yaml` remains P0 `not_started` / P1 `blocked_by_P0`; no OpenClaw, Feishu, Gateway, Binding, OAuth, Cron, AI Director, commit, push, reset, or clean action was performed.
 - A fresh Git clone smoke is intentionally deferred until the user-authorized commit; the current worktree has pre-existing dirty files that were preserved. Core-path/import and full regression smoke passed in the current repository.
+
+## AI-DIRECTOR-VIDEO-FACTORY-PHASE2-001 — REVIEW / BLOCKED REAL PROVIDER
+
+Execution handoff: `reports/change_requests/AI-DIRECTOR-VIDEO-FACTORY-PHASE2-001.json`.
+
+- [x] [1/12] Freeze execution boundary, branch, control-plane hashes, and 273/5 baseline.
+- [x] [2/12] Add DirectorScript, factual brief, asset selection, quality, and versioned Job State contracts.
+- [x] [3/12] Add factual brief loading, topic digest checks, research/source/style artifacts, and safe Director context.
+- [x] [4/12] Add ScriptPlanner, fake provider coverage, Director score, and one bounded quality retry.
+- [x] [5/12] Add deterministic StoryboardAssembler while preserving `Director.create_storyboard(topic)`.
+- [x] [6/12] Add deterministic Registry-backed AssetSelector, tags, fallback, diversity, and manifest evidence.
+- [x] [7/12] Add atomic local VideoJob lifecycle snapshots and transition validation.
+- [x] [8/12] Integrate the staged Director with existing `run_job()` and topic CLI without a second pipeline.
+- [x] [9/12] Add pre-render and post-render quality gates, factual-review state, and quality reports.
+- [x] [10/12] Generate the no-manual-storyboard Modbus AI Director demo with fake-provider evidence; real Codex CLI returned `director_provider_failed` (exit 1).
+- [x] [11/12] Full regression/security/forbidden-surface audit recorded; all local checks pass, real provider remains blocked.
+- [x] [12/12] Repository docs, Obsidian 04/05, final report, and stop without phase promotion.
+
+### Review — Phase 2 implementation checkpoint
+
+- Fake-provider full chain passed with a 38.4s 1080x1920 H.264/AAC MP4, five distinct Registry knowledge assets, subtitle safe region, and verified factual brief; Job State reached `completed`.
+- Topic-only path remains `review_required` at `quality_check`.
+- Real Codex CLI acceptance was attempted once as required and failed closed with `director_provider_failed`, exit code 1; no raw provider output was retained.
+- A separate read-only diagnostic identified the local prerequisite failure as a malformed Codex models cache missing `base_instructions`; no cache/config/profile/model/OAuth mutation or second provider attempt was performed. Terminal result remains `BLOCKED_REAL_PROVIDER`, not `AI_DIRECTOR_PHASE2_READY`.
+- Independent review follow-up: stable-topic artifact reset added and verified; the completed fake snapshot is separated from the quarantined real-provider failure snapshot. Obsidian test count corrected to 32.
+
+## AI-DIRECTOR-PHASE2-FINAL-QUALIFICATION-003 — IN PROGRESS
+
+Execution plan: `docs/superpowers/plans/2026-08-09-ai-director-phase2-final-qualification-003.md`.
+Change Request: `reports/change_requests/AI-DIRECTOR-PHASE2-FINAL-QUALIFICATION-003.json`.
+
+- [x] Freeze branch, HEAD, index, dirty-file hashes, and phase boundary.
+- [x] Complete Git/local/remote artifact audit.
+- [x] Complete Director contract and single-pipeline audit; record strict-scope findings.
+- [x] Re-run 32/273/5 test gates and both legacy CLI modes.
+- [x] Independently verify MP4, ffprobe, render report, subtitles, assets, and state snapshots.
+- [x] Isolate and document the real Codex CLI provider blocker without running or repairing it.
+- [x] Produce the separately authorized provider recovery plan.
+- [x] Reconcile three specialist reviews and one fresh final review.
+- [x] Update qualification reports and Obsidian, recheck forbidden hashes, and stop.
+
+### Review — AI-DIRECTOR-PHASE2-FINAL-QUALIFICATION-003
+
+- Git reviewer: PASS for branch/HEAD/index and preservation boundary; Phase 2 implementation remains the read-only subject and six pre-existing dirty files are unchanged.
+- Contract reviewer: PASS for Director/Script/Storyboard/Registry/Composition/Provider interfaces; FAIL for strict alternate-pipeline contract, non-contract exception state snapshots, and stale report reuse risk.
+- Provider reviewer: PASS isolation and sanitization; environment blocker is `director_provider_failed` exit 1 with content-free cache probe showing 9/9 missing `base_instructions`.
+- Main evidence: `tests/director` 32 passed, `tests/video` 273 passed, `video_factory/tests` 5 passed; both legacy CLI modes exit 0; fake MP4 and topic-only state gates pass.
+- Final reviewer: APPROVED after report-only corrections for readiness-marker wording, provider-status scope, trackable exceptions, recovery command templates, and required final-report sections; final verdict is `FAIL_IMPLEMENTATION`, provider substatus `REAL_PROVIDER_BLOCKED` (isolation-only).
+- Qualification reports: `reports/PHASE2_GIT_AUDIT_003.md`, `reports/CODEX_PROVIDER_BLOCKER_003.md`, `reports/CODEX_PROVIDER_RECOVERY_PLAN_003.md`, `reports/PHASE2_FINAL_QUALIFICATION_003.md`.
+- No source repair, Provider retry, cache/config/OAuth/Profile/model mutation, commit, push, reset, clean, Feishu, OpenClaw, Cron, or formal Gate action was performed.
+
+## AI-DIRECTOR-PHASE2-IMPLEMENTATION-REMEDIATION-004 — IN PROGRESS
+
+Execution record: `docs/superpowers/plans/2026-08-10-ai-director-phase2-remediation-004.md`.
+Change Request: `reports/change_requests/AI-DIRECTOR-PHASE2-IMPLEMENTATION-REMEDIATION-004.json`.
+
+- [x] [1/10] Freeze branch, HEAD, index, six dirty-file hashes, and baseline tests.
+- [x] [2/10] Add sanitized execution-error contract and atomic `VideoJobStateMachine.fail()`.
+- [x] [3/10] Persist failed snapshots for every Phase 2 exception stage.
+- [x] [4/10] Clear stale Director outputs and align factual failure reports.
+- [x] [5/10] Retire the historical Candidate render/TTS/subtitle/quality chain.
+- [x] [6/10] Preserve control-plane CLI commands and structurally fail retired commands.
+- [x] [7/10] Update docs, error catalog, backlog, lessons, and ignore exceptions.
+- [x] [8/10] Run directed, legacy, video, and media regression evidence.
+- [x] [9/10] Reconcile specialist reviews and final independent review.
+- [x] [10/10] Write report, update Obsidian, recheck hashes, and stop.
+
+### Baseline review
+
+- `tests/director`: 32 passed.
+- `tests/video`: 273 passed.
+- `video_factory/tests`: 5 passed.
+- legacy suite: 56 passed, 1 skipped at symbolic-link capability test; no failures.
+- No Provider/Codex/OpenClaw/Feishu/Git mutation performed.
+
+### Remediation review
+
+- Lifecycle specialist: targeted failure/state/report tests pass; sanitized stages, path-free errors, stale-report reset, factual flags, atomic failed snapshots, and sandbox boundary checks reviewed.
+- Legacy specialist: six historical media execution modules deleted; Candidate control commands retained; retired commands return structured exit 2; 57 legacy test methods retained.
+- Remaining final gate: complete media decode/ffprobe evidence, Obsidian update, final report, and dirty-file hash recheck.
+
+### Final review — Remediation 004
+
+- Final independent reviewer: **APPROVED**.
+- `tests/director` 47 passed; `tests/video` 273 passed; `video_factory/tests` 5 passed.
+- Legacy group 56 passed, 1 Windows symbolic-link skip, 13 subtests; 57 legacy test methods preserved.
+- Four MP4 artifacts fully decoded; ffprobe matched render reports for Modbus, offline story, and fake Director outputs.
+- Obsidian 04/05 appended and 06 created; plan/report/Change Request are trackable (`git check-ignore` exit 1).
+- Six pre-existing dirty-file hashes unchanged; index empty; no Provider, OpenClaw, Feishu, Gateway, Binding, OAuth, Cron, PROJECT_STATUS, commit, push, reset, or clean action.
+- Final local status: `AI_DIRECTOR_PHASE2_LOCAL_REMEDIATED`; next task only `005 Provider Recovery + Real AI Qualification`.
+
+## AI-DIRECTOR-PHASE2-PROVIDER-RECOVERY-QUALIFICATION-005 — IN PROGRESS
+
+Plan: `tasks/plans/2026-08-10-ai-director-phase2-provider-recovery-005.md`.
+Change Request: `reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-RECOVERY-QUALIFICATION-005.json`.
+
+- [x] Reconcile the 003 Provider blocker/recovery evidence, 004 approved remediation, formal phase status, and Obsidian 04/05/06 roadmap.
+- [x] Define the exact cache-only recovery authority, byte-exact rollback, one-smoke/one-acceptance limits, evidence separation, and independent review model.
+- [x] Define a fresh verified Modbus qualification fixture and stable job ID so 005 cannot overwrite the 003 fake/failure snapshots.
+- [x] Define contract, TTS, subtitle, Composition, Pink Pig, FFmpeg/ffprobe, Git, environment, reporting, and Obsidian acceptance gates.
+- [x] [1/12] Freeze execution boundary, Change Request, branch/HEAD/index, dirty-file hashes, and local baseline.
+- [x] [2/12] Read-only lock CLI, cache structure, config/auth hashes, and forbidden-surface hashes.
+- [x] [3/12] Verify derived-cache semantics and obtain read-only reviewer approval.
+- [ ] [4/12] BLOCKED — cache hash drifted before the hash-bound move; no backup/quarantine mutation was attempted.
+- [ ] [5/12] Run the single isolated read-only Provider smoke and validate/reconcile cache rebuild.
+- [ ] [6/12] Run Provider security regression and obtain read-only security approval.
+- [ ] [7/12] Create the fresh 005 factual fixture and protect prior fake/failure artifacts.
+- [ ] [8/12] Run the single real Codex AI Director acceptance command.
+- [ ] [9/12] Validate contracts, facts, Registry assets, Pink Pig, TTS, subtitles, MP4 and ffprobe.
+- [ ] [10/12] Run complete Director/video/legacy regressions and old-evidence isolation checks.
+- [ ] [11/12] Complete specialist reviews, Git audit, environment hashes, and fresh final review.
+- [ ] [12/12] Write reports, update Obsidian, set only evidence-backed status, and stop.
+
+### Planning review — Provider Recovery 005
+
+- Current product status remains `AI_DIRECTOR_PHASE2_LOCAL_REMEDIATED`; formal P0/P1/P2 status is unchanged.
+- Execution reached [3/12] under the 005 Change Request; [4/12] is blocked because the active cache changed between the audit hash and the pre-move hash recheck.
+- Success is limited to `AI_DIRECTOR_PHASE2_REAL_PROVIDER_QUALIFIED`; it is not a formal P2 Gate or authorization for Video Agent, Feishu, Cron, commit, or push.
+
+### Execution review — Provider Recovery 005 blocker
+
+- Baseline passed: Director 47, video 273, Video Factory 5, legacy 56 passed / 1 skipped / 13 subtests.
+- CLI read-only gate passed: npm Codex CLI 0.146.0 with all required read-only/Schema flags.
+- Environment reviewer: APPROVED for the exact cache-only, hash-bound, byte-exact rollback procedure.
+- Pre-move recheck failed: cache hash changed from `046b9d...` to `98bb3e...`; later CLI-free reads changed it to `89dc71...` and then `d0cc1b...` (size 215773→215770→215773), without any 005 cache mutation.
+- No cache backup, quarantine, `codex exec`, real acceptance, fixture, or media was executed after the drift; Obsidian was updated only to record the blocked evidence, not as a qualification pass.
+- Authorized resume re-ran [1/12] successfully: Director 47, video 273, Video Factory 5, legacy 56 passed / 1 skipped. The stopped child app-server was respawned by the parent Codex Desktop process (new PID 11968), and cache changed again `adf1ec...` → `81c33a...`.
+- Final execution status remains `BLOCKED_PROVIDER_CACHE_DRIFT`; the parent Codex Desktop writer must be closed/frozen before another fresh [1/12]–[3/12]. No backup, quarantine, smoke, real acceptance, or media run was attempted.
+
+## AI-DIRECTOR-PHASE2-DESKTOP-DETACHED-PROVIDER-QUALIFICATION-005R — IN PROGRESS
+
+Plan: `tasks/plans/2026-08-10-ai-director-phase2-detached-provider-qualification-005r.md`.
+Change Request: `reports/change_requests/AI-DIRECTOR-PHASE2-DESKTOP-DETACHED-PROVIDER-QUALIFICATION-005R.json`.
+
+- [x] Freeze current phase, formal status, dirty-file boundary, and 005 blocker evidence.
+- [ ] [1/12] Re-run baseline and hash boundary.
+- [ ] [2/12] Implement detached Worker, state schema, launcher and verifier.
+- [ ] [3/12] Run Pester contract/fault-injection tests and static forbidden-command scan.
+- [ ] [4/12] Create fresh 005R factual fixture and protect prior evidence.
+- [ ] [5/12] Start hidden Worker and hand off Desktop close interlock.
+- [ ] [6/12] Prove Desktop quiescence and stable cache hash.
+- [ ] [7/12] Perform hash-bound backup/quarantine with rollback journal.
+- [ ] [8/12] Run the single smoke and cache health gate.
+- [ ] [9/12] Run the single real AI Director acceptance.
+- [ ] [10/12] Validate media/contracts and complete regressions.
+- [ ] [11/12] Reopen Desktop and complete specialist/final reviews.
+- [ ] [12/12] Write report, update Obsidian, record evidence-backed status, and stop.
+
+### Execution review — Provider Qualification 005R
+
+- Worker contract review initially returned `CHANGES_REQUIRED`; the launcher/module were corrected for cwd isolation, hash-bound rollback, manifest containment/reparse checks, one-shot flags, active-run locking, run-bound reports, smoke evidence, full post-acceptance checks, recursive raw-output detection, and Verify/Finalize separation.
+- Current local verification: PowerShell parse passed; forbidden-command scan passed; Pester contract suite 12 passed; Director 47, Video 273, Video Factory 5, legacy 56 passed / 1 skipped / 13 subtests passed.
+- A detached Worker was started once as `session_20260810T145823Z_60876` and then terminated before Desktop quiescence/cache access. Its state was closed with revision 3 as structured `blocked/BLOCKED_DETACHED_WORKER_DIED`; no cache backup/quarantine, smoke, acceptance, or MP4 was produced.
+- Per the 005R contract, a terminated Worker cannot be started a second time in this task. Real Provider qualification therefore remains `BLOCKED_DETACHED_WORKER_DIED`; no readiness marker or real-provider pass may be written.
+- Final local Worker hardening added provider re-locking, dirty-file/index hash checkpoints, actual backup/quarantine verification, state/run binding, cache-health checks, and a non-invasive watchdog for future runs. These changes do not consume another Worker attempt.
+- Final reviewer’s last code-only finding (run-bound `WATCHDOG_READY` content) was fixed; parse, Pester 12/12 and diff-check were re-run. A fresh final review requiring an actual Worker run was not claimed because the one-shot execution allowance is exhausted.
+
+### Terminal closure — Provider Qualification 005R
+
+- [x] 005R is closed as `BLOCKED_DETACHED_WORKER_DIED`; its single Worker allowance is consumed.
+- [x] No cache move, `codex exec`, real acceptance, Provider MP4, or readiness marker exists for 005R.
+- [x] Old reports and external run evidence must remain immutable and must not be reused by a later qualification.
+
+## AI-DIRECTOR-PHASE2-RESUMABLE-PROVIDER-QUALIFICATION-005S — PLANNED
+
+Plan: `tasks/plans/2026-08-11-ai-director-phase2-resumable-provider-qualification-005s.md`.
+
+- [x] [1/14] Read-only freeze branch/HEAD/index, protected dirty hashes, and immutable 005R evidence. Baseline tests are deliberately recorded in [2/14] because [1/14] forbids cache-producing commands.
+- [x] [2/14] Create the 005S Change Request, confirm a fresh 005S namespace, record the backlog/task ledger, and run the locked local baseline: Director 47, Video 273, Video Factory 5, legacy 56 passed / 1 skipped / 13 subtests.
+- [ ] [3/14] Convert the qualification Worker to a profile-driven resumable Supervisor engine and permanently close 005R Start.
+- [ ] [4/14] Run Pester/fault injection/static checks and a harmless detached liveness rehearsal.
+- [ ] [5/14] Obtain contract/security preliminary reviews and reproduce all findings.
+- [ ] [6/14] Create the fresh fixture, freeze source hashes, and obtain hash-bound Prelaunch Final Review.
+- [ ] [7/14] Run live Preflight, start the only Supervisor, prove Worker lease/armed handshake, and hand off Desktop close.
+- [ ] [8/14] Prove Desktop quiescence, stable cache, and health classification.
+- [ ] [9/14] Create a byte-exact backup and quarantine only a degraded cache.
+- [ ] [10/14] Run exactly one real Codex smoke and validate cache health.
+- [ ] [11/14] Run exactly one real AI Director acceptance.
+- [ ] [12/14] Validate contracts/media/Pink Pig and run full regressions without Provider rerun.
+- [ ] [13/14] Reopen Codex, run read-only Verify, specialist reviews, final review, and guarded Finalize.
+- [ ] [14/14] Write reports, update Obsidian, verify Git/forbidden boundaries, record truthful status, and stop.
+
+Planning status: `AI_DIRECTOR_PHASE2_LOCAL_REMEDIATED`; real Provider remains `BLOCKED_DETACHED_WORKER_DIED` until 005S produces new evidence. Planning does not authorize a new Worker by itself.
+
+### 005S execution closure — 2026-08-11
+
+- [x] Local Worker contract hardening completed: strict lease/PID/token state conditions and canonical smoke/acceptance command fingerprints.
+- [x] TestDrive/Pester contract suite: 33 passed, 0 failed; Python baseline: Director 47, Video 273, Video Factory 5, legacy 56 passed / 1 skipped / 13 subtests.
+- [x] Preserved the single 005S detached rehearsal as immutable evidence: `session_rehearsal_20260811T070706Z_82832` ended `BLOCKED_DETACHED_WORKER_DIED`/`desktop_not_quiescent`; smoke and acceptance remain unattempted.
+- [ ] Real Provider qualification is not complete. No second Worker, smoke, acceptance, cache move, or `codex exec` was run under 005S.
+- [x] Current terminal decision: `BLOCKED_DETACHED_WORKER_DIED`; a new separately authorized qualification task is required before another detached Worker can be launched.
+
+## AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T — PREPARED
+
+Plan: `tasks/plans/2026-08-11-ai-director-phase2-provider-qualification-005t.md`.
+Change Request: `reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T.json`.
+
+- [x] Closed 005S as immutable `BLOCKED_DETACHED_WORKER_DIED`; no old Worker, lock, fixture, or report will be reused.
+- [x] Created fresh 005T task ID and external namespace; no cache or Provider command has been touched.
+- [ ] Complete current-tree contract/security review and TestDrive fault matrix.
+- [ ] Create fresh 005T factual fixture and obtain hash-bound prelaunch approval.
+- [ ] Run one detached Worker, one smoke, and one acceptance only after all gates pass.
+- [ ] Verify media, regressions, independent reviews, Obsidian, and final evidence; stop on the first blocker.
+
+### 005T terminal closure — 2026-08-12
+
+- [x] Contract/lifecycle/security reviewers approved the frozen 005T launcher, module, schema, and TestDrive suite.
+- [x] Local evidence rerun: Pester 39 passed; Director 47; Video 273; Video Factory 5; legacy 56 passed / 1 skipped / 13 subtests.
+- [x] Prelaunch review/audit and source-freeze binding created; Preflight exit 0.
+- [x] Exactly one detached Start was attempted; Worker exited before `WORKER_READY` and the run closed as `BLOCKED_DETACHED_WORKER_DIED`.
+- [x] Bound `Status` created the readonly terminal ledger for `session_20260811T175916Z_43092`.
+- [x] No cache move, smoke, acceptance, MP4, or real Provider qualification evidence exists for 005T.
+- [x] 005T is terminally blocked; do not retry in this task. A new separately authorized namespace is required.
+
+## AI-DIRECTOR-PHASE2-WORKER-STATE-CONTRACT-REMEDIATION-005U — TERMINAL
+
+- [x] Frozen 005T terminal evidence and created the 005U Change Request with no Worker/Provider/cache authorization.
+- [x] Baseline recorded: Director 47, Video 273, Video Factory 5, Pester 005R/005S/005T passed.
+- [x] Added TestDrive reproduction for `worker_started(worker_pid=0)` and positive-PID `supervisor_ready` gate.
+- [x] Repaired Schema and Supervisor launch ordering without changing Provider/cache behavior.
+- [x] Ran fault injection, parser/static checks, Python suites, and legacy regression.
+- [x] Completed two Luna xhigh read-only reviews: both approved planning the next qualification.
+- [x] Correct the Windows PowerShell BOM validator defect and add its TestDrive regression.
+- [x] Complete the fresh Luna xhigh final review: `APPROVED_FOR_NEW_PROVIDER_QUALIFICATION_PLANNING`.
+- [x] Write the final 005U status marker and stop before 005V/006; no Worker, Provider, cache, Desktop, commit, or push.
+
+## AI-DIRECTOR-PHASE2-WORKER-MARKER-INTEGRATION-REMEDIATION-005U1 — READY FOR EXTERNAL AUDIT
+
+- [x] Freeze Git/protected hashes and record the latest external `FAIL_REVIEW`.
+- [x] Create the 005U1 plan and Change Request; keep 005T immutable.
+- [x] Add exact production-marker failure tests and a non-vacuous success control.
+- [x] Extract a production-used Supervisor/Worker marker integration seam.
+- [x] Complete spec and code-quality review loops.
+- [x] Run Pester, Python, legacy, parser, static and Git/hash regressions.
+- [x] Update report, Obsidian and backlog; complete final read-only review.
+- [x] Stop before 005V/006 and any real Provider or Desktop operation.
+
+### 005U1 local review — 2026-08-13
+
+- Pester 005R/S/T/U/U1: 60 passed, 0 failed, 0 skipped.
+- Python: Director 47, Video 273, Video Factory 5.
+- Legacy: 56 passed, 1 skipped, 13 subtests.
+- Spec reviewer: `APPROVED`; code-quality reviewer: `APPROVED`.
+- Fresh internal final reviewer: `READY_FOR_EXTERNAL_AUDIT`.
+- Local status is only `AI_DIRECTOR_PHASE2_PROVIDER_MARKER_EVIDENCE_READY_FOR_EXTERNAL_AUDIT`.
+- A fresh external read-only audit is still required before any 005V planning.
+
+## AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V - IN PROGRESS
+
+Plan: `tasks/plans/2026-08-13-ai-director-phase2-real-provider-qualification-005v.md`.
+Change Request: `reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005V.json`.
+
+- [x] Record 005U1 external approval for 005V planning and freeze the 005T terminal evidence.
+- [x] Run the locked local baseline and record the resulting fail-closed status.
+- [ ] Add and test the isolated 005V profile, final-review contract, and fresh factual fixture.
+- [ ] Complete source freeze and independent prelaunch contract/security reviews.
+- [ ] Run one Preflight, one Worker, one smoke, and one real acceptance only after all gates pass.
+- [ ] Validate real media, complete regressions, independent final review, Obsidian, and Git boundaries.
+
+### 005V baseline recheck — 2026-08-13 — `BASELINE_BLOCKED`
+
+- [x] Pester 005R/005S/005T/005U/005U1/005V: `76 passed, 0 failed, 0 skipped`.
+- [x] Core Python regressions with repository-local `--basetemp`: Director `47 passed`, Video `273 passed`, Video Factory `5 passed`.
+- [x] Preserve branch/HEAD, empty index, `git diff --check`, and all six protected dirty-file SHA-256 values.
+- [x] Reproduce the legacy media blocker without changing product code: `CandidateMediaTests.test_all_mascot_poses_are_deterministic_and_contact_sheet_is_png` fails in local Chrome with `mascot_contact_sheet_failed:2147483651:local_path_redacted`.
+- [x] Repeat the exact contact-sheet test with repository-local `TEMP`/`TMP`; it still fails, so this is not the denied default user Temp directory alone.
+- [x] Stop before Source Freeze approval, Preflight, Worker, cache/auth access, smoke, acceptance, MP4 generation, or Desktop handoff.
+- [ ] Resolve the separately scoped Chrome host-environment baseline or obtain a clean external legacy-regression proof before re-authorizing 005V.
+- [x] Stop with the truthful terminal marker; do not enter 006, Feishu, Cron, or formal P2.
+
+## AI-DIRECTOR-PHASE2-LEGACY-CHROME-HOST-BASELINE-005W — PLANNED
+
+Plan: tasks/plans/2026-08-13-ai-director-phase2-legacy-chrome-host-baseline-005w.md.
+
+- [ ] Freeze branch, HEAD, index, six protected dirty hashes, 005T immutable evidence, and 005V unused one-shot counts.
+- [ ] Create the 005W Change Request and complete a read-only mascot/Chrome command contract audit.
+- [ ] On one attributable clean Windows host context, run the contact-sheet test exactly once with an isolated temporary/profile root.
+- [ ] Only if that target test passes, run the locked legacy regression group exactly once.
+- [ ] Produce sanitized host evidence, run independent Chrome/evidence reviews, and stop at the most specific status.
+- [ ] Do not call Provider, Worker, cache/auth, Preflight, smoke, acceptance, or generate an MP4.
+
+Planning truth: 005V remains BASELINE_BLOCKED; 005W can at most unlock a separately authorized 005V local source-freeze/prelaunch re-entry. It does not authorize 005V execution or 006.
+
+### 005W execution evidence — 2026-08-13
+
+- [x] Static mascot/Chrome contract review passed; no browser security flag, browser replacement, or second renderer was introduced.
+- [x] Unique external session created: session_20260813T135342Z_005w; source/test/Chrome hashes bound.
+- [x] Exact contact-sheet target test ran once and passed: 1 passed in 1.62s; test asserted PNG and 1360x780 internally.
+- [x] Locked legacy group ran once after target pass: 56 passed / 1 skipped / 13 subtests.
+- [x] Raw logs were hashed for the external journal, converted to sanitized results, then deleted.
+- [x] Provider actions remain zero: no Preflight, Worker, cache/auth, codex exec, smoke, acceptance, or MP4.
+- [x] Obtain independent Chrome/legacy and Git/evidence verdicts plus fresh final verdict APPROVED_FOR_005V_LOCAL_GATE_REENTRY; close 005W as CHROME_HOST_BASELINE_PASS.
+- [ ] Separately re-enter 005V local source-freeze/prelaunch review; do not execute 005V from this task.
+
+## AI-DIRECTOR-PHASE2-PROVIDER-LOCAL-GATE-REMEDIATION-005V1 - TERMINAL
+
+Plan: tasks/plans/2026-08-13-ai-director-phase2-provider-local-gate-remediation-005v1.md.
+Change Request: reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-LOCAL-GATE-REMEDIATION-005V1.json.
+
+- [x] Read-only 005V re-entry review found CHANGES_REQUIRED; preserve its evidence.
+- [x] Add operational CR authorization gate before any 005V operational mode.
+- [x] Lock 005T evidence to session_20260811T175916Z_43092 and test alternate rejection.
+- [x] Freeze registry-driven mascot/illustration assets and fallback BGM bytes.
+- [x] Replace schema-validation recursive cleanup with safe no-reparse cleanup.
+- [x] Run complete local tests, LoadOnly source freeze, and fresh Luna xhigh reviews.
+- [x] Obtain fresh final reviewer after evidence/report closure: APPROVED_FOR_LOCAL_GATE_REMEDIATION_FINAL.
+- [x] Stop at AI_DIRECTOR_PHASE2_PROVIDER_LOCAL_GATE_REMEDIATED; do not run Preflight/Worker/Provider.
+
+## AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V-REENTRY-001 - IN PROGRESS
+
+Plan: tasks/plans/2026-08-13-ai-director-phase2-real-provider-qualification-005v-reentry-001.md.
+Change Request: reports/change_requests/AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V-REENTRY-001.json.
+
+- [x] Freeze current identity, protected hashes, 005T immutable evidence, and 005W approval.
+- [x] Create the local-only re-entry plan and Change Request; no operational mode is authorized.
+- [x] Run Pester 005R/S/T/U/U1/V: 76 passed, 0 failed, 0 skipped.
+- [x] Run Python: Director 47, Video 273, Video Factory 5; legacy 56 passed / 1 skipped / 13 subtests.
+- [x] Run PowerShell/JSON parser, forbidden-control scan, path freshness, diff-check, and empty-index checks.
+- [x] Generate LoadOnly 005V source freeze: 71 files, source digest 403eecbd7c76326a08ad56f8a3e46551c213faa8dbc3e632919e299165a9ff2c; immutable 005T digest 5e86bba919fa932da052bad055697d28a7d3e283961d770fec14f5dd6eea205f.
+- [ ] Complete independent Luna xhigh local contract/security/lifecycle review and reproduce findings.
+- [ ] Generate local gate report/audit and obtain fresh final approval.
+- [ ] Stop at READY_FOR_PROVIDER_PREFLIGHT; do not run Preflight, Worker, Provider, smoke, acceptance, Desktop, cache/auth, or 006.
+
+## AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-005V2 — TERMINAL PREFLIGHT BLOCKED
+
+Plan: `tasks/plans/2026-08-14-ai-director-phase2-provider-preflight-005v2.md`.
+Change Request: `reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-005V2.json`.
+Report: `reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_005V2.md`.
+
+- [x] Preserve the historical 005V CR and 005T evidence; create a separate read-only bridge CR.
+- [x] Run the local bridge contract test and parser gate: Pester 19 passed, parser 0 errors.
+- [x] Execute exactly one authorized 005V Preflight; exit 1 with sanitized `unexpected_error`.
+- [x] Verify no 005V external root, active lock, stable job, READY marker, Worker or MP4 was created.
+- [x] Preserve empty index, protected hashes, PROJECT_STATUS and all forbidden-surface boundaries.
+- [x] Close the bridge as `PREFLIGHT_BLOCKED`; do not retry and do not enter Worker/smoke/acceptance/006.
+- [ ] Create a new separately authorized diagnostic plan to improve read-only Preflight failure observability before any new qualification attempt.
+
+## PHASE1-LOCAL-VIDEO-MINIMUM-SLICE-001 — LOCAL REVIEW PACKAGE READY
+
+Plan: `tasks/plans/2026-08-15-phase1-local-video-minimum-slice-001.md`.
+Change Request: `reports/change_requests/PHASE1-LOCAL-VIDEO-MINIMUM-SLICE-001.json`.
+
+- [x] Re-anchor current work to `PHASE_1_LOCAL_VIDEO_FACTORY`; preserve the terminal 005V3 Provider branch.
+- [x] Freeze branch, HEAD, empty index and the pre-existing dirty/untracked worktree.
+- [x] Add P1-00 local input/originality contracts and deterministic Modbus brief assembler; future reference/research modes remain fail-closed.
+- [x] Add local Windows SAPI narration without authorizing a remote TTS Provider.
+- [x] Add review-package and quality contracts around the existing `video_factory` pipeline.
+- [x] Add `generate_video.py --local-brief` and the local Phase 1 SQLite/CLI controls.
+- [x] Run focused tests and all affected regressions: Phase 1 16, Director 47, Video 273, VideoFactory 5, legacy 56/1/13.
+- [x] Render and independently decode/ffprobe the first local Modbus review package: 35.4s, 1080x1920, 30 FPS, H.264/AAC, local SAPI TTS, decode exit 0.
+- [x] Prove the SQLite job reaches `PENDING_REVIEW` and a repeated run returns idempotently without rerendering.
+- [x] Record actual progress without marking Phase 1 passed.
+
+Result: `PHASE1_LOCAL_MODBUS_REVIEW_PACKAGE_READY`. Remaining Phase 1 work is the local-reference analyzer, Flash/watchdog and FreeRTOS fixtures, cancel/retry/NVENC evidence, and the final Phase 1 gate.
+
+## PRODUCT-PHASE-REALIGNMENT-014 — DOCUMENTATION COMPLETE (2026-08-14)
+
+Change Request: `reports/change_requests/PRODUCT-PHASE-REALIGNMENT-014.json`.
+
+- [x] Record the user-corrected delivery order: Phase 1 is a local Codex video factory; Phase 2 adds Feishu topic automation.
+- [x] Define the three Phase 1 inputs: Jovi topic, Jovi-supplied local reference-video theme analysis, and explicitly authorized public-topic research.
+- [x] Keep Phase 1 independent of Feishu/OpenClaw/Gateway/lark-cli/Cron and automatic publication.
+- [x] Move Feishu ingress/egress, 08:30/12:00, selection, controlled delivery and Cron into Phase 2 documentation.
+- [x] Preserve historical P0/P1/P2 and Provider evidence without claiming any new phase pass.
+- [x] Align repository entry documents and the Obsidian current-decision notes; validate JSON/YAML parsing and whitespace.
+- [x] Clarify that external TTS/Provider, GPU/ComfyUI/NVENC, and advanced reference recreation each require their own approved scope when applicable.
+- [ ] Separately authorize and implement the first bounded Phase 1 local-video creation slice; this documentation change is not implementation or acceptance evidence.
+
+## AI-DIRECTOR-PHASE2-PREFLIGHT-OBSERVABILITY-REMEDIATION-005V3 - TERMINAL LOCAL REMEDIATED
+
+Plan: `tasks/plans/2026-08-14-ai-director-phase2-provider-preflight-observability-remediation-005v3.md`.
+Change Request: `reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-OBSERVABILITY-REMEDIATION-005V3.json`.
+
+- [x] Freeze 005V2 terminal evidence, protected hashes, branch, HEAD, empty index and diff-check boundary.
+- [x] Correct the stale 005V2 test expectation to `preflight_blocked`, `PREFLIGHT_BLOCKED`, exit 1, and zero Worker/smoke/acceptance counts.
+- [x] Add the fixed, non-leaking preflight error Schema and safe gate/substep/reason helpers.
+- [x] Add diagnostic-only 005V3 profile and separate, not-yet-authorized diagnostic namespace.
+- [x] Wrap Preflight sub-gates with sanitized structured context; preserve the generic non-Preflight error contract.
+- [x] Add TestDrive error and leakage matrix; do not access cache/config/auth or start any process.
+- [x] Run Pester 005R/S/T/U/U1/V/V3: 90 passed, 0 failed, 0 skipped.
+- [x] Run Python: Director 47, Video 273, Video Factory 5; legacy baseline remains 56 passed / 1 skipped / 13 subtests from 005W; current isolated non-Chrome subset 55 passed / 1 skipped / 13 subtests, while the existing Chrome contact-sheet host test remains blocked in this sandbox.
+- [x] Run PowerShell parser, JSON Schema meta-validation, static forbidden-surface scan and LoadOnly V3 source freeze.
+- [x] Add 005V2 immutable CR/report hash binding, explicit diagnostic metadata/hash/process probe authorization, outer CLI envelope coverage, and all non-Preflight rejection tests.
+- [x] Independent security review: APPROVED_FOR_005V3_LOCAL_GATE.
+- [ ] Protected boundary closure: PROJECT_STATUS.yaml and scripts/analysis_request.py differ from the frozen hashes and remain untouched user dirty files.
+- [ ] Do not execute the separately authorized V3 diagnostic Preflight in this local remediation task.
+- [ ] Do not start Worker/Provider/Desktop, move cache, generate MP4, enter 006, Feishu or Cron.
+
+Local terminal marker: `AI_DIRECTOR_PHASE2_PREFLIGHT_OBSERVABILITY_REMEDIATED`.
+
+## AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-005V2 — TERMINAL PREFLIGHT BLOCKED
+
+Plan: `tasks/plans/2026-08-14-ai-director-phase2-provider-preflight-005v2.md`.
+Change Request: `reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-005V2.json`.
+Report: `reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_005V2.md`.
+
+- [x] Preserve the historical 005V CR and 005T evidence; create a separate read-only bridge CR.
+- [x] Run the local bridge contract test and parser gate: Pester 19 passed, parser 0 errors.
+- [x] Execute exactly one authorized 005V Preflight; exit 1 with sanitized `unexpected_error`.
+- [x] Verify no 005V external root, active lock, stable job, READY marker, Worker or MP4 was created.
+- [x] Preserve empty index, protected hashes, PROJECT_STATUS and all forbidden-surface boundaries.
+- [x] Close the bridge as `PREFLIGHT_BLOCKED`; do not retry and do not enter Worker/smoke/acceptance/006.
+- [ ] Create a new separately authorized diagnostic plan to improve read-only Preflight failure observability before any new qualification attempt.

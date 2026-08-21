@@ -1,0 +1,68 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-LEGACY-CHROME-HOST-BASELINE-005W",
+  "mode": "host_baseline_evidence_only",
+  "does_not_imply_real_provider_pass": true,
+  "does_not_authorize_product_code_changes": true,
+  "does_not_authorize_chrome_configuration_changes": true,
+  "does_not_authorize_provider_cache_or_auth_access": true,
+  "does_not_authorize_worker_start": true,
+  "does_not_authorize_commit_or_push": true,
+  "maximum_targeted_contact_sheet_runs": 1,
+  "maximum_full_legacy_runs": 1,
+  "allowed_repository_paths": [
+    "tasks/plans/2026-08-13-ai-director-phase2-legacy-chrome-host-baseline-005w.md",
+    "reports/change_requests/AI-DIRECTOR-PHASE2-LEGACY-CHROME-HOST-BASELINE-005W.json",
+    "reports/CHROME_HOST_BASELINE_005W.json",
+    "reports/AI_DIRECTOR_PHASE2_LEGACY_CHROME_HOST_BASELINE_005W.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "handoff/codex/IMPLEMENTATION_BACKLOG.yaml",
+    ".gitignore"
+  ],
+  "allowed_external_root": "E:/Claude_allow/Download/chrome-host-baseline-005w/",
+  "immutable_005t_evidence": {
+    "run_id": "session_20260811T175916Z_43092",
+    "state_sha256": "ffc27a599151dd649d428180f67900d74e095120c0f2c1075fae71b77ddff2de",
+    "terminal_ledger_sha256": "e72ad3787267162fe4e56b840f6e7f762ccc227eb637d3e45b1bf4db978554f3",
+    "status": "BLOCKED_DETACHED_WORKER_DIED",
+    "smoke_attempts": 0,
+    "acceptance_attempts": 0,
+    "mp4_count": 0
+  },
+  "005v_precondition": {
+    "status": "BASELINE_BLOCKED",
+    "preflight_attempts": 0,
+    "worker_attempts": 0,
+    "smoke_attempts": 0,
+    "acceptance_attempts": 0,
+    "mp4_count": 0
+  },
+  "forbidden_surfaces": [
+    "PROJECT_STATUS.yaml",
+    "models_cache.json",
+    "config.toml",
+    "auth.json",
+    "Codex Desktop",
+    "Provider",
+    "Worker",
+    "smoke",
+    "acceptance",
+    "MP4",
+    "OpenClaw",
+    "Feishu",
+    "Gateway",
+    "Binding",
+    "Cron",
+    "Git index/history"
+  ],
+  "execution_status": "prepared",
+  "stop_states": [
+    "CHROME_HOST_BASELINE_PASS",
+    "CHROME_HOST_STATUS_BREAKPOINT_BLOCKED",
+    "CHROME_HOST_EXECUTION_BLOCKED",
+    "LEGACY_CONTACT_SHEET_CONTRACT_FAILED",
+    "LEGACY_BASELINE_BLOCKED",
+    "INCONCLUSIVE_EXTERNAL_HOST_EVIDENCE",
+    "FAIL_REVIEW"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "task_id": "AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T",
+  "qualification_profile": "005T",
+  "run_id": "session_20260811T175916Z_43092",
+  "source_freeze_sha256": "aac8bdb6eb173e211bded9c9caaa4e76358479f4dfd35e2bf0b1eccb134e8c37",
+  "desktop_process_class": "codex_desktop_and_app_server_observed_at_preflight",
+  "desktop_process_count_at_preflight": 10,
+  "desktop_quiescent": false,
+  "desktop_absent_sample_count": 0,
+  "cache_stability_sample_count": 0,
+  "cache_operation_performed": false,
+  "smoke_attempted": false,
+  "acceptance_attempted": false,
+  "verdict": "BLOCKED_DETACHED_WORKER_DIED",
+  "artifact_refs": [
+    "session_20260811T175916Z_43092/run_manifest.json",
+    "session_20260811T175916Z_43092/source_freeze.json",
+    "session_20260811T175916Z_43092/state.json",
+    "session_20260811T175916Z_43092/BLOCKED.txt"
+  ],
+  "artifact_sha256": {
+    "run_manifest.json": "58458afdbceb4a18e0f11fe67cc343b4b0ae0edff1dc8efd88a82ac90c985c9a",
+    "source_freeze.json": "1cceb0608ab10347b260c26988c31c229b4d9256b171e90da0074a2848ba6ebe",
+    "state.json": "ffc27a599151dd649d428180f67900d74e095120c0f2c1075fae71b77ddff2de",
+    "BLOCKED.txt": "8f50c8edba29eb3e5dc34531ad6872e1a1ea4c4d26e130695ac2e3e1a2b3cdd1"
+  },
+  "terminal_ledger_sha256": "e72ad3787267162fe4e56b840f6e7f762ccc227eb637d3e45b1bf4db978554f3",
+  "does_not_imply_formal_phase_pass": true
+}

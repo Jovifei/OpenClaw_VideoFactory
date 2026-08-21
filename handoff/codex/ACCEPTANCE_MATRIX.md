@@ -1,20 +1,19 @@
-# V2.5 验收矩阵
+# 产品阶段验收矩阵（2026-08-14 对齐）
+
+历史 `P0`–`P5` 证据仍可追溯；当前产品顺序以 [`docs/PRODUCT_PHASES.md`](../../docs/PRODUCT_PHASES.md) 为准。
 
 | 阶段 | 关键需求 | 必须证据 | 阻塞 |
 |---|---|---|---|
-| PACKAGE | 扁平目录、14个Skill、无密钥、SHA、文档完整 | `reports/package_release_validation.json` | 是 |
-| P0 | OpenClaw、飞书、lark-cli、Direct Codex CLI、权限 | Gateway/doctor、单消费者、TXT/PNG/MP4安全入站、四类出站与幂等、CLI read/write smoke、回归、无VideoFactory Cron | 是 |
-| P0可选项 | OpenClaw Codex Plugin OAuth | `deferred_optional_not_blocking`；`/codex status`、`/codex models`和OpenAI Codex Runtime不参与P0 | 否 |
-| P1-A | SQLite与CLI，不做视频 | 幂等、取消、重启恢复 | 是 |
-| P1-B/C | 固定JSON 10秒MP4，再加TTS和字幕 | 可解码MP4、WAV、SRT | 是 |
-| P1-D/E/F/G | 模板逐个增加、确定性小粉飞猪、三个fixture、最后接飞书 | 3条fixture job、NVENC/CPU、质量报告和幂等交付 | 是 |
-| P1 | 状态恢复和幂等 | Gateway重启、同job重跑、取消/重试 | 是 |
-| P1/P2 | 小粉飞猪一致性 | 角色DNA、遮挡、失败降级 | 是 |
-| P2 | 候选、选择、12:00兜底 | 高分/低分/取消/重复/Cron run history | 是 |
-| P2 | 栏目配额和AI门禁 | 最近28条比例、来源和日期报告 | 是 |
-| P3 | GPU有效使用 | CUDA、显存、ComfyUI、NVENC日志 | 是 |
-| P3 | GPU故障回退 | OOM注入和CPU/静态图回退 | 是 |
-| P4 | 参考视频原创改编 | 3条分析、新视频和人工原创检查 | 是 |
-| P5 | 剪映草稿 | 本机可开；失败不阻塞MP4 | 可选 |
-| PRODUCTION | 七天试运行 | 完成率≥90%、重复0、人工≤15分钟 | 是 |
-| 发布 | 抖音 | 用户人工发布 | 非系统自动化 |
+| PACKAGE | 扁平目录、Skill、无密钥、SHA、文档完整 | `reports/package_release_validation.json` | 是 |
+| Phase 1 输入 | Jovi 主题、本地参考视频、或明确授权公开研究 | 输入说明、来源/权利边界、只读参考 digest | 是 |
+| Phase 1 成片 | 原创脚本/分镜、TTS、字幕、MP4、质量报告 | 主题 fixture + 本地参考视频 fixture、可解码 MP4、WAV/SRT、人工视听复核 | 是 |
+| Phase 1 状态 | 本地 job 工件、取消/重试/重启恢复、CPU 回退 | job events、失败快照、render manifest | 是 |
+| Phase 1 边界 | 不使用飞书、OpenClaw、lark-cli、Cron、自动发布 | 命令/产物边界审计 | 是 |
+| Phase 2 飞书安全 | 历史 P0：OpenClaw、飞书、lark-cli、Direct Codex CLI、权限 | Gateway/doctor、单消费者、TXT/PNG/MP4 安全入站、两消息意图、四类受控出站与幂等、无 Cron | 是 |
+| Phase 2 自动化 | 候选、选择、12:00 兜底、恢复 | 高分/低分/取消/重复/Cron run history | 是 |
+| Phase 2 内容门 | 栏目配额和 AI 门禁 | 最近 28 条比例、来源和日期报告 | 是 |
+| Phase 3 | GPU 有效使用与回退 | CUDA、显存、ComfyUI、NVENC、OOM/CPU/静态图回退日志 | 是 |
+| Phase 4 | 高级参考视频原创改编 | 三类分析、新视频、人工原创检查 | 是 |
+| Phase 5 | 剪映草稿 | 本机可开；失败不阻塞 MP4 | 可选 |
+| PRODUCTION | 七天试运行 | 完成率≥90%、重复 0、人工≤15 分钟 | 是 |
+| 发布 | 抖音 | Jovi 人工发布 | 非系统自动化 |

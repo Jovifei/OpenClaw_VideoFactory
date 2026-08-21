@@ -104,3 +104,29 @@ clips cross-fade overlaps so captions never cover the central illustration.
 For narration, use `audio_mode: tts_with_offline_fallback`; a failed TTS
 provider records the fallback and uses the configured BGM instead of silently
 producing a near-zero-volume track.
+## Phase 2 Director integration
+
+The existing `video_factory/` pipeline remains the sole renderer. A topic job
+is assembled upstream and then calls `run_job()` exactly once:
+
+```text
+topic -> DirectorScript -> Storyboard -> Registry AssetSelector
+      -> Storyboard Compiler -> Timeline -> Composition/Pink Pig gates
+      -> subtitle/audio/FFmpeg -> render_report.json
+```
+
+Use `generate_video.py --topic-file ... --factual-brief ... --output-name ...`
+for the staged path; `--topic` remains compatible. Provider output cannot
+choose asset paths or IDs. Without a verified factual brief, the candidate is
+explicitly `review_required` rather than silently marked complete. The local
+`video_job_state.json` is an atomic snapshot, not a persistent scheduler.
+
+## Remediation 004 boundary
+
+Phase 2 execution failures normalize to `video_job_execution_failed` and are
+persisted as sanitized atomic `failed` snapshots. Verified factual briefs set
+`factual_review_required: false`; topic-only candidates remain review-required.
+The historical `src.factory` media chain is retired; it now provides control
+compatibility only, while `generate_video.py -> video_factory.pipeline` is the
+canonical video execution path. Retired Candidate commands fail closed with
+`legacy_candidate_pipeline_retired` and exit code 2.

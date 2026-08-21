@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "task": "AI-DIRECTOR-PHASE2-PROVIDER-RECOVERY-QUALIFICATION-005",
+  "status": "BLOCKED_PROVIDER_CACHE_DRIFT",
+  "completed_stages": ["1/12", "2/12", "3/12"],
+  "blocked_stage": "4/12",
+  "baseline": {
+    "tests_director": "47 passed",
+    "tests_video": "273 passed",
+    "video_factory_tests": "5 passed",
+    "legacy": "56 passed, 1 skipped, 13 subtests"
+  },
+  "environment_review": {
+    "cli": "npm_codex_cli 0.146.0",
+    "required_read_only_flags": "present",
+    "derived_cache_semantics": "approved",
+    "reviewer_verdict": "APPROVED_CONDITIONAL_ON_PRE_MOVE_HASH_RECHECK",
+    "official_reference": "https://github.com/openai/codex/issues/32496"
+  },
+  "cache": {
+    "path_class": "codex_models_cache",
+    "models_count": 9,
+    "missing_base_instructions_count": 9,
+    "size_bytes": 215773,
+    "sha256_at_step_2": "046b9dd60f2d0f1cf97c5b99195e2a5231799e6d8b98a8f0c54d30f9685d9ec3",
+    "sha256_at_read_only_reviewer_sample": "60d56ed239b4f23aaddcecba84daebe4dafe5068d94bd95135c10c672054eb22",
+    "sha256_at_pre_move_recheck": "98bb3e3ac1cc0417544a8f795940c2707b14b2007c9d097489f42440da5cc090",
+    "sha256_at_followup_read_only_recheck": "89dc71bf54cb192dd1d8ccc4b9c511d5c920373674f338f6e4947d0fa4a2533f",
+    "size_bytes_at_followup_read_only_recheck": 215770,
+    "sha256_at_final_read_only_recheck": "d0cc1bc450d2541ae63d059bf71f1e947c7e671244f7082e1458fa2f1f82d1c1",
+    "size_bytes_at_final_read_only_recheck": 215773,
+    "sha256_after_authorized_resume_preflight": "81c33af97ff7bca6aa01ef08a2ef1357ffa842dfe40888ca7df63b2595863230",
+    "size_bytes_after_authorized_resume_preflight": 215773,
+    "stable_after_recheck_samples": 3,
+    "backup_created": false,
+    "quarantine_created": false,
+    "cache_mutated_by_task": false
+  },
+  "provider_commands": {
+    "isolated_smoke_count": 0,
+    "real_acceptance_count": 0,
+    "raw_output_retained": false
+  },
+  "blocker": {
+    "code": "provider_cache_changed_before_hash_bound_move",
+    "classification": "BLOCKED_PROVIDER_CACHE_DRIFT",
+    "reason": "codex desktop app-server respawned after child stop and cache hash changed again",
+    "required_recovery": "close_or_freeze_the_parent_codex_desktop_writer_then_start_a_fresh_authorized_attempt"
+  },
+  "forbidden_surface_mutation_observed": false,
+  "formal_project_status_changed": false
+}

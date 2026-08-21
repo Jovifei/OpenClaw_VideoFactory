@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "task_id": "AI-DIRECTOR-PHASE2-LEGACY-CHROME-HOST-BASELINE-005W",
+  "status": "CHROME_HOST_BASELINE_PASS",
+  "review_status": "APPROVED_FOR_005V_LOCAL_GATE_REENTRY",
+  "reviewers": {
+    "chrome_legacy": "PASS",
+    "git_evidence": "PASS",
+    "final": "APPROVED_FOR_005V_LOCAL_GATE_REENTRY"
+  },
+  "session_id": "session_20260813T135342Z_005w",
+  "branch": "codex/ai-director-video-factory-phase2-001",
+  "head": "76180a59ea662bdf168d88baaeb777d3e8eb59ef",
+  "index_empty": true,
+  "source_sha256": "0bfe19a151c38ccc7b9a0e0b920e2fb821cefadd5ef0a3c389b5eb83b4e6196e",
+  "test_sha256": "de72adab0495a9239e1c6f06d8ee71042a7ac182718cdd8b94855bafab1179d0",
+  "chrome": {
+    "version": "151.0.7922.110",
+    "sha256": "1c8a72b0e6b5a4dd1de5ce42a7b11460753d8941baebda208360475f31eb17d2",
+    "flags_contract": "headless_angle_swiftshader_local_file_isolated_profile"
+  },
+  "contact_sheet": {
+    "targeted_attempt_count": 1,
+    "target_test_result": "1 passed in 1.62s",
+    "exit_code": 0,
+    "png_asserted_by_test": true,
+    "asserted_width": 1360,
+    "asserted_height": 780,
+    "png_retained": false,
+    "status_breakpoint_observed": false
+  },
+  "legacy_group": {
+    "attempt_count": 1,
+    "result": "56 passed, 1 skipped, 13 subtests passed in 50.95s",
+    "exit_code": 0,
+    "includes_existing_contact_sheet_test": true
+  },
+  "provider_actions": {
+    "preflight": 0,
+    "worker": 0,
+    "smoke": 0,
+    "acceptance": 0,
+    "codex_exec": 0,
+    "mp4_count": 0
+  },
+  "immutable_005t": {
+    "run_id": "session_20260811T175916Z_43092",
+    "state_sha256": "ffc27a599151dd649d428180f67900d74e095120c0f2c1075fae71b77ddff2de",
+    "terminal_ledger_sha256": "e72ad3787267162fe4e56b840f6e7f762ccc227eb637d3e45b1bf4db978554f3",
+    "status": "BLOCKED_DETACHED_WORKER_DIED"
+  },
+  "v005_precondition": {
+    "status": "BASELINE_BLOCKED",
+    "preflight_attempts": 0,
+    "worker_attempts": 0,
+    "smoke_attempts": 0,
+    "acceptance_attempts": 0
+  },
+  "raw_artifacts": {
+    "stored_externally_only": true,
+    "raw_logs_deleted_after_validation": true
+  }
+}

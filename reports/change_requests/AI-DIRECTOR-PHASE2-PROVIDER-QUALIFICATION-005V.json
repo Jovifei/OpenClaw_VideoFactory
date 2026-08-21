@@ -1,0 +1,41 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V",
+  "mode": "single_use_real_provider_qualification",
+  "profile": "005V",
+  "schema_version": "1.1",
+  "execution_status": "baseline_blocked",
+  "does_not_imply_formal_phase_pass": true,
+  "maximum_worker_generations": 1,
+  "maximum_smoke_commands": 1,
+  "maximum_acceptance_commands": 1,
+  "allow_rehearsal": false,
+  "does_not_authorize_oauth_profile_model_changes": true,
+  "does_not_authorize_openclaw_feishu_gateway_binding_or_cron_changes": true,
+  "does_not_authorize_project_status_changes": true,
+  "does_not_authorize_commit_or_push": true,
+  "allowed_repository_paths": [
+    "scripts/provider_qualification.ps1",
+    "scripts/lib/ProviderQualification.psm1",
+    "schemas/ops/provider_qualification_run.schema.json",
+    "schemas/ops/provider_qualification_final_review.schema.json",
+    "tests/Test-ProviderQualification005V.ps1",
+    "examples/ai_director_provider_qualification_005v/",
+    "tasks/plans/2026-08-13-ai-director-phase2-real-provider-qualification-005v.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "handoff/codex/IMPLEMENTATION_BACKLOG.yaml",
+    "reports/",
+    ".gitignore"
+  ],
+  "allowed_external_root": "E:/Claude_allow/Download/codex-provider-recovery-005v/",
+  "forbidden_surfaces": [
+    "PROJECT_STATUS.yaml",
+    "OpenClaw",
+    "Feishu",
+    "Gateway",
+    "Binding",
+    "OAuth",
+    "Cron",
+    "Codex profile/model/config changes"
+  ]
+}

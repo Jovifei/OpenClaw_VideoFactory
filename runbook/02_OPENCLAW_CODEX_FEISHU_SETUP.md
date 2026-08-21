@@ -1,4 +1,8 @@
-# 02 — OpenClaw、Direct Codex CLI 与飞书配置（V2.5）
+# 02 — Phase 2：OpenClaw、Direct Codex CLI 与飞书配置（V2.5）
+
+> 这是 **Phase 2 飞书自动化** Runbook，不是当前 Phase 1 本地视频工厂的启动步骤。
+> 在 Phase 1 中不得运行本文件的配置、Gateway、飞书、lark-cli 或 smoke 命令；
+> 需要进入 Phase 2 时仍须取得 Jovi 的单独授权。
 
 ## 1. 捕获状态
 

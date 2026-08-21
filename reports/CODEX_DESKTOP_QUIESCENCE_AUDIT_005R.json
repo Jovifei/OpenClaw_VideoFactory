@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "task_id": "AI-DIRECTOR-PHASE2-DESKTOP-DETACHED-PROVIDER-QUALIFICATION-005R",
+  "run_id": "session_20260810T145823Z_60876",
+  "status": "blocked",
+  "reason": "detached_worker_died_before_desktop_quiescence",
+  "desktop_quiescent": false,
+  "absent_process_samples": 0,
+  "cache_stability_samples": 0,
+  "cache_operation_performed": false,
+  "raw_output_retained": false,
+  "absolute_paths_retained": false
+}

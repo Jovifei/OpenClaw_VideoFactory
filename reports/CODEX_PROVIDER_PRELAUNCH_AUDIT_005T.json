@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "task_id": "AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T",
+  "qualification_profile": "005T",
+  "verdict": "APPROVED",
+  "source_freeze_sha256": "aac8bdb6eb173e211bded9c9caaa4e76358479f4dfd35e2bf0b1eccb134e8c37",
+  "reviewer_result_sha256": "b973a5e2660c11e43bdd1fe6215a141f740b762396c0ee599e73581f01ea04cf",
+  "reviewer_result_ref": "reports/CODEX_PROVIDER_PRELAUNCH_REVIEW_005T.json",
+  "boundary": {
+    "branch": "codex/ai-director-video-factory-phase2-001",
+    "head": "76180a59ea662bdf168d88baaeb777d3e8eb59ef",
+    "index_empty": true
+  },
+  "worker_policy": {
+    "max_worker_generations": 1,
+    "maximum_smoke_commands": 1,
+    "maximum_acceptance_commands": 1,
+    "provider_or_worker_started": false
+  },
+  "does_not_imply_formal_phase_pass": true,
+  "artifact_refs": [
+    "reports/CODEX_PROVIDER_PRELAUNCH_REVIEW_005T.json",
+    "reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-QUALIFICATION-005T.json"
+  ]
+}

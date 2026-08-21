@@ -1,4 +1,20 @@
 version: 2.7
+product_phase_alignment:
+  authority: docs/PRODUCT_PHASES.md
+  effective_date: '2026-08-14'
+  current_product_phase: PHASE_1_LOCAL_VIDEO_FACTORY
+  rule: Phase 1 local Codex video creation is the current delivery priority. Historical P0 Feishu work is retained as Phase 2 safety evidence and must not block Phase 1.
+  phase_1_inputs:
+  - Jovi-provided topic
+  - Jovi-provided local reference video for theme/structure analysis
+  - explicitly authorized public-topic research
+  phase_1_excludes:
+  - Feishu
+  - OpenClaw runtime
+  - lark-cli
+  - Cron
+  - automatic publication
+  phase_2_scope: historical P0 Feishu safety, candidate cards, user selection, qualified fallback, controlled delivery, and Cron
 definition_of_done:
 - code_committed
 - tests_passed
@@ -7,7 +23,8 @@ definition_of_done:
 - no_secret_in_repo
 phases:
   P0:
-    name: Infrastructure, Feishu, media, lark-cli, and Direct Codex CLI
+    name: Historical Feishu safety track retained for Phase 2
+    status: deferred_to_phase_2
     codex_plugin_status: deferred_optional_not_blocking
     tasks:
     - id: P0-01
@@ -89,14 +106,21 @@ phases:
         evidence and no VideoFactory production Cron. OpenClaw Default Runtime is
         allowed.
   P1:
-    name: Deterministic video MVP in small verified increments
+    name: Phase 1 local Codex video factory in small verified increments
     tasks:
+    - id: P1-00
+      title: Define local topic, local reference-video and authorized-public-research input contracts
+      implementation_status: topic_mode_complete_other_modes_fail_closed
+      depends_on: []
+      output: topic_brief, reference_report (when applicable), source boundary and local input digest
+      acceptance: Reference inputs remain read-only; generated script and visuals are original; no Feishu, OpenClaw, lark-cli, Cron, downloader, account or publication action occurs.
     - id: P1-A
-      title: Implement SQLite state/event/artifact store and CLI only
+      title: Implement local state/event/artifact store and CLI only
+      implementation_status: local_topic_control_complete
       depends_on:
-      - P0-11
-      output: src/factory/db.py, src/factory/state.py, src/factory/cli.py
-      acceptance: Idempotency, cancel, and restart recovery tests pass; no video is generated.
+      - P1-00
+      output: src/factory/db.py, src/factory/phase1_cli.py, scripts/factory.py
+      acceptance: Local input digest idempotency, cancel, and restart recovery tests pass; no video is generated.
     - id: P1-B
       title: Render one fixed JSON fixture to a 10-second MP4
       depends_on:
@@ -105,6 +129,7 @@ phases:
       acceptance: File is decodable; no TTS, captions, network research, or extra template.
     - id: P1-C
       title: Add TTS and captions to the fixed fixture
+      implementation_status: local_windows_sapi_complete_for_modbus
       depends_on:
       - P1-B
       output: voice.wav, captions.srt, MP4
@@ -136,6 +161,7 @@ phases:
       acceptance: Placement, occlusion, and static fallback checks pass.
     - id: P1-F1
       title: Complete Modbus fixture
+      implementation_status: candidate_ready_for_human_review
       depends_on: [P1-E]
       output: FIX-001 delivery package
       acceptance: Clean run, rerun, cancel, retry, and CPU/NVENC fallback pass.
@@ -149,17 +175,23 @@ phases:
       depends_on: [P1-F2]
       output: FIX-003 delivery package
       acceptance: Clean run, rerun, cancel, retry, and CPU/NVENC fallback pass.
+    - id: P1-F4
+      title: Complete user-provided local reference-video topic fixture
+      depends_on: [P1-F3]
+      output: reference report, original script/storyboard and local review package
+      acceptance: A read-only reference video yields only theme/structure/general-expression analysis and a new original MP4 without reused audio, watermark, continuous source footage or full source copy.
     - id: P1-G
-      title: Add Feishu delivery last
-      depends_on: [P1-F3, P0-09]
-      output: cover, preview MP4, report, idempotent delivery
-      acceptance: All three completed fixtures deliver once with idempotency keys.
+      title: Add local review package and human acceptance last
+      implementation_status: first_fixture_package_complete_remaining_fixtures_pending
+      depends_on: [P1-F4]
+      output: cover, final_master MP4, captions, render/quality reports and local review checklist
+      acceptance: All fixtures produce reviewable local packages; no Feishu delivery is attempted.
     - id: P1-99
-      title: Pass P1 acceptance gate
+      title: Pass Phase 1 local-video-factory acceptance gate
       depends_on:
       - P1-G
-      output: reports/gates/P1_READY.json
-      acceptance: p1 gate exits 0 with evidence.
+      output: reports/gates/PHASE_1_LOCAL_VIDEO_FACTORY_READY.json
+      acceptance: Phase 1 gate exits 0 with evidence; this does not start Feishu automation.
   P1.5:
     name: Video Use Adapter Pilot
     optional: true
@@ -189,12 +221,18 @@ phases:
       - multi_take
       acceptance: No word cuts, no audio pops, max 3 self-review passes, original media unchanged.
   P2:
-    name: Topic recommendation and timeout fallback
+    name: Phase 2 Feishu topic recommendation, controlled delivery and timeout fallback
     tasks:
+    - id: P2-00
+      title: Complete historical P0 Feishu safety and controlled egress prerequisites
+      depends_on:
+      - P1-99
+      output: Phase 2 Feishu safety evidence and rollback records
+      acceptance: Allowlist, single consumer, isolated receipt/MIME/SHA, explicit two-message intent, controlled idempotent egress and recovery evidence pass without production Cron.
     - id: P2-01
       title: Implement source adapters and semantic history index
       depends_on:
-      - P1-99
+      - P2-00
       output: src/topic_sources/
       acceptance: Configured user directories can be indexed without reading outside
         allowlist.
@@ -279,10 +317,10 @@ phases:
       output: reports/gates/P3_READY.json
       acceptance: p3 gate exits 0 with evidence.
   P4:
-    name: Reference-video recreation
+    name: Phase 4 advanced reference-video original re-creation
     tasks:
     - id: P4-01
-      title: Implement safe media ingestion and read-only copy
+      title: Implement advanced safe media ingestion and read-only copy
       depends_on:
       - P3-05
       output: src/reference_ingest/
@@ -378,3 +416,119 @@ phases:
       title: Record Phase1.5 candidate report
       output: reports/PINK_PIG_FACTORY_PHASE1_5_COMPOSITION.md
       acceptance: READY is written only after every declared local gate passes; official P0/P1 remains unchanged.
+
+  AI_DIRECTOR_PHASE2:
+    name: AI Director staged local planning extension
+    status: blocked_external_provider_acceptance
+    does_not_imply_phase_pass: true
+    depends_on:
+    - P1.5_COMPOSITION
+    tasks:
+    - id: AI-DIRECTOR-01
+      title: DirectorScript, factual brief, asset selection, quality, and Job State contracts
+      output: schemas/video/director_script.schema.json
+      acceptance: schema fixtures and fail-closed validation pass.
+    - id: AI-DIRECTOR-02
+      title: Deterministic ScriptPlanner, StoryboardAssembler, and Registry AssetSelector
+      output: src/factory/director/script_planner.py
+      acceptance: fake-provider generation is stable and never receives provider-selected asset IDs.
+    - id: AI-DIRECTOR-03
+      title: Integrate topic-file pipeline with existing run_job and local lifecycle snapshots
+      output: generate_video.py
+      acceptance: fake-provider full chain produces MP4/report; topic-only remains review_required.
+    - id: AI-DIRECTOR-99
+      title: Record Phase 2 candidate report
+      output: reports/AI_DIRECTOR_PHASE2_IMPLEMENTATION.md
+      acceptance: real Codex CLI evidence is recorded separately; READY only if all declared gates pass.
+    remediation_004:
+      status: local_remediated_pending_provider_recovery
+      output: reports/AI_DIRECTOR_PHASE2_REMEDIATION_004.md
+      acceptance: failed snapshots, stale-report protection, and legacy media-chain retirement pass local review
+      does_not_imply_phase_pass: true
+    provider_005:
+      status: blocked_provider_cache_drift
+      output: reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005.md
+      acceptance: historical cache-drift evidence is preserved
+      does_not_imply_phase_pass: true
+    provider_005r:
+      status: blocked_detached_worker_died
+      output: reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005R.md
+      acceptance: historical one-worker run remains immutable and must not be restarted
+      does_not_imply_phase_pass: true
+    provider_005s:
+      status: blocked_detached_worker_died
+      output: reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005S.md
+      depends_on:
+      - provider_005r
+      acceptance: terminal historical evidence; do not restart or reuse
+      does_not_imply_phase_pass: true
+    provider_005t:
+      status: blocked_detached_worker_died
+      output: reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005T.md
+      depends_on:
+      - provider_005s
+      acceptance: pre-ready state-contract failure preserved; no Worker, smoke, acceptance, cache move, or MP4
+      does_not_imply_phase_pass: true
+    worker_state_contract_005u:
+      status: fail_review_marker_integration_unproven
+      output: reports/AI_DIRECTOR_PHASE2_WORKER_STATE_CONTRACT_REMEDIATION_005U.md
+      depends_on:
+      - provider_005t
+      acceptance: worker_started permits reservation PID zero, supervisor_ready requires persisted positive PID, launch fault matrix passes, BOM-safe schema validation passes, and independent final reviewer approves future qualification planning
+      does_not_imply_real_provider_pass: true
+      next: AI-DIRECTOR-PHASE2-REAL-PROVIDER-QUALIFICATION-005V
+    worker_marker_integration_005u1:
+      status: ready_for_external_read_only_audit
+      output: reports/AI_DIRECTOR_PHASE2_WORKER_MARKER_INTEGRATION_REMEDIATION_005U1.md
+      depends_on:
+      - worker_state_contract_005u
+      acceptance: exact production marker paths and production Supervisor/Worker integration must be proven by TestDrive failure matrix and success control
+      does_not_imply_real_provider_pass: true
+      next: independent external audit before any 005V planning
+    legacy_chrome_host_baseline_005w:
+      status: chrome_host_baseline_pass
+      output: reports/AI_DIRECTOR_PHASE2_LEGACY_CHROME_HOST_BASELINE_005W.md
+      depends_on:
+      - provider_005v
+      acceptance: one isolated contact-sheet target pass, one locked legacy run with 56 passed / 1 skipped / 13 subtests, raw evidence sanitized, provider_actions all zero
+      does_not_imply_real_provider_pass: true
+      next: fresh 005V local source-freeze and prelaunch review; no Provider execution authorization
+    provider_005v_local_reentry_001:
+      status: changes_required_preserved
+      output: reports/AI_DIRECTOR_PHASE2_PROVIDER_LOCAL_GATE_REENTRY_005V.md
+      depends_on:
+      - legacy_chrome_host_baseline_005w
+      acceptance: initial local re-entry tests passed but independent review found missing CR gate, non-unique 005T run binding, runtime asset freeze gap, and unsafe validation cleanup; do not run Provider
+      next: provider_005v_local_gate_remediation_005v1
+    provider_005v_local_gate_remediation_005v1:
+      status: local_contract_remediated_final_approved
+      output: reports/AI_DIRECTOR_PHASE2_PROVIDER_LOCAL_GATE_REMEDIATION_005V1.md
+      depends_on:
+      - provider_005v_local_reentry_001
+      acceptance: CR dispatcher gate, exact 005T identity, 12 runtime asset hashes, safe validation cleanup, Pester 78, Director 47, Video 273, VideoFactory 5, legacy 56/1/13, two specialist approvals
+      does_not_imply_real_provider_pass: true
+      next: fresh_final_review_then_separate_005v_preflight_authorization
+    provider_005v_preflight_005v2:
+      status: preflight_blocked_unexpected_error
+      output: reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_005V2.md
+      depends_on:
+      - provider_005v_local_gate_remediation_005v1
+      acceptance: exactly one read-only Preflight was attempted through a separate bridge CR; exit 1 with sanitized unexpected_error; no run root, lock, Worker, smoke, acceptance, cache mutation, or MP4
+      does_not_imply_real_provider_pass: true
+      next: new separately authorized preflight-diagnostics plan; do not retry 005V2 or enter 006
+    provider_005v_preflight_observability_005v3:
+      status: local_observability_remediated_pending_diagnostic_authorization
+      output: reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_OBSERVABILITY_REMEDIATION_005V3.md
+      depends_on:
+      - provider_005v_preflight_005v2
+      acceptance: fixed preflight error schema, gate/substep/reason normalization, V3 diagnostic-only profile, 90 Pester passes, Director 47, Video 273, VideoFactory 5, legacy 005W baseline 56/1/13 plus current isolated non-Chrome subset 55/1/13, no operational execution; protected-file drift remains BASELINE_BLOCKED
+      does_not_imply_real_provider_pass: true
+      next: separately authorize exactly one read-only 005V3 diagnostic Preflight; do not start Worker or enter 006
+    provider_005v_preflight_005v2:
+      status: preflight_blocked_unexpected_error
+      output: reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_005V2.md
+      depends_on:
+      - provider_005v_local_gate_remediation_005v1
+      acceptance: exactly one read-only Preflight was attempted through a separate bridge CR; exit 1 with sanitized unexpected_error; no run root, lock, Worker, smoke, acceptance, cache mutation, or MP4
+      does_not_imply_real_provider_pass: true
+      next: new separately authorized preflight-diagnostics plan; do not retry 005V2 or enter 006

@@ -1,8 +1,27 @@
 version: 2.4
 project_root: E:\project\OpenClaw_VideoFactory
-status: ready_for_codex_p0
-last_updated: null
-current_phase: P0
+status: ready_for_codex_phase_1_local_video_factory
+last_updated: 2026-08-14
+current_phase: PHASE_1_LOCAL_VIDEO_FACTORY
+phase_model: user_aligned_2026_08_14
+product_phases:
+  PHASE_1_LOCAL_VIDEO_FACTORY:
+    status: not_started
+    goal: local Codex video creation from a user topic, a user-provided local reference video, or explicitly authorized public-topic research
+    excludes:
+      - Feishu
+      - OpenClaw runtime and daily state
+      - Cron
+      - automatic topic selection
+      - automatic publication
+    canonical_document: docs/PRODUCT_PHASES.md
+  PHASE_2_FEISHU_AUTOMATION:
+    status: blocked_by_PHASE_1_LOCAL_VIDEO_FACTORY
+    goal: Feishu safety, topic cards, user selection, qualified 12:00 fallback, controlled delivery, and Cron after non-scheduled proof
+    prerequisite: PHASE_1_LOCAL_VIDEO_FACTORY
+# Historical P0-P5 labels below are retained for existing evidence and tooling.
+# They are compatibility tracks, not the product-stage order, and P0 no longer
+# blocks the local Phase 1 video factory.
 phases:
   PACKAGE:
     status: passed
@@ -14,15 +33,30 @@ phases:
   P3: {status: blocked_by_P2, evidence: []}
   P4: {status: blocked_by_P3, evidence: []}
   P5: {status: blocked_by_P4, evidence: []}
+exceptions:
+  - id: PINK_PIG_VIDEO_FACTORY_PRODUCTIZATION_001
+    scope: PHASE_1_LOCAL_VIDEO_FACTORY
+    granted_by: user
+    summary: 小粉猪视频工厂产品化 Phase1（Registry + Schema + Storyboard 编译 + 多场景 Demo）
+    note: 本轮属于本地 Phase 1 产品工作，产出不构成 Phase 1 通过依据；历史 P0 飞书门禁移至 Phase 2
+    does_not_imply_phase_pass: true
+    allowed_paths:
+      - video_factory/
+      - assets/
+      - schemas/video/
+      - src/factory/assets/pink_pig/
+      - external/
+      - docs/
+      - tests/video/
 known_implementation_gaps:
-  - production factory pipeline is not implemented
-  - SQLite state/event store is not implemented
-  - Remotion templates are not implemented
-  - ComfyUI approved workflows are not selected
-  - Feishu runtime credentials and target IDs are not configured
-  - production cron is not registered
+  - Phase 1 production-ready local factory proof is not complete
+  - Phase 1 SQLite state/event store and reviewable local job lifecycle are not complete
+  - Phase 1 Remotion templates and approved render contracts are not complete
+  - Phase 1 local reference-video theme-analysis path is not complete
+  - Phase 2 Feishu runtime credentials and target IDs are not configured
+  - Phase 2 production Cron is not registered
 rules:
   - never mark a phase passed without evidence
-  - never register production cron before P2 passes
+  - never register production cron before Phase 2 passes
   - never download models without approval and budget check
   - never publish to Douyin automatically

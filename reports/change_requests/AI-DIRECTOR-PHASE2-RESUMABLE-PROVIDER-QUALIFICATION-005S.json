@@ -1,0 +1,96 @@
+{
+  "id": "AI-DIRECTOR-PHASE2-RESUMABLE-PROVIDER-QUALIFICATION-005S",
+  "mode": "resumable_sealed_real_provider_qualification",
+  "repository": "E:/project/OpenClaw_VideoFactory",
+  "allowed_repository_paths": [
+    "scripts/provider_qualification.ps1",
+    "scripts/provider_qualification_005r.ps1",
+    "scripts/lib/ProviderQualification.psm1",
+    "scripts/lib/ProviderQualification005R.psm1",
+    "tests/Test-ProviderQualification005R.ps1",
+    "tests/Test-ProviderQualification005S.ps1",
+    "schemas/ops/provider_qualification_run.schema.json",
+    "examples/ai_director_provider_qualification_005s/",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "tasks/plans/2026-08-11-ai-director-phase2-resumable-provider-qualification-005s.md",
+    "reports/*005S*",
+    "reports/change_requests/*005S.json",
+    "handoff/codex/IMPLEMENTATION_BACKLOG.yaml",
+    ".gitignore"
+  ],
+  "allowed_external_paths": [
+    "E:/Claude_allow/Download/codex-provider-recovery-005s/",
+    "C:/Users/Admin/.codex/models_cache.json",
+    "dist/director/director_3aff643f8c6a7ab8/"
+  ],
+  "does_not_imply_formal_phase_pass": true,
+  "authorizes_one_supervisor": true,
+  "maximum_worker_generations": 3,
+  "maximum_detachment_canaries": 1,
+  "maximum_smoke_commands": 1,
+  "maximum_acceptance_commands": 1,
+  "does_not_authorize_commit_or_push": true,
+  "does_not_authorize_oauth_profile_model_changes": true,
+  "does_not_authorize_openclaw_feishu_changes": true,
+  "forbidden_surfaces": [
+    "PROJECT_STATUS.yaml",
+    "OpenClaw",
+    "Feishu",
+    "Gateway",
+    "Binding",
+    "Cron",
+    "C:/Users/Admin/.codex/config.toml",
+    "C:/Users/Admin/.codex/auth.json",
+    "OAuth",
+    "Codex profile",
+    "model selection"
+  ],
+  "execution_status": "blocked_detached_worker_died",
+  "terminal_decision": "BLOCKED_DETACHED_WORKER_DIED",
+  "terminal_evidence": {
+    "run_id": "session_rehearsal_20260811T070706Z_82832",
+    "smoke_attempted": false,
+    "acceptance_attempted": false,
+    "desktop_quiescent": false,
+    "local_contract_tests": "33 passed",
+    "product_regressions": "director 47, video 273, video_factory 5, legacy 56 passed / 1 skipped / 13 subtests"
+  },
+  "requires_new_authorization_for_next_worker": true,
+  "baseline_frozen": {
+    "branch": "codex/ai-director-video-factory-phase2-001",
+    "head": "76180a59ea662bdf168d88baaeb777d3e8eb59ef",
+    "index_empty": true,
+    "protected_dirty_sha256": {
+      "PROJECT_STATUS.yaml": "cd0dc97280ed86abac748dceaff73a45587a92656d4481e782b37aa33002785d",
+      "reports/P0_ACCEPTANCE_MATRIX_V2.yaml": "acccf9e9440776583857c67ba15094ef461f1b61dfe0ebd436fa68b4e3b6905e",
+      "scripts/analysis_request.py": "68bdd12ebc45d92fff17ae01dec7f6c4efcd0cef3e89aeb68434ec9ebed9ea1d",
+      "scripts/analyzer_mcp.py": "bcf09db631eed87316c4d2b0664abc159470860b0d3e84c7e8c3460071e09d90",
+      "scripts/mcp_ingest_attachment.py": "313f00b8f855faaf2ad22cd01a61d987670d0ff02ff4c9de3d57970039a7d52b",
+      "scripts/media_action_ticket.py": "794b0ed4dea1fb18eb52371d1fcddc4724d8d781b141b09214545e5af19699e5"
+    },
+    "immutable_005r": {
+      "terminal_status": "BLOCKED_DETACHED_WORKER_DIED",
+      "smoke_attempted": false,
+      "acceptance_attempted": false,
+      "new_provider_mp4": false,
+      "repository_artifacts": {
+        "reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005R.md": "1544256e9284b267cdf3dca3669cf93f24f769687d307d048e92461902b08289",
+        "reports/CODEX_DESKTOP_QUIESCENCE_AUDIT_005R.json": "09019930a1ca5f42f61d2dd0212230ef203ea8e3e2b65c84a93e1d16676ccf5b",
+        "reports/CODEX_PROVIDER_DETACHED_RUN_005R.json": "f8e7d1db317a2d16905bd009a38c093e75faf3b1c2d363f65b24406a352b614b",
+        "scripts/provider_qualification_005r.ps1": "b742ef40c51d5c0a891bed80a3ca71d13e5619c7aefe0b4460413c2c899535ba",
+        "scripts/lib/ProviderQualification005R.psm1": "09af0aed84646d18c1875721fcaa0900b0080b1a06a26a585bcea58d7c65b8ea",
+        "schemas/ops/provider_qualification_run.schema.json": "684cf735f0ef1fb927f374b58b640995814a0712d2bc54b5b6eea593743a47ac",
+        "tests/Test-ProviderQualification005R.ps1": "83308563a074c6682e4d4eb2346dc657bbec251040619b12e169a5b947091092"
+      },
+      "external_run_root": "E:/Claude_allow/Download/codex-provider-recovery-005r/session_20260810T145823Z_60876",
+      "external_run_files": {
+        "BLOCKED.txt": "e0fafcfc88a35ebca77ab0e028d02526411019a1133d930909690cf2fddd27d9",
+        "CLOSE_CODEX_DESKTOP_NOW.txt": "aa0788be03a39b3efcdf361ac538732b9acef15f97ef5ba0196e70b9bcabc0ba",
+        "run_manifest.json": "9bb87c13f07e22f56a4761781a00fd7328d7767532f7c5692e1b6f8fd1662114",
+        "state.json": "2df6685feb681d372f7dbf942c31bccb54b43ff60ae079c27dd3afd75df6f368",
+        "worker.pid": "44e0bfceeb6c1d3f44aa6f25d2c31fe100cd371cfd380c22cde9afcc419eee95"
+      }
+    }
+  }
+}
