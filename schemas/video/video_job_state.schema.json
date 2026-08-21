@@ -10,17 +10,54 @@
     "schema_version": {"type": "string", "pattern": "^\\d+\\.\\d+$"},
     "job_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
     "topic": {"type": "string", "minLength": 1},
-    "state": {"type": "string", "enum": ["draft", "validated", "compiled", "rendering", "completed", "failed"]},
+    "state": {"type": "string", "enum": ["draft", "validated", "compiled", "created", "planning", "script_ready", "storyboard_ready", "rendering", "quality_check", "completed", "failed"]},
+    "state_revision": {"type": "integer", "minimum": 0},
+    "topic_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "script_ref": {"type": ["string", "null"], "$comment": "Repository-relative DirectorScript reference."},
     "storyboard_ref": {"type": ["string", "null"], "$comment": "Repository-relative storyboard reference."},
     "timeline_ref": {"type": ["string", "null"], "$comment": "Repository-relative timeline reference."},
     "output_ref": {"type": ["string", "null"], "$comment": "Repository-relative rendered output reference."},
     "render_report_ref": {"type": ["string", "null"], "$comment": "Repository-relative render report reference."},
+    "quality_report_ref": {"type": ["string", "null"], "$comment": "Repository-relative Director quality report reference."},
+    "factual_review_required": {"type": "boolean"},
+    "factual_review_status": {"type": "string", "enum": ["verified", "review_required", "not_applicable"]},
     "error": {"$ref": "#/$defs/error"}
   },
   "allOf": [
     {
+      "if": {"properties": {"schema_version": {"const": "1.0"}}, "required": ["schema_version"]},
+      "then": {"properties": {"state": {"enum": ["draft", "validated", "compiled", "rendering", "completed", "failed"]}}}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "2.0"}}, "required": ["schema_version"]},
+      "then": {
+        "required": ["state_revision", "topic_digest"],
+        "properties": {"state": {"enum": ["created", "planning", "script_ready", "storyboard_ready", "rendering", "quality_check", "completed", "failed"]}}
+      }
+    },
+    {
       "if": {"properties": {"state": {"const": "validated"}}, "required": ["state"]},
       "then": {"required": ["storyboard_ref"], "properties": {"storyboard_ref": {"type": "string", "minLength": 1}}}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "2.0"}, "state": {"enum": ["script_ready", "storyboard_ready", "rendering", "quality_check", "completed"]}}, "required": ["schema_version", "state"]},
+      "then": {"required": ["script_ref"], "properties": {"script_ref": {"type": "string", "minLength": 1}}}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "2.0"}, "state": {"enum": ["storyboard_ready", "rendering", "quality_check", "completed"]}}, "required": ["schema_version", "state"]},
+      "then": {"required": ["storyboard_ref"], "properties": {"storyboard_ref": {"type": "string", "minLength": 1}}}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "2.0"}, "state": {"enum": ["quality_check", "completed"]}}, "required": ["schema_version", "state"]},
+      "then": {"required": ["timeline_ref", "render_report_ref", "quality_report_ref"], "properties": {"timeline_ref": {"type": "string", "minLength": 1}, "render_report_ref": {"type": "string", "minLength": 1}, "quality_report_ref": {"type": "string", "minLength": 1}}}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "2.0"}, "state": {"const": "completed"}}, "required": ["schema_version", "state"]},
+      "then": {"required": ["output_ref"], "properties": {"output_ref": {"type": "string", "minLength": 1}}}
+    },
+    {
+      "if": {"properties": {"state": {"const": "failed"}}, "required": ["state"]},
+      "then": {"required": ["error"], "properties": {"error": {"$ref": "#/$defs/error"}}}
     },
     {
       "if": {"properties": {"state": {"enum": ["compiled", "rendering"]}}, "required": ["state"]},

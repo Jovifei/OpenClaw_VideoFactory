@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_quality_report.schema.json",
+  "title": "Phase1LocalQualityReport",
+  "type": "object",
+  "required": ["schema_version", "job_id", "status", "scene_count", "media", "narration", "subtitle", "style", "checks", "error"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "job_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "status": {"type": "string", "enum": ["passed", "failed"]},
+    "scene_count": {"type": "integer", "minimum": 1},
+    "media": {
+      "type": "object",
+      "required": ["path", "sha256", "bytes", "duration_seconds", "width", "height", "fps", "video_codec", "audio_codec"],
+      "additionalProperties": false,
+      "properties": {
+        "path": {"type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!\\\\).+"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "bytes": {"type": "integer", "minimum": 1},
+        "duration_seconds": {"type": "number", "minimum": 25, "maximum": 60},
+        "width": {"type": "integer", "const": 1080},
+        "height": {"type": "integer", "const": 1920},
+        "fps": {"type": "number", "const": 30},
+        "video_codec": {"type": "string", "const": "h264"},
+        "audio_codec": {"type": "string", "const": "aac"}
+      }
+    },
+    "narration": {
+      "type": "object",
+      "required": ["mode", "segments_count"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"type": "string", "const": "tts"},
+        "segments_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "subtitle": {
+      "type": "object",
+      "required": ["path", "cue_count", "mode"],
+      "additionalProperties": false,
+      "properties": {
+        "path": {"type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!\\\\).+"},
+        "cue_count": {"type": "integer", "minimum": 1},
+        "mode": {"type": "string", "const": "burned_in"}
+      }
+    },
+    "style": {
+      "type": "object",
+      "required": ["layout_mode", "pink_pig_status", "subtitle_region"],
+      "additionalProperties": false,
+      "properties": {
+        "layout_mode": {"type": "string", "const": "knowledge_illustration"},
+        "pink_pig_status": {"type": "string", "const": "pass"},
+        "subtitle_region": {
+          "type": "object",
+          "required": ["x", "y", "width", "height"],
+          "additionalProperties": false,
+          "properties": {
+            "x": {"type": "integer", "minimum": 0},
+            "y": {"type": "integer", "minimum": 1120, "maximum": 1580},
+            "width": {"type": "integer", "minimum": 1},
+            "height": {"type": "integer", "minimum": 1}
+          }
+        }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["name", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "status": {"type": "string", "const": "passed"}
+        }
+      }
+    },
+    "error": {"type": "null"}
+  }
+}

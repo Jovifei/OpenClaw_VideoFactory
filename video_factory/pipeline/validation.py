@@ -8,6 +8,7 @@ does **not** crash on import.
 from __future__ import annotations
 
 import logging
+import json
 import warnings
 from pathlib import Path
 
@@ -24,7 +25,13 @@ _SCHEMA_MAP: dict[str, str] = {
     "video_job": "schemas/video/video_job.schema.json",
     "video_job_state": "schemas/video/video_job_state.schema.json",
     "director_draft": "schemas/video/director_draft.schema.json",
+    "director_script": "schemas/video/director_script.schema.json",
+    "director_factual_brief": "schemas/video/director_factual_brief.schema.json",
     "director_run_report": "schemas/video/director_run_report.schema.json",
+    "asset_selection_report": "schemas/video/asset_selection_report.schema.json",
+    "director_quality_report": "schemas/video/director_quality_report.schema.json",
+    "phase1_quality_report": "schemas/video/phase1_quality_report.schema.json",
+    "phase1_review_package": "schemas/video/phase1_review_package.schema.json",
     "composition": "schemas/video/composition.schema.json",
     "pink_pig_registry": "src/factory/assets/pink_pig/registry.schema.json",
 }
@@ -36,7 +43,13 @@ _SCHEMA_ERROR_CODES: dict[str, str] = {
     "video_job": "video_job_invalid",
     "video_job_state": "video_job_state_invalid",
     "director_draft": "director_draft_invalid",
+    "director_script": "director_script_schema_invalid",
+    "director_factual_brief": "director_factual_brief_invalid",
     "director_run_report": "director_run_report_invalid",
+    "asset_selection_report": "asset_selection_report_invalid",
+    "director_quality_report": "director_quality_report_invalid",
+    "phase1_quality_report": "phase1_quality_report_invalid",
+    "phase1_review_package": "phase1_review_package_invalid",
     "composition": "composition_schema_invalid",
 }
 
@@ -47,7 +60,13 @@ _SCHEMA_ERROR_MESSAGES: dict[str, str] = {
     "video_job": "Video render job failed schema validation.",
     "video_job_state": "Video job state failed schema validation.",
     "director_draft": "Director draft failed schema validation.",
+    "director_script": "Director script failed schema validation.",
+    "director_factual_brief": "Director factual brief failed schema validation.",
     "director_run_report": "Director run report failed schema validation.",
+    "asset_selection_report": "Asset selection report failed schema validation.",
+    "director_quality_report": "Director quality report failed schema validation.",
+    "phase1_quality_report": "Phase 1 quality report failed schema validation.",
+    "phase1_review_package": "Phase 1 review package failed schema validation.",
     "composition": "Composition failed schema validation.",
 }
 
@@ -155,7 +174,38 @@ def validate(document: dict, schema_name: str) -> None:
     import jsonschema
 
     schema = load(schema_name)
-    validator = jsonschema.Draft202012Validator(schema)
+    path_str = _SCHEMA_MAP[schema_name]
+    schema_path = Path(path_str).resolve()
+    # Resolve all repository-local schema references from the checked-out
+    # catalog.  This prevents jsonschema from treating the documentation-only
+    # openclaw.local $id as a network endpoint during offline validation.
+    store: dict[str, dict] = {}
+    for candidate in schema_path.parent.glob("*.schema.json"):
+        try:
+            loaded = json.loads(candidate.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, ValueError):
+            continue
+        if isinstance(loaded, dict):
+            store[candidate.resolve().as_uri()] = loaded
+            if isinstance(loaded.get("$id"), str):
+                store[str(loaded["$id"])] = loaded
+    # Use the modern ``referencing`` registry so each external schema keeps
+    # its own ``$id`` scope.  The legacy RefResolver mutates the active scope
+    # after resolving ``composition.schema.json`` and can then incorrectly
+    # resolve Storyboard's local ``#/$defs/scene`` against Composition.
+    try:
+        from referencing import Registry, Resource
+
+        registry = Registry()
+        for uri, loaded in store.items():
+            # A schema may be registered under both its repository file URI
+            # and documentation-only canonical $id.  Registering the same
+            # resource under both keeps validation offline and deterministic.
+            registry = registry.with_resource(uri, Resource.from_contents(loaded))
+        validator = jsonschema.Draft202012Validator(schema, registry=registry)
+    except ImportError:  # pragma: no cover - jsonschema installs referencing
+        resolver = jsonschema.RefResolver.from_schema(schema, store=store)
+        validator = jsonschema.Draft202012Validator(schema, resolver=resolver)
     errors = sorted(
         validator.iter_errors(document),
         key=lambda err: (

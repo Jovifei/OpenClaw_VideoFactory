@@ -43,10 +43,16 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "provider": {"type": "string", "const": "edge-tts"},
+            "provider": {
+              "type": "string",
+              "enum": ["edge-tts", "windows-sapi"],
+              "default": "edge-tts"
+            },
             "voice": {"type": "string"}
-          }
+          },
+          "default": {"provider": "edge-tts"}
         },
+        "require_narration": {"type": "boolean", "default": false},
         "fallback_bgm": {"type": "string", "description": "Repo-relative path to fallback BGM WAV file."}
       }
     },

@@ -143,6 +143,7 @@ class CandidateStore:
                 for row in connection.execute("PRAGMA table_info(jobs)").fetchall()
             }
             migrations = {
+                "metadata_json": "ALTER TABLE jobs ADD COLUMN metadata_json TEXT NOT NULL DEFAULT '{}'",
                 "requested_duration_seconds": "ALTER TABLE jobs ADD COLUMN requested_duration_seconds INTEGER",
                 "resolved_duration_seconds": "ALTER TABLE jobs ADD COLUMN resolved_duration_seconds REAL",
                 "render_contract_version": "ALTER TABLE jobs ADD COLUMN render_contract_version TEXT NOT NULL DEFAULT '1.0'",
@@ -200,6 +201,7 @@ class CandidateStore:
         topic: str,
         *,
         requested_duration_seconds: int = DEFAULT_CANDIDATE_DURATION_SECONDS,
+        metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         if not all([fixture_id, idempotency_key, template, topic]):
             raise ValueError("candidate_job_fields_required")
@@ -210,19 +212,22 @@ class CandidateStore:
                 "SELECT * FROM jobs WHERE idempotency_key = ?", (idempotency_key,)
             ).fetchone()
             if existing:
-                return {**dict(existing), "created": False}
+                result = dict(existing)
+                result["metadata"] = json.loads(result.pop("metadata_json"))
+                return {**result, "created": False}
             now = utc_now()
             connection.execute(
                 """INSERT INTO jobs
                 (job_id,idempotency_key,fixture_id,template,topic,state,last_completed_state,attempt,
-                 requested_duration_seconds,resolved_duration_seconds,render_contract_version,created_at,updated_at)
-                VALUES (?,?,?,?,?,'NEW',NULL,0,?,NULL,'2.0',?,?)""",
+                 metadata_json,requested_duration_seconds,resolved_duration_seconds,render_contract_version,created_at,updated_at)
+                VALUES (?,?,?,?,?,'NEW',NULL,0,?,?,NULL,'2.0',?,?)""",
                 (
                     job_id,
                     idempotency_key,
                     fixture_id,
                     template,
                     topic,
+                    json.dumps(metadata or {}, ensure_ascii=False, sort_keys=True),
                     requested_duration_seconds,
                     now,
                     now,
@@ -237,6 +242,7 @@ class CandidateStore:
                     "fixture_id": fixture_id,
                     "requested_duration_seconds": requested_duration_seconds,
                     "render_contract_version": "2.0",
+                    "input_digest": str((metadata or {}).get("topic_digest", "")),
                 },
             )
             return {**self._status_row(connection, job_id), "created": True}

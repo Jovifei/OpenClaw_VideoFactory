@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_review_package.schema.json",
+  "title": "Phase1LocalReviewPackage",
+  "type": "object",
+  "required": ["schema_version", "job_id", "status", "input_mode", "title", "scene_count", "quality_report", "asset_selection", "artifacts"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "job_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "status": {"type": "string", "const": "ready_for_human_review"},
+    "input_mode": {"type": "string", "enum": ["topic", "local_reference", "authorized_public_research"]},
+    "title": {"type": "string", "minLength": 1, "maxLength": 160},
+    "scene_count": {"type": "integer", "minimum": 1},
+    "quality_report": {"type": "string", "const": "quality_report.json"},
+    "asset_selection": {"type": "object"},
+    "artifacts": {
+      "type": "array",
+      "minItems": 5,
+      "items": {"$ref": "#/$defs/artifact"}
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "required": ["name", "path", "sha256", "bytes"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "enum": ["final_master.mp4", "cover.png", "subtitle.srt", "quality_report.json", "review_checklist.md", "publish_info.md"]},
+        "path": {"type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!\\\\).+"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "bytes": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

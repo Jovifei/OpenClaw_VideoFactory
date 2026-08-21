@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_local_brief.schema.json",
+  "title": "Phase1LocalBrief",
+  "description": "Closed Phase 1 local input contract. It contains only reviewable topic and factual metadata; assets, paths, render commands, and provider prompts are not accepted.",
+  "type": "object",
+  "required": ["schema_version", "input_mode", "topic", "factual_brief"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "input_mode": {
+      "type": "string",
+      "enum": ["topic", "local_reference", "authorized_public_research"]
+    },
+    "topic": {"type": "string", "minLength": 1, "maxLength": 200},
+    "factual_brief": {"$ref": "director_factual_brief.schema.json"},
+    "reference_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "research_authorization_id": {"type": "string", "pattern": "^[A-Za-z0-9_.-]{1,96}$"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"input_mode": {"const": "topic"}}},
+      "then": {
+        "not": {
+          "anyOf": [
+            {"required": ["reference_sha256"]},
+            {"required": ["research_authorization_id"]}
+          ]
+        }
+      }
+    },
+    {
+      "if": {"properties": {"input_mode": {"const": "local_reference"}}},
+      "then": {
+        "required": ["reference_sha256"],
+        "not": {"required": ["research_authorization_id"]}
+      }
+    },
+    {
+      "if": {"properties": {"input_mode": {"const": "authorized_public_research"}}},
+      "then": {
+        "required": ["research_authorization_id"],
+        "not": {"required": ["reference_sha256"]}
+      }
+    }
+  ]
+}

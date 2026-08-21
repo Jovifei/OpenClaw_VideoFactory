@@ -3,6 +3,7 @@
 Supports two modes:
   --config  Legacy mode (directory-scan driven, unchanged behavior)
   --job     New mode (storyboard-driven, Phase 1 productization)
+  --local-brief  Deterministic local topic brief → Phase 1 review package
   --topic   Director mode (topic → Storyboard → existing Video Factory)
 """
 
@@ -12,6 +13,7 @@ import argparse
 import copy
 import hashlib
 import json
+import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -22,6 +24,7 @@ import yaml
 from video_factory.pipeline.asset_loader import build_asset_manifest
 from video_factory.pipeline.export import write_json
 from video_factory.pipeline.errors import FactoryContractError
+from video_factory.pipeline.failure_contract import sanitize_error_payload, sanitize_reason, sanitize_stage
 from video_factory.pipeline.renderer import render_video
 from video_factory.pipeline.render_report import build_render_report
 from video_factory.pipeline.subtitle import build_srt, build_srt_from_timeline
@@ -166,17 +169,200 @@ def _load_director_job_defaults() -> dict[str, Any]:
     return value
 
 
+def _safe_topic_file(path: Path) -> Path:
+    """Resolve a topic file without allowing path escape from the repo."""
+
+    candidate = path if path.is_absolute() else ROOT / path
+    resolved = candidate.resolve()
+    try:
+        resolved.relative_to(ROOT.resolve())
+    except ValueError as exc:
+        raise FactoryContractError(
+            "director_topic_invalid",
+            "Topic file must remain inside the repository.",
+            {"field": "topic_file", "reason": "path"},
+        ) from exc
+    return resolved
+
+
+def _safe_output_name(value: str | None) -> str:
+    name = str(value or "output.mp4")
+    path = Path(name.replace("\\", "/"))
+    if path.name != name or path.is_absolute() or ".." in path.parts or path.suffix.lower() != ".mp4":
+        raise FactoryContractError(
+            "video_job_invalid",
+            "Output name must be a safe MP4 basename.",
+            {"field": "output_name", "reason": "path"},
+        )
+    return name
+
+
+def _reset_director_work_dir(work_dir: Path) -> None:
+    """Start a stable-topic job from a single, non-mixed artifact snapshot.
+
+    Topic jobs intentionally use a stable directory name.  A retry for the
+    same topic must therefore remove only artifacts produced by this renderer
+    before writing a new state snapshot; otherwise a failed provider attempt
+    could be mistaken for a completed media run.  The directory is pipeline
+    owned (under ``dist/director``), and unknown files are left untouched.
+    """
+
+    generated_names = {
+        "topic.txt",
+        "research.md",
+        "sources.json",
+        "style_tokens.json",
+        "script.json",
+        "director_score.json",
+        "storyboard.json",
+        "asset_selection.json",
+        "director_report.json",
+        "video_job.yaml",
+        "video_job_state.json",
+        "storyboard.resolved.json",
+        "timeline.json",
+        "subtitle.srt",
+        "render_report.json",
+        "director_quality_report.json",
+        "director_quality_report.md",
+        "run_report.json",
+        "concat_list.txt",
+    }
+    if not work_dir.is_dir():
+        return
+    for child in work_dir.iterdir():
+        if child.name == ".director_sandbox" and child.is_dir() and not child.is_symlink():
+            shutil.rmtree(child)
+            continue
+        if not child.is_file() or child.name in generated_names or child.suffix.lower() in {".mp4", ".wav", ".mp3"}:
+            if child.is_file() and (child.name in generated_names or child.suffix.lower() in {".mp4", ".wav", ".mp3"}):
+                child.unlink()
+
+
+def _write_director_support_artifacts(work_dir: Path, *, topic: str, context: Any, brief: Any | None) -> None:
+    """Write bounded, source-linked context artifacts without raw prompts."""
+
+    (work_dir / "topic.txt").write_text(topic + "\n", encoding="utf-8")
+    if brief is None:
+        (work_dir / "research.md").write_text(
+            "# Factual review\n\nNo factual brief was supplied. This candidate remains review_required.\n",
+            encoding="utf-8",
+        )
+        write_json(work_dir / "sources.json", {"review_status": "review_required", "sources": []})
+    else:
+        facts = brief.document.get("facts", [])
+        lines = ["# Factual brief", "", f"Review status: {brief.document.get('review_status', 'review_required')}", ""]
+        for fact in facts:
+            if isinstance(fact, dict):
+                lines.append(f"- {fact.get('fact_id', 'fact')}: {fact.get('claim', '')}")
+        (work_dir / "research.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        write_json(work_dir / "sources.json", {"review_status": brief.document.get("review_status"), "sources": brief.document.get("sources", [])})
+    profile = context.style_profile
+    write_json(
+        work_dir / "style_tokens.json",
+        {
+            "schema_version": "1.0",
+            "character_id": context.registry.character_id,
+            "registry_version": context.registry.registry_version,
+            "persona": profile.brand_identity.get("persona", []),
+            "allowed_poses": list(context.allowed_poses),
+            "composition_id": context.composition.get("composition_id"),
+            "mascot_mode": "required",
+        },
+    )
+
+
+def _build_director_quality_report(*, job_id: str, score: dict[str, object] | None, factual_brief: Any | None, render_report_ref: str, render_report: dict[str, object] | None = None) -> dict[str, object]:
+    score_value = int(score.get("score", 0)) if isinstance(score, dict) else 0
+    verified = bool(factual_brief is not None and factual_brief.verified)
+    report = render_report if isinstance(render_report, dict) else {}
+    resolution = report.get("resolution") if isinstance(report.get("resolution"), dict) else {}
+    audio = report.get("audio") if isinstance(report.get("audio"), dict) else {}
+    subtitle = report.get("subtitle") if isinstance(report.get("subtitle"), dict) else {}
+    technical_checks = [
+        ("resolution", resolution.get("width") == 1080 and resolution.get("height") == 1920, "1080x1920 required"),
+        ("fps", float(report.get("fps", 0.0)) == 30.0, "30 fps required"),
+        ("codec", str(report.get("codec", "")).lower() == "h264", "H.264 required"),
+        ("audio", bool(audio.get("present")), "audio track required"),
+        ("subtitle_region", isinstance(report.get("subtitle_region"), dict) and bool(subtitle.get("present")), "subtitle safe region required"),
+        ("duration", 25.0 <= float(report.get("duration", 0.0)) <= 60.0, "duration must be 25-60 seconds"),
+    ]
+    checks = [
+        {"check_id": "director_score", "status": "pass" if score_value >= 85 else "fail", "detail": f"score={score_value}"},
+        {"check_id": "factual_review", "status": "pass" if verified else "review_required", "detail": "verified brief" if verified else "human review required"},
+    ]
+    checks.extend({"check_id": check_id, "status": "pass" if passed else "fail", "detail": detail} for check_id, passed, detail in technical_checks)
+    technical_ok = all(passed for _, passed, _ in technical_checks)
+    status = "failed" if not technical_ok or score_value < 85 else ("completed" if verified else "review_required")
+    error = None if status != "failed" else {"code": "director_quality_failed", "message": "Director post-render quality checks failed.", "context": {}}
+    return {
+        "schema_version": "1.0",
+        "job_id": job_id,
+        "status": status,
+        "score": score_value,
+        "checks": checks,
+        "factual_review_required": not verified,
+        "factual_review_status": "verified" if verified else "review_required",
+        "render_report_ref": render_report_ref,
+        "error": error,
+    }
+
+
+def _build_director_failure_report(*, topic: str, director: Any, error: FactoryContractError, factual_review_required: bool = True) -> dict[str, object]:
+    """Create a schema-valid sanitized report when planning fails early."""
+
+    normalized = str(topic)
+    provider = str(getattr(director, "_provider_name", lambda: type(director).__name__)())
+    version = str(getattr(director, "_provider_version", lambda: "unknown")())
+    safe_error = sanitize_error_payload(error)
+    context = dict(safe_error.get("context", {}))
+    return {
+        "schema_version": "1.0",
+        "provider": provider,
+        "provider_version": version[:128] or "unknown",
+        "prompt_version": "pink_pig_director_v1",
+        "topic_digest": hashlib.sha256(normalized.encode("utf-8")).hexdigest(),
+        "attempts": int(context.get("attempt", 1)),
+        "draft_validation": {"status": "fail", "error_count": 1, "validator": "provider"},
+        "storyboard_validation": {"status": "fail", "error_count": 1, "validator": "director"},
+        "semantic_validation": {"status": "fail", "error_count": 1, "validator": "director"},
+        "storyboard_id": "sb_" + hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:16],
+        "storyboard_sha256": hashlib.sha256(b"{}").hexdigest(),
+        "compiled_duration_seconds": 0.0,
+        "factual_review_required": bool(factual_review_required),
+        "error": {"code": str(safe_error["code"]), "message": str(safe_error["message"]), "context": context},
+    }
+
+
+def _report_is_current_failure(report: object, *, topic: str, error: FactoryContractError) -> bool:
+    """Accept only a failure report produced for this topic and failure."""
+
+    if not isinstance(report, dict):
+        return False
+    expected_digest = hashlib.sha256(topic.encode("utf-8")).hexdigest()
+    report_error = report.get("error")
+    return (
+        report.get("topic_digest") == expected_digest
+        and isinstance(report_error, dict)
+        and report_error.get("code") == error.code
+    )
+
+
 def run_topic(
     topic: str,
     *,
     director: Any | None = None,
     provider_name: str = "codex-cli",
+    factual_brief_path: str | Path | None = None,
+    output_name: str = "output.mp4",
     emit: bool = True,
 ) -> dict[str, object]:
-    """Generate a Storyboard from *topic* and invoke the existing ``run_job``."""
+    """Generate a Script/Storyboard from *topic* and invoke existing ``run_job`` once."""
 
-    from src.factory.director import AIDirector, CodexCliDirectorProvider, normalize_topic
+    from src.factory.director import AIDirector, CodexCliDirectorProvider, load_factual_brief, load_director_context, normalize_topic
     from video_factory.pipeline.validation import validate as _validate_director_report
+    from video_factory.pipeline.job_state import VideoJobStateMachine
+    from video_factory.pipeline.failure_contract import normalize_execution_error
 
     normalized = normalize_topic(topic)
     if provider_name != "codex-cli" and director is None:
@@ -188,69 +374,254 @@ def run_topic(
 
     digest = hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:16]
     job_id = f"director_{digest}"
+    phase2 = director is None or getattr(director, "workflow", "legacy") == "phase2"
     work_dir = ROOT / "dist" / "director" / job_id
     work_dir.mkdir(parents=True, exist_ok=True)
-    sandbox = work_dir / ".director_sandbox"
-    sandbox.mkdir(parents=True, exist_ok=True)
+    if phase2:
+        _reset_director_work_dir(work_dir)
     storyboard_path = work_dir / "storyboard.json"
     director_report_path = work_dir / "director_report.json"
     job_path = work_dir / "video_job.yaml"
-    output_path = work_dir / "output.mp4"
+    output_basename = _safe_output_name(output_name)
+    output_path = work_dir / output_basename
+    sandbox = work_dir / ".director_sandbox"
+    sandbox.mkdir(parents=True, exist_ok=True)
+
+    machine = VideoJobStateMachine(work_dir=work_dir)
+    state = machine.initial(
+        job_id=job_id,
+        topic=normalized,
+        factual_review_required=True,
+        factual_review_status="review_required",
+    )
+    if phase2:
+        machine.write(state)
+    brief = None
+
+    def _cleanup_sandbox() -> None:
+        """Remove only this job's validated, non-symlink provider sandbox."""
+
+        try:
+            owner = (ROOT.resolve() / "dist" / "director").resolve()
+            current = work_dir.resolve()
+            current.relative_to(owner)
+            candidate = sandbox.resolve()
+            candidate.relative_to(current)
+        except FileNotFoundError:
+            return
+        except (OSError, RuntimeError, ValueError) as exc:
+            raise FactoryContractError(
+                "video_job_execution_failed",
+                "Video job sandbox path is invalid.",
+                {"stage": "context", "reason": "sandbox_path_invalid"},
+            ) from exc
+        if sandbox.is_symlink() or not sandbox.is_dir():
+            return
+        try:
+            shutil.rmtree(candidate)
+        except FileNotFoundError:
+            return
+        except OSError:
+            # An ordinary cleanup race or lock must not leak its raw path.
+            return
+
+    def _execution_error(exc: BaseException, stage: str) -> FactoryContractError:
+        return exc if isinstance(exc, FactoryContractError) else normalize_execution_error(exc, stage=stage)
+
+    def _persist_failure(exc: BaseException, stage: str, *, cleanup: bool = True) -> FactoryContractError:
+        normalized_error = _execution_error(exc, stage)
+        try:
+            if phase2:
+                # ``fail`` performs the transition and atomic write as one
+                # lifecycle operation.  Persistence failures get a stable
+                # contract instead of leaking filesystem exception text.
+                nonlocal state
+                state = machine.fail(state, normalized_error, stage=stage)
+        except Exception as persist_exc:
+            raise FactoryContractError(
+                "video_job_state_persist_failed",
+                "Video job failure state could not be persisted.",
+                {"stage": sanitize_stage(stage), "reason": sanitize_reason(persist_exc)},
+            ) from persist_exc
+        finally:
+            if cleanup:
+                _cleanup_sandbox()
+        return normalized_error
+
+    try:
+        if factual_brief_path is not None:
+            brief = load_factual_brief(factual_brief_path, repo_root=ROOT, topic=normalized)
+        context = load_director_context(ROOT)
+        if brief is not None and brief.verified:
+            state["factual_review_required"] = False
+            state["factual_review_status"] = "verified"
+            machine._validate(state)
+            if phase2:
+                machine.write(state)
+        _write_director_support_artifacts(work_dir, topic=normalized, context=context, brief=brief)
+    except Exception as exc:
+        normalized_error = _persist_failure(exc, "context")
+        raise normalized_error from exc
 
     if director is None:
         director = AIDirector(
             provider=CodexCliDirectorProvider(working_dir=sandbox),
             repo_root=ROOT,
+            workflow="phase2",
         )
+    if phase2 and hasattr(director, "factual_brief"):
+        director.factual_brief = brief
     try:
+        if phase2:
+            state = machine.transition(state, "planning")
+            machine.write(state)
         storyboard = director.create_storyboard(normalized)
-    except FactoryContractError:
-        report = getattr(director, "last_report", None)
-        if isinstance(report, dict):
-            _validate_director_report(report, "director_run_report")
-            write_json(director_report_path, report)
+    except Exception as raw_exc:
+        exc = _execution_error(raw_exc, "storyboard")
         try:
-            sandbox.rmdir()
-        except OSError:
-            pass
-        raise
+            report = getattr(director, "last_report", None)
+            if not _report_is_current_failure(report, topic=normalized, error=exc):
+                report = _build_director_failure_report(
+                    topic=normalized,
+                    director=director,
+                    error=exc,
+                    factual_review_required=bool(state.get("factual_review_required", True)),
+                )
+            else:
+                # Even a topic-matching provider report may contain an unsafe
+                # exception payload.  Rebuild only its structured error before
+                # schema validation and persistence.
+                report = dict(report)
+                report["error"] = sanitize_error_payload(report.get("error"), stage="storyboard")
+            try:
+                _validate_director_report(report, "director_run_report")
+            except Exception:
+                # A stale or malformed provider report must never mask the
+                # real provider failure; replace it with deterministic data.
+                report = _build_director_failure_report(
+                    topic=normalized,
+                    director=director,
+                    error=exc,
+                    factual_review_required=bool(state.get("factual_review_required", True)),
+                )
+                _validate_director_report(report, "director_run_report")
+            write_json(director_report_path, report)
+        except Exception as report_exc:
+            persist_error = _persist_failure(report_exc, "storyboard")
+            raise persist_error from report_exc
+        _persist_failure(exc, "storyboard")
+        raise exc from raw_exc
     try:
-        sandbox.rmdir()
-    except OSError:
-        pass
+        _cleanup_sandbox()
+    except Exception as cleanup_exc:
+        persist_error = _persist_failure(cleanup_exc, "storyboard", cleanup=False)
+        raise persist_error from cleanup_exc
 
-    write_json(storyboard_path, storyboard)
-    report = getattr(director, "last_report", None)
-    if not isinstance(report, dict):
-        raise FactoryContractError(
-            "director_storyboard_invalid",
-            "Director did not produce a sanitized run report.",
-            {"reason": "report_missing"},
+    try:
+        script = getattr(director, "last_script", None)
+        if phase2 and isinstance(script, dict):
+            write_json(work_dir / "script.json", script)
+            write_json(work_dir / "director_score.json", getattr(director, "last_score", {}) or {})
+            state = machine.transition(state, "script_ready", artifact_refs={"script_ref": "script.json"})
+            machine.write(state)
+        write_json(storyboard_path, storyboard)
+        if phase2:
+            selection_report = getattr(director, "last_asset_selection", None)
+            if isinstance(selection_report, dict):
+                selection_report = dict(selection_report)
+                selection_report["job_id"] = job_id
+                write_json(work_dir / "asset_selection.json", selection_report)
+            state = machine.transition(state, "storyboard_ready", artifact_refs={"storyboard_ref": "storyboard.json"})
+            machine.write(state)
+        report = getattr(director, "last_report", None)
+        if not isinstance(report, dict):
+            raise FactoryContractError(
+                "director_storyboard_invalid",
+                "Director did not produce a sanitized run report.",
+                {"reason": "report_missing"},
+            )
+        _validate_director_report(report, "director_run_report")
+        expected_factual = bool(state.get("factual_review_required", True))
+        if report.get("factual_review_required") != expected_factual:
+            raise FactoryContractError(
+                "director_run_report_invalid",
+                "Director report factual review status does not match job state.",
+                {"reason": "factual_review_mismatch"},
+            )
+        write_json(director_report_path, report)
+
+        job = copy.deepcopy(_load_director_job_defaults())
+        job.update(
+            {
+                "schema_version": "1.0",
+                "job_id": job_id,
+                "job_kind": "video_render",
+                "storyboard_ref": "storyboard.json",
+                "outputs": {
+                    "video": _relative_to_root(output_path),
+                    "work_dir": _relative_to_root(work_dir),
+                },
+            }
         )
-    _validate_director_report(report, "director_run_report")
-    write_json(director_report_path, report)
+        from video_factory.pipeline.validation import validate as _validate_job
 
-    job = copy.deepcopy(_load_director_job_defaults())
-    job.update(
-        {
-            "schema_version": "1.0",
-            "job_id": job_id,
-            "job_kind": "video_render",
-            "storyboard_ref": "storyboard.json",
-            "outputs": {
-                "video": _relative_to_root(output_path),
-                "work_dir": _relative_to_root(work_dir),
-            },
-        }
-    )
-    from video_factory.pipeline.validation import validate as _validate_job
-
-    _validate_job(job, "video_job")
-    job_path.write_text(
-        yaml.safe_dump(job, allow_unicode=True, sort_keys=False),
-        encoding="utf-8",
-    )
-    result = run_job(job_path, emit=False)
+        _validate_job(job, "video_job")
+        job_path.write_text(
+            yaml.safe_dump(job, allow_unicode=True, sort_keys=False),
+            encoding="utf-8",
+        )
+        if phase2:
+            state = machine.transition(state, "rendering", artifact_refs={"timeline_ref": "timeline.json"})
+            machine.write(state)
+    except Exception as raw_exc:
+        exc = _persist_failure(raw_exc, "job_validation")
+        raise exc from raw_exc
+    try:
+        result = run_job(job_path, emit=False)
+    except Exception as raw_exc:
+        exc = _persist_failure(raw_exc, "rendering")
+        raise exc from raw_exc
+    quality_report = None
+    if phase2:
+        try:
+            render_report_value = None
+            render_report_file = work_dir / "render_report.json"
+            if render_report_file.is_file():
+                parsed_render_report = json.loads(render_report_file.read_text(encoding="utf-8"))
+                if isinstance(parsed_render_report, dict):
+                    render_report_value = parsed_render_report
+            quality_report = _build_director_quality_report(
+                job_id=job_id,
+                score=getattr(director, "last_score", None),
+                factual_brief=brief,
+                render_report_ref="render_report.json",
+                render_report=render_report_value,
+            )
+            _validate_director_report(quality_report, "director_quality_report")
+            write_json(work_dir / "director_quality_report.json", quality_report)
+            (work_dir / "director_quality_report.md").write_text(
+                f"# Director Quality Report\n\n- status: {quality_report['status']}\n- score: {quality_report['score']}\n- factual_review_status: {quality_report['factual_review_status']}\n",
+                encoding="utf-8",
+            )
+            state = machine.transition(
+                state,
+                "quality_check",
+                artifact_refs={"timeline_ref": "timeline.json", "render_report_ref": "render_report.json", "quality_report_ref": "director_quality_report.json"},
+            )
+            machine.write(state)
+            if quality_report["status"] == "failed":
+                quality_error = FactoryContractError(
+                    str((quality_report.get("error") or {}).get("code", "director_quality_failed")),
+                    str((quality_report.get("error") or {}).get("message", "Director quality checks failed.")),
+                    dict((quality_report.get("error") or {}).get("context", {})),
+                )
+                state = machine.fail(state, quality_error, stage="quality_check")
+            elif quality_report["status"] == "completed":
+                state = machine.transition(state, "completed", artifact_refs={"output_ref": output_basename})
+                machine.write(state)
+        except Exception as raw_exc:
+            exc = _persist_failure(raw_exc, "quality_check")
+            raise exc from raw_exc
     result.update(
         {
             "mode": "topic",
@@ -262,6 +633,10 @@ def run_topic(
             "job": _relative_to_root(job_path),
         }
     )
+    if phase2:
+        result["status"] = str(quality_report["status"])
+        result["video_job_state"] = _relative_to_root(work_dir / "video_job_state.json")
+        result["director_quality_report"] = _relative_to_root(work_dir / "director_quality_report.json")
     if emit:
         print(json.dumps(result, ensure_ascii=False))
     return result
@@ -399,6 +774,13 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
     t5 = time.perf_counter()
     render_timeline = to_render_timeline(tl_doc)
     transition_sec = float(render_cfg.get("transition_seconds", 0.4))
+    effective_subtitle_style = job.get("subtitle", {}).get("style") if isinstance(job.get("subtitle"), dict) else None
+    # VideoRenderJob 1.0 keeps its historical bottom_safe_band enum.  When
+    # the storyboard activates the Phase 1.5 composition, the composition is
+    # the authoritative render style and supplies the 52–60px safe-band
+    # values without changing the immutable job contract.
+    if composition is not None and isinstance(composition.get("subtitle_style"), dict):
+        effective_subtitle_style = dict(composition["subtitle_style"])
     render = render_video(
         asset_dir=ROOT,  # asset_dir is now secondary; image_path takes priority
         timeline=render_timeline,
@@ -408,7 +790,7 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
         audio_path=audio_plan.path,
         audio_loop=audio_plan.loop,
         repo_root=ROOT,
-        subtitle_style=job.get("subtitle", {}).get("style") if isinstance(job.get("subtitle"), dict) else None,
+        subtitle_style=effective_subtitle_style,
         audio_gain=float(job.get("audio", {}).get("gain", 1.0)) if isinstance(job.get("audio"), dict) else 1.0,
         audio_sample_rate=24000 if audio_plan.mode == "tts" else (48000 if audio_plan.path else None),
         composition=composition,
@@ -509,6 +891,222 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
 
 
 # ---------------------------------------------------------------------------
+# Local Phase 1 brief mode (no Provider / no network)
+# ---------------------------------------------------------------------------
+
+_PHASE1_OWNED_FILES = {
+    "input_brief.json",
+    "factual_brief.json",
+    "sources.json",
+    "script.json",
+    "storyboard.json",
+    "asset_selection_report.json",
+    "render_job.yaml",
+    "storyboard.resolved.json",
+    "timeline.json",
+    "subtitle.srt",
+    "audio.wav",
+    "concat_list.txt",
+    "render_report.json",
+    "run_report.json",
+    "render_manifest.json",
+    "audio_manifest.json",
+    "quality_report.json",
+    "review_package.json",
+    "review_checklist.md",
+    "publish_info.md",
+    "cover.png",
+    "final_master.mp4",
+    "video_job_state.json",
+}
+
+
+def _prepare_phase1_work_dir(work_dir: Path) -> None:
+    """Reset only files owned by one stable local-brief job.
+
+    Re-runs are intentionally idempotent, but an unexpected file or directory
+    is preserved.  This keeps the operation recoverable in a dirty workspace.
+    """
+
+    owner = (ROOT / "dist" / "phase1_local").resolve()
+    target = work_dir.resolve()
+    if target == owner or owner not in target.parents:
+        raise FactoryContractError(
+            "phase1_output_path_invalid",
+            "Phase 1 output must remain inside its owned job directory.",
+            {"reason": "containment"},
+        )
+    if work_dir.exists() and work_dir.is_symlink():
+        raise FactoryContractError(
+            "phase1_output_path_invalid",
+            "Phase 1 output directory cannot be a link.",
+            {"reason": "reparse"},
+        )
+    work_dir.mkdir(parents=True, exist_ok=True)
+    for name in sorted(_PHASE1_OWNED_FILES):
+        candidate = work_dir / name
+        if candidate.is_symlink():
+            raise FactoryContractError(
+                "phase1_output_path_invalid",
+                "Phase 1 output artifacts cannot be links.",
+                {"reason": "reparse", "artifact": name},
+            )
+        if candidate.is_file():
+            candidate.unlink()
+    for pattern in ("seg_*.wav", "seg_*.mp3", "padded_*.wav"):
+        for candidate in work_dir.glob(pattern):
+            if candidate.is_symlink() or not candidate.is_file():
+                raise FactoryContractError(
+                    "phase1_output_path_invalid",
+                    "Phase 1 temporary audio artifacts are invalid.",
+                    {"reason": "reparse"},
+                )
+            candidate.unlink()
+
+
+def run_local_brief(brief_path: Path, *, emit: bool = True) -> dict[str, object]:
+    """Build one fully local review package through the existing pipeline."""
+
+    from src.factory.phase1_local import build_local_plan, load_local_brief
+    from video_factory.pipeline.job_state import VideoJobStateMachine
+    from video_factory.pipeline.review_package import build_review_package
+
+    brief = load_local_brief(brief_path)
+    plan = build_local_plan(brief, repo_root=ROOT)
+    job_id = str(plan["job_id"])
+    work_dir = ROOT / "dist" / "phase1_local" / job_id
+    _prepare_phase1_work_dir(work_dir)
+
+    machine = VideoJobStateMachine(work_dir=work_dir)
+    state = machine.initial(
+        job_id=job_id,
+        topic=str(plan["topic"]),
+        factual_review_required=False,
+        factual_review_status="verified",
+    )
+    machine.write(state)
+    try:
+        state = machine.transition(state, "planning")
+        machine.write(state)
+
+        write_json(work_dir / "input_brief.json", brief)
+        write_json(work_dir / "factual_brief.json", plan["factual_brief"])
+        write_json(
+            work_dir / "sources.json",
+            {
+                "review_status": "verified",
+                "sources": list(plan["factual_brief"]["sources"]),
+            },
+        )
+        write_json(work_dir / "script.json", plan["script"])
+        state = machine.transition(state, "script_ready", artifact_refs={"script_ref": "script.json"})
+        machine.write(state)
+
+        write_json(work_dir / "storyboard.json", plan["storyboard"])
+        selection_report = dict(plan["asset_selection"])
+        selection_report["job_id"] = job_id
+        write_json(work_dir / "asset_selection_report.json", selection_report)
+        state = machine.transition(state, "storyboard_ready", artifact_refs={"storyboard_ref": "storyboard.json"})
+        machine.write(state)
+
+        render_job = {
+            "schema_version": "1.0",
+            "job_id": job_id,
+            "job_kind": "video_render",
+            "storyboard_ref": "storyboard.json",
+            "registry_ref": "src/factory/assets/pink_pig/registry.json",
+            "render": {
+                "width": 1080,
+                "height": 1920,
+                "fps": 30,
+                "transition_seconds": 0.4,
+                "pad_color": "0xF7E4EA",
+            },
+            "audio": {
+                "strategy": "tts_with_offline_fallback",
+                "allow_network": False,
+                "require_narration": True,
+                "tts": {"provider": "windows-sapi", "voice": "Microsoft Huihui Desktop"},
+                "fallback_bgm": "assets/pink_pig/demo_music.wav",
+            },
+            "subtitle": {
+                "enabled": True,
+                "source": "scene_caption",
+                "style": {
+                    "layout": "bottom_safe_band",
+                    "font_name": "Microsoft YaHei",
+                    "font_size": 56,
+                    "margin_left": 90,
+                    "margin_right": 90,
+                    "margin_vertical": 250,
+                },
+            },
+            "mascot": {
+                "mode": "required",
+                "skill_ref": "skills/pink-pig-mascot-director/SKILL.md",
+                "style_profile_ref": "src/factory/assets/pink_pig/style_profile.json",
+            },
+            "outputs": {
+                "video": f"dist/phase1_local/{job_id}/final_master.mp4",
+                "work_dir": f"dist/phase1_local/{job_id}",
+            },
+        }
+        (work_dir / "render_job.yaml").write_text(
+            yaml.safe_dump(render_job, allow_unicode=True, sort_keys=False),
+            encoding="utf-8",
+        )
+        state = machine.transition(
+            state,
+            "rendering",
+            artifact_refs={"timeline_ref": "timeline.json"},
+        )
+        machine.write(state)
+
+        render_result = run_job(work_dir / "render_job.yaml", emit=False)
+        package = build_review_package(
+            work_dir=work_dir,
+            output_path=work_dir / "final_master.mp4",
+            job_id=job_id,
+            input_mode=str(brief["input_mode"]),
+            title=str(brief.get("title", plan["topic"])),
+            scene_count=len(plan["storyboard"]["scenes"]),
+            asset_selection=selection_report,
+        )
+        state = machine.transition(
+            state,
+            "quality_check",
+            artifact_refs={
+                "timeline_ref": "timeline.json",
+                "render_report_ref": "render_report.json",
+                "quality_report_ref": "quality_report.json",
+            },
+        )
+        machine.write(state)
+        state = machine.transition(
+            state,
+            "completed",
+            artifact_refs={"output_ref": "final_master.mp4"},
+        )
+        machine.write(state)
+        result = {
+            "mode": "local_brief",
+            "status": "pending_review",
+            "job_id": job_id,
+            "review_package": str(work_dir / "review_package.json"),
+            "output": str(work_dir / "final_master.mp4"),
+            "quality_status": package["quality"]["status"],
+            "audio_mode": render_result.get("audio_mode"),
+        }
+        if emit:
+            print(json.dumps(result, ensure_ascii=False))
+        return result
+    except Exception as exc:
+        if state.get("state") not in {"completed", "failed"}:
+            machine.fail(state, exc, stage=state.get("state"))
+        raise
+
+
+# ---------------------------------------------------------------------------
 # CLI entry point
 # ---------------------------------------------------------------------------
 
@@ -517,7 +1115,11 @@ def main() -> int:
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--config", type=Path, default=None, help="Legacy config YAML path")
     group.add_argument("--job", type=Path, default=None, help="Phase 1 job YAML path")
+    group.add_argument("--local-brief", type=Path, default=None, help="Deterministic local Phase 1 brief JSON")
     group.add_argument("--topic", type=str, default=None, help="Generate a storyboard from a topic")
+    group.add_argument("--topic-file", type=Path, default=None, help="Read a topic from a repository-relative text file")
+    parser.add_argument("--factual-brief", type=Path, default=None, help="Repository-relative factual brief JSON for topic mode")
+    parser.add_argument("--output-name", type=str, default="output.mp4", help="Safe MP4 basename for topic mode")
     parser.add_argument(
         "--director-provider",
         choices=["codex-cli"],
@@ -526,13 +1128,27 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    if args.factual_brief is not None and args.topic is None and args.topic_file is None:
+        parser.error("--factual-brief requires --topic or --topic-file")
+    if args.output_name != "output.mp4" and args.topic is None and args.topic_file is None:
+        parser.error("--output-name requires --topic or --topic-file")
+
     # Default to legacy --config if neither specified
-    if args.config is None and args.job is None and args.topic is None:
+    if args.config is None and args.job is None and args.local_brief is None and args.topic is None and args.topic_file is None:
         args.config = ROOT / "examples" / "pink_pig_demo" / "config.yaml"
 
     try:
-        if args.topic is not None:
-            return 0 if run_topic(args.topic, provider_name=args.director_provider) else 0
+        if args.topic is not None or args.topic_file is not None:
+            if args.topic_file is not None:
+                if args.factual_brief is not None and args.topic is not None:
+                    raise FactoryContractError("director_topic_invalid", "Topic and topic-file are mutually exclusive.", {"field": "topic"})
+                topic_path = _safe_topic_file(args.topic_file)
+                topic_value = topic_path.read_text(encoding="utf-8").strip()
+            else:
+                topic_value = args.topic
+            return 0 if run_topic(topic_value, provider_name=args.director_provider, factual_brief_path=args.factual_brief, output_name=args.output_name) else 0
+        if args.local_brief is not None:
+            return 0 if run_local_brief(args.local_brief) else 0
         if args.job is not None:
             return 0 if run_job(args.job) else 0
         else:
