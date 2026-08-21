@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/difference_report.schema.json",
+  "title": "ReferenceDifferenceReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "job_id", "status", "reference_sha256", "output_sha256", "checks", "human_review"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "job_id": {"type": "string", "pattern": "^[a-z0-9_-]+$"},
+    "status": {"type": "string", "enum": ["ready_for_human_review", "blocked"]},
+    "reference_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "output_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "checks": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_output_sha_distinct", "reference_path_absent", "registry_assets_only", "local_sapi_audio", "source_audio_absent", "text_similarity"],
+      "properties": {
+        "source_output_sha_distinct": {"type": "string", "enum": ["passed", "blocked"]},
+        "reference_path_absent": {"type": "string", "enum": ["passed", "blocked"]},
+        "registry_assets_only": {"type": "string", "enum": ["passed", "blocked"]},
+        "local_sapi_audio": {"type": "string", "enum": ["passed", "blocked"]},
+        "source_audio_absent": {"type": "string", "enum": ["passed", "blocked"]},
+        "text_similarity": {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "score", "threshold", "method"],
+          "properties": {
+            "status": {"type": "string", "enum": ["passed", "unavailable", "blocked"]},
+            "score": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+            "threshold": {"type": "number", "const": 0.3},
+            "method": {"type": "string", "enum": ["sequence_matcher", "unavailable"]}
+          }
+        }
+      }
+    },
+    "human_review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["logo_watermark", "faces", "perceptual_frame_similarity", "shot_sequence_similarity"],
+      "properties": {
+        "logo_watermark": {"type": "string", "const": "human_review_required"},
+        "faces": {"type": "string", "const": "human_review_required"},
+        "perceptual_frame_similarity": {"type": "string", "const": "human_review_required"},
+        "shot_sequence_similarity": {"type": "string", "const": "human_review_required"}
+      }
+    }
+  }
+}

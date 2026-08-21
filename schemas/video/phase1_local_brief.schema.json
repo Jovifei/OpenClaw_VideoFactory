@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://openclaw.local/schemas/video/phase1_local_brief.schema.json",
   "title": "Phase1LocalBrief",
-  "description": "Closed Phase 1 local input contract. It contains only reviewable topic and factual metadata; assets, paths, render commands, and provider prompts are not accepted.",
+  "description": "Closed Phase 1 local input contract. Reference mode carries only abstract style constraints; assets, paths, render commands, source frames, source audio, and provider prompts are not accepted.",
   "type": "object",
   "required": ["schema_version", "input_mode", "topic", "factual_brief"],
   "additionalProperties": false,
@@ -13,9 +13,22 @@
       "enum": ["topic", "local_reference", "authorized_public_research"]
     },
     "topic": {"type": "string", "minLength": 1, "maxLength": 200},
+    "title": {"type": "string", "minLength": 1, "maxLength": 200},
     "factual_brief": {"$ref": "director_factual_brief.schema.json"},
     "reference_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-    "research_authorization_id": {"type": "string", "pattern": "^[A-Za-z0-9_.-]{1,96}$"}
+    "research_authorization_id": {"type": "string", "pattern": "^[A-Za-z0-9_.-]{1,96}$"},
+    "reference_abstraction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pace", "scene_count_band", "median_shot_duration_seconds", "shot_density_per_second", "structure", "duration_target_seconds"],
+      "properties": {
+        "pace": {"type": "string", "enum": ["fast", "medium", "slow"]},
+        "scene_count_band": {"type": "string", "enum": ["1", "2-4", "5-8", "9+"]},
+        "median_shot_duration_seconds": {"type": "number", "exclusiveMinimum": 0},
+        "shot_density_per_second": {"type": "number", "minimum": 0},
+        "structure": {"type": "array", "const": ["hook", "explain", "evidence", "repair", "summary"]},
+        "duration_target_seconds": {"type": "integer", "enum": [30, 40, 50]}
+      }
+    }
   },
   "allOf": [
     {
@@ -33,7 +46,8 @@
       "if": {"properties": {"input_mode": {"const": "local_reference"}}},
       "then": {
         "required": ["reference_sha256"],
-        "not": {"required": ["research_authorization_id"]}
+        "not": {"required": ["research_authorization_id"]},
+        "required": ["reference_abstraction"]
       }
     },
     {

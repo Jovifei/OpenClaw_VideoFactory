@@ -21,10 +21,11 @@ from src.factory.director.context import load_director_context, normalize_topic
 from src.factory.director.factual import FactualBrief
 from src.factory.director.script_planner import stable_script_id
 from src.factory.director.storyboard_assembler import StoryboardAssembler
+from src.factory.reference_video import POLICY_VERSION, brief_digest, stable_reference_job_key
 
 
 _SCHEMA_NAME = "phase1_local_brief"
-_SUPPORTED_EXECUTION_MODE = "topic"
+_SUPPORTED_EXECUTION_MODES = frozenset({"topic", "local_reference"})
 _FORBIDDEN_CONTROL_FIELDS = frozenset({"asset_id", "path", "render", "provider_prompt"})
 
 
@@ -133,7 +134,7 @@ def _validated_factual_brief(brief: dict[str, object], *, topic: str, topic_dige
     return FactualBrief(document=factual, relative_path="inline")
 
 
-def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: FactualBrief) -> dict[str, object]:
+def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: FactualBrief, duration_target_seconds: int = 40) -> dict[str, object]:
     facts = factual_brief.document.get("facts", [])
     assert isinstance(facts, list) and facts and isinstance(facts[0], dict)
     fact_id = str(facts[0]["fact_id"])
@@ -192,7 +193,7 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
         "title": topic,
         "hook": str(beats[0]["narration"]),
         "narration": "\n".join(str(beat["narration"]) for beat in beats),
-        "duration_target_seconds": 40,
+        "duration_target_seconds": duration_target_seconds,
         "style": {
             "language": "zh-CN",
             "tone": "technical_calm_dry_humor",
@@ -204,13 +205,18 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
     return script
 
 
-def build_local_plan(brief: dict[str, object], repo_root: Path) -> dict[str, object]:
+def build_local_plan(
+    brief: dict[str, object],
+    repo_root: Path,
+    *,
+    reference_context: dict[str, object] | None = None,
+) -> dict[str, object]:
     """Build deterministic Phase 1 planning artifacts for a validated brief.
 
-    Only the direct ``topic`` mode is executable in this initial slice.
-    ``local_reference`` and ``authorized_public_research`` remain valid input
-    contracts, but deliberately fail closed until their separate analysers are
-    implemented and explicitly authorised.
+    ``local_reference`` is executable only when the caller supplies a
+    sanitized, analyzer-produced context.  The context contains no path or
+    media bytes; the CLI obtains it from the receipt/report bundle and the
+    renderer never trusts a user brief alone.
     """
 
     if not isinstance(brief, dict):
@@ -219,7 +225,7 @@ def build_local_plan(brief: dict[str, object], repo_root: Path) -> dict[str, obj
     if _contains_forbidden_control_field(brief):
         raise _brief_error("forbidden_control_field", field="brief")
     mode = str(brief.get("input_mode", ""))
-    if mode != _SUPPORTED_EXECUTION_MODE:
+    if mode not in _SUPPORTED_EXECUTION_MODES:
         raise FactoryContractError(
             "phase1_local_input_mode_unsupported",
             "Phase 1 local brief input mode is not implemented.",
@@ -228,12 +234,41 @@ def build_local_plan(brief: dict[str, object], repo_root: Path) -> dict[str, obj
     root = Path(repo_root).resolve()
     topic = normalize_topic(brief.get("topic"))
     topic_digest = hashlib.sha256(topic.encode("utf-8")).hexdigest()
+    if mode == "local_reference":
+        if not isinstance(reference_context, dict):
+            raise FactoryContractError(
+                "phase1_reference_context_required",
+                "A verified reference-analysis context is required for local_reference mode.",
+                {"reason": "missing"},
+            )
+        expected_context = {
+            "source_sha256": str(brief.get("reference_sha256", "")),
+            "policy_version": POLICY_VERSION,
+            "analysis_verified": True,
+        }
+        if any(reference_context.get(key) != value for key, value in expected_context.items()):
+            raise FactoryContractError(
+                "phase1_reference_context_invalid",
+                "Reference-analysis context does not match the original brief.",
+                {"reason": "digest_or_policy_mismatch"},
+            )
     factual_brief = _validated_factual_brief(brief, topic=topic, topic_digest=topic_digest)
     context = load_director_context(root)
-    script = _deterministic_script(topic=topic, topic_digest=topic_digest, factual_brief=factual_brief)
+    abstraction = brief.get("reference_abstraction") if mode == "local_reference" else None
+    duration_target = int(abstraction.get("duration_target_seconds", 40)) if isinstance(abstraction, dict) else 40
+    script = _deterministic_script(
+        topic=topic,
+        topic_digest=topic_digest,
+        factual_brief=factual_brief,
+        duration_target_seconds=duration_target,
+    )
     storyboard = StoryboardAssembler(repo_root=root, registry=context.registry).from_script(script)
     selection = AssetSelector(repo_root=root, registry=context.registry).select_assets(storyboard, context.registry)
-    job_id = f"phase1_{topic_digest[:16]}"
+    if mode == "local_reference":
+        stable_key = stable_reference_job_key(str(brief["reference_sha256"]), brief)
+        job_id = f"phase1_ref_{hashlib.sha256(stable_key.encode('utf-8')).hexdigest()[:24]}"
+    else:
+        job_id = f"phase1_{topic_digest[:16]}"
     asset_selection = {**selection.report, "job_id": job_id}
     validate(asset_selection, "asset_selection_report")
     return {
@@ -244,6 +279,8 @@ def build_local_plan(brief: dict[str, object], repo_root: Path) -> dict[str, obj
         "storyboard": selection.storyboard,
         "asset_selection": asset_selection,
         "factual_brief": factual_brief.document,
+        "input_mode": mode,
+        "reference_digest": brief_digest(brief) if mode == "local_reference" else None,
     }
 
 

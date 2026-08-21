@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/reference_rights.schema.json",
+  "title": "LocalReferenceRights",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "rights_basis", "source_owner", "license_reference", "source_sha256", "processing_timestamp"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "rights_basis": {"type": "string", "minLength": 1, "maxLength": 120},
+    "source_owner": {"type": "string", "minLength": 1, "maxLength": 240},
+    "license_reference": {"type": "string", "minLength": 1, "maxLength": 1000},
+    "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "processing_timestamp": {"type": "string", "format": "date-time"}
+  }
+}

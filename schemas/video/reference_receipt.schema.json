@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/reference_receipt.schema.json",
+  "title": "LocalReferenceReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "reference_id",
+    "source_mode",
+    "source_name",
+    "source_sha256",
+    "stored_path",
+    "stored_sha256",
+    "bytes",
+    "duration_seconds",
+    "resolution",
+    "has_audio",
+    "processing_timestamp",
+    "analyzer_policy_version"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "reference_id": {"type": "string", "pattern": "^ref_[a-f0-9]{16,64}$"},
+    "source_mode": {"type": "string", "const": "owned_or_licensed_local_video"},
+    "source_name": {"type": "string", "pattern": "^[^\\/\\\\\r\n]{1,240}$"},
+    "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "stored_path": {"type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!\\\\)(?!.*\\.\\.).+"},
+    "stored_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "bytes": {"type": "integer", "minimum": 1, "maximum": 1073741824},
+    "duration_seconds": {"type": "number", "exclusiveMinimum": 0, "maximum": 180},
+    "resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height"],
+      "properties": {
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1}
+      }
+    },
+    "has_audio": {"type": "boolean"},
+    "processing_timestamp": {"type": "string", "format": "date-time"},
+    "analyzer_policy_version": {"type": "string", "pattern": "^[a-z0-9._-]{1,96}$"}
+  }
+}

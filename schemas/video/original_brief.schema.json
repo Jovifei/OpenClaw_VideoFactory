@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/original_brief.schema.json",
+  "title": "OriginalBriefFromLocalReference",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "input_mode", "topic", "factual_brief", "reference_sha256", "reference_abstraction"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "input_mode": {"type": "string", "const": "local_reference"},
+    "title": {"type": "string", "minLength": 1, "maxLength": 200},
+    "topic": {"type": "string", "minLength": 1, "maxLength": 200},
+    "factual_brief": {"$ref": "director_factual_brief.schema.json"},
+    "reference_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "reference_abstraction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pace", "scene_count_band", "median_shot_duration_seconds", "shot_density_per_second", "structure", "duration_target_seconds"],
+      "properties": {
+        "pace": {"type": "string", "enum": ["fast", "medium", "slow"]},
+        "scene_count_band": {"type": "string", "enum": ["1", "2-4", "5-8", "9+"]},
+        "median_shot_duration_seconds": {"type": "number", "exclusiveMinimum": 0},
+        "shot_density_per_second": {"type": "number", "minimum": 0},
+        "structure": {"type": "array", "const": ["hook", "explain", "evidence", "repair", "summary"]},
+        "duration_target_seconds": {"type": "integer", "enum": [30, 40, 50]}
+      }
+    }
+  }
+}
