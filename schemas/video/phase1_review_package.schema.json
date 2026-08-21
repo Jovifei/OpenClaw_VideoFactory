@@ -14,6 +14,7 @@
     "scene_count": {"type": "integer", "minimum": 1},
     "quality_report": {"type": "string", "const": "quality_report.json"},
     "asset_selection": {"type": "object"},
+    "reference_evidence": {"type": "object"},
     "artifacts": {
       "type": "array",
       "minItems": 5,
@@ -26,11 +27,37 @@
       "required": ["name", "path", "sha256", "bytes"],
       "additionalProperties": false,
       "properties": {
-        "name": {"type": "string", "enum": ["final_master.mp4", "cover.png", "subtitle.srt", "quality_report.json", "review_checklist.md", "publish_info.md"]},
+        "name": {"type": "string", "enum": ["final_master.mp4", "cover.png", "subtitle.srt", "quality_report.json", "review_checklist.md", "publish_info.md", "reference_receipt.json", "reference_rights.json", "reference_report.json", "original_brief.json", "difference_report.json"]},
         "path": {"type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!\\\\).+"},
         "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
         "bytes": {"type": "integer", "minimum": 1}
       }
     }
   }
+  ,
+  "allOf": [
+    {
+      "if": {"properties": {"input_mode": {"const": "local_reference"}}},
+      "then": {
+        "required": ["reference_evidence"],
+        "properties": {
+          "reference_evidence": {
+            "type": "object", "additionalProperties": false,
+            "required": ["reference_receipt", "reference_rights", "reference_report", "original_brief", "difference_report"],
+            "properties": {
+              "reference_receipt": {"type": "string", "const": "reference_receipt.json"},
+              "reference_rights": {"type": "string", "const": "reference_rights.json"},
+              "reference_report": {"type": "string", "const": "reference_report.json"},
+              "original_brief": {"type": "string", "const": "original_brief.json"},
+              "difference_report": {"type": "string", "const": "difference_report.json"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"input_mode": {"const": "topic"}}},
+      "then": {"not": {"required": ["reference_evidence"]}}
+    }
+  ]
 }

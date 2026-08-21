@@ -915,6 +915,11 @@ _PHASE1_OWNED_FILES = {
     "review_package.json",
     "review_checklist.md",
     "publish_info.md",
+    "reference_receipt.json",
+    "reference_rights.json",
+    "reference_report.json",
+    "original_brief.json",
+    "difference_report.json",
     "cover.png",
     "final_master.mp4",
     "video_job_state.json",
@@ -964,15 +969,27 @@ def _prepare_phase1_work_dir(work_dir: Path) -> None:
             candidate.unlink()
 
 
-def run_local_brief(brief_path: Path, *, emit: bool = True) -> dict[str, object]:
+def run_local_brief(
+    brief_path: Path,
+    *,
+    emit: bool = True,
+    reference_context: dict[str, object] | None = None,
+    reference_bundle: dict[str, object] | None = None,
+) -> dict[str, object]:
     """Build one fully local review package through the existing pipeline."""
 
     from src.factory.phase1_local import build_local_plan, load_local_brief
     from video_factory.pipeline.job_state import VideoJobStateMachine
     from video_factory.pipeline.review_package import build_review_package
+    from src.factory.reference_video import build_difference_report, materialize_review_evidence
 
     brief = load_local_brief(brief_path)
-    plan = build_local_plan(brief, repo_root=ROOT)
+    if reference_context is None:
+        # Preserve the narrow monkeypatch/legacy call shape used by topic-mode
+        # tests and by downstream callers that have not opted into references.
+        plan = build_local_plan(brief, repo_root=ROOT)
+    else:
+        plan = build_local_plan(brief, repo_root=ROOT, reference_context=reference_context)
     job_id = str(plan["job_id"])
     work_dir = ROOT / "dist" / "phase1_local" / job_id
     _prepare_phase1_work_dir(work_dir)
@@ -986,6 +1003,14 @@ def run_local_brief(brief_path: Path, *, emit: bool = True) -> dict[str, object]
     )
     machine.write(state)
     try:
+        if str(brief.get("input_mode")) == "local_reference":
+            if not isinstance(reference_bundle, dict):
+                raise FactoryContractError(
+                    "phase1_reference_context_required",
+                    "Local reference rendering requires verified evidence context.",
+                    {"reason": "missing_bundle"},
+                )
+            materialize_review_evidence(Path(str(reference_bundle["runtime_root"])), work_dir)
         state = machine.transition(state, "planning")
         machine.write(state)
 
@@ -1063,6 +1088,13 @@ def run_local_brief(brief_path: Path, *, emit: bool = True) -> dict[str, object]
         machine.write(state)
 
         render_result = run_job(work_dir / "render_job.yaml", emit=False)
+        if str(brief.get("input_mode")) == "local_reference":
+            build_difference_report(
+                bundle=reference_bundle,
+                work_dir=work_dir,
+                output_path=work_dir / "final_master.mp4",
+                asset_selection=selection_report,
+            )
         package = build_review_package(
             work_dir=work_dir,
             output_path=work_dir / "final_master.mp4",
@@ -1089,7 +1121,7 @@ def run_local_brief(brief_path: Path, *, emit: bool = True) -> dict[str, object]
         )
         machine.write(state)
         result = {
-            "mode": "local_brief",
+            "mode": str(brief.get("input_mode", "topic")),
             "status": "pending_review",
             "job_id": job_id,
             "review_package": str(work_dir / "review_package.json"),

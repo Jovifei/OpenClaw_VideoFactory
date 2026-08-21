@@ -32,6 +32,11 @@ _SCHEMA_MAP: dict[str, str] = {
     "director_quality_report": "schemas/video/director_quality_report.schema.json",
     "phase1_quality_report": "schemas/video/phase1_quality_report.schema.json",
     "phase1_review_package": "schemas/video/phase1_review_package.schema.json",
+    "reference_receipt": "schemas/video/reference_receipt.schema.json",
+    "reference_rights": "schemas/video/reference_rights.schema.json",
+    "reference_report": "schemas/video/reference_report.schema.json",
+    "original_brief": "schemas/video/original_brief.schema.json",
+    "difference_report": "schemas/video/difference_report.schema.json",
     "composition": "schemas/video/composition.schema.json",
     "pink_pig_registry": "src/factory/assets/pink_pig/registry.schema.json",
 }
@@ -50,6 +55,11 @@ _SCHEMA_ERROR_CODES: dict[str, str] = {
     "director_quality_report": "director_quality_report_invalid",
     "phase1_quality_report": "phase1_quality_report_invalid",
     "phase1_review_package": "phase1_review_package_invalid",
+    "reference_receipt": "reference_receipt_invalid",
+    "reference_rights": "reference_rights_invalid",
+    "reference_report": "reference_report_invalid",
+    "original_brief": "original_brief_invalid",
+    "difference_report": "difference_report_invalid",
     "composition": "composition_schema_invalid",
 }
 
@@ -67,6 +77,11 @@ _SCHEMA_ERROR_MESSAGES: dict[str, str] = {
     "director_quality_report": "Director quality report failed schema validation.",
     "phase1_quality_report": "Phase 1 quality report failed schema validation.",
     "phase1_review_package": "Phase 1 review package failed schema validation.",
+    "reference_receipt": "Reference receipt failed schema validation.",
+    "reference_rights": "Reference rights failed schema validation.",
+    "reference_report": "Reference report failed schema validation.",
+    "original_brief": "Original brief failed schema validation.",
+    "difference_report": "Difference report failed schema validation.",
     "composition": "Composition failed schema validation.",
 }
 

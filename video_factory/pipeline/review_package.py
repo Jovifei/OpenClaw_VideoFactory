@@ -19,13 +19,21 @@ from .errors import FactoryContractError
 from .validation import validate
 
 
-_REQUIRED_PACKAGE_ARTIFACTS = (
+_BASE_PACKAGE_ARTIFACTS = (
     ("final_master.mp4", "video"),
     ("cover.png", "cover"),
     ("subtitle.srt", "subtitle"),
     ("quality_report.json", "quality"),
     ("review_checklist.md", "checklist"),
     ("publish_info.md", "publish_info"),
+)
+
+_REFERENCE_PACKAGE_ARTIFACTS = (
+    ("reference_receipt.json", "reference_receipt"),
+    ("reference_rights.json", "reference_rights"),
+    ("reference_report.json", "reference_report"),
+    ("original_brief.json", "original_brief"),
+    ("difference_report.json", "difference_report"),
 )
 
 
@@ -107,6 +115,17 @@ def build_review_package(
         "checklist": checklist_path,
         "publish_info": publish_info_path,
     }
+    required_artifacts = list(_BASE_PACKAGE_ARTIFACTS)
+    reference_evidence: dict[str, str] | None = None
+    if input_mode == "local_reference":
+        reference_evidence = {}
+        for name, key in _REFERENCE_PACKAGE_ARTIFACTS:
+            evidence_path = work_dir / name
+            document = _read_object(evidence_path, key)
+            validate(document, key)
+            artifact_paths[key] = evidence_path
+            reference_evidence[key] = name
+        required_artifacts.extend(_REFERENCE_PACKAGE_ARTIFACTS)
     manifest = {
         "schema_version": "1.0",
         "job_id": job_id,
@@ -118,9 +137,11 @@ def build_review_package(
         "asset_selection": _safe_asset_selection(asset_selection),
         "artifacts": [
             _artifact_entry(name, artifact_paths[key], work_dir)
-            for name, key in _REQUIRED_PACKAGE_ARTIFACTS
+            for name, key in required_artifacts
         ],
     }
+    if reference_evidence is not None:
+        manifest["reference_evidence"] = reference_evidence
     manifest_path = work_dir / "review_package.json"
     validate(manifest, "phase1_review_package")
     _write_json(manifest_path, manifest)
