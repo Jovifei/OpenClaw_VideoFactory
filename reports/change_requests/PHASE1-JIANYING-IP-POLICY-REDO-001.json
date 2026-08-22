@@ -1,0 +1,84 @@
+{
+  "id": "PHASE1-JIANYING-IP-POLICY-REDO-001",
+  "phase": "phase1_local_reviewable_video",
+  "status": "completed_pending_human_review",
+  "completed_at": "2026-08-22T20:10:18+08:00",
+  "granted_by": "Jovi",
+  "objective": "Enforce explicit opt-in for the Pink Pig personal IP, require Jovi's original assets when the IP is requested, and redo the Flash/watchdog candidate through the reviewed jianying-editor-skill Jianying draft workflow without a mascot.",
+  "observed_issue": {
+    "root_cause": "The previous Flash brief was corrected away from Modbus assets, but the replacement cards still embedded repository-created mascot vectors. The upstream ian-fenzhu-illustrations repository is a style/prompt specification, not Jovi's original asset pack.",
+    "user_rule": "Pink Pig is optional per video; when requested, use only Jovi's original personal-IP assets; never invent or substitute a pig.",
+    "delivery_rule": "Jovi video production uses jianying-editor-skill as the selected Jianying editing backend; automatic export and desktop automation remain disabled."
+  },
+  "allowed_writes": [
+    "reports/change_requests/PHASE1-JIANYING-IP-POLICY-REDO-001.json",
+    "assets/flash_watchdog_plain_illustrations/*.svg",
+    "assets/flash_watchdog_plain_illustrations/*.png",
+    "src/factory/assets/pink_pig/registry.json",
+    "config/mascot_usage.yaml",
+    "config/pipeline_routes.yaml",
+    "config/skill_registry.yaml",
+    "schemas/video/phase1_local_brief.schema.json",
+    "schemas/video/phase1_quality_report.schema.json",
+    "src/factory/phase1_local.py",
+    "generate_video.py",
+    "config/mascot_usage.yaml",
+    "config/pipeline_routes.yaml",
+    "config/skill_registry.yaml",
+    "runbook/08_P5_JIANYING.md",
+    "runbook/03_SKILLS_AND_EXTERNAL_REPOS.md",
+    "src/factory/assets/pink_pig/README.md",
+    "docs/PINK_PIG_PHASE1_ARCHITECTURE.md",
+    "skills/jianying-draft-exporter/SKILL.md",
+    "examples/phase1_local_flash_watchdog/brief.json",
+    "examples/pink_pig_story_demo/storyboard.json",
+    "tests/phase1_local/*",
+    "tests/video/test_registry.py",
+    "scripts/phase1_jianying_tts_draft.py",
+    "video_factory/pipeline/review_package.py",
+    "tasks/todo.md",
+    "tasks/lessons.md"
+  ],
+  "prohibited_changes": [
+    "PROJECT_STATUS.yaml",
+    "external/ian-fenzhu-illustrations",
+    "existing Jianying draft directories",
+    "automatic Jianying UI export or mouse/keyboard automation",
+    "remote Provider calls, model downloads, or source-audio reuse",
+    "automatic publication, Feishu, Cron, or Phase 1 promotion"
+  ],
+  "acceptance": [
+    "Mascot mode defaults to off and a brief without explicit user opt-in renders without Pink Pig assets or signature composition.",
+    "Explicit Pink Pig mode fails closed unless a verified user-owned original asset context is supplied; local self-created vectors, local raster placeholders, and upstream samples are rejected.",
+    "Flash/watchdog plain assets contain no mascot image references and are selected instead of Modbus assets for the no-mascot fixture.",
+    "A new Jianying draft is created using the reviewed jianying-editor-skill adapter with a portrait visual track, local narration, and aligned subtitles.",
+    "Existing drafts and the previous deterministic candidate remain untouched; automatic export remains disabled.",
+    "Targeted and full regressions pass, Obsidian and Codex project memory record the policy and evidence, and the branch is pushed with a verified remote SHA."
+  ],
+  "evidence": {
+    "mascot_mode": "off",
+    "selected_visual_root": "assets/flash_watchdog_plain_illustrations",
+    "deterministic_output_sha256": "6054d9f1477b355b836399ff5f5f92e26681fcce364e6b1912b52008b748bb6e",
+    "deterministic_output": {
+      "duration_seconds": 36.2,
+      "resolution": "1080x1920",
+      "fps": 30,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "full_decode": "passed"
+    },
+    "jianying_draft_name": "Phase1_FlashWatchdog_SAMI_20260822_plain_v4",
+    "jianying_skill_commit": "f421c8a036f4fda888a83b38fc90bb9c00d6faa9",
+    "jianying_tracks": {
+      "video": 1,
+      "voiceover_segments": 5,
+      "subtitle_segments": 5,
+      "automatic_export": "disabled"
+    },
+    "targeted_regression": "360 passed, 1 skipped",
+    "phase1_acceptance": "9 passed",
+    "human_gate": "pending_jovi_manual_jianying_review"
+  },
+  "rollback": "Revert only the commit created for this Change Request; do not delete or mutate existing Jianying drafts, prior deterministic candidates, user memory, or the external reference repository.",
+  "final_status_token": "PHASE1_JIANYING_IP_POLICY_REVIEW_READY"
+}

@@ -1,6 +1,7 @@
 {
   "schema_version": "1.0",
   "input_mode": "topic",
+  "mascot_mode": "off",
   "topic": "Flash 擦除时，如何安排微控制器的看门狗服务窗口",
   "factual_brief": {
     "schema_version": "1.0",

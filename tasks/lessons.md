@@ -428,3 +428,16 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Regenerate a new draft from the corrected visual input. Preserve old drafts
   for audit, keep export manual, and report the mismatch as a pipeline asset
   selection defect rather than an editor defect.
+
+# 2026-08-22 - Personal IP must be explicit, original, and optional
+
+- Never infer that a style/prompt repository or a project-created PNG/SVG is
+  Jovi's Pink Pig personal IP. The original asset pack and a verifiable receipt
+  are required before any mascot composition is allowed.
+- Pink Pig is opt-in per video. The safe default is no mascot; a missing or
+  unverifiable original-asset adapter must fail closed rather than invent a
+  substitute.
+- The editor was not the root cause of the latest mismatch. Validate the
+  upstream brief and selected visual semantics first, then send the corrected
+  visual input to the fixed `jianying-editor-skill` backend. Keep export and
+  publication manual.

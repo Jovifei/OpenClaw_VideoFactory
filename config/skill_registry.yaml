@@ -54,10 +54,10 @@ core_external:
     repository: https://github.com/luoluoluo22/jianying-editor-skill
     ref: main
     license: MIT
-    tier: optional_windows
+    tier: selected_windows_finalizer
     purpose: Windows 剪映草稿、时间线、配音、字幕、特效、录屏和旧版自动导出
     install_mode: reviewed_local_skill
-    enabled: false
+    enabled: true
     restrictions:
     - 不执行 README 中的远程 PowerShell 一键脚本
     - 手动 git clone 并审核 scripts

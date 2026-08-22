@@ -103,7 +103,9 @@ def build_review_package(
     _write_json(quality_path, quality)
 
     checklist_path = work_dir / "review_checklist.md"
-    checklist_path.write_text(_review_checklist(title), encoding="utf-8")
+    mascot = run_report.get("mascot")
+    mascot_mode = str(mascot.get("mode", "required")) if isinstance(mascot, dict) else "required"
+    checklist_path.write_text(_review_checklist(title, mascot_mode=mascot_mode), encoding="utf-8")
     publish_info_path = work_dir / "publish_info.md"
     publish_info_path.write_text(_publish_info(title), encoding="utf-8")
 
@@ -198,10 +200,17 @@ def _validate_evidence_documents(
         raise _fail("phase1_review_subtitle_invalid", "Render report does not confirm burned-in subtitles.", "render_report.subtitle")
     if int(subtitle.get("cue_count", 0)) < scene_count:
         raise _fail("phase1_review_subtitle_invalid", "Render report subtitle cues are incomplete.", "render_report.subtitle.cue_count")
+    mascot = run_report.get("mascot")
+    mascot_mode = str(mascot.get("mode", "required")) if isinstance(mascot, dict) else "required"
     style = render_report.get("style_profile")
     region = render_report.get("subtitle_region")
-    if render_report.get("layout_mode") != "knowledge_illustration" or not isinstance(style, dict) or style.get("status") != "pass":
+    if mascot_mode == "off":
+        if style is not None or render_report.get("layout_mode") is not None:
+            raise _fail("phase1_review_style_invalid", "Mascot-off render must not claim Pink Pig composition evidence.", "render_report.style_profile")
+    elif render_report.get("layout_mode") != "knowledge_illustration" or not isinstance(style, dict) or style.get("status") != "pass":
         raise _fail("phase1_review_style_invalid", "Render report does not confirm the Pink Pig style gate.", "render_report.style_profile")
+    if mascot_mode == "off":
+        return
     if not isinstance(region, dict) or not _valid_subtitle_region(region):
         raise _fail("phase1_review_style_invalid", "Render report subtitle region is outside the safe band.", "render_report.subtitle_region")
 
@@ -320,15 +329,25 @@ def _build_quality(
 ) -> dict[str, object]:
     audio_plan = run_report["audio_plan"]
     subtitle = render_report["subtitle"]
-    region = render_report["subtitle_region"]
-    style = render_report["style_profile"]
+    mascot = run_report.get("mascot")
+    mascot_mode = str(mascot.get("mode", "required")) if isinstance(mascot, dict) else "required"
+    if mascot_mode == "off":
+        region = {"x": 90, "y": 1400, "width": 900, "height": 300}
+        style = {"status": "off"}
+        layout_mode = "plain_vertical"
+    else:
+        region = render_report["subtitle_region"]
+        style = render_report["style_profile"]
+        layout_mode = render_report["layout_mode"]
+    check_names = (
+        "mp4_exists", "portrait_1080x1920", "fps_30", "h264_video", "aac_audio",
+        "duration_25_to_60", "full_decode", "tts_scene_alignment", "subtitle_burned_in",
+        "mascot_policy" if mascot_mode == "off" else "pink_pig_style",
+        "subtitle_safe_region", "render_report_alignment",
+    )
     checks = [
         {"name": name, "status": "passed"}
-        for name in (
-            "mp4_exists", "portrait_1080x1920", "fps_30", "h264_video", "aac_audio",
-            "duration_25_to_60", "full_decode", "tts_scene_alignment", "subtitle_burned_in",
-            "pink_pig_style", "subtitle_safe_region", "render_report_alignment",
-        )
+        for name in check_names
     ]
     return {
         "schema_version": "1.0",
@@ -348,7 +367,7 @@ def _build_quality(
             "mode": subtitle["mode"],
         },
         "style": {
-            "layout_mode": render_report["layout_mode"],
+            "layout_mode": layout_mode,
             "pink_pig_status": style["status"],
             "subtitle_region": {key: int(region[key]) for key in ("x", "y", "width", "height")},
         },
@@ -408,11 +427,16 @@ def _write_json(path: Path, value: dict[str, object]) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def _review_checklist(title: str) -> str:
+def _review_checklist(title: str, *, mascot_mode: str = "required") -> str:
+    mascot_line = (
+        "- [ ] 本视频按 brief 未启用粉色飞猪；画面不含粉色飞猪、签名或角色构图。"
+        if mascot_mode == "off"
+        else "- [ ] 小粉猪使用 Jovi 已核验的原始 IP 素材并承担工程讲解动作，未遮挡知识图与字幕。"
+    )
     return (
         f"# 本地人工审阅清单：{title.strip()}\n\n"
         "- [ ] 内容准确、表达原创，未复用参考视频的连续镜头、原音或水印。\n"
-        "- [ ] 小粉猪承担工程讲解动作，未遮挡知识图与字幕。\n"
+        f"{mascot_line}\n"
         "- [ ] 字幕清晰、最多两行，且位于底部安全区。\n"
         "- [ ] 配音与画面节奏自然，音视频同步。\n"
         "- [ ] 不含隐私、凭据、未经核验的事实或自动发布信息。\n"

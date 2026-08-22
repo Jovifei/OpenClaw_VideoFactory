@@ -1,11 +1,11 @@
 # 08 — P5 剪映可编辑草稿
 
-主交付始终是MP4/SRT/WAV/封面/素材/发布文案，剪映只增强。
+Jovi 视频交付的编辑后端固定选择 `jianying-editor-skill`；本地 MP4、SRT、WAV、封面和素材只作为可审计输入，最终剪辑、配音/字幕时间线和人工导出由剪映完成。
 
-Codex发现剪映路径、版本、草稿目录和CapCut Mate兼容性，写JIANYING_COMPATIBILITY。
+Codex发现剪映路径、版本和草稿目录，记录 `JIANYING_COMPATIBILITY`；本项目不启用 CapCut Mate 双后端。
 
-优先CapCut Mate localhost API，备选jianying-editor-skill；一个任务一个后端。
+固定使用 `jianying-editor-skill`；一个任务一个后端。草稿生成脚本必须位于本项目根目录或 `scripts/`，不得写入 Skill 安装目录。
 
 每次新建草稿，不反复改用户已编辑草稿；导入视频、音频、字幕、封面和素材；记录轨道；不默认控制活跃桌面、不自动导出、不自动发布。
 
-失败标记DRAFT_FAILED，但MP4仍PENDING_REVIEW，飞书说明成片可用。P5验收草稿可开、同步、路径有效、失败不阻塞、用户修改不被覆盖。
+失败标记 `DRAFT_FAILED`，不伪报剪映导出成功；草稿失败只能阻塞剪映交付，不改写旧草稿。P5 验收草稿可开、至少一条视频轨、旁白位于音频轨、字幕与旁白对齐、路径有效、自动导出关闭、用户修改不被覆盖。

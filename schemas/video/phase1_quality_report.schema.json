@@ -50,8 +50,8 @@
       "required": ["layout_mode", "pink_pig_status", "subtitle_region"],
       "additionalProperties": false,
       "properties": {
-        "layout_mode": {"type": "string", "const": "knowledge_illustration"},
-        "pink_pig_status": {"type": "string", "const": "pass"},
+        "layout_mode": {"type": "string", "enum": ["knowledge_illustration", "plain_vertical"]},
+        "pink_pig_status": {"type": "string", "enum": ["pass", "off"]},
         "subtitle_region": {
           "type": "object",
           "required": ["x", "y", "width", "height"],

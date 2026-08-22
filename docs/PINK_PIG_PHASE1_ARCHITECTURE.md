@@ -9,6 +9,8 @@
 - `SubtitleLayoutEngine` 在 FFmpeg 前验证字幕区域，使用 52–60px、左右 90px、最多两行的字幕样式；content/subtitle 冲突以 `subtitle_overlap_content` 失败。
 - Registry 增加五张本地 Modbus RTU 知识插图和透明 `pink_pig.signature.v1`；上游 `ian-fenzhu-illustrations` 只提供 style DNA、persona 与 composition rules。
 - Pink Pig quality gate 验证 registry asset、style profile、角色一致性、skill 加载、core action 和签名资产。
+- 当前个人 IP 规则：粉色飞猪按视频显式 opt-in；未收到 Jovi 提示时默认关闭。启用时只接受 Jovi 原始资产包的 receipt 绑定证明，仓库自制 PNG/SVG、AI 临时图、上游样例图和风格仓库都不得替代原始 IP；缺失时失败关闭。
+- Flash/watchdog 的无飞猪版本使用 `assets/flash_watchdog_plain_illustrations/*` 技术卡片，避免关闭 mascot 后仍从旧 Flash 卡片或 Modbus 卡片获得错误画面；这些卡片不含角色图像。
 - `render_report.json` 增加 `assets_used`、`subtitle_region`、`layout_mode` 与 `style_profile`，并保留真实 ffprobe 字段。
 - 可复核示例：`examples/pink_pig_modbus_demo/job.yaml` 生成四幕 Modbus RTU 视频；字幕只出现在 subtitle_area，知识插图只出现在 content_area。
 

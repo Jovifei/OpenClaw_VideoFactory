@@ -976,6 +976,7 @@ def run_local_brief(
     emit: bool = True,
     reference_context: dict[str, object] | None = None,
     reference_bundle: dict[str, object] | None = None,
+    mascot_context: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Build one fully local review package through the existing pipeline."""
 
@@ -985,12 +986,21 @@ def run_local_brief(
     from src.factory.reference_video import build_difference_report, materialize_review_evidence
 
     brief = load_local_brief(brief_path)
-    if reference_context is None:
+    if reference_context is None and mascot_context is None:
         # Preserve the narrow monkeypatch/legacy call shape used by topic-mode
         # tests and by downstream callers that have not opted into references.
         plan = build_local_plan(brief, repo_root=ROOT)
-    else:
+    elif reference_context is None:
+        plan = build_local_plan(brief, repo_root=ROOT, mascot_context=mascot_context)
+    elif mascot_context is None:
         plan = build_local_plan(brief, repo_root=ROOT, reference_context=reference_context)
+    else:
+        plan = build_local_plan(
+            brief,
+            repo_root=ROOT,
+            reference_context=reference_context,
+            mascot_context=mascot_context,
+        )
     job_id = str(plan["job_id"])
     work_dir = ROOT / "dist" / "phase1_local" / job_id
     _prepare_phase1_work_dir(work_dir)
@@ -1068,11 +1078,7 @@ def run_local_brief(
                     "margin_vertical": 250,
                 },
             },
-            "mascot": {
-                "mode": "required",
-                "skill_ref": "skills/pink-pig-mascot-director/SKILL.md",
-                "style_profile_ref": "src/factory/assets/pink_pig/style_profile.json",
-            },
+            "mascot": {"mode": "off" if str(plan.get("mascot_mode", "off")) == "off" else "required"},
             "outputs": {
                 "video": f"dist/phase1_local/{job_id}/final_master.mp4",
                 "work_dir": f"dist/phase1_local/{job_id}",

@@ -19,8 +19,8 @@ routes:
     - remotion-layout-engine
     - audio-subtitle-engine
     - video-quality-gate
-    optional_finalizer:
-    - jianying-draft-exporter
+    finalizer:
+    - jianying-editor-skill
   selection_timeout:
     preconditions:
       minimum_score: 80
@@ -38,8 +38,8 @@ routes:
     - remotion-layout-engine
     - audio-subtitle-engine
     - video-quality-gate
-    optional_finalizer:
-    - jianying-draft-exporter
+    finalizer:
+    - jianying-editor-skill
     ingress_skill: feishu-video-factory-operator
   remotion_template_change:
     skills:
@@ -64,11 +64,12 @@ routes:
     - deterministic_fallback
   mascot_system:
     repository: https://github.com/Jovifei/ian-fenzhu-illustrations
-    required_for:
-    - brand_recognition
-    - fun_overlay
-    - end_signature
-    fallback: disable_mascot_or_use_static_corner_mark
+    activation_policy: explicit_user_opt_in
+    required_for: []
+    when_user_requests:
+    - use_jovi_original_asset_pack_only
+    - require_receipt_bound_ownership
+    fallback: disable_mascot_and_fail_closed_if_original_assets_are_missing
   delivery:
     skills:
     - video-quality-gate

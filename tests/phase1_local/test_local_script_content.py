@@ -28,8 +28,12 @@ def test_flash_watchdog_fixture_uses_reviewed_topic_copy() -> None:
         "service_window_is_budget",
     }
     selected_paths = [str(item["relative_path"]) for item in plan["asset_selection"]["selections"]]
-    assert all("flash_watchdog_illustrations/" in path for path in selected_paths)
+    assert all("flash_watchdog_plain_illustrations/" in path for path in selected_paths)
+    assert not any("flash_watchdog_illustrations/" in path for path in selected_paths)
     assert not any("modbus_rtu_illustrations/" in path for path in selected_paths)
+    assert plan["mascot_mode"] == "off"
+    assert all("layout_mode" not in scene for scene in plan["storyboard"]["scenes"])
+    assert all("assets/pink_pig/" not in path for path in selected_paths)
     assert all("flash_watchdog" in beat["required_tags"] for beat in script["beats"])
 
 

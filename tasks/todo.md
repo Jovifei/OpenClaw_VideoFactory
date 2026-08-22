@@ -25,6 +25,29 @@ Change Requests: `reports/change_requests/PHASE1-LOCAL-BASELINE-PUBLISH-001.json
 - Final-commit fresh-clone offline wheel install and core-suite rerun passed (`355 passed, 1 skipped`); external evidence is `E:\Claude_allow\Download\OpenClaw_VideoFactory-phase1-reference-fresh-clone-final-20260821.json`.
 - Final feature HEAD and remote branch were rechecked during audit; the exact commit is recorded in the external fresh-clone JSON.
 
+# PHASE1-JIANYING-IP-POLICY-REDO-001 — IN PROGRESS
+
+Change Request: `reports/change_requests/PHASE1-JIANYING-IP-POLICY-REDO-001.json`.
+
+- [x] Confirm the root cause boundary: the previous Flash mismatch was an upstream asset-selection issue, and the replacement cards also contained repository-created mascot vectors.
+- [x] Read and pin the reviewed `jianying-editor-skill` workflow; keep automatic export and desktop automation disabled.
+- [x] Make Pink Pig explicit opt-in only; require a verified Jovi-owned original asset pack when requested and fail closed otherwise.
+- [x] Rebuild Flash/watchdog visuals without any mascot and ensure no Modbus asset can be selected.
+- [x] Create a new Jianying draft with the no-mascot visual, local narration, and aligned subtitles; preserve all prior drafts.
+- [x] Run targeted/full regression, update Obsidian and Codex project memory, commit only scoped files, push the feature branch, and record the human review gate.
+
+### Review — current correction boundary
+
+No original Pink Pig asset path has been provided in the repository or the reviewed upstream style repository. The current redo therefore omits the mascot. A future mascot-enabled video must stop and request Jovi's original asset path/pack rather than use local self-created PNG/SVG files or the upstream sample image.
+
+### Review — verification evidence
+
+- Plain Flash contact-sheet review shows five technical cards with no Pink Pig or Modbus imagery; the selected runtime paths are `assets/flash_watchdog_plain_illustrations/*.png`.
+- Deterministic output: `dist/phase1_local/phase1_d939208f4995f8d2/final_master.mp4`, SHA-256 `6054d9f1477b355b836399ff5f5f92e26681fcce364e6b1912b52008b748bb6e`; 36.2s, 1080×1920, 30 FPS, H.264/AAC; complete video and audio decode passed.
+- Jianying draft: `Phase1_FlashWatchdog_SAMI_20260822_plain_v4`; `jianying-editor-skill` pinned at `f421c8a036f4fda888a83b38fc90bb9c00d6faa9`; 1 video, 5 SAMI voice segments, 5 subtitle segments; visual duration 41.2s exceeds the 40.28s narration timeline; automatic export remains disabled.
+- Regression evidence: Phase 1/Director/video/video_factory suites `360 passed, 1 skipped`; Phase 1 acceptance `9 passed`; project `tests/` excluding the unrelated legacy ingest/P0 environment pair `736 passed, 2 skipped`. Direct root pytest collection still includes vendor-research dependency failures and the two legacy ingest suites fail because the current PowerShell subprocess cannot resolve `Get-FileHash`; no source in this Change Request touches that path.
+- Codex project memory note and Obsidian checkpoint were both updated. Final status is `PHASE1_JIANYING_IP_POLICY_REVIEW_READY`; Jovi must still open/listen/review in Jianying before any export or publication.
+
 # P0-FEISHU-SINGLE-CONSUMER-086 — IN PROGRESS
 
 Execution handoff: `reports/change_requests/P0-FEISHU-SINGLE-CONSUMER-086.json`.

@@ -1,5 +1,17 @@
 version: 1
 canonical_source: https://github.com/Jovifei/ian-fenzhu-illustrations
+activation_policy: explicit_user_opt_in
+default_mode: off
+original_asset_policy:
+  required_when_enabled: true
+  ownership: jovi_original_only
+  verification: receipt_bound_asset_pack
+  missing_asset_action: fail_closed_request_original_asset_path
+  forbidden_substitutes:
+  - repository_created_png_or_svg
+  - ai_generated_mascot
+  - upstream_style_sample
+  - upstream_prompt_only_repository
 character:
   name: 小粉飞猪
   visual:
@@ -51,6 +63,10 @@ preferred_actions:
 - 搭桥
 - 搬运数据包
 rules:
+- 不得默认启用；只有 Jovi 在当前视频 brief 中明确要求时才允许使用个人 IP。
+- 启用时只能使用 Jovi 提供并核验归属的原始粉色飞猪素材；没有原始资产路径或 receipt 时必须失败关闭。
+- 禁止用本仓库自制 `assets/pink_pig/*`、`src/factory/assets/mascot/*`、AI 临时生成图或上游样例图替代 Jovi 原始 IP。
+- 未收到粉色飞猪提示时，视频不得生成粉色飞猪、签名或角色构图。
 - 角色必须参与观点的核心动作，不能只是飘在角落。
 - 技术信息密集时降级为角标或结尾签名。
 - 不得遮挡代码、报文、图表、字幕和关键操作。

@@ -1,6 +1,6 @@
 ---
 name: jianying-draft-exporter
-description: "Optionally package a completed job into an editable Jianying draft using a reviewed local backend."
+description: "Package a completed local candidate into an editable Jianying draft using the reviewed jianying-editor-skill backend."
 version: 0.2.0
 metadata:
   openclaw:
@@ -9,15 +9,13 @@ metadata:
 
 # Jianying draft exporter
 
-This is optional. The reliable deliverable remains `final.mp4`.
+For Jovi video deliverables this is the selected editing backend. The deterministic MP4 is an auditable visual input, not the final edited delivery.
 
 ## Backend selection
 
-Preferred API backend: CapCut Mate on `127.0.0.1:30000`.
+Selected backend: reviewed `jianying-editor-skill` on Windows.
 
-Alternative Windows backend: reviewed `jianying-editor-skill`.
-
-Never enable both for the same job.
+Do not enable CapCut Mate for the same job; this project keeps one Jianying backend per draft.
 
 ## Inputs
 

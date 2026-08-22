@@ -26,7 +26,9 @@ from src.factory.reference_video import POLICY_VERSION, brief_digest, stable_ref
 
 _SCHEMA_NAME = "phase1_local_brief"
 _SUPPORTED_EXECUTION_MODES = frozenset({"topic", "local_reference"})
-_FORBIDDEN_CONTROL_FIELDS = frozenset({"asset_id", "path", "render", "provider_prompt"})
+_FORBIDDEN_CONTROL_FIELDS = frozenset({"asset_id", "path", "render", "provider_prompt", "mascot_asset", "mascot_path"})
+_MASCOT_MODES = frozenset({"off", "user_original_only"})
+_MASCOT_ASSET_MARKERS = ("assets/pink_pig/", "src/factory/assets/mascot/", "ian-fenzhu-illustrations")
 
 
 def _repo_root_from_module() -> Path:
@@ -266,11 +268,61 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
     return script
 
 
+def _apply_mascot_policy(storyboard: dict[str, object], *, mascot_mode: str) -> dict[str, object]:
+    """Remove mascot composition intent when the brief did not opt in.
+
+    The Director storyboard contract still carries the registry identity for
+    deterministic asset resolution, but an ``off`` brief must not activate the
+    Pink Pig composition, signature, or character placement fields.
+    """
+
+    result = dict(storyboard)
+    if mascot_mode == "off":
+        result.pop("composition", None)
+        scenes = result.get("scenes", [])
+        if isinstance(scenes, list):
+            result["scenes"] = [
+                {key: value for key, value in scene.items() if key not in {
+                    "layout_mode", "subtitle_layout", "character_position", "content_region"
+                }}
+                if isinstance(scene, dict) else scene
+                for scene in scenes
+            ]
+    return result
+
+
+def _validate_mascot_policy(
+    brief: dict[str, object],
+    *,
+    mascot_context: dict[str, object] | None,
+) -> str:
+    mascot_mode = str(brief.get("mascot_mode", "off"))
+    if mascot_mode not in _MASCOT_MODES:
+        raise _brief_error("unsupported_mascot_mode", field="mascot_mode")
+    if mascot_mode == "user_original_only":
+        # The local renderer has no authority to discover or infer Jovi's
+        # personal-IP files.  A future adapter must provide a sanitized,
+        # receipt-bound ownership proof; absent that proof, fail closed.
+        if not isinstance(mascot_context, dict) or mascot_context.get("verified") is not True or mascot_context.get("ownership") != "jovi_original":
+            raise FactoryContractError(
+                "phase1_mascot_original_asset_required",
+                "Mascot mode requires a verified Jovi-owned original asset receipt.",
+                {"field": "mascot_context", "reason": "missing_or_unverified"},
+            )
+        raise FactoryContractError(
+            "phase1_mascot_original_asset_adapter_unavailable",
+            "The local Phase 1 renderer has no approved adapter for Jovi's original mascot asset pack.",
+            {"field": "mascot_context", "reason": "adapter_not_implemented"},
+        )
+    return mascot_mode
+
+
 def build_local_plan(
     brief: dict[str, object],
     repo_root: Path,
     *,
     reference_context: dict[str, object] | None = None,
+    mascot_context: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Build deterministic Phase 1 planning artifacts for a validated brief.
 
@@ -285,6 +337,7 @@ def build_local_plan(
     _validate_local_brief_schema(brief)
     if _contains_forbidden_control_field(brief):
         raise _brief_error("forbidden_control_field", field="brief")
+    mascot_mode = _validate_mascot_policy(brief, mascot_context=mascot_context)
     mode = str(brief.get("input_mode", ""))
     if mode not in _SUPPORTED_EXECUTION_MODES:
         raise FactoryContractError(
@@ -323,8 +376,30 @@ def build_local_plan(
         factual_brief=factual_brief,
         duration_target_seconds=duration_target,
     )
+    if mascot_mode == "off":
+        beats = script.get("beats", [])
+        if isinstance(beats, list):
+            for beat in beats:
+                if not isinstance(beat, dict):
+                    continue
+                tags = beat.get("required_tags")
+                if isinstance(tags, list) and "flash_watchdog" in tags and "flash_watchdog_plain" not in tags:
+                    tags.append("flash_watchdog_plain")
+            validate(script, "director_script")
     storyboard = StoryboardAssembler(repo_root=root, registry=context.registry).from_script(script)
+    storyboard = _apply_mascot_policy(storyboard, mascot_mode=mascot_mode)
     selection = AssetSelector(repo_root=root, registry=context.registry).select_assets(storyboard, context.registry)
+    if mascot_mode == "off":
+        for item in selection.report.get("selections", []):
+            if not isinstance(item, dict):
+                continue
+            path = str(item.get("relative_path", ""))
+            if any(marker in path for marker in _MASCOT_ASSET_MARKERS):
+                raise FactoryContractError(
+                    "phase1_mascot_disabled_asset_selected",
+                    "Mascot mode is off but asset selection resolved to a mascot-owned path.",
+                    {"field": "asset_selection", "path": path},
+                )
     if mode == "local_reference":
         stable_key = stable_reference_job_key(str(brief["reference_sha256"]), brief)
         job_id = f"phase1_ref_{hashlib.sha256(stable_key.encode('utf-8')).hexdigest()[:24]}"
@@ -341,6 +416,7 @@ def build_local_plan(
         "asset_selection": asset_selection,
         "factual_brief": factual_brief.document,
         "input_mode": mode,
+        "mascot_mode": mascot_mode,
         "reference_digest": brief_digest(brief) if mode == "local_reference" else None,
     }
 

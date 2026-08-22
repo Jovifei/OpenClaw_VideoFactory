@@ -168,6 +168,7 @@ def main() -> int:
             "draft_name": args.name,
             "draft_relative_path": args.name,
             "skill": {
+                "selected_backend": "jianying-editor-skill",
                 "repository": "luoluoluo22/jianying-editor-skill",
                 "pinned_commit": "f421c8a036f4fda888a83b38fc90bb9c00d6faa9",
                 "license": "MIT",

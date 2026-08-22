@@ -19,6 +19,17 @@ persona, composition rules, and IP constraints. The local structured style
 contract is the single external file referenced by `registry.json`:
 `src/factory/assets/pink_pig/style_profile.json`.
 
+## Jovi personal-IP gate
+
+The repository-owned PNG/SVG files in this directory are implementation
+fixtures, not proof that they are Jovi's original personal-IP assets. They must
+not be used when Jovi asks for the original Pink Pig IP. Pink Pig is opt-in per
+video; a brief without an explicit opt-in must render with no mascot, signature,
+or mascot composition. An opt-in requires a receipt-bound Jovi-owned asset pack;
+without that pack the pipeline fails closed. The upstream repository and its
+sample JPG are style references only and are never a substitute for the
+original asset pack.
+
 ## Vertical Screen Exemption
 
 This project outputs **1080×1920 vertical (9:16) videos**, which intentionally
@@ -58,6 +69,12 @@ closed eight-pose character vocabulary. The transparent
 `pink_pig.signature.v1` asset is a 400×400 RGBA PNG with a recorded SHA-256 and
 is reserved for the lower signature area of the `knowledge_illustration`
 composition.
+
+The registry entries tagged `flash_watchdog_plain` point to mascot-free
+technical cards under `assets/flash_watchdog_plain_illustrations/`; they are
+the required Flash/watchdog fixture assets when mascot mode is off. Their
+registry namespace is retained only for compatibility with the existing
+Pink-Pig registry schema and does not mean that the cards contain the mascot.
 
 ## Pose Verification Status
 

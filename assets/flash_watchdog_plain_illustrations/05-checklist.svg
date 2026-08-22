@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+  <rect width="1672" height="941" fill="#ffffff"/>
+  <style>.ink{font-family:'Microsoft YaHei',sans-serif;fill:#5A4650}.muted{font-family:'Microsoft YaHei',sans-serif;fill:#7b6870}.label{font-family:'Microsoft YaHei',sans-serif;fill:#ffffff;font-weight:700}</style>
+  <text x="72" y="94" class="ink" font-size="48" font-weight="700">Flash / 看门狗：四项检查清单</text>
+  <text x="76" y="145" class="muted" font-size="26">按手册发起，观察状态，留下证据</text>
+  <g transform="translate(105,255)">
+    <rect width="760" height="105" rx="24" fill="#EEF5FA" stroke="#4E83B7" stroke-width="5"/><circle cx="62" cy="52" r="28" fill="#4E83B7"/><text x="53" y="63" class="label" font-size="26">1</text><text x="115" y="64" class="ink" font-size="31">按器件手册解锁并发起</text>
+    <rect y="125" width="760" height="105" rx="24" fill="#FFF5E7" stroke="#E4A65C" stroke-width="5"/><circle cx="62" cy="177" r="28" fill="#E4A65C"/><text x="53" y="188" class="label" font-size="26">2</text><text x="115" y="189" class="ink" font-size="31">等待 BUSY，测量最长耗时</text>
+    <rect y="250" width="760" height="105" rx="24" fill="#FCEDEF" stroke="#C76B75" stroke-width="5"/><circle cx="62" cy="302" r="28" fill="#C76B75"/><text x="53" y="313" class="label" font-size="26">3</text><text x="115" y="314" class="ink" font-size="31">检查错误位，不隐藏失败</text>
+    <rect y="375" width="760" height="105" rx="24" fill="#EEF8F2" stroke="#5BAE8C" stroke-width="5"/><circle cx="62" cy="427" r="28" fill="#5BAE8C"/><text x="53" y="438" class="label" font-size="26">4</text><text x="115" y="439" class="ink" font-size="31">超预算就走明确恢复路径</text>
+  </g>
+  <text x="1090" y="700" class="ink" font-size="30" font-weight="700">可复核，比“看起来没问题”可靠。</text>
+</svg>

@@ -71,6 +71,8 @@ def test_topic_brief_builds_deterministic_existing_director_artifacts(tmp_path: 
     assert len(first["script"]["beats"]) == 5
     assert first["script"]["beats"][0]["purpose"] == "hook"
     assert first["script"]["beats"][-1]["purpose"] == "summary"
+    assert first["mascot_mode"] == "off"
+    assert all("layout_mode" not in scene for scene in first["storyboard"]["scenes"])
     assert all(scene["asset_id"] for scene in first["storyboard"]["scenes"])
     assert len(first["asset_selection"]["selections"]) == 5
     validate(first["script"], "director_script")
@@ -152,3 +154,20 @@ def test_digest_and_verified_factual_review_are_semantic_requirements(tmp_path: 
         build_local_plan(load_local_brief(_write_brief(tmp_path, unverified)), ROOT)
     assert caught.value.code == "phase1_local_brief_invalid"
     assert caught.value.context["reason"] == "factual_brief_not_verified"
+
+
+def test_mascot_opt_in_requires_verified_original_asset_context(tmp_path: Path) -> None:
+    value = _brief()
+    value["mascot_mode"] = "user_original_only"
+    brief = load_local_brief(_write_brief(tmp_path, value))
+    with pytest.raises(FactoryContractError) as caught:
+        build_local_plan(brief, ROOT)
+    assert caught.value.code == "phase1_mascot_original_asset_required"
+
+    with pytest.raises(FactoryContractError) as caught:
+        build_local_plan(
+            brief,
+            ROOT,
+            mascot_context={"verified": True, "ownership": "jovi_original"},
+        )
+    assert caught.value.code == "phase1_mascot_original_asset_adapter_unavailable"
