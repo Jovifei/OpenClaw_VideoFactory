@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+  <rect width="1672" height="941" fill="#ffffff"/>
+  <style>.ink{font-family:'Microsoft YaHei',sans-serif;fill:#5A4650}.muted{font-family:'Microsoft YaHei',sans-serif;fill:#7b6870}.label{font-family:'Microsoft YaHei',sans-serif;fill:#ffffff;font-weight:700}.line{stroke:#5A4650;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;fill:none}</style>
+  <text x="72" y="94" class="ink" font-size="48" font-weight="700">超出预算：进入受控恢复路径</text>
+  <text x="76" y="145" class="muted" font-size="26">不要用无限重试把真实卡死伪装成正常运行</text>
+  <rect x="105" y="300" width="330" height="150" rx="28" fill="#EEF5FA" stroke="#4E83B7" stroke-width="6"/><text x="166" y="365" class="ink" font-size="35" font-weight="700">检查状态</text><text x="166" y="410" class="muted" font-size="26">BUSY / ERROR / DONE</text>
+  <path d="M435 375h150" class="line"/><path d="m560 352 40 23-40 23" fill="#5A4650"/>
+  <polygon points="760,270 880,390 760,510 640,390" fill="#FFF5E7" stroke="#E4A65C" stroke-width="7"/><text x="695" y="383" class="ink" font-size="32" font-weight="700">预算内？</text>
+  <path d="M880 335h190" stroke="#5BAE8C" stroke-width="8"/><path d="m1045 312 40 23-40 23" fill="#5BAE8C"/><text x="930" y="310" class="muted" font-size="27">是</text>
+  <path d="M880 445h190" stroke="#C76B75" stroke-width="8"/><path d="m1045 422 40 23-40 23" fill="#C76B75"/><text x="930" y="520" class="muted" font-size="27">否</text>
+  <rect x="1090" y="260" width="440" height="130" rx="24" fill="#EEF8F2" stroke="#5BAE8C" stroke-width="6"/><text x="1140" y="320" class="ink" font-size="31" font-weight="700">确认完成并继续</text><text x="1140" y="360" class="muted" font-size="25">保留状态证据</text>
+  <rect x="1090" y="455" width="440" height="170" rx="24" fill="#FCEDEF" stroke="#C76B75" stroke-width="6"/><text x="1140" y="520" class="ink" font-size="31" font-weight="700">记录错误 → 恢复</text><text x="1140" y="565" class="muted" font-size="25">停止无限重试</text><text x="1140" y="600" class="muted" font-size="25">让故障可定位</text>
+  <image href="../../src/factory/assets/mascot/repair.svg" x="170" y="580" width="300" height="300"/>
+</svg>

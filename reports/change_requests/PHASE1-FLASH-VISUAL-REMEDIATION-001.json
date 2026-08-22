@@ -1,0 +1,56 @@
+{
+  "id": "PHASE1-FLASH-VISUAL-REMEDIATION-001",
+  "phase": "phase1_local_reviewable_video",
+  "status": "completed_pending_human_review",
+  "objective": "Correct the Flash/watchdog local video visual track so its Registry assets and Jianying draft match the verified Flash brief instead of Modbus RTU illustrations.",
+  "observed_issue": {
+    "brief_topic": "Flash 擦除时，如何安排微控制器的看门狗服务窗口",
+    "rendered_visual_source": "assets/modbus_rtu_illustrations/*",
+    "impact": "Narration and captions describe Flash/watchdog, while the rendered cards show RS-485, Modbus frames, serial parameters, and CRC."
+  },
+  "allowed_writes": [
+    "reports/change_requests/PHASE1-FLASH-VISUAL-REMEDIATION-001.json",
+    "assets/flash_watchdog_illustrations/*.svg",
+    "assets/flash_watchdog_illustrations/*.png",
+    "src/factory/assets/pink_pig/registry.json",
+    "src/factory/phase1_local.py",
+    "src/factory/director/asset_selector.py",
+    "examples/pink_pig_story_demo/storyboard.json",
+    "tests/phase1_local/*",
+    "tests/video/test_registry.py",
+    "scripts/phase1_jianying_tts_draft.py",
+    "tasks/todo.md",
+    "tasks/lessons.md"
+  ],
+  "prohibited_changes": [
+    "PROJECT_STATUS.yaml",
+    "Feishu, Cron, Gateway, OpenClaw production configuration",
+    "automatic Jianying UI export or mouse/keyboard automation",
+    "remote Provider calls, model downloads, or source-audio reuse"
+  ],
+  "acceptance": [
+    "Flash/watchdog brief deterministically selects five flash_watchdog Registry assets",
+    "No selected asset path or rendered manifest contains modbus_rtu_illustrations for the Flash fixture",
+    "Rendered replacement MP4 is 1080x1920, 30 FPS, H.264/AAC and decodes fully",
+    "New Jianying draft uses the replacement visual and the existing reviewed AI voice/subtitle path",
+    "Existing topic-mode and Modbus regression tests remain green",
+    "Obsidian records the mismatch, correction, evidence and remaining human review boundary"
+  ],
+  "evidence": {
+    "job_id": "phase1_d939208f4995f8d2",
+    "deterministic_output": "dist/phase1_local/phase1_d939208f4995f8d2/final_master.mp4",
+    "deterministic_output_sha256": "5704cd7453548e4e1c98b69485d5946ff100cb3af971edb66f0380ba812b33da",
+    "asset_selection": "dist/phase1_local/phase1_d939208f4995f8d2/asset_selection_report.json",
+    "quality_report": "dist/phase1_local/phase1_d939208f4995f8d2/quality_report.json",
+    "ffprobe": "1080x1920, 30 FPS, H.264/AAC, 36.2 seconds",
+    "full_decode_exit_code": 0,
+    "jianying_draft": "Phase1_FlashWatchdog_SAMI_20260822_flash_v3",
+    "jianying_report": "reports/phase1/jianying_tts_flash_visual_20260822.json",
+    "jianying_visual_sha256": "9f22004e5aa9e9517723b0e4ad34dbc6a0e729b4bcc00acbe7bb879b5fff6a1b",
+    "jianying_visual_duration_seconds": 41.2,
+    "jianying_voice_timeline_seconds": 40.28,
+    "regression": "359 passed, 1 skipped, 4 warnings; phase1_acceptance 9 passed"
+  },
+  "rollback": "Revert only the commit created for this Change Request; do not delete or mutate existing Jianying drafts or prior deterministic candidates.",
+  "final_status_token": "PHASE1_FLASH_VISUAL_REVIEW_READY"
+}

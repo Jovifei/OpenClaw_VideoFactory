@@ -417,3 +417,14 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   narration run past the picture.
 - Keep the deterministic MP4 primary, create a new draft name, and require Jovi
   to listen and export manually; never use UI automation as hidden proof.
+
+# 2026-08-22 - Validate visual semantics before editing in Jianying
+
+- A valid Jianying draft can still be semantically wrong when the upstream
+  Registry binds a topic's narration to another topic's reusable cards.
+- Inspect the rendered asset manifest and at least one contact sheet before
+  blaming the editor; add topic-specific selection tags and a negative test
+  that rejects cross-topic assets.
+- Regenerate a new draft from the corrected visual input. Preserve old drafts
+  for audit, keep export manual, and report the mismatch as a pipeline asset
+  selection defect rather than an editor defect.

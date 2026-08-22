@@ -27,6 +27,10 @@ def test_flash_watchdog_fixture_uses_reviewed_topic_copy() -> None:
         "iwdg_independent_timeout",
         "service_window_is_budget",
     }
+    selected_paths = [str(item["relative_path"]) for item in plan["asset_selection"]["selections"]]
+    assert all("flash_watchdog_illustrations/" in path for path in selected_paths)
+    assert not any("modbus_rtu_illustrations/" in path for path in selected_paths)
+    assert all("flash_watchdog" in beat["required_tags"] for beat in script["beats"])
 
 
 def test_generic_script_removes_duplicate_claim_punctuation(tmp_path: Path) -> None:

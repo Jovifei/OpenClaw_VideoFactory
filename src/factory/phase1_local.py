@@ -157,7 +157,7 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
                 "subtitle": "擦除时看门狗怎么办？",
                 "visual_intent": "用角色提出擦除与看门狗服务窗口的工程问题",
                 "pose": "question",
-                "required_tags": ["education", "explain"],
+                "required_tags": ["flash_watchdog", "flash_window", "education", "explain"],
                 "fact_refs": [],
             },
             {
@@ -166,7 +166,7 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
                 "subtitle": "发起、等待、检查、确认",
                 "visual_intent": "展示闪存操作从发起到完成的四个可观察阶段",
                 "pose": "thinking",
-                "required_tags": ["education", "explain", "protocol_frame"],
+                "required_tags": ["flash_watchdog", "erase_sequence", "education", "explain", "protocol_frame"],
                 "fact_refs": ["flash_erase_sequence"],
             },
             {
@@ -175,7 +175,7 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
                 "subtitle": "服务窗口要算出来",
                 "visual_intent": "把独立时钟、倒计时和复位风险放入知识卡片",
                 "pose": "measure",
-                "required_tags": ["education", "protocol_frame", "measure"],
+                "required_tags": ["flash_watchdog", "watchdog_budget", "education", "measure"],
                 "fact_refs": ["iwdg_independent_timeout", "service_window_is_budget"],
             },
             {
@@ -184,7 +184,7 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
                 "subtitle": "超预算就走恢复路径",
                 "visual_intent": "展示测量预算、记录错误和明确恢复动作",
                 "pose": "repair",
-                "required_tags": ["education", "warning", "repair"],
+                "required_tags": ["flash_watchdog", "recovery_path", "education", "warning", "repair"],
                 "fact_refs": ["observable_recovery", "service_window_is_budget"],
             },
             {
@@ -193,7 +193,7 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
                 "subtitle": "按手册，留窗口，有恢复",
                 "visual_intent": "总结闪存操作与看门狗服务窗口的可复用检查表",
                 "pose": "success",
-                "required_tags": ["education", "summary"],
+                "required_tags": ["flash_watchdog", "checklist", "education", "summary"],
                 "fact_refs": [],
             },
         ]

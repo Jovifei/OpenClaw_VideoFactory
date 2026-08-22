@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+  <rect width="1672" height="941" fill="#ffffff"/>
+  <style>
+    .ink{font-family:'Microsoft YaHei',sans-serif;fill:#5A4650}.muted{font-family:'Microsoft YaHei',sans-serif;fill:#7b6870}.label{font-family:'Microsoft YaHei',sans-serif;fill:#ffffff;font-weight:700}.line{stroke:#5A4650;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;fill:none}
+  </style>
+  <text x="72" y="94" class="ink" font-size="48" font-weight="700">FLASH 擦除 × 看门狗服务窗口</text>
+  <text x="76" y="145" class="muted" font-size="26">长操作要有预算、状态和明确的恢复路径</text>
+  <rect x="78" y="245" width="360" height="190" rx="28" fill="#F7E4EA" stroke="#5A4650" stroke-width="6"/>
+  <text x="115" y="302" class="ink" font-size="33" font-weight="700">微控制器</text>
+  <rect x="120" y="337" width="140" height="55" rx="10" fill="#E6A3AF" stroke="#5A4650" stroke-width="5"/>
+  <text x="145" y="374" class="ink" font-size="25">CPU / 总线</text>
+  <path d="M275 364h105" class="line"/><path d="m358 342 40 22-40 22" fill="#5A4650"/>
+  <rect x="470" y="245" width="440" height="190" rx="28" fill="#EEF5FA" stroke="#4E83B7" stroke-width="6"/>
+  <text x="515" y="302" class="ink" font-size="33" font-weight="700">Flash 操作状态</text>
+  <rect x="515" y="337" width="110" height="54" rx="10" fill="#4E83B7"/><text x="540" y="373" class="label" font-size="24">BUSY</text>
+  <rect x="650" y="337" width="110" height="54" rx="10" fill="#E4A65C"/><text x="669" y="373" class="label" font-size="24">ERROR?</text>
+  <rect x="785" y="337" width="90" height="54" rx="10" fill="#5BAE8C"/><text x="802" y="373" class="label" font-size="24">DONE</text>
+  <path d="M950 364h105" class="line"/><path d="m1032 342 40 22-40 22" fill="#5A4650"/>
+  <rect x="1110" y="220" width="350" height="250" rx="28" fill="#FFF5E7" stroke="#E4A65C" stroke-width="6"/>
+  <text x="1150" y="282" class="ink" font-size="33" font-weight="700">独立看门狗</text>
+  <circle cx="1285" cy="365" r="67" fill="#ffffff" stroke="#E4A65C" stroke-width="9"/>
+  <path d="M1285 365V325M1285 365l32 22" class="line"/><text x="1248" y="443" class="muted" font-size="25">倒计时</text>
+  <path d="M100 610h960" stroke="#D6C1C8" stroke-width="5" stroke-dasharray="16 16"/>
+  <text x="95" y="570" class="ink" font-size="31" font-weight="700">问题不是“要不要喂狗”，而是：手册允许的服务窗口在哪里？</text>
+  <image href="../../src/factory/assets/mascot/normal.svg" x="1260" y="535" width="300" height="300"/>
+  <rect x="78" y="700" width="1010" height="112" rx="24" fill="#F7E4EA"/>
+  <text x="112" y="770" class="ink" font-size="31">先测最长擦除时间，再决定服务与故障边界。</text>
+</svg>

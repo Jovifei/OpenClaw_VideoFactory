@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "storyboard_id": "pink_pig_story_demo",
   "title": "小粉飞猪的第一条产品化视频",
-  "ip": {"character_id": "pink_pig", "registry_version": "1.1.0"},
+  "ip": {"character_id": "pink_pig", "registry_version": "1.2.0"},
   "globals": {
     "aspect_ratio": "9:16",
     "fps": 30,

@@ -2307,6 +2307,24 @@ Change Request: `reports/change_requests/PHASE1-JIANYING-TTS-DRAFT-001.json`.
 
 The deterministic MP4 remains the primary artifact. The Jianying draft is an optional editable voice/subtitle candidate and cannot mark the Phase 1 job passed.
 
+## PHASE1-FLASH-VISUAL-REMEDIATION-001 — CORRECTED VISUAL REVIEW READY (2026-08-22)
+
+Change Request: `reports/change_requests/PHASE1-FLASH-VISUAL-REMEDIATION-001.json`.
+
+- [x] Trace the mismatch to the five Modbus Registry assets selected for the Flash/watchdog brief.
+- [x] Add five repository-owned Flash/watchdog technical cards and register their dimensions and SHA-256 values.
+- [x] Add Flash-specific selection tags so the fixed Flash fixture cannot fall back to Modbus cards.
+- [x] Re-render the deterministic local MP4 through the existing `run_local_brief()` → `run_job()` → review-package chain.
+- [x] Verify the replacement MP4: five Flash assets, 1080×1920, 30 FPS, H.264/AAC, complete decode, quality report passed.
+- [x] Create a new Jianying draft `Phase1_FlashWatchdog_SAMI_20260822_flash_v3` with the corrected visual, five SAMI voice segments and five subtitles.
+- [x] Verify Jianying visual duration (41.2s) exceeds the full voice timeline (40.28s); automatic export and UI automation remain disabled.
+- [x] Run targeted and full regressions: 359 passed, 1 skipped, 4 warnings; Phase 1 acceptance 9 passed.
+- [ ] Jovi manually opens the new draft and approves the visual/copy/voice; do not mark Phase 1 passed before that decision.
+
+### Review — Flash visual remediation
+
+The prior Flash draft was not a Jianying import bug: its source `final_master.mp4` contained Modbus Registry cards. The corrected candidate uses only `assets/flash_watchdog_illustrations/*`; the old drafts and deterministic candidate history were not deleted or mutated. The final status is `PHASE1_FLASH_VISUAL_REVIEW_READY`, pending human listening and visual review.
+
 ## PHASE1-LOCAL-VIDEO-MINIMUM-SLICE-001 — LOCAL REVIEW PACKAGE READY
 
 Plan: `tasks/plans/2026-08-15-phase1-local-video-minimum-slice-001.md`.
