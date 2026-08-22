@@ -2290,6 +2290,23 @@ Change Request: `reports/change_requests/PHASE1-TEXT-AUDIO-REMEDIATION-001.json`
 
 The new candidate is `PENDING_REVIEW`, not an approval. Visual Registry asset IDs are unchanged from the prior candidate; only topic copy, subtitles, and narration were changed. The local audio path is proven, but voice suitability remains a human listening decision.
 
+## PHASE1-JIANYING-TTS-DRAFT-001 — DRAFT READY FOR MANUAL REVIEW (2026-08-22)
+
+Change Request: `reports/change_requests/PHASE1-JIANYING-TTS-DRAFT-001.json`.
+
+- [x] Search and review the MIT `jianying-editor-skill` and Apache-2.0 `capcut-mate` candidates.
+- [x] Pin and audit `jianying-editor-skill` commit `f421c8a036f4fda888a83b38fc90bb9c00d6faa9` in the permitted download directory.
+- [x] Use a dedicated Python 3.12 environment with `pip check=0`; no dependency was added to the project venv.
+- [x] Generate a new Jianying draft with five consistent SAMI AI voice segments and five aligned subtitle segments.
+- [x] Add a five-second tail-frame pad so the visual track is longer than the narration timeline; verify complete decode.
+- [x] Keep automatic export and mouse/keyboard automation disabled; open the draft in Jianying for Jovi's manual listening review.
+- [ ] Jovi reviews `Phase1_FlashWatchdog_SAMI_20260822_v2` and decides whether the voice is acceptable.
+- [ ] Only after approval, consider a separate controlled export or CapCut Mate backend qualification.
+
+### Review — Jianying draft
+
+The deterministic MP4 remains the primary artifact. The Jianying draft is an optional editable voice/subtitle candidate and cannot mark the Phase 1 job passed.
+
 ## PHASE1-LOCAL-VIDEO-MINIMUM-SLICE-001 — LOCAL REVIEW PACKAGE READY
 
 Plan: `tasks/plans/2026-08-15-phase1-local-video-minimum-slice-001.md`.

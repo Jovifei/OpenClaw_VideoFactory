@@ -407,3 +407,13 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Preserve accepted Registry visuals, create a new candidate Job after a copy
   correction, and keep Jianying/remote AI-TTS behind a separate authorization;
   local SAPI proves the pipeline but does not prove voice suitability.
+
+# 2026-08-22 - Jianying drafts need duration and export gates
+
+- The Jianying Skill can create a valid v11.3-compatible draft with native SAMI
+  narration even when automatic export is not safe for the installed version.
+- Always compare visual duration with the complete voice timeline before handing
+  over a draft; fail closed or add an explicit tail-frame pad instead of letting
+  narration run past the picture.
+- Keep the deterministic MP4 primary, create a new draft name, and require Jovi
+  to listen and export manually; never use UI automation as hidden proof.

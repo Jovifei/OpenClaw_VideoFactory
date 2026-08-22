@@ -1,0 +1,44 @@
+{
+  "id": "PHASE1-JIANYING-TTS-DRAFT-001",
+  "mode": "phase1_optional_jianying_tts_draft",
+  "granted_by": "Jovi",
+  "goal": "Create one new local Jianying draft from the reviewed Flash/watchdog candidate using Jianying-compatible AI narration and aligned subtitles, without replacing the deterministic MP4 renderer or mutating an existing draft.",
+  "does_not_imply_phase_pass": true,
+  "allowed_paths": [
+    "reports/change_requests/PHASE1-JIANYING-TTS-DRAFT-001.json",
+    "reports/phase1/",
+    "scripts/",
+    "tasks/lessons.md",
+    "E:\\AI_Tools\\Obsidian\\Data\\notes-personal\\codex_memory\\03-项目记忆\\OpenClaw_VideoFactory\\04-落地状态与执行计划.md",
+    "E:\\AI_Tools\\Obsidian\\Data\\notes-personal\\codex_memory\\03-项目记忆\\OpenClaw_VideoFactory\\06-Phase1本地视频工厂收口.md",
+    "E:\\Claude_allow\\Download\\jianying-editor-skill-20260822",
+    "C:\\Users\\Admin\\AppData\\Local\\JianyingPro\\User Data\\Projects\\com.lveditor.draft"
+  ],
+  "forbidden": [
+    "mutate_existing_jianying_draft",
+    "mouse_or_keyboard_automation",
+    "automatic_export",
+    "automatic_publication",
+    "feishu",
+    "cron",
+    "replace_existing_mp4_job",
+    "source_audio_reuse",
+    "secret_or_device_id_logging",
+    "project_status_phase_promotion"
+  ],
+  "external_references": {
+    "repository": "https://github.com/luoluoluo22/jianying-editor-skill",
+    "license": "MIT",
+    "pinned_commit": "f421c8a036f4fda888a83b38fc90bb9c00d6faa9",
+    "local_jianying_version": "11.3.0.14362",
+    "automatic_export_policy": "disabled; current version is outside the documented old-version automation coverage"
+  },
+  "acceptance": [
+    "A new draft directory is created under the detected Jianying draft root.",
+    "The draft contains one muted visual video track from the existing project candidate, one AI narration track, and aligned subtitle segments.",
+    "The original MP4, previous draft candidates, and project database state are not overwritten.",
+    "Draft inspection reports track types, segment counts, duration, and hashes without recording device identifiers.",
+    "Jianying rendering/export remains a user-reviewed action; draft failure does not fail the Phase 1 MP4 job."
+  ],
+  "rollback": "Delete only the newly named draft directory after confirming containment under the detected Jianying drafts root; retain the MP4 and prior drafts."
+}
