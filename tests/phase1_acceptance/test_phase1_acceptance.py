@@ -107,7 +107,19 @@ def _fixture(
             "pink_pig_status": "pass",
             "subtitle_region": {"x": 90, "y": 1120, "width": 900, "height": 460},
         },
-        "checks": [{"name": "decode", "status": "passed"}],
+        "checks": [
+            {"name": name, "status": "passed"}
+            for name in (
+                "decode",
+                "resolution",
+                "fps",
+                "video_codec",
+                "audio_codec",
+                "narration",
+                "subtitle",
+                "style",
+            )
+        ],
         "error": None,
     }
     quality_path = work / "quality_report.json"
