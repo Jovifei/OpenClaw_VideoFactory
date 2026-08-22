@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "input_mode": "topic",
+  "topic": "用小粉猪讲清 FreeRTOS 互斥锁与中断通知边界",
+  "factual_brief": {
+    "schema_version": "1.0",
+    "topic_digest": "515ccfc258dbdea96d0ad47d83f2142b49f531514bafb5600691207b1df37a67",
+    "review_status": "verified",
+    "facts": [
+      {
+        "fact_id": "mutex_task_ownership",
+        "claim": "FreeRTOS 互斥锁包含优先级继承语义，适用于任务之间的互斥；其所有权应在任务上下文中取得并归还。",
+        "source_ids": ["freertos_mutexes", "freertos_reference_manual"]
+      },
+      {
+        "fact_id": "isr_nonblocking_boundary",
+        "claim": "中断服务程序不能阻塞等待互斥锁保护的资源，ISR 应使用适合中断的同步方式通知任务继续处理。",
+        "source_ids": ["freertos_mutexes", "freertos_isr_guidance"]
+      },
+      {
+        "fact_id": "priority_inheritance_context",
+        "claim": "互斥锁的优先级继承只在任务取得和释放互斥锁的上下文中有意义，不能把它当作普通中断信号量。",
+        "source_ids": ["freertos_mutexes", "freertos_reference_manual"]
+      },
+      {
+        "fact_id": "short_isr_handler",
+        "claim": "ISR 应保持短小，完成必要的取数或清标志后唤醒处理任务，把共享资源访问和状态机修改留在任务上下文。",
+        "source_ids": ["freertos_isr_guidance"]
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "freertos_mutexes",
+        "title": "FreeRTOS mutexes",
+        "publisher": "Amazon Web Services / FreeRTOS",
+        "url": "https://freertos.org/Real-time-embedded-RTOS-mutexes.html",
+        "kind": "official_document",
+        "published_date": null
+      },
+      {
+        "source_id": "freertos_reference_manual",
+        "title": "FreeRTOS Reference Manual V10.0.0",
+        "publisher": "Amazon Web Services / FreeRTOS",
+        "url": "https://www.freertos.org/media/2018/FreeRTOS_Reference_Manual_V10.0.0.pdf",
+        "kind": "official_document",
+        "published_date": null
+      },
+      {
+        "source_id": "freertos_isr_guidance",
+        "title": "FreeRTOS customization and interrupt-safe API guidance",
+        "publisher": "Amazon Web Services / FreeRTOS",
+        "url": "https://www.freertos.org/Documentation/02-Kernel/03-Supported-devices/02-Customization",
+        "kind": "official_document",
+        "published_date": null
+      }
+    ]
+  }
+}

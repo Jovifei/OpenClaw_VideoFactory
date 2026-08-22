@@ -795,6 +795,7 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
         audio_sample_rate=24000 if audio_plan.mode == "tts" else (48000 if audio_plan.path else None),
         composition=composition,
         signature_path=signature_path,
+        encoder=str(render_cfg.get("encoder", "cpu")),
     )
     t_render = round(time.perf_counter() - t5, 3)
 
@@ -1046,6 +1047,7 @@ def run_local_brief(
                 "fps": 30,
                 "transition_seconds": 0.4,
                 "pad_color": "0xF7E4EA",
+                "encoder": "auto",
             },
             "audio": {
                 "strategy": "tts_with_offline_fallback",

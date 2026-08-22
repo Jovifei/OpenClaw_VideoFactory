@@ -28,7 +28,8 @@
         "height": {"type": "integer", "minimum": 1},
         "fps": {"type": "integer", "minimum": 1},
         "transition_seconds": {"type": "number", "minimum": 0.001},
-        "pad_color": {"type": "string", "pattern": "^0x[0-9A-Fa-f]{6}$"}
+        "pad_color": {"type": "string", "pattern": "^0x[0-9A-Fa-f]{6}$"},
+        "encoder": {"type": "string", "enum": ["auto", "cpu", "nvenc"], "default": "cpu"}
       }
     },
     "audio_config": {

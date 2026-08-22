@@ -122,6 +122,7 @@ def build_render_command(
     audio_sample_rate: int | None = None,
     composition: dict[str, object] | None = None,
     signature_path: Path | None = None,
+    encoder: str = "cpu",
 ) -> tuple[list[str], float]:
     if not subtitle_path.is_file():
         raise ValueError("subtitle_missing")
@@ -130,6 +131,8 @@ def build_render_command(
         raise ValueError("audio_gain_invalid")
     if audio_sample_rate is not None and not 8_000 <= int(audio_sample_rate) <= 192_000:
         raise ValueError("audio_sample_rate_invalid")
+    if encoder not in {"auto", "cpu", "nvenc"}:
+        raise ValueError("encoder_invalid")
     command = ["ffmpeg", "-y", "-nostdin", "-loglevel", "error"]
     for item in timeline:
         # NEW (branch 1): if timeline item has "image_path", resolve via repo_root;
@@ -240,16 +243,42 @@ def build_render_command(
             audio_filters.append(f"aresample={int(audio_sample_rate)}")
         if audio_filters:
             command.extend(["-af", ",".join(audio_filters)])
-    command.extend(["-c:v", "libx264", "-pix_fmt", "yuv420p", "-r", str(FPS), "-movflags", "+faststart", str(output_path)])
+    video_encoder = "h264_nvenc" if encoder in {"auto", "nvenc"} else "libx264"
+    command.extend(["-c:v", video_encoder, "-pix_fmt", "yuv420p", "-r", str(FPS), "-movflags", "+faststart", str(output_path)])
     return command, duration
 
 
 def render_video(**kwargs: Any) -> dict[str, object]:
     output_path = Path(kwargs["output_path"])
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    requested_encoder = str(kwargs.get("encoder", "cpu"))
     command, duration = build_render_command(**kwargs)
     result = subprocess.run(command, text=True, capture_output=True, check=False, timeout=300)
-    if result.returncode != 0 or not output_path.is_file() or output_path.stat().st_size == 0:
+    used_encoder = "h264_nvenc" if requested_encoder in {"auto", "nvenc"} else "libx264"
+    fallback_reason: str | None = None
+    succeeded = result.returncode == 0 and output_path.is_file() and output_path.stat().st_size > 0
+    if not succeeded and requested_encoder in {"auto", "nvenc"}:
+        # A failed NVENC attempt may leave a partial output.  Remove only this
+        # renderer-owned file before retrying the same command with libx264.
+        if output_path.is_file():
+            output_path.unlink()
+        cpu_kwargs = dict(kwargs)
+        cpu_kwargs["encoder"] = "cpu"
+        cpu_command, duration = build_render_command(**cpu_kwargs)
+        fallback = subprocess.run(cpu_command, text=True, capture_output=True, check=False, timeout=300)
+        succeeded = fallback.returncode == 0 and output_path.is_file() and output_path.stat().st_size > 0
+        used_encoder = "libx264"
+        fallback_reason = "nvenc_failed"
+        result = fallback
+    if not succeeded:
         detail = (result.stderr or result.stdout).strip().splitlines()[-1:] or ["ffmpeg_failed"]
         raise RuntimeError(f"render_failed:{detail[0][:180]}")
-    return {"renderer": "ffmpeg", "duration_seconds": duration, "output": str(output_path), "audio_enabled": kwargs.get("audio_path") is not None}
+    return {
+        "renderer": "ffmpeg",
+        "duration_seconds": duration,
+        "output": str(output_path),
+        "audio_enabled": kwargs.get("audio_path") is not None,
+        "encoder_requested": requested_encoder,
+        "encoder_used": used_encoder,
+        "encoder_fallback_reason": fallback_reason,
+    }

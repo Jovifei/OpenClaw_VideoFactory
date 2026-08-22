@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "input_mode": "topic",
+  "topic": "用小粉猪讲清 MCU 擦除 Flash 时的看门狗节拍",
+  "factual_brief": {
+    "schema_version": "1.0",
+    "topic_digest": "5e9cc3d6931a500a391a5024a3c6fedbb0ba6206842d1458b8125c4c60a4125b",
+    "review_status": "verified",
+    "facts": [
+      {
+        "fact_id": "flash_erase_sequence",
+        "claim": "Flash 擦除和编程必须遵循具体器件参考手册规定的解锁、操作、忙状态和错误检查顺序，不能把一次长操作当成无界等待。",
+        "source_ids": ["stm32_rm0008"]
+      },
+      {
+        "fact_id": "iwdg_independent_timeout",
+        "claim": "独立看门狗使用独立低速时钟持续倒计时，在计数到期且未按器件规则处理时会触发系统复位。",
+        "source_ids": ["stm32_rm0008", "stm32_wdg_overview"]
+      },
+      {
+        "fact_id": "service_window_is_budget",
+        "claim": "擦除期间能否服务看门狗取决于具体器件的执行上下文和时序限制，因此应先计算最长操作时间与服务窗口，再决定故障路径。",
+        "source_ids": ["stm32_rm0008", "stm32_wdg_overview"]
+      },
+      {
+        "fact_id": "observable_recovery",
+        "claim": "长操作应分成发起、等待忙状态、检查错误和完成确认等可观察阶段，超出预算时进入明确恢复路径，而不是无限重试。",
+        "source_ids": ["stm32_rm0008"]
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "stm32_rm0008",
+        "title": "STM32F1 reference manual RM0008",
+        "publisher": "STMicroelectronics",
+        "url": "https://www.st.com/resource/en/reference_manual/cd00171190.pdf",
+        "kind": "vendor_document",
+        "published_date": null
+      },
+      {
+        "source_id": "stm32_wdg_overview",
+        "title": "Getting started with WDG",
+        "publisher": "STMicroelectronics",
+        "url": "https://wiki.st.com/stm32mcu/wiki/Getting_started_with_WDG",
+        "kind": "official_document",
+        "published_date": null
+      }
+    ]
+  }
+}
