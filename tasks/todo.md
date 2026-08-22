@@ -2273,6 +2273,23 @@ Report: `reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_005V2.md`.
 - [x] Close the bridge as `PREFLIGHT_BLOCKED`; do not retry and do not enter Worker/smoke/acceptance/006.
 - [ ] Create a new separately authorized diagnostic plan to improve read-only Preflight failure observability before any new qualification attempt.
 
+## PHASE1-TEXT-AUDIO-REMEDIATION-001 — PENDING HUMAN REVIEW (2026-08-22)
+
+Change Request: `reports/change_requests/PHASE1-TEXT-AUDIO-REMEDIATION-001.json`.
+
+- [x] Record Jovi's review: visual composition is acceptable; copy and voiceover require changes.
+- [x] Replace the generic Flash/watchdog five-beat narration with fact-bound, speech-friendly Chinese copy.
+- [x] Keep the existing Registry assets and `run_local_brief()` → `run_job()` → review-package renderer chain.
+- [x] Re-render an independent candidate with offline Windows SAPI (`Microsoft Huihui Desktop`) and five aligned narration segments.
+- [x] Verify targeted tests, core regression, Phase 1 acceptance, ffprobe, and complete MP4 decode.
+- [x] Record sanitized evidence in `reports/phase1/text_audio_remediation_20260822.json` and append Obsidian status.
+- [ ] Obtain Jovi's structured human decision for `job-f1c8a9a21805e29aed29ebbb`; do not mark Phase 1 passed.
+- [ ] Only after text approval, consider a separate authorized Jianying/AI-TTS adapter Change Request; it is not a Phase 1 default dependency.
+
+### Review — text/audio remediation
+
+The new candidate is `PENDING_REVIEW`, not an approval. Visual Registry asset IDs are unchanged from the prior candidate; only topic copy, subtitles, and narration were changed. The local audio path is proven, but voice suitability remains a human listening decision.
+
 ## PHASE1-LOCAL-VIDEO-MINIMUM-SLICE-001 — LOCAL REVIEW PACKAGE READY
 
 Plan: `tasks/plans/2026-08-15-phase1-local-video-minimum-slice-001.md`.

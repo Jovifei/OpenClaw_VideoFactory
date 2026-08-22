@@ -137,55 +137,116 @@ def _validated_factual_brief(brief: dict[str, object], *, topic: str, topic_dige
 def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: FactualBrief, duration_target_seconds: int = 40) -> dict[str, object]:
     facts = factual_brief.document.get("facts", [])
     assert isinstance(facts, list) and facts and isinstance(facts[0], dict)
-    fact_id = str(facts[0]["fact_id"])
-    claim = str(facts[0]["claim"]).strip()
-    beats = [
-        {
-            "purpose": "hook",
-            "narration": f"{topic}到底在解决什么工程问题？先把任务拆成可观察、可验证的几个部分。",
-            "subtitle": "先拆成可验证的问题",
-            "visual_intent": "用角色提出工程问题并标记边界",
-            "pose": "question",
-            "required_tags": ["education", "explain"],
-            "fact_refs": [],
-        },
-        {
-            "purpose": "explain",
-            "narration": "先明确对象、边界和输入输出，再按顺序组织信息，避免把猜测当成结论。",
-            "subtitle": "对象、边界、输入输出",
-            "visual_intent": "展示信息在受控边界内流动",
-            "pose": "thinking",
-            "required_tags": ["education", "explain"],
-            "fact_refs": [],
-        },
-        {
-            "purpose": "evidence",
-            "narration": f"关键事实是：{claim}。它来自已核验资料，而不是临场猜测。",
-            "subtitle": "先看已核验事实",
-            "visual_intent": "把已核验事实放入知识卡片",
-            "pose": "measure",
-            "required_tags": ["education", "protocol_frame", "measure"],
-            "fact_refs": [fact_id],
-        },
-        {
-            "purpose": "repair",
-            "narration": "遇到异常时，按现象、条件和证据逐项排查，保留能够复现的工程记录。",
-            "subtitle": "按证据逐项排查",
-            "visual_intent": "展示由现象到证据的排错步骤",
-            "pose": "repair",
-            "required_tags": ["education", "warning", "repair"],
-            "fact_refs": [],
-        },
-        {
-            "purpose": "summary",
-            "narration": f"回顾一下：从问题到事实再到排错路径，{topic}就能变成可执行的工程说明。",
-            "subtitle": "问题、事实、排错路径",
-            "visual_intent": "总结可复用的工程说明方法",
-            "pose": "success",
-            "required_tags": ["education", "summary"],
-            "fact_refs": [],
-        },
-    ]
+    fact_ids = {str(fact.get("fact_id")) for fact in facts if isinstance(fact, dict)}
+    clean_topic = topic.rstrip("。！？；， ")
+    clean_claim = str(facts[0]["claim"]).strip().rstrip("。！？；， ")
+    flash_watchdog_ids = {
+        "flash_erase_sequence",
+        "iwdg_independent_timeout",
+        "service_window_is_budget",
+        "observable_recovery",
+    }
+    if flash_watchdog_ids.issubset(fact_ids):
+        # This fixture is deliberately concrete: its narration must teach the
+        # reviewed engineering point instead of falling back to a generic
+        # "object/boundary/input-output" template.
+        beat_specs = [
+            {
+                "purpose": "hook",
+                "narration": "闪存擦除不是“点一下等结果”：看门狗还在倒计时，服务窗口怎么安排？",
+                "subtitle": "擦除时看门狗怎么办？",
+                "visual_intent": "用角色提出擦除与看门狗服务窗口的工程问题",
+                "pose": "question",
+                "required_tags": ["education", "explain"],
+                "fact_refs": [],
+            },
+            {
+                "purpose": "explain",
+                "narration": "先按芯片手册拆成四拍：解锁并发起、等待忙状态、检查错误、确认完成。每一拍都要有可观察状态。",
+                "subtitle": "发起、等待、检查、确认",
+                "visual_intent": "展示闪存操作从发起到完成的四个可观察阶段",
+                "pose": "thinking",
+                "required_tags": ["education", "explain", "protocol_frame"],
+                "fact_refs": ["flash_erase_sequence"],
+            },
+            {
+                "purpose": "evidence",
+                "narration": "独立看门狗用独立低速时钟持续倒计时；擦除时间和服务窗口算错，就可能在操作中触发复位。",
+                "subtitle": "服务窗口要算出来",
+                "visual_intent": "把独立时钟、倒计时和复位风险放入知识卡片",
+                "pose": "measure",
+                "required_tags": ["education", "protocol_frame", "measure"],
+                "fact_refs": ["iwdg_independent_timeout", "service_window_is_budget"],
+            },
+            {
+                "purpose": "repair",
+                "narration": "工程上先测最长擦除时间，再安排服务窗口；超过预算就记录错误、进入恢复路径，不能无限重试。",
+                "subtitle": "超预算就走恢复路径",
+                "visual_intent": "展示测量预算、记录错误和明确恢复动作",
+                "pose": "repair",
+                "required_tags": ["education", "warning", "repair"],
+                "fact_refs": ["observable_recovery", "service_window_is_budget"],
+            },
+            {
+                "purpose": "summary",
+                "narration": "记住四件事：按手册发起，观察忙状态，检查错误，给看门狗留出可计算的窗口。",
+                "subtitle": "按手册，留窗口，有恢复",
+                "visual_intent": "总结闪存操作与看门狗服务窗口的可复用检查表",
+                "pose": "success",
+                "required_tags": ["education", "summary"],
+                "fact_refs": [],
+            },
+        ]
+    else:
+        fact_id = str(facts[0]["fact_id"])
+        beat_specs = [
+            {
+                "purpose": "hook",
+                "narration": f"{clean_topic}最容易误判的地方是什么？先给出一个可观察的问题。",
+                "subtitle": "先找出可观察的问题",
+                "visual_intent": "用角色提出工程问题并标记边界",
+                "pose": "question",
+                "required_tags": ["education", "explain"],
+                "fact_refs": [],
+            },
+            {
+                "purpose": "explain",
+                "narration": "把流程拆成发起、执行、校验和收尾四步，先看状态，再下结论。",
+                "subtitle": "发起、执行、校验、收尾",
+                "visual_intent": "展示信息在受控边界内流动",
+                "pose": "thinking",
+                "required_tags": ["education", "explain"],
+                "fact_refs": [],
+            },
+            {
+                "purpose": "evidence",
+                "narration": f"已核验事实是：{clean_claim}。",
+                "subtitle": "先看已核验事实",
+                "visual_intent": "把已核验事实放入知识卡片",
+                "pose": "measure",
+                "required_tags": ["education", "protocol_frame", "measure"],
+                "fact_refs": [fact_id],
+            },
+            {
+                "purpose": "repair",
+                "narration": "出现异常时，记录触发条件、状态和恢复动作；超出预算就停止重试。",
+                "subtitle": "记录条件、状态和恢复",
+                "visual_intent": "展示由现象到证据的排错步骤",
+                "pose": "repair",
+                "required_tags": ["education", "warning", "repair"],
+                "fact_refs": [],
+            },
+            {
+                "purpose": "summary",
+                "narration": f"记住：按顺序执行，留下可观察证据，才能把{clean_topic}变成可复现的工程步骤。",
+                "subtitle": "按顺序，留证据，可复现",
+                "visual_intent": "总结可复用的工程说明方法",
+                "pose": "success",
+                "required_tags": ["education", "summary"],
+                "fact_refs": [],
+            },
+        ]
+    beats = [dict(spec) for spec in beat_specs]
     script = {
         "schema_version": "1.0",
         "script_id": stable_script_id(topic),

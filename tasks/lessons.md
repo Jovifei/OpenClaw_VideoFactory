@@ -396,3 +396,14 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - The first useful Phase 1 proof is a real, locally narrated MP4 plus a human
   review package and idempotent local job record. Passing that slice is progress,
   not permission to mark the whole phase ready or enter Feishu/Cron.
+
+# 2026-08-22 - Human review must inspect copy before audiovisual readiness
+
+- A locally valid MP4 with a passed quality package can still fail the real
+  review when the planner emits generic narration or duplicate punctuation.
+- For a fixed topic, bind the five beats to the verified factual claims and
+  assert the rendered `script.json`/`subtitle.srt` content before discussing a
+  different voice provider.
+- Preserve accepted Registry visuals, create a new candidate Job after a copy
+  correction, and keep Jianying/remote AI-TTS behind a separate authorization;
+  local SAPI proves the pipeline but does not prove voice suitability.

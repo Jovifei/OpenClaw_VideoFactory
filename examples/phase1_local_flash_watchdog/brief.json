@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "input_mode": "topic",
-  "topic": "用小粉猪讲清 MCU 擦除 Flash 时的看门狗节拍",
+  "topic": "Flash 擦除时，如何安排微控制器的看门狗服务窗口",
   "factual_brief": {
     "schema_version": "1.0",
-    "topic_digest": "5e9cc3d6931a500a391a5024a3c6fedbb0ba6206842d1458b8125c4c60a4125b",
+    "topic_digest": "d939208f4995f8d21c5cac1a99a9797291e1f82035bda067415211068fcc7512",
     "review_status": "verified",
     "facts": [
       {

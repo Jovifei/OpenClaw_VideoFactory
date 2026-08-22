@@ -1,0 +1,35 @@
+{
+  "id": "PHASE1-TEXT-AUDIO-REMEDIATION-001",
+  "mode": "phase1_local_text_audio_remediation",
+  "granted_by": "user",
+  "goal": "Remediate the reviewed Flash/watchdog Phase 1 candidate by replacing generic narration with topic-specific, fact-bound Chinese copy and re-rendering through the existing offline local SAPI audio path while preserving the accepted visual asset composition.",
+  "does_not_imply_phase_pass": true,
+  "allowed_paths": [
+    "src/factory/phase1_local.py",
+    "examples/phase1_local_flash_watchdog/brief.json",
+    "tests/phase1_local/",
+    "tasks/lessons.md",
+    "reports/change_requests/PHASE1-TEXT-AUDIO-REMEDIATION-001.json",
+    "reports/phase1/",
+    "E:\\AI_Tools\\Obsidian\\Data\\notes-personal\\codex_memory\\03-项目记忆\\OpenClaw_VideoFactory\\04-落地状态与执行计划.md",
+    "E:\\AI_Tools\\Obsidian\\Data\\notes-personal\\codex_memory\\03-项目记忆\\OpenClaw_VideoFactory\\06-Phase1本地视频工厂收口.md"
+  ],
+  "forbidden": [
+    "visual_asset_rebuild",
+    "remote_tts_provider",
+    "jianying_dependency",
+    "source_audio_reuse",
+    "phase2",
+    "feishu",
+    "cron",
+    "automatic_publication",
+    "project_status_phase_promotion"
+  ],
+  "acceptance": [
+    "Flash/watchdog script contains five fact-bound, speech-friendly beats and no generic placeholder narration or duplicate punctuation.",
+    "Existing renderer remains the only render path and uses offline Windows SAPI with five aligned narration segments.",
+    "New candidate passes targeted and full Phase 1 regression tests, ffprobe, and complete decode.",
+    "Candidate remains pending human review; visual approval is preserved as a review note, not promoted to a phase gate."
+  ],
+  "rollback": "Revert only the scoped script, fixture, and test changes; retain prior review evidence and do not delete runtime jobs."
+}
