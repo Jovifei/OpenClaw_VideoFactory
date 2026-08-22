@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_boundary_audit.schema.json",
+  "title": "Phase1BoundaryAudit",
+  "type": "object",
+  "required": ["schema_version", "phase", "status", "checks", "observed_at"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "phase": {"type": "string", "const": "PHASE_1_LOCAL_VIDEO_FACTORY"},
+    "status": {"type": "string", "const": "passed"},
+    "checks": {
+      "type": "object",
+      "required": ["no_feishu", "no_openclaw_runtime", "no_cron", "no_automatic_publish", "runtime_paths_private"],
+      "additionalProperties": false,
+      "properties": {
+        "no_feishu": {"type": "boolean", "const": true},
+        "no_openclaw_runtime": {"type": "boolean", "const": true},
+        "no_cron": {"type": "boolean", "const": true},
+        "no_automatic_publish": {"type": "boolean", "const": true},
+        "runtime_paths_private": {"type": "boolean", "const": true}
+      }
+    },
+    "observed_at": {"type": "string", "format": "date-time"}
+  }
+}

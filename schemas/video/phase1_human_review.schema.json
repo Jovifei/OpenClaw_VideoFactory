@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_human_review.schema.json",
+  "title": "Phase1HumanReview",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "control_job_id",
+    "render_job_id",
+    "reviewer",
+    "decision",
+    "reviewed_at",
+    "reviewed_artifact_sha256",
+    "checklist",
+    "notes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "control_job_id": {"type": "string", "pattern": "^job-[a-f0-9]{24}$"},
+    "render_job_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "reviewer": {"type": "string", "minLength": 1, "maxLength": 80},
+    "decision": {"type": "string", "enum": ["approved", "changes_required", "rejected"]},
+    "reviewed_at": {"type": "string", "format": "date-time"},
+    "reviewed_artifact_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "checklist": {
+      "type": "object",
+      "required": [
+        "video_playable",
+        "audio_clear",
+        "subtitles_readable",
+        "pink_pig_consistent",
+        "technical_content_acceptable",
+        "originality_acceptable"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "video_playable": {"type": "boolean"},
+        "audio_clear": {"type": "boolean"},
+        "subtitles_readable": {"type": "boolean"},
+        "pink_pig_consistent": {"type": "boolean"},
+        "technical_content_acceptable": {"type": "boolean"},
+        "originality_acceptable": {"type": "boolean"}
+      }
+    },
+    "notes": {"type": "string", "maxLength": 2000}
+  }
+}

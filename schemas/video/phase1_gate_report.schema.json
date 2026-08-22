@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_gate_report.schema.json",
+  "title": "Phase1GateReport",
+  "type": "object",
+  "required": ["schema_version", "phase", "status", "checks", "blockers", "verified_at"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "phase": {"type": "string", "const": "PHASE_1_LOCAL_VIDEO_FACTORY"},
+    "status": {"type": "string", "enum": ["ready", "blocked"]},
+    "checks": {
+      "type": "object",
+      "required": ["source_hashes_match", "topic_fixtures_ready", "reference_mode_ready", "lifecycle_ready", "boundary_ready"],
+      "additionalProperties": false,
+      "properties": {
+        "source_hashes_match": {"type": "boolean"},
+        "topic_fixtures_ready": {"type": "boolean"},
+        "reference_mode_ready": {"type": "boolean"},
+        "lifecycle_ready": {"type": "boolean"},
+        "boundary_ready": {"type": "boolean"}
+      }
+    },
+    "blockers": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9_]+$"}},
+    "verified_at": {"type": "string", "format": "date-time"}
+  }
+}

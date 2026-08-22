@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_job_prereview.schema.json",
+  "title": "Phase1JobPrereview",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "phase",
+    "control_job_id",
+    "render_job_id",
+    "input_mode",
+    "status",
+    "checks",
+    "blockers",
+    "final_master_sha256",
+    "verified_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "phase": {"type": "string", "const": "PHASE_1_LOCAL_VIDEO_FACTORY"},
+    "control_job_id": {"type": "string", "pattern": "^job-[a-f0-9]{24}$"},
+    "render_job_id": {"type": ["string", "null"], "pattern": "^[a-z0-9_]+$"},
+    "input_mode": {"type": "string", "enum": ["topic", "local_reference", "authorized_public_research", "unknown"]},
+    "status": {"type": "string", "enum": ["ready", "blocked"]},
+    "checks": {
+      "type": "object",
+      "required": [
+        "job_pending_review",
+        "required_artifacts_registered",
+        "registered_artifact_hashes_match",
+        "review_package_valid",
+        "review_package_artifacts_match",
+        "quality_report_passed",
+        "human_review_approved",
+        "reference_difference_ready",
+        "forbidden_integrations_absent"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "job_pending_review": {"type": "boolean"},
+        "required_artifacts_registered": {"type": "boolean"},
+        "registered_artifact_hashes_match": {"type": "boolean"},
+        "review_package_valid": {"type": "boolean"},
+        "review_package_artifacts_match": {"type": "boolean"},
+        "quality_report_passed": {"type": "boolean"},
+        "human_review_approved": {"type": "boolean"},
+        "reference_difference_ready": {"type": "boolean"},
+        "forbidden_integrations_absent": {"type": "boolean"}
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z0-9_]+$"}
+    },
+    "final_master_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "verified_at": {"type": "string", "format": "date-time"}
+  }
+}
