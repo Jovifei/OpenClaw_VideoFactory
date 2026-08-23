@@ -1,0 +1,43 @@
+{
+  "id": "PHASE1-RC-HIGHPASS-9X16-RECONSTRUCTION-007",
+  "scope": "PHASE_1_LOCAL_VIDEO_FACTORY",
+  "status": "approved_by_task_request",
+  "requested_by": "Jovi",
+  "objective": "Create a 9:16, 30 FPS original RC high-pass explainer based on the supplied reference's generic information structure, with theme-driven colors, bounded typography, voice-first timing, a Jianying review draft, and mandatory post-render quality checks.",
+  "source": {
+    "platform": "douyin",
+    "video_id": "7676032444876819739",
+    "source_sha256": "AA8DD55F77B87D8191D4C792B8A660573662BE957853AE4CF554510A1B87560F",
+    "rights_mode": "public_reference_structure_only"
+  },
+  "allowed_paths": [
+    "reports/change_requests/PHASE1-RC-HIGHPASS-9X16-RECONSTRUCTION-007.json",
+    "reports/phase1/",
+    "tasks/",
+    "docs/superpowers/specs/",
+    "docs/superpowers/plans/",
+    "remotion/src/",
+    "scripts/",
+    "tests/video/",
+    "Obsidian project memory pages"
+  ],
+  "constraints": [
+    "Output is 1080x1920 portrait at 30 FPS; no C-drive outputs.",
+    "Use topic-derived palette; pink is not a global background default.",
+    "Remotion is the only deterministic picture renderer; HyperFrames supplies layout/timing rules only.",
+    "jianying-editor-skill is the only Jianying backend; CapCut Mate and JianYing MCP remain disabled.",
+    "HeyGen may be attempted only for newly generated narration or a non-authoritative benchmark; source audio is never uploaded or reused.",
+    "No source frames, source audio, full source transcript, watermark, creator identity, or recognizable source shot sequence enters the output.",
+    "Every render runs the post-render layout/media/black-frame/audio/decode gate before a Jianying draft is created.",
+    "Automatic Jianying export, desktop UI automation, publication, Feishu, Cron, and PROJECT_STATUS phase promotion remain disabled."
+  ],
+  "acceptance": [
+    "RC high-pass script and storyboard contain five original beats and verified formulas.",
+    "Every visible text box has a declared safe rectangle and bounded font/line policy; layout gate passes at all chapter sample frames.",
+    "Remotion output is visual-only, 1080x1920, 30 FPS, H.264, full-decodes, and has no burned-in subtitles.",
+    "One timing manifest drives Remotion scene windows, Jianying VoiceOver segments, and one native subtitle track.",
+    "Assembled preview has audible AAC, source audio is absent, and post-render quality report is pass or explicitly human-review-required.",
+    "New Jianying draft is written on E:, automatic export is false, and manual listening/export remains open."
+  ],
+  "rollback": "Remove only the new scoped commit and preserve prior Flash/watchdog candidates, reports, and Jianying drafts."
+}
