@@ -2505,3 +2505,16 @@ Report: `reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_005V2.md`.
 - [x] Preserve empty index, protected hashes, PROJECT_STATUS and all forbidden-surface boundaries.
 - [x] Close the bridge as `PREFLIGHT_BLOCKED`; do not retry and do not enter Worker/smoke/acceptance/006.
 - [ ] Create a new separately authorized diagnostic plan to improve read-only Preflight failure observability before any new qualification attempt.
+## PHASE1-RC-HIGHPASS-9X16-RECONSTRUCTION-007 — IN PROGRESS
+
+Design: `docs/superpowers/specs/2026-08-23-rc-highpass-reference-reconstruction-design.md`.
+Plan: `docs/superpowers/plans/2026-08-23-rc-highpass-reference-reconstruction.md`.
+Change Request: `reports/change_requests/PHASE1-RC-HIGHPASS-9X16-RECONSTRUCTION-007.json`.
+
+- [x] Record Jovi's correction: background palette follows the technical topic; pink is not global.
+- [x] Record Jovi's correction: every render must run a post-render layout/media/audio/decode gate before Jianying.
+- [ ] Author the five-beat RC high-pass brief and storyboard.
+- [ ] Render a bounded 1080x1920 Remotion visual with no burned-in subtitles.
+- [ ] Run the post-render gate and inspect representative frames.
+- [ ] Create a new Jianying draft with one VoiceOver and one native subtitle track; automatic export remains disabled.
+- [ ] Preserve formal Phase 1 as not passed and record the human listening/export gate.

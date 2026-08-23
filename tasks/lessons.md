@@ -476,3 +476,8 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - A healthy AAC stream or an unmuted Jianying track is only an automated gate.
   Manual listening is still required, and the project must remain fail-closed on
   timing mismatch beyond one video frame.
+# 2026-08-23 - Post-render layout gate is mandatory
+
+- A technically valid MP4 can still be unusable when a title, axis label, or caption crosses the canvas edge. Every video job must run a post-render gate that checks canvas, safe-area boxes, representative frames, black/frozen samples, audio presence, and complete decode before handing the visual to Jianying.
+- Theme colors must come from topic/style tokens. Pink Pig branding is opt-in and must never become the default technical-video background.
+- Keep one subtitle authority: Remotion visual output is subtitle-free when Jianying native subtitles are enabled.
