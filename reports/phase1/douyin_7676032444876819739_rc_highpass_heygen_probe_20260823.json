@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "status": "unavailable",
+  "provider": "HeyGen",
+  "requested_role": "optional_original_narration_adapter",
+  "attempted": true,
+  "error_code": "UNAUTHORIZED",
+  "reason": "reauthentication_required",
+  "fallback": {
+    "status": "used",
+    "backend": "jianying-editor-skill",
+    "tts_backend": "sami",
+    "source_audio_uploaded": false,
+    "source_video_uploaded": false
+  },
+  "production_renderer": "remotion",
+  "editor_backend": "jianying-editor-skill",
+  "automatic_export": false
+}

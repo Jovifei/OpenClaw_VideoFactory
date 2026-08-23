@@ -18,6 +18,8 @@ if str(SCRIPT_DIR) not in sys.path:
 from phase1_jianying_timing import (  # noqa: E402
     DEFAULT_GAP_MICROSECONDS,
     FPS,
+    MAX_VISUAL_DURATION_SECONDS,
+    MIN_VISUAL_DURATION_SECONDS,
     load_script,
     sha256,
 )
@@ -66,7 +68,7 @@ def main() -> int:
         raise ValueError("script_missing")
     if args.gap_ms < 0 or args.gap_ms > 2000:
         raise ValueError("gap_invalid")
-    if args.visual_duration_seconds < 25 or args.visual_duration_seconds > 60:
+    if args.visual_duration_seconds < MIN_VISUAL_DURATION_SECONDS or args.visual_duration_seconds > MAX_VISUAL_DURATION_SECONDS:
         raise ValueError("visual_duration_invalid")
     if not (skill_root / "scripts" / "jy_wrapper.py").is_file():
         raise ValueError("skill_root_invalid")

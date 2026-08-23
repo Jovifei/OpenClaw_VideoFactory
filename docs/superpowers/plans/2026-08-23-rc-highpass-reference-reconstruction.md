@@ -19,9 +19,9 @@
 - Create: `reports/phase1/douyin_7676032444876819739_rc_highpass_storyboard.json`
 
 - [x] Record the source hash and public-reference-only rights mode.
-- [ ] Write five original beats covering hook, topology, cutoff/Bode, phase/time intuition, and summary.
-- [ ] Add factual references for `fc = 1/(2πRC)`, `|H(fc)| = -3 dB`, phase lead, and `τ = RC`.
-- [ ] Assert the brief contains no source path, source audio, frame path, full transcript, asset ID, or provider control.
+- [x] Write five original beats covering hook, topology, cutoff/Bode, phase/time intuition, and summary.
+- [x] Add factual references for `fc = 1/(2πRC)`, `|H(fc)| = -3 dB`, phase lead, and `τ = RC`.
+- [x] Assert the brief contains no source path, source audio, frame path, full transcript, asset ID, or provider control.
 
 ### Task 2: Add bounded 9:16 Remotion composition
 
@@ -31,11 +31,11 @@
 - Create: `scripts/render_rc_highpass_remotion_visual.mjs`
 - Test: `tests/video/test_rc_highpass_visual_contract.py`
 
-- [ ] Use 1080x1920, `SAFE.left=72`, `SAFE.right=72`, `SAFE.bottom=180`, and a theme token selected for technical content.
-- [ ] Implement five diagrams with deterministic SVG/DOM geometry; no source frame or audio imports.
-- [ ] Wrap all visible text in a bounded text primitive with max width, max height, natural wrapping, and explicit `data-layout-box` metadata.
-- [ ] Drive scene starts and ends from the timing manifest; keep the visual subtitle-free for Jianying's native subtitle authority.
-- [ ] Add a render report containing `layout_contract`, `burned_in_subtitles=false`, canvas, fps, and hashes.
+- [x] Use 1080x1920, `SAFE.left=72`, `SAFE.right=72`, `SAFE.bottom=180`, and a theme token selected for technical content.
+- [x] Implement five diagrams with deterministic SVG/DOM geometry; no source frame or audio imports.
+- [x] Wrap all visible text in a bounded text primitive with max width, max height, natural wrapping, and explicit `data-layout-box` metadata.
+- [x] Drive scene starts and ends from the timing manifest; keep the visual subtitle-free for Jianying's native subtitle authority.
+- [x] Add a render report containing `layout_contract`, `burned_in_subtitles=false`, canvas, fps, and hashes.
 
 ### Task 3: Make long-form timing and optional HeyGen narration safe
 
@@ -46,10 +46,10 @@
 - Create: `scripts/phase1_heygen_narration_probe.py`
 - Test: `tests/video/test_timing_manifest.py`
 
-- [ ] Permit an explicit long-form visual duration up to 120 seconds while preserving the existing 25-second lower bound.
-- [ ] Generate exact SAMI timings with no fallback when the selected local adapter is used.
-- [ ] If HeyGen voice generation is explicitly attempted, store only the new narration asset/hash and mark provider failure as `unavailable`; never upload the source MP4.
-- [ ] Keep Jianying's selected backend and one VoiceOver track authoritative.
+- [x] Permit an explicit long-form visual duration up to 120 seconds while preserving the existing 25-second lower bound.
+- [x] Generate exact SAMI timings with no fallback when the selected local adapter is used.
+- [x] If HeyGen voice generation is explicitly attempted, store only the new narration asset/hash and mark provider failure as `unavailable`; never upload the source MP4.
+- [x] Keep Jianying's selected backend and one VoiceOver track authoritative.
 
 ### Task 4: Add mandatory post-render inspection
 
@@ -58,11 +58,11 @@
 - Create: `tests/video/test_phase1_post_render_check.py`
 - Modify: `scripts/render_rc_highpass_remotion_visual.mjs`
 
-- [ ] Verify output path is on E:, canvas is 1080x1920, fps is 30, H.264 is present, and visual-only output has no audio/subtitle stream.
-- [ ] Verify every declared layout box is inside safe bounds and no text box exceeds its max height/line count.
-- [ ] Extract representative chapter frames and reject black/frozen samples.
-- [ ] Verify full decode, source-audio absence, and deterministic output hash.
-- [ ] Write a JSON/Markdown report and stop before Jianying on failure.
+- [x] Verify output path is on E:, canvas is 1080x1920, fps is 30, H.264 is present, and visual-only output has no audio/subtitle stream.
+- [x] Verify every declared layout box is inside safe bounds and no text box exceeds its max height/line count.
+- [x] Extract representative chapter frames and reject black/frozen samples.
+- [x] Verify full decode, source-audio absence, and deterministic output hash.
+- [x] Write a JSON/Markdown report and stop before Jianying on failure.
 
 ### Task 5: Integrate Jianying review draft and assembled preview
 
@@ -71,10 +71,10 @@
 - Modify: `scripts/phase1_jianying_tts_draft.py`
 - Test: `tests/video/test_jianying_chain.py`
 
-- [ ] Create a new E-drive draft with one visual track, one unmuted VoiceOver track, and one native subtitle track.
-- [ ] Verify manifest timing against visual windows within one 30 FPS frame.
-- [ ] Assemble a local AAC preview only for QA; do not call automatic Jianying export.
-- [ ] Record manual listening/export as the remaining human gate.
+- [x] Create a new E-drive draft with one visual track, one unmuted VoiceOver track, and one native subtitle track.
+- [x] Verify manifest timing against visual windows within one 30 FPS frame.
+- [x] Assemble a local AAC preview only for QA; do not call automatic Jianying export.
+- [x] Record manual listening/export as the remaining human gate.
 
 ### Task 6: Verify, document, and publish evidence
 
@@ -84,7 +84,7 @@
 - Create: `reports/phase1/douyin_7676032444876819739_rc_highpass_quality_20260823.json`
 - Create: `reports/phase1/douyin_7676032444876819739_rc_highpass_jianying_20260823.json`
 
-- [ ] Run focused timing/layout/video tests, Remotion typecheck, ffprobe, complete decode, and staged-diff audit.
-- [ ] Inspect representative rendered frames using the visual companion and record any corrected overflow.
-- [ ] Keep status at `PHASE1_LOCAL_REFERENCE_REVIEW_PACKAGE_READY`; do not mark formal Phase 1 passed.
-- [ ] Commit the scoped change and push only the current feature branch after all checks pass.
+- [x] Run focused timing/layout/video tests, Remotion typecheck, ffprobe, complete decode, and staged-diff audit.
+- [x] Inspect representative rendered frames using the visual companion and record the Bode label correction.
+- [x] Keep status at `PHASE1_LOCAL_REFERENCE_REVIEW_PACKAGE_READY`; do not mark formal Phase 1 passed.
+- [ ] Commit the scoped change and push only the current feature branch after final staged-diff audit.

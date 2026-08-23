@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "script_id": "script_douyin_structure_rc_highpass_20260823",
+  "topic_digest": "rc_highpass_original_20260823",
+  "title": "RC 高通滤波器：从分水岭到相位超前",
+  "duration_target_seconds": 102,
+  "structure_source": "abstract_public_reference_structure_only",
+  "style": {
+    "language": "zh-CN",
+    "tone": "technical_calm",
+    "visual_direction": "technical_neutral_card_diagram_motion_graphics",
+    "aspect_ratio": "9:16",
+    "mascot_mode": "off",
+    "background_policy": "theme_driven_not_global_pink",
+    "renderer": "remotion",
+    "editor_backend": "jianying-editor-skill",
+    "subtitle_authority": "jianying_native"
+  },
+  "beats": [
+    {
+      "purpose": "hook",
+      "narration": "为什么一个电容和一个电阻，能把直流挡在门外，却让快速变化的信号通过？关键在时间尺度。恒定电压下，电容充电后电流逐渐变小；突变和快速波形还来不及建立稳态，变化就会传到输出端。RC 高通筛掉的是变化太慢的部分。",
+      "subtitle": "RC 高通：只让变化通过",
+      "visual_intent": "用原创标题卡、输入输出波形和简化电路提出问题",
+      "visual_kind": "hook",
+      "fact_refs": ["high_pass_blocks_dc_and_passes_high_frequency"]
+    },
+    {
+      "purpose": "explain",
+      "narration": "把电容串在输入和输出之间，再用电阻把输出拉回参考点，输出节点由分压决定。低频时，XC 等于一除以二 pi fC，很大，电容像高阻，输出接近零；频率升高，XC 变小，输出逐渐跟上输入。截止频率还要和瞬态边界一起看。",
+      "subtitle": "串联电容，分压取输出",
+      "visual_intent": "原创电路拓扑、容抗大小对比和输入输出路径动画",
+      "visual_kind": "topology",
+      "fact_refs": ["rc_high_pass_topology", "capacitive_reactance_decreases_with_frequency"]
+    },
+    {
+      "purpose": "evidence",
+      "narration": "分水岭由 fc 等于一除以二 pi RC 决定。到达 fc 时，幅度约下降三分贝，输出相位领先输入四十五度；再往上，增益接近零分贝，相位慢慢回到同相。低于 fc 越多，衰减越明显。",
+      "subtitle": "fc：幅度 -3 dB，相位 +45°",
+      "visual_intent": "原创 Bode 幅频/相频双曲线，标出 fc、-3 dB 和 +45°",
+      "visual_kind": "bode"
+      ,"fact_refs": ["fc_equals_one_over_two_pi_rc", "high_pass_cutoff_minus_3db", "high_pass_phase_lead_at_cutoff"]
+    },
+    {
+      "purpose": "intuition",
+      "narration": "相量图把这件事画清楚：电阻和电容分量互相转动，输出向量的角度就是相位。边缘频率会出现可见的时间位移。时间常数 tau 等于 RC，决定变化速度和阶跃响应的尺度。",
+      "subtitle": "相位是时间位移，RC 是时间尺度",
+      "visual_intent": "原创相量圆、波形超前和时间常数滑杆动画",
+      "visual_kind": "phasor"
+      ,"fact_refs": ["rc_time_constant", "phase_is_time_shift"]
+    },
+    {
+      "purpose": "summary",
+      "narration": "所以看 RC 高通，记住三个轴：分水岭是频率，超前是相位，RC 是时间尺度。实际设计先定截止频率，再选择 R 和 C；然后检查稳态增益、边缘相位和阶跃瞬态，最后用波形与 Bode 曲线验证。下一集再看 RL 与 LC 的高阶网络。如果负载变化，截止频率也要重新估算；测量时同时观察幅度和相位，才能知道模型是否真的适用。",
+      "subtitle": "频率、相位、时间尺度",
+      "visual_intent": "原创三要素矩阵和 RL/LC 下期预告卡",
+      "visual_kind": "summary",
+      "fact_refs": ["filter_design_from_cutoff_frequency", "bode_and_waveform_validation"]
+    }
+  ],
+  "originality": {
+    "source_audio_reused": false,
+    "source_frames_reused": false,
+    "source_transcript_reused": false,
+    "source_paths_embedded": false,
+    "creator_identity_reused": false,
+    "logo_or_watermark_reused": false
+  }
+}

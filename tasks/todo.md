@@ -2513,8 +2513,14 @@ Change Request: `reports/change_requests/PHASE1-RC-HIGHPASS-9X16-RECONSTRUCTION-
 
 - [x] Record Jovi's correction: background palette follows the technical topic; pink is not global.
 - [x] Record Jovi's correction: every render must run a post-render layout/media/audio/decode gate before Jianying.
-- [ ] Author the five-beat RC high-pass brief and storyboard.
-- [ ] Render a bounded 1080x1920 Remotion visual with no burned-in subtitles.
-- [ ] Run the post-render gate and inspect representative frames.
-- [ ] Create a new Jianying draft with one VoiceOver and one native subtitle track; automatic export remains disabled.
+- [x] Author the five-beat RC high-pass brief and storyboard.
+- [x] Render a bounded 1080x1920 Remotion visual with no burned-in subtitles.
+- [x] Run the post-render gate and inspect representative frames; fix Bode phase-label alignment before final v5 render.
+- [x] Create a new Jianying draft with one VoiceOver and one native subtitle track; automatic export remains disabled.
 - [ ] Preserve formal Phase 1 as not passed and record the human listening/export gate.
+
+Evidence: `reports/phase1/douyin_7676032444876819739_rc_highpass_quality_20260823_v5.json` and
+`reports/phase1/douyin_7676032444876819739_rc_highpass_jianying_20260823_v5.json`.
+Final visual: `dist/phase1_local/rc_highpass_reconstruction_20260823_v5/rc_highpass_9x16_visual.mp4`.
+Audible QA preview: `dist/phase1_local/rc_highpass_reconstruction_20260823_v5/rc_highpass_9x16_voice_preview.mp4`.
+Jianying draft: `E:/OpenClaw_VideoFactory_Runtime/jianying_drafts/DouyinRCHighPass_9x16_SAMI_20260823_v5`.

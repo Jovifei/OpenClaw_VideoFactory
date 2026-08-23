@@ -63,3 +63,11 @@ def test_manifest_rejects_absolute_audio_paths() -> None:
     value["segments"][0]["audio_relative_path"] = "E:/private/audio.ogg"
     with pytest.raises(ValueError, match="audio_relative_path_must_be_relative"):
         timing.validate_manifest(value)
+
+
+def test_manifest_allows_explicit_long_form_tail() -> None:
+    timing = _load_module("scripts/phase1_jianying_timing.py", "timing_manifest_long_form_test")
+    value = _manifest()
+    value["visual_duration_seconds"] = 120
+    value["segments"][-1]["scene_end_microseconds"] = 120_000_000
+    assert timing.validate_manifest(value)["visual_duration_seconds"] == 120

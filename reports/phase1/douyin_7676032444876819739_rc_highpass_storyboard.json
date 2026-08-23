@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "storyboard_id": "storyboard_rc_highpass_9x16_20260823",
+  "aspect_ratio": "9:16",
+  "canvas": {"width": 1080, "height": 1920, "fps": 30},
+  "theme": {
+    "token": "technical_neutral",
+    "canvas": "#F2F1EE",
+    "panel": "#FFFFFF",
+    "ink": "#1F2228",
+    "muted": "#6D7179",
+    "mint_amplitude": "#54C989",
+    "orange_phase": "#E89A44",
+    "violet_time": "#7668C6",
+    "rule": "#D9D7D2"
+  },
+  "safe_area": {"left": 72, "right": 72, "top": 68, "bottom": 180},
+  "subtitle_reserve": {"top": 1590, "height": 220, "authority": "jianying_native"},
+  "beats": [
+    {"index": 1, "target_start_seconds": 0, "target_end_seconds": 12, "visual_kind": "hook", "transition": "soft_wipe"},
+    {"index": 2, "target_start_seconds": 12, "target_end_seconds": 40, "visual_kind": "topology", "transition": "card_morph"},
+    {"index": 3, "target_start_seconds": 40, "target_end_seconds": 68, "visual_kind": "bode", "transition": "line_reveal"},
+    {"index": 4, "target_start_seconds": 68, "target_end_seconds": 87, "visual_kind": "phasor", "transition": "phase_sweep"},
+    {"index": 5, "target_start_seconds": 87, "target_end_seconds": 102, "visual_kind": "summary", "transition": "soft_wipe"}
+  ],
+  "layout_contract": {
+    "text_policy": "bounded_natural_wrap",
+    "min_font_px": 18,
+    "max_title_lines": 3,
+    "max_body_lines": 3,
+    "no_burned_in_subtitles": true,
+    "all_visible_text_has_data_layout_box": true
+  },
+  "asset_policy": {
+    "source_media": "forbidden",
+    "registry_assets_only": true,
+    "generated_diagrams": true,
+    "mascot_mode": "off"
+  }
+}

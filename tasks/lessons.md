@@ -481,3 +481,5 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - A technically valid MP4 can still be unusable when a title, axis label, or caption crosses the canvas edge. Every video job must run a post-render gate that checks canvas, safe-area boxes, representative frames, black/frozen samples, audio presence, and complete decode before handing the visual to Jianying.
 - Theme colors must come from topic/style tokens. Pink Pig branding is opt-in and must never become the default technical-video background.
 - Keep one subtitle authority: Remotion visual output is subtitle-free when Jianying native subtitles are enabled.
+- A voice-first manifest can still leave a long silent tail when the visual target is longer than the narration. Measure total voice coverage before finalizing; either extend the original narration or shorten the visual, then regenerate the draft and preview.
+- Frame inspection must check semantic placement as well as overflow. In the RC Bode chart, the phase labels were inside the canvas but initially mapped to the wrong vertical positions; the v5 render corrected the chart before Jianying packaging.

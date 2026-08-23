@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "status": "passed",
+  "checks": {
+    "canvas_1080x1920": true,
+    "fps_30": true,
+    "visual_audio_absent": true,
+    "burned_in_subtitles_absent": true,
+    "layout_safe_area": {
+      "status": "passed",
+      "safe_area": {
+        "left": 72,
+        "right": 72,
+        "top": 68,
+        "bottom": 180
+      },
+      "subtitle_reserve": {
+        "top": 1590,
+        "height": 220
+      },
+      "text_policy": "bounded_natural_wrap",
+      "theme_token": "technical_neutral"
+    },
+    "full_decode": true,
+    "representative_frames": [
+      {
+        "mean_luma": 239.248,
+        "black_ratio": 0.0,
+        "frame_delta": 0.0
+      },
+      {
+        "mean_luma": 239.278,
+        "black_ratio": 0.0,
+        "frame_delta": 6.803
+      },
+      {
+        "mean_luma": 240.926,
+        "black_ratio": 0.0,
+        "frame_delta": 6.917
+      },
+      {
+        "mean_luma": 239.188,
+        "black_ratio": 0.0,
+        "frame_delta": 6.939
+      },
+      {
+        "mean_luma": 239.141,
+        "black_ratio": 0.0,
+        "frame_delta": 1.146
+      }
+    ],
+    "source_output_distinct": true,
+    "theme_background_not_global_pink": true
+  },
+  "visual": {
+    "path": "E:\\project\\OpenClaw_VideoFactory\\dist\\phase1_local\\rc_highpass_reconstruction_20260823_v5\\rc_highpass_9x16_visual.mp4",
+    "sha256": "c2f145738fd10bccfb1f4a41aa07e28b2c358667fbe104097efdb1c683c3b761",
+    "duration_seconds": 102.0
+  },
+  "preview": null,
+  "human_gate": {
+    "status": "required",
+    "action": "Jovi visually inspects and listens in the new Jianying draft, then exports manually if accepted."
+  }
+}

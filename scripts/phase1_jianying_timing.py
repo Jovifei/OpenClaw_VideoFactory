@@ -19,6 +19,8 @@ SCHEMA_VERSION = "1.0"
 DEFAULT_GAP_MICROSECONDS = 100_000
 FPS = 30
 FRAME_TOLERANCE_MICROSECONDS = (1_000_000 + FPS - 1) // FPS
+MIN_VISUAL_DURATION_SECONDS = 25
+MAX_VISUAL_DURATION_SECONDS = 120
 
 
 def sha256(path: Path) -> str:
@@ -109,7 +111,7 @@ def validate_manifest(value: Any, *, drafts_root: Path | None = None) -> dict[st
     if voice.get("segment_count") != 5 or voice.get("voice_end_microseconds") != previous_end:
         raise ValueError("timing_voice_end_invalid")
     visual_duration = value.get("visual_duration_seconds")
-    if not isinstance(visual_duration, (int, float)) or not (25 <= float(visual_duration) <= 60):
+    if not isinstance(visual_duration, (int, float)) or not (MIN_VISUAL_DURATION_SECONDS <= float(visual_duration) <= MAX_VISUAL_DURATION_SECONDS):
         raise ValueError("timing_visual_duration_invalid")
     visual_duration_us = round(float(visual_duration) * 1_000_000)
     if visual_duration_us != previous_scene_end:

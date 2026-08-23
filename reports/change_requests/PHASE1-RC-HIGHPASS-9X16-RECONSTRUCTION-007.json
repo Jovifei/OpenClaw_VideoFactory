@@ -1,7 +1,7 @@
 {
   "id": "PHASE1-RC-HIGHPASS-9X16-RECONSTRUCTION-007",
   "scope": "PHASE_1_LOCAL_VIDEO_FACTORY",
-  "status": "approved_by_task_request",
+  "status": "review_ready_for_human",
   "requested_by": "Jovi",
   "objective": "Create a 9:16, 30 FPS original RC high-pass explainer based on the supplied reference's generic information structure, with theme-driven colors, bounded typography, voice-first timing, a Jianying review draft, and mandatory post-render quality checks.",
   "source": {

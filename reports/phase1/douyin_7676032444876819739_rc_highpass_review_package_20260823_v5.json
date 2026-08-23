@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "status": "PHASE1_LOCAL_REFERENCE_REVIEW_PACKAGE_READY",
+  "change_request": "PHASE1-RC-HIGHPASS-9X16-RECONSTRUCTION-007",
+  "topic": "RC 高通滤波器：从分水岭到相位超前",
+  "source": {
+    "sha256": "AA8DD55F77B87D8191D4C792B8A660573662BE957853AE4CF554510A1B87560F",
+    "rights_mode": "public_reference_structure_only",
+    "source_audio_reused": false,
+    "source_frames_reused": false
+  },
+  "visual": {
+    "path": "dist/phase1_local/rc_highpass_reconstruction_20260823_v5/rc_highpass_9x16_visual.mp4",
+    "sha256": "c2f145738fd10bccfb1f4a41aa07e28b2c358667fbe104097efdb1c683c3b761",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration_seconds": 102,
+    "audio_present": false,
+    "burned_in_subtitles": false,
+    "post_render_gate": "passed"
+  },
+  "audio": {
+    "backend": "jianying-editor-skill",
+    "tts_backend": "sami",
+    "segment_count": 5,
+    "voice_end_seconds": 98.36,
+    "qa_preview_path": "dist/phase1_local/rc_highpass_reconstruction_20260823_v5/rc_highpass_9x16_voice_preview.mp4",
+    "qa_preview_audio": "aac",
+    "qa_preview_full_decode": "passed",
+    "heygen_status": "unavailable_reauthentication_required"
+  },
+  "jianying": {
+    "draft_path": "E:/OpenClaw_VideoFactory_Runtime/jianying_drafts/DouyinRCHighPass_9x16_SAMI_20260823_v5",
+    "visual_track_count": 1,
+    "voiceover_track_count": 1,
+    "subtitle_track_count": 1,
+    "voice_muted": false,
+    "automatic_export": false
+  },
+  "automation_gate": {
+    "script": "scripts/phase1_post_render_check.py",
+    "required_before_jianying": true,
+    "checks": ["canvas", "fps", "safe_area", "black_frame", "frozen_frame", "full_decode", "audio_preview", "source_audio_absent", "theme_background"]
+  },
+  "human_gate": {
+    "status": "required",
+    "action": "Jovi opens the v5 Jianying draft, listens, checks subtitles and visual semantics, then exports manually if accepted.",
+    "formal_phase1_pass": false
+  }
+}
