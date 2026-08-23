@@ -1,0 +1,48 @@
+{
+  "id": "PHASE1-DOUYIN-REFERENCE-STRUCTURE-005",
+  "mode": "phase1_public_reference_structure_research",
+  "granted_by": "user",
+  "goal": "Analyze the supplied Douyin video and create an original 16:9 Flash/watchdog reconstruction using abstract structure/style tokens.",
+  "does_not_imply_phase_pass": true,
+  "source": {
+    "platform": "douyin",
+    "video_id": "7676032444876819739",
+    "rights_mode": "public_reference_research_only"
+  },
+  "allowed_paths": [
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "tasks/plans/2026-08-23-phase1-douyin-reference-structure.md",
+    "reports/change_requests/PHASE1-DOUYIN-REFERENCE-STRUCTURE-005.json",
+    "reports/phase1/",
+    "remotion/src/",
+    "scripts/",
+    "tests/video/",
+    "docs/"
+  ],
+  "forbidden": [
+    "source_audio_reuse",
+    "source_frame_reuse",
+    "full_source_transcript_reuse",
+    "logo_or_watermark_reuse",
+    "creator_identity_reuse",
+    "recognizable_expression_copy",
+    "remote_provider_generation",
+    "heygen_api_call",
+    "automatic_jianying_export",
+    "automatic_publication",
+    "project_status_phase_promotion"
+  ],
+  "runtime_defaults": {
+    "aspect_ratio": "16:9",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "renderer": "remotion",
+    "editor_backend": "jianying-editor-skill",
+    "subtitle_authority": "jianying_native_or_remotion_burned_in_but_not_both",
+    "mascot_mode": "off",
+    "hyperframes_role": "design_reference_only",
+    "heygen_role": "deferred_optional_adapter"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "status": "remotion_visual_ready_for_jianying",
+  "renderer": "remotion",
+  "composition": "FlashWatchdog16x9",
+  "input": {
+    "script_filename": "douyin_7676032444876819739_flash_reconstruction_script.json",
+    "script_sha256": "5992b1042c31603c349b2b657c99041614a1f120785f347afe96608d59e81ace"
+  },
+  "visual": {
+    "filename": "flash_watchdog_reference_style_16x9.mp4",
+    "sha256": "885afe7584e0d840e7409eff40336fc69b784c7b9354c7c0202be976d61f1635",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration_seconds": 50,
+    "audio_present": false,
+    "burned_in_subtitles": false
+  },
+  "preview": {
+    "filename": "flash_watchdog_reference_style_16x9.preview.png",
+    "sha256": "5bcc2d664d2715e78a739264178cea1c03e8435d3b16fa4f89fa571d7b91ccd7",
+    "frame": 30,
+    "scale": 0.25
+  },
+  "outputs_on_e_drive": true,
+  "automatic_export": false
+}

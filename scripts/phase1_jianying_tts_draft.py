@@ -13,6 +13,7 @@ import io
 import json
 import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -61,6 +62,38 @@ def _load_script(path: Path) -> list[dict[str, str]]:
     return result
 
 
+def _probe_visual_canvas(path: Path) -> tuple[int, int]:
+    completed = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-select_streams",
+            "v:0",
+            "-show_entries",
+            "stream=width,height",
+            "-of",
+            "json",
+            str(path),
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    if completed.returncode != 0:
+        raise ValueError("visual_probe_failed")
+    try:
+        streams = json.loads(completed.stdout).get("streams", [])
+        width = int(streams[0]["width"])
+        height = int(streams[0]["height"])
+    except (KeyError, IndexError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise ValueError("visual_probe_invalid") from exc
+    if width <= 0 or height <= 0:
+        raise ValueError("visual_canvas_invalid")
+    return width, height
+
+
 def _track_report(project: Any) -> list[dict[str, object]]:
     tracks = getattr(project.script, "tracks", {})
     values = tracks.values() if isinstance(tracks, dict) else []
@@ -93,6 +126,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--speaker", default="zh_male_huoli")
     parser.add_argument("--backend", choices=("sami", "edge"), default="sami")
     parser.add_argument("--skill-root", required=True, type=Path)
+    parser.add_argument("--width", type=int, default=1920)
+    parser.add_argument("--height", type=int, default=1080)
     return parser
 
 
@@ -106,6 +141,11 @@ def main() -> int:
 
     if not visual.is_file() or not script_path.is_file():
         raise ValueError("input_missing")
+    if args.width < 320 or args.height < 180 or args.width % 2 or args.height % 2:
+        raise ValueError("canvas_invalid")
+    visual_width, visual_height = _probe_visual_canvas(visual)
+    if (visual_width, visual_height) != (args.width, args.height):
+        raise ValueError("visual_canvas_mismatch")
     if not (skill_root / "scripts" / "jy_wrapper.py").is_file():
         raise ValueError("skill_root_invalid")
     drafts_root.mkdir(parents=True, exist_ok=True)
@@ -126,8 +166,8 @@ def main() -> int:
     try:
         project = JyProject(
             args.name,
-            width=1080,
-            height=1920,
+            width=args.width,
+            height=args.height,
             drafts_root=str(drafts_root),
             overwrite=False,
         )
@@ -205,6 +245,11 @@ def main() -> int:
                 "segment_count": len(beats),
                 "subtitle_segment_count": len(beats),
                 "timeline_duration_microseconds": cursor_us,
+            },
+            "canvas": {
+                "width": args.width,
+                "height": args.height,
+                "fps": 30,
             },
             "visual_duration_microseconds": visual_duration_us,
             "tracks": track_report,

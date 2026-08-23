@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "script_id": "script_douyin_structure_flash_20260823",
+  "topic_digest": "d939208f4995f8d21c5cac1a99a9797291e1f82035bda067415211068fcc7512",
+  "title": "Flash 擦除时，如何安排看门狗服务窗口",
+  "duration_target_seconds": 50,
+  "structure_source": "abstract_public_reference_style_only",
+  "style": {
+    "language": "zh-CN",
+    "tone": "technical_calm",
+    "visual_direction": "warm_neutral_card_diagram_motion_graphics",
+    "aspect_ratio": "16:9",
+    "mascot_mode": "off"
+  },
+  "beats": [
+    {
+      "purpose": "hook",
+      "narration": "闪存擦除不是点一下就等结果：看门狗还在倒计时，服务窗口怎么安排？",
+      "subtitle": "擦除时，看门狗怎么办？",
+      "visual_intent": "用一张原创的 Flash 与独立看门狗关系图提出工程问题",
+      "fact_refs": []
+    },
+    {
+      "purpose": "explain",
+      "narration": "先按芯片手册拆成四拍：解锁并发起、等待忙状态、检查错误、确认完成。每一拍都要有可观察状态。",
+      "subtitle": "发起、等待、检查、确认",
+      "visual_intent": "用四张原创状态卡展示可观察的擦除阶段",
+      "fact_refs": ["flash_erase_sequence"]
+    },
+    {
+      "purpose": "evidence",
+      "narration": "独立看门狗用独立低速时钟持续倒计时；擦除时间和服务窗口算错，就可能在操作中触发复位。",
+      "subtitle": "服务窗口，要算出来",
+      "visual_intent": "用原创时间预算条和独立时钟强调最坏情况",
+      "fact_refs": ["iwdg_independent_timeout", "service_window_is_budget"]
+    },
+    {
+      "purpose": "repair",
+      "narration": "工程上先测最长擦除时间，再安排服务窗口；超过预算就记录错误、进入恢复路径，不能无限重试。",
+      "subtitle": "超预算，就走恢复路径",
+      "visual_intent": "用原创三节点恢复图区分完成、记录错误和受控恢复",
+      "fact_refs": ["observable_recovery", "service_window_is_budget"]
+    },
+    {
+      "purpose": "summary",
+      "narration": "记住四件事：按手册发起，观察忙状态，检查错误，给看门狗留出可计算的窗口。",
+      "subtitle": "按手册，留窗口，有恢复",
+      "visual_intent": "用原创检查卡总结并给出下一条工程验证动作",
+      "fact_refs": []
+    }
+  ]
+}

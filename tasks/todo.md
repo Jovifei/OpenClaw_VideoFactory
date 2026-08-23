@@ -2363,6 +2363,27 @@ Change Request: `reports/change_requests/PHASE1-JIANYING-TTS-DRAFT-001.json`.
 
 The deterministic MP4 remains the primary artifact. The Jianying draft is an optional editable voice/subtitle candidate and cannot mark the Phase 1 job passed.
 
+## PHASE1-DOUYIN-REFERENCE-STRUCTURE-005 — IN PROGRESS (2026-08-23)
+
+Change Request: `reports/change_requests/PHASE1-DOUYIN-REFERENCE-STRUCTURE-005.json`.
+Plan: `tasks/plans/2026-08-23-phase1-douyin-reference-structure.md`.
+
+- [x] Open and verify the supplied Douyin page and its actual media metadata.
+- [x] Keep the downloaded public reference outside the repository and record its SHA-256.
+- [x] Run local ffprobe, audio-level, PySceneDetect and keyframe inspection without reusing source media.
+- [x] Record a sanitized reference structure/style report and a clean-room original brief.
+- [x] Rebuild the project topic in 16:9 with the reference's abstract card/diagram rhythm, using Remotion as the only renderer.
+- [x] Generate a Jianying-editable visual/audio/subtitle draft; export remains manual and no remote HeyGen generation is enabled.
+- [x] Run originality, audio, subtitle-authority, ffprobe, full-decode and staged-diff checks.
+- [x] Update Obsidian only after evidence is complete; do not mark formal Phase 1 passed.
+
+### Review — reference reconstruction boundary
+
+The supplied public video is usable for structure/style analysis, not for a frame-,
+audio-, or transcript-level copy. The candidate target is an original Flash/watchdog
+explanation in 1920×1080 with one subtitle authority and optional Jovi-original mascot
+disabled unless explicitly requested.
+
 ## PHASE1-FLASH-VISUAL-REMEDIATION-001 — CORRECTED VISUAL REVIEW READY (2026-08-22)
 
 Change Request: `reports/change_requests/PHASE1-FLASH-VISUAL-REMEDIATION-001.json`.

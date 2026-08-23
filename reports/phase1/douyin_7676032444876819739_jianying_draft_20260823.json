@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "status": "draft_ready_for_manual_jianying_review",
+  "draft_name": "DouyinStructure_FlashWatchdog_16x9_SAMI_20260823",
+  "draft_relative_path": "DouyinStructure_FlashWatchdog_16x9_SAMI_20260823",
+  "skill": {
+    "selected_backend": "jianying-editor-skill",
+    "repository": "luoluoluo22/jianying-editor-skill",
+    "pinned_commit": "f421c8a036f4fda888a83b38fc90bb9c00d6faa9",
+    "license": "MIT"
+  },
+  "inputs": {
+    "visual_filename": "flash_watchdog_reference_style_16x9.mp4",
+    "visual_sha256": "885afe7584e0d840e7409eff40336fc69b784c7b9354c7c0202be976d61f1635",
+    "script_filename": "douyin_7676032444876819739_flash_reconstruction_script.json",
+    "script_sha256": "5992b1042c31603c349b2b657c99041614a1f120785f347afe96608d59e81ace"
+  },
+  "voice": {
+    "speaker": "zh_male_iclvop_chenxuankepu",
+    "requested_backend": "sami",
+    "used_backends": [
+      "sami",
+      "sami",
+      "sami",
+      "sami",
+      "sami"
+    ],
+    "segment_count": 5,
+    "subtitle_segment_count": 5,
+    "timeline_duration_microseconds": 37640000
+  },
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "visual_duration_microseconds": 50000000,
+  "tracks": [
+    {
+      "name": "VideoTrack",
+      "type": "",
+      "mute": false,
+      "volume": null,
+      "segment_count": 1,
+      "duration_microseconds": 50000000
+    },
+    {
+      "name": "VoiceOver",
+      "type": "",
+      "mute": false,
+      "volume": null,
+      "segment_count": 5,
+      "duration_microseconds": 37540000
+    },
+    {
+      "name": "Subtitles",
+      "type": "",
+      "mute": false,
+      "volume": null,
+      "segment_count": 5,
+      "duration_microseconds": 37540000
+    }
+  ],
+  "audio_validation": {
+    "status": "passed",
+    "voice_track": "VoiceOver",
+    "muted": false,
+    "segment_count": 5,
+    "human_listening_required": true
+  },
+  "subtitle_validation": {
+    "status": "passed",
+    "authoritative_layer": "jianying_native_subtitles_track",
+    "track_name": "Subtitles",
+    "segment_count": 5,
+    "burned_in_visual_must_be_false": true
+  },
+  "output_root": "E:\\OpenClaw_VideoFactory_Runtime\\jianying_drafts",
+  "export": {
+    "automatic_export": "disabled",
+    "manual_action": "open the new draft in Jianying and review/listen before exporting"
+  }
+}

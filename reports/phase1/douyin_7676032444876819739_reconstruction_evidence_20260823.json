@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "change_request": "PHASE1-DOUYIN-REFERENCE-STRUCTURE-005",
+  "status": "PHASE1_LOCAL_REFERENCE_REVIEW_PACKAGE_READY",
+  "reference": {
+    "analysis_report": "reports/phase1/douyin_7676032444876819739_reference_analysis_20260823.json",
+    "source_sha256": "aa8dd55f77b87d8191d4c792b8a660573662be957853ae4cf554510a1b87560f",
+    "rights_mode": "public_reference_research_only",
+    "source_media_in_repo": false,
+    "source_media_in_render_chain": false
+  },
+  "original_reconstruction": {
+    "original_brief": "reports/phase1/douyin_7676032444876819739_original_brief.json",
+    "script": "reports/phase1/douyin_7676032444876819739_flash_reconstruction_script.json",
+    "topic": "Flash 擦除时，如何安排微控制器的看门狗服务窗口",
+    "aspect_ratio": "16:9",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration_seconds": 50,
+    "mascot_mode": "off",
+    "subtitle_authority": "jianying_native_subtitles_track"
+  },
+  "design_and_render": {
+    "hyperframes": {
+      "status": "design_tokens_only",
+      "transferred": ["layout_before_animation", "warm_editorial_neutral_canvas", "single_caption_authority", "deterministic_scene_entrances"],
+      "execution_renderer": "remotion"
+    },
+    "remotion_report": "reports/phase1/douyin_7676032444876819739_flash_remotion_render_20260823.json",
+    "visual_output": {
+      "path": "dist/phase1_local/reference_reconstruction_20260823/flash_watchdog_reference_style_16x9.mp4",
+      "sha256": "885afe7584e0d840e7409eff40336fc69b784c7b9354c7c0202be976d61f1635",
+      "audio_present": false,
+      "burned_in_subtitles": false,
+      "ffprobe_and_full_decode": "passed"
+    }
+  },
+  "jianying": {
+    "draft_report": "reports/phase1/douyin_7676032444876819739_jianying_draft_20260823.json",
+    "draft_name": "DouyinStructure_FlashWatchdog_16x9_SAMI_20260823",
+    "draft_root": "E:/OpenClaw_VideoFactory_Runtime/jianying_drafts",
+    "skill": "jianying-editor-skill@f421c8a036f4fda888a83b38fc90bb9c00d6faa9",
+    "voice": "zh_male_iclvop_chenxuankepu",
+    "backend": "sami",
+    "voice_timeline_seconds": 37.64,
+    "visual_timeline_seconds": 50.0,
+    "voice_track_audible": true,
+    "native_subtitle_segments": 5,
+    "automatic_export": false,
+    "human_listening_required": true
+  },
+  "audio_preview": {
+    "path": "dist/phase1_local/reference_reconstruction_20260823/flash_watchdog_jianying_voice_preview_16x9.mp4",
+    "sha256": "1d601a9c5ba1a223aa700b54d105a7f775b176f17ea8f8e761a031a0941e0c72",
+    "duration_seconds": 50.0,
+    "audio_source": "jianying_editor_skill_sami_generated_segments_only",
+    "source_audio_reused": false,
+    "mean_volume_db": -18.7,
+    "max_volume_db": -0.8,
+    "ffprobe_and_full_decode": "passed",
+    "preview_only_not_jianying_export": true
+  },
+  "originality_checks": {
+    "source_audio_reused": "passed",
+    "source_frames_reused": "passed",
+    "source_transcript_reused": "passed",
+    "creator_identity_or_logo_reused": "passed",
+    "source_path_in_brief_or_manifests": "passed",
+    "remote_heygen_called": "not_called_by_phase1_policy",
+    "perceptual_frame_similarity": "human_review_required",
+    "shot_sequence_similarity": "human_review_required",
+    "logo_watermark_face_review": "human_review_required"
+  },
+  "limitations": [
+    "The public reference audio was not semantically transcribed because the approved offline faster-whisper small snapshot was unavailable.",
+    "The Jianying draft is ready for Jovi to open, listen to, adjust, and export manually; it is not a publication claim.",
+    "Formal Phase 1 remains not passed."
+  ]
+}

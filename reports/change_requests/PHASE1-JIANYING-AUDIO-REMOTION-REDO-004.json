@@ -1,0 +1,36 @@
+{
+  "id": "PHASE1-JIANYING-AUDIO-REMOTION-REDO-004",
+  "phase": "phase1_local_reviewable_video",
+  "status": "in_progress",
+  "granted_by": "Jovi",
+  "objective": "Redo the Flash/watchdog review candidate with a deterministic 16:9 Remotion visual, one Jianying AI voice, and one native subtitle track after the prior SAPI audio and portrait canvas were rejected.",
+  "allowed_writes": [
+    "remotion/src/ReferenceFlashVisual.tsx",
+    "remotion/src/Root.tsx",
+    "scripts/render_flash_remotion_visual.mjs",
+    "scripts/phase1_jianying_tts_draft.py",
+    "tests/video/test_jianying_chain.py",
+    "tasks/plans/2026-08-23-phase1-jianying-audio-remotion-redo.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "reports/phase1/phase1_jianying_audio_remotion_redo_20260823.json",
+    "reports/phase1/jianying_tts_flash_remotion_redo_20260823.json"
+  ],
+  "prohibited_changes": [
+    "existing C-drive Jianying drafts",
+    "existing E-drive Jianying drafts",
+    "automatic Jianying UI export or mouse/keyboard automation",
+    "automatic publication, Feishu, Cron, or PROJECT_STATUS phase promotion",
+    "Pink Pig enablement or substitution without Jovi's original-asset receipt",
+    "remote provider or model download outside the already selected jianying-editor-skill adapter"
+  ],
+  "acceptance": [
+    "Remotion visual is 1920x1080 at 30fps, has no audio stream, and has no burned-in subtitles",
+    "Jianying draft canvas is 1920x1080 and contains exactly one VideoTrack, one unmuted VoiceOver track, and one native Subtitles track",
+    "all five narration segments use the selected SAMI speaker with no backend fallback",
+    "all generated outputs remain on E: and the old candidate remains untouched",
+    "ffprobe, complete decode, frame inspection, and focused regression evidence are recorded",
+    "manual listening and export remain a human gate"
+  ],
+  "rollback": "Revert only the scoped commit for this Change Request; preserve old MP4s, reports, and Jianying drafts."
+}

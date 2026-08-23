@@ -1,0 +1,128 @@
+{
+  "analysis_policy_version": "public-reference-structure-v1",
+  "audio_style_profile": {
+    "max_volume_db": -5.6,
+    "mean_volume_db": -29.9,
+    "music_or_sfx_identity": "not_inferred",
+    "observed": [
+      "AAC stereo narration-bearing stream",
+      "six short low-level gaps above 0.35 seconds"
+    ],
+    "transcript_status": "unavailable_cached_small_model_missing",
+    "voice_identity": "not_inferred"
+  },
+  "chapter_structure": [
+    {
+      "role": "hook_and_title",
+      "start_seconds": 0.0
+    },
+    {
+      "role": "principle_or_topology",
+      "start_seconds": 12.0
+    },
+    {
+      "role": "quantitative_behavior",
+      "start_seconds": 40.0
+    },
+    {
+      "role": "engineering_application",
+      "start_seconds": 68.0
+    },
+    {
+      "role": "summary_and_next_step",
+      "start_seconds": 87.0
+    }
+  ],
+  "limitations": [
+    "The page player was muted in the browser; the local file contains an AAC stream, but no semantic transcript was produced because the approved offline small-model cache is absent.",
+    "Visual descriptions are human-observed style tokens, not source frame assets."
+  ],
+  "media": {
+    "aspect_ratio": "9:16",
+    "audio": {
+      "channels": 2,
+      "codec": "aac",
+      "content_status": "not_transcribed_offline",
+      "duration_seconds": 101.935,
+      "level_observation": {
+        "max_db": -5.6,
+        "mean_db": -29.9
+      },
+      "present": true,
+      "profile": "HE-AACv2",
+      "sample_rate_hz": 44100
+    },
+    "duration_seconds": 101.935,
+    "fps": 30.0,
+    "resolution": {
+      "height": 1920,
+      "width": 1080
+    },
+    "video_codec": "h264"
+  },
+  "non_reuse_assertions": {
+    "creator_identity_reused": false,
+    "exact_shot_sequence_reused": false,
+    "logo_or_watermark_reused": false,
+    "source_audio_reused": false,
+    "source_frames_reused": false,
+    "source_transcript_reused": false
+  },
+  "scene_analysis": {
+    "cadence": "continuous_motion_graphics",
+    "detector": "PySceneDetect ContentDetector",
+    "detector_version": "0.7.1",
+    "hard_cut_count": 0,
+    "median_shot_duration_seconds": 101.935,
+    "minimum_scene_seconds": 0.8,
+    "pace_label": "slow",
+    "scene_count": 1,
+    "scenes": [
+      {
+        "duration_seconds": 101.935,
+        "end_seconds": 101.935,
+        "representative_frame_time_seconds": 50.968,
+        "start_seconds": 0.0
+      }
+    ],
+    "shot_density_per_second": 0.0,
+    "threshold": 27.0
+  },
+  "schema_version": "1.0",
+  "source": {
+    "platform": "douyin",
+    "processing_timestamp": "2026-08-23T04:13:49.464298Z",
+    "rights_mode": "public_reference_research_only",
+    "source_sha256": "AA8DD55F77B87D8191D4C792B8A660573662BE957853AE4CF554510A1B87560F",
+    "source_size_bytes": 5868668,
+    "source_url": "https://www.douyin.com/video/7676032444876819739",
+    "video_id": "7676032444876819739"
+  },
+  "transferable_abstractions": {
+    "default_output": "16:9 landscape 1920x1080",
+    "layout": "large title plus one main diagram/card per beat",
+    "structure": [
+      "hook",
+      "explain",
+      "quantify",
+      "apply",
+      "summarize"
+    ],
+    "timing": "five broad chapters; continuous motion rather than rapid cuts"
+  },
+  "visual_style_profile": {
+    "accent_roles": [
+      "mint_green",
+      "orange",
+      "purple"
+    ],
+    "branding": "small_badges_and_episode_labels_without_creator_identity",
+    "canvas": "warm_neutral_off_white",
+    "caption_layer": "single_large_lower_center_emphasis",
+    "composition": "single_continuous_canvas_with_white_cards",
+    "information_density": "high_diagram_first",
+    "motion_language": "progressive_vector_reveal_and_highlight",
+    "observed_keyframe_count": 3,
+    "typography": "bold_black_sans_with_small_gray_labels"
+  }
+}

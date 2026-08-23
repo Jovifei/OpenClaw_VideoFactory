@@ -26,5 +26,12 @@ def test_visual_helper_rejects_c_drive_outputs() -> None:
 def test_jianying_draft_defaults_to_e_drive_and_rejects_c_drive() -> None:
     draft = _load_module("scripts/phase1_jianying_tts_draft.py", "phase1_jianying_tts_draft_test")
     assert draft.DEFAULT_DRAFTS_ROOT.drive.upper() == "E:"
+    parsed = draft.build_parser().parse_args(
+        [
+            "--visual", "visual.mp4", "--script", "script.json", "--name", "draft",
+            "--report", "report.json", "--skill-root", "skill",
+        ]
+    )
+    assert (parsed.width, parsed.height) == (1920, 1080)
     with pytest.raises(ValueError, match="report_must_not_use_c_drive"):
         draft._output_root(Path("C:/Users/Admin/report.json"), "report")

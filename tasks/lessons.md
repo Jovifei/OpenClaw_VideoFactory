@@ -458,3 +458,10 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Keep new runtime, draft, and report roots on E: and fail closed on C:. Use
   one editor backend per job and document external candidates without enabling
   them beside Jianying.
+
+# 2026-08-23 - Public reference URLs require verification before clean-room reconstruction
+
+- A reference URL is not evidence that the video was actually inspected. Open the real page, resolve the media, record its hash/ffprobe/audio observations, and preserve the source outside the repository before making any claim about its structure.
+- “先复刻” must be interpreted as reconstructing the information logic and visual grammar when ownership is not established; never copy the source audio, full transcript, frames, logo, creator identity, or recognizable shot expression into an original brief or render chain.
+- If the approved offline ASR snapshot is absent, mark semantic audio transcription unavailable and report codec/level/timing observations only; do not invent a transcript.
+- HyperFrames and other external candidates may inform layout or motion tokens, but the project keeps one deterministic renderer and one Jianying editor backend per job. HeyGen remains separately authorized work, not a default Phase 1 call.
