@@ -49,6 +49,20 @@ const defaultRcHighPassProps: RcHighPassVisualInput = {
   duration_seconds: 102,
   fps: 30,
   layout_contract_version: '1.0',
+  geometry: {
+    version: '2.0',
+    topology: {
+      resistor: {x: 485, y: 430, width: 100, height: 120},
+      ground: {x: 485, y: 550, width: 100, height: 76},
+      wave_paths: [],
+    },
+    bode: {
+      x: {left: 118, right: 754, fc_ratio: 1},
+      magnitude_lane: {top: 110, bottom: 350, min_db: -20, max_db: 0},
+      phase_lane: {top: 420, bottom: 620, min_degrees: 0, max_degrees: 90},
+      markers: {magnitude_fc: {db: -3.0103}, phase_fc: {degrees: 45}},
+    },
+  },
   scenes: [
     {start_seconds: 0, end_seconds: 12, heading: '为什么变化通过，稳态却被挡住？', visual_kind: 'hook'},
     {start_seconds: 12, end_seconds: 40, heading: '串联电容，分压取输出', visual_kind: 'topology'},

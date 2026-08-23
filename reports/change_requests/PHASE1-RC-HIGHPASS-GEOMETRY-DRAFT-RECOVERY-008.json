@@ -1,0 +1,39 @@
+{
+  "id": "PHASE1-RC-HIGHPASS-GEOMETRY-DRAFT-RECOVERY-008",
+  "scope": "PHASE_1_LOCAL_VIDEO_FACTORY",
+  "status": "review_ready_for_human",
+  "requested_by": "Jovi",
+  "objective": "Correct the RC high-pass topology and Bode geometry, upgrade output QA to all-frame scanning, and expose a new E-drive Jianying draft through the actual Jianying projects root without copying media to C:.",
+  "root_cause": {
+    "jianying_visibility": "The v5 draft was written to E:/OpenClaw_VideoFactory_Runtime/jianying_drafts, while the desktop Jianying application enumerates C:/Users/Admin/AppData/Local/JianyingPro/User Data/Projects/com.lveditor.draft.",
+    "topology_visual": "A decorative sine path crossed the resistor body and was not electrically meaningful.",
+    "bode_visual": "The fc markers used hard-coded coordinates instead of the amplitude and phase curve functions."
+  },
+  "allowed_paths": [
+    "reports/change_requests/PHASE1-RC-HIGHPASS-GEOMETRY-DRAFT-RECOVERY-008.json",
+    "reports/phase1/",
+    "docs/superpowers/plans/",
+    "tasks/",
+    "remotion/src/",
+    "scripts/",
+    "tests/video/",
+    "Obsidian project memory pages",
+    "C:/Users/Admin/AppData/Local/JianyingPro/User Data/Projects/com.lveditor.draft/<new-junction-only>"
+  ],
+  "constraints": [
+    "All rendered media, timing probes, source files, and Jianying draft content remain on E:.",
+    "The C: Jianying projects root may receive only one new NTFS directory junction pointing to the E: draft; the target must not exist and no existing draft may be overwritten.",
+    "No source MP4, source audio, source frame, full transcript, watermark, or creator identity is reused.",
+    "Remotion remains the sole picture renderer; HyperFrames supplies layout/timing inspection principles; Jianying remains the only editor backend.",
+    "CapCut Mate and JianYing MCP remain disabled; automatic export, desktop UI automation, publication, Feishu, Cron, and PROJECT_STATUS promotion remain disabled.",
+    "Every output frame is mechanically scanned; six chapter/key transition frames receive visual review before draft creation."
+  ],
+  "acceptance": [
+    "No waveform geometry intersects the resistor or ground geometry in the topology scene.",
+    "At fc, green amplitude and orange phase markers are computed from their own curves and land on -3 dB and +45 degree lanes respectively.",
+    "Full-frame report records all 3060 frames scanned, no black frame, and no unintended static run; visual inspection evidence covers the corrected topology and Bode hero frames.",
+    "A new E-drive Jianying v6 draft has 1 video, 1 unmuted voice-over, and 1 subtitle track, and a verified C: directory junction makes the draft discoverable by Jianying.",
+    "The audible preview contains AAC and the final report retains the manual Jianying listening/export gate."
+  ],
+  "rollback": "Remove only the exact new junction after resolving and proving that it points to the generated E: draft; preserve old drafts, candidates, and all prior reports."
+}

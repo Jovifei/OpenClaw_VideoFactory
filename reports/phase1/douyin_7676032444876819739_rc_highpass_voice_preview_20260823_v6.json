@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "status": "audio_preview_ready_for_manual_listening",
+  "visual": {
+    "filename": "rc_highpass_9x16_visual.mp4",
+    "sha256": "a2e7133b0ffafe94dee6ddb876e4e9284c5d145cc2cf842265cd9d92d324a6d6",
+    "duration_seconds": 102.0
+  },
+  "timing_manifest": {
+    "filename": "douyin_7676032444876819739_rc_highpass_timing_manifest_20260823_v4.json",
+    "sha256": "6df9c9d9c1ca2c0eca2a8c21d81bba9561b9714d88172ddd7a10fcea589cc154"
+  },
+  "audio_source": {
+    "kind": "jianying_editor_skill_timing_probe_assets",
+    "segment_count": 5,
+    "source_audio_reused": false,
+    "segments": [
+      {
+        "index": 1,
+        "start_microseconds": 0,
+        "end_microseconds": 19240000,
+        "audio_sha256": "1646df14496582bbee1137e7b6a13039e5064a913dcc359c7d8297f412de6892"
+      },
+      {
+        "index": 2,
+        "start_microseconds": 19340000,
+        "end_microseconds": 39500000,
+        "audio_sha256": "1b0208c7e26f76a1710d743c20fea2a58a71acff928a2ca3a45341210cc20439"
+      },
+      {
+        "index": 3,
+        "start_microseconds": 39600000,
+        "end_microseconds": 55100000,
+        "audio_sha256": "23a6ee565e5fce901619c92b645f9fd439dcaf6df3744ceb76e0700ee2fa809b"
+      },
+      {
+        "index": 4,
+        "start_microseconds": 55200000,
+        "end_microseconds": 69900000,
+        "audio_sha256": "98edd26c0d02da46ef7889c02ecbdf9a6d1162b1432c5af7ce8867a3b824d2ad"
+      },
+      {
+        "index": 5,
+        "start_microseconds": 70000000,
+        "end_microseconds": 98360000,
+        "audio_sha256": "74178cca6ce2f8d5ba365f28e57d63f26f61451dfbee727c7dc223566680a76a"
+      }
+    ]
+  },
+  "output": {
+    "filename": "rc_highpass_9x16_voice_preview.mp4",
+    "sha256": "bcf2f3b3637585ddba00e451f3df30e8a3cfbfe6a0e5c95441f1d467d55b1a24",
+    "duration_seconds": 102.0,
+    "audio_present": true,
+    "codec": "aac",
+    "mean_volume_db": -20.6,
+    "max_volume_db": -3.5,
+    "full_decode": "passed"
+  },
+  "sync_validation": {
+    "status": "passed",
+    "visual_duration_matches_manifest": true,
+    "audio_segment_starts_match_manifest": true,
+    "subtitle_authority": "jianying_native_subtitles_track",
+    "preview_is_not_jianying_export": true,
+    "human_listening_required": true
+  },
+  "outputs_on_e_drive": true
+}

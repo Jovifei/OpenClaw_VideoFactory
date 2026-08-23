@@ -2524,3 +2524,16 @@ Evidence: `reports/phase1/douyin_7676032444876819739_rc_highpass_quality_2026082
 Final visual: `dist/phase1_local/rc_highpass_reconstruction_20260823_v5/rc_highpass_9x16_visual.mp4`.
 Audible QA preview: `dist/phase1_local/rc_highpass_reconstruction_20260823_v5/rc_highpass_9x16_voice_preview.mp4`.
 Jianying draft: `E:/OpenClaw_VideoFactory_Runtime/jianying_drafts/DouyinRCHighPass_9x16_SAMI_20260823_v5`.
+## PHASE1-RC-HIGHPASS-GEOMETRY-DRAFT-RECOVERY-008 — IN PROGRESS
+
+Change Request: `reports/change_requests/PHASE1-RC-HIGHPASS-GEOMETRY-DRAFT-RECOVERY-008.json`.
+Plan: `docs/superpowers/plans/2026-08-23-rc-highpass-geometry-draft-recovery.md`.
+
+- [x] Reproduce: desktop Jianying lists only its C: projects root, while the v5 draft is complete but stored only under E:.
+- [x] Reproduce: topology sine overlay crosses the resistor; Bode markers use wrong fixed coordinates.
+- [x] Add failing geometry/full-frame/draft-visibility tests; observe four expected failures before implementation.
+- [x] Rebuild geometry and all-frame gate; re-render the new v6 candidate and scan all 3060 frames.
+- [x] Create one C: junction to the E: v6 draft and verify it via Jianying's own draft inspector.
+- [x] Generate a visible, audible Jianying v6 draft; manual listening/export remains required.
+
+Evidence: `reports/phase1/douyin_7676032444876819739_rc_highpass_geometry_recovery_20260823_v6.json`.

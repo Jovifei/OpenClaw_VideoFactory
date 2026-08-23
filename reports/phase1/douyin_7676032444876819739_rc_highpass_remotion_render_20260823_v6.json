@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0",
+  "status": "remotion_visual_ready_for_post_render_gate",
+  "renderer": "remotion",
+  "composition": "RcHighPass1080x1920",
+  "input": {
+    "script_filename": "douyin_7676032444876819739_rc_highpass_reconstruction_script.json",
+    "script_sha256": "bb0e59867491a6236d26f1d2e5c4240762604c75fe6c6c5250385ec4d4d11d78",
+    "storyboard_filename": "douyin_7676032444876819739_rc_highpass_storyboard.json",
+    "storyboard_sha256": "ae32445d4610b10726e6993a216eab477138cf53675b60b4d16c1192be0c95dc",
+    "timing_manifest_filename": "douyin_7676032444876819739_rc_highpass_timing_manifest_20260823_v4.json",
+    "timing_manifest_sha256": "6df9c9d9c1ca2c0eca2a8c21d81bba9561b9714d88172ddd7a10fcea589cc154"
+  },
+  "visual": {
+    "filename": "rc_highpass_9x16_visual.mp4",
+    "sha256": "a2e7133b0ffafe94dee6ddb876e4e9284c5d145cc2cf842265cd9d92d324a6d6",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration_seconds": 102,
+    "audio_present": false,
+    "burned_in_subtitles": false,
+    "scene_timing": [
+      {
+        "start_seconds": 0,
+        "end_seconds": 19.34,
+        "visual_kind": "hook",
+        "timing_segment_index": 1
+      },
+      {
+        "start_seconds": 19.34,
+        "end_seconds": 39.6,
+        "visual_kind": "topology",
+        "timing_segment_index": 2
+      },
+      {
+        "start_seconds": 39.6,
+        "end_seconds": 55.2,
+        "visual_kind": "bode",
+        "timing_segment_index": 3
+      },
+      {
+        "start_seconds": 55.2,
+        "end_seconds": 70,
+        "visual_kind": "phasor",
+        "timing_segment_index": 4
+      },
+      {
+        "start_seconds": 70,
+        "end_seconds": 102,
+        "visual_kind": "summary",
+        "timing_segment_index": 5
+      }
+    ]
+  },
+  "layout_contract": {
+    "version": "1.0",
+    "safe_area": {
+      "left": 72,
+      "right": 72,
+      "top": 68,
+      "bottom": 180
+    },
+    "subtitle_reserve": {
+      "top": 1590,
+      "height": 220,
+      "authority": "jianying_native"
+    },
+    "text_policy": "bounded_natural_wrap",
+    "overflow_policy": "fail_closed",
+    "theme_token": "technical_neutral",
+    "background_is_theme_driven": true,
+    "pink_global_background": false
+  },
+  "geometry_contract": {
+    "version": "2.0",
+    "topology": {
+      "resistor": {
+        "x": 485,
+        "y": 430,
+        "width": 100,
+        "height": 120
+      },
+      "ground": {
+        "x": 485,
+        "y": 550,
+        "width": 100,
+        "height": 76
+      },
+      "wave_paths": []
+    },
+    "bode": {
+      "x": {
+        "left": 118,
+        "right": 754,
+        "fc_ratio": 1
+      },
+      "magnitude_lane": {
+        "top": 110,
+        "bottom": 350,
+        "min_db": -20,
+        "max_db": 0
+      },
+      "phase_lane": {
+        "top": 420,
+        "bottom": 620,
+        "min_degrees": 0,
+        "max_degrees": 90
+      },
+      "markers": {
+        "magnitude_fc": {
+          "db": -3.0103
+        },
+        "phase_fc": {
+          "degrees": 45
+        }
+      }
+    }
+  },
+  "preview": {
+    "filename": "rc_highpass_9x16_visual.preview.png",
+    "sha256": "39124362aee7fd5c77f4c5aee3bef1754df77130d7ed4793a41ff2ed96e55600",
+    "frame": 30,
+    "scale": 0.25
+  },
+  "outputs_on_e_drive": true,
+  "sync_contract": {
+    "status": "voice_first_manifest_driven",
+    "authority": "jianying_voice_timing_manifest",
+    "remotion_scene_boundaries_are_voice_boundaries": true,
+    "subtitle_authority": "jianying_native_subtitles_track"
+  },
+  "automatic_export": false
+}

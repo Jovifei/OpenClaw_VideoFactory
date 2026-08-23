@@ -16,6 +16,21 @@ export type RcHighPassScene = {
   timing_segment_index?: number;
 };
 
+export type RcHighPassGeometry = {
+  version: '2.0';
+  topology: {
+    resistor: {x: number; y: number; width: number; height: number};
+    ground: {x: number; y: number; width: number; height: number};
+    wave_paths: Array<{left: number; top: number; right: number; bottom: number}>;
+  };
+  bode: {
+    x: {left: number; right: number; fc_ratio: number};
+    magnitude_lane: {top: number; bottom: number; min_db: number; max_db: number};
+    phase_lane: {top: number; bottom: number; min_degrees: number; max_degrees: number};
+    markers: {magnitude_fc: {db: number}; phase_fc: {degrees: number}};
+  };
+};
+
 export type RcHighPassVisualInput = {
   schema_version: '1.0';
   title: string;
@@ -23,6 +38,7 @@ export type RcHighPassVisualInput = {
   fps: 30;
   scenes: RcHighPassScene[];
   layout_contract_version: '1.0';
+  geometry: RcHighPassGeometry;
 };
 
 const THEME = {
@@ -183,8 +199,9 @@ const HookDiagram: React.FC<{frame: number; fps: number}> = ({frame, fps}) => {
   );
 };
 
-const TopologyDiagram: React.FC<{frame: number; fps: number}> = ({frame, fps}) => {
-  const reveal = interpolate(frame, [0, 45], [0, 1], clamp);
+const TopologyDiagram: React.FC<{geometry: RcHighPassGeometry}> = ({geometry}) => {
+  const {resistor, ground} = geometry.topology;
+  const resistorCenter = resistor.x + resistor.width / 2;
   return (
     <Card accent={THEME.violet} style={{height: 1120, padding: 34}}>
       <BoundedText id="topology-label" size={22} color={THEME.muted} weight={900} lines={1}>TOPOLOGY & SIGNAL PATH</BoundedText>
@@ -196,22 +213,21 @@ const TopologyDiagram: React.FC<{frame: number; fps: number}> = ({frame, fps}) =
         <line x1="270" y1="215" x2="270" y2="385" stroke={THEME.mint} strokeWidth="10" strokeLinecap="round" />
         <line x1="316" y1="215" x2="316" y2="385" stroke={THEME.mint} strokeWidth="10" strokeLinecap="round" />
         <line x1="245" y1="300" x2="270" y2="300" stroke={THEME.ink} strokeWidth="8" />
-        <line x1="316" y1="300" x2="535" y2="300" stroke={THEME.ink} strokeWidth="8" />
+        <line x1="316" y1="300" x2={resistorCenter} y2="300" stroke={THEME.ink} strokeWidth="8" />
         <text data-layout-box="topology-c" x="270" y="180" fill={THEME.mint} fontSize="32" fontWeight="900">C</text>
-        <line x1="535" y1="300" x2="535" y2="430" stroke={THEME.ink} strokeWidth="8" />
-        <rect x="485" y="430" width="100" height="120" rx="18" fill={THEME.panel} stroke={THEME.orange} strokeWidth="8" />
-        <text data-layout-box="topology-r" x="525" y="507" fill={THEME.orange} fontSize="32" fontWeight="900">R</text>
-        <line x1="535" y1="550" x2="535" y2="598" stroke={THEME.ink} strokeWidth="8" />
-        <path d="M 485 598 H 585 M 500 612 H 570 M 518 626 H 552" stroke={THEME.ink} strokeWidth="7" strokeLinecap="round" />
+        <line x1={resistorCenter} y1="300" x2={resistorCenter} y2={resistor.y} stroke={THEME.ink} strokeWidth="8" />
+        <rect x={resistor.x} y={resistor.y} width={resistor.width} height={resistor.height} rx="18" fill={THEME.panel} stroke={THEME.orange} strokeWidth="8" />
+        <text data-layout-box="topology-r" x={resistorCenter - 10} y={resistor.y + 77} fill={THEME.orange} fontSize="32" fontWeight="900">R</text>
+        <line x1={resistorCenter} y1={resistor.y + resistor.height} x2={resistorCenter} y2={ground.y + 48} stroke={THEME.ink} strokeWidth="8" />
+        <path d={`M ${ground.x} ${ground.y + 48} H ${ground.x + ground.width} M ${ground.x + 15} ${ground.y + 62} H ${ground.x + ground.width - 15} M ${ground.x + 33} ${ground.y + 76} H ${ground.x + ground.width - 33}`} stroke={THEME.ink} strokeWidth="7" strokeLinecap="round" />
         <circle cx="765" cy="300" r="22" fill={THEME.panel} stroke={THEME.ink} strokeWidth="6" />
-        <line x1="535" y1="300" x2="743" y2="300" stroke={THEME.ink} strokeWidth="8" strokeLinecap="round" />
+        <line x1={resistorCenter} y1="300" x2="743" y2="300" stroke={THEME.ink} strokeWidth="8" strokeLinecap="round" />
         <text data-layout-box="topology-vout" x="710" y="365" fill={THEME.ink} fontSize="26" fontWeight="900">Vout</text>
         <Arrow x1={110} x2={220} y={160} color={THEME.mint} />
         <text data-layout-box="topology-low" x="110" y="110" fill={THEME.muted} fontSize="22" fontWeight="800">低频：XC 大</text>
         <Arrow x1={600} x2={750} y={160} color={THEME.orange} />
         <text data-layout-box="topology-high" x="560" y="110" fill={THEME.orange} fontSize="22" fontWeight="900">高频：XC 小</text>
-        <path d="M 120 470 C 195 410, 260 530, 335 470 S 475 530, 550 470 S 690 530, 760 470" fill="none" stroke={THEME.mint} strokeWidth="8" strokeLinecap="round" strokeDasharray="1" strokeDashoffset={1 - reveal} pathLength={1} />
-        <text data-layout-box="topology-wave" x="138" y="545" fill={THEME.muted} fontSize="21" fontWeight="800">输出逐渐跟随输入</text>
+        <text data-layout-box="topology-node" x="618" y="432" fill={THEME.muted} fontSize="21" fontWeight="800">输出节点取样</text>
       </svg>
       <div style={{display: 'flex', gap: 18}}>
         <Card accent={THEME.orange} style={{flex: 1, height: 170, padding: 22}}>
@@ -227,46 +243,71 @@ const TopologyDiagram: React.FC<{frame: number; fps: number}> = ({frame, fps}) =
   );
 };
 
-const makeCurve = (phase = false): string => {
+const logRatioToX = (ratio: number, geometry: RcHighPassGeometry) => {
+  const {left, right} = geometry.bode.x;
+  return left + (Math.log10(ratio) + 1) / 2 * (right - left);
+};
+
+const magnitudeDb = (ratio: number) => 20 * Math.log10(ratio / Math.sqrt(1 + ratio * ratio));
+const phaseDegrees = (ratio: number) => Math.atan(1 / ratio) * (180 / Math.PI);
+
+const magnitudeYForDb = (db: number, geometry: RcHighPassGeometry) => {
+  const lane = geometry.bode.magnitude_lane;
+  return lane.top + (lane.max_db - db) / (lane.max_db - lane.min_db) * (lane.bottom - lane.top);
+};
+
+const phaseYForDegrees = (degrees: number, geometry: RcHighPassGeometry) => {
+  const lane = geometry.bode.phase_lane;
+  return lane.top + (lane.max_degrees - degrees) / (lane.max_degrees - lane.min_degrees) * (lane.bottom - lane.top);
+};
+
+const makeCurve = (geometry: RcHighPassGeometry, kind: 'magnitude' | 'phase'): string => {
   const points: string[] = [];
   for (let i = 0; i <= 80; i += 1) {
-    const x = 92 + (i / 80) * 700;
+    const x = logRatioToX(10 ** (-1 + (i / 80) * 2), geometry);
     const logRatio = -1 + (i / 80) * 2;
     const ratio = 10 ** logRatio;
-    const value = phase ? Math.atan(1 / ratio) * (180 / Math.PI) : 20 * Math.log10(ratio / Math.sqrt(1 + ratio * ratio));
-    const y = phase ? 520 - ((value / 90) * 330) : 390 - (((value + 20) / 20) * 300);
+    const y = kind === 'phase' ? phaseYForDegrees(phaseDegrees(ratio), geometry) : magnitudeYForDb(magnitudeDb(ratio), geometry);
     points.push(`${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`);
   }
   return points.join(' ');
 };
 
-const BodeDiagram: React.FC<{frame: number; fps: number}> = ({frame, fps}) => {
+const BodeDiagram: React.FC<{frame: number; fps: number; geometry: RcHighPassGeometry}> = ({frame, fps, geometry}) => {
   const reveal = interpolate(frame, [0, 54], [1, 0], clamp);
   const pulse = 1 + Math.sin(frame / fps) * 0.04;
+  const {left, right, fc_ratio: fcRatio} = geometry.bode.x;
+  const magnitudeLane = geometry.bode.magnitude_lane;
+  const phaseLane = geometry.bode.phase_lane;
+  const fcX = logRatioToX(fcRatio, geometry);
+  const magnitudeFc = {x: fcX, y: magnitudeYForDb(geometry.bode.markers.magnitude_fc.db, geometry)};
+  const phaseFc = {x: fcX, y: phaseYForDegrees(geometry.bode.markers.phase_fc.degrees, geometry)};
   return (
     <Card accent={THEME.orange} style={{height: 1180, padding: 30}}>
       <BoundedText id="bode-label" size={22} color={THEME.muted} weight={900} lines={1}>CUTOFF & PHASE LEAD</BoundedText>
       <BoundedText id="bode-title" size={34} weight={900} lines={2} maxWidth={800} style={{marginTop: 20}}>fc 是幅度和相位的分水岭</BoundedText>
       <svg viewBox="0 0 860 780" width="100%" height="780" role="img" aria-label="Bode magnitude and phase curves" style={{marginTop: 26}}>
         <rect x="58" y="34" width="744" height="680" rx="24" fill={THEME.panel} stroke={THEME.rule} strokeWidth="3" />
-        {[120, 205, 290, 375, 460, 545, 630].map((y) => <line key={y} x1="118" y1={y} x2="754" y2={y} stroke={THEME.soft} strokeWidth="3" />)}
-        <line x1="118" y1="76" x2="118" y2="660" stroke={THEME.rule} strokeWidth="4" />
-        <line x1="118" y1="660" x2="754" y2="660" stroke={THEME.rule} strokeWidth="4" />
-        <path d={makeCurve(false)} fill="none" stroke={THEME.mint} strokeWidth="9" strokeLinecap="round" pathLength={1} strokeDasharray="1" strokeDashoffset={reveal} />
-        <path d={makeCurve(true)} fill="none" stroke={THEME.orange} strokeWidth="9" strokeLinecap="round" pathLength={1} strokeDasharray="1" strokeDashoffset={reveal} />
-        <line x1="436" y1="72" x2="436" y2="660" stroke={THEME.violet} strokeWidth="5" strokeDasharray="12 10" />
-        <circle cx="436" cy="275" r={15 * pulse} fill={THEME.mint} />
-        <circle cx="436" cy="445" r={15 * pulse} fill={THEME.orange} />
-        <text data-layout-box="bode-0db" x="70" y="112" fill={THEME.muted} fontSize="20" fontWeight="800">0 dB</text>
-        <text data-layout-box="bode-3db" x="70" y="285" fill={THEME.muted} fontSize="20" fontWeight="800">-3 dB</text>
-        <text data-layout-box="bode-phase-90" x="65" y="210" fill={THEME.orange} fontSize="20" fontWeight="900">+90°</text>
-        <text data-layout-box="bode-phase-45" x="65" y="375" fill={THEME.orange} fontSize="20" fontWeight="900">+45°</text>
-        <text data-layout-box="bode-phase-0" x="72" y="540" fill={THEME.orange} fontSize="20" fontWeight="900">0°</text>
-        <text data-layout-box="bode-fc" x="398" y="700" fill={THEME.violet} fontSize="22" fontWeight="900">fc</text>
-        <text data-layout-box="bode-low" x="124" y="700" fill={THEME.muted} fontSize="19" fontWeight="800">0.1 fc</text>
-        <text data-layout-box="bode-high" x="704" y="700" fill={THEME.muted} fontSize="19" fontWeight="800">10 fc</text>
-        <text data-layout-box="bode-green" x="566" y="170" fill={THEME.mint} fontSize="20" fontWeight="900">幅频</text>
-        <text data-layout-box="bode-orange" x="566" y="205" fill={THEME.orange} fontSize="20" fontWeight="900">相频</text>
+        {[magnitudeLane.top, magnitudeFc.y, magnitudeLane.bottom, phaseLane.top, phaseFc.y, phaseLane.bottom].map((y) => <line key={y} x1={left} y1={y} x2={right} y2={y} stroke={THEME.soft} strokeWidth="3" />)}
+        <line x1={left} y1={magnitudeLane.top} x2={left} y2={phaseLane.bottom} stroke={THEME.rule} strokeWidth="4" />
+        <line x1={left} y1={magnitudeLane.bottom} x2={right} y2={magnitudeLane.bottom} stroke={THEME.rule} strokeWidth="3" />
+        <line x1={left} y1={phaseLane.bottom} x2={right} y2={phaseLane.bottom} stroke={THEME.rule} strokeWidth="4" />
+        <path d={makeCurve(geometry, 'magnitude')} fill="none" stroke={THEME.mint} strokeWidth="9" strokeLinecap="round" pathLength={1} strokeDasharray="1" strokeDashoffset={reveal} />
+        <path d={makeCurve(geometry, 'phase')} fill="none" stroke={THEME.orange} strokeWidth="9" strokeLinecap="round" pathLength={1} strokeDasharray="1" strokeDashoffset={reveal} />
+        <line x1={fcX} y1={magnitudeLane.top - 18} x2={fcX} y2={phaseLane.bottom} stroke={THEME.violet} strokeWidth="5" strokeDasharray="12 10" />
+        <circle cx={magnitudeFc.x} cy={magnitudeFc.y} r={15 * pulse} fill={THEME.mint} />
+        <circle cx={phaseFc.x} cy={phaseFc.y} r={15 * pulse} fill={THEME.orange} />
+        <text data-layout-box="bode-0db" x="70" y={magnitudeLane.top + 7} fill={THEME.muted} fontSize="20" fontWeight="800">0 dB</text>
+        <text data-layout-box="bode-3db" x="64" y={magnitudeFc.y + 7} fill={THEME.muted} fontSize="20" fontWeight="800">-3 dB</text>
+        <text data-layout-box="bode-20db" x="58" y={magnitudeLane.bottom + 7} fill={THEME.muted} fontSize="20" fontWeight="800">-20 dB</text>
+        <text data-layout-box="bode-phase-90" x="65" y={phaseLane.top + 7} fill={THEME.orange} fontSize="20" fontWeight="900">+90°</text>
+        <text data-layout-box="bode-phase-45" x="65" y={phaseFc.y + 7} fill={THEME.orange} fontSize="20" fontWeight="900">+45°</text>
+        <text data-layout-box="bode-phase-0" x="72" y={phaseLane.bottom + 7} fill={THEME.orange} fontSize="20" fontWeight="900">0°</text>
+        <text data-layout-box="bode-fc" x={fcX - 18} y="700" fill={THEME.violet} fontSize="22" fontWeight="900">fc</text>
+        <text data-layout-box="bode-low" x={left + 6} y="700" fill={THEME.muted} fontSize="19" fontWeight="800">0.1 fc</text>
+        <text data-layout-box="bode-high" x={right - 50} y="700" fill={THEME.muted} fontSize="19" fontWeight="800">10 fc</text>
+        <text data-layout-box="bode-green" x={right - 170} y={magnitudeLane.top + 35} fill={THEME.mint} fontSize="20" fontWeight="900">幅频</text>
+        <text data-layout-box="bode-orange" x={right - 170} y={phaseLane.top + 35} fill={THEME.orange} fontSize="20" fontWeight="900">相频</text>
       </svg>
       <div style={{display: 'flex', gap: 14}}>
         <Card accent={THEME.mint} style={{flex: 1, height: 164, padding: 20}}>
@@ -352,10 +393,10 @@ const SummaryDiagram: React.FC<{frame: number; fps: number}> = ({frame, fps}) =>
   );
 };
 
-const SceneDiagram: React.FC<{kind: RcHighPassScene['visual_kind']; frame: number; fps: number}> = ({kind, frame, fps}) => {
+const SceneDiagram: React.FC<{kind: RcHighPassScene['visual_kind']; frame: number; fps: number; geometry: RcHighPassGeometry}> = ({kind, frame, fps, geometry}) => {
   if (kind === 'hook') return <HookDiagram frame={frame} fps={fps} />;
-  if (kind === 'topology') return <TopologyDiagram frame={frame} fps={fps} />;
-  if (kind === 'bode') return <BodeDiagram frame={frame} fps={fps} />;
+  if (kind === 'topology') return <TopologyDiagram geometry={geometry} />;
+  if (kind === 'bode') return <BodeDiagram frame={frame} fps={fps} geometry={geometry} />;
   if (kind === 'phasor') return <PhasorDiagram frame={frame} fps={fps} />;
   return <SummaryDiagram frame={frame} fps={fps} />;
 };
@@ -392,11 +433,7 @@ export const ReferenceRcHighPassVisual: React.FC<RcHighPassVisualInput> = (input
         <div style={{height: '100%', width: `${progress}%`, borderRadius: 4, background: accent}} />
       </div>
       <div style={{position: 'absolute', left: SAFE.left, right: SAFE.right, top: 370, bottom: SAFE.bottom + 18, opacity, transform: `translateY(${entrance}px)`, overflow: 'hidden'}}>
-        <SceneDiagram kind={scene.visual_kind} frame={localFrame} fps={fps} />
-      </div>
-      <div style={{position: 'absolute', left: SAFE.left, right: SAFE.right, bottom: 56, display: 'flex', justifyContent: 'space-between', color: THEME.muted, fontSize: 16, fontWeight: 800}} data-layout-box="footer-meta">
-        <span>原创电路图 · 画面无烧录字幕</span>
-        <span>Jianying 原生字幕后置 · mascot_mode=off</span>
+        <SceneDiagram kind={scene.visual_kind} frame={localFrame} fps={fps} geometry={input.geometry} />
       </div>
     </AbsoluteFill>
   );

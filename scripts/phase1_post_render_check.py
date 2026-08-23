@@ -97,6 +97,108 @@ def validate_layout_contract(contract: Any, *, width: int = EXPECTED_WIDTH, heig
     }
 
 
+def _rectangles_intersect(first: dict[str, float], second: dict[str, float]) -> bool:
+    return not (
+        first["right"] <= second["left"]
+        or first["left"] >= second["right"]
+        or first["bottom"] <= second["top"]
+        or first["top"] >= second["bottom"]
+    )
+
+
+def _box_bounds(box: Any, *, field: str) -> dict[str, float]:
+    if not isinstance(box, dict):
+        raise ValueError(f"{field}_invalid")
+    try:
+        x = float(box["x"])
+        y = float(box["y"])
+        width = float(box["width"])
+        height = float(box["height"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError(f"{field}_invalid") from exc
+    if width <= 0 or height <= 0:
+        raise ValueError(f"{field}_invalid")
+    return {"left": x, "top": y, "right": x + width, "bottom": y + height}
+
+
+def _mapped_y(value: float, *, top: float, bottom: float, minimum: float, maximum: float) -> float:
+    if minimum >= maximum or top >= bottom:
+        raise ValueError("bode_lane_invalid")
+    clamped = min(max(value, minimum), maximum)
+    return top + (maximum - clamped) / (maximum - minimum) * (bottom - top)
+
+
+def validate_rc_highpass_geometry(value: Any) -> dict[str, Any]:
+    """Verify the topology has no decorative component crossings and fc markers use curve math."""
+    if not isinstance(value, dict) or value.get("version") != "2.0":
+        raise ValueError("rc_geometry_contract_invalid")
+    topology = value.get("topology")
+    bode = value.get("bode")
+    if not isinstance(topology, dict) or not isinstance(bode, dict):
+        raise ValueError("rc_geometry_contract_invalid")
+    resistor = _box_bounds(topology.get("resistor"), field="resistor")
+    ground = _box_bounds(topology.get("ground"), field="ground")
+    paths = topology.get("wave_paths")
+    if not isinstance(paths, list):
+        raise ValueError("wave_paths_invalid")
+    for path in paths:
+        if not isinstance(path, dict):
+            raise ValueError("wave_path_invalid")
+        try:
+            bounds = {name: float(path[name]) for name in ("left", "top", "right", "bottom")}
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ValueError("wave_path_invalid") from exc
+        if bounds["left"] >= bounds["right"] or bounds["top"] >= bounds["bottom"]:
+            raise ValueError("wave_path_invalid")
+        if _rectangles_intersect(bounds, resistor):
+            raise ValueError("wave_intersects_resistor")
+        if _rectangles_intersect(bounds, ground):
+            raise ValueError("wave_intersects_ground")
+    x_axis = bode.get("x")
+    magnitude = bode.get("magnitude_lane")
+    phase = bode.get("phase_lane")
+    markers = bode.get("markers")
+    if not all(isinstance(item, dict) for item in (x_axis, magnitude, phase, markers)):
+        raise ValueError("bode_geometry_invalid")
+    try:
+        left = float(x_axis["left"])
+        right = float(x_axis["right"])
+        fc_ratio = float(x_axis["fc_ratio"])
+        magnitude_fc_db = float(markers["magnitude_fc"]["db"])
+        phase_fc_degrees = float(markers["phase_fc"]["degrees"])
+        magnitude_y = _mapped_y(
+            magnitude_fc_db,
+            top=float(magnitude["top"]),
+            bottom=float(magnitude["bottom"]),
+            minimum=float(magnitude["min_db"]),
+            maximum=float(magnitude["max_db"]),
+        )
+        phase_y = _mapped_y(
+            phase_fc_degrees,
+            top=float(phase["top"]),
+            bottom=float(phase["bottom"]),
+            minimum=float(phase["min_degrees"]),
+            maximum=float(phase["max_degrees"]),
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("bode_geometry_invalid") from exc
+    if not (left < right and 0.1 <= fc_ratio <= 10):
+        raise ValueError("bode_geometry_invalid")
+    expected_db = 20.0 * math.log10(fc_ratio / math.sqrt(1.0 + fc_ratio * fc_ratio))
+    expected_phase = math.degrees(math.atan(1.0 / fc_ratio))
+    if abs(magnitude_fc_db - expected_db) > 0.02:
+        raise ValueError("magnitude_fc_marker_not_on_curve")
+    if abs(phase_fc_degrees - expected_phase) > 0.02:
+        raise ValueError("phase_fc_marker_not_on_curve")
+    fc_x = left + (math.log10(fc_ratio) + 1.0) / 2.0 * (right - left)
+    return {
+        "status": "passed",
+        "magnitude_fc": {"x": round(fc_x, 6), "y": round(magnitude_y, 6), "db": round(magnitude_fc_db, 6)},
+        "phase_fc": {"x": round(fc_x, 6), "y": round(phase_y, 6), "degrees": round(phase_fc_degrees, 6)},
+        "wave_path_count": len(paths),
+    }
+
+
 def _decode_check(path: Path) -> bool:
     completed = subprocess.run(
         ["ffmpeg", "-hide_banner", "-nostdin", "-v", "error", "-i", str(path), "-f", "null", "NUL"],
@@ -115,6 +217,7 @@ def _sample_frames(path: Path, duration: float, sample_count: int) -> list[Path]
         samples: list[Path] = []
         for index in range(sample_count):
             timestamp = min(max(0.0, duration * (index + 0.5) / sample_count), max(0.0, duration - 0.05))
+            frame_index = max(0, int(round(timestamp * EXPECTED_FPS)))
             target = root / f"frame_{index:02d}.png"
             completed = subprocess.run(
                 [
@@ -123,14 +226,14 @@ def _sample_frames(path: Path, duration: float, sample_count: int) -> list[Path]
                     "-nostdin",
                     "-v",
                     "error",
-                    "-ss",
-                    f"{timestamp:.3f}",
                     "-i",
                     str(path),
+                    "-vf",
+                    f"select=eq(n\\,{frame_index}),scale=270:-1",
+                    "-vsync",
+                    "0",
                     "-frames:v",
                     "1",
-                    "-vf",
-                    "scale=270:-1",
                     str(target),
                 ],
                 capture_output=True,
@@ -145,6 +248,7 @@ def _sample_frames(path: Path, duration: float, sample_count: int) -> list[Path]
         metrics: list[dict[str, float]] = []
         try:
             from PIL import Image, ImageChops, ImageStat
+            import numpy as np
         except ImportError as exc:
             raise ValueError("pillow_required_for_frame_gate") from exc
         previous = None
@@ -152,7 +256,7 @@ def _sample_frames(path: Path, duration: float, sample_count: int) -> list[Path]
             with Image.open(frame_path).convert("L") as image:
                 stat = ImageStat.Stat(image)
                 mean = float(stat.mean[0])
-                black_ratio = sum(1 for pixel in image.getdata() if pixel <= 4) / float(image.width * image.height)
+                black_ratio = float((np.asarray(image) <= 4).mean())
                 delta = 0.0
                 if previous is not None:
                     delta = float(ImageStat.Stat(ImageChops.difference(previous, image)).mean[0])
@@ -163,6 +267,74 @@ def _sample_frames(path: Path, duration: float, sample_count: int) -> list[Path]
         if len(metrics) >= 3 and all(item["frame_delta"] < 0.25 for item in metrics[1:]):
             raise ValueError("sample_frames_frozen")
         return metrics
+
+
+def validate_full_frame_metrics(metrics: list[dict[str, float]]) -> dict[str, Any]:
+    if not metrics:
+        raise ValueError("all_frame_metrics_empty")
+    black_indices = [
+        index
+        for index, item in enumerate(metrics)
+        if float(item.get("mean_luma", 0.0)) <= 4.0 or float(item.get("black_ratio", 1.0)) >= 0.98
+    ]
+    if black_indices:
+        raise ValueError("all_frame_black_detected")
+    unsafe_edge_indices = [index for index, item in enumerate(metrics) if float(item.get("unsafe_edge_dark_ratio", 1.0)) > 0.03]
+    if unsafe_edge_indices:
+        raise ValueError("all_frame_canvas_edge_overflow")
+    longest_static_run = 0
+    current_static_run = 0
+    for item in metrics[1:]:
+        if float(item.get("frame_delta", 0.0)) < 0.02:
+            current_static_run += 1
+            longest_static_run = max(longest_static_run, current_static_run)
+        else:
+            current_static_run = 0
+    if longest_static_run > 450:
+        raise ValueError("all_frame_static_run_excessive")
+    return {
+        "status": "passed",
+        "frames_scanned": len(metrics),
+        "black_frame_count": len(black_indices),
+        "unsafe_edge_frame_count": len(unsafe_edge_indices),
+        "longest_near_static_run_frames": longest_static_run,
+    }
+
+
+def scan_all_frames(path: Path) -> dict[str, Any]:
+    try:
+        import cv2
+        import numpy as np
+    except ImportError as exc:
+        raise ValueError("opencv_required_for_all_frame_gate") from exc
+    capture = cv2.VideoCapture(str(path))
+    if not capture.isOpened():
+        raise ValueError("all_frame_open_failed")
+    metrics: list[dict[str, float]] = []
+    previous = None
+    try:
+        while True:
+            ok, frame = capture.read()
+            if not ok:
+                break
+            grayscale = cv2.resize(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), (270, 480), interpolation=cv2.INTER_AREA)
+            edge = np.concatenate((grayscale[:12, :].ravel(), grayscale[-12:, :].ravel(), grayscale[:, :12].ravel(), grayscale[:, -12:].ravel()))
+            delta = 0.0 if previous is None else float(cv2.absdiff(previous, grayscale).mean())
+            metrics.append(
+                {
+                    "mean_luma": float(grayscale.mean()),
+                    "black_ratio": float((grayscale <= 4).mean()),
+                    "unsafe_edge_dark_ratio": float((edge <= 55).mean()),
+                    "frame_delta": delta,
+                }
+            )
+            previous = grayscale
+    finally:
+        capture.release()
+    summary = validate_full_frame_metrics(metrics)
+    summary["first_frame_luma"] = round(metrics[0]["mean_luma"], 3)
+    summary["last_frame_luma"] = round(metrics[-1]["mean_luma"], 3)
+    return summary
 
 
 def _has_audio(path: Path) -> bool:
@@ -197,12 +369,14 @@ def run_gate(visual: Path, render_report: Path, output_report: Path, *, preview:
     if report.get("visual", {}).get("burned_in_subtitles") is not False:
         raise ValueError("burned_in_subtitles_forbidden")
     layout = validate_layout_contract(report.get("layout_contract"))
+    geometry = validate_rc_highpass_geometry(report["geometry_contract"]) if "geometry_contract" in report else None
     duration = float(visual_probe.get("format", {}).get("duration") or 0.0)
     if duration <= 0:
         raise ValueError("post_render_duration_invalid")
     if not _decode_check(visual):
         raise ValueError("post_render_decode_failed")
     samples = _sample_frames(visual, duration, len(report.get("visual", {}).get("scene_timing", [])) or 5)
+    all_frames = scan_all_frames(visual)
     source_distinct = True
     visual_sha = _sha256(visual)
     if reference_sha256:
@@ -225,8 +399,10 @@ def run_gate(visual: Path, render_report: Path, output_report: Path, *, preview:
             "visual_audio_absent": True,
             "burned_in_subtitles_absent": True,
             "layout_safe_area": layout,
+            "rc_geometry": geometry,
             "full_decode": True,
             "representative_frames": samples,
+            "all_frame_scan": all_frames,
             "source_output_distinct": source_distinct,
             "theme_background_not_global_pink": True,
         },

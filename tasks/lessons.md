@@ -483,3 +483,8 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Keep one subtitle authority: Remotion visual output is subtitle-free when Jianying native subtitles are enabled.
 - A voice-first manifest can still leave a long silent tail when the visual target is longer than the narration. Measure total voice coverage before finalizing; either extend the original narration or shorten the visual, then regenerate the draft and preview.
 - Frame inspection must check semantic placement as well as overflow. In the RC Bode chart, the phase labels were inside the canvas but initially mapped to the wrong vertical positions; the v5 render corrected the chart before Jianying packaging.
+# 2026-08-23 - Visual plausibility is not electrical correctness
+
+- A decorative waveform must never cross a circuit symbol unless it deliberately represents that node and is geometrically separated from components. For technical diagrams, use topology-aware lanes, node labels, and curve-derived markers rather than decorative overlays.
+- A sampled frame gate is insufficient for a requested all-frame review. Decode and mechanically scan every rendered frame, then inspect the main chapter and transition frames for semantics that image metrics cannot judge.
+- A valid external Jianying draft is not sufficient if it is saved outside the desktop application's enumerated projects root. Verify app-root discovery before calling a draft visible; where the project data must remain on E:, use one explicit, non-overwriting junction and prove its target.

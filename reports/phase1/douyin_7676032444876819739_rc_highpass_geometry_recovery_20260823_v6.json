@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "status": "PHASE1_LOCAL_REFERENCE_REVIEW_PACKAGE_READY",
+  "change_request": "PHASE1-RC-HIGHPASS-GEOMETRY-DRAFT-RECOVERY-008",
+  "root_cause": {
+    "desktop_draft_visibility": "E-drive draft root was not enumerated by Jianying desktop",
+    "topology_wave_crossing": "removed",
+    "bode_marker_coordinates": "computed_from_curve_functions"
+  },
+  "visual": {
+    "path": "dist/phase1_local/rc_highpass_reconstruction_20260823_v6/rc_highpass_9x16_visual.mp4",
+    "sha256": "a2e7133b0ffafe94dee6ddb876e4e9284c5d145cc2cf842265cd9d92d324a6d6",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration_seconds": 102,
+    "burned_in_subtitles": false
+  },
+  "geometry": {
+    "topology_wave_path_count": 0,
+    "fc_ratio": 1.0,
+    "magnitude_fc_db": -3.0103,
+    "magnitude_fc_y": 146.1236,
+    "phase_fc_degrees": 45.0,
+    "phase_fc_y": 520.0,
+    "status": "passed"
+  },
+  "all_frame_scan": {
+    "frames_scanned": 3060,
+    "black_frame_count": 0,
+    "unsafe_edge_frame_count": 0,
+    "longest_near_static_run_frames": 423,
+    "status": "passed"
+  },
+  "audio_preview": {
+    "path": "dist/phase1_local/rc_highpass_reconstruction_20260823_v6/rc_highpass_9x16_voice_preview.mp4",
+    "sha256": "bcf2f3b3637585ddba00e451f3df30e8a3cfbfe6a0e5c95441f1d467d55b1a24",
+    "codec": "aac",
+    "mean_volume_db": -20.6,
+    "max_volume_db": -3.5,
+    "full_decode": "passed"
+  },
+  "jianying": {
+    "source_draft_e": "E:/OpenClaw_VideoFactory_Runtime/jianying_drafts/DouyinRCHighPass_9x16_SAMI_20260823_v6",
+    "visible_junction_c": "C:/Users/Admin/AppData/Local/JianyingPro/User Data/Projects/com.lveditor.draft/DouyinRCHighPass_9x16_SAMI_20260823_v6",
+    "source_media_copied_to_c": false,
+    "junction_verified": true,
+    "tracks": {"video": 1, "voiceover": 1, "subtitles": 1},
+    "voice_muted": false,
+    "automatic_export": false
+  },
+  "human_gate": {
+    "status": "required",
+    "action": "Refresh or reopen Jianying, open DouyinRCHighPass_9x16_SAMI_20260823_v6, listen and inspect native subtitles, then export manually if accepted.",
+    "formal_phase1_pass": false
+  }
+}

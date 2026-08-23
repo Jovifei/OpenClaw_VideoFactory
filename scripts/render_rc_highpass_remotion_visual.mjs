@@ -52,6 +52,7 @@ async function approvedChrome() {
 function buildInput(script, storyboard, timing) {
   if (!script || !Array.isArray(script.beats) || script.beats.length !== 5) throw new Error('script_must_have_five_beats');
   if (!storyboard || storyboard.aspect_ratio !== '9:16' || storyboard.canvas?.width !== 1080 || storyboard.canvas?.height !== 1920) throw new Error('storyboard_canvas_invalid');
+  if (!storyboard.geometry_contract || storyboard.geometry_contract.version !== '2.0') throw new Error('storyboard_geometry_invalid');
   if (!timing || timing.schema_version !== '1.0' || !Array.isArray(timing.segments) || timing.segments.length !== 5) throw new Error('timing_manifest_invalid');
   const durationSeconds = Number(timing.visual_duration_seconds);
   if (!Number.isFinite(durationSeconds) || durationSeconds < 25 || durationSeconds > 120) throw new Error('timing_visual_duration_invalid');
@@ -62,6 +63,7 @@ function buildInput(script, storyboard, timing) {
     duration_seconds: durationSeconds,
     fps: 30,
     layout_contract_version: '1.0',
+    geometry: storyboard.geometry_contract,
     scenes: script.beats.map((beat, index) => {
       const segment = timing.segments[index];
       const startSeconds = Number(segment.scene_start_microseconds) / 1_000_000;
@@ -159,6 +161,7 @@ async function main() {
       background_is_theme_driven: true,
       pink_global_background: false,
     },
+    geometry_contract: storyboard.geometry_contract,
     preview: {filename: path.basename(previewPath), sha256: sha256(previewBytes), frame: 30, scale: 0.25},
     outputs_on_e_drive: true,
     sync_contract: {
