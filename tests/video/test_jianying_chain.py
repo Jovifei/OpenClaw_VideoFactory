@@ -28,7 +28,7 @@ def test_jianying_draft_defaults_to_e_drive_and_rejects_c_drive() -> None:
     assert draft.DEFAULT_DRAFTS_ROOT.drive.upper() == "E:"
     parsed = draft.build_parser().parse_args(
         [
-            "--visual", "visual.mp4", "--script", "script.json", "--name", "draft",
+            "--visual", "visual.mp4", "--script", "script.json", "--timing-manifest", "timing.json", "--timing-root", "E:/timing", "--name", "draft",
             "--report", "report.json", "--skill-root", "skill",
         ]
     )

@@ -465,3 +465,14 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - “先复刻” must be interpreted as reconstructing the information logic and visual grammar when ownership is not established; never copy the source audio, full transcript, frames, logo, creator identity, or recognizable shot expression into an original brief or render chain.
 - If the approved offline ASR snapshot is absent, mark semantic audio transcription unavailable and report codec/level/timing observations only; do not invent a transcript.
 - HyperFrames and other external candidates may inform layout or motion tokens, but the project keeps one deterministic renderer and one Jianying editor backend per job. HeyGen remains separately authorized work, not a default Phase 1 call.
+
+# 2026-08-23 - Voice-first timing prevents Remotion/Jianying drift
+
+- Equal-duration visual beats are unsafe when local TTS durations vary. Measure
+  the exact voice assets first and persist one timing manifest with microsecond
+  starts/ends and hashes.
+- Remotion scene boundaries, Jianying VoiceOver clips, and native subtitles must
+  consume that same manifest; regenerate a new draft when the manifest changes.
+- A healthy AAC stream or an unmuted Jianying track is only an automated gate.
+  Manual listening is still required, and the project must remain fail-closed on
+  timing mismatch beyond one video frame.

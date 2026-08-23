@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "change_request": "PHASE1-AV-SYNC-TIMELINE-006",
+  "status": "PHASE1_LOCAL_REFERENCE_REVIEW_PACKAGE_READY",
+  "root_cause": {
+    "previous_visual_policy": "five_equal_ten_second_scenes",
+    "previous_voice_timeline_seconds": 37.64,
+    "correction": "voice_first_timing_manifest",
+    "source_audio_reused": false
+  },
+  "timing_manifest": {
+    "path": "dist/phase1_local/reference_reconstruction_20260823_sync/flash_watchdog_timing_manifest.json",
+    "sha256": "00979b7bbb7b95f19c37e80fd4ee141b2f335b6c8223fa5c6aa896b8aa9c5882",
+    "fps": 30,
+    "frame_tolerance_microseconds": 33334,
+    "inter_segment_gap_microseconds": 100000,
+    "voice_end_microseconds": 37560000,
+    "segments": [
+      {"index": 1, "start_microseconds": 0, "end_microseconds": 5860000, "scene_end_microseconds": 5960000},
+      {"index": 2, "start_microseconds": 5960000, "end_microseconds": 14700000, "scene_end_microseconds": 14800000},
+      {"index": 3, "start_microseconds": 14800000, "end_microseconds": 22640000, "scene_end_microseconds": 22740000},
+      {"index": 4, "start_microseconds": 22740000, "end_microseconds": 31100000, "scene_end_microseconds": 31200000},
+      {"index": 5, "start_microseconds": 31200000, "end_microseconds": 37560000, "scene_end_microseconds": 50000000}
+    ]
+  },
+  "remotion": {
+    "visual_path": "dist/phase1_local/reference_reconstruction_20260823_sync/flash_watchdog_voice_first_16x9.mp4",
+    "visual_sha256": "01c8247a953a4fc28477216bcb15966f5043fe647bddf07a485c1f3389383ec5",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration_seconds": 50.0,
+    "audio_present": false,
+    "burned_in_subtitles": false,
+    "scene_boundaries_match_manifest": true,
+    "full_decode": "passed"
+  },
+  "jianying": {
+    "draft_name": "DouyinStructure_FlashWatchdog_16x9_SYNC_SAMI_20260823",
+    "draft_root": "E:/OpenClaw_VideoFactory_Runtime/jianying_drafts",
+    "report_path": "reports/phase1/douyin_7676032444876819739_jianying_sync_draft_20260823.json",
+    "skill": "luoluoluo22/jianying-editor-skill",
+    "pinned_commit": "f421c8a036f4fda888a83b38fc90bb9c00d6faa9",
+    "backend": "sami",
+    "voice_track_muted": false,
+    "native_subtitle_segments": 5,
+    "draft_boundaries_match_manifest": true,
+    "automatic_export": false
+  },
+  "audio_preview": {
+    "path": "dist/phase1_local/reference_reconstruction_20260823_sync/flash_watchdog_voice_first_sync_preview.mp4",
+    "sha256": "8ac8ec907c2b13ed8aa7abbd4eecec0b7af01e21770bf843b6024306aaff698d",
+    "duration_seconds": 50.0,
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "audio_channels": 2,
+    "mean_volume_db": -21.7,
+    "max_volume_db": -3.9,
+    "audio_present": true,
+    "full_decode": "passed",
+    "preview_only_not_jianying_export": true
+  },
+  "dependency_provenance": [
+    {"name": "pymediainfo", "version": "7.0.1", "license": "MIT", "wheel_sha256": "13224FA7590E198763B8BAF072E704EA81D334E71AA32A469091460E243893C7"},
+    {"name": "uiautomation", "version": "2.0.20", "license": "Apache-2.0", "wheel_sha256": "4FFFF98A3B334AD60132B756C45CC9CAE77F3F0C0841D964E2722DB39246F783"},
+    {"name": "comtypes", "version": "1.4.15", "license": "package-metadata-unspecified", "wheel_sha256": "CDA90486DE8762EC57D7CE04E68721920911F3F03415CB29AFDF7609C427C7E3"}
+  ],
+  "skill_strategy": {
+    "hyperframes": "clean_room_timing_and_caption_rules_only",
+    "remotion": "only_programmatic_visual_renderer",
+    "jianying_editor_skill": "only_editable_voice_and_native_subtitle_backend",
+    "heygen": "not_called_by_phase1_policy",
+    "second_mcp_or_renderer": "not_introduced"
+  },
+  "human_gate": {
+    "status": "required",
+    "action": "Jovi opens the new Jianying draft, listens at scene boundaries, adjusts if desired, and exports manually",
+    "formal_phase1_pass": false
+  }
+}

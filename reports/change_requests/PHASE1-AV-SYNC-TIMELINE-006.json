@@ -1,0 +1,34 @@
+{
+  "id": "PHASE1-AV-SYNC-TIMELINE-006",
+  "scope": "PHASE_1_LOCAL_VIDEO_FACTORY",
+  "status": "approved_by_task_request",
+  "requested_by": "Jovi",
+  "summary": "Make the local Remotion/Jianying preview voice-first and eliminate scene/subtitle drift.",
+  "allowed_paths": [
+    "scripts/phase1_jianying_timing_probe.py",
+    "scripts/phase1_jianying_tts_draft.py",
+    "scripts/render_flash_remotion_visual.mjs",
+    "remotion/src/ReferenceFlashVisual.tsx",
+    "remotion/src/Root.tsx",
+    "tests/video/",
+    "reports/phase1/",
+    "tasks/",
+    "docs/",
+    "Obsidian project memory pages"
+  ],
+  "constraints": [
+    "Use the pinned local jianying-editor-skill for SAMI voice and native subtitles.",
+    "Use Remotion as the only execution renderer; HyperFrames rules are clean-room timing/layout guidance only.",
+    "Do not call HeyGen or any other remote provider in Phase 1.",
+    "Keep one subtitle authority: Jianying native subtitles; Remotion visual remains subtitle-free.",
+    "All generated outputs and reports stay on E:, and old artifacts remain untouched.",
+    "Fail closed if measured voice timing and final draft timing diverge beyond one video frame."
+  ],
+  "acceptance": [
+    "A versioned timing manifest records every narration start/end and the source audio hash.",
+    "Remotion scene boundaries equal the timing manifest boundaries within one 30 FPS frame.",
+    "Jianying VoiceOver and native subtitle segments use the same starts and measured durations.",
+    "The assembled preview contains audible AAC and full-decodes successfully.",
+    "Targeted and existing video regressions pass; formal Phase 1 remains not passed."
+  ]
+}

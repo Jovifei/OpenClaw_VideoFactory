@@ -7,9 +7,6 @@ through UI automation and never reopens or overwrites an existing draft.
 from __future__ import annotations
 
 import argparse
-import contextlib
-import hashlib
-import io
 import json
 import os
 import shutil
@@ -18,16 +15,24 @@ import sys
 from pathlib import Path
 from typing import Any
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from phase1_jianying_timing import (  # noqa: E402
+    FRAME_TOLERANCE_MICROSECONDS,
+    load_manifest,
+    load_script,
+    sha256,
+)
+
 
 DEFAULT_DRAFTS_ROOT = Path("E:/OpenClaw_VideoFactory_Runtime/jianying_drafts")
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    """Compatibility wrapper retained for callers of the older helper."""
+    return sha256(path)
 
 
 def _safe_draft_path(root: Path, name: str) -> Path:
@@ -46,20 +51,7 @@ def _output_root(path: Path, field: str) -> Path:
 
 
 def _load_script(path: Path) -> list[dict[str, str]]:
-    value = json.loads(path.read_text(encoding="utf-8"))
-    beats = value.get("beats") if isinstance(value, dict) else None
-    if not isinstance(beats, list) or len(beats) != 5:
-        raise ValueError("script_must_have_five_beats")
-    result: list[dict[str, str]] = []
-    for index, beat in enumerate(beats, start=1):
-        if not isinstance(beat, dict):
-            raise ValueError(f"beat_{index}_invalid")
-        narration = str(beat.get("narration", "")).strip()
-        subtitle = str(beat.get("subtitle", "")).strip()
-        if not narration or not subtitle:
-            raise ValueError(f"beat_{index}_text_missing")
-        result.append({"narration": narration, "subtitle": subtitle})
-    return result
+    return load_script(path)[1]
 
 
 def _probe_visual_canvas(path: Path) -> tuple[int, int]:
@@ -120,7 +112,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--visual", required=True, type=Path)
     parser.add_argument("--script", required=True, type=Path)
+    parser.add_argument("--timing-manifest", required=True, type=Path)
     parser.add_argument("--drafts-root", type=Path, default=DEFAULT_DRAFTS_ROOT)
+    parser.add_argument("--timing-root", required=True, type=Path, help="E-drive root that owns the probe audio files")
     parser.add_argument("--name", required=True)
     parser.add_argument("--report", required=True, type=Path)
     parser.add_argument("--speaker", default="zh_male_huoli")
@@ -135,11 +129,13 @@ def main() -> int:
     args = build_parser().parse_args()
     visual = args.visual.resolve()
     script_path = args.script.resolve()
+    timing_manifest_path = args.timing_manifest.resolve()
     drafts_root = _output_root(args.drafts_root, "drafts_root")
+    timing_root = _output_root(args.timing_root, "timing_root")
     report_path = _output_root(args.report, "report")
     skill_root = args.skill_root.resolve()
 
-    if not visual.is_file() or not script_path.is_file():
+    if not visual.is_file() or not script_path.is_file() or not timing_manifest_path.is_file():
         raise ValueError("input_missing")
     if args.width < 320 or args.height < 180 or args.width % 2 or args.height % 2:
         raise ValueError("canvas_invalid")
@@ -153,7 +149,18 @@ def main() -> int:
     if draft_path.exists():
         raise ValueError("draft_already_exists")
 
-    beats = _load_script(script_path)
+    _, beats = load_script(script_path)
+    timing_manifest = load_manifest(timing_manifest_path, drafts_root=timing_root)
+    expected_script_sha = str(timing_manifest.get("script", {}).get("sha256", ""))
+    if expected_script_sha != sha256(script_path):
+        raise ValueError("timing_manifest_script_mismatch")
+    manifest_segments = timing_manifest["segments"]
+    if len(manifest_segments) != len(beats):
+        raise ValueError("timing_manifest_segment_count_mismatch")
+    voice_meta = timing_manifest["voice"]
+    if voice_meta.get("speaker") != args.speaker or voice_meta.get("requested_backend") != args.backend:
+        raise ValueError("timing_manifest_voice_settings_mismatch")
+    expected_visual_duration_us = round(float(timing_manifest["visual_duration_seconds"]) * 1_000_000)
     scripts_dir = str(skill_root / "scripts")
     if scripts_dir not in sys.path:
         sys.path.insert(0, scripts_dir)
@@ -162,7 +169,8 @@ def main() -> int:
     from jy_wrapper import JyProject
 
     project = None
-    backend_used: list[str] = []
+    backend_used: list[str] = list(timing_manifest["voice"].get("used_backends", []))
+    voice_segments: list[dict[str, object]] = []
     try:
         project = JyProject(
             args.name,
@@ -175,35 +183,52 @@ def main() -> int:
         if visual_segment is None:
             raise ValueError("visual_import_failed")
         visual_duration_us = int(visual_segment.target_timerange.duration)
+        if abs(visual_duration_us - expected_visual_duration_us) > FRAME_TOLERANCE_MICROSECONDS:
+            raise ValueError("visual_duration_manifest_mismatch")
 
-        cursor_us = 0
         for index, beat in enumerate(beats, start=1):
-            # The Skill prints local Jianying identifiers while it probes the
-            # native backend. Capture that output and never persist it.
-            sink = io.StringIO()
-            with contextlib.redirect_stdout(sink):
-                audio_segment, used = project.add_tts_intelligent(
-                    beat["narration"],
-                    speaker=args.speaker,
-                    start_time=cursor_us,
-                    track_name="VoiceOver",
-                    tts_backend=args.backend,
-                    allow_fallback=False,
-                    return_backend=True,
-                )
-            if audio_segment is None or not used:
-                raise ValueError(f"tts_segment_{index}_failed")
-            backend_used.append(str(used))
+            manifest_segment = manifest_segments[index - 1]
+            from phase1_jianying_timing import resolve_audio_path
+
+            audio_path = resolve_audio_path(timing_manifest, timing_root, manifest_segment)
+            expected_start_us = int(manifest_segment["start_microseconds"])
+            expected_duration_us = int(manifest_segment["duration_microseconds"])
+            audio_segment = project.add_media_safe(
+                str(audio_path),
+                start_time=expected_start_us,
+                track_name="VoiceOver",
+            )
+            if audio_segment is None:
+                raise ValueError(f"timing_audio_import_{index}_failed")
             duration_us = int(audio_segment.target_timerange.duration)
+            if abs(duration_us - expected_duration_us) > FRAME_TOLERANCE_MICROSECONDS:
+                raise ValueError(f"timing_audio_duration_drift_{index}")
+            actual_start_us = int(audio_segment.target_timerange.start)
+            if abs(actual_start_us - expected_start_us) > FRAME_TOLERANCE_MICROSECONDS:
+                raise ValueError(f"timing_audio_start_drift_{index}")
             project.add_text_simple(
                 beat["subtitle"],
-                start_time=cursor_us,
+                start_time=expected_start_us,
                 duration=duration_us,
                 track_name="Subtitles",
             )
-            cursor_us += duration_us + 100_000
+            voice_segments.append(
+                {
+                    "index": index,
+                    "start_microseconds": actual_start_us,
+                    "end_microseconds": actual_start_us + duration_us,
+                    "duration_microseconds": duration_us,
+                    "audio_filename": audio_path.name,
+                    "audio_sha256": sha256(audio_path),
+                    "narration_sha256": manifest_segment["narration_sha256"],
+                    "subtitle_sha256": manifest_segment["subtitle_sha256"],
+                }
+            )
 
-        if cursor_us > visual_duration_us:
+        voice_end_us = int(voice_segments[-1]["end_microseconds"])
+        if abs(voice_end_us - int(voice_meta["voice_end_microseconds"])) > FRAME_TOLERANCE_MICROSECONDS:
+            raise ValueError("voice_timeline_manifest_mismatch")
+        if expected_visual_duration_us < voice_end_us:
             raise ValueError("visual_shorter_than_voice")
 
         track_report = _track_report(project)
@@ -214,9 +239,7 @@ def main() -> int:
         if len(subtitle_tracks) != 1 or int(subtitle_tracks[0].get("segment_count", 0)) != len(beats):
             raise ValueError("subtitle_track_invalid")
 
-        save_sink = io.StringIO()
-        with contextlib.redirect_stdout(save_sink):
-            save_result = project.save()
+        save_result = project.save()
         if not isinstance(save_result, dict) or save_result.get("status") != "SUCCESS":
             raise ValueError("draft_save_failed")
 
@@ -237,6 +260,8 @@ def main() -> int:
                 "visual_sha256": _sha256(visual),
                 "script_filename": script_path.name,
                 "script_sha256": _sha256(script_path),
+                "timing_manifest_filename": timing_manifest_path.name,
+                "timing_manifest_sha256": _sha256(timing_manifest_path),
             },
             "voice": {
                 "speaker": args.speaker,
@@ -244,7 +269,9 @@ def main() -> int:
                 "used_backends": backend_used,
                 "segment_count": len(beats),
                 "subtitle_segment_count": len(beats),
-                "timeline_duration_microseconds": cursor_us,
+                "voice_end_microseconds": voice_end_us,
+                "timeline_duration_microseconds": voice_end_us,
+                "segments": voice_segments,
             },
             "canvas": {
                 "width": args.width,
@@ -252,6 +279,13 @@ def main() -> int:
                 "fps": 30,
             },
             "visual_duration_microseconds": visual_duration_us,
+            "sync_validation": {
+                "status": "passed",
+                "timing_authority": "timing_manifest",
+                "frame_tolerance_microseconds": FRAME_TOLERANCE_MICROSECONDS,
+                "visual_duration_matches_manifest": abs(visual_duration_us - expected_visual_duration_us) <= FRAME_TOLERANCE_MICROSECONDS,
+                "scene_and_voice_boundaries_are_manifest_driven": True,
+            },
             "tracks": track_report,
             "audio_validation": {
                 "status": "passed",

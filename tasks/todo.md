@@ -2384,6 +2384,43 @@ audio-, or transcript-level copy. The candidate target is an original Flash/watc
 explanation in 1920×1080 with one subtitle authority and optional Jovi-original mascot
 disabled unless explicitly requested.
 
+## PHASE1-AV-SYNC-TIMELINE-006 — VOICE-FIRST TIMELINE (2026-08-23)
+
+Change Request: `reports/change_requests/PHASE1-AV-SYNC-TIMELINE-006.json`.
+Plan: `tasks/plans/2026-08-23-phase1-audio-visual-sync.md`.
+
+- [x] Measure exact local Jianying SAMI segment files and write a timing manifest.
+- [x] Drive Remotion scene boundaries from the manifest, not equal ten-second beats.
+- [x] Rebuild the Jianying draft with the same segment files and native subtitle
+  intervals; keep the visual free of burned-in captions.
+- [x] Assemble and independently verify an audio-equipped preview.
+- [x] Run targeted and existing video regressions, update Obsidian, and push the
+  sync fix without marking formal Phase 1 passed.
+
+### Review — voice-first synchronization
+
+The prior candidate had five fixed ten-second visual scenes while the measured
+voice timeline ended at 37.64 seconds. This task makes the measured voice timing
+the single source of truth and retains manual listening/export as the human gate.
+
+### Evidence — voice-first rebuild
+
+`reports/phase1/douyin_7676032444876819739_av_sync_evidence_20260823.json`
+records the new manifest, scene boundaries, Jianying draft, audio preview, and
+dependency hashes. The new candidate is review-ready; it is not a formal Phase 1
+pass until Jovi completes the human listening/export decision.
+
+### Verification notes
+
+- Remotion `npm run typecheck`: passed.
+- `tests/video tests/phase1_local`: 302 passed.
+- `tests/director tests/video video_factory/tests`: 332 passed.
+- Repository-root `pytest -q` remains outside this Phase 1 scope: 227 vendor
+  collection errors were reported by `vendor_research` because its optional
+  packages/import paths are not installed; no project video tests failed.
+- Obsidian pages `02-当前进度.md`, `03-关键决策.md`, `04-工作流与知识.md`, and
+  `06-Phase1本地视频工厂收口.md` were updated with the voice-first contract.
+
 ## PHASE1-FLASH-VISUAL-REMEDIATION-001 — CORRECTED VISUAL REVIEW READY (2026-08-22)
 
 Change Request: `reports/change_requests/PHASE1-FLASH-VISUAL-REMEDIATION-001.json`.
