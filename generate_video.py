@@ -796,6 +796,11 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
         composition=composition,
         signature_path=signature_path,
         encoder=str(render_cfg.get("encoder", "cpu")),
+        canvas_width=int(render_cfg.get("width", 1080)),
+        canvas_height=int(render_cfg.get("height", 1920)),
+        fps=int(render_cfg.get("fps", 30)),
+        pad_color=str(render_cfg.get("pad_color", "0xF4F6F8")),
+        burn_in_subtitles=bool(job.get("subtitle", {}).get("enabled", True)) if isinstance(job.get("subtitle"), dict) else True,
     )
     t_render = round(time.perf_counter() - t5, 3)
 
@@ -842,6 +847,7 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
         composition=composition,
         style_evidence=style_evidence,
         signature_asset_id=signature_asset_id,
+        subtitle_enabled=bool(job.get("subtitle", {}).get("enabled", True)) if isinstance(job.get("subtitle"), dict) else True,
     )
     render_report_path = work_dir / "render_report.json"
     write_json(render_report_path, render_report)
@@ -1045,6 +1051,12 @@ def run_local_brief(
         state = machine.transition(state, "storyboard_ready", artifact_refs={"storyboard_ref": "storyboard.json"})
         machine.write(state)
 
+        render_profile = plan.get("render_profile") if isinstance(plan.get("render_profile"), dict) else {}
+        render_width = int(render_profile.get("width", 1920))
+        render_height = int(render_profile.get("height", 1080))
+        render_fps = int(render_profile.get("fps", 30))
+        render_pad_color = str(render_profile.get("pad_color", "0xF4F6F8"))
+        subtitle_margin_vertical = 180 if render_width > render_height else 250
         render_job = {
             "schema_version": "1.0",
             "job_id": job_id,
@@ -1052,11 +1064,11 @@ def run_local_brief(
             "storyboard_ref": "storyboard.json",
             "registry_ref": "src/factory/assets/pink_pig/registry.json",
             "render": {
-                "width": 1080,
-                "height": 1920,
-                "fps": 30,
+                "width": render_width,
+                "height": render_height,
+                "fps": render_fps,
                 "transition_seconds": 0.4,
-                "pad_color": "0xF7E4EA",
+                "pad_color": render_pad_color,
                 "encoder": "auto",
             },
             "audio": {
@@ -1075,7 +1087,7 @@ def run_local_brief(
                     "font_size": 56,
                     "margin_left": 90,
                     "margin_right": 90,
-                    "margin_vertical": 250,
+                    "margin_vertical": subtitle_margin_vertical,
                 },
             },
             "mascot": {"mode": "off" if str(plan.get("mascot_mode", "off")) == "off" else "required"},

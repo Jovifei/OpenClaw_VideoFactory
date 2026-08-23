@@ -37,6 +37,7 @@ def build_render_report(
     composition: dict[str, Any] | None = None,
     style_evidence: dict[str, Any] | None = None,
     signature_asset_id: str | None = None,
+    subtitle_enabled: bool = True,
 ) -> dict[str, Any]:
     """Build a deterministic report from real probe data and pipeline evidence."""
     if ffprobe_meta.get("error") or not ffprobe_meta.get("has_audio") and "video" not in ffprobe_meta:
@@ -69,7 +70,7 @@ def build_render_report(
         )
     asset_ids = [str(scene["asset_id"]) for scene in scenes]
 
-    subtitle_present = subtitle_path.is_file() and captions_count > 0
+    subtitle_present = bool(subtitle_enabled) and subtitle_path.is_file() and captions_count > 0
     report = {
         "schema_version": "1.0",
         "duration": round(float(ffprobe_meta.get("duration", 0.0)), 3),

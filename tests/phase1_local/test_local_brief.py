@@ -80,6 +80,30 @@ def test_topic_brief_builds_deterministic_existing_director_artifacts(tmp_path: 
     validate(first["asset_selection"], "asset_selection_report")
 
 
+def test_topic_brief_defaults_to_neutral_landscape_render_profile(tmp_path: Path) -> None:
+    brief = load_local_brief(_write_brief(tmp_path, _brief()))
+    plan = build_local_plan(brief, ROOT)
+    assert plan["render_profile"] == {
+        "profile_id": "phase1_neutral_landscape_v1",
+        "aspect_ratio": "16:9",
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "pad_color": "0xF4F6F8",
+        "palette": "technical_neutral",
+    }
+
+
+def test_explicit_portrait_profile_remains_supported(tmp_path: Path) -> None:
+    value = _brief()
+    value["aspect_ratio"] = "9:16"
+    brief = load_local_brief(_write_brief(tmp_path, value))
+    plan = build_local_plan(brief, ROOT)
+    assert plan["render_profile"]["profile_id"] == "phase1_neutral_portrait_v1"
+    assert plan["render_profile"]["width"] == 1080
+    assert plan["render_profile"]["height"] == 1920
+
+
 @pytest.mark.parametrize(
     ("mode", "extra"),
     [

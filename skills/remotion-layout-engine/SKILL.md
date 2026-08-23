@@ -1,6 +1,6 @@
 ---
 name: remotion-layout-engine
-description: "Render tested 9:16 technical short-video templates with deterministic layout, motion, captions, charts, code, diagrams, and audio."
+description: "Render tested technical video templates with deterministic layout, motion, captions, charts, code, diagrams, and audio."
 version: 0.2.0
 metadata:
   openclaw:
@@ -28,7 +28,7 @@ Before creating or modifying Remotion code, load the official Remotion best-prac
 ## Rules
 
 - Input is structured JSON, never free-form prose embedded in components.
-- 1080x1920, 30 FPS.
+- Default 1920x1080, 30 FPS; explicit briefs may opt into 1080x1920.
 - Use a consistent typography scale and safe area.
 - Text layout must be measured; no blind fixed widths for variable Chinese copy.
 - All scenes have deterministic duration derived from audio timing.

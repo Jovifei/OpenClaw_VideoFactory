@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -13,6 +14,7 @@ from .transition import ffmpeg_transition
 
 
 WIDTH, HEIGHT, FPS = 1080, 1920, 30
+DEFAULT_PAD_COLOR = "0xF4F6F8"
 
 # Knowledge illustrations reserve the middle of the vertical canvas for the
 # 16:9 body image and keep captions in a dedicated lower safe band.  These
@@ -44,6 +46,8 @@ def _subtitle_force_style(
     style: dict[str, object] | None,
     *,
     composition: dict[str, object] | None = None,
+    canvas_width: int = WIDTH,
+    canvas_height: int = HEIGHT,
 ) -> str:
     """Return a bounded libass style for the subtitle safe band."""
 
@@ -84,11 +88,11 @@ def _subtitle_force_style(
     # those values back to the virtual canvas before passing force_style.
     # Without this conversion a nominal 44px font becomes roughly 293px and
     # a 250px bottom margin moves the caption into the top letterbox band.
-    ass_scale = 288.0 / HEIGHT
+    ass_scale = 288.0 / canvas_height
     ass_font_size = max(1, round(font_size * ass_scale))
     ass_margin_vertical = max(1, round(margin_vertical * ass_scale))
-    ass_margin_left = max(1, round(margin_left * (384.0 / WIDTH)))
-    ass_margin_right = max(1, round(margin_right * (384.0 / WIDTH)))
+    ass_margin_left = max(1, round(margin_left * (384.0 / canvas_width)))
+    ass_margin_right = max(1, round(margin_right * (384.0 / canvas_width)))
     return ",".join(
         [
             f"FontName={values.get('font_name', 'Microsoft YaHei')}",
@@ -123,6 +127,11 @@ def build_render_command(
     composition: dict[str, object] | None = None,
     signature_path: Path | None = None,
     encoder: str = "cpu",
+    canvas_width: int | None = None,
+    canvas_height: int | None = None,
+    fps: int | None = None,
+    pad_color: str | None = None,
+    burn_in_subtitles: bool = True,
 ) -> tuple[list[str], float]:
     if not subtitle_path.is_file():
         raise ValueError("subtitle_missing")
@@ -133,6 +142,14 @@ def build_render_command(
         raise ValueError("audio_sample_rate_invalid")
     if encoder not in {"auto", "cpu", "nvenc"}:
         raise ValueError("encoder_invalid")
+    width = int(canvas_width or WIDTH)
+    height = int(canvas_height or HEIGHT)
+    frame_rate = int(fps or FPS)
+    if width <= 0 or height <= 0 or frame_rate <= 0:
+        raise ValueError("canvas_invalid")
+    background_color = str(pad_color or DEFAULT_PAD_COLOR)
+    if not re.fullmatch(r"0x[0-9A-Fa-f]{6}", background_color):
+        raise ValueError("pad_color_invalid")
     command = ["ffmpeg", "-y", "-nostdin", "-loglevel", "error"]
     for item in timeline:
         # NEW (branch 1): if timeline item has "image_path", resolve via repo_root;
@@ -142,7 +159,7 @@ def build_render_command(
             image_input = str((repo_root / str(item["image_path"])).resolve())
         else:
             image_input = str(asset_dir / str(item["image"]))
-        command.extend(["-loop", "1", "-framerate", str(FPS), "-t", str(item["duration"]), "-i", image_input])
+        command.extend(["-loop", "1", "-framerate", str(frame_rate), "-t", str(item["duration"]), "-i", image_input])
     audio = validate_audio(audio_path)
     signature_input_index: int | None = None
     if composition is not None:
@@ -153,7 +170,7 @@ def build_render_command(
                 {"field": "signature_path"},
             )
         signature_input_index = len(timeline)
-        command.extend(["-loop", "1", "-framerate", str(FPS), "-t", str(duration), "-i", str(signature_path)])
+        command.extend(["-loop", "1", "-framerate", str(frame_rate), "-t", str(duration), "-i", str(signature_path)])
     audio_input_index = len(timeline) + (1 if signature_input_index is not None else 0)
     if audio is not None:
         audio_input_index = audio_input_index
@@ -168,7 +185,7 @@ def build_render_command(
     if composition is None:
         for index in range(len(timeline)):
             filters.append(
-                f"[{index}:v]scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=decrease,pad={WIDTH}:{HEIGHT}:(ow-iw)/2:(oh-ih)/2:color=0xF7E4EA,fps={FPS},setsar=1,format=yuv420p[v{index}]"
+                f"[{index}:v]scale={width}:{height}:force_original_aspect_ratio=decrease,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2:color={background_color},fps={frame_rate},setsar=1,format=yuv420p[v{index}]"
             )
     else:
         canvas = composition.get("canvas", {})
@@ -188,15 +205,18 @@ def build_render_command(
             )
         cw, ch = int(content.get("width", 1080)), int(content.get("height", 800))
         cx, cy = int(content.get("x", 0)), int(content.get("y", 240))
-        background = str(canvas.get("background_color", "0xF7E4EA"))
+        width = int(canvas.get("width", width))
+        height = int(canvas.get("height", height))
+        frame_rate = int(canvas.get("fps", frame_rate))
+        background = str(canvas.get("background_color", background_color))
         if background.startswith("0x"):
             background = background[2:]
         for index, item in enumerate(timeline):
             filters.append(
-                f"[{index}:v]scale={cw}:{ch}:force_original_aspect_ratio=decrease,pad={cw}:{ch}:(ow-iw)/2:(oh-ih)/2:color=white,fps={FPS},setsar=1,format=rgba[body{index}]"
+                f"[{index}:v]scale={cw}:{ch}:force_original_aspect_ratio=decrease,pad={cw}:{ch}:(ow-iw)/2:(oh-ih)/2:color=white,fps={frame_rate},setsar=1,format=rgba[body{index}]"
             )
             filters.append(
-                f"color=c=0x{background}:s={WIDTH}x{HEIGHT}:r={FPS}:d={float(item['duration'])}[bg{index}]"
+                f"color=c=0x{background}:s={width}x{height}:r={frame_rate}:d={float(item['duration'])}[bg{index}]"
             )
             filters.append(
                 f"[bg{index}][body{index}]overlay={cx}:{cy}:shortest=1,format=yuv420p[v{index}]"
@@ -222,12 +242,21 @@ def build_render_command(
         filters.append(f"[{signature_input_index}:v]scale=-1:{max_height},format=rgba[signature_rgba]")
         filters.append(f"[main_rgba][signature_rgba]overlay={sx}:{sy}:eof_action=repeat,format=yuv420p[with_signature]")
         subtitle_input = "with_signature"
-    force_style = _subtitle_force_style(subtitle_style, composition=composition)
-    filters.append(
-        f"[{subtitle_input}]subtitles=filename='{_subtitle_filename(subtitle_path)}':"
-        f"charenc=UTF-8:force_style='{force_style}'[vout]"
-    )
-    command.extend(["-filter_complex", ";".join(filters), "-map", "[vout]"])
+    if burn_in_subtitles:
+        force_style = _subtitle_force_style(
+            subtitle_style,
+            composition=composition,
+            canvas_width=width,
+            canvas_height=height,
+        )
+        filters.append(
+            f"[{subtitle_input}]subtitles=filename='{_subtitle_filename(subtitle_path)}':"
+            f"charenc=UTF-8:force_style='{force_style}'[vout]"
+        )
+        video_map = "[vout]"
+    else:
+        video_map = f"[{subtitle_input}]"
+    command.extend(["-filter_complex", ";".join(filters), "-map", video_map])
     if audio is None:
         command.extend(["-an"])
     else:
@@ -244,7 +273,7 @@ def build_render_command(
         if audio_filters:
             command.extend(["-af", ",".join(audio_filters)])
     video_encoder = "h264_nvenc" if encoder in {"auto", "nvenc"} else "libx264"
-    command.extend(["-c:v", video_encoder, "-pix_fmt", "yuv420p", "-r", str(FPS), "-movflags", "+faststart", str(output_path)])
+    command.extend(["-c:v", video_encoder, "-pix_fmt", "yuv420p", "-r", str(frame_rate), "-movflags", "+faststart", str(output_path)])
     return command, duration
 
 

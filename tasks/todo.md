@@ -1,3 +1,36 @@
+# PHASE1-JIANYING-VISUAL-AUDIO-REMEDIATION-002 — IMPLEMENTED / HUMAN REVIEW PENDING
+
+Execution plan: `tasks/plans/2026-08-23-phase1-jianying-visual-audio-remediation.md`.
+Change Request: `reports/change_requests/PHASE1-JIANYING-VISUAL-AUDIO-REMEDIATION-002.json`.
+
+- [x] Replace the accidental global pink canvas with a neutral, topic-safe palette and default 1920×1080 profile.
+- [x] Keep explicit 1080×1920 compatibility for briefs that opt into `9:16`.
+- [x] Enforce E-drive roots for new Jianying drafts and reports; preserve old C-drive drafts unchanged.
+- [x] Render a Jianying visual-only input with no audio and no burned-in subtitles.
+- [x] Create a new draft with one unmuted VoiceOver track and one native Subtitles track.
+- [x] Run focused and video/Phase 1 regression suites, ffprobe, and complete media decode.
+- [ ] Jovi manually opens/listens/reviews/exports the new E-drive Jianying draft.
+
+### Review — current evidence
+
+- Main candidate: `dist/phase1_local/phase1_d939208f4995f8d2/final_master.mp4`, 1920×1080, 30 FPS, H.264/AAC, SHA-256 `a857f7d358b18c8629491d6a332c039d9c943bc4aec497351d2034690535f2ca`.
+- Jianying visual input: `dist/phase1_local/phase1_d939208f4995f8d2/jianying_visual_landscape_padded_v2.mp4`, 1920×1080, no audio, no burned subtitles, SHA-256 `115ad6b91685796793aa3063f089dc5abf06a5a065b26d2ae5a3d94187ee8819`.
+- Draft root: `E:\OpenClaw_VideoFactory_Runtime\jianying_drafts\Phase1_FlashWatchdog_SAMI_20260823_landscape_single_caption_v2`; report: `reports/phase1/jianying_tts_flash_landscape_single_caption_20260823_v2.json`.
+- The MP4 has non-silent AAC (`mean_volume -22.5 dB`, `max_volume -1.7 dB`). The draft track gate passes with `mute:false`; human listening is still required.
+- Old output and old C-drive draft were preserved; no automatic export, UI automation, publication, or Phase 1 promotion was performed.
+- Regression evidence: the combined reference/local/video/acceptance/integration run is `322 passed, 1 skipped`; direct full-repo collection remains blocked by unrelated vendor dependencies and the pre-existing Feishu/P0 ingest environment failures.
+
+# PHASE1-VIDEO-PRODUCTION-SKILL-CHAIN-003 — COMPLETED / ROUTE LOCKED
+
+Execution plan: `tasks/plans/2026-08-23-video-production-skill-chain.md`.
+Change Request: `reports/change_requests/PHASE1-VIDEO-PRODUCTION-SKILL-CHAIN-003.json`.
+
+- [x] Add the `video-production-chain` Skill for topic/reference → text → storyboard → assets → audio/captions → visual → Jianying → quality.
+- [x] Select pinned `jianying-editor-skill` as the only editor backend for a job.
+- [x] Keep CapCut Mate and JianYing MCP isolated; do not add a second renderer or editor backend.
+- [x] Update the manifest, runbook, Douyin route, and Remotion defaults to match the chain.
+- [x] Keep Pink Pig opt-in and user-original-only, and keep automatic export/publication disabled.
+
 # PHASE1-REFERENCE-VIDEO-ANALYSIS-001 — REVIEWED / READY FOR HUMAN REVIEW
 
 Execution plan: `tasks/plans/2026-08-21-phase1-reference-video-analysis-001.md`.

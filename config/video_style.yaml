@@ -1,8 +1,8 @@
-resolution: "1080x1920"
+resolution: "1920x1080"
 fps: 30
 safe_area:
-  top: 150
-  bottom: 300
+  top: 80
+  bottom: 120
   left: 80
   right: 80
 subtitle:

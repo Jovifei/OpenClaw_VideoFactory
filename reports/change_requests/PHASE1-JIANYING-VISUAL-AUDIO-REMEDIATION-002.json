@@ -1,0 +1,59 @@
+{
+  "id": "PHASE1-JIANYING-VISUAL-AUDIO-REMEDIATION-002",
+  "phase": "phase1_local_reviewable_video",
+  "status": "completed_pending_human_review",
+  "granted_by": "Jovi",
+  "objective": "Correct Phase 1 visual palette/aspect ratio, audible Jianying narration, single subtitle authority, and non-C-drive output handling.",
+  "observed_issues": {
+    "background": "The local renderer uses fixed 0xF7E4EA padding, producing a pink Flash/watchdog canvas.",
+    "aspect_ratio": "The Phase 1 local job hardcodes 1080x1920 even though the Flash assets are 1672x941 (16:9).",
+    "audio": "The MP4 has AAC audio with non-silent samples and the draft report says VoiceOver is unmuted, but no hard draft audibility evidence is emitted.",
+    "duplicate_subtitle": "The Jianying visual input is derived from a subtitle-burned MP4 and a second Subtitles track is added.",
+    "output_drive": "The prior Jianying draft root is under C:\\Users\\Admin\\AppData\\Local\\JianyingPro; new generated outputs must stay on E:."
+  },
+  "allowed_writes": [
+    "tasks/plans/2026-08-23-phase1-jianying-visual-audio-remediation.md",
+    "reports/change_requests/PHASE1-JIANYING-VISUAL-AUDIO-REMEDIATION-002.json",
+    "generate_video.py",
+    "video_factory/pipeline/renderer.py",
+    "video_factory/pipeline/render_report.py",
+    "video_factory/pipeline/review_package.py",
+    "schemas/video/phase1_quality_report.schema.json",
+    "schemas/video/phase1_local_brief.schema.json",
+    "scripts/phase1_jianying_tts_draft.py",
+    "scripts/prepare_jianying_visual.py",
+    "tests/phase1_local/*",
+    "tests/video/*",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "docs/*",
+    "runbook/*"
+  ],
+  "prohibited_changes": [
+    "existing C-drive Jianying draft directories",
+    "automatic Jianying UI export or mouse/keyboard automation",
+    "remote TTS/provider calls or model downloads",
+    "Pink Pig asset substitution or mascot enablement",
+    "automatic publication, Feishu, Cron, or PROJECT_STATUS phase promotion"
+  ],
+  "human_gate": "Jovi must manually open/listen/review the new E-drive Jianying draft before export or publication.",
+  "evidence": {
+    "regression": "298 passed in tests/video tests/phase1_local",
+    "main_video": {
+      "path": "dist/phase1_local/phase1_d939208f4995f8d2/final_master.mp4",
+      "sha256": "a857f7d358b18c8629491d6a332c039d9c943bc4aec497351d2034690535f2ca",
+      "format": "1920x1080 H.264/AAC 30fps",
+      "decode": "passed"
+    },
+    "jianying_visual": {
+      "path": "dist/phase1_local/phase1_d939208f4995f8d2/jianying_visual_landscape_padded_v2.mp4",
+      "sha256": "115ad6b91685796793aa3063f089dc5abf06a5a065b26d2ae5a3d94187ee8819",
+      "audio": "absent",
+      "burned_subtitles": false,
+      "decode": "passed"
+    },
+    "draft": "E:/OpenClaw_VideoFactory_Runtime/jianying_drafts/Phase1_FlashWatchdog_SAMI_20260823_landscape_single_caption_v2",
+    "draft_report": "reports/phase1/jianying_tts_flash_landscape_single_caption_20260823_v2.json"
+  },
+  "rollback": "Revert only the scoped commit for this Change Request; do not delete or mutate old drafts or prior evidence."
+}

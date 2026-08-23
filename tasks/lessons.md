@@ -441,3 +441,20 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   upstream brief and selected visual semantics first, then send the corrected
   visual input to the fixed `jianying-editor-skill` backend. Keep export and
   publication manual.
+
+# 2026-08-23 - Theme, canvas, and subtitle authority belong to the chain
+
+- Do not use Pink Pig pink as a global technical-video background. Resolve a
+  theme palette from the topic/style tokens; Pink Pig remains explicit and
+  user-original-only.
+- Default to 1920×1080 when the Registry assets and reference examples are
+  landscape. Preserve portrait only as an explicit brief choice.
+- A Jianying draft must receive a visual-only input. If the input already has
+  burned-in subtitles, adding Jianying's native Subtitles track creates a
+  misleading duplicate; enforce one subtitle authority in the draft.
+- Verify both media-level audio and draft-level VoiceOver state. A non-silent
+  AAC stream plus `mute:false` is an automated gate, not proof that Jovi has
+  heard the voice; manual listening remains required.
+- Keep new runtime, draft, and report roots on E: and fail closed on C:. Use
+  one editor backend per job and document external candidates without enabling
+  them beside Jianying.

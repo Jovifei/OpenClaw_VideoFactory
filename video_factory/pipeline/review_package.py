@@ -258,14 +258,11 @@ def _parse_fps(value: object) -> float:
 
 
 def _validate_media(media: dict[str, Any]) -> None:
-    expected = {
-        "width": 1080,
-        "height": 1920,
-        "video_codec": "h264",
-        "audio_codec": "aac",
-    }
-    if any(media.get(key) != value for key, value in expected.items()):
-        raise _fail("phase1_review_media_invalid", "Rendered MP4 does not match the required portrait contract.", "media")
+    expected_codecs = {"video_codec": "h264", "audio_codec": "aac"}
+    if any(media.get(key) != value for key, value in expected_codecs.items()):
+        raise _fail("phase1_review_media_invalid", "Rendered MP4 does not match the H.264/AAC contract.", "media")
+    if (media.get("width"), media.get("height")) not in {(1080, 1920), (1920, 1080)}:
+        raise _fail("phase1_review_media_invalid", "Rendered MP4 must be 1080x1920 or 1920x1080.", "media")
     duration = float(media.get("duration_seconds", 0))
     fps = float(media.get("fps", 0))
     if not 25 <= duration <= 60 or not math.isclose(fps, 30.0, abs_tol=0.01):
@@ -334,13 +331,17 @@ def _build_quality(
     if mascot_mode == "off":
         region = {"x": 90, "y": 1400, "width": 900, "height": 300}
         style = {"status": "off"}
-        layout_mode = "plain_vertical"
+        if int(media["width"]) > int(media["height"]):
+            region = {"x": 96, "y": 860, "width": 1728, "height": 160}
+            layout_mode = "plain_landscape"
+        else:
+            layout_mode = "plain_vertical"
     else:
         region = render_report["subtitle_region"]
         style = render_report["style_profile"]
         layout_mode = render_report["layout_mode"]
     check_names = (
-        "mp4_exists", "portrait_1080x1920", "fps_30", "h264_video", "aac_audio",
+        "mp4_exists", "landscape_1920x1080" if layout_mode == "plain_landscape" else "portrait_1080x1920", "fps_30", "h264_video", "aac_audio",
         "duration_25_to_60", "full_decode", "tts_scene_alignment", "subtitle_burned_in",
         "mascot_policy" if mascot_mode == "off" else "pink_pig_style",
         "subtitle_safe_region", "render_report_alignment",
@@ -420,7 +421,9 @@ def _valid_subtitle_region(region: dict[str, Any]) -> bool:
         width, height = int(region["width"]), int(region["height"])
     except (KeyError, TypeError, ValueError):
         return False
-    return x >= 0 and width > 0 and height > 0 and 1120 <= y <= 1580 and y + height <= 1920
+    portrait = x >= 0 and width > 0 and height > 0 and 1120 <= y <= 1580 and y + height <= 1920
+    landscape = x >= 0 and width > 0 and height > 0 and 760 <= y <= 900 and y + height <= 1080
+    return portrait or landscape
 
 
 def _write_json(path: Path, value: dict[str, object]) -> None:

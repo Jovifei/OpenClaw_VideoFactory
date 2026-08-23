@@ -1,0 +1,35 @@
+{
+  "version": "2.3",
+  "core_external": [
+    "larksuite/cli",
+    "remotion-dev/skills",
+    "Agents365-ai/video-podcast-maker",
+    "artokun/comfyui-mcp",
+    "Jovifei/ian-fenzhu-illustrations",
+    "Hommy-master/capcut-mate OR luoluoluo22/jianying-editor-skill"
+  ],
+  "local_skills": [
+    "audio-subtitle-engine",
+    "codex-template-maintainer",
+    "comfyui-gpu-renderer",
+    "douyin-video-factory",
+    "feishu-video-factory-operator",
+    "jianying-draft-exporter",
+    "media-asset-curator",
+    "pink-pig-mascot-director",
+    "reference-video-analyzer",
+    "reference-video-recreator",
+    "remotion-layout-engine",
+    "script-storyboard-director",
+    "topic-intelligence",
+    "video-quality-gate",
+    "video-production-chain"
+  ],
+  "editorial_plan": "config/account_columns.yaml",
+  "mascot_plan": "config/mascot_usage.yaml",
+  "feishu_plan": "config/feishu.example.yaml",
+  "default_draft_backend": "jianying-editor-skill",
+  "main_renderer": "remotion+ffmpeg",
+  "gpu": "RTX 4070 SUPER via ComfyUI/faster-whisper/Real-ESRGAN/NVENC",
+  "publish": "manual"
+}

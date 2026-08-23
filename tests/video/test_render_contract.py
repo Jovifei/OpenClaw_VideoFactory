@@ -101,6 +101,28 @@ class TestRenderCommandStructure:
         )
         assert any("subtitles=" in token for token in command)
 
+    def test_landscape_visual_only_profile_has_neutral_pad_and_no_burned_subtitles(
+        self, subtitle, output
+    ) -> None:
+        command, _ = build_render_command(
+            asset_dir=ROOT,
+            timeline=_timeline(with_image_path=True),
+            subtitle_path=subtitle,
+            output_path=output,
+            transition_seconds=TRANSITION_SECONDS,
+            audio_path=None,
+            canvas_width=1920,
+            canvas_height=1080,
+            fps=30,
+            pad_color="0xF4F6F8",
+            burn_in_subtitles=False,
+        )
+        filter_graph = command[command.index("-filter_complex") + 1]
+        assert filter_graph.count("scale=1920:1080") == SCENE_COUNT
+        assert "color=0xF4F6F8" in filter_graph
+        assert "subtitles=" not in filter_graph
+        assert "-an" in command
+
     def test_reported_duration_matches_the_timeline_formula(self, subtitle, output) -> None:
         from video_factory.pipeline.timeline import rendered_duration_seconds
 

@@ -31,6 +31,33 @@ _MASCOT_MODES = frozenset({"off", "user_original_only"})
 _MASCOT_ASSET_MARKERS = ("assets/pink_pig/", "src/factory/assets/mascot/", "ian-fenzhu-illustrations")
 
 
+def _render_profile(brief: dict[str, object]) -> dict[str, object]:
+    """Resolve the Phase 1 canvas without exposing renderer controls to users.
+
+    The local product now prefers landscape because the technical Registry
+    cards are authored at 16:9.  Portrait remains an explicit compatibility
+    option for old/social briefs; the palette is neutral in both modes so a
+    technical topic is never given the Pink Pig fallback background.
+    """
+
+    aspect_ratio = str(brief.get("aspect_ratio", "16:9"))
+    if aspect_ratio == "9:16":
+        width, height = 1080, 1920
+        profile_id = "phase1_neutral_portrait_v1"
+    else:
+        width, height = 1920, 1080
+        profile_id = "phase1_neutral_landscape_v1"
+    return {
+        "profile_id": profile_id,
+        "aspect_ratio": aspect_ratio,
+        "width": width,
+        "height": height,
+        "fps": 30,
+        "pad_color": "0xF4F6F8",
+        "palette": "technical_neutral",
+    }
+
+
 def _repo_root_from_module() -> Path:
     # phase1_local.py lives at <repo>/src/factory/phase1_local.py.
     return Path(__file__).resolve().parents[2]
@@ -368,6 +395,7 @@ def build_local_plan(
             )
     factual_brief = _validated_factual_brief(brief, topic=topic, topic_digest=topic_digest)
     context = load_director_context(root)
+    render_profile = _render_profile(brief)
     abstraction = brief.get("reference_abstraction") if mode == "local_reference" else None
     duration_target = int(abstraction.get("duration_target_seconds", 40)) if isinstance(abstraction, dict) else 40
     script = _deterministic_script(
@@ -418,6 +446,7 @@ def build_local_plan(
         "input_mode": mode,
         "mascot_mode": mascot_mode,
         "reference_digest": brief_digest(brief) if mode == "local_reference" else None,
+        "render_profile": render_profile,
     }
 
 

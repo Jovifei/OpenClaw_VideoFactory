@@ -17,7 +17,8 @@ metadata:
 Before queueing any video:
 
 1. Verify file decodes.
-2. Verify 1080x1920, 30 FPS, audio track, and configured duration.
+2. Verify the configured canvas (Phase 1 defaults to 1920x1080; explicit legacy
+   1080x1920 remains valid), 30 FPS, an audible audio track, and configured duration.
 3. Check first meaningful title appears within two seconds.
 4. Detect black/frozen sections and excessive scene duration.
 5. Check subtitle safe areas and line length from render metadata.

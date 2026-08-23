@@ -18,6 +18,9 @@ from pathlib import Path
 from typing import Any
 
 
+DEFAULT_DRAFTS_ROOT = Path("E:/OpenClaw_VideoFactory_Runtime/jianying_drafts")
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -32,6 +35,13 @@ def _safe_draft_path(root: Path, name: str) -> Path:
     if os.path.commonpath([str(root_resolved), str(target)]) != str(root_resolved):
         raise ValueError("draft_path_outside_root")
     return target
+
+
+def _output_root(path: Path, field: str) -> Path:
+    resolved = path.resolve()
+    if resolved.drive.upper() == "C:":
+        raise ValueError(f"{field}_must_not_use_c_drive")
+    return resolved
 
 
 def _load_script(path: Path) -> list[dict[str, str]]:
@@ -62,6 +72,7 @@ def _track_report(project: Any) -> list[dict[str, object]]:
                 "name": str(getattr(track, "name", "")),
                 "type": str(getattr(track, "type", "")),
                 "mute": bool(getattr(track, "mute", False)),
+                "volume": getattr(track, "volume", None),
                 "segment_count": len(segments),
                 "duration_microseconds": max(
                     [int(getattr(getattr(seg, "target_timerange", None), "end", 0)) for seg in segments]
@@ -76,7 +87,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--visual", required=True, type=Path)
     parser.add_argument("--script", required=True, type=Path)
-    parser.add_argument("--drafts-root", required=True, type=Path)
+    parser.add_argument("--drafts-root", type=Path, default=DEFAULT_DRAFTS_ROOT)
     parser.add_argument("--name", required=True)
     parser.add_argument("--report", required=True, type=Path)
     parser.add_argument("--speaker", default="zh_male_huoli")
@@ -89,8 +100,8 @@ def main() -> int:
     args = build_parser().parse_args()
     visual = args.visual.resolve()
     script_path = args.script.resolve()
-    drafts_root = args.drafts_root.resolve()
-    report_path = args.report.resolve()
+    drafts_root = _output_root(args.drafts_root, "drafts_root")
+    report_path = _output_root(args.report, "report")
     skill_root = args.skill_root.resolve()
 
     if not visual.is_file() or not script_path.is_file():
@@ -155,6 +166,14 @@ def main() -> int:
         if cursor_us > visual_duration_us:
             raise ValueError("visual_shorter_than_voice")
 
+        track_report = _track_report(project)
+        voice_tracks = [item for item in track_report if item.get("name") == "VoiceOver"]
+        subtitle_tracks = [item for item in track_report if item.get("name") == "Subtitles"]
+        if len(voice_tracks) != 1 or bool(voice_tracks[0].get("mute")) or int(voice_tracks[0].get("segment_count", 0)) != len(beats):
+            raise ValueError("voice_track_not_audible")
+        if len(subtitle_tracks) != 1 or int(subtitle_tracks[0].get("segment_count", 0)) != len(beats):
+            raise ValueError("subtitle_track_invalid")
+
         save_sink = io.StringIO()
         with contextlib.redirect_stdout(save_sink):
             save_result = project.save()
@@ -188,7 +207,22 @@ def main() -> int:
                 "timeline_duration_microseconds": cursor_us,
             },
             "visual_duration_microseconds": visual_duration_us,
-            "tracks": _track_report(project),
+            "tracks": track_report,
+            "audio_validation": {
+                "status": "passed",
+                "voice_track": "VoiceOver",
+                "muted": False,
+                "segment_count": len(beats),
+                "human_listening_required": True,
+            },
+            "subtitle_validation": {
+                "status": "passed",
+                "authoritative_layer": "jianying_native_subtitles_track",
+                "track_name": "Subtitles",
+                "segment_count": len(beats),
+                "burned_in_visual_must_be_false": True,
+            },
+            "output_root": str(drafts_root),
             "export": {
                 "automatic_export": "disabled",
                 "manual_action": "open the new draft in Jianying and review/listen before exporting",

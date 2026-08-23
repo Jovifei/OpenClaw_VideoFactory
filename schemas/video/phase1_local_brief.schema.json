@@ -15,6 +15,7 @@
     "topic": {"type": "string", "minLength": 1, "maxLength": 200},
     "title": {"type": "string", "minLength": 1, "maxLength": 200},
     "mascot_mode": {"type": "string", "enum": ["off", "user_original_only"], "default": "off"},
+    "aspect_ratio": {"type": "string", "enum": ["16:9", "9:16"], "default": "16:9"},
     "factual_brief": {"$ref": "director_factual_brief.schema.json"},
     "reference_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "research_authorization_id": {"type": "string", "pattern": "^[A-Za-z0-9_.-]{1,96}$"},

@@ -1,6 +1,6 @@
 ---
 name: douyin-video-factory
-description: "Plan, select, produce, verify, and queue Chinese vertical technical videos for manual Douyin publishing."
+description: "Plan, select, produce, verify, and queue Chinese technical videos for manual Jianying review and Douyin publishing."
 version: 0.1.0
 metadata:
   openclaw:
@@ -14,6 +14,9 @@ metadata:
 
 # Douyin video factory
 
+For the end-to-end route, load `video-production-chain` first. It defines the
+single ownership path from verified text through the pinned Jianying backend.
+
 Use this skill for daily topic selection and end-to-end video production.
 
 ## Workflow
@@ -24,10 +27,13 @@ Use this skill for daily topic selection and end-to-end video production.
 4. On user selection, run `python scripts/factory.py select --rank N`.
 5. At selection deadline, run `python scripts/factory.py auto-select`.
 6. Run the selected job with `python scripts/factory.py run --job-id ID`.
-7. Run the quality gate.
-8. Move passing results to `output/pending_review/`.
-9. Send the user the MP4, cover, caption, hashtags, script, and quality report.
-10. Never publish to Douyin.
+7. Prepare a visual-only Jianying input and create a new draft with
+   `jianying-draft-exporter` when the brief requests Jianying editing.
+8. Run the quality gate and assemble the review package.
+9. Require manual Jianying listening, visual review, and export on E:.
+10. Send the user the MP4, draft path, cover, caption, hashtags, script, and
+    quality report.
+11. Never publish to Douyin.
 
 ## Codex delegation
 

@@ -1,0 +1,42 @@
+{
+  "id": "PHASE1-VIDEO-PRODUCTION-SKILL-CHAIN-003",
+  "phase": "phase1_local_reviewable_video",
+  "status": "completed",
+  "granted_by": "Jovi",
+  "objective": "Document and enforce one text-to-Jianying video production chain without adding a second renderer or editor backend.",
+  "allowed_writes": [
+    "skills/video-production-chain/SKILL.md",
+    "skills/douyin-video-factory/SKILL.md",
+    "skills/remotion-layout-engine/SKILL.md",
+    "docs/V2_MANIFEST.json",
+    "docs/OPEN_SOURCE_SKILL_MATRIX.md",
+    "runbook/03_SKILLS_AND_EXTERNAL_REPOS.md",
+    "tasks/plans/2026-08-23-video-production-skill-chain.md",
+    "tasks/todo.md",
+    "tasks/lessons.md"
+  ],
+  "selected_backend": {
+    "repository": "https://github.com/luoluoluo22/jianying-editor-skill",
+    "license": "MIT",
+    "integration": "jianying-draft-exporter",
+    "automatic_export": false
+  },
+  "isolated_candidates": [
+    {
+      "repository": "https://github.com/Hommy-master/capcut-mate",
+      "license": "Apache-2.0",
+      "status": "not_enabled"
+    },
+    {
+      "repository": "https://github.com/hey-jian-wei/jianying-mcp",
+      "status": "research_only_not_enabled"
+    }
+  ],
+  "acceptance": [
+    "single stage ownership and handoff route documented",
+    "default editor backend is Jianying",
+    "Jianying input is visual-only with native audio/subtitles added once",
+    "no second renderer or automatic publication"
+  ],
+  "human_gate": "manual Jianying listening, visual review, and export remain required"
+}
