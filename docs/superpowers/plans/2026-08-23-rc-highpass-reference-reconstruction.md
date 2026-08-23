@@ -87,4 +87,4 @@
 - [x] Run focused timing/layout/video tests, Remotion typecheck, ffprobe, complete decode, and staged-diff audit.
 - [x] Inspect representative rendered frames using the visual companion and record the Bode label correction.
 - [x] Keep status at `PHASE1_LOCAL_REFERENCE_REVIEW_PACKAGE_READY`; do not mark formal Phase 1 passed.
-- [ ] Commit the scoped change and push only the current feature branch after final staged-diff audit.
+- [x] Commit the scoped change and push only the current feature branch after final staged-diff audit; commit `ff502ce` is remote-matched.
