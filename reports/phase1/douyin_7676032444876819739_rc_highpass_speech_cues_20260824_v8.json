@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "status": "PHASE1_LOCAL_REFERENCE_REVIEW_PACKAGE_READY",
+  "change_request": "PHASE1-RC-HIGHPASS-SPEECH-CUE-009",
+  "visual": {
+    "path": "dist/phase1_local/rc_highpass_reconstruction_20260824_v8/rc_highpass_9x16_visual.mp4",
+    "sha256": "f98ba40d15e301125e8a88956e593775c813ea6ada494206a99e8b6b1fbaee94",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration_seconds": 102,
+    "burned_in_subtitles": false
+  },
+  "speech_cues": [
+    {"cue_id": "watershed", "start_seconds": 72.7, "end_seconds": 74.16, "visual_target": "summary.watershed"},
+    {"cue_id": "phase_lead", "start_seconds": 74.26, "end_seconds": 75.88, "visual_target": "summary.phase_lead"},
+    {"cue_id": "time_scale", "start_seconds": 75.98, "end_seconds": 78.08, "visual_target": "summary.time_scale"},
+    {"cue_id": "design_fc", "start_seconds": 78.18, "end_seconds": 81.5, "visual_target": "summary.design_step_1"},
+    {"cue_id": "design_validate", "start_seconds": 81.6, "end_seconds": 87.6, "visual_target": "summary.design_step_2"},
+    {"cue_id": "next_preview", "start_seconds": 87.7, "end_seconds": 98.92, "visual_target": "summary.design_step_3_and_next"}
+  ],
+  "visible_knowledge": [
+    "H(jω) = jωRC/(1+jωRC)",
+    "XC ≫ R → Vout ≈ 0",
+    "XC ≪ R → Vout ≈ Vin",
+    "fc = 1/(2πRC), -3.0103 dB, +45°",
+    "Δt = φ/(2πf)",
+    "τ = RC",
+    "定 fc → 验幅相 → 查负载"
+  ],
+  "frame_verification": {
+    "all_frames_scanned": 3060,
+    "black_frame_count": 0,
+    "unsafe_edge_frame_count": 0,
+    "longest_near_static_run_frames": 418,
+    "critical_frame_method": "OpenCV sequential decode plus direct Remotion still comparison",
+    "status": "passed"
+  },
+  "audio_preview": {
+    "path": "dist/phase1_local/rc_highpass_reconstruction_20260824_v8/rc_highpass_9x16_voice_preview_sync.mp4",
+    "sha256": "21a30769a902edc5d39f311546082a378d217ebfec6bebfb01fbd0fe84cc485e",
+    "codec": "aac",
+    "mean_volume_db": -20.5,
+    "max_volume_db": -3.7,
+    "source_audio_segment_count": 11,
+    "full_decode": "passed"
+  },
+  "jianying": {
+    "source_draft_e": "E:/OpenClaw_VideoFactory_Runtime/jianying_drafts/DouyinRCHighPass_9x16_SAMI_20260824_v8",
+    "visible_junction_c": "C:/Users/Admin/AppData/Local/JianyingPro/User Data/Projects/com.lveditor.draft/DouyinRCHighPass_9x16_SAMI_20260824_v8",
+    "source_media_copied_to_c": false,
+    "tracks": {"video": 1, "voiceover": 1, "voiceover_segments": 11, "subtitles": 1, "subtitle_segments": 5},
+    "automatic_export": false
+  },
+  "human_gate": {
+    "status": "required",
+    "action": "Jovi refreshes Jianying, opens V8, listens to the phrase-triggered card events, checks native subtitles, and manually exports if accepted.",
+    "formal_phase1_pass": false
+  }
+}

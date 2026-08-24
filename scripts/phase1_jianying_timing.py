@@ -21,6 +21,7 @@ FPS = 30
 FRAME_TOLERANCE_MICROSECONDS = (1_000_000 + FPS - 1) // FPS
 MIN_VISUAL_DURATION_SECONDS = 25
 MAX_VISUAL_DURATION_SECONDS = 120
+VISUAL_CUE_IDS = ("watershed", "phase_lead", "time_scale", "design_fc", "design_validate", "next_preview")
 
 
 def sha256(path: Path) -> str:
@@ -48,6 +49,21 @@ def load_script(path: Path) -> tuple[dict[str, Any], list[dict[str, str]]]:
     return value, result
 
 
+def validate_visual_cues(cues: Any, *, parent_start: int, parent_end: int) -> list[dict[str, Any]]:
+    if not isinstance(cues, list) or [item.get("cue_id") if isinstance(item, dict) else None for item in cues] != list(VISUAL_CUE_IDS):
+        raise ValueError("visual_cue_ids_invalid")
+    previous_end = parent_start
+    validated: list[dict[str, Any]] = []
+    for item in cues:
+        start = item.get("start_microseconds")
+        end = item.get("end_microseconds")
+        if not isinstance(start, int) or not isinstance(end, int) or start < previous_end or end <= start or end > parent_end:
+            raise ValueError("visual_cue_range_invalid")
+        validated.append(item)
+        previous_end = end
+    return validated
+
+
 def _safe_relative(value: Any, field: str) -> str:
     raw = str(value or "").replace("\\", "/")
     if not raw or raw.startswith("/") or re.match(r"^[A-Za-z]:", raw):
@@ -67,6 +83,16 @@ def resolve_audio_path(manifest: dict[str, Any], drafts_root: Path, segment: dic
     if not target.is_file():
         raise ValueError("timing_audio_missing")
     return target
+
+
+def manifest_audio_entries(parent_segment: dict[str, Any]) -> list[dict[str, Any]]:
+    """Expand an optional narration subsegment list into final VoiceOver entries."""
+    subsegments = parent_segment.get("subsegments")
+    if subsegments is None:
+        return [parent_segment]
+    if not isinstance(subsegments, list) or not subsegments or not all(isinstance(item, dict) for item in subsegments):
+        raise ValueError("timing_subsegments_invalid")
+    return [dict(item) for item in subsegments]
 
 
 def validate_manifest(value: Any, *, drafts_root: Path | None = None) -> dict[str, Any]:
@@ -106,6 +132,25 @@ def validate_manifest(value: Any, *, drafts_root: Path | None = None) -> dict[st
         if not isinstance(segment.get("audio_sha256"), str) or not re.fullmatch(r"[0-9a-f]{64}", segment["audio_sha256"]):
             raise ValueError("timing_audio_hash_invalid")
         _safe_relative(segment.get("audio_relative_path"), "audio_relative_path")
+        subsegments = segment.get("subsegments")
+        if subsegments is not None:
+            if not isinstance(subsegments, list) or not subsegments:
+                raise ValueError("timing_subsegments_invalid")
+            previous_sub_end = start
+            for sub_index, subsegment in enumerate(subsegments, start=1):
+                if not isinstance(subsegment, dict) or subsegment.get("index") != sub_index:
+                    raise ValueError("timing_subsegment_index_invalid")
+                sub_start = subsegment.get("start_microseconds")
+                sub_end = subsegment.get("end_microseconds")
+                sub_duration = subsegment.get("duration_microseconds")
+                if not all(isinstance(item, int) for item in (sub_start, sub_end, sub_duration)) or sub_start < previous_sub_end or sub_end != sub_start + sub_duration:
+                    raise ValueError("timing_subsegment_range_invalid")
+                if not isinstance(subsegment.get("audio_sha256"), str) or not re.fullmatch(r"[0-9a-f]{64}", subsegment["audio_sha256"]):
+                    raise ValueError("timing_subsegment_audio_hash_invalid")
+                _safe_relative(subsegment.get("audio_relative_path"), "subsegment_audio_relative_path")
+                previous_sub_end = sub_end
+            if subsegments[0]["start_microseconds"] != start or subsegments[-1]["end_microseconds"] != end:
+                raise ValueError("timing_subsegment_parent_mismatch")
         previous_end = end
         previous_scene_end = scene_end
     if voice.get("segment_count") != 5 or voice.get("voice_end_microseconds") != previous_end:
@@ -118,11 +163,18 @@ def validate_manifest(value: Any, *, drafts_root: Path | None = None) -> dict[st
         raise ValueError("timing_scene_duration_invalid")
     if visual_duration_us < previous_end:
         raise ValueError("timing_visual_shorter_than_voice")
+    visual_cues = value.get("visual_cues")
+    if visual_cues:
+        validate_visual_cues(visual_cues, parent_start=int(segments[-1]["start_microseconds"]), parent_end=int(segments[-1]["end_microseconds"]))
     if drafts_root is not None:
         for segment in segments:
             audio_path = resolve_audio_path(value, drafts_root, segment)
             if sha256(audio_path) != segment["audio_sha256"]:
                 raise ValueError("timing_audio_hash_mismatch")
+            for subsegment in manifest_audio_entries(segment) if segment.get("subsegments") is not None else []:
+                audio_path = resolve_audio_path(value, drafts_root, subsegment)
+                if sha256(audio_path) != subsegment["audio_sha256"]:
+                    raise ValueError("timing_subsegment_audio_hash_mismatch")
     return value
 
 

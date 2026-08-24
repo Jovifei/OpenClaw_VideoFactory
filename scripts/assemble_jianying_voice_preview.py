@@ -18,7 +18,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from phase1_jianying_timing import load_manifest, sha256  # noqa: E402
+from phase1_jianying_timing import load_manifest, manifest_audio_entries, sha256  # noqa: E402
 
 
 def _output_root(path: Path, field: str) -> Path:
@@ -66,8 +66,13 @@ def main() -> int:
     if abs(visual_duration - target_duration) > 0.1:
         raise ValueError("visual_duration_manifest_mismatch")
     segments = manifest["segments"]
+    audio_entries = [
+        {**entry, "parent_segment_index": parent["index"]}
+        for parent in segments
+        for entry in manifest_audio_entries(parent)
+    ]
     audio_paths = []
-    for segment in segments:
+    for segment in audio_entries:
         from phase1_jianying_timing import resolve_audio_path
 
         audio_paths.append(resolve_audio_path(manifest, timing_root, segment))
@@ -75,12 +80,12 @@ def main() -> int:
     output.parent.mkdir(parents=True, exist_ok=True)
     filter_parts = []
     audio_labels = []
-    for input_index, segment in enumerate(segments, start=1):
+    for input_index, segment in enumerate(audio_entries, start=1):
         delay_ms = int(round(int(segment["start_microseconds"]) / 1000))
         label = f"a{input_index}"
         filter_parts.append(f"[{input_index}:a]adelay={delay_ms}:all=1[{label}]")
         audio_labels.append(f"[{label}]")
-    filter_parts.append("".join(audio_labels) + f"amix=inputs={len(segments)}:duration=longest:normalize=0,apad[aout]")
+    filter_parts.append("".join(audio_labels) + f"amix=inputs={len(audio_entries)}:duration=longest:normalize=0,apad[aout]")
     command = ["ffmpeg", "-y", "-nostdin", "-v", "error", "-i", str(visual)]
     for audio_path in audio_paths:
         command.extend(["-i", str(audio_path)])
@@ -120,11 +125,12 @@ def main() -> int:
         "timing_manifest": {"filename": manifest_path.name, "sha256": sha256(manifest_path)},
         "audio_source": {
             "kind": "jianying_editor_skill_timing_probe_assets",
-            "segment_count": len(segments),
+            "segment_count": len(audio_entries),
+            "parent_segment_count": len(segments),
             "source_audio_reused": False,
             "segments": [
-                {"index": s["index"], "start_microseconds": s["start_microseconds"], "end_microseconds": s["end_microseconds"], "audio_sha256": s["audio_sha256"]}
-                for s in segments
+                {"index": index, "parent_segment_index": s["parent_segment_index"], "start_microseconds": s["start_microseconds"], "end_microseconds": s["end_microseconds"], "audio_sha256": s["audio_sha256"]}
+                for index, s in enumerate(audio_entries, start=1)
             ],
         },
         "output": {

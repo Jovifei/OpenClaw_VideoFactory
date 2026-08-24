@@ -23,6 +23,7 @@ from phase1_jianying_timing import (  # noqa: E402
     FRAME_TOLERANCE_MICROSECONDS,
     load_manifest,
     load_script,
+    manifest_audio_entries,
     sha256,
 )
 
@@ -189,43 +190,48 @@ def main() -> int:
         for index, beat in enumerate(beats, start=1):
             manifest_segment = manifest_segments[index - 1]
             from phase1_jianying_timing import resolve_audio_path
-
-            audio_path = resolve_audio_path(timing_manifest, timing_root, manifest_segment)
+            for part_index, timing_entry in enumerate(manifest_audio_entries(manifest_segment), start=1):
+                audio_path = resolve_audio_path(timing_manifest, timing_root, timing_entry)
+                expected_start_us = int(timing_entry["start_microseconds"])
+                expected_duration_us = int(timing_entry["duration_microseconds"])
+                audio_segment = project.add_media_safe(
+                    str(audio_path),
+                    start_time=expected_start_us,
+                    track_name="VoiceOver",
+                )
+                if audio_segment is None:
+                    raise ValueError(f"timing_audio_import_{index}_{part_index}_failed")
+                duration_us = int(audio_segment.target_timerange.duration)
+                if abs(duration_us - expected_duration_us) > FRAME_TOLERANCE_MICROSECONDS:
+                    raise ValueError(f"timing_audio_duration_drift_{index}_{part_index}")
+                actual_start_us = int(audio_segment.target_timerange.start)
+                if abs(actual_start_us - expected_start_us) > FRAME_TOLERANCE_MICROSECONDS:
+                    raise ValueError(f"timing_audio_start_drift_{index}_{part_index}")
+                voice_segments.append(
+                    {
+                        "index": len(voice_segments) + 1,
+                        "parent_segment_index": index,
+                        "part_index": part_index,
+                        "cue_id": timing_entry.get("cue_id"),
+                        "start_microseconds": actual_start_us,
+                        "end_microseconds": actual_start_us + duration_us,
+                        "duration_microseconds": duration_us,
+                        "audio_filename": audio_path.name,
+                        "audio_sha256": sha256(audio_path),
+                        "narration_sha256": timing_entry.get("narration_sha256", manifest_segment["narration_sha256"]),
+                        "subtitle_sha256": manifest_segment["subtitle_sha256"],
+                    }
+                )
             expected_start_us = int(manifest_segment["start_microseconds"])
             expected_duration_us = int(manifest_segment["duration_microseconds"])
-            audio_segment = project.add_media_safe(
-                str(audio_path),
-                start_time=expected_start_us,
-                track_name="VoiceOver",
-            )
-            if audio_segment is None:
-                raise ValueError(f"timing_audio_import_{index}_failed")
-            duration_us = int(audio_segment.target_timerange.duration)
-            if abs(duration_us - expected_duration_us) > FRAME_TOLERANCE_MICROSECONDS:
-                raise ValueError(f"timing_audio_duration_drift_{index}")
-            actual_start_us = int(audio_segment.target_timerange.start)
-            if abs(actual_start_us - expected_start_us) > FRAME_TOLERANCE_MICROSECONDS:
-                raise ValueError(f"timing_audio_start_drift_{index}")
             project.add_text_simple(
                 beat["subtitle"],
                 start_time=expected_start_us,
-                duration=duration_us,
+                duration=expected_duration_us,
                 track_name="Subtitles",
             )
-            voice_segments.append(
-                {
-                    "index": index,
-                    "start_microseconds": actual_start_us,
-                    "end_microseconds": actual_start_us + duration_us,
-                    "duration_microseconds": duration_us,
-                    "audio_filename": audio_path.name,
-                    "audio_sha256": sha256(audio_path),
-                    "narration_sha256": manifest_segment["narration_sha256"],
-                    "subtitle_sha256": manifest_segment["subtitle_sha256"],
-                }
-            )
 
-        voice_end_us = int(voice_segments[-1]["end_microseconds"])
+        voice_end_us = max(int(segment["end_microseconds"]) for segment in voice_segments)
         if abs(voice_end_us - int(voice_meta["voice_end_microseconds"])) > FRAME_TOLERANCE_MICROSECONDS:
             raise ValueError("voice_timeline_manifest_mismatch")
         if expected_visual_duration_us < voice_end_us:
@@ -234,7 +240,7 @@ def main() -> int:
         track_report = _track_report(project)
         voice_tracks = [item for item in track_report if item.get("name") == "VoiceOver"]
         subtitle_tracks = [item for item in track_report if item.get("name") == "Subtitles"]
-        if len(voice_tracks) != 1 or bool(voice_tracks[0].get("mute")) or int(voice_tracks[0].get("segment_count", 0)) != len(beats):
+        if len(voice_tracks) != 1 or bool(voice_tracks[0].get("mute")) or int(voice_tracks[0].get("segment_count", 0)) != len(voice_segments):
             raise ValueError("voice_track_not_audible")
         if len(subtitle_tracks) != 1 or int(subtitle_tracks[0].get("segment_count", 0)) != len(beats):
             raise ValueError("subtitle_track_invalid")
@@ -267,7 +273,8 @@ def main() -> int:
                 "speaker": args.speaker,
                 "requested_backend": args.backend,
                 "used_backends": backend_used,
-                "segment_count": len(beats),
+                "segment_count": len(voice_segments),
+                "parent_segment_count": len(beats),
                 "subtitle_segment_count": len(beats),
                 "voice_end_microseconds": voice_end_us,
                 "timeline_duration_microseconds": voice_end_us,
@@ -291,7 +298,7 @@ def main() -> int:
                 "status": "passed",
                 "voice_track": "VoiceOver",
                 "muted": False,
-                "segment_count": len(beats),
+                "segment_count": len(voice_segments),
                 "human_listening_required": True,
             },
             "subtitle_validation": {

@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0",
+  "status": "audio_preview_ready_for_manual_listening",
+  "visual": {
+    "filename": "rc_highpass_9x16_visual.mp4",
+    "sha256": "f98ba40d15e301125e8a88956e593775c813ea6ada494206a99e8b6b1fbaee94",
+    "duration_seconds": 102.0
+  },
+  "timing_manifest": {
+    "filename": "douyin_7676032444876819739_rc_highpass_timing_manifest_20260824_v8.json",
+    "sha256": "0b989c244cfa5cf9c1ed7a998af9c3222b078c23f8e119dbf390bda91cddd0cb"
+  },
+  "audio_source": {
+    "kind": "jianying_editor_skill_timing_probe_assets",
+    "segment_count": 11,
+    "parent_segment_count": 5,
+    "source_audio_reused": false,
+    "segments": [
+      {
+        "index": 1,
+        "parent_segment_index": 1,
+        "start_microseconds": 0,
+        "end_microseconds": 19160000,
+        "audio_sha256": "f9d273063b938ba6e1dee9e862edcd44da6191e34ca49c6516dfbf1e71d6946a"
+      },
+      {
+        "index": 2,
+        "parent_segment_index": 2,
+        "start_microseconds": 19260000,
+        "end_microseconds": 39340000,
+        "audio_sha256": "ce6bc12dfdae4fa740f9a101587a5db3449ce3f115cda8fd3f08f7934dbad5f6"
+      },
+      {
+        "index": 3,
+        "parent_segment_index": 3,
+        "start_microseconds": 39440000,
+        "end_microseconds": 55000000,
+        "audio_sha256": "9ce184fc19c20969015436b10671148e5ae6c7070b7e89d18062507819e214f7"
+      },
+      {
+        "index": 4,
+        "parent_segment_index": 4,
+        "start_microseconds": 55100000,
+        "end_microseconds": 69800000,
+        "audio_sha256": "a55b420581ccb74cde117d5d8766dccd8f1db9efce9cd1f3060abf966ae991b7"
+      },
+      {
+        "index": 5,
+        "parent_segment_index": 5,
+        "start_microseconds": 69900000,
+        "end_microseconds": 72600000,
+        "audio_sha256": "146ebd976232b4cf074e46a0a2d3dcc3e1e97c69f3207cc8317621f88e76190d"
+      },
+      {
+        "index": 6,
+        "parent_segment_index": 5,
+        "start_microseconds": 72700000,
+        "end_microseconds": 74160000,
+        "audio_sha256": "2d4efc7a7057b4704e7478492e1e527b8a471a83fe2e19aceb7561ef274dae91"
+      },
+      {
+        "index": 7,
+        "parent_segment_index": 5,
+        "start_microseconds": 74260000,
+        "end_microseconds": 75880000,
+        "audio_sha256": "c8f8612afb2c0a0942faeb298ad0ea51ef41570d4e8eae9c5cbc51da13dedebe"
+      },
+      {
+        "index": 8,
+        "parent_segment_index": 5,
+        "start_microseconds": 75980000,
+        "end_microseconds": 78080000,
+        "audio_sha256": "71201c882a2fd3d7fceb22e1093a065191d0f9a6be9ec9e3c7608722053cf437"
+      },
+      {
+        "index": 9,
+        "parent_segment_index": 5,
+        "start_microseconds": 78180000,
+        "end_microseconds": 81500000,
+        "audio_sha256": "9724e67f534b6c9822e73ce23e5e17a69bf30f6aee9e6e7615d40450f00852ba"
+      },
+      {
+        "index": 10,
+        "parent_segment_index": 5,
+        "start_microseconds": 81600000,
+        "end_microseconds": 87600000,
+        "audio_sha256": "39a2555494609e647cc495fe6993d2b465e2d164ccf2b9040b44ec3bfa33e27c"
+      },
+      {
+        "index": 11,
+        "parent_segment_index": 5,
+        "start_microseconds": 87700000,
+        "end_microseconds": 98920000,
+        "audio_sha256": "05aee40e694c5e70e462dcbe0b83a4499e17f334b2d04607b1f7c1530f0ae371"
+      }
+    ]
+  },
+  "output": {
+    "filename": "rc_highpass_9x16_voice_preview_sync.mp4",
+    "sha256": "21a30769a902edc5d39f311546082a378d217ebfec6bebfb01fbd0fe84cc485e",
+    "duration_seconds": 102.0,
+    "audio_present": true,
+    "codec": "aac",
+    "mean_volume_db": -20.5,
+    "max_volume_db": -3.7,
+    "full_decode": "passed"
+  },
+  "sync_validation": {
+    "status": "passed",
+    "visual_duration_matches_manifest": true,
+    "audio_segment_starts_match_manifest": true,
+    "subtitle_authority": "jianying_native_subtitles_track",
+    "preview_is_not_jianying_export": true,
+    "human_listening_required": true
+  },
+  "outputs_on_e_drive": true
+}

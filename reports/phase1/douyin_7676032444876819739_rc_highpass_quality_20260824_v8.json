@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "status": "passed",
+  "checks": {
+    "canvas_1080x1920": true,
+    "fps_30": true,
+    "visual_audio_absent": true,
+    "burned_in_subtitles_absent": true,
+    "layout_safe_area": {
+      "status": "passed",
+      "safe_area": {
+        "left": 72,
+        "right": 72,
+        "top": 68,
+        "bottom": 180
+      },
+      "subtitle_reserve": {
+        "top": 1590,
+        "height": 220
+      },
+      "text_policy": "bounded_natural_wrap",
+      "theme_token": "technical_neutral"
+    },
+    "rc_geometry": {
+      "status": "passed",
+      "magnitude_fc": {
+        "x": 436.0,
+        "y": 146.1236,
+        "db": -3.0103
+      },
+      "phase_fc": {
+        "x": 436.0,
+        "y": 520.0,
+        "degrees": 45.0
+      },
+      "wave_path_count": 0
+    },
+    "full_decode": true,
+    "representative_frames": [
+      {
+        "mean_luma": 238.776,
+        "black_ratio": 0.0,
+        "frame_delta": 0.0
+      },
+      {
+        "mean_luma": 239.483,
+        "black_ratio": 0.0,
+        "frame_delta": 0.707
+      },
+      {
+        "mean_luma": 240.766,
+        "black_ratio": 0.0,
+        "frame_delta": 1.283
+      },
+      {
+        "mean_luma": 239.099,
+        "black_ratio": 0.0,
+        "frame_delta": 1.667
+      },
+      {
+        "mean_luma": 239.034,
+        "black_ratio": 0.0,
+        "frame_delta": 0.065
+      }
+    ],
+    "all_frame_scan": {
+      "status": "passed",
+      "frames_scanned": 3060,
+      "black_frame_count": 0,
+      "unsafe_edge_frame_count": 0,
+      "longest_near_static_run_frames": 418,
+      "first_frame_luma": 236.125,
+      "last_frame_luma": 238.861
+    },
+    "source_output_distinct": true,
+    "theme_background_not_global_pink": true
+  },
+  "visual": {
+    "path": "E:\\project\\OpenClaw_VideoFactory\\dist\\phase1_local\\rc_highpass_reconstruction_20260824_v8\\rc_highpass_9x16_visual.mp4",
+    "sha256": "f98ba40d15e301125e8a88956e593775c813ea6ada494206a99e8b6b1fbaee94",
+    "duration_seconds": 102.0
+  },
+  "preview": {
+    "path": "E:\\project\\OpenClaw_VideoFactory\\dist\\phase1_local\\rc_highpass_reconstruction_20260824_v8\\rc_highpass_9x16_voice_preview_sync.mp4",
+    "audio_present": true,
+    "full_decode": "passed",
+    "sha256": "21a30769a902edc5d39f311546082a378d217ebfec6bebfb01fbd0fe84cc485e"
+  },
+  "human_gate": {
+    "status": "required",
+    "action": "Jovi visually inspects and listens in the new Jianying draft, then exports manually if accepted."
+  }
+}

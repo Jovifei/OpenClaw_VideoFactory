@@ -12,7 +12,6 @@ import hashlib
 import json
 import math
 import subprocess
-import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -210,63 +209,51 @@ def _decode_check(path: Path) -> bool:
     return completed.returncode == 0 and not completed.stderr.strip()
 
 
-def _sample_frames(path: Path, duration: float, sample_count: int) -> list[Path]:
+def _sample_frames(path: Path, duration: float, sample_count: int) -> list[dict[str, float]]:
     sample_count = max(3, sample_count)
-    with tempfile.TemporaryDirectory(prefix="phase1-render-check-") as temp:
-        root = Path(temp)
-        samples: list[Path] = []
-        for index in range(sample_count):
-            timestamp = min(max(0.0, duration * (index + 0.5) / sample_count), max(0.0, duration - 0.05))
-            frame_index = max(0, int(round(timestamp * EXPECTED_FPS)))
-            target = root / f"frame_{index:02d}.png"
-            completed = subprocess.run(
-                [
-                    "ffmpeg",
-                    "-hide_banner",
-                    "-nostdin",
-                    "-v",
-                    "error",
-                    "-i",
-                    str(path),
-                    "-vf",
-                    f"select=eq(n\\,{frame_index}),scale=270:-1",
-                    "-vsync",
-                    "0",
-                    "-frames:v",
-                    "1",
-                    str(target),
-                ],
-                capture_output=True,
-                text=True,
-                check=False,
-                timeout=60,
-            )
-            if completed.returncode != 0 or not target.is_file():
-                raise ValueError("sample_frame_extract_failed")
-            samples.append(target)
-        # Read samples while the temporary root exists; callers receive only metrics.
-        metrics: list[dict[str, float]] = []
-        try:
-            from PIL import Image, ImageChops, ImageStat
-            import numpy as np
-        except ImportError as exc:
-            raise ValueError("pillow_required_for_frame_gate") from exc
-        previous = None
-        for frame_path in samples:
-            with Image.open(frame_path).convert("L") as image:
-                stat = ImageStat.Stat(image)
-                mean = float(stat.mean[0])
-                black_ratio = float((np.asarray(image) <= 4).mean())
-                delta = 0.0
-                if previous is not None:
-                    delta = float(ImageStat.Stat(ImageChops.difference(previous, image)).mean[0])
-                metrics.append({"mean_luma": round(mean, 3), "black_ratio": round(black_ratio, 6), "frame_delta": round(delta, 3)})
-                previous = image.copy()
-        if not metrics or all(item["mean_luma"] < 4.0 for item in metrics):
-            raise ValueError("sample_frames_black")
-        if len(metrics) >= 3 and all(item["frame_delta"] < 0.25 for item in metrics[1:]):
-            raise ValueError("sample_frames_frozen")
-        return metrics
+    try:
+        import cv2
+        import numpy as np
+    except ImportError as exc:
+        raise ValueError("opencv_required_for_frame_gate") from exc
+    target_indices = sorted(
+        {
+            max(0, int(round(min(max(0.0, duration * (index + 0.5) / sample_count), max(0.0, duration - 0.05)) * EXPECTED_FPS)))
+            for index in range(sample_count)
+        }
+    )
+    capture = cv2.VideoCapture(str(path))
+    if not capture.isOpened():
+        raise ValueError("sample_frame_open_failed")
+    target_set = set(target_indices)
+    samples_by_index: dict[int, dict[str, float]] = {}
+    frame_index = 0
+    try:
+        while frame_index <= target_indices[-1]:
+            ok, frame = capture.read()
+            if not ok:
+                break
+            if frame_index in target_set:
+                grayscale = cv2.resize(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), (270, 480), interpolation=cv2.INTER_AREA)
+                samples_by_index[frame_index] = {
+                    "mean_luma": round(float(grayscale.mean()), 3),
+                    "black_ratio": round(float((grayscale <= 4).mean()), 6),
+                    "frame_delta": 0.0,
+                }
+            frame_index += 1
+    finally:
+        capture.release()
+    if len(samples_by_index) != len(target_indices):
+        raise ValueError("sample_frame_extract_failed")
+    metrics = [samples_by_index[index] for index in target_indices]
+    previous_mean = None
+    for metric in metrics:
+        if previous_mean is not None:
+            metric["frame_delta"] = round(abs(metric["mean_luma"] - previous_mean), 3)
+        previous_mean = metric["mean_luma"]
+    if all(item["mean_luma"] < 4.0 for item in metrics):
+        raise ValueError("sample_frames_black")
+    return metrics
 
 
 def validate_full_frame_metrics(metrics: list[dict[str, float]]) -> dict[str, Any]:

@@ -31,6 +31,12 @@ export type RcHighPassGeometry = {
   };
 };
 
+export type RcHighPassVisualCue = {
+  cue_id: 'watershed' | 'phase_lead' | 'time_scale' | 'design_fc' | 'design_validate' | 'next_preview';
+  start_microseconds: number;
+  end_microseconds: number;
+};
+
 export type RcHighPassVisualInput = {
   schema_version: '1.0';
   title: string;
@@ -39,6 +45,7 @@ export type RcHighPassVisualInput = {
   scenes: RcHighPassScene[];
   layout_contract_version: '1.0';
   geometry: RcHighPassGeometry;
+  visual_cues: RcHighPassVisualCue[];
 };
 
 const THEME = {
@@ -164,6 +171,7 @@ const HookDiagram: React.FC<{frame: number; fps: number}> = ({frame, fps}) => {
     <Card accent={THEME.mint} style={{height: 1040, padding: 34}}>
       <BoundedText id="hook-card-label" size={22} color={THEME.muted} weight={900} lines={1}>WHY HIGH-PASS?</BoundedText>
       <BoundedText id="hook-card-title" size={35} weight={900} lines={2} maxWidth={800} style={{marginTop: 22}}>变化通过，稳态被挡住</BoundedText>
+      <BoundedText id="hook-reactance" size={22} color={THEME.violet} weight={900} lines={1} style={{marginTop: 12}}>Xc = 1/(2πfC)：频率越高，容抗越小</BoundedText>
       <svg viewBox="0 0 860 620" width="100%" height="620" role="img" aria-label="RC high pass hook diagram" style={{marginTop: 36, overflow: 'visible'}}>
         <circle cx="122" cy="280" r="24" fill={THEME.panel} stroke={THEME.ink} strokeWidth="6" />
         <text data-layout-box="hook-vin" x="74" y="350" fill={THEME.ink} fontSize="26" fontWeight="800">Vin</text>
@@ -206,7 +214,8 @@ const TopologyDiagram: React.FC<{geometry: RcHighPassGeometry}> = ({geometry}) =
     <Card accent={THEME.violet} style={{height: 1120, padding: 34}}>
       <BoundedText id="topology-label" size={22} color={THEME.muted} weight={900} lines={1}>TOPOLOGY & SIGNAL PATH</BoundedText>
       <BoundedText id="topology-title" size={34} weight={900} lines={2} maxWidth={800} style={{marginTop: 20}}>串联电容，分压取输出</BoundedText>
-      <svg viewBox="0 0 860 660" width="100%" height="660" role="img" aria-label="RC high pass topology" style={{marginTop: 30}}>
+      <BoundedText id="topology-transfer" size={21} color={THEME.violet} weight={900} lines={1} style={{marginTop: 12}}>H(jω) = jωRC/(1+jωRC)</BoundedText>
+      <svg viewBox="0 0 860 620" width="100%" height="620" role="img" aria-label="RC high pass topology" style={{marginTop: 22}}>
         <line x1="70" y1="300" x2="245" y2="300" stroke={THEME.ink} strokeWidth="8" strokeLinecap="round" />
         <circle cx="70" cy="300" r="22" fill={THEME.panel} stroke={THEME.ink} strokeWidth="6" />
         <text data-layout-box="topology-vin" x="46" y="365" fill={THEME.ink} fontSize="26" fontWeight="900">Vin</text>
@@ -232,11 +241,13 @@ const TopologyDiagram: React.FC<{geometry: RcHighPassGeometry}> = ({geometry}) =
       <div style={{display: 'flex', gap: 18}}>
         <Card accent={THEME.orange} style={{flex: 1, height: 170, padding: 22}}>
           <BoundedText id="topology-frequency" size={22} color={THEME.muted} lines={1}>LOW FREQUENCY</BoundedText>
-          <BoundedText id="topology-frequency-copy" size={26} lines={2} style={{marginTop: 16}}>电容像高阻</BoundedText>
+          <BoundedText id="topology-frequency-copy" size={25} color={THEME.orange} lines={1} style={{marginTop: 14}}>XC ≫ R</BoundedText>
+          <BoundedText id="topology-frequency-result" size={19} color={THEME.muted} lines={1} style={{marginTop: 10}}>Vout ≈ 0</BoundedText>
         </Card>
         <Card accent={THEME.mint} style={{flex: 1, height: 170, padding: 22}}>
           <BoundedText id="topology-frequency-high" size={22} color={THEME.muted} lines={1}>HIGH FREQUENCY</BoundedText>
-          <BoundedText id="topology-frequency-high-copy" size={26} lines={2} style={{marginTop: 16}}>电容像低阻</BoundedText>
+          <BoundedText id="topology-frequency-high-copy" size={25} color={THEME.mint} lines={1} style={{marginTop: 14}}>XC ≪ R</BoundedText>
+          <BoundedText id="topology-frequency-high-result" size={19} color={THEME.muted} lines={1} style={{marginTop: 10}}>Vout ≈ Vin</BoundedText>
         </Card>
       </div>
     </Card>
@@ -350,55 +361,80 @@ const PhasorDiagram: React.FC<{frame: number; fps: number}> = ({frame, fps}) => 
       </svg>
       <div style={{display: 'flex', gap: 14}}>
         <Card accent={THEME.violet} style={{flex: 1, height: 160, padding: 20}}>
-          <BoundedText id="phasor-transient" size={22} lines={2}>瞬态先变化</BoundedText>
+          <BoundedText id="phasor-transient" size={21} color={THEME.violet} lines={1}>Δt = φ/(2πf)</BoundedText>
+          <BoundedText id="phasor-transient-copy" size={19} color={THEME.muted} lines={2} style={{marginTop: 14}}>相位可换算成时间位移</BoundedText>
         </Card>
         <Card accent={THEME.orange} style={{flex: 1, height: 160, padding: 20}}>
-          <BoundedText id="phasor-boundary" size={22} lines={2}>边缘频率最值得看</BoundedText>
+          <BoundedText id="phasor-boundary" size={21} color={THEME.orange} lines={1}>fc：边缘频率</BoundedText>
+          <BoundedText id="phasor-boundary-copy" size={19} color={THEME.muted} lines={2} style={{marginTop: 14}}>幅度与相位一起检查</BoundedText>
         </Card>
       </div>
     </Card>
   );
 };
 
-const SummaryDiagram: React.FC<{frame: number; fps: number}> = ({frame, fps}) => {
-  const active = Math.min(2, Math.floor((frame / fps) % 3));
+const cuePulse = (frame: number, fps: number, cue: RcHighPassVisualCue | undefined) => {
+  if (!cue) return {scale: 1, active: false};
+  const elapsed = frame - Math.round(cue.start_microseconds / 1_000_000 * fps);
+  if (elapsed < 0) return {scale: 1, active: false};
+  const pulse = interpolate(elapsed, [0, 5, 18, 34], [0, 0.1, 0.025, 0], clamp);
+  return {scale: 1 + pulse, active: elapsed <= 34};
+};
+
+const SummaryDiagram: React.FC<{frame: number; fps: number; visualCues: RcHighPassVisualCue[]}> = ({frame, fps, visualCues}) => {
   const items = [
-    ['分水岭', 'fc = 1/(2πRC)', THEME.mint],
-    ['超前角', 'fc 处约 +45°', THEME.orange],
-    ['时间尺度', 'τ = RC', THEME.violet],
+    ['watershed', '分水岭', 'fc = 1/(2πRC)', 'fc 处约 -3 dB', THEME.mint],
+    ['phase_lead', '超前角', 'φ(fc) = +45°', 'Δt = φ/(2πf)', THEME.orange],
+    ['time_scale', '时间尺度', 'τ = RC', '决定瞬态长度', THEME.violet],
   ] as const;
+  const designSteps = [
+    ['design_fc', '① 定 fc', '频率目标', THEME.mint],
+    ['design_validate', '② 验幅相', 'Bode + 波形', THEME.orange],
+    ['next_preview', '③ 查负载', '边界条件', THEME.violet],
+  ] as const;
+  const nextPulse = cuePulse(frame, fps, visualCues.find((cue) => cue.cue_id === 'next_preview'));
   return (
     <Card accent={THEME.mint} style={{height: 1120, padding: 30}}>
       <BoundedText id="summary-label" size={22} color={THEME.muted} weight={900} lines={1}>MASTER MATRIX & NEXT PREVIEW</BoundedText>
       <BoundedText id="summary-title" size={34} weight={900} lines={2} maxWidth={840} style={{marginTop: 20}}>三个轴，掌握动态滤波</BoundedText>
       <div style={{display: 'flex', gap: 14, marginTop: 42}}>
-        {items.map(([label, value, color], index) => (
-          <Card key={label} accent={index === active ? color : THEME.rule} style={{flex: 1, height: 360, padding: 20, transform: `translateY(${index === active ? -10 : 0}px)`}}>
+        {items.map(([cueId, label, value, fact, color], index) => {
+          const pulse = cuePulse(frame, fps, visualCues.find((cue) => cue.cue_id === cueId));
+          return <Card key={cueId} accent={pulse.active ? color : THEME.rule} style={{flex: 1, height: 360, padding: 20, transform: `scale(${pulse.scale})`}}>
             <BoundedText id={`summary-label-${index}`} size={19} color={color} lines={1}>{label}</BoundedText>
             <BoundedText id={`summary-value-${index}`} size={25} weight={900} lines={2} style={{marginTop: 36}}>{value}</BoundedText>
-            <BoundedText id={`summary-copy-${index}`} size={19} color={THEME.muted} lines={3} style={{marginTop: 32}}>{index === 0 ? '截止频率决定分水岭' : index === 1 ? '相位告诉你时间位移' : 'RC 决定变化速度'}</BoundedText>
-          </Card>
-        ))}
+            <BoundedText id={`summary-copy-${index}`} size={19} color={THEME.muted} lines={3} style={{marginTop: 32}}>{fact}</BoundedText>
+          </Card>;
+        })}
       </div>
-      <Card accent={THEME.violet} style={{height: 450, marginTop: 28, padding: 24}}>
-        <BoundedText id="next-label" size={20} color={THEME.violet} lines={1}>NEXT EPISODE</BoundedText>
-        <BoundedText id="next-title" size={28} weight={900} lines={2} maxWidth={780} style={{marginTop: 22}}>RL 与 LC：把相位直觉带到更高阶网络</BoundedText>
-        <svg viewBox="0 0 760 190" width="100%" height="190" style={{marginTop: 24}}>
+      <Card accent={nextPulse.active ? THEME.violet : THEME.rule} style={{height: 450, marginTop: 28, padding: 24, transform: `scale(${nextPulse.scale})`}}>
+        <BoundedText id="next-label" size={20} color={THEME.violet} lines={1}>DESIGN CHECK & NEXT PREVIEW</BoundedText>
+        <BoundedText id="next-title" size={28} weight={900} lines={2} maxWidth={780} style={{marginTop: 16}}>设计不只算公式，还要验证边界</BoundedText>
+        <div style={{display: 'flex', gap: 10, marginTop: 16}}>
+          {designSteps.map(([cueId, title, body, color], index) => {
+            const pulse = cuePulse(frame, fps, visualCues.find((cue) => cue.cue_id === cueId));
+            return <div key={cueId} data-layout-box={`design-step-${index}`} style={{flex: 1, minHeight: 58, padding: '8px 10px', borderRadius: 14, border: `2px solid ${pulse.active ? color : THEME.rule}`, background: `${color}${pulse.active ? '20' : '0D'}`, boxSizing: 'border-box', transform: `scale(${pulse.scale})`}}>
+              <div style={{fontSize: 18, fontWeight: 900, color}}>{title}</div>
+              <div style={{fontSize: 15, fontWeight: 800, color: THEME.muted, marginTop: 4}}>{body}</div>
+            </div>;
+          })}
+        </div>
+        <svg viewBox="0 0 760 150" width="100%" height="150" style={{marginTop: 12}}>
           <path d="M 70 110 H 230 C 260 50, 290 50, 320 110 C 350 170, 380 170, 410 110 C 440 50, 470 50, 500 110 H 690" fill="none" stroke={THEME.violet} strokeWidth="9" strokeLinecap="round" />
           <text data-layout-box="next-l" x="350" y="56" fill={THEME.violet} fontSize="30" fontWeight="900">L</text>
         </svg>
-        <BoundedText id="next-copy" size={21} color={THEME.muted} lines={2}>先看拓扑，再看频率响应，最后验证边界。</BoundedText>
+        <BoundedText id="next-copy" size={20} color={THEME.muted} lines={2}>下一集：RL 与 LC，把这套相位直觉扩展到更高阶网络。</BoundedText>
       </Card>
     </Card>
   );
 };
 
-const SceneDiagram: React.FC<{kind: RcHighPassScene['visual_kind']; frame: number; fps: number; geometry: RcHighPassGeometry}> = ({kind, frame, fps, geometry}) => {
+const SceneDiagram: React.FC<{kind: RcHighPassScene['visual_kind']; frame: number; globalFrame: number; fps: number; geometry: RcHighPassGeometry; visualCues: RcHighPassVisualCue[]}> = ({kind, frame, globalFrame, fps, geometry, visualCues}) => {
   if (kind === 'hook') return <HookDiagram frame={frame} fps={fps} />;
   if (kind === 'topology') return <TopologyDiagram geometry={geometry} />;
   if (kind === 'bode') return <BodeDiagram frame={frame} fps={fps} geometry={geometry} />;
   if (kind === 'phasor') return <PhasorDiagram frame={frame} fps={fps} />;
-  return <SummaryDiagram frame={frame} fps={fps} />;
+  return <SummaryDiagram frame={globalFrame} fps={fps} visualCues={visualCues} />;
 };
 
 const ACT_LABELS = ['ACT 01 / WHY HIGH-PASS', 'ACT 02 / TOPOLOGY', 'ACT 03 / CUTOFF & PHASE', 'ACT 04 / PHASOR & TIME', 'ACT 05 / SUMMARY'];
@@ -433,7 +469,7 @@ export const ReferenceRcHighPassVisual: React.FC<RcHighPassVisualInput> = (input
         <div style={{height: '100%', width: `${progress}%`, borderRadius: 4, background: accent}} />
       </div>
       <div style={{position: 'absolute', left: SAFE.left, right: SAFE.right, top: 370, bottom: SAFE.bottom + 18, opacity, transform: `translateY(${entrance}px)`, overflow: 'hidden'}}>
-        <SceneDiagram kind={scene.visual_kind} frame={localFrame} fps={fps} geometry={input.geometry} />
+        <SceneDiagram kind={scene.visual_kind} frame={localFrame} globalFrame={frame} fps={fps} geometry={input.geometry} visualCues={input.visual_cues} />
       </div>
     </AbsoluteFill>
   );

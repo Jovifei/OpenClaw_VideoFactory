@@ -63,6 +63,14 @@ const defaultRcHighPassProps: RcHighPassVisualInput = {
       markers: {magnitude_fc: {db: -3.0103}, phase_fc: {degrees: 45}},
     },
   },
+  visual_cues: [
+    {cue_id: 'watershed', start_microseconds: 70_000_000, end_microseconds: 72_000_000},
+    {cue_id: 'phase_lead', start_microseconds: 72_100_000, end_microseconds: 74_000_000},
+    {cue_id: 'time_scale', start_microseconds: 74_100_000, end_microseconds: 76_000_000},
+    {cue_id: 'design_fc', start_microseconds: 76_100_000, end_microseconds: 78_000_000},
+    {cue_id: 'design_validate', start_microseconds: 78_100_000, end_microseconds: 80_000_000},
+    {cue_id: 'next_preview', start_microseconds: 80_100_000, end_microseconds: 82_000_000},
+  ],
   scenes: [
     {start_seconds: 0, end_seconds: 12, heading: '为什么变化通过，稳态却被挡住？', visual_kind: 'hook'},
     {start_seconds: 12, end_seconds: 40, heading: '串联电容，分压取输出', visual_kind: 'topology'},

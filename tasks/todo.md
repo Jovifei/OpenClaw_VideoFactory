@@ -2537,3 +2537,14 @@ Plan: `docs/superpowers/plans/2026-08-23-rc-highpass-geometry-draft-recovery.md`
 - [x] Generate a visible, audible Jianying v6 draft; manual listening/export remains required.
 
 Evidence: `reports/phase1/douyin_7676032444876819739_rc_highpass_geometry_recovery_20260823_v6.json`.
+## PHASE1-RC-HIGHPASS-SPEECH-CUE-009 — REVIEW READY
+
+Change Request: `reports/change_requests/PHASE1-RC-HIGHPASS-SPEECH-CUE-009.json`.
+Plan: `docs/superpowers/plans/2026-08-24-rc-highpass-speech-cues.md`.
+
+- [x] Replace free-running summary-card cycle with six measured TTS cue events.
+- [x] Add visible transfer function, impedance cases, time-shift relation and design-check knowledge points.
+- [x] Replace unreliable single-frame H.264 seek with OpenCV sequential key-frame extraction in the quality gate.
+- [x] Produce V8 visual, all-frame report, audible QA preview and actual-project-root Jianying draft.
+- [x] Fix QA preview mixing so all 11 speech subsegments—not only the five parent segments—are audible.
+- [ ] Jovi refreshes/reopens Jianying, listens to V8 and manually exports if approved.

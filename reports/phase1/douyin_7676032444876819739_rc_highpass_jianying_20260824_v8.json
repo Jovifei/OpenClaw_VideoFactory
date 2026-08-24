@@ -1,0 +1,245 @@
+{
+  "schema_version": "1.0",
+  "status": "draft_ready_for_manual_jianying_review",
+  "draft_name": "DouyinRCHighPass_9x16_SAMI_20260824_v8",
+  "draft_relative_path": "DouyinRCHighPass_9x16_SAMI_20260824_v8",
+  "skill": {
+    "selected_backend": "jianying-editor-skill",
+    "repository": "luoluoluo22/jianying-editor-skill",
+    "pinned_commit": "f421c8a036f4fda888a83b38fc90bb9c00d6faa9",
+    "license": "MIT"
+  },
+  "inputs": {
+    "visual_filename": "rc_highpass_9x16_visual.mp4",
+    "visual_sha256": "f98ba40d15e301125e8a88956e593775c813ea6ada494206a99e8b6b1fbaee94",
+    "script_filename": "douyin_7676032444876819739_rc_highpass_reconstruction_script.json",
+    "script_sha256": "1aa919510192d3461bb07eeddc3e94576993d2c065ae21a6add7b4eebd874ccf",
+    "timing_manifest_filename": "douyin_7676032444876819739_rc_highpass_timing_manifest_20260824_v8.json",
+    "timing_manifest_sha256": "0b989c244cfa5cf9c1ed7a998af9c3222b078c23f8e119dbf390bda91cddd0cb"
+  },
+  "voice": {
+    "speaker": "zh_male_iclvop_chenxuankepu",
+    "requested_backend": "sami",
+    "used_backends": [
+      "sami",
+      "sami",
+      "sami",
+      "sami",
+      "sami",
+      "sami",
+      "sami",
+      "sami",
+      "sami",
+      "sami",
+      "sami"
+    ],
+    "segment_count": 11,
+    "parent_segment_count": 5,
+    "subtitle_segment_count": 5,
+    "voice_end_microseconds": 98920000,
+    "timeline_duration_microseconds": 98920000,
+    "segments": [
+      {
+        "index": 1,
+        "parent_segment_index": 1,
+        "part_index": 1,
+        "cue_id": null,
+        "start_microseconds": 0,
+        "end_microseconds": 19160000,
+        "duration_microseconds": 19160000,
+        "audio_filename": "tts_f73e7a42.ogg",
+        "audio_sha256": "f9d273063b938ba6e1dee9e862edcd44da6191e34ca49c6516dfbf1e71d6946a",
+        "narration_sha256": "d68363960742c0ddacb9b066f9d5058a4b75f6a8d9ba6cc3a3f0996d3658f56b",
+        "subtitle_sha256": "eb2d76cf4a5c7e1aafca9cd6930d509bdba4422a2753746bbf38a6bc28a02d0b"
+      },
+      {
+        "index": 2,
+        "parent_segment_index": 2,
+        "part_index": 1,
+        "cue_id": null,
+        "start_microseconds": 19260000,
+        "end_microseconds": 39340000,
+        "duration_microseconds": 20080000,
+        "audio_filename": "tts_efe9b5ee.ogg",
+        "audio_sha256": "ce6bc12dfdae4fa740f9a101587a5db3449ce3f115cda8fd3f08f7934dbad5f6",
+        "narration_sha256": "d3ec05017fb0a08e9adee60a49d0f25c44735e58c451aa11409c7fca854b7c88",
+        "subtitle_sha256": "04edeecb72996b8469fd227d6412ab951787123e313a1a2cc67199301575bff7"
+      },
+      {
+        "index": 3,
+        "parent_segment_index": 3,
+        "part_index": 1,
+        "cue_id": null,
+        "start_microseconds": 39440000,
+        "end_microseconds": 55000000,
+        "duration_microseconds": 15560000,
+        "audio_filename": "tts_20ccd658.ogg",
+        "audio_sha256": "9ce184fc19c20969015436b10671148e5ae6c7070b7e89d18062507819e214f7",
+        "narration_sha256": "cb10e1ca1b906102ab2ae40639b55d659488e6ee23b20112ae561859f1b13067",
+        "subtitle_sha256": "e4c6d83162a8e877276657dce87a3723e4e2f61e35e392271f57b2c6cbb49c64"
+      },
+      {
+        "index": 4,
+        "parent_segment_index": 4,
+        "part_index": 1,
+        "cue_id": null,
+        "start_microseconds": 55100000,
+        "end_microseconds": 69800000,
+        "duration_microseconds": 14700000,
+        "audio_filename": "tts_d270cc69.ogg",
+        "audio_sha256": "a55b420581ccb74cde117d5d8766dccd8f1db9efce9cd1f3060abf966ae991b7",
+        "narration_sha256": "5aa54cde20a4cb7b42d58b877fe5df0cbd95688f6be585d918bd1d76273818b5",
+        "subtitle_sha256": "00f0c20ef1e2b8edcfb39f604501b8f05c6273b9865f89516869e538248e4df2"
+      },
+      {
+        "index": 5,
+        "parent_segment_index": 5,
+        "part_index": 1,
+        "cue_id": null,
+        "start_microseconds": 69900000,
+        "end_microseconds": 72600000,
+        "duration_microseconds": 2700000,
+        "audio_filename": "tts_73bc3c1a.ogg",
+        "audio_sha256": "146ebd976232b4cf074e46a0a2d3dcc3e1e97c69f3207cc8317621f88e76190d",
+        "narration_sha256": "2b361e5faa60eb61ecf4ce4c6c449166d130984c53ed799fc2d7ecf2127a5926",
+        "subtitle_sha256": "6c3e1c66cc94f8713e1f6f5d20275ecd056dc27d1aacf9344ab669271bf5e401"
+      },
+      {
+        "index": 6,
+        "parent_segment_index": 5,
+        "part_index": 2,
+        "cue_id": "watershed",
+        "start_microseconds": 72700000,
+        "end_microseconds": 74160000,
+        "duration_microseconds": 1460000,
+        "audio_filename": "tts_879eccdf.ogg",
+        "audio_sha256": "2d4efc7a7057b4704e7478492e1e527b8a471a83fe2e19aceb7561ef274dae91",
+        "narration_sha256": "97eef6a95b9ed345e0e4fa71db7edbf4d10e4a9695cfdc028286e5372d245d6b",
+        "subtitle_sha256": "6c3e1c66cc94f8713e1f6f5d20275ecd056dc27d1aacf9344ab669271bf5e401"
+      },
+      {
+        "index": 7,
+        "parent_segment_index": 5,
+        "part_index": 3,
+        "cue_id": "phase_lead",
+        "start_microseconds": 74260000,
+        "end_microseconds": 75880000,
+        "duration_microseconds": 1620000,
+        "audio_filename": "tts_83432a07.ogg",
+        "audio_sha256": "c8f8612afb2c0a0942faeb298ad0ea51ef41570d4e8eae9c5cbc51da13dedebe",
+        "narration_sha256": "b85f0d4ea723df692b289edf966a78246139d9e40b9578f943173f70b92febdb",
+        "subtitle_sha256": "6c3e1c66cc94f8713e1f6f5d20275ecd056dc27d1aacf9344ab669271bf5e401"
+      },
+      {
+        "index": 8,
+        "parent_segment_index": 5,
+        "part_index": 4,
+        "cue_id": "time_scale",
+        "start_microseconds": 75980000,
+        "end_microseconds": 78080000,
+        "duration_microseconds": 2100000,
+        "audio_filename": "tts_7d96e31c.ogg",
+        "audio_sha256": "71201c882a2fd3d7fceb22e1093a065191d0f9a6be9ec9e3c7608722053cf437",
+        "narration_sha256": "a67782d84e3eb8c271a4b2840ecd3ea627f82142be03594bb408adadc6df940f",
+        "subtitle_sha256": "6c3e1c66cc94f8713e1f6f5d20275ecd056dc27d1aacf9344ab669271bf5e401"
+      },
+      {
+        "index": 9,
+        "parent_segment_index": 5,
+        "part_index": 5,
+        "cue_id": "design_fc",
+        "start_microseconds": 78180000,
+        "end_microseconds": 81500000,
+        "duration_microseconds": 3320000,
+        "audio_filename": "tts_10ab2332.ogg",
+        "audio_sha256": "9724e67f534b6c9822e73ce23e5e17a69bf30f6aee9e6e7615d40450f00852ba",
+        "narration_sha256": "c09ad318e49c521db1a3e5f1118ffc604687769d01758e245de576c79f07877c",
+        "subtitle_sha256": "6c3e1c66cc94f8713e1f6f5d20275ecd056dc27d1aacf9344ab669271bf5e401"
+      },
+      {
+        "index": 10,
+        "parent_segment_index": 5,
+        "part_index": 6,
+        "cue_id": "design_validate",
+        "start_microseconds": 81600000,
+        "end_microseconds": 87600000,
+        "duration_microseconds": 6000000,
+        "audio_filename": "tts_2d4a91f8.ogg",
+        "audio_sha256": "39a2555494609e647cc495fe6993d2b465e2d164ccf2b9040b44ec3bfa33e27c",
+        "narration_sha256": "11c320a429178b7870ed04edc7ba946d6422a2100f1e4be9d0513c72eecf4b8b",
+        "subtitle_sha256": "6c3e1c66cc94f8713e1f6f5d20275ecd056dc27d1aacf9344ab669271bf5e401"
+      },
+      {
+        "index": 11,
+        "parent_segment_index": 5,
+        "part_index": 7,
+        "cue_id": "next_preview",
+        "start_microseconds": 87700000,
+        "end_microseconds": 98920000,
+        "duration_microseconds": 11220000,
+        "audio_filename": "tts_19eb2bc9.ogg",
+        "audio_sha256": "05aee40e694c5e70e462dcbe0b83a4499e17f334b2d04607b1f7c1530f0ae371",
+        "narration_sha256": "ab856b313f9226d43bc44a500a33c44fe5590beaf605850b3b50cc38c6318c90",
+        "subtitle_sha256": "6c3e1c66cc94f8713e1f6f5d20275ecd056dc27d1aacf9344ab669271bf5e401"
+      }
+    ]
+  },
+  "canvas": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "visual_duration_microseconds": 102000000,
+  "sync_validation": {
+    "status": "passed",
+    "timing_authority": "timing_manifest",
+    "frame_tolerance_microseconds": 33334,
+    "visual_duration_matches_manifest": true,
+    "scene_and_voice_boundaries_are_manifest_driven": true
+  },
+  "tracks": [
+    {
+      "name": "VideoTrack",
+      "type": "",
+      "mute": false,
+      "volume": null,
+      "segment_count": 1,
+      "duration_microseconds": 102000000
+    },
+    {
+      "name": "VoiceOver",
+      "type": "",
+      "mute": false,
+      "volume": null,
+      "segment_count": 11,
+      "duration_microseconds": 98920000
+    },
+    {
+      "name": "Subtitles",
+      "type": "",
+      "mute": false,
+      "volume": null,
+      "segment_count": 5,
+      "duration_microseconds": 98920000
+    }
+  ],
+  "audio_validation": {
+    "status": "passed",
+    "voice_track": "VoiceOver",
+    "muted": false,
+    "segment_count": 11,
+    "human_listening_required": true
+  },
+  "subtitle_validation": {
+    "status": "passed",
+    "authoritative_layer": "jianying_native_subtitles_track",
+    "track_name": "Subtitles",
+    "segment_count": 5,
+    "burned_in_visual_must_be_false": true
+  },
+  "output_root": "E:\\OpenClaw_VideoFactory_Runtime\\jianying_drafts",
+  "export": {
+    "automatic_export": "disabled",
+    "manual_action": "open the new draft in Jianying and review/listen before exporting"
+  }
+}

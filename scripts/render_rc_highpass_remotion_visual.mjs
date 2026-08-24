@@ -54,6 +54,7 @@ function buildInput(script, storyboard, timing) {
   if (!storyboard || storyboard.aspect_ratio !== '9:16' || storyboard.canvas?.width !== 1080 || storyboard.canvas?.height !== 1920) throw new Error('storyboard_canvas_invalid');
   if (!storyboard.geometry_contract || storyboard.geometry_contract.version !== '2.0') throw new Error('storyboard_geometry_invalid');
   if (!timing || timing.schema_version !== '1.0' || !Array.isArray(timing.segments) || timing.segments.length !== 5) throw new Error('timing_manifest_invalid');
+  if (!Array.isArray(timing.visual_cues) || timing.visual_cues.length !== 6) throw new Error('timing_visual_cues_invalid');
   const durationSeconds = Number(timing.visual_duration_seconds);
   if (!Number.isFinite(durationSeconds) || durationSeconds < 25 || durationSeconds > 120) throw new Error('timing_visual_duration_invalid');
   const kinds = ['hook', 'topology', 'bode', 'phasor', 'summary'];
@@ -64,6 +65,7 @@ function buildInput(script, storyboard, timing) {
     fps: 30,
     layout_contract_version: '1.0',
     geometry: storyboard.geometry_contract,
+    visual_cues: timing.visual_cues,
     scenes: script.beats.map((beat, index) => {
       const segment = timing.segments[index];
       const startSeconds = Number(segment.scene_start_microseconds) / 1_000_000;
@@ -162,6 +164,7 @@ async function main() {
       pink_global_background: false,
     },
     geometry_contract: storyboard.geometry_contract,
+    visual_cues: timing.visual_cues,
     preview: {filename: path.basename(previewPath), sha256: sha256(previewBytes), frame: 30, scale: 0.25},
     outputs_on_e_drive: true,
     sync_contract: {

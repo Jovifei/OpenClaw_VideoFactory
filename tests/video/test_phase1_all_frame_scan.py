@@ -33,5 +33,6 @@ def test_full_frame_metrics_reports_every_decoded_frame() -> None:
 
 def test_representative_frames_are_selected_by_decoded_frame_index() -> None:
     source = (ROOT / "scripts/phase1_post_render_check.py").read_text(encoding="utf-8")
-    assert "select=eq(n" in source
-    assert "frame_index" in source
+    assert "cv2.VideoCapture" in source
+    assert "target_indices" in source
+    assert "select=eq(n" not in source

@@ -10,6 +10,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
@@ -20,8 +21,10 @@ from phase1_jianying_timing import (  # noqa: E402
     FPS,
     MAX_VISUAL_DURATION_SECONDS,
     MIN_VISUAL_DURATION_SECONDS,
+    VISUAL_CUE_IDS,
     load_script,
     sha256,
+    validate_visual_cues,
 )
 
 
@@ -40,6 +43,30 @@ def _safe_draft_path(root: Path, name: str) -> Path:
     if os.path.commonpath([str(root.resolve()), str(target)]) != str(root.resolve()):
         raise ValueError("draft_path_outside_root")
     return target
+
+
+def _narration_parts(script_value: dict[str, Any], beat_index: int, beat: dict[str, str]) -> list[dict[str, str | None]]:
+    raw_beats = script_value.get("beats")
+    raw = raw_beats[beat_index - 1].get("narration_parts") if isinstance(raw_beats, list) and isinstance(raw_beats[beat_index - 1], dict) else None
+    if raw is None:
+        return [{"text": beat["narration"], "cue_id": None}]
+    if not isinstance(raw, list) or not raw:
+        raise ValueError(f"narration_parts_{beat_index}_invalid")
+    parts: list[dict[str, str | None]] = []
+    for item in raw:
+        if not isinstance(item, dict):
+            raise ValueError(f"narration_part_{beat_index}_invalid")
+        text = str(item.get("text", "")).strip()
+        cue_id = item.get("cue_id")
+        if not text or cue_id is not None and cue_id not in VISUAL_CUE_IDS:
+            raise ValueError(f"narration_part_{beat_index}_invalid")
+        parts.append({"text": text, "cue_id": str(cue_id) if cue_id is not None else None})
+    if "".join(str(part["text"]) for part in parts) != beat["narration"]:
+        raise ValueError(f"narration_parts_{beat_index}_text_mismatch")
+    cue_ids = [str(part["cue_id"]) for part in parts if part["cue_id"] is not None]
+    if cue_ids and cue_ids != list(VISUAL_CUE_IDS):
+        raise ValueError(f"narration_parts_{beat_index}_cue_order_invalid")
+    return parts
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -83,6 +110,7 @@ def main() -> int:
 
     project = None
     segments: list[dict[str, object]] = []
+    visual_cues: list[dict[str, object]] = []
     cursor_us = 0
     gap_us = args.gap_ms * 1000
     backend_used: list[str] = []
@@ -95,41 +123,72 @@ def main() -> int:
             overwrite=False,
         )
         for index, beat in enumerate(beats, start=1):
-            sink = io.StringIO()
-            with contextlib.redirect_stdout(sink):
-                audio_segment, used = project.add_tts_intelligent(
-                    beat["narration"],
-                    speaker=args.speaker,
-                    start_time=cursor_us,
-                    track_name="VoiceOver",
-                    tts_backend=args.backend,
-                    allow_fallback=False,
-                    return_backend=True,
-                )
-            if audio_segment is None or not used:
-                raise ValueError(f"tts_segment_{index}_failed")
-            material = getattr(audio_segment, "material_instance", None)
-            audio_path = Path(str(getattr(material, "path", ""))).resolve()
-            if not audio_path.is_file():
-                raise ValueError(f"tts_segment_{index}_asset_missing")
-            duration_us = int(audio_segment.target_timerange.duration)
-            end_us = cursor_us + duration_us
-            relative = audio_path.relative_to(drafts_root.resolve()).as_posix()
-            backend_used.append(str(used))
-            segments.append(
-                {
-                    "index": index,
-                    "start_microseconds": cursor_us,
+            parts = _narration_parts(script_value, index, beat)
+            parent_start_us = cursor_us
+            subsegments: list[dict[str, object]] = []
+            for part_index, part in enumerate(parts, start=1):
+                part_start_us = cursor_us
+                sink = io.StringIO()
+                with contextlib.redirect_stdout(sink):
+                    audio_segment, used = project.add_tts_intelligent(
+                        str(part["text"]),
+                        speaker=args.speaker,
+                        start_time=part_start_us,
+                        track_name="VoiceOver",
+                        tts_backend=args.backend,
+                        allow_fallback=False,
+                        return_backend=True,
+                    )
+                if audio_segment is None or not used:
+                    raise ValueError(f"tts_segment_{index}_{part_index}_failed")
+                material = getattr(audio_segment, "material_instance", None)
+                audio_path = Path(str(getattr(material, "path", ""))).resolve()
+                if not audio_path.is_file():
+                    raise ValueError(f"tts_segment_{index}_{part_index}_asset_missing")
+                duration_us = int(audio_segment.target_timerange.duration)
+                end_us = part_start_us + duration_us
+                subsegment = {
+                    "index": part_index,
+                    "start_microseconds": part_start_us,
                     "end_microseconds": end_us,
                     "duration_microseconds": duration_us,
-                    "audio_relative_path": relative,
+                    "audio_relative_path": audio_path.relative_to(drafts_root.resolve()).as_posix(),
                     "audio_filename": audio_path.name,
                     "audio_sha256": sha256(audio_path),
-                    "narration_sha256": hashlib.sha256(beat["narration"].encode("utf-8")).hexdigest(),
-                    "subtitle_sha256": hashlib.sha256(beat["subtitle"].encode("utf-8")).hexdigest(),
+                    "narration_sha256": hashlib.sha256(str(part["text"]).encode("utf-8")).hexdigest(),
+                    "cue_id": part["cue_id"],
                 }
-            )
-            cursor_us = end_us + (gap_us if index < len(beats) else 0)
+                subsegments.append(subsegment)
+                backend_used.append(str(used))
+                cursor_us = end_us + (gap_us if part_index < len(parts) else 0)
+            parent_end_us = int(subsegments[-1]["end_microseconds"])
+            first = subsegments[0]
+            parent: dict[str, object] = {
+                "index": index,
+                "start_microseconds": parent_start_us,
+                "end_microseconds": parent_end_us,
+                "duration_microseconds": parent_end_us - parent_start_us,
+                "audio_relative_path": first["audio_relative_path"],
+                "audio_filename": first["audio_filename"],
+                "audio_sha256": first["audio_sha256"],
+                "narration_sha256": hashlib.sha256(beat["narration"].encode("utf-8")).hexdigest(),
+                "subtitle_sha256": hashlib.sha256(beat["subtitle"].encode("utf-8")).hexdigest(),
+            }
+            if len(subsegments) > 1:
+                parent["subsegments"] = subsegments
+            for subsegment in subsegments:
+                cue_id = subsegment.get("cue_id")
+                if cue_id is not None:
+                    visual_cues.append(
+                        {
+                            "cue_id": cue_id,
+                            "parent_segment_index": index,
+                            "start_microseconds": subsegment["start_microseconds"],
+                            "end_microseconds": subsegment["end_microseconds"],
+                        }
+                    )
+            segments.append(parent)
+            cursor_us = parent_end_us + (gap_us if index < len(beats) else 0)
         visual_duration_us = round(args.visual_duration_seconds * 1_000_000)
         for index, segment in enumerate(segments):
             segment["scene_start_microseconds"] = int(segment["start_microseconds"])
@@ -137,6 +196,12 @@ def main() -> int:
                 int(segments[index + 1]["start_microseconds"])
                 if index + 1 < len(segments)
                 else visual_duration_us
+            )
+        if visual_cues:
+            validate_visual_cues(
+                visual_cues,
+                parent_start=int(segments[-1]["start_microseconds"]),
+                parent_end=int(segments[-1]["end_microseconds"]),
             )
         save_sink = io.StringIO()
         with contextlib.redirect_stdout(save_sink):
@@ -162,6 +227,7 @@ def main() -> int:
                 "requested_backend": args.backend,
                 "used_backends": backend_used,
                 "segment_count": len(segments),
+                "rendered_audio_segment_count": len(backend_used),
                 "voice_end_microseconds": segments[-1]["end_microseconds"],
                 "timeline_duration_seconds": round(float(segments[-1]["end_microseconds"]) / 1_000_000, 6),
             },
@@ -172,6 +238,7 @@ def main() -> int:
                 "audio_paths_are_runtime_relative": True,
             },
             "segments": segments,
+            "visual_cues": visual_cues,
         }
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
         manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

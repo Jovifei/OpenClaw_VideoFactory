@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "status": "remotion_visual_ready_for_post_render_gate",
+  "renderer": "remotion",
+  "composition": "RcHighPass1080x1920",
+  "input": {
+    "script_filename": "douyin_7676032444876819739_rc_highpass_reconstruction_script.json",
+    "script_sha256": "1aa919510192d3461bb07eeddc3e94576993d2c065ae21a6add7b4eebd874ccf",
+    "storyboard_filename": "douyin_7676032444876819739_rc_highpass_storyboard.json",
+    "storyboard_sha256": "ae32445d4610b10726e6993a216eab477138cf53675b60b4d16c1192be0c95dc",
+    "timing_manifest_filename": "douyin_7676032444876819739_rc_highpass_timing_manifest_20260824_v8.json",
+    "timing_manifest_sha256": "0b989c244cfa5cf9c1ed7a998af9c3222b078c23f8e119dbf390bda91cddd0cb"
+  },
+  "visual": {
+    "filename": "rc_highpass_9x16_visual.mp4",
+    "sha256": "f98ba40d15e301125e8a88956e593775c813ea6ada494206a99e8b6b1fbaee94",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration_seconds": 102,
+    "audio_present": false,
+    "burned_in_subtitles": false,
+    "scene_timing": [
+      {
+        "start_seconds": 0,
+        "end_seconds": 19.26,
+        "visual_kind": "hook",
+        "timing_segment_index": 1
+      },
+      {
+        "start_seconds": 19.26,
+        "end_seconds": 39.44,
+        "visual_kind": "topology",
+        "timing_segment_index": 2
+      },
+      {
+        "start_seconds": 39.44,
+        "end_seconds": 55.1,
+        "visual_kind": "bode",
+        "timing_segment_index": 3
+      },
+      {
+        "start_seconds": 55.1,
+        "end_seconds": 69.9,
+        "visual_kind": "phasor",
+        "timing_segment_index": 4
+      },
+      {
+        "start_seconds": 69.9,
+        "end_seconds": 102,
+        "visual_kind": "summary",
+        "timing_segment_index": 5
+      }
+    ]
+  },
+  "layout_contract": {
+    "version": "1.0",
+    "safe_area": {
+      "left": 72,
+      "right": 72,
+      "top": 68,
+      "bottom": 180
+    },
+    "subtitle_reserve": {
+      "top": 1590,
+      "height": 220,
+      "authority": "jianying_native"
+    },
+    "text_policy": "bounded_natural_wrap",
+    "overflow_policy": "fail_closed",
+    "theme_token": "technical_neutral",
+    "background_is_theme_driven": true,
+    "pink_global_background": false
+  },
+  "geometry_contract": {
+    "version": "2.0",
+    "topology": {
+      "resistor": {
+        "x": 485,
+        "y": 430,
+        "width": 100,
+        "height": 120
+      },
+      "ground": {
+        "x": 485,
+        "y": 550,
+        "width": 100,
+        "height": 76
+      },
+      "wave_paths": []
+    },
+    "bode": {
+      "x": {
+        "left": 118,
+        "right": 754,
+        "fc_ratio": 1
+      },
+      "magnitude_lane": {
+        "top": 110,
+        "bottom": 350,
+        "min_db": -20,
+        "max_db": 0
+      },
+      "phase_lane": {
+        "top": 420,
+        "bottom": 620,
+        "min_degrees": 0,
+        "max_degrees": 90
+      },
+      "markers": {
+        "magnitude_fc": {
+          "db": -3.0103
+        },
+        "phase_fc": {
+          "degrees": 45
+        }
+      }
+    }
+  },
+  "visual_cues": [
+    {
+      "cue_id": "watershed",
+      "parent_segment_index": 5,
+      "start_microseconds": 72700000,
+      "end_microseconds": 74160000
+    },
+    {
+      "cue_id": "phase_lead",
+      "parent_segment_index": 5,
+      "start_microseconds": 74260000,
+      "end_microseconds": 75880000
+    },
+    {
+      "cue_id": "time_scale",
+      "parent_segment_index": 5,
+      "start_microseconds": 75980000,
+      "end_microseconds": 78080000
+    },
+    {
+      "cue_id": "design_fc",
+      "parent_segment_index": 5,
+      "start_microseconds": 78180000,
+      "end_microseconds": 81500000
+    },
+    {
+      "cue_id": "design_validate",
+      "parent_segment_index": 5,
+      "start_microseconds": 81600000,
+      "end_microseconds": 87600000
+    },
+    {
+      "cue_id": "next_preview",
+      "parent_segment_index": 5,
+      "start_microseconds": 87700000,
+      "end_microseconds": 98920000
+    }
+  ],
+  "preview": {
+    "filename": "rc_highpass_9x16_visual.preview.png",
+    "sha256": "ed2a091fd30900c19606d355cdf65d94a4251cf0d7480caf9324507578cb5bd9",
+    "frame": 30,
+    "scale": 0.25
+  },
+  "outputs_on_e_drive": true,
+  "sync_contract": {
+    "status": "voice_first_manifest_driven",
+    "authority": "jianying_voice_timing_manifest",
+    "remotion_scene_boundaries_are_voice_boundaries": true,
+    "subtitle_authority": "jianying_native_subtitles_track"
+  },
+  "automatic_export": false
+}

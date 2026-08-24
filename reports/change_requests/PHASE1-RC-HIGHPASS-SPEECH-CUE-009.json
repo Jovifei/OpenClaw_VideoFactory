@@ -1,0 +1,32 @@
+{
+  "id": "PHASE1-RC-HIGHPASS-SPEECH-CUE-009",
+  "scope": "PHASE_1_LOCAL_VIDEO_FACTORY",
+  "status": "review_ready_for_human",
+  "requested_by": "Jovi",
+  "objective": "Bind RC high-pass information-card emphasis to measured narration phrases, increase visible technical knowledge density, and make all-frame/critical-cue visual evidence use a reliable sequential decoder.",
+  "allowed_paths": [
+    "reports/change_requests/PHASE1-RC-HIGHPASS-SPEECH-CUE-009.json",
+    "reports/phase1/",
+    "tasks/",
+    "docs/superpowers/plans/",
+    "remotion/src/",
+    "scripts/",
+    "tests/video/",
+    "Obsidian project memory pages",
+    "C:/Users/Admin/AppData/Local/JianyingPro/User Data/Projects/com.lveditor.draft/<new-junction-only>"
+  ],
+  "constraints": [
+    "Six visual cues are generated from new local SAMI subsegments: watershed, phase_lead, time_scale, design_fc, design_validate, and next_preview.",
+    "The first three terms trigger one corresponding card pulse only at their measured speech starts; no free-running modulo animation is allowed.",
+    "Remotion visual stays subtitle-free; Jianying owns one native subtitle track and one VoiceOver track.",
+    "All source media and actual draft/media data remain on E:. Any C: entry is an app-visible non-overwriting junction only.",
+    "No remote HeyGen output, source audio, source frame, source transcript, automatic export, UI automation, publication, Feishu, Cron, or phase promotion."
+  ],
+  "acceptance": [
+    "Manifest records six ordered cue start/end times from TTS subsegments and Jianying imports 11 exact VoiceOver segments on one track.",
+    "Visible knowledge includes transfer function, low/high-frequency boundary conditions, cutoff facts, time-shift equation, three design checks, and cue-linked summary cards.",
+    "The post-render gate scans all 3060 frames by OpenCV sequential decode; critical frames use the same decode path or direct Remotion stills, not fast H.264 seek.",
+    "V8 is visible from Jianying's actual projects root, has audible AAC QA preview, and preserves the manual listening/export gate."
+  ],
+  "rollback": "Remove only the exact v8 C-to-E junction after resolving and proving its E target; retain previous v5-v7 candidates and reports."
+}
