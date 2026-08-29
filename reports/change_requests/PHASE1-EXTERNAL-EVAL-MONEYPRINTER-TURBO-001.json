@@ -1,0 +1,26 @@
+{
+  "id": "PHASE1-EXTERNAL-EVAL-MONEYPRINTER-TURBO-001",
+  "date": "2026-08-29",
+  "granted_by": "user",
+  "category": "external_engineering_evaluation",
+  "summary": "Evaluate harry0703/MoneyPrinterTurbo for local deployment and reuse potential; no production-chain changes",
+  "scope": [
+    "shallow-clone MoneyPrinterTurbo v1.3.5 (commit eb8c237) into gitignored external/MoneyPrinterTurbo",
+    "install pinned dependencies into an isolated Python 3.12 venv inside that folder",
+    "run keyless smoke checks: CLI, WebUI, API, edge TTS, pipeline stop_at=subtitle",
+    "produce evaluation report with integration options and locked-decision conflict analysis"
+  ],
+  "excludes": [
+    "no integration into run_local_brief()/run_job()/build_review_package() chain",
+    "no second renderer or editor backend adoption",
+    "no LLM/Pexels/API keys stored in the repo",
+    "no model download (whisper large-v3 default explicitly not triggered)",
+    "no Feishu, Cron, or auto publish; MPT cross-post stays disabled",
+    "no PROJECT_STATUS.yaml or Phase 1 gate change"
+  ],
+  "evidence": [
+    "reports/phase1/moneyprinter_turbo_smoke_20260829.json",
+    "reports/MONEYPRINTER_TURBO_EVALUATION_20260829.md"
+  ],
+  "rollback": "delete external/MoneyPrinterTurbo and external/mpt_smoke_tts.mp3; nothing else was modified"
+}

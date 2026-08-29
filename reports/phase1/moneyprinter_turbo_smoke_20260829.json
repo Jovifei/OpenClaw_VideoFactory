@@ -1,0 +1,77 @@
+{
+  "report": "moneyprinter_turbo_local_smoke",
+  "date": "2026-08-29",
+  "scope": "external evaluation only; not part of Phase 1 render chain; no Phase 1 status change",
+  "vendor": {
+    "name": "MoneyPrinterTurbo",
+    "source": "https://github.com/harry0703/MoneyPrinterTurbo",
+    "license": "MIT (Copyright (c) 2024 Harry)",
+    "version": "v1.3.5",
+    "pinned_commit": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "clone_mode": "shallow, depth=1",
+    "location": "external/MoneyPrinterTurbo (gitignored)",
+    "python": "3.12 (py -3.12 venv at external/MoneyPrinterTurbo/.venv)"
+  },
+  "key_dependencies": {
+    "moviepy": "2.1.2 (installed)",
+    "edge_tts": "7.2.7",
+    "faster-whisper": "1.1.0",
+    "streamlit": "1.59.1",
+    "fastapi": "0.136.3",
+    "uvicorn": "0.32.1"
+  },
+  "smoke_results": [
+    {
+      "check": "cli_help",
+      "command": "python cli.py --help",
+      "result": "pass",
+      "notes": "full argparse surfaced; stages script/terms/audio/subtitle/materials/video; stop_at supported"
+    },
+    {
+      "check": "webui_start",
+      "command": "python -m streamlit run webui/Main.py --server.address=127.0.0.1 --server.port=8503",
+      "result": "pass",
+      "notes": "HTTP 200 on http://127.0.0.1:8503"
+    },
+    {
+      "check": "api_start",
+      "command": "python -m uvicorn app.asgi:app --host 127.0.0.1 --port 8081",
+      "result": "pass",
+      "notes": "HTTP 200 on /docs; MemoryState fallback means Redis is NOT required locally"
+    },
+    {
+      "check": "edge_tts_keyless",
+      "command": "edge_tts.Communicate('...watchdog narration...', 'zh-CN-XiaoxiaoNeural')",
+      "result": "pass",
+      "artifact": "E:/project/OpenClaw_VideoFactory/external/mpt_smoke_tts.mp3",
+      "duration_seconds": 4.488,
+      "notes": "no API key needed; remote Microsoft online service, not fully local"
+    },
+    {
+      "check": "pipeline_stop_at_subtitle_keyless",
+      "command": "cli.py --video-subject watchdog_smoke --video-script '<provided>' --video-source local --stop-at subtitle --voice-name zh-CN-XiaoxiaoNeural-Female --subtitle-enabled",
+      "task_id": "72848715-b4be-4ee1-9a7f-d9920f8c62b7",
+      "result": "pass",
+      "artifacts": [
+        "audio.mp3",
+        "script.json",
+        "subtitle.srt (3 cues, timeline correct)"
+      ],
+      "notes": "LLM skipped via provided script; terms skipped via local source; no key of any kind used; system FFmpeg 8.1.1 auto-detected"
+    }
+  ],
+  "key_findings": [
+    "stop_at allows consuming MPT stages in isolation (script/terms/audio/subtitle) without MoviePy composition",
+    "subtitle default model large-v3 would download ~3GB at runtime; must pin a small model or reuse existing faster-whisper cache if adopted",
+    "edge_tts is a free but REMOTE service; adopting it for production narration requires an approved change request per project governance",
+    "LLM script generation requires a user-provided API key (DeepSeek/Moonshot/OpenAI/etc.); keys stay outside the repo",
+    "auto cross-post (TikTok/YouTube via upload-post) exists but is disabled unless configured; must remain disabled per project rules (no auto publish)",
+    "MoviePy burned-subtitle composition conflicts with locked single-renderer (Remotion) and Jianying-only editing decisions; not adopted"
+  ],
+  "boundaries": [
+    "no Phase 1 gate or PROJECT_STATUS.yaml change",
+    "no second renderer or editor backend introduced into the production chain",
+    "no model download, no Feishu, no Cron, no publication",
+    "config.toml inside external/MoneyPrinterTurbo stays gitignored and must not hold production keys"
+  ]
+}

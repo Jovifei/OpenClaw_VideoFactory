@@ -276,3 +276,8 @@ schemas/p0_evidence_v2/
 !reports/AI_DIRECTOR_PHASE2_PROVIDER_PREFLIGHT_OBSERVABILITY_REMEDIATION_005V3.md
 !reports/CODEX_PROVIDER_PREFLIGHT_DIAGNOSTIC_005V3.json
 !reports/change_requests/AI-DIRECTOR-PHASE2-PROVIDER-PREFLIGHT-DIAGNOSTICS-005V3.json
+
+# MoneyPrinterTurbo external evaluation (2026-08-29)
+!reports/MONEYPRINTER_TURBO_EVALUATION_20260829.md
+!reports/phase1/moneyprinter_turbo_smoke_20260829.json
+!reports/change_requests/PHASE1-EXTERNAL-EVAL-MONEYPRINTER-TURBO-001.json
