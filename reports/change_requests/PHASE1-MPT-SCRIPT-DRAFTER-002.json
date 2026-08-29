@@ -1,0 +1,26 @@
+{
+  "id": "PHASE1-MPT-SCRIPT-DRAFTER-002",
+  "date": "2026-08-29",
+  "granted_by": "user",
+  "category": "phase1_local_input_tooling",
+  "summary": "Option A approved by Jovi: wire MoneyPrinterTurbo (vendored, MIT) as a keyword-to-narration-draft drafter using the MiMo v2.5 OpenAI-compatible endpoint",
+  "scope": [
+    "add scripts/phase1_mpt_script_drafter.py: subprocess adapter around MPT cli.py --stop-at script with per-call timeout, fail-closed aggregation, and JSON draft output under dist/phase1_local/script_drafts/",
+    "add tests/phase1_local/test_mpt_script_drafter.py (mocked subprocess, 5 cases)",
+    "configure gitignored external/MoneyPrinterTurbo/config.toml with openai-compatible base_url https://token-plan-cn.xiaomimimo.com/v1, model mimo-v2.5, and the user's MIMO_API_KEY from the local environment",
+    "force whisper model_size to small inside the gitignored MPT config to prevent runtime model downloads",
+    "allowlist the new evidence files in .gitignore following the existing reports convention"
+  ],
+  "excludes": [
+    "no integration into run_local_brief()/run_job()/build_review_package() renderer chain",
+    "no second renderer, editor backend, or TTS backend adoption",
+    "no keys in the repository, logs, or reports",
+    "no Feishu, Cron, auto publication, or PROJECT_STATUS.yaml change",
+    "drafts are human-review inputs only; never auto-promoted to production scripts"
+  ],
+  "evidence": [
+    "reports/phase1/mpt_script_drafter_evidence_20260829.json",
+    "reports/MONEYPRINTER_TURBO_DRAFTER_002.md"
+  ],
+  "rollback": "delete the adapter script, test file, external/MoneyPrinterTurbo tree, draft outputs, and revert .gitignore additions"
+}

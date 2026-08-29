@@ -1,0 +1,47 @@
+{
+  "report": "moneyprinter_turbo_script_drafter_002",
+  "date": "2026-08-29",
+  "change_request": "PHASE1-MPT-SCRIPT-DRAFTER-002",
+  "scope": "Option A integration: MoneyPrinterTurbo as keyword-to-narration-draft upstream tool; no render-chain changes; no Phase 1 status change",
+  "provider": {
+    "endpoint_host": "token-plan-cn.xiaomimimo.com",
+    "model": "mimo-v2.5",
+    "api_format_used": "openai_compatible (/v1/chat/completions, Bearer auth)",
+    "anthropic_format_probe": "also 200 with x-api-key; not used by MPT",
+    "key_handling": "MIMO_API_KEY read from user environment into gitignored external/MoneyPrinterTurbo/config.toml only; never echoed, never committed",
+    "verification": "unauthenticated probes returned 401; with key both formats returned 200"
+  },
+  "config_hardening": [
+    "external/MoneyPrinterTurbo/config.toml is gitignored (verified via git check-ignore)",
+    "whisper model_size forced from large-v3 (~3GB runtime download) to small; no model download occurred"
+  ],
+  "evidence": [
+    {
+      "check": "mpt_cli_script_generation",
+      "subject": "单片机看门狗的作用",
+      "task_id": "f9ee0f8e-7d1c-4783-a5f1-735c1a56db12",
+      "result": "pass; two-paragraph Chinese narration returned",
+      "duration_seconds": 19
+    },
+    {
+      "check": "adapter_real_smoke",
+      "command": "python scripts/phase1_mpt_script_drafter.py --subject 'I2C总线为什么要上拉电阻' --candidates 2 --paragraphs 2",
+      "result": "pass; 2/2 candidates ok (13.73s, 10.65s)",
+      "artifact": "dist/phase1_local/script_drafts/drafter_20260829_213516/candidates.json",
+      "notes": "candidates technically correct on open-drain/pull-up reasoning; review_status=PENDING_HUMAN_REVIEW"
+    },
+    {
+      "check": "unit_tests_mocked",
+      "command": "python -m pytest tests/phase1_local/test_mpt_script_drafter.py -q",
+      "result": "5 passed",
+      "notes": "JSON parsing, candidate writing, fail-closed on all-timeout, input validation"
+    }
+  ],
+  "boundaries": [
+    "adapter only invokes MPT cli.py --stop-at script in a subprocess; Remotion/Jianying/FFmpeg render chain untouched",
+    "no Feishu, Cron, publication, or model download",
+    "drafts are review inputs for the original-brief flow; never auto-promoted to production scripts",
+    "PROJECT_STATUS.yaml unchanged; Phase 1 human-review gates unchanged"
+  ],
+  "rollback": "delete scripts/phase1_mpt_script_drafter.py, tests/phase1_local/test_mpt_script_drafter.py, external/MoneyPrinterTurbo, and dist/phase1_local/script_drafts/; revert .gitignore additions"
+}
