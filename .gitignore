@@ -284,3 +284,8 @@ schemas/p0_evidence_v2/
 !reports/phase1/mpt_script_drafter_evidence_20260829.json
 !reports/MONEYPRINTER_TURBO_DRAFTER_002.md
 !reports/change_requests/PHASE1-MPT-SCRIPT-DRAFTER-002.json
+
+# MoneyPrinterTurbo config finalize 003 (2026-08-29)
+!docs/MONEYPRINTER_TURBO_SETUP.md
+!reports/phase1/mpt_configure_evidence_20260829.json
+!reports/change_requests/PHASE1-MPT-CONFIG-FINALIZE-003.json

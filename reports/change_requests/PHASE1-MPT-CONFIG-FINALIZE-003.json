@@ -1,0 +1,23 @@
+{
+  "id": "PHASE1-MPT-CONFIG-FINALIZE-003",
+  "date": "2026-08-29",
+  "granted_by": "user",
+  "category": "phase1_local_input_tooling",
+  "summary": "Finalize MoneyPrinterTurbo configuration: key rotation helper, security-safe key input, setup documentation, and live verification; prepares for Jovi to supply a dedicated API key without pasting it into chat",
+  "scope": [
+    "add scripts/phase1_mpt_configure.py: writes gitignored external/MoneyPrinterTurbo/config.toml from env or piped stdin, never accepts keys as CLI arguments, never echoes key material, supports --verify live probe",
+    "add tests/phase1_local/test_mpt_configure.py (no network)",
+    "add docs/MONEYPRINTER_TURBO_SETUP.md covering setup, key rotation, usage, and disabled capabilities",
+    "record evidence and allowlist new tracked files in .gitignore"
+  ],
+  "excludes": [
+    "no render-chain changes; no new provider adoption",
+    "no keys in the repository, logs, chat transcripts, or reports",
+    "no Feishu, Cron, publication, model download, or PROJECT_STATUS.yaml change",
+    "Pexels/Pixabay material keys stay unconfigured (Option C deferred)"
+  ],
+  "evidence": [
+    "reports/phase1/mpt_configure_evidence_20260829.json"
+  ],
+  "rollback": "delete the configure script, test, docs page, and revert .gitignore additions; external/MoneyPrinterTurbo/config.toml is gitignored and user-owned"
+}

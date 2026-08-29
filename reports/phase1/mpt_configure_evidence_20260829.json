@@ -1,0 +1,48 @@
+{
+  "report": "moneyprinter_turbo_config_finalize_003",
+  "date": "2026-08-29",
+  "change_request": "PHASE1-MPT-CONFIG-FINALIZE-003",
+  "scope": "configuration finalize: key rotation helper, security-safe key input, setup documentation; no render-chain changes; no Phase 1 status change",
+  "deliverables": [
+    {
+      "item": "scripts/phase1_mpt_configure.py",
+      "purpose": "writes gitignored external/MoneyPrinterTurbo/config.toml; key sources: MPT_LLM_API_KEY/MIMO_API_KEY env, --stdin pipe, or --key-file; keys never accepted as CLI args, never echoed; --status-only reports presence without network; --verify runs a live chat-completion probe"
+    },
+    {
+      "item": "tests/phase1_local/test_mpt_configure.py",
+      "result": "3 passed (TOML replace/insert, idempotency, missing-config status)"
+    },
+    {
+      "item": "docs/MONEYPRINTER_TURBO_SETUP.md",
+      "author": "sub-agent (GLM-5.3-flash) drafted; lead reviewed and corrected duration_seconds field description",
+      "content": "setup, three safe key-input methods with PowerShell/Git Bash examples, verification, daily usage, security boundaries, troubleshooting, rollback"
+    }
+  ],
+  "verification": [
+    {
+      "check": "status_only",
+      "result": "all five settings present: llm_provider=openai, base_url, model, api_key, whisper small"
+    },
+    {
+      "check": "live_verify_initial",
+      "result": "HTTP 200 but content empty: mimo-v2.5 reasoning model spent the 8-token budget on thinking; probe logic was too strict (defect found by lead review)"
+    },
+    {
+      "check": "live_verify_after_fix",
+      "change": "max_tokens raised to 64; accept content or reasoning_content as proof of serving",
+      "result": "VERIFY HTTP 200, model responded: True; exit code 0"
+    },
+    {
+      "check": "unit_tests",
+      "command": "python -m pytest tests/phase1_local/test_mpt_configure.py tests/phase1_local/test_mpt_script_drafter.py -q",
+      "result": "8 passed"
+    }
+  ],
+  "key_handling": "MIMO_API_KEY from the user environment remains the working key; when Jovi supplies a dedicated key it must be delivered via environment variable, stdin pipe, or key file per docs/MONEYPRINTER_TURBO_SETUP.md — never pasted into chat",
+  "boundaries": [
+    "no render-chain changes; Pexels/Pixabay material keys stay unconfigured (Option C deferred)",
+    "no keys in repo/logs/reports; config.toml verified gitignored",
+    "no Feishu, Cron, publication, model download, or PROJECT_STATUS.yaml change"
+  ],
+  "rollback": "delete scripts/phase1_mpt_configure.py, tests/phase1_local/test_mpt_configure.py, docs/MONEYPRINTER_TURBO_SETUP.md; revert .gitignore additions"
+}
