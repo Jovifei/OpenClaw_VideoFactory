@@ -1,0 +1,31 @@
+{
+  "id": "PHASE1-TOPIC-TO-JIANYING-010",
+  "date": "2026-08-30",
+  "granted_by": "user",
+  "category": "phase1_local_topic_pipeline",
+  "summary": "Implement one-topic-to-reviewable-Jianying-draft automation using a pinned AGPLv3 OpenMontage subset, MoneyPrinterTurbo drafts, the existing Remotion project, SAMI timing, and the pinned Jianying backend",
+  "scope": [
+    "relicense distributable repository code under AGPL-3.0 and record third-party provenance",
+    "vendor the minimal OpenMontage subset pinned at cd9f3c1f03368be87b140af494914b8ee4e3c7a4",
+    "add create-subject and validated research/script/scene/quality contracts",
+    "keep SQLite as the only job lifecycle authority and export read-only Backlot checkpoints",
+    "render generic technical explainers in the existing Remotion project",
+    "generate scene stills, a contact sheet, visual review, timing manifest, audible preview, and an E-drive Jianying draft",
+    "extend the Phase 1 review package and topic-only acceptance gate",
+    "update project documentation, Obsidian memory, tests, and evidence"
+  ],
+  "excludes": [
+    "no Feishu, OpenClaw runtime, Cron, automatic topic scheduling, automatic export, or publication",
+    "no new image/video generation provider, model, Piper, cloud TTS, HyperFrames, or second renderer",
+    "no source/reference video requirement for Phase 1 topic-chain acceptance",
+    "no C-drive media storage and no unverified Pink Pig substitute"
+  ],
+  "upstream": {
+    "repository": "https://github.com/calesthio/OpenMontage",
+    "commit": "cd9f3c1f03368be87b140af494914b8ee4e3c7a4",
+    "license": "AGPL-3.0-only"
+  },
+  "terminal_candidate_status": "PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW",
+  "does_not_imply_phase_pass": true,
+  "rollback": "revert the five feature commits; runtime jobs, drafts, and downloaded archives remain isolated and ignored"
+}

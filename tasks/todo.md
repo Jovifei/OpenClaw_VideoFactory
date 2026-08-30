@@ -2548,3 +2548,17 @@ Plan: `docs/superpowers/plans/2026-08-24-rc-highpass-speech-cues.md`.
 - [x] Produce V8 visual, all-frame report, audible QA preview and actual-project-root Jianying draft.
 - [x] Fix QA preview mixing so all 11 speech subsegments—not only the five parent segments—are audible.
 - [ ] Jovi refreshes/reopens Jianying, listens to V8 and manually exports if approved.
+## PHASE1-TOPIC-TO-JIANYING-010 — IMPLEMENTING
+
+Plan: `tasks/plans/2026-08-30-phase1-topic-to-jianying-openmontage.md`.
+Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
+
+- [x] Create isolated E-drive worktree and prove the clean baseline.
+- [x] Vendor and qualify the pinned AGPLv3 OpenMontage subset.
+- [ ] Add topic request/research/script selection/scene plan contracts.
+- [ ] Connect `create-subject` to the existing SQLite lifecycle.
+- [ ] Add generic Remotion scene/still/contact-sheet rendering and visual gates.
+- [ ] Bind SAMI timing, Jianying draft generation, and expanded review evidence.
+- [ ] Run three fixture qualifications, one real-topic E2E, full regression, and fresh clone.
+- [ ] Record the final candidate as `PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW`; wait for Jovi before any phase pass.
+- [ ] Sync repository docs, Obsidian project memory, and Codex durable memory.
