@@ -292,6 +292,32 @@ class CandidateStore:
             connection.close()
         return [{**dict(row), "payload": json.loads(row["payload_json"])} for row in rows]
 
+    def projection_snapshot(self, job_id: str) -> dict[str, Any]:
+        """Read job, artifacts, and events from one SQLite read transaction."""
+        connection = self._connect()
+        try:
+            connection.execute("BEGIN")
+            job = self._status_row(connection, job_id)
+            artifact_rows = connection.execute(
+                "SELECT * FROM artifacts WHERE job_id = ? ORDER BY artifact_type", (job_id,)
+            ).fetchall()
+            event_rows = connection.execute(
+                "SELECT * FROM job_events WHERE job_id = ? ORDER BY event_id", (job_id,)
+            ).fetchall()
+            connection.commit()
+        except Exception:
+            connection.rollback()
+            raise
+        finally:
+            connection.close()
+        return {
+            "job": job,
+            "artifacts": [dict(row) for row in artifact_rows],
+            "events": [
+                {**dict(row), "payload": json.loads(row["payload_json"])} for row in event_rows
+            ],
+        }
+
     def list_jobs(self) -> list[dict[str, Any]]:
         connection = self._connect()
         try:

@@ -32,6 +32,9 @@ def create_app(*, projects_root: Path | str, default_host: str = "127.0.0.1") ->
 
     @app.get("/api/project/{project_id}/state")
     async def project_state(project_id: str) -> dict[str, object]:
-        return load_board_state(safe_project(project_id))
+        try:
+            return load_board_state(safe_project(project_id))
+        except ValueError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
 
     return app
