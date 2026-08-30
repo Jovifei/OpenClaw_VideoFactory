@@ -2635,3 +2635,22 @@ Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
 - Final text-layout correction: aspect geometry is a single source of truth; the exact measured title width and per-scene main/item font sizes now drive JSX. Remotion contract tests reject any return to hardcoded grammar sizes, and both genuine Task2 aspect renders were refreshed.
 - Evidence-integrity correction: post-render layout validation now receives measured media dimensions. `render_and_review` verifies the report-declared master/still/clip paths and hashes, rejects stale or extra scene files, and binds render report, contact sheet, post report and media hashes in `visual_review.json`.
 - Fresh current-HEAD evidence: `E:\Claude_allow\Download\phase1-topic-openmontage-010-current\16x9` and `...\9x16`; both were created through `render_and_review` and passed their 150-frame post-render gates.
+
+# PHASE1-TOPIC-OPENMONTAGE-010 — Task 4A timing/audio/Jianying service
+
+- [x] RED: add strict topic timing tests for scene-plan identity/count/hash, duration range, voice overflow, and legacy compatibility.
+- [x] RED: add multi-clip Jianying import tests for render-report binding, containment, tamper/extra/index/duration failures, expanded audio, and track counts.
+- [x] RED: add audible-preview binding/decode/loudness tests and dependency-injected subject-media orchestration tests.
+- [x] GREEN: extend timing probe, Jianying draft builder, and audible preview without changing legacy CLI behavior.
+- [x] GREEN: add `src/factory/phase1_subject_media.py` and strict result validation needed by this service.
+- [x] VERIFY: run focused red/green cycles, relevant video + Phase 1 suites, and inspect the scoped diff.
+- [ ] E2E: run one bounded five-scene SAMI / current Task3 visual / pinned Jianying Skill proof on E:, with automatic export disabled. **BLOCKED:** the fresh 40s render correctly failed the existing all-frame gate because the 12.4s narration leaves an excessive static final-scene tail; preview and draft were not created.
+- [x] REVIEW: record evidence paths, residual concerns, and commit `feat(jianying): bind subject timing and editable draft`.
+
+## Task 4A review
+
+- RED: the new subject-media import failed collection as expected; focused contract failures then covered the missing bindings.
+- GREEN: focused Task4A plus legacy timing/Jianying tests passed 15 tests; final `tests/video tests/phase1_local` passed 389 tests; compileall passed.
+- Real evidence: `E:\Claude_allow\Download\phase1-topic-task4a-e2e-20260830-03` contains a new SAMI timing manifest, five fresh clips/stills, 40s visual master, render report, contact sheet, and failed post-render report. The post-render gate reported `all_frame_static_run_excessive` before preview/draft creation.
+- No package was installed or downloaded. The existing `E:\project\OpenClaw_VideoFactory\.venv\Scripts\python.exe` supplied the pinned Skill runtime dependencies through the explicit `media_python` boundary.
+- Automatic Jianying export remains disabled; no DB transition, CLI/review-package/status change, or phase promotion was added.

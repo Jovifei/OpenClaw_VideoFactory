@@ -87,6 +87,45 @@ def _probe_visual_canvas(path: Path) -> tuple[int, int]:
     return width, height
 
 
+def _probe_duration_microseconds(path: Path) -> int:
+    completed = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", str(path)],
+                               capture_output=True, text=True, check=False, timeout=30)
+    if completed.returncode != 0:
+        raise ValueError("visual_clip_probe_failed")
+    try:
+        return round(float(completed.stdout.strip()) * 1_000_000)
+    except ValueError as exc:
+        raise ValueError("visual_clip_probe_invalid") from exc
+
+
+def verify_scene_clips(render_report: Path, clips_root: Path, segments: list[dict[str, Any]], *, duration_probe=_probe_duration_microseconds) -> list[dict[str, Any]]:
+    report = json.loads(render_report.read_text(encoding="utf-8"))
+    declarations = report.get("visual", {}).get("scene_timing")
+    if not isinstance(declarations, list) or len(declarations) != len(segments):
+        raise ValueError("visual_clip_count_mismatch")
+    root = clips_root.resolve(); verified = []
+    for expected, (declaration, timing) in enumerate(zip(declarations, segments), start=1):
+        if declaration.get("scene_index") != expected or timing.get("index") != expected:
+            raise ValueError("visual_clip_index_mismatch")
+        clip = declaration.get("clip")
+        raw = str(clip.get("filename", "")) if isinstance(clip, dict) else ""
+        candidate = (render_report.parent / raw).resolve()
+        if os.path.commonpath([str(root), str(candidate)]) != str(root):
+            raise ValueError("visual_clip_path_escape")
+        if not candidate.is_file():
+            raise ValueError("visual_clip_missing")
+        if clip.get("sha256") != sha256(candidate):
+            raise ValueError("visual_clip_hash_mismatch")
+        expected_duration = int(timing["scene_end_microseconds"]) - int(timing["scene_start_microseconds"])
+        actual_duration = int(duration_probe(candidate))
+        if abs(actual_duration - expected_duration) > FRAME_TOLERANCE_MICROSECONDS:
+            raise ValueError("visual_clip_duration_drift")
+        verified.append({"index": expected, "path": candidate, "sha256": sha256(candidate), "duration_microseconds": actual_duration})
+    if set(root.glob("scene_*.mp4")) != {item["path"] for item in verified}:
+        raise ValueError("visual_clip_directory_contaminated")
+    return verified
+
+
 def _track_report(project: Any) -> list[dict[str, object]]:
     tracks = getattr(project.script, "tracks", {})
     values = tracks.values() if isinstance(tracks, dict) else []
@@ -112,6 +151,8 @@ def _track_report(project: Any) -> list[dict[str, object]]:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--visual", required=True, type=Path)
+    parser.add_argument("--visual-report", type=Path)
+    parser.add_argument("--clips-root", type=Path)
     parser.add_argument("--script", required=True, type=Path)
     parser.add_argument("--timing-manifest", required=True, type=Path)
     parser.add_argument("--drafts-root", type=Path, default=DEFAULT_DRAFTS_ROOT)
@@ -135,6 +176,8 @@ def main() -> int:
     timing_root = _output_root(args.timing_root, "timing_root")
     report_path = _output_root(args.report, "report")
     skill_root = args.skill_root.resolve()
+    if (args.visual_report is None) != (args.clips_root is None):
+        raise ValueError("visual_report_and_clips_root_required_together")
 
     if not visual.is_file() or not script_path.is_file() or not timing_manifest_path.is_file():
         raise ValueError("input_missing")
@@ -162,6 +205,12 @@ def main() -> int:
     if voice_meta.get("speaker") != args.speaker or voice_meta.get("requested_backend") != args.backend:
         raise ValueError("timing_manifest_voice_settings_mismatch")
     expected_visual_duration_us = round(float(timing_manifest["visual_duration_seconds"]) * 1_000_000)
+    scene_clips = verify_scene_clips(args.visual_report.resolve(), args.clips_root.resolve(), manifest_segments) if args.visual_report else None
+    if scene_clips is not None:
+        render_value = json.loads(args.visual_report.read_text(encoding="utf-8"))
+        master = render_value.get("visual", {})
+        if master.get("sha256") != sha256(visual) or Path(str(master.get("filename", ""))).name != visual.name:
+            raise ValueError("visual_render_report_master_mismatch")
     scripts_dir = str(skill_root / "scripts")
     if scripts_dir not in sys.path:
         sys.path.insert(0, scripts_dir)
@@ -180,12 +229,16 @@ def main() -> int:
             drafts_root=str(drafts_root),
             overwrite=False,
         )
-        visual_segment = project.add_media_safe(str(visual), start_time="0s", track_name="VideoTrack")
-        if visual_segment is None:
-            raise ValueError("visual_import_failed")
-        visual_duration_us = int(visual_segment.target_timerange.duration)
-        if abs(visual_duration_us - expected_visual_duration_us) > FRAME_TOLERANCE_MICROSECONDS:
-            raise ValueError("visual_duration_manifest_mismatch")
+        if scene_clips is None:
+            visual_segment = project.add_media_safe(str(visual), start_time="0s", track_name="VideoTrack")
+            if visual_segment is None: raise ValueError("visual_import_failed")
+            visual_duration_us = int(visual_segment.target_timerange.duration)
+        else:
+            for clip, timing_entry in zip(scene_clips, manifest_segments):
+                visual_segment = project.add_media_safe(str(clip["path"]), start_time=int(timing_entry["scene_start_microseconds"]), track_name="VideoTrack")
+                if visual_segment is None: raise ValueError("visual_clip_import_failed")
+            visual_duration_us = expected_visual_duration_us
+        if abs(visual_duration_us - expected_visual_duration_us) > FRAME_TOLERANCE_MICROSECONDS: raise ValueError("visual_duration_manifest_mismatch")
 
         for index, beat in enumerate(beats, start=1):
             manifest_segment = manifest_segments[index - 1]
@@ -238,12 +291,16 @@ def main() -> int:
             raise ValueError("visual_shorter_than_voice")
 
         track_report = _track_report(project)
+        video_tracks = [item for item in track_report if item.get("name") == "VideoTrack"]
         voice_tracks = [item for item in track_report if item.get("name") == "VoiceOver"]
         subtitle_tracks = [item for item in track_report if item.get("name") == "Subtitles"]
         if len(voice_tracks) != 1 or bool(voice_tracks[0].get("mute")) or int(voice_tracks[0].get("segment_count", 0)) != len(voice_segments):
             raise ValueError("voice_track_not_audible")
         if len(subtitle_tracks) != 1 or int(subtitle_tracks[0].get("segment_count", 0)) != len(beats):
             raise ValueError("subtitle_track_invalid")
+        expected_video_segments = len(manifest_segments) if scene_clips is not None else 1
+        if len(video_tracks) != 1 or int(video_tracks[0].get("segment_count", 0)) != expected_video_segments:
+            raise ValueError("video_track_invalid")
 
         save_result = project.save()
         if not isinstance(save_result, dict) or save_result.get("status") != "SUCCESS":
@@ -268,6 +325,9 @@ def main() -> int:
                 "script_sha256": _sha256(script_path),
                 "timing_manifest_filename": timing_manifest_path.name,
                 "timing_manifest_sha256": _sha256(timing_manifest_path),
+                "render_report_filename": args.visual_report.name if args.visual_report else None,
+                "render_report_sha256": _sha256(args.visual_report.resolve()) if args.visual_report else None,
+                "visual_clips": ([{"index": item["index"], "filename": item["path"].name, "sha256": item["sha256"], "duration_microseconds": item["duration_microseconds"]} for item in scene_clips] if scene_clips else []),
             },
             "voice": {
                 "speaker": args.speaker,

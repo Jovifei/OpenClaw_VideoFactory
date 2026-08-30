@@ -72,6 +72,7 @@ def _narration_parts(script_value: dict[str, Any], beat_index: int, beat: dict[s
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--script", required=True, type=Path)
+    parser.add_argument("--scene-plan", type=Path)
     parser.add_argument("--drafts-root", type=Path, default=DEFAULT_DRAFTS_ROOT)
     parser.add_argument("--name", required=True)
     parser.add_argument("--manifest", required=True, type=Path)
@@ -85,14 +86,32 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def validate_scene_plan_binding(script: dict[str, Any], scene_plan: dict[str, Any], *, target_duration_seconds: float,
+                                voice_end_microseconds: int) -> list[dict[str, Any]]:
+    scenes = scene_plan.get("scenes") if isinstance(scene_plan, dict) else None
+    beats = script.get("beats") if isinstance(script, dict) else None
+    if not isinstance(scenes, list) or not isinstance(beats, list) or len(scenes) != len(beats):
+        raise ValueError("scene_plan_scene_count_mismatch")
+    if not script.get("script_id") or scene_plan.get("script_id") != script.get("script_id"):
+        raise ValueError("scene_plan_script_id_mismatch")
+    if not 25 <= float(target_duration_seconds) <= 60:
+        raise ValueError("scene_plan_visual_duration_invalid")
+    if voice_end_microseconds > round(float(target_duration_seconds) * 1_000_000):
+        raise ValueError("voice_exceeds_visual_target")
+    return scenes
+
+
 def main() -> int:
     args = build_parser().parse_args()
     script_path = args.script.resolve()
+    scene_plan_path = args.scene_plan.resolve() if args.scene_plan else None
     drafts_root = _output_root(args.drafts_root, "drafts_root")
     manifest_path = _output_root(args.manifest, "manifest")
     skill_root = args.skill_root.resolve()
     if not script_path.is_file():
         raise ValueError("script_missing")
+    if scene_plan_path is not None and not scene_plan_path.is_file():
+        raise ValueError("scene_plan_missing")
     if args.gap_ms < 0 or args.gap_ms > 2000:
         raise ValueError("gap_invalid")
     if args.visual_duration_seconds < MIN_VISUAL_DURATION_SECONDS or args.visual_duration_seconds > MAX_VISUAL_DURATION_SECONDS:
@@ -190,6 +209,11 @@ def main() -> int:
             segments.append(parent)
             cursor_us = parent_end_us + (gap_us if index < len(beats) else 0)
         visual_duration_us = round(args.visual_duration_seconds * 1_000_000)
+        scene_plan_value = None
+        if scene_plan_path is not None:
+            scene_plan_value = json.loads(scene_plan_path.read_text(encoding="utf-8"))
+            validate_scene_plan_binding(script_value, scene_plan_value, target_duration_seconds=args.visual_duration_seconds,
+                                        voice_end_microseconds=int(segments[-1]["end_microseconds"]))
         for index, segment in enumerate(segments):
             segment["scene_start_microseconds"] = int(segment["start_microseconds"])
             segment["scene_end_microseconds"] = (
@@ -240,6 +264,8 @@ def main() -> int:
             "segments": segments,
             "visual_cues": visual_cues,
         }
+        if scene_plan_path is not None:
+            manifest["scene_plan"] = {"filename": scene_plan_path.name, "sha256": sha256(scene_plan_path)}
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
         manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"ok": True, "code": "timing_manifest_ready", "manifest": str(manifest_path), "segments": segments}, ensure_ascii=False))

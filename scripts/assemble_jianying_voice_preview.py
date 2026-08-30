@@ -43,11 +43,19 @@ def _probe(path: Path) -> dict:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--visual", required=True, type=Path)
+    parser.add_argument("--visual-report", type=Path)
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--timing-root", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--report", required=True, type=Path)
     return parser
+
+
+def verify_visual_report(visual: Path, render_report: Path) -> None:
+    value = json.loads(render_report.read_text(encoding="utf-8"))
+    declared = value.get("visual", {})
+    if declared.get("sha256") != sha256(visual) or Path(str(declared.get("filename", ""))).name != visual.name:
+        raise ValueError("visual_render_report_hash_mismatch")
 
 
 def main() -> int:
@@ -59,6 +67,8 @@ def main() -> int:
     report_path = _output_root(args.report, "report")
     if not visual.is_file() or not manifest_path.is_file():
         raise ValueError("input_missing")
+    if args.visual_report:
+        verify_visual_report(visual, args.visual_report.resolve())
     manifest = load_manifest(manifest_path, drafts_root=timing_root)
     visual_info = _probe(visual)
     visual_duration = float(visual_info.get("format", {}).get("duration", 0.0) or 0.0)
@@ -76,6 +86,8 @@ def main() -> int:
         from phase1_jianying_timing import resolve_audio_path
 
         audio_paths.append(resolve_audio_path(manifest, timing_root, segment))
+    if len(audio_paths) != int(manifest["voice"].get("rendered_audio_segment_count", len(audio_paths))):
+        raise ValueError("expanded_audio_count_mismatch")
 
     output.parent.mkdir(parents=True, exist_ok=True)
     filter_parts = []
@@ -117,6 +129,8 @@ def main() -> int:
     loudness_text = loudness.stderr
     mean_match = re.search(r"mean_volume:\s*(-?\d+(?:\.\d+)?) dB", loudness_text)
     max_match = re.search(r"max_volume:\s*(-?\d+(?:\.\d+)?) dB", loudness_text)
+    if loudness.returncode != 0 or mean_match is None or max_match is None:
+        raise ValueError("assembled_loudness_invalid")
     output_duration = float(output_info.get("format", {}).get("duration", 0.0) or 0.0)
     report = {
         "schema_version": "1.0",
