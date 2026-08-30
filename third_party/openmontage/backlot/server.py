@@ -8,6 +8,8 @@ from .state import load_board_state
 
 
 def create_app(*, projects_root: Path | str, default_host: str = "127.0.0.1") -> FastAPI:
+    if default_host != "127.0.0.1":
+        raise ValueError("backlot_loopback_host_required")
     root = Path(projects_root).resolve()
     app = FastAPI(title="Backlot read-only", docs_url=None, redoc_url=None)
     app.state.default_host = default_host

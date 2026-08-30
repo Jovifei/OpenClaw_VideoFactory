@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
 from third_party.openmontage.backlot.server import create_app
@@ -29,3 +30,9 @@ def test_backlot_rejects_path_traversal_and_defaults_to_loopback(tmp_path: Path)
     with TestClient(app) as client:
         assert client.get("/api/project/%2e%2e/state").status_code in {400, 404}
         assert client.get("/api/project/C%3A/state").status_code == 400
+
+
+@pytest.mark.parametrize("host", ["0.0.0.0", "localhost", "::1", "127.0.0.2"])
+def test_backlot_rejects_every_noncanonical_bind_host(tmp_path: Path, host: str) -> None:
+    with pytest.raises(ValueError, match="backlot_loopback_host_required"):
+        create_app(projects_root=tmp_path, default_host=host)
