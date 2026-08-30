@@ -2666,3 +2666,9 @@ Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
 - [x] Verify focused tests, full video + Phase 1 tests, Schema meta-validation, compileall, and diff checks.
 
 Spec-review verification: focused `10 passed`; full `393 passed`; Draft 2020-12 Schema check and compileall passed. The narration/static-tail issue remains deliberately unchanged and no E2E retry was run.
+
+### Task 4A clip-duration contract correction
+
+- [x] RED: missing and independently tampered `clip.duration_microseconds` produced three expected failures.
+- [x] GREEN: Remotion emits exact rounded microseconds; Jianying validates report boundary, timing window, declared duration, and probed duration within one frame.
+- [x] VERIFY: focused `28 passed`; full video + Phase 1 `396 passed`; Remotion typecheck and diff check passed.

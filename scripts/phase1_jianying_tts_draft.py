@@ -122,8 +122,17 @@ def verify_scene_clips(render_report: Path, clips_root: Path, segments: list[dic
         if declared_start != int(timing["scene_start_microseconds"]) or declared_end != int(timing["scene_end_microseconds"]):
             raise ValueError("visual_clip_declaration_timing_mismatch")
         declared_duration = declared_end - declared_start
+        reported_duration = clip.get("duration_microseconds")
+        if not isinstance(reported_duration, int) or reported_duration <= 0:
+            raise ValueError("visual_clip_declared_duration_invalid")
         actual_duration = int(duration_probe(candidate))
-        if abs(actual_duration - expected_duration) > FRAME_TOLERANCE_MICROSECONDS or abs(actual_duration - declared_duration) > FRAME_TOLERANCE_MICROSECONDS:
+        if (abs(reported_duration - declared_duration) > FRAME_TOLERANCE_MICROSECONDS
+                or abs(reported_duration - expected_duration) > FRAME_TOLERANCE_MICROSECONDS
+                or abs(reported_duration - actual_duration) > FRAME_TOLERANCE_MICROSECONDS
+                or abs(actual_duration - expected_duration) > FRAME_TOLERANCE_MICROSECONDS
+                or abs(actual_duration - declared_duration) > FRAME_TOLERANCE_MICROSECONDS):
+            if reported_duration != declared_duration:
+                raise ValueError("visual_clip_declared_duration_invalid")
             raise ValueError("visual_clip_duration_drift")
         verified.append({"index": expected, "path": candidate, "sha256": sha256(candidate), "duration_microseconds": actual_duration})
     if set(root.glob("scene_*.mp4")) != {item["path"] for item in verified}:

@@ -506,3 +506,4 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - A subprocess chain must not return a review-ready status merely because commands returned zero. Parse every expected report and media output, validate success states and cross-hashes, and validate the final strict result schema before emitting READY.
 - Keep media-runtime Python explicit and E-drive-bound. Do not silently fall back to the parent interpreter when pinned editor dependencies differ across environments.
 - On stage failure, preserve the workdir and prior evidence, write a sanitized stage failure record, and let the exact draft-producing adapter clean only the newly created draft.
+- Cross-file media contracts must carry explicit declared duration as an integer, not derive it only at the consumer. Validate the declared duration against report boundaries, the timing manifest, and the probed media duration within one frame.

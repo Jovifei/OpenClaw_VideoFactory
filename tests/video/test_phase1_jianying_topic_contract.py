@@ -55,6 +55,24 @@ def test_render_report_clip_binding_rejects_tamper_extra_escape_and_duration(tmp
     with pytest.raises(ValueError, match="visual_clip_declaration_timing_mismatch"): draft.verify_scene_clips(report, clips, segments, duration_probe=lambda _: 1_000_000)
 
 
+@pytest.mark.parametrize("declared", [None, 900_000])
+def test_render_report_clip_duration_field_is_required_and_bound(tmp_path: Path, declared: int | None) -> None:
+    draft = _module("scripts/phase1_jianying_tts_draft.py", f"topic_clip_duration_{declared}")
+    clips = tmp_path / "clips"; clips.mkdir(); clip = clips / "scene_01.mp4"; clip.write_bytes(b"clip")
+    clip_value = {"filename":"clips/scene_01.mp4", "sha256":draft.sha256(clip)}
+    if declared is not None: clip_value["duration_microseconds"] = declared
+    report = tmp_path / "render.json"
+    report.write_text(json.dumps({"visual":{"scene_timing":[{"scene_index":1,"start_seconds":0,"end_seconds":1,"clip":clip_value}]}}), encoding="utf-8")
+    segment = [{"index":1,"scene_start_microseconds":0,"scene_end_microseconds":1_000_000}]
+    with pytest.raises(ValueError, match="visual_clip_declared_duration_invalid"):
+        draft.verify_scene_clips(report, clips, segment, duration_probe=lambda _: 1_000_000)
+
+
+def test_renderer_emits_microsecond_clip_duration_contract() -> None:
+    source = (ROOT / "scripts" / "render_phase1_topic_visual.mjs").read_text(encoding="utf-8")
+    assert "duration_microseconds:Math.round((scene.end_seconds-scene.start_seconds)*1e6)" in source
+
+
 def test_preview_render_report_binds_visual_hash(tmp_path: Path) -> None:
     preview = _module("scripts/assemble_jianying_voice_preview.py", "topic_preview_contract")
     visual = tmp_path / "visual.mp4"; visual.write_bytes(b"visual")
