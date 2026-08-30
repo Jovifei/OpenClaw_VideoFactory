@@ -507,3 +507,5 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Keep media-runtime Python explicit and E-drive-bound. Do not silently fall back to the parent interpreter when pinned editor dependencies differ across environments.
 - On stage failure, preserve the workdir and prior evidence, write a sanitized stage failure record, and let the exact draft-producing adapter clean only the newly created draft.
 - Cross-file media contracts must carry explicit declared duration as an integer, not derive it only at the consumer. Validate the declared duration against report boundaries, the timing manifest, and the probed media duration within one frame.
+- A declared media timeline is not proof of the editor timeline. Capture the actual segment start/duration returned by the editor, validate ordered gap/overlap and measured max end, and persist those observations in the report.
+- READY validation must inspect safety and quality conclusions inside each report, not only terminal status and file hashes. Treat status-only documents as incomplete evidence.

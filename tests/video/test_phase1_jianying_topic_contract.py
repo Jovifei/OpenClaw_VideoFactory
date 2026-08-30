@@ -73,6 +73,23 @@ def test_renderer_emits_microsecond_clip_duration_contract() -> None:
     assert "duration_microseconds:Math.round((scene.end_seconds-scene.start_seconds)*1e6)" in source
 
 
+@pytest.mark.parametrize("actual,error", [
+    ([{"index":1,"start_microseconds":100_000,"duration_microseconds":1_000_000}], "visual_segment_start_drift"),
+    ([{"index":1,"start_microseconds":0,"duration_microseconds":800_000}], "visual_segment_duration_drift"),
+])
+def test_actual_visual_segments_reject_moved_and_truncated(actual: list[dict], error: str) -> None:
+    draft = _module("scripts/phase1_jianying_tts_draft.py", f"actual_track_{error}")
+    expected = [{"index":1,"scene_start_microseconds":0,"scene_end_microseconds":1_000_000}]
+    with pytest.raises(ValueError, match=error): draft.validate_actual_visual_segments(actual, expected, expected_visual_duration_us=1_000_000)
+
+
+def test_actual_visual_segments_allow_one_frame_quantization() -> None:
+    draft = _module("scripts/phase1_jianying_tts_draft.py", "actual_track_quantized")
+    expected = [{"index":1,"scene_start_microseconds":0,"scene_end_microseconds":1_000_000}]
+    result = draft.validate_actual_visual_segments([{"index":1,"start_microseconds":1_000,"duration_microseconds":999_000}], expected, expected_visual_duration_us=1_000_000)
+    assert result["max_end_microseconds"] == 1_000_000
+
+
 def test_preview_render_report_binds_visual_hash(tmp_path: Path) -> None:
     preview = _module("scripts/assemble_jianying_voice_preview.py", "topic_preview_contract")
     visual = tmp_path / "visual.mp4"; visual.write_bytes(b"visual")

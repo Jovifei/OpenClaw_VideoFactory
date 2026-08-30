@@ -140,6 +140,20 @@ def verify_scene_clips(render_report: Path, clips_root: Path, segments: list[dic
     return verified
 
 
+def validate_actual_visual_segments(actual: list[dict[str, int]], expected: list[dict[str, Any]], *, expected_visual_duration_us: int) -> dict[str, int]:
+    if len(actual) != len(expected): raise ValueError("visual_segment_count_mismatch")
+    previous_end = 0
+    for index, (observed, timing) in enumerate(zip(actual, expected), start=1):
+        start, duration = int(observed["start_microseconds"]), int(observed["duration_microseconds"])
+        expected_start = int(timing["scene_start_microseconds"]); expected_duration = int(timing["scene_end_microseconds"]) - expected_start
+        if observed.get("index") != index or abs(start - expected_start) > FRAME_TOLERANCE_MICROSECONDS: raise ValueError("visual_segment_start_drift")
+        if abs(duration - expected_duration) > FRAME_TOLERANCE_MICROSECONDS: raise ValueError("visual_segment_duration_drift")
+        if index > 1 and abs(start - previous_end) > FRAME_TOLERANCE_MICROSECONDS: raise ValueError("visual_segment_gap_or_overlap")
+        previous_end = start + duration
+    if abs(previous_end - expected_visual_duration_us) > FRAME_TOLERANCE_MICROSECONDS: raise ValueError("visual_track_end_drift")
+    return {"segment_count":len(actual), "max_end_microseconds":previous_end}
+
+
 def _track_report(project: Any) -> list[dict[str, object]]:
     tracks = getattr(project.script, "tracks", {})
     values = tracks.values() if isinstance(tracks, dict) else []
@@ -248,10 +262,13 @@ def main() -> int:
             if visual_segment is None: raise ValueError("visual_import_failed")
             visual_duration_us = int(visual_segment.target_timerange.duration)
         else:
+            actual_visual_segments = []
             for clip, timing_entry in zip(scene_clips, manifest_segments):
                 visual_segment = project.add_media_safe(str(clip["path"]), start_time=int(timing_entry["scene_start_microseconds"]), track_name="VideoTrack")
                 if visual_segment is None: raise ValueError("visual_clip_import_failed")
-            visual_duration_us = expected_visual_duration_us
+                actual_visual_segments.append({"index":int(timing_entry["index"]),"start_microseconds":int(visual_segment.target_timerange.start),"duration_microseconds":int(visual_segment.target_timerange.duration)})
+            measured_visual = validate_actual_visual_segments(actual_visual_segments, manifest_segments, expected_visual_duration_us=expected_visual_duration_us)
+            visual_duration_us = measured_visual["max_end_microseconds"]
         if abs(visual_duration_us - expected_visual_duration_us) > FRAME_TOLERANCE_MICROSECONDS: raise ValueError("visual_duration_manifest_mismatch")
 
         for index, beat in enumerate(beats, start=1):
@@ -342,6 +359,7 @@ def main() -> int:
                 "render_report_filename": args.visual_report.name if args.visual_report else None,
                 "render_report_sha256": _sha256(args.visual_report.resolve()) if args.visual_report else None,
                 "visual_clips": ([{"index": item["index"], "filename": item["path"].name, "sha256": item["sha256"], "duration_microseconds": item["duration_microseconds"]} for item in scene_clips] if scene_clips else []),
+                "actual_visual_segments": actual_visual_segments if scene_clips else [],
             },
             "voice": {
                 "speaker": args.speaker,

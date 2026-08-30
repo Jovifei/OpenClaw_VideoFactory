@@ -2672,3 +2672,9 @@ Spec-review verification: focused `10 passed`; full `393 passed`; Draft 2020-12 
 - [x] RED: missing and independently tampered `clip.duration_microseconds` produced three expected failures.
 - [x] GREEN: Remotion emits exact rounded microseconds; Jianying validates report boundary, timing window, declared duration, and probed duration within one frame.
 - [x] VERIFY: focused `28 passed`; full video + Phase 1 `396 passed`; Remotion typecheck and diff check passed.
+
+### Task 4A actual-timeline and READY-quality correction
+
+- [x] RED: reject moved/truncated editor segments and status-only READY reports while allowing one-frame quantization.
+- [x] GREEN: measure and persist every imported visual segment, validate ordered starts/durations/gaps/end, and inspect required timing/render/review/preview/Jianying conclusions.
+- [x] VERIFY: focused `17 passed`; full video + Phase 1 `400 passed`; compileall and diff check passed.

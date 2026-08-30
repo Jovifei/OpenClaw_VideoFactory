@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from src.factory.phase1_subject_media import SubjectMediaRequest, run_subject_media
+from src.factory.phase1_subject_media import SubjectMediaRequest, run_subject_media, validate_ready_reports
 from src.factory.phase1_topic import build_director_script, build_research_brief, build_scene_plan, build_topic_request
 from video_factory.pipeline import validation
 
@@ -37,6 +37,14 @@ def test_subject_media_result_schema_is_strict() -> None:
         validation.validate({"schema_version":"1.0","status":"PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW"}, "phase1_subject_media_result")
 
 
+def test_ready_reports_reject_status_only_documents() -> None:
+    reports = {name:{"status":status} for name,status in {
+        "timing":"timing_manifest_ready","render":"passed","visual_review":"passed",
+        "preview":"audio_preview_ready_for_manual_listening","jianying":"draft_ready_for_manual_jianying_review"}.items()}
+    with pytest.raises(ValueError, match="ready_report_contract_invalid"):
+        validate_ready_reports(reports, scene_count=5, expanded_audio_count=5, visual_duration_us=30_000_000)
+
+
 def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     skill = tmp_path / "skill"; (skill / "scripts").mkdir(parents=True); (skill / "scripts" / "jy_wrapper.py").write_text("", encoding="utf-8")
     request_value = build_topic_request(subject="watchdog", duration=30)
@@ -53,12 +61,12 @@ def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: p
         script_name = Path(command[1]).name
         def arg(name: str) -> Path: return Path(command[command.index(name) + 1])
         if script_name == "phase1_jianying_timing_probe.py":
-            _write(arg("--manifest"), {"schema_version":"1.0","status":"timing_manifest_ready","script":{"sha256":hashlib.sha256(script.read_bytes()).hexdigest()},"scene_plan":{"sha256":hashlib.sha256(plan.read_bytes()).hexdigest()}})
+            _write(arg("--manifest"), {"schema_version":"1.0","status":"timing_manifest_ready","script":{"sha256":hashlib.sha256(script.read_bytes()).hexdigest()},"scene_plan":{"sha256":hashlib.sha256(plan.read_bytes()).hexdigest()},"segments":[{}]*5,"voice":{"rendered_audio_segment_count":5,"voice_end_microseconds":10_000_000}})
         elif script_name == "assemble_jianying_voice_preview.py":
             visual_path, output_path = arg("--visual"), arg("--output"); output_path.write_bytes(b"preview")
-            _write(arg("--report"), {"status":"audio_preview_ready_for_manual_listening","visual":{"sha256":hashlib.sha256(visual_path.read_bytes()).hexdigest()},"render_report":{"sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"output":{"sha256":hashlib.sha256(output_path.read_bytes()).hexdigest()}})
+            _write(arg("--report"), {"status":"audio_preview_ready_for_manual_listening","visual":{"sha256":hashlib.sha256(visual_path.read_bytes()).hexdigest()},"render_report":{"sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"audio_source":{"segment_count":5},"output":{"sha256":hashlib.sha256(output_path.read_bytes()).hexdigest(),"audio_present":True,"full_decode":"passed","codec":"aac","mean_volume_db":-20.0,"max_volume_db":-2.0},"sync_validation":{"status":"passed"}})
         elif script_name == "phase1_jianying_tts_draft.py":
-            _write(arg("--report"), {"status":"draft_ready_for_manual_jianying_review","inputs":{"script_sha256":hashlib.sha256(script.read_bytes()).hexdigest(),"timing_manifest_sha256":hashlib.sha256(arg("--timing-manifest").read_bytes()).hexdigest(),"render_report_sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"export":{"automatic_export":"disabled"}})
+            _write(arg("--report"), {"status":"draft_ready_for_manual_jianying_review","inputs":{"script_sha256":hashlib.sha256(script.read_bytes()).hexdigest(),"timing_manifest_sha256":hashlib.sha256(arg("--timing-manifest").read_bytes()).hexdigest(),"render_report_sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"sync_validation":{"status":"passed"},"audio_validation":{"status":"passed","muted":False,"segment_count":5},"subtitle_validation":{"status":"passed","segment_count":5},"tracks":[{"name":"VideoTrack","segment_count":5,"duration_microseconds":30_000_000},{"name":"VoiceOver","segment_count":5},{"name":"Subtitles","segment_count":5}],"export":{"automatic_export":"disabled"}})
         return type("Done", (), {"returncode": 0, "stdout": "", "stderr": ""})()
 
     def visual(**kwargs: object) -> dict:
@@ -68,8 +76,8 @@ def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: p
         for i in range(1, 6):
             clip = clips / f"scene_{i:02d}.mp4"; clip.write_bytes(str(i).encode())
             report_entries.append({"scene_index":i,"clip":{"filename":f"clips/{clip.name}","sha256":hashlib.sha256(clip.read_bytes()).hexdigest()}})
-        report = Path(kwargs["report"]); _write(report,{"status":"passed","visual":{"filename":output.name,"sha256":hashlib.sha256(output.read_bytes()).hexdigest(),"scene_timing":report_entries}})
-        _write(Path(kwargs["review_report"]), {"status":"passed","visual":{"sha256":hashlib.sha256(output.read_bytes()).hexdigest()}})
+        report = Path(kwargs["report"]); _write(report,{"status":"passed","visual":{"filename":output.name,"sha256":hashlib.sha256(output.read_bytes()).hexdigest(),"audio_present":False,"burned_in_subtitles":False,"scene_timing":report_entries}})
+        _write(Path(kwargs["review_report"]), {"status":"passed","visual":{"sha256":hashlib.sha256(output.read_bytes()).hexdigest()},"contact_sheet":{"sha256":"a"*64},"post_render_report":{"sha256":"b"*64},"post_render":{"full_decode":True,"all_frame_scan":{"status":"passed"}}})
         return {"status":"passed","visual":{"path":str(output)}}
 
     workdir = Path("E:/Claude_allow/Download") / f"subject-media-{uuid.uuid4().hex}"

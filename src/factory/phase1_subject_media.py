@@ -44,6 +44,33 @@ def _write_failure(workdir: Path, stage: str, exc: Exception) -> None:
     (workdir / "media_failure.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def validate_ready_reports(reports: dict[str, dict[str, Any]], *, scene_count: int, expanded_audio_count: int, visual_duration_us: int) -> None:
+    try:
+        timing, render, review, preview, draft = (reports[k] for k in ("timing","render","visual_review","preview","jianying"))
+        voice = timing["voice"]
+        assert timing["status"] == "timing_manifest_ready" and len(timing["segments"]) == scene_count
+        assert voice["rendered_audio_segment_count"] == expanded_audio_count and voice["voice_end_microseconds"] <= visual_duration_us
+        visual = render["visual"]
+        assert render["status"] == "passed" and visual["audio_present"] is False and visual["burned_in_subtitles"] is False and len(visual["scene_timing"]) == scene_count
+        post = review["post_render"]
+        assert review["status"] == "passed" and review["contact_sheet"]["sha256"] and review["post_render_report"]["sha256"]
+        assert post["full_decode"] is True and post["all_frame_scan"]["status"] == "passed"
+        out, sync = preview["output"], preview["sync_validation"]
+        assert preview["status"] == "audio_preview_ready_for_manual_listening" and out["audio_present"] is True and out["full_decode"] == "passed"
+        assert str(out["codec"]).lower() == "aac" and isinstance(out["mean_volume_db"], (int,float)) and isinstance(out["max_volume_db"], (int,float))
+        assert -100 < out["mean_volume_db"] <= out["max_volume_db"] <= 1 and sync["status"] == "passed" and preview["audio_source"]["segment_count"] == expanded_audio_count
+        assert draft["status"] == "draft_ready_for_manual_jianying_review" and draft["sync_validation"]["status"] == "passed"
+        audio, subtitle = draft["audio_validation"], draft["subtitle_validation"]
+        assert audio["status"] == "passed" and audio["muted"] is False and audio["segment_count"] == expanded_audio_count
+        assert subtitle["status"] == "passed" and subtitle["segment_count"] == scene_count and draft["export"]["automatic_export"] == "disabled"
+        tracks = {item["name"]:item for item in draft["tracks"]}
+        assert set(tracks) == {"VideoTrack","VoiceOver","Subtitles"} and tracks["VideoTrack"]["segment_count"] == scene_count
+        assert tracks["VoiceOver"]["segment_count"] == expanded_audio_count and tracks["Subtitles"]["segment_count"] == scene_count
+        assert abs(int(tracks["VideoTrack"]["duration_microseconds"]) - visual_duration_us) <= 33_335
+    except (AssertionError, KeyError, TypeError, ValueError) as exc:
+        raise ValueError("ready_report_contract_invalid") from exc
+
+
 def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None = None,
                       media_python: Path | None = None, runner: Callable[..., Any] = subprocess.run,
                       render_runner: Callable[..., dict[str, Any]] = render_and_review) -> dict[str, Any]:
@@ -93,6 +120,9 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
         draft = _require_report(draft_report, {"draft_ready_for_manual_jianying_review"})
         inputs = draft.get("inputs", {})
         if inputs.get("script_sha256") != _sha(request.director_script) or inputs.get("timing_manifest_sha256") != _sha(manifest) or inputs.get("render_report_sha256") != _sha(render_report) or draft.get("export", {}).get("automatic_export") != "disabled": raise ValueError("jianying_output_hash_mismatch")
+        expanded_count = int(timing.get("voice", {}).get("rendered_audio_segment_count", 0))
+        validate_ready_reports({"timing":timing,"render":render,"visual_review":review,"preview":preview_value,"jianying":draft},
+                               scene_count=len(plan["scenes"]), expanded_audio_count=expanded_count, visual_duration_us=round(duration * 1_000_000))
         paths = {"timing_manifest":manifest,"render_report":render_report,"visual_review":visual_review,"preview":preview,"preview_report":preview_report,"jianying_report":draft_report}
         result = {"schema_version":"1.0","status":"PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW","paths":{k:str(v) for k,v in paths.items()},"hashes":{k:_sha(v) for k,v in paths.items()},"draft_name":draft_name}
         validation.validate(result, "phase1_subject_media_result")
