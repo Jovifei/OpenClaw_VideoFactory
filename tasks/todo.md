@@ -2562,3 +2562,20 @@ Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
 - [ ] Run three fixture qualifications, one real-topic E2E, full regression, and fresh clone.
 - [ ] Record the final candidate as `PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW`; wait for Jovi before any phase pass.
 - [ ] Sync repository docs, Obsidian project memory, and Codex durable memory.
+# PHASE1-TOPIC-OPENMONTAGE-010 / Task 2 — SUBJECT RESEARCH + SCRIPT PLANNING
+
+- [x] RED: add focused schema, policy, selection, scene-plan, CLI, containment, and lifecycle tests; capture expected failures.
+- [x] GREEN: add five strict versioned schemas and validation catalog registration.
+- [x] GREEN: implement `src/factory/phase1_topic.py` policy, normalization, validation, MPT ingestion, scoring/selection, director-script and scene-plan compilation.
+- [x] GREEN: extend Phase 1 CLI with idempotent `create-subject`, internal `attach-research`, and planning-only `run` lifecycle through ASSETS/`subject_plan_ready`.
+- [x] GREEN: update `video-production-chain` and `topic-intelligence` user-topic research contracts.
+- [x] VERIFY: run focused tests and full `tests/phase1_local` without `PYTHONPATH`; inspect diff and compatibility.
+- [x] REVIEW: record red/green evidence, files, residual concerns, and commit SHA.
+
+## Review
+
+- RED: `python -m pytest tests/phase1_local/test_phase1_topic.py tests/phase1_local/test_phase1_subject_cli.py -q` failed collection with two expected `ModuleNotFoundError: src.factory.phase1_topic` errors.
+- GREEN: focused topic/CLI/projection suite passed 26 tests; full Phase 1 local suite passed 43 tests.
+- Final combined verification: `python -m pytest tests/phase1_local tests/openmontage/test_projection.py -q` => `56 passed`.
+- Subject jobs stop at SQLite `ASSETS` with `subject_plan_ready`; no renderer, FFmpeg fallback, Remotion, Jianying, provider approval, or publication behavior was added.
+- MPT remains an injectable boundary. Real MPT/provider execution was not performed by these offline tests.

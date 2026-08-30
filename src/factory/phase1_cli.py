@@ -15,6 +15,17 @@ from video_factory.pipeline.export import write_json
 from .config import PROJECT_ROOT
 from .db import CandidateStore
 from .phase1_local import load_local_brief
+from .openmontage_projection import project_job_read_only
+from .phase1_topic import (
+    build_director_script,
+    build_research_brief,
+    build_scene_plan,
+    build_topic_request,
+    ingest_mpt_candidates,
+    select_candidate,
+    stable_subject_key,
+)
+from scripts.phase1_mpt_script_drafter import run_drafts as MPT_RUN_DRAFTS
 from .state import next_state
 from .reference_video import (
     POLICY_VERSION,
@@ -32,6 +43,7 @@ from .reference_video import (
 STATE_ROOT = PROJECT_ROOT / "state" / "phase1_local"
 DATABASE_PATH = STATE_ROOT / "phase1_jobs.sqlite3"
 INPUT_ROOT = STATE_ROOT / "inputs"
+OPENMONTAGE_PROJECTS_ROOT = STATE_ROOT / "openmontage_projects"
 
 
 def _emit(payload: dict[str, Any], code: int = 0) -> int:
@@ -47,6 +59,15 @@ def _parser() -> argparse.ArgumentParser:
     create = commands.add_parser("create-topic")
     create.add_argument("--brief", type=Path, required=True)
     create.add_argument("--idempotency-key")
+    subject = commands.add_parser("create-subject")
+    subject.add_argument("--subject", required=True)
+    subject.add_argument("--duration", type=int, default=40)
+    subject.add_argument("--aspect-ratio", choices=["16:9", "9:16"], default="16:9")
+    subject.add_argument("--mascot-mode", choices=["off", "user_original_only"], default="off")
+    subject.add_argument("--idempotency-key")
+    attach = commands.add_parser("attach-research")
+    attach.add_argument("--job-id", required=True)
+    attach.add_argument("--research", type=Path, required=True)
     reference = commands.add_parser("create-reference")
     reference.add_argument("--video", type=Path, required=True)
     reference.add_argument("--brief", type=Path, required=True)
@@ -101,6 +122,101 @@ def _create_topic(args: argparse.Namespace) -> dict[str, Any]:
         },
     )
     return {"status": "created" if result["created"] else "existing", "job": result}
+
+
+def _subject_root(job_id: str) -> Path:
+    return INPUT_ROOT / "subjects" / job_id
+
+
+def _create_subject(args: argparse.Namespace) -> dict[str, Any]:
+    request = build_topic_request(subject=args.subject, duration=args.duration, aspect=args.aspect_ratio, mascot=args.mascot_mode)
+    canonical = stable_subject_key(request)
+    key = args.idempotency_key or canonical
+    store = _store()
+    result = store.create_job("local_subject", key, "phase1_subject_plan", request["subject"], requested_duration_seconds=request["duration"], metadata={"pipeline_type": "phase1-local-topic", "input_mode": "local_subject", "topic_digest": hashlib.sha256(request["subject"].casefold().encode("utf-8")).hexdigest(), "canonical_subject_key": canonical, "topic_request_path": "pending", "subject_input_root": "pending"})
+    root = _subject_root(result["job_id"])
+    root.mkdir(parents=True, exist_ok=True)
+    request_path = root / "topic_request.json"
+    if not request_path.exists():
+        write_json(request_path, request)
+    # Paths are deterministic and supplied in the response; SQLite remains the state authority.
+    result["metadata"]["topic_request_path"] = request_path.relative_to(PROJECT_ROOT).as_posix()
+    result["metadata"]["subject_input_root"] = root.relative_to(PROJECT_ROOT).as_posix()
+    if result["created"]:
+        updated = store.update_metadata(result["job_id"], result["metadata"])
+        result = {**updated, "created": True}
+    return {"status": "created" if result["created"] else "existing", "job": result, "topic_request_path": request_path.relative_to(PROJECT_ROOT).as_posix()}
+
+
+def _read_json_object(path: Path) -> dict[str, Any]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise FactoryContractError("phase1_topic_contract_invalid", "Phase 1 document must be an object.", {})
+    return value
+
+
+def _attach_research(args: argparse.Namespace) -> dict[str, Any]:
+    store = _store()
+    job = store.status(args.job_id)
+    if job["fixture_id"] != "local_subject":
+        raise FactoryContractError("phase1_topic_contract_invalid", "Research can only be attached to a local subject job.", {})
+    source = args.research.resolve()
+    if not source.is_file() or source.is_symlink():
+        raise FactoryContractError("phase1_input_path_invalid", "Research input must be a regular JSON file.", {})
+    raw = _read_json_object(source)
+    research = build_research_brief(topic=str(raw.get("topic", "")), sources=raw.get("sources", []), facts=raw.get("facts", []), comparables=raw.get("comparables", []))
+    target = _subject_root(args.job_id) / "research_brief.json"
+    write_json(target, research)
+    store.record_artifact(args.job_id, "research_brief", target.relative_to(PROJECT_ROOT).as_posix(), hashlib.sha256(target.read_bytes()).hexdigest())
+    project_job_read_only(store, args.job_id, OPENMONTAGE_PROJECTS_ROOT)
+    return {"status": "research_attached", "job": store.status(args.job_id), "research_path": target.relative_to(PROJECT_ROOT).as_posix()}
+
+
+def _record_json_artifact(store: CandidateStore, job_id: str, kind: str, path: Path, value: dict[str, Any]) -> None:
+    write_json(path, value)
+    store.record_artifact(job_id, kind, path.relative_to(PROJECT_ROOT).as_posix(), hashlib.sha256(path.read_bytes()).hexdigest())
+
+
+def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
+    job_id = str(job["job_id"])
+    if job["state"] == "ASSETS":
+        return {"status": "subject_plan_ready", "job": job, "artifacts": store.artifacts(job_id), "idempotent": True}
+    root = _subject_root(job_id)
+    request_path, research_path = root / "topic_request.json", root / "research_brief.json"
+    if not request_path.is_file() or not research_path.is_file():
+        raise FactoryContractError("phase1_research_required", "Validated research must be attached before running a subject job.", {})
+    request = build_topic_request(**{ "subject": _read_json_object(request_path)["subject"], "duration": _read_json_object(request_path)["duration"], "aspect": _read_json_object(request_path)["aspect"], "language": _read_json_object(request_path)["language"], "mascot": _read_json_object(request_path)["mascot"]})
+    raw = _read_json_object(research_path)
+    research = build_research_brief(topic=raw["topic"], sources=raw["sources"], facts=raw["facts"], comparables=raw.get("comparables", []))
+    while job["state"] != "SCRIPTING":
+        target = next_state(job["state"])
+        if target is None:
+            raise FactoryContractError("phase1_job_state_invalid", "Subject job cannot advance to scripting.", {"state": job["state"]})
+        job = store.advance(job_id, target, reason="subject_research_validated")
+    candidates = None
+    selected = None
+    for rewrite_attempt in (0, 1):
+        mpt_path = MPT_RUN_DRAFTS(subject=request["subject"], language="zh-CN", paragraphs=2, candidates=3, timeout_seconds=120.0)
+        candidates = ingest_mpt_candidates(Path(mpt_path))
+        try:
+            selected = select_candidate(candidates, research, rewrite_attempt=rewrite_attempt)
+            break
+        except FactoryContractError as exc:
+            if exc.context.get("reason") != "selection_threshold_not_met" or rewrite_attempt == 1:
+                raise
+    if candidates is None or selected is None:  # pragma: no cover - loop is exhaustive
+        raise FactoryContractError("phase1_topic_contract_invalid", "Subject selection failed closed.", {})
+    director = build_director_script(request, research, selected)
+    scene_plan = build_scene_plan(director, research)
+    for kind, value in (("script_candidates", candidates), ("selected_script", selected), ("director_script", director), ("scene_plan", scene_plan)):
+        _record_json_artifact(store, job_id, kind, root / f"{kind}.json", value)
+    while job["state"] != "ASSETS":
+        target = next_state(job["state"])
+        if target is None:
+            raise FactoryContractError("phase1_job_state_invalid", "Subject job cannot advance to assets.", {"state": job["state"]})
+        job = store.advance(job_id, target, reason="subject_plan_completed")
+    project_job_read_only(store, job_id, OPENMONTAGE_PROJECTS_ROOT)
+    return {"status": "subject_plan_ready", "job": job, "artifacts": store.artifacts(job_id)}
 
 
 def _create_reference(args: argparse.Namespace) -> dict[str, Any]:
@@ -169,8 +285,6 @@ def _advance_to_rendering(store: CandidateStore, job_id: str) -> dict[str, Any]:
 
 
 def _run_job(args: argparse.Namespace) -> dict[str, Any]:
-    from generate_video import run_local_brief
-
     store = _store()
     job = store.status(args.job_id)
     if job["state"] == "PENDING_REVIEW":
@@ -186,6 +300,9 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
             "A failed or cancelled Phase 1 job must be retried explicitly.",
             {"state": str(job["state"])},
         )
+    if job["fixture_id"] == "local_subject":
+        return _run_subject(store, job)
+    from generate_video import run_local_brief
     metadata = dict(job["metadata"])
     brief_ref = str(metadata.get("brief_path", ""))
     brief_path = (PROJECT_ROOT / brief_ref).resolve()
@@ -261,6 +378,10 @@ def main(arguments: list[str] | None = None) -> int:
             return _emit({"status": "initialized", "database": DATABASE_PATH.relative_to(PROJECT_ROOT).as_posix()})
         if args.command == "create-topic":
             return _emit(_create_topic(args))
+        if args.command == "create-subject":
+            return _emit(_create_subject(args))
+        if args.command == "attach-research":
+            return _emit(_attach_research(args))
         if args.command == "create-reference":
             return _emit(_create_reference(args))
         if args.command == "run":

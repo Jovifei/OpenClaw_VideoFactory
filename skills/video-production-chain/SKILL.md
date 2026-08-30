@@ -31,6 +31,20 @@ video-quality-gate
         ↓ review package; manual Jianying listening/export gate
 ```
 
+### User-topic mode
+
+For `create-subject`, Codex automatically researches the normalized user topic
+on the web and writes a versioned `phase1_research_brief`. It must contain at
+least two unique sources, at least one official document, standard, research
+paper, or other primary source, and every fact must cite source IDs. Codex then
+uses the internal `attach-research` command to copy the validated brief into the
+job input root. This is an internal chain handoff, not an intermediate user
+approval gate; the human gate remains the final audiovisual review.
+
+Comparable videos are retained only as abstract URL/title plus hook, structure,
+pace, and visual-grammar observations. Never attach their paths, frames, audio,
+transcripts, logos, provider controls, render controls, or publication fields.
+
 ## Stage ownership and handoffs
 
 | Stage | Owner | Required handoff | Hard stop |

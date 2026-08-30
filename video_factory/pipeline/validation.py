@@ -38,6 +38,11 @@ _SCHEMA_MAP: dict[str, str] = {
     "original_brief": "schemas/video/original_brief.schema.json",
     "difference_report": "schemas/video/difference_report.schema.json",
     "composition": "schemas/video/composition.schema.json",
+    "phase1_topic_request": "schemas/video/phase1_topic_request.schema.json",
+    "phase1_research_brief": "schemas/video/phase1_research_brief.schema.json",
+    "phase1_script_candidates": "schemas/video/phase1_script_candidates.schema.json",
+    "phase1_selected_script": "schemas/video/phase1_selected_script.schema.json",
+    "phase1_scene_plan": "schemas/video/phase1_scene_plan.schema.json",
     "pink_pig_registry": "src/factory/assets/pink_pig/registry.schema.json",
 }
 
@@ -61,6 +66,11 @@ _SCHEMA_ERROR_CODES: dict[str, str] = {
     "original_brief": "original_brief_invalid",
     "difference_report": "difference_report_invalid",
     "composition": "composition_schema_invalid",
+    "phase1_topic_request": "phase1_topic_request_invalid",
+    "phase1_research_brief": "phase1_research_brief_invalid",
+    "phase1_script_candidates": "phase1_script_candidates_invalid",
+    "phase1_selected_script": "phase1_selected_script_invalid",
+    "phase1_scene_plan": "phase1_scene_plan_invalid",
 }
 
 _SCHEMA_ERROR_MESSAGES: dict[str, str] = {
@@ -83,6 +93,11 @@ _SCHEMA_ERROR_MESSAGES: dict[str, str] = {
     "original_brief": "Original brief failed schema validation.",
     "difference_report": "Difference report failed schema validation.",
     "composition": "Composition failed schema validation.",
+    "phase1_topic_request": "Phase 1 topic request failed schema validation.",
+    "phase1_research_brief": "Phase 1 research brief failed schema validation.",
+    "phase1_script_candidates": "Phase 1 script candidates failed schema validation.",
+    "phase1_selected_script": "Phase 1 selected script failed schema validation.",
+    "phase1_scene_plan": "Phase 1 scene plan failed schema validation.",
 }
 
 # Lazy-loaded cache

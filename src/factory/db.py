@@ -318,6 +318,17 @@ class CandidateStore:
             ],
         }
 
+    def update_metadata(self, job_id: str, metadata: dict[str, Any]) -> dict[str, Any]:
+        """Replace one job's metadata atomically without changing lifecycle state."""
+        with self._transaction() as connection:
+            self._status_row(connection, job_id)
+            connection.execute(
+                "UPDATE jobs SET metadata_json = ?, updated_at = ? WHERE job_id = ?",
+                (json.dumps(metadata, ensure_ascii=False, sort_keys=True), utc_now(), job_id),
+            )
+            self._event(connection, job_id, "job_metadata_updated", payload={"fields": sorted(metadata)})
+            return self._status_row(connection, job_id)
+
     def list_jobs(self) -> list[dict[str, Any]]:
         connection = self._connect()
         try:

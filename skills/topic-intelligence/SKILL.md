@@ -20,6 +20,12 @@ metadata:
 - user project notes, Git commits, issue logs, and monthly reports
 - current public web sources when trend information matters
 
+For an explicit Phase 1 user topic, normalize the topic and perform Codex web
+research automatically. Produce at least two unique sources, including one
+official document, standard, research paper, or other primary source; link every
+fact to source IDs. Pass the validated brief to `attach-research` without an
+intermediate user gate.
+
 ## Rules
 
 1. Generate at least ten raw candidates.
@@ -30,6 +36,10 @@ metadata:
 6. Do not generate a topic based only on popularity; account fit and visual explainability are mandatory.
 7. Reject claims that cannot be verified.
 8. Output the top 3–5 topic cards.
+9. In user-topic mode, comparables are optional (maximum three) and may contain
+   only URL, title, hook style, structure, pace, and visual grammar. Do not retain
+   paths, frames, audio, transcripts, logos, provider/render/publish controls, or
+   recognizable expression.
 
 ## Topic card
 
