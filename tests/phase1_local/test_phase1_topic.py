@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import pytest
+from video_factory.pipeline import validation
 
 from video_factory.pipeline.errors import FactoryContractError
 from video_factory.pipeline.validation import validate
@@ -88,6 +89,26 @@ def test_mpt_ingest_requires_exactly_three_successes_and_no_controls(tmp_path: P
     path.write_text(json.dumps(bad, ensure_ascii=False), encoding="utf-8")
     with pytest.raises(FactoryContractError):
         ingest_mpt_candidates(path)
+
+
+def test_mpt_ingest_rejects_nested_raw_controls_and_noncanonical_ids() -> None:
+    nested = mpt_document(["甲", "乙", "丙"])
+    nested["candidates"][0]["metadata"] = {"render": {"path": "C:/escape"}}
+    with pytest.raises(FactoryContractError) as exc:
+        ingest_mpt_candidates(nested)
+    assert exc.value.context["reason"] == "forbidden_control"
+    duplicate = mpt_document(["甲", "乙", "丙"])
+    duplicate["candidates"][2]["candidate"] = 2
+    with pytest.raises(FactoryContractError) as exc:
+        ingest_mpt_candidates(duplicate)
+    assert exc.value.context["reason"] == "candidate_ids_invalid"
+
+
+def test_new_contracts_fail_closed_without_jsonschema(monkeypatch) -> None:
+    monkeypatch.setattr(validation, "is_available", lambda: False)
+    with pytest.raises(FactoryContractError) as exc:
+        build_topic_request(subject="看门狗")
+    assert exc.value.context["reason"] == "schema_validation_unavailable"
 
 
 def test_selection_threshold_tie_break_and_rewrite_fail_closed() -> None:

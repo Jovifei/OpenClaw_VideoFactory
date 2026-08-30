@@ -85,6 +85,22 @@ def test_run_drafts_rejects_bad_inputs(tmp_path: Path) -> None:
             timeout_seconds=1,
             out_root=tmp_path,
         )
+
+
+def test_run_drafts_applies_rewrite_guidance_without_changing_output_subject(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    commands = []
+    def fake_run(command, **kwargs):
+        commands.append(command)
+        class Completed:
+            returncode = 0
+            stdout = _cli_stdout("改写候选")
+            stderr = ""
+        return Completed()
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    out = run_drafts(subject="看门狗", language="zh-CN", paragraphs=2, candidates=1, timeout_seconds=5, out_root=tmp_path, rewrite_guidance="加强 hook 与 factual_consistency")
+    document = json.loads(out.read_text(encoding="utf-8"))
+    assert "加强 hook" in commands[0][commands[0].index("--video-subject") + 1]
+    assert document["subject"] == "看门狗"
     with pytest.raises(ValueError):
         run_drafts(
             subject="x",

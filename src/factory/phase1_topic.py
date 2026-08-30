@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from video_factory.pipeline.errors import FactoryContractError
-from video_factory.pipeline.validation import validate
+from video_factory.pipeline import validation
 
 SCHEMA_VERSION = "1.0"
 OPENMONTAGE_COMMIT = "cd9b905d41c2e1ddfbb730323e57481e9a36bfe6"
@@ -44,10 +44,18 @@ def _reject_controls(value: Any, path: str = "$") -> None:
             _reject_controls(child, f"{path}[{index}]")
 
 
+def _validate_new(document: dict[str, Any], schema_name: str) -> None:
+    if not validation.is_available():
+        raise _error("schema_validation_unavailable", schema=schema_name)
+    validation.validate(document, schema_name)
+
+
 def build_topic_request(*, subject: str, duration: int = 40, aspect: str = "16:9", language: str = "zh-CN", mascot: str = "off") -> dict[str, Any]:
     document = {"schema_version": SCHEMA_VERSION, "subject": _normalized(subject), "duration": duration, "aspect": aspect, "language": language, "mascot": mascot}
     try:
-        validate(document, "phase1_topic_request")
+        _validate_new(document, "phase1_topic_request")
+    except FactoryContractError:
+        raise
     except Exception as exc:
         raise _error("request_schema") from exc
     return document
@@ -72,7 +80,9 @@ def build_research_brief(*, topic: str, sources: list[dict[str, Any]], facts: li
     if any(not set(map(str, fact.get("source_ids", []))) or not set(map(str, fact.get("source_ids", []))).issubset(known) for fact in facts):
         raise _error("fact_source_invalid")
     try:
-        validate(document, "phase1_research_brief")
+        _validate_new(document, "phase1_research_brief")
+    except FactoryContractError:
+        raise
     except Exception as exc:
         raise _error("research_schema") from exc
     return document
@@ -90,10 +100,11 @@ def _load(value: Path | Mapping[str, Any]) -> dict[str, Any]:
 
 def ingest_mpt_candidates(value: Path | Mapping[str, Any]) -> dict[str, Any]:
     source = _load(value)
+    _reject_controls(source)
     # Adapter metadata is accepted at ingress, then deliberately omitted from
     # the canonical candidates contract so downstream stages cannot inherit
     # provider/runtime controls.
-    allowed = {"schema_version", "kind", "review_status", "subject", "language", "paragraphs", "requested_candidates", "successful_candidates", "endpoint_host", "mpt_version", "mpt_commit", "generated_at", "candidates", "failures"}
+    allowed = {"schema_version", "kind", "review_status", "subject", "language", "paragraphs", "requested_candidates", "successful_candidates", "mpt_version", "mpt_commit", "generated_at", "candidates", "failures"}
     if set(source) - allowed:
         raise _error("raw_provider_controls", fields=sorted(set(source) - allowed))
     if source.get("mpt_commit") != MPT_COMMIT or source.get("mpt_version") != MPT_VERSION:
@@ -101,10 +112,14 @@ def ingest_mpt_candidates(value: Path | Mapping[str, Any]) -> dict[str, Any]:
     candidates = source.get("candidates")
     if source.get("successful_candidates") != 3 or not isinstance(candidates, list) or len(candidates) != 3 or source.get("failures"):
         raise _error("exactly_three_successes_required")
+    if {int(item.get("candidate", -1)) for item in candidates} != {1, 2, 3}:
+        raise _error("candidate_ids_invalid")
     document = {"schema_version": SCHEMA_VERSION, "mpt_version": MPT_VERSION, "mpt_commit": MPT_COMMIT, "candidates": [{"candidate": int(item["candidate"]), "script": _normalized(str(item["script"]))} for item in candidates]}
     _reject_controls(document)
     try:
-        validate(document, "phase1_script_candidates")
+        _validate_new(document, "phase1_script_candidates")
+    except FactoryContractError:
+        raise
     except Exception as exc:
         raise _error("candidate_schema") from exc
     return document
@@ -125,9 +140,10 @@ def select_candidate(candidates: Mapping[str, Any], research: Mapping[str, Any],
     scored = [(int(item["candidate"]), str(item["script"]), _score(str(item["script"]), research)) for item in candidates["candidates"]]
     index, script, scores = sorted(scored, key=lambda item: (-item[2]["total"], item[0]))[0]
     if scores["total"] < 85:
-        raise _error("selection_threshold_not_met", rewrite_attempt=rewrite_attempt, best_score=scores["total"])
+        failed = sorted(name for name, score in scores.items() if name != "total" and score < 85)
+        raise _error("selection_threshold_not_met", rewrite_attempt=rewrite_attempt, best_score=scores["total"], best_candidate=index, failed_dimensions=failed)
     document = {"schema_version": SCHEMA_VERSION, "selected_candidate": index, "script": script, "score_breakdown": scores, "rewrite_attempt": rewrite_attempt}
-    validate(document, "phase1_selected_script")
+    _validate_new(document, "phase1_selected_script")
     return document
 
 
@@ -138,7 +154,7 @@ def build_director_script(request: Mapping[str, Any], research: Mapping[str, Any
     beats = [{"purpose": purpose, "narration": text, "subtitle": text[:80], "visual_intent": f"用{purpose}信息图表达当前知识点", "pose": "normal", "required_tags": ["technical"], "fact_refs": refs} for purpose, text in zip(purposes, narrations)]
     digest = str(research["topic_digest"])
     script = {"schema_version": SCHEMA_VERSION, "script_id": f"script_{hashlib.sha256((selected['script']+digest).encode('utf-8')).hexdigest()[:16]}", "topic_digest": digest, "title": str(request["subject"]), "hook": narrations[0], "narration": "".join(narrations), "duration_target_seconds": int(request["duration"]), "style": {"language": "zh-CN", "tone": "technical_calm_dry_humor", "content_scope": "evergreen_embedded_mainline"}, "beats": beats}
-    validate(script, "director_script")
+    validation.validate(script, "director_script")
     return script
 
 
@@ -149,7 +165,7 @@ def build_scene_plan(script: Mapping[str, Any], research: Mapping[str, Any]) -> 
         visual = visual_types[(index - 1) % len(visual_types)]
         scenes.append({"scene_index": index, "scene_type": str(beat["purpose"]), "narration": str(beat["narration"]), "on_screen_knowledge": str(beat["subtitle"]), "information_role": "explain_verified_fact", "narrative_role": str(beat["purpose"]), "shot_intent": str(beat["visual_intent"]), "visual_type": visual, "motion": "progressive_reveal", "transition": "cut", "fallback_visual": "accessible_text_card", "source_refs": list(beat["fact_refs"])})
     plan = {"schema_version": SCHEMA_VERSION, "script_id": script["script_id"], "scenes": scenes}
-    validate(plan, "phase1_scene_plan")
+    _validate_new(plan, "phase1_scene_plan")
     return plan
 
 

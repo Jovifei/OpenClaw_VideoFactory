@@ -2579,3 +2579,14 @@ Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
 - Final combined verification: `python -m pytest tests/phase1_local tests/openmontage/test_projection.py -q` => `56 passed`.
 - Subject jobs stop at SQLite `ASSETS` with `subject_plan_ready`; no renderer, FFmpeg fallback, Remotion, Jianying, provider approval, or publication behavior was added.
 - MPT remains an injectable boundary. Real MPT/provider execution was not performed by these offline tests.
+
+### Spec review remediation
+
+- [x] Pass deterministic score/dimension rewrite guidance to the second MPT attempt while preserving the original output subject.
+- [x] Persist subject-planning failures as `FAILED` and verify retry resumes at `SCRIPTING`.
+- [x] Reject recursive raw candidate controls before canonical reconstruction.
+- [x] Require candidate IDs to be exactly `{1,2,3}` in code and schema.
+- [x] Bind attached and persisted research topic/digest to the subject request and SQLite metadata.
+- [x] Fail closed for the five new contracts when jsonschema is unavailable, without changing legacy validation behavior.
+- RED remediation evidence: focused tests initially reported 5 failures covering the missing behaviors.
+- GREEN remediation evidence: focused suite `24 passed`; full `tests/phase1_local` suite `49 passed`.

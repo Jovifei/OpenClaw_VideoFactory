@@ -165,6 +165,10 @@ def _attach_research(args: argparse.Namespace) -> dict[str, Any]:
         raise FactoryContractError("phase1_input_path_invalid", "Research input must be a regular JSON file.", {})
     raw = _read_json_object(source)
     research = build_research_brief(topic=str(raw.get("topic", "")), sources=raw.get("sources", []), facts=raw.get("facts", []), comparables=raw.get("comparables", []))
+    request = _read_json_object(_subject_root(args.job_id) / "topic_request.json")
+    expected_digest = str(job["metadata"].get("topic_digest", ""))
+    if research["topic"] != request["subject"] or research["topic_digest"] != expected_digest:
+        raise FactoryContractError("phase1_research_topic_mismatch", "Research topic is not bound to this subject job.", {"job_id": args.job_id})
     target = _subject_root(args.job_id) / "research_brief.json"
     write_json(target, research)
     store.record_artifact(args.job_id, "research_brief", target.relative_to(PROJECT_ROOT).as_posix(), hashlib.sha256(target.read_bytes()).hexdigest())
@@ -188,6 +192,8 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
     request = build_topic_request(**{ "subject": _read_json_object(request_path)["subject"], "duration": _read_json_object(request_path)["duration"], "aspect": _read_json_object(request_path)["aspect"], "language": _read_json_object(request_path)["language"], "mascot": _read_json_object(request_path)["mascot"]})
     raw = _read_json_object(research_path)
     research = build_research_brief(topic=raw["topic"], sources=raw["sources"], facts=raw["facts"], comparables=raw.get("comparables", []))
+    if research["topic"] != request["subject"] or research["topic_digest"] != str(job["metadata"].get("topic_digest", "")):
+        raise FactoryContractError("phase1_research_topic_mismatch", "Persisted research is not bound to this subject job.", {"job_id": job_id})
     while job["state"] != "SCRIPTING":
         target = next_state(job["state"])
         if target is None:
@@ -195,8 +201,9 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
         job = store.advance(job_id, target, reason="subject_research_validated")
     candidates = None
     selected = None
+    rewrite_guidance = None
     for rewrite_attempt in (0, 1):
-        mpt_path = MPT_RUN_DRAFTS(subject=request["subject"], language="zh-CN", paragraphs=2, candidates=3, timeout_seconds=120.0)
+        mpt_path = MPT_RUN_DRAFTS(subject=request["subject"], language="zh-CN", paragraphs=2, candidates=3, timeout_seconds=120.0, rewrite_guidance=rewrite_guidance)
         candidates = ingest_mpt_candidates(Path(mpt_path))
         try:
             selected = select_candidate(candidates, research, rewrite_attempt=rewrite_attempt)
@@ -204,6 +211,8 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
         except FactoryContractError as exc:
             if exc.context.get("reason") != "selection_threshold_not_met" or rewrite_attempt == 1:
                 raise
+            dimensions = ",".join(map(str, exc.context.get("failed_dimensions", [])))
+            rewrite_guidance = f"候选{exc.context.get('best_candidate')}总分{exc.context.get('best_score')}；改进维度：{dimensions}；保留事实引用并重写。"
     if candidates is None or selected is None:  # pragma: no cover - loop is exhaustive
         raise FactoryContractError("phase1_topic_contract_invalid", "Subject selection failed closed.", {})
     director = build_director_script(request, research, selected)
@@ -301,7 +310,13 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
             {"state": str(job["state"])},
         )
     if job["fixture_id"] == "local_subject":
-        return _run_subject(store, job)
+        try:
+            return _run_subject(store, job)
+        except Exception:
+            current = store.status(args.job_id)
+            if current["state"] not in {"FAILED", "CANCELLED", "PENDING_REVIEW"}:
+                store.fail(args.job_id, "phase1_subject_planning_failed")
+            raise
     from generate_video import run_local_brief
     metadata = dict(job["metadata"])
     brief_ref = str(metadata.get("brief_path", ""))

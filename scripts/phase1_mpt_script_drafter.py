@@ -115,6 +115,7 @@ def run_drafts(
     timeout_seconds: float,
     mpt_root: Path = DEFAULT_MPT_ROOT,
     out_root: Path = DEFAULT_OUT_ROOT,
+    rewrite_guidance: str | None = None,
 ) -> Path:
     if not subject.strip():
         raise ValueError("subject must not be empty")
@@ -125,11 +126,14 @@ def run_drafts(
     out_dir = out_root / f"drafter_{stamp}"
     out_dir.mkdir(parents=True, exist_ok=False)
 
+    prompt_subject = subject
+    if rewrite_guidance:
+        prompt_subject = f"{subject}\n\n确定性改写要求：{rewrite_guidance.strip()}"
     results: list[dict[str, Any]] = []
     for index in range(1, candidates + 1):
         outcome = _draft_one_candidate(
             mpt_root,
-            subject=subject,
+            subject=prompt_subject,
             language=language,
             paragraphs=paragraphs,
             timeout_seconds=timeout_seconds,
@@ -148,7 +152,6 @@ def run_drafts(
         "paragraphs": paragraphs,
         "requested_candidates": candidates,
         "successful_candidates": len(ok_results),
-        "endpoint_host": ENDPOINT_HOST,
         "mpt_version": MPT_VERSION,
         "mpt_commit": MPT_COMMIT,
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S"),

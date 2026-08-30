@@ -64,3 +64,59 @@ def test_attach_research_contains_copy_and_subject_run_stops_before_render(tmp_p
     assert {a["artifact_type"] for a in result["artifacts"]} == {"research_brief", "script_candidates", "selected_script", "director_script", "scene_plan"}
     store = CandidateStore(phase1_cli.DATABASE_PATH)
     assert store.status(job_id)["state"] == "ASSETS"
+
+
+def test_attach_research_rejects_unrelated_topic(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject", "--subject", "看门狗"]) == 0
+    job_id = _output(capsys)["job"]["job_id"]
+    unrelated = _research()
+    unrelated["topic"] = "串口 DMA"
+    unrelated["topic_digest"] = "0" * 64
+    path = tmp_path / "unrelated.json"
+    path.write_text(json.dumps(unrelated, ensure_ascii=False), encoding="utf-8")
+    assert phase1_cli.main(["attach-research", "--job-id", job_id, "--research", str(path)]) == 2
+    assert _output(capsys)["error"]["code"] == "phase1_research_topic_mismatch"
+
+
+def test_subject_failure_is_persisted_and_retry_reenters_planning(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject", "--subject", "看门狗"]) == 0
+    job_id = _output(capsys)["job"]["job_id"]
+    research_path = tmp_path / "research.json"
+    research_path.write_text(json.dumps(_research(), ensure_ascii=False), encoding="utf-8")
+    assert phase1_cli.main(["attach-research", "--job-id", job_id, "--research", str(research_path)]) == 0
+    _output(capsys)
+    monkeypatch.setattr(phase1_cli, "MPT_RUN_DRAFTS", lambda **kwargs: (_ for _ in ()).throw(RuntimeError("mpt failed")))
+    assert phase1_cli.main(["run", "--job-id", job_id]) == 2
+    _output(capsys)
+    store = CandidateStore(phase1_cli.DATABASE_PATH)
+    assert store.status(job_id)["state"] == "FAILED"
+    assert phase1_cli.main(["retry", "--job-id", job_id]) == 0
+    retried = _output(capsys)
+    assert retried["job"]["state"] == "SCRIPTING"
+
+
+def test_subject_second_attempt_receives_score_informed_guidance(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject", "--subject", "看门狗"]) == 0
+    job_id = _output(capsys)["job"]["job_id"]
+    research_path = tmp_path / "research.json"
+    research_path.write_text(json.dumps(_research(), ensure_ascii=False), encoding="utf-8")
+    assert phase1_cli.main(["attach-research", "--job-id", job_id, "--research", str(research_path)]) == 0
+    _output(capsys)
+    calls = []
+    def fake_run_drafts(**kwargs):
+        calls.append(kwargs)
+        strong = len(calls) == 2
+        script = "看门狗发生故障后，先解释原理与配置，再通过时间轴验证超时和恢复边界 f1 f2" if strong else "短"
+        output = tmp_path / f"mpt-{len(calls)}.json"
+        output.write_text(json.dumps({"schema_version":"1.0","kind":"phase1_script_drafts","subject":"看门狗","language":"zh-CN","requested_candidates":3,"successful_candidates":3,"mpt_version":"1.3.5","mpt_commit":MPT_COMMIT,"candidates":[{"candidate":i,"script":script,"duration_seconds":1} for i in range(1,4)],"failures":[]}, ensure_ascii=False), encoding="utf-8")
+        return output
+    monkeypatch.setattr(phase1_cli, "MPT_RUN_DRAFTS", fake_run_drafts)
+    assert phase1_cli.main(["run", "--job-id", job_id]) == 0
+    result = _output(capsys)
+    assert calls[0]["rewrite_guidance"] is None
+    assert "改进维度" in calls[1]["rewrite_guidance"]
+    selected_path = tmp_path / next(a["relative_path"] for a in result["artifacts"] if a["artifact_type"] == "selected_script")
+    assert json.loads(selected_path.read_text(encoding="utf-8"))["rewrite_attempt"] == 1
