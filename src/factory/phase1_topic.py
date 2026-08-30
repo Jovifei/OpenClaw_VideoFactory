@@ -20,6 +20,23 @@ MPT_VERSION = "1.3.5"
 POLICY_VERSION = "phase1-topic-policy-v1"
 _FORBIDDEN = {"path", "frame", "audio", "transcript", "logo", "provider", "render", "publish", "asset_id", "asset_ids", "temperature", "top_p", "model", "endpoint_host"}
 _PRIMARY_KINDS = {"official_document", "standard", "research_paper", "primary_source"}
+# SAMI timing probes for the genuine Task2 Chinese fixture average just over
+# five Han characters per second. Use five as a conservative local budget so
+# an 80% script estimate still supplies the 0.75 measured-voice gate.
+CHINESE_TTS_CHARS_PER_SECOND = 5.0
+MIN_NARRATION_COVERAGE = 0.8
+_SAFE_FRAME_CHARACTERS = set("先再把这条结论写清核对日志记录边界现场逐项观察检查确认复核回到过程结果证据清单问题重点步骤接下来然后最后并且是否对应不提前替它下不补充额外原因方便下一次复查：，。！？；")
+_SAFE_PROCESS_FRAMES = (
+    "先核对记录。",
+    "再看现场。",
+    "逐项对照。",
+    "记录结果。",
+    "回到结论复核。",
+    "确认前后一致。",
+    "把它放进清单。",
+    "不补充额外原因。",
+    "方便下一次复查。",
+)
 
 
 def _error(reason: str, **context: Any) -> FactoryContractError:
@@ -161,45 +178,103 @@ def _claim_matches(script: str, claim: str) -> bool:
     return right in left or _longest_common_contiguous(left, right) / len(right) >= 0.8
 
 
-def _score(script: str, research: Mapping[str, Any]) -> dict[str, int]:
+def _grounded_chinese_characters(script: str, research: Mapping[str, Any]) -> int:
+    return sum(len(re.findall(r"[\u4e00-\u9fff]", sentence)) for sentence in _sentences(script)
+               if any(_claim_matches(sentence, str(fact["claim"])) for fact in research["facts"]))
+
+
+def _score(script: str, research: Mapping[str, Any], *, duration_target_seconds: int | None = None) -> dict[str, int]:
     compact = re.sub(r"\s+", "", script)
     factual = min(100, 40 + 30 * sum(_claim_matches(script, str(f["claim"])) for f in research["facts"]))
-    dimensions = {"factual_consistency": factual, "hook": 90 if any(x in script for x in ("故障", "为什么", "？")) else 65, "clarity": 90 if len(compact) >= 18 else 55, "duration": 90 if 18 <= len(compact) <= 800 else 55, "visualizability": 90 if any(x in script for x in ("原理", "配置", "验证", "时间")) else 60, "originality": 88 if len(set(compact)) >= 12 else 55, "account_fit": 92 if any(x in script for x in ("看门狗", "工程", "配置", "芯片")) else 60}
+    grounded_chars = _grounded_chinese_characters(script, research)
+    required_grounded_chars = max(12, round((duration_target_seconds or 25) * CHINESE_TTS_CHARS_PER_SECOND * 0.12))
+    duration_ok = grounded_chars >= required_grounded_chars if re.search(r"[\u4e00-\u9fff]", script) else 18 <= len(compact) <= 800
+    dimensions = {"factual_consistency": factual, "hook": 90 if any(x in script for x in ("故障", "为什么", "？")) else 65, "clarity": 90 if len(compact) >= 18 else 55, "duration": 90 if duration_ok else 55, "visualizability": 90 if any(x in script for x in ("原理", "配置", "验证", "时间")) else 60, "originality": 88 if len(set(compact)) >= 12 else 55, "account_fit": 92 if any(x in script for x in ("看门狗", "工程", "配置", "芯片")) else 60}
     dimensions["total"] = round(sum(dimensions.values()) / 7)
     return dimensions
 
 
-def select_candidate(candidates: Mapping[str, Any], research: Mapping[str, Any], *, rewrite_attempt: int = 0) -> dict[str, Any]:
+def select_candidate(candidates: Mapping[str, Any], research: Mapping[str, Any], *, rewrite_attempt: int = 0,
+                     duration_target_seconds: int | None = None) -> dict[str, Any]:
     if rewrite_attempt not in (0, 1):
         raise _error("rewrite_attempt_invalid")
-    scored = [(int(item["candidate"]), str(item["script"]), _score(str(item["script"]), research)) for item in candidates["candidates"]]
+    scored = [(int(item["candidate"]), str(item["script"]), _score(str(item["script"]), research, duration_target_seconds=duration_target_seconds)) for item in candidates["candidates"]]
     index, script, scores = sorted(scored, key=lambda item: (-item[2]["total"], item[0]))[0]
     if scores["total"] < 85:
         failed = sorted(name for name, score in scores.items() if name != "total" and score < 85)
-        raise _error("selection_threshold_not_met", rewrite_attempt=rewrite_attempt, best_score=scores["total"], best_candidate=index, failed_dimensions=failed)
+        guidance = None
+        if "duration" in failed:
+            required = max(12, round((duration_target_seconds or 25) * CHINESE_TTS_CHARS_PER_SECOND * 0.12))
+            guidance = f"补足至少{required}个已核验 claim 锚点字符；只能围绕已核验 claim 写观察、核对和记录步骤。"
+        raise _error("selection_threshold_not_met", rewrite_attempt=rewrite_attempt, best_score=scores["total"], best_candidate=index, failed_dimensions=failed, duration_guidance=guidance)
     document = {"schema_version": SCHEMA_VERSION, "selected_candidate": index, "script": script, "score_breakdown": scores, "rewrite_attempt": rewrite_attempt}
     _validate_new(document, "phase1_selected_script")
     return document
 
 
+def _sentences(prose: str) -> list[str]:
+    return [value.strip() for value in re.split(r"(?<=[。！？!?；;])", prose) if value.strip()]
+
+
+def estimate_narration_duration_seconds(narration: str) -> float:
+    """Deterministically estimate local Chinese TTS duration from Han characters."""
+    return len(re.findall(r"[\u4e00-\u9fff]", narration)) / CHINESE_TTS_CHARS_PER_SECOND
+
+
+def _safe_selected_frame(prose: str, fact: Mapping[str, Any]) -> str:
+    claim = str(fact["claim"])
+    for sentence in _sentences(prose):
+        if not _claim_matches(sentence, claim):
+            continue
+        frame = sentence.replace(claim, "").strip(" ：，。！？；")
+        if frame and len(frame) <= 18 and set(frame).issubset(_SAFE_FRAME_CHARACTERS):
+            return f"{frame}："
+    return ""
+
+
+def _beat_total(target_seconds: int) -> int:
+    if target_seconds <= 30:
+        return 5
+    if target_seconds <= 40:
+        return 6
+    if target_seconds <= 50:
+        return 7
+    return 9
+
+
 def build_director_script(request: Mapping[str, Any], research: Mapping[str, Any], selected: Mapping[str, Any]) -> dict[str, Any]:
     prose = _normalized(str(selected["script"]))
-    first_sentence = next((value.strip() for value in re.split(r"(?<=[。！？!?；;])", prose) if value.strip()), "")
-    hook = first_sentence if first_sentence and not any(marker in first_sentence for marker in _CONTRADICTION_MARKERS) else f"{request['subject']}真正需要验证的是什么？"
     facts = list(research["facts"])
+    if not facts:
+        raise _error("facts_required")
+    target_seconds = int(request["duration"])
+    target_chars = round(target_seconds * CHINESE_TTS_CHARS_PER_SECOND)
+    minimum_chars = round(target_chars * MIN_NARRATION_COVERAGE)
+    hook_fact = next((fact for sentence in _sentences(prose) for fact in facts if _claim_matches(sentence, str(fact["claim"]))), None)
+    hook = (f"{request['subject']}这一步该看什么？先从{hook_fact['claim']}开始核验。"
+            if hook_fact is not None else f"{request['subject']}这一步该看什么？先把核验顺序理清。")
     beats = [{"purpose": "hook", "narration": hook, "subtitle": hook[:80], "visual_intent": "用hook信息图表达当前知识点", "pose": "normal", "required_tags": ["technical"], "fact_refs": []}]
-    technical: list[tuple[str, dict[str, Any]]] = [(str(fact["claim"]), fact) for fact in facts]
-    cursor = 0
-    while len(technical) < 4:
-        fact = facts[cursor % len(facts)]
-        prefix = "核验依据：" if len(technical) < 3 else "工程结论："
-        technical.append((prefix + str(fact["claim"]), fact))
-        cursor += 1
-    for index, (text, fact) in enumerate(technical[:8], 1):
-        purpose = "summary" if index == min(8, len(technical)) else "explain"
+    technical_count = _beat_total(target_seconds) - 1
+    for index in range(technical_count):
+        fact = facts[index % len(facts)]
+        frame = _safe_selected_frame(prose, fact) if index == 0 else ""
+        text = f"{frame}{fact['claim']}。"
+        purpose = "summary" if index == technical_count - 1 else "explain"
         beats.append({"purpose": purpose, "narration": text, "subtitle": text[:80], "visual_intent": f"用{purpose}信息图表达当前知识点", "pose": "normal", "required_tags": ["technical"], "fact_refs": [str(fact["id"])]})
-    digest = str(research["topic_digest"])
+    frame_index = 0
+    while estimate_narration_duration_seconds("".join(str(beat["narration"]) for beat in beats)) * CHINESE_TTS_CHARS_PER_SECOND < minimum_chars:
+        frame = _SAFE_PROCESS_FRAMES[frame_index % len(_SAFE_PROCESS_FRAMES)]
+        recipient = beats[1 + frame_index % technical_count]
+        recipient["narration"] = str(recipient["narration"]) + frame
+        recipient["subtitle"] = str(recipient["narration"])[:80]
+        frame_index += 1
+        if frame_index > target_chars:  # defensive; a valid target always has usable process frames.
+            raise _error("narration_duration_unachievable")
     narration = "".join(str(beat["narration"]) for beat in beats)
+    estimate = estimate_narration_duration_seconds(narration)
+    if not target_seconds * MIN_NARRATION_COVERAGE <= estimate <= target_seconds:
+        raise _error("narration_duration_unachievable", estimated_seconds=estimate, target_seconds=target_seconds)
+    digest = str(research["topic_digest"])
     script = {"schema_version": SCHEMA_VERSION, "script_id": f"script_{hashlib.sha256((prose+digest).encode('utf-8')).hexdigest()[:16]}", "topic_digest": digest, "title": str(request["subject"]), "hook": hook, "narration": narration, "duration_target_seconds": int(request["duration"]), "style": {"language": "zh-CN", "tone": "technical_calm_dry_humor", "content_scope": "evergreen_embedded_mainline"}, "beats": beats}
     validation.validate(script, "director_script")
     return script

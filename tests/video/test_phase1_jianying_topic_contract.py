@@ -27,6 +27,18 @@ def test_timing_topic_binding_rejects_script_scene_and_voice_mismatch(tmp_path: 
     with pytest.raises(ValueError, match="voice_exceeds_visual_target"): timing.validate_scene_plan_binding(script, plan, target_duration_seconds=30, voice_end_microseconds=31_000_000)
 
 
+def test_subject_scene_plan_requires_default_voice_coverage_and_rejects_lower_override() -> None:
+    timing = _module("scripts/phase1_jianying_timing_probe.py", "topic_timing_voice_coverage")
+    script = {"script_id":"s1","beats":[{}] * 5}
+    plan = {"script_id":"s1","scenes":[{}] * 5}
+    with pytest.raises(ValueError, match="voice_coverage_below_minimum"):
+        timing.validate_scene_plan_binding(script, plan, target_duration_seconds=40, voice_end_microseconds=29_900_000)
+    assert timing.resolve_min_voice_coverage(scene_plan_present=True, requested=0.75) == 0.75
+    with pytest.raises(ValueError, match="scene_plan_min_voice_coverage_invalid"):
+        timing.resolve_min_voice_coverage(scene_plan_present=True, requested=0.6)
+    assert timing.resolve_min_voice_coverage(scene_plan_present=False, requested=0.0) == 0.0
+
+
 def test_timing_parser_keeps_scene_plan_optional() -> None:
     timing = _module("scripts/phase1_jianying_timing_probe.py", "topic_timing_parser")
     parsed = timing.build_parser().parse_args(["--script","s.json","--name","n","--manifest","E:/m.json","--skill-root","E:/skill"])

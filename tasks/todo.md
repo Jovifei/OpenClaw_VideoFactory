@@ -2684,3 +2684,12 @@ Spec-review verification: focused `10 passed`; full `393 passed`; Draft 2020-12 
 - [x] RED: `python -O` rejected incomplete reports but lacked the required stable field-specific error.
 - [x] GREEN: replace every READY validator assert with explicit `ready_report_contract_invalid:<field>` conditions.
 - [x] VERIFY: focused `7 passed`; full video + Phase 1 `401 passed`; production assert grep empty, compileall and diff check passed.
+
+### Task 4A duration-coverage correction — IN PROGRESS
+
+- [x] RED: add duration-budget and voice-coverage contract tests for the topic script, timing probe, and subject-media orchestration.
+- [x] GREEN: derive 25–60s Chinese narration from verified claims and safe non-factual process framing without weakening factual binding.
+- [x] GREEN: enforce the 0.75 voice/visual coverage floor for scene-plan timing and subject-media rendering.
+- [ ] VERIFY: run the final full Task4A regression after the six-to-nine-beat timing compatibility correction.
+- [ ] E2E: **BLOCKED:** new 40s timing passed at 38.280s / 0.957 coverage, then the one complete current subject-media run stopped at render with a sanitized `ModuleNotFoundError`; `media_failure.json` has `failed_stage=render`, so no preview/draft was created and no retry is permitted.
+- [ ] REVIEW: inspect the stopped E2E evidence and commit the scoped fix.

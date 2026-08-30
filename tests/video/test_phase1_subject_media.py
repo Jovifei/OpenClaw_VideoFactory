@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from src.factory.phase1_subject_media import SubjectMediaRequest, run_subject_media, validate_ready_reports
+from src.factory.phase1_subject_media import SubjectMediaRequest, run_subject_media, validate_ready_reports, validate_timing_coverage
 from src.factory.phase1_topic import build_director_script, build_research_brief, build_scene_plan, build_topic_request
 from video_factory.pipeline import validation
 
@@ -57,6 +57,12 @@ validate_ready_reports(r,scene_count=5,expanded_audio_count=5,visual_duration_us
     assert "ready_report_contract_invalid:" in done.stderr
 
 
+def test_subject_media_timing_coverage_requires_three_quarters_of_visual_duration() -> None:
+    with pytest.raises(ValueError, match="subject_media_voice_coverage_below_minimum"):
+        validate_timing_coverage({"voice":{"voice_end_microseconds":29_900_000}}, visual_duration_us=40_000_000)
+    assert validate_timing_coverage({"voice":{"voice_end_microseconds":30_000_000,"coverage_ratio":0.75}}, visual_duration_us=40_000_000) == 0.75
+
+
 def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     skill = tmp_path / "skill"; (skill / "scripts").mkdir(parents=True); (skill / "scripts" / "jy_wrapper.py").write_text("", encoding="utf-8")
     request_value = build_topic_request(subject="watchdog", duration=30)
@@ -73,7 +79,7 @@ def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: p
         script_name = Path(command[1]).name
         def arg(name: str) -> Path: return Path(command[command.index(name) + 1])
         if script_name == "phase1_jianying_timing_probe.py":
-            _write(arg("--manifest"), {"schema_version":"1.0","status":"timing_manifest_ready","script":{"sha256":hashlib.sha256(script.read_bytes()).hexdigest()},"scene_plan":{"sha256":hashlib.sha256(plan.read_bytes()).hexdigest()},"segments":[{}]*5,"voice":{"rendered_audio_segment_count":5,"voice_end_microseconds":10_000_000}})
+            _write(arg("--manifest"), {"schema_version":"1.0","status":"timing_manifest_ready","script":{"sha256":hashlib.sha256(script.read_bytes()).hexdigest()},"scene_plan":{"sha256":hashlib.sha256(plan.read_bytes()).hexdigest()},"segments":[{}]*5,"voice":{"rendered_audio_segment_count":5,"voice_end_microseconds":25_000_000,"coverage_ratio":0.8333333333333334}})
         elif script_name == "assemble_jianying_voice_preview.py":
             visual_path, output_path = arg("--visual"), arg("--output"); output_path.write_bytes(b"preview")
             _write(arg("--report"), {"status":"audio_preview_ready_for_manual_listening","visual":{"sha256":hashlib.sha256(visual_path.read_bytes()).hexdigest()},"render_report":{"sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"audio_source":{"segment_count":5},"output":{"sha256":hashlib.sha256(output_path.read_bytes()).hexdigest(),"audio_present":True,"full_decode":"passed","codec":"aac","mean_volume_db":-20.0,"max_volume_db":-2.0},"sync_validation":{"status":"passed"}})

@@ -22,6 +22,8 @@ FRAME_TOLERANCE_MICROSECONDS = (1_000_000 + FPS - 1) // FPS
 MIN_VISUAL_DURATION_SECONDS = 25
 MAX_VISUAL_DURATION_SECONDS = 120
 VISUAL_CUE_IDS = ("watershed", "phase_lead", "time_scale", "design_fc", "design_validate", "next_preview")
+MIN_DIRECTOR_BEATS = 5
+MAX_DIRECTOR_BEATS = 9
 
 
 def sha256(path: Path) -> str:
@@ -35,8 +37,8 @@ def sha256(path: Path) -> str:
 def load_script(path: Path) -> tuple[dict[str, Any], list[dict[str, str]]]:
     value = json.loads(path.read_text(encoding="utf-8"))
     beats = value.get("beats") if isinstance(value, dict) else None
-    if not isinstance(beats, list) or len(beats) != 5:
-        raise ValueError("script_must_have_five_beats")
+    if not isinstance(beats, list) or not MIN_DIRECTOR_BEATS <= len(beats) <= MAX_DIRECTOR_BEATS:
+        raise ValueError("script_beat_count_invalid")
     result: list[dict[str, str]] = []
     for index, beat in enumerate(beats, start=1):
         if not isinstance(beat, dict):
@@ -101,7 +103,7 @@ def validate_manifest(value: Any, *, drafts_root: Path | None = None) -> dict[st
     timing = value.get("timing")
     voice = value.get("voice")
     segments = value.get("segments")
-    if not isinstance(timing, dict) or not isinstance(voice, dict) or not isinstance(segments, list) or len(segments) != 5:
+    if not isinstance(timing, dict) or not isinstance(voice, dict) or not isinstance(segments, list) or not MIN_DIRECTOR_BEATS <= len(segments) <= MAX_DIRECTOR_BEATS:
         raise ValueError("timing_manifest_shape_invalid")
     fps = timing.get("fps")
     gap_us = timing.get("inter_segment_gap_microseconds")
@@ -153,7 +155,7 @@ def validate_manifest(value: Any, *, drafts_root: Path | None = None) -> dict[st
                 raise ValueError("timing_subsegment_parent_mismatch")
         previous_end = end
         previous_scene_end = scene_end
-    if voice.get("segment_count") != 5 or voice.get("voice_end_microseconds") != previous_end:
+    if voice.get("segment_count") != len(segments) or voice.get("voice_end_microseconds") != previous_end:
         raise ValueError("timing_voice_end_invalid")
     visual_duration = value.get("visual_duration_seconds")
     if not isinstance(visual_duration, (int, float)) or not (MIN_VISUAL_DURATION_SECONDS <= float(visual_duration) <= MAX_VISUAL_DURATION_SECONDS):

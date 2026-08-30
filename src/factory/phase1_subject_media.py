@@ -12,6 +12,8 @@ from typing import Any, Callable
 from .phase1_topic_visual import render_and_review
 from video_factory.pipeline import validation
 
+MIN_SUBJECT_VOICE_COVERAGE = 0.75
+
 
 @dataclass(frozen=True)
 class SubjectMediaRequest:
@@ -44,6 +46,23 @@ def _write_failure(workdir: Path, stage: str, exc: Exception) -> None:
     (workdir / "media_failure.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def validate_timing_coverage(timing: dict[str, Any], *, visual_duration_us: int,
+                             minimum_ratio: float = MIN_SUBJECT_VOICE_COVERAGE) -> float:
+    try:
+        voice_end = int(timing["voice"]["voice_end_microseconds"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("subject_media_voice_coverage_invalid") from exc
+    if visual_duration_us <= 0 or voice_end < 0 or voice_end > visual_duration_us:
+        raise ValueError("subject_media_voice_coverage_invalid")
+    ratio = voice_end / visual_duration_us
+    if ratio < minimum_ratio:
+        raise ValueError("subject_media_voice_coverage_below_minimum")
+    reported = timing.get("voice", {}).get("coverage_ratio")
+    if reported is not None and abs(float(reported) - ratio) > 0.000_001:
+        raise ValueError("subject_media_voice_coverage_invalid")
+    return ratio
+
+
 def validate_ready_reports(reports: dict[str, dict[str, Any]], *, scene_count: int, expanded_audio_count: int, visual_duration_us: int) -> None:
     def require(condition: bool, field: str) -> None:
         if not condition:
@@ -55,6 +74,7 @@ def validate_ready_reports(reports: dict[str, dict[str, Any]], *, scene_count: i
         require(len(timing["segments"]) == scene_count, "timing.segment_count")
         require(voice["rendered_audio_segment_count"] == expanded_audio_count, "timing.expanded_audio_count")
         require(voice["voice_end_microseconds"] <= visual_duration_us, "timing.voice_end")
+        require(validate_timing_coverage(timing, visual_duration_us=visual_duration_us) >= MIN_SUBJECT_VOICE_COVERAGE, "timing.voice_coverage")
         visual = render["visual"]
         require(render["status"] == "passed", "render.status")
         require(visual["audio_present"] is False, "render.audio_present")
@@ -127,6 +147,7 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
         runner(timing_cmd, check=True, shell=False, timeout=900)
         timing = _require_report(manifest, {"timing_manifest_ready"})
         if timing.get("script", {}).get("sha256") != _sha(request.director_script) or timing.get("scene_plan", {}).get("sha256") != _sha(request.scene_plan): raise ValueError("timing_input_hash_mismatch")
+        validate_timing_coverage(timing, visual_duration_us=round(duration * 1_000_000))
         stage = "render"
         render_runner(script=request.director_script, scene_plan=request.scene_plan, timing_manifest=manifest, output=output, report=render_report,
                       stills_dir=stills, clips_dir=clips, review_report=visual_review, contact_sheet=workdir / "contact_sheet.png", aspect=str(topic["aspect"]))

@@ -10,6 +10,7 @@ from video_factory.pipeline.errors import FactoryContractError
 from video_factory.pipeline.validation import validate
 
 from src.factory.phase1_topic import (
+    estimate_narration_duration_seconds,
     MPT_COMMIT,
     OPENMONTAGE_COMMIT,
     build_director_script,
@@ -184,7 +185,7 @@ def test_contradictory_keyword_overlap_never_scores_or_binds_facts() -> None:
     assert prose not in script["narration"]
 
 
-def test_grounded_claim_anchors_pass_and_safe_hooks_only_change_hook() -> None:
+def test_grounded_claim_anchors_pass_without_copying_unbound_opening_prose() -> None:
     brief = research()
     grounded_a = "为什么系统会突然重启？看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"
     grounded_b = "先别急着重启。看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"
@@ -193,6 +194,40 @@ def test_grounded_claim_anchors_pass_and_safe_hooks_only_change_hook() -> None:
     request = build_topic_request(subject="看门狗定时器")
     first = build_director_script(request, brief, {"script": grounded_a})
     second = build_director_script(request, brief, {"script": grounded_b})
-    assert first["beats"][0]["narration"] != second["beats"][0]["narration"]
-    assert first["beats"][1:] == second["beats"][1:]
+    assert first["beats"][0]["narration"] == second["beats"][0]["narration"]
+    assert "为什么系统会突然重启" not in first["narration"]
+    assert "先别急着重启" not in second["narration"]
     assert all(beat["fact_refs"] for beat in first["beats"][1:])
+
+
+@pytest.mark.parametrize("target_seconds", [25, 40, 60])
+def test_director_script_expands_grounded_chinese_narration_to_requested_budget(target_seconds: int) -> None:
+    brief = research()
+    request = build_topic_request(subject="看门狗定时器", duration=target_seconds)
+    selected = {"script": "先核对日志：看门狗用于检测软件失去响应。再记录边界：喂狗窗口应由最坏执行时间决定。"}
+    script = build_director_script(request, brief, selected)
+
+    estimate = estimate_narration_duration_seconds(script["narration"])
+    assert target_seconds * 0.8 <= estimate <= target_seconds
+    assert 5 <= len(script["beats"]) <= 9
+    assert any(beat["purpose"] == "hook" for beat in script["beats"])
+    assert all(beat["fact_refs"] for beat in script["beats"] if beat["fact_refs"])
+    assert "软件会自动修复" not in script["narration"]
+    assert "最坏执行时间决定" in script["narration"]
+
+
+def test_director_script_uses_only_grounded_selected_safe_framing_and_expands_short_input_deterministically() -> None:
+    brief = research()
+    request = build_topic_request(subject="看门狗定时器", duration=40)
+    grounded = {"script": "先核对日志：看门狗用于检测软件失去响应。再记录边界：喂狗窗口应由最坏执行时间决定。软件会自动修复所有故障。"}
+    first = build_director_script(request, brief, grounded)
+    second = build_director_script(request, brief, grounded)
+
+    assert first == second
+    assert "先核对日志" in first["narration"]
+    assert "软件会自动修复所有故障" not in first["narration"]
+    for beat in first["beats"]:
+        if beat["fact_refs"]:
+            assert set(beat["fact_refs"]).issubset({"fact1", "fact2"})
+        else:
+            assert beat["purpose"] == "hook"

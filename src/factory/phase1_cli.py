@@ -214,13 +214,15 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
         mpt_path = MPT_RUN_DRAFTS(subject=request["subject"], language="zh-CN", paragraphs=2, candidates=3, timeout_seconds=120.0, rewrite_guidance=rewrite_guidance, research_guidance=research_guidance)
         candidates = ingest_mpt_candidates(Path(mpt_path))
         try:
-            selected = select_candidate(candidates, research, rewrite_attempt=rewrite_attempt)
+            selected = select_candidate(candidates, research, rewrite_attempt=rewrite_attempt,
+                                        duration_target_seconds=int(request["duration"]))
             break
         except FactoryContractError as exc:
             if exc.context.get("reason") != "selection_threshold_not_met" or rewrite_attempt == 1:
                 raise
             dimensions = ",".join(map(str, exc.context.get("failed_dimensions", [])))
-            rewrite_guidance = f"候选{exc.context.get('best_candidate')}总分{exc.context.get('best_score')}；改进维度：{dimensions}；必须包含完整已核验 claim 锚点，禁止否定或反转 claim，并重写。"
+            duration_guidance = str(exc.context.get("duration_guidance") or "")
+            rewrite_guidance = f"候选{exc.context.get('best_candidate')}总分{exc.context.get('best_score')}；改进维度：{dimensions}；必须包含完整已核验 claim 锚点，禁止否定或反转 claim；{duration_guidance}并重写。"
     if candidates is None or selected is None:  # pragma: no cover - loop is exhaustive
         raise FactoryContractError("phase1_topic_contract_invalid", "Subject selection failed closed.", {})
     director = build_director_script(request, research, selected)
