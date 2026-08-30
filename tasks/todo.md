@@ -2557,7 +2557,7 @@ Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
 - [x] Vendor and qualify the pinned AGPLv3 OpenMontage subset.
 - [x] Add topic request/research/script selection/scene plan contracts.
 - [x] Connect `create-subject` to the existing SQLite lifecycle.
-- [ ] Add generic Remotion scene/still/contact-sheet rendering and visual gates.
+- [x] Add generic Remotion scene/still/contact-sheet rendering and visual gates.
 - [ ] Bind SAMI timing, Jianying draft generation, and expanded review evidence.
 - [ ] Run three fixture qualifications, one real-topic E2E, full regression, and fresh clone.
 - [ ] Record the final candidate as `PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW`; wait for Jovi before any phase pass.
