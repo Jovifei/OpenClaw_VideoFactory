@@ -19,6 +19,19 @@ from typing import Any
 EXPECTED_WIDTH = 1080
 EXPECTED_HEIGHT = 1920
 EXPECTED_FPS = 30.0
+ALLOWED_CANVASES = {"16:9": (1920, 1080), "9:16": (1080, 1920)}
+
+
+def validate_report_canvas(report: dict[str, Any], width: int, height: int) -> dict[str, Any]:
+    aspect = report.get("layout_contract", {}).get("aspect", "9:16")
+    if aspect not in ALLOWED_CANVASES:
+        raise ValueError("post_render_aspect_invalid")
+    expected = ALLOWED_CANVASES[aspect]
+    declared = report.get("visual", {})
+    declared_canvas = (int(declared.get("width", width)), int(declared.get("height", height)))
+    if (width, height) != expected or declared_canvas != expected:
+        raise ValueError("post_render_canvas_report_mismatch")
+    return {"aspect": aspect, "width": width, "height": height}
 
 
 def _sha256(path: Path) -> str:
@@ -347,8 +360,7 @@ def run_gate(visual: Path, render_report: Path, output_report: Path, *, preview:
     width = int(video.get("width") or 0)
     height = int(video.get("height") or 0)
     measured_fps = _fps(video.get("avg_frame_rate"))
-    if (width, height) != (EXPECTED_WIDTH, EXPECTED_HEIGHT):
-        raise ValueError("post_render_canvas_invalid")
+    canvas = validate_report_canvas(report, width, height)
     if abs(measured_fps - EXPECTED_FPS) > 0.01:
         raise ValueError("post_render_fps_invalid")
     if audio:
@@ -381,7 +393,7 @@ def run_gate(visual: Path, render_report: Path, output_report: Path, *, preview:
         "schema_version": "1.0",
         "status": "passed",
         "checks": {
-            "canvas_1080x1920": True,
+            "canvas": canvas,
             "fps_30": True,
             "visual_audio_absent": True,
             "burned_in_subtitles_absent": True,

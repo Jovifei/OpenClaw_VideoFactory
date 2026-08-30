@@ -44,3 +44,13 @@ def test_layout_contract_rejects_outside_subtitle_reserve() -> None:
     value["subtitle_reserve"] = {"top": 1800, "height": 200}
     with pytest.raises(ValueError, match="layout_subtitle_reserve_outside_canvas"):
         MODULE.validate_layout_contract(value)
+
+
+@pytest.mark.parametrize(("aspect", "canvas"), [("16:9", (1920, 1080)), ("9:16", (1080, 1920))])
+def test_declared_canvas_modes_are_allowlisted(aspect: str, canvas: tuple[int, int]) -> None:
+    assert MODULE.validate_report_canvas({"layout_contract": {"aspect": aspect}, "visual": {"width": canvas[0], "height": canvas[1]}}, *canvas) == {"aspect": aspect, "width": canvas[0], "height": canvas[1]}
+
+
+def test_declared_canvas_rejects_media_or_report_mismatch() -> None:
+    with pytest.raises(ValueError, match="post_render_canvas_report_mismatch"):
+        MODULE.validate_report_canvas({"layout_contract": {"aspect": "16:9"}, "visual": {"width": 1920, "height": 1080}}, 1080, 1920)

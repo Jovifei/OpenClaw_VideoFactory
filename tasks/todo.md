@@ -2609,3 +2609,18 @@ Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
 - [x] Require rewrite guidance to include complete verified claim anchors without negation.
 - RED: reviewer probe produced 3 expected focused failures.
 - GREEN: final Phase 1 local plus projection suite `72 passed`.
+# PHASE1-TOPIC-OPENMONTAGE-010 — Task 3 Remotion technical explainer
+
+- [x] RED: add focused tests for scene/timing validation, visual semantics, render command safety, canvas modes, and report hashes.
+- [x] GREEN: add the generic `TechnicalExplainer` composition and dynamic metadata.
+- [x] GREEN: add the strict E-drive Node renderer and Python visual orchestration/review module.
+- [x] GREEN: generalize the post-render canvas gate while preserving RC behavior.
+- [x] VERIFY: run focused Python tests, relevant video tests, npm typecheck, and a real direct still.
+- [x] REVIEW: inspect diff/evidence, record concerns here, and commit the scoped implementation.
+
+### Review — completed locally
+
+- RED evidence: missing `phase1_topic_visual` module; then missing `validate_report_canvas` caused three expected failures.
+- GREEN evidence: 407 relevant tests passed; Remotion `npm run typecheck` passed.
+- Real render: 5 midpoint PNGs, 5 visual-only clips, and a 5-second 1920×1080 master. The first render exposed silent AAC; the renderer now strips audio explicitly and the post-render sequential 150-frame check passes.
+- Evidence root: `E:\Claude_allow\Download\phase1-topic-openmontage-010-smoke` (not repository evidence and not a Phase 1 pass).
