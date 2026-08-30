@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 
-from factory.db import CandidateStore
-from factory.openmontage_projection import project_job_read_only
+from src.factory.db import CandidateStore
+from src.factory.openmontage_projection import project_job_read_only
 
 
 def test_projection_is_atomic_and_does_not_transition_sqlite(tmp_path: Path) -> None:
