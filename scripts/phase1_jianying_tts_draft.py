@@ -117,8 +117,13 @@ def verify_scene_clips(render_report: Path, clips_root: Path, segments: list[dic
         if clip.get("sha256") != sha256(candidate):
             raise ValueError("visual_clip_hash_mismatch")
         expected_duration = int(timing["scene_end_microseconds"]) - int(timing["scene_start_microseconds"])
+        declared_start = round(float(declaration.get("start_seconds", -1)) * 1_000_000)
+        declared_end = round(float(declaration.get("end_seconds", -1)) * 1_000_000)
+        if declared_start != int(timing["scene_start_microseconds"]) or declared_end != int(timing["scene_end_microseconds"]):
+            raise ValueError("visual_clip_declaration_timing_mismatch")
+        declared_duration = declared_end - declared_start
         actual_duration = int(duration_probe(candidate))
-        if abs(actual_duration - expected_duration) > FRAME_TOLERANCE_MICROSECONDS:
+        if abs(actual_duration - expected_duration) > FRAME_TOLERANCE_MICROSECONDS or abs(actual_duration - declared_duration) > FRAME_TOLERANCE_MICROSECONDS:
             raise ValueError("visual_clip_duration_drift")
         verified.append({"index": expected, "path": candidate, "sha256": sha256(candidate), "duration_microseconds": actual_duration})
     if set(root.glob("scene_*.mp4")) != {item["path"] for item in verified}:

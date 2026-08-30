@@ -39,7 +39,7 @@ def test_render_report_clip_binding_rejects_tamper_extra_escape_and_duration(tmp
     entries = []
     for index in range(1, 3):
         clip = clips / f"scene_{index:02d}.mp4"; clip.write_bytes(str(index).encode())
-        entries.append({"scene_index":index,"clip":{"filename":f"clips/{clip.name}","sha256":draft.sha256(clip),"duration_microseconds":1_000_000}})
+        entries.append({"scene_index":index,"start_seconds":index-1,"end_seconds":index,"clip":{"filename":f"clips/{clip.name}","sha256":draft.sha256(clip),"duration_microseconds":1_000_000}})
     report = root / "render.json"; report.write_text(json.dumps({"visual":{"scene_timing":entries}}), encoding="utf-8")
     segments = [{"index":1,"scene_start_microseconds":0,"scene_end_microseconds":1_000_000},{"index":2,"scene_start_microseconds":1_000_000,"scene_end_microseconds":2_000_000}]
     assert len(draft.verify_scene_clips(report, clips, segments, duration_probe=lambda _: 1_000_000)) == 2
@@ -50,6 +50,9 @@ def test_render_report_clip_binding_rejects_tamper_extra_escape_and_duration(tmp
     entries[0]["clip"]["sha256"] = draft.sha256(clips / "scene_01.mp4")
     report.write_text(json.dumps({"visual":{"scene_timing":entries}}), encoding="utf-8")
     with pytest.raises(ValueError, match="visual_clip_duration_drift"): draft.verify_scene_clips(report, clips, segments, duration_probe=lambda _: 2_000_000)
+    entries[0]["end_seconds"] = 1.2
+    report.write_text(json.dumps({"visual":{"scene_timing":entries}}), encoding="utf-8")
+    with pytest.raises(ValueError, match="visual_clip_declaration_timing_mismatch"): draft.verify_scene_clips(report, clips, segments, duration_probe=lambda _: 1_000_000)
 
 
 def test_preview_render_report_binds_visual_hash(tmp_path: Path) -> None:
@@ -59,3 +62,9 @@ def test_preview_render_report_binds_visual_hash(tmp_path: Path) -> None:
     preview.verify_visual_report(visual, report)
     visual.write_bytes(b"tampered")
     with pytest.raises(ValueError, match="visual_render_report_hash_mismatch"): preview.verify_visual_report(visual, report)
+
+
+def test_preview_report_binding_is_exact() -> None:
+    preview = _module("scripts/assemble_jianying_voice_preview.py", "topic_preview_report")
+    binding = preview.render_report_binding(Path("E:/job/render_report.json"), "a" * 64)
+    assert binding == {"filename":"render_report.json", "sha256":"a" * 64}

@@ -9,6 +9,7 @@ import pytest
 
 from src.factory.phase1_subject_media import SubjectMediaRequest, run_subject_media
 from src.factory.phase1_topic import build_director_script, build_research_brief, build_scene_plan, build_topic_request
+from video_factory.pipeline import validation
 
 
 def _write(path: Path, value: object) -> Path:
@@ -21,6 +22,19 @@ def test_subject_media_requires_skill_env(monkeypatch: pytest.MonkeyPatch, tmp_p
     monkeypatch.delenv("JIAN_YING_SKILL_ROOT", raising=False)
     with pytest.raises(ValueError, match="jianying_skill_root_required"):
         run_subject_media(SubjectMediaRequest(tmp_path / "s.json", tmp_path / "p.json", tmp_path / "r.json", Path("E:/runtime/job")))
+
+
+def test_subject_media_requires_explicit_media_python(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.delenv("PHASE1_MEDIA_PYTHON", raising=False)
+    skill = tmp_path / "skill"; (skill / "scripts").mkdir(parents=True); (skill / "scripts" / "jy_wrapper.py").write_text("", encoding="utf-8")
+    with pytest.raises(ValueError, match="media_python_required"):
+        run_subject_media(SubjectMediaRequest(tmp_path / "s.json", tmp_path / "p.json", tmp_path / "r.json", Path("E:/runtime/job")), skill_root=skill)
+
+
+def test_subject_media_result_schema_is_strict() -> None:
+    assert validation.is_available()
+    with pytest.raises(Exception):
+        validation.validate({"schema_version":"1.0","status":"PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW"}, "phase1_subject_media_result")
 
 
 def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
@@ -36,6 +50,15 @@ def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: p
 
     def runner(command: list[str], **_: object) -> object:
         calls.append(command)
+        script_name = Path(command[1]).name
+        def arg(name: str) -> Path: return Path(command[command.index(name) + 1])
+        if script_name == "phase1_jianying_timing_probe.py":
+            _write(arg("--manifest"), {"schema_version":"1.0","status":"timing_manifest_ready","script":{"sha256":hashlib.sha256(script.read_bytes()).hexdigest()},"scene_plan":{"sha256":hashlib.sha256(plan.read_bytes()).hexdigest()}})
+        elif script_name == "assemble_jianying_voice_preview.py":
+            visual_path, output_path = arg("--visual"), arg("--output"); output_path.write_bytes(b"preview")
+            _write(arg("--report"), {"status":"audio_preview_ready_for_manual_listening","visual":{"sha256":hashlib.sha256(visual_path.read_bytes()).hexdigest()},"render_report":{"sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"output":{"sha256":hashlib.sha256(output_path.read_bytes()).hexdigest()}})
+        elif script_name == "phase1_jianying_tts_draft.py":
+            _write(arg("--report"), {"status":"draft_ready_for_manual_jianying_review","inputs":{"script_sha256":hashlib.sha256(script.read_bytes()).hexdigest(),"timing_manifest_sha256":hashlib.sha256(arg("--timing-manifest").read_bytes()).hexdigest(),"render_report_sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"export":{"automatic_export":"disabled"}})
         return type("Done", (), {"returncode": 0, "stdout": "", "stderr": ""})()
 
     def visual(**kwargs: object) -> dict:
@@ -45,7 +68,8 @@ def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: p
         for i in range(1, 6):
             clip = clips / f"scene_{i:02d}.mp4"; clip.write_bytes(str(i).encode())
             report_entries.append({"scene_index":i,"clip":{"filename":f"clips/{clip.name}","sha256":hashlib.sha256(clip.read_bytes()).hexdigest()}})
-        report = Path(kwargs["report"]); _write(report,{"visual":{"filename":output.name,"sha256":hashlib.sha256(output.read_bytes()).hexdigest(),"scene_timing":report_entries}})
+        report = Path(kwargs["report"]); _write(report,{"status":"passed","visual":{"filename":output.name,"sha256":hashlib.sha256(output.read_bytes()).hexdigest(),"scene_timing":report_entries}})
+        _write(Path(kwargs["review_report"]), {"status":"passed","visual":{"sha256":hashlib.sha256(output.read_bytes()).hexdigest()}})
         return {"status":"passed","visual":{"path":str(output)}}
 
     workdir = Path("E:/Claude_allow/Download") / f"subject-media-{uuid.uuid4().hex}"
@@ -54,3 +78,18 @@ def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: p
     assert result["status"] == "PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW"
     assert len(calls) == 3
     assert all(str(workdir.resolve()) in " ".join(call) for call in calls)
+
+
+def test_subject_media_failure_writes_sanitized_stage_evidence(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    request_value = build_topic_request(subject="watchdog", duration=30)
+    research = build_research_brief(topic="watchdog", sources=[{"id":"s1","url":"https://example.com/a","title":"a","kind":"official_document"},{"id":"s2","url":"https://example.com/b","title":"b","kind":"research_paper"}], facts=[{"id":"f1","claim":"watchdog detects stalled software","source_ids":["s1"]},{"id":"f2","claim":"window follows worst case execution time","source_ids":["s1","s2"]}])
+    script_value = build_director_script(request_value, research, {"script":"why reset? watchdog detects stalled software. window follows worst case execution time."})
+    plan_value = build_scene_plan(script_value, research)
+    script, plan, topic = _write(tmp_path/"s.json",script_value), _write(tmp_path/"p.json",plan_value), _write(tmp_path/"r.json",request_value)
+    skill = tmp_path/"skill"; (skill/"scripts").mkdir(parents=True); (skill/"scripts"/"jy_wrapper.py").write_text("",encoding="utf-8")
+    workdir = Path("E:/Claude_allow/Download") / f"subject-media-fail-{uuid.uuid4().hex}"
+    def fail(*_: object, **__: object) -> object: raise RuntimeError("secret C:/private token")
+    with pytest.raises(RuntimeError): run_subject_media(SubjectMediaRequest(script,plan,topic,workdir),skill_root=skill,media_python=Path("E:/project/OpenClaw_VideoFactory/.venv/Scripts/python.exe"),runner=fail)
+    failure = json.loads((workdir/"media_failure.json").read_text(encoding="utf-8"))
+    assert failure["failed_stage"] == "timing" and "C:/private" not in json.dumps(failure)
+    assert not (workdir/"jianying_manifest.json").exists()

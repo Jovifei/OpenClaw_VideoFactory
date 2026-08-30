@@ -2654,3 +2654,15 @@ Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
 - Real evidence: `E:\Claude_allow\Download\phase1-topic-task4a-e2e-20260830-03` contains a new SAMI timing manifest, five fresh clips/stills, 40s visual master, render report, contact sheet, and failed post-render report. The post-render gate reported `all_frame_static_run_excessive` before preview/draft creation.
 - No package was installed or downloaded. The existing `E:\project\OpenClaw_VideoFactory\.venv\Scripts\python.exe` supplied the pinned Skill runtime dependencies through the explicit `media_python` boundary.
 - Automatic Jianying export remains disabled; no DB transition, CLI/review-package/status change, or phase promotion was added.
+
+### Task 4A spec-review hardening
+
+- [x] Add and register the strict `phase1_subject_media_result` schema.
+- [x] Require all timing/render/review/preview/Jianying outputs, passed statuses, and cross-hashes before READY.
+- [x] Persist sanitized `media_failure.json` with the exact failed stage while preserving workdir evidence.
+- [x] Require explicit `media_python` or `PHASE1_MEDIA_PYTHON`; retain explicit/env Jianying Skill root only.
+- [x] Bind each clip duration to both timing-manifest and render-report boundaries.
+- [x] Persist the exact render-report filename and SHA-256 in the preview report.
+- [x] Verify focused tests, full video + Phase 1 tests, Schema meta-validation, compileall, and diff checks.
+
+Spec-review verification: focused `10 passed`; full `393 passed`; Draft 2020-12 Schema check and compileall passed. The narration/static-tail issue remains deliberately unchanged and no E2E retry was run.

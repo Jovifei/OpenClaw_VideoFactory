@@ -58,6 +58,10 @@ def verify_visual_report(visual: Path, render_report: Path) -> None:
         raise ValueError("visual_render_report_hash_mismatch")
 
 
+def render_report_binding(render_report: Path, digest: str) -> dict[str, str]:
+    return {"filename": render_report.name, "sha256": digest}
+
+
 def main() -> int:
     args = build_parser().parse_args()
     visual = args.visual.resolve()
@@ -137,6 +141,7 @@ def main() -> int:
         "status": "audio_preview_ready_for_manual_listening",
         "visual": {"filename": visual.name, "sha256": sha256(visual), "duration_seconds": visual_duration},
         "timing_manifest": {"filename": manifest_path.name, "sha256": sha256(manifest_path)},
+        "render_report": render_report_binding(args.visual_report.resolve(), sha256(args.visual_report.resolve())) if args.visual_report else None,
         "audio_source": {
             "kind": "jianying_editor_skill_timing_probe_assets",
             "segment_count": len(audio_entries),

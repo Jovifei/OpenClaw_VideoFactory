@@ -43,6 +43,7 @@ _SCHEMA_MAP: dict[str, str] = {
     "phase1_script_candidates": "schemas/video/phase1_script_candidates.schema.json",
     "phase1_selected_script": "schemas/video/phase1_selected_script.schema.json",
     "phase1_scene_plan": "schemas/video/phase1_scene_plan.schema.json",
+    "phase1_subject_media_result": "schemas/video/phase1_subject_media_result.schema.json",
     "pink_pig_registry": "src/factory/assets/pink_pig/registry.schema.json",
 }
 
@@ -71,6 +72,7 @@ _SCHEMA_ERROR_CODES: dict[str, str] = {
     "phase1_script_candidates": "phase1_script_candidates_invalid",
     "phase1_selected_script": "phase1_selected_script_invalid",
     "phase1_scene_plan": "phase1_scene_plan_invalid",
+    "phase1_subject_media_result": "phase1_subject_media_result_invalid",
 }
 
 _SCHEMA_ERROR_MESSAGES: dict[str, str] = {
@@ -98,6 +100,7 @@ _SCHEMA_ERROR_MESSAGES: dict[str, str] = {
     "phase1_script_candidates": "Phase 1 script candidates failed schema validation.",
     "phase1_selected_script": "Phase 1 selected script failed schema validation.",
     "phase1_scene_plan": "Phase 1 scene plan failed schema validation.",
+    "phase1_subject_media_result": "Phase 1 subject media result failed schema validation.",
 }
 
 # Lazy-loaded cache
