@@ -1,5 +1,11 @@
 # Lessons
 
+## 2026-08-30 — Renderer adapters must consume canonical artifacts without widening them
+
+- Do not add renderer-only title, aspect, promise, or hash fields to a strict scene-plan artifact. Pass the canonical director script separately, bind both files by actual SHA-256 in the timing manifest, and pass render options such as aspect as explicit CLI arguments.
+- Hooks are non-factual only when their scene/narrative/information roles all say so; every technical or evidence scene must remain source-bound.
+- A `data-layout-box` marker is not a layout gate. Remotion must measure every marked node before rendering and cancel on safe-area overflow, with structural length checks as the earlier fail-closed layer.
+
 ## 2026-07-28 — Backend completion is not a user-visible result
 
 - Do not classify a media flow as product-qualified merely because the Ticket, request, analyzer, and result artifact completed.

@@ -210,7 +210,8 @@ def build_scene_plan(script: Mapping[str, Any], research: Mapping[str, Any]) -> 
     scenes = []
     for index, beat in enumerate(script["beats"], 1):
         visual = visual_types[(index - 1) % len(visual_types)]
-        scenes.append({"scene_index": index, "scene_type": str(beat["purpose"]), "narration": str(beat["narration"]), "on_screen_knowledge": str(beat["subtitle"]), "information_role": "explain_verified_fact", "narrative_role": str(beat["purpose"]), "shot_intent": str(beat["visual_intent"]), "visual_type": visual, "motion": "progressive_reveal", "transition": "cut", "fallback_visual": "accessible_text_card", "source_refs": list(beat["fact_refs"])})
+        information_role = "hook_question" if beat["purpose"] == "hook" else "explain_verified_fact"
+        scenes.append({"scene_index": index, "scene_type": str(beat["purpose"]), "narration": str(beat["narration"]), "on_screen_knowledge": str(beat["subtitle"]), "information_role": information_role, "narrative_role": str(beat["purpose"]), "shot_intent": str(beat["visual_intent"]), "visual_type": visual, "motion": "progressive_reveal", "transition": "cut", "fallback_visual": "accessible_text_card", "source_refs": list(beat["fact_refs"])})
     plan = {"schema_version": SCHEMA_VERSION, "script_id": script["script_id"], "scenes": scenes}
     _validate_new(plan, "phase1_scene_plan")
     return plan

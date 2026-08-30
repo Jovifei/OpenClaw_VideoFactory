@@ -27,19 +27,23 @@ def _load(path: Path) -> dict[str, Any]:
     return value
 
 
-def validate_visual_inputs(scene_plan_path: Path, timing_manifest_path: Path, *, aspect: str) -> dict[str, Any]:
+def validate_visual_inputs(script_path: Path, scene_plan_path: Path, timing_manifest_path: Path, *, aspect: str) -> dict[str, Any]:
     if aspect not in CANVASES:
         raise ValueError("aspect_invalid")
-    plan, timing = _load(scene_plan_path), _load(timing_manifest_path)
+    script, plan, timing = _load(script_path), _load(scene_plan_path), _load(timing_manifest_path)
     if plan.get("schema_version") != "1.0" or timing.get("schema_version") != "1.0":
         raise ValueError("schema_version_invalid")
+    if set(plan) != {"schema_version", "script_id", "scenes"}:
+        raise ValueError("scene_plan_shape_invalid")
+    if plan.get("script_id") != script.get("script_id"):
+        raise ValueError("scene_plan_script_id_mismatch")
+    if timing.get("script", {}).get("sha256") != _sha256(script_path):
+        raise ValueError("script_hash_mismatch")
     if timing.get("scene_plan", {}).get("sha256") != _sha256(scene_plan_path):
         raise ValueError("scene_plan_hash_mismatch")
-    if plan.get("script_sha256") != timing.get("script", {}).get("sha256"):
-        raise ValueError("script_hash_mismatch")
-    promise = plan.get("delivery_promise", "teacher_explainer")
-    if promise not in {"data_explainer", "teacher_explainer"}:
-        raise ValueError("delivery_promise_invalid")
+    promise = "teacher_explainer"
+    if len(str(script.get("title", ""))) > 80:
+        raise ValueError("layout_text_overflow_preflight")
     scenes, segments = plan.get("scenes"), timing.get("segments")
     if not isinstance(scenes, list) or not isinstance(segments, list) or len(scenes) != len(segments):
         raise ValueError("scene_timing_count_mismatch")
@@ -54,10 +58,18 @@ def validate_visual_inputs(scene_plan_path: Path, timing_manifest_path: Path, *,
         previous_end = end
         if scene.get("visual_type") not in VISUAL_TYPES:
             raise ValueError("visual_type_invalid")
-        if not str(scene.get("on_screen_knowledge", "")).strip():
+        knowledge = str(scene.get("on_screen_knowledge", "")).strip()
+        if not knowledge:
             raise ValueError("visible_knowledge_required")
-        if not scene.get("source_refs"):
+        if len(knowledge) > (120 if aspect == "16:9" else 90) or len(str(scene.get("narration", ""))) > 400:
+            raise ValueError("layout_text_overflow_preflight")
+        is_hook = scene.get("scene_type") == "hook" and scene.get("narrative_role") == "hook" and scene.get("information_role") == "hook_question"
+        if scene.get("information_role") not in {"hook_question", "explain_verified_fact"}:
+            raise ValueError("information_role_invalid")
+        if not is_hook and not scene.get("source_refs"):
             raise ValueError("source_refs_required")
+        if is_hook and scene.get("source_refs"):
+            raise ValueError("hook_source_refs_forbidden")
         paced.append({"duration_seconds": (end - start) / 1_000_000})
     if previous_end != round(float(timing.get("visual_duration_seconds", 0)) * 1_000_000):
         raise ValueError("scene_duration_mismatch")
@@ -87,9 +99,11 @@ def _e_drive(path: Path, field: str) -> str:
     return resolved
 
 
-def build_renderer_command(*, node: str, scene_plan: Path, timing_manifest: Path, output: Path, report: Path,
+def build_renderer_command(*, node: str, script: Path, scene_plan: Path, timing_manifest: Path, aspect: str, output: Path, report: Path,
                            stills_dir: Path, clips_dir: Path, renderer: Path) -> list[str]:
-    return [node, str(renderer.resolve()), "--scene-plan", str(scene_plan.resolve()), "--timing-manifest", str(timing_manifest.resolve()),
+    if aspect not in CANVASES:
+        raise ValueError("aspect_invalid")
+    return [node, str(renderer.resolve()), "--script", str(script.resolve()), "--scene-plan", str(scene_plan.resolve()), "--timing-manifest", str(timing_manifest.resolve()), "--aspect", aspect,
             "--output", _e_drive(output, "renderer_output"), "--report", _e_drive(report, "renderer_report"),
             "--stills-dir", _e_drive(stills_dir, "renderer_stills"), "--clips-dir", _e_drive(clips_dir, "renderer_clips")]
 
@@ -114,11 +128,11 @@ def assemble_contact_sheet(stills: list[Path], output: Path) -> dict[str, Any]:
     return {"path": str(output), "scene_count": len(stills), "sha256": _sha256(output)}
 
 
-def render_and_review(*, scene_plan: Path, timing_manifest: Path, output: Path, report: Path, stills_dir: Path,
+def render_and_review(*, script: Path, scene_plan: Path, timing_manifest: Path, output: Path, report: Path, stills_dir: Path,
                       clips_dir: Path, review_report: Path, contact_sheet: Path, aspect: str = "16:9") -> dict[str, Any]:
-    validation = validate_visual_inputs(scene_plan, timing_manifest, aspect=aspect)
+    validation = validate_visual_inputs(script, scene_plan, timing_manifest, aspect=aspect)
     renderer = Path(__file__).resolve().parents[2] / "scripts" / "render_phase1_topic_visual.mjs"
-    command = build_renderer_command(node="node", scene_plan=scene_plan, timing_manifest=timing_manifest, output=output,
+    command = build_renderer_command(node="node", script=script, scene_plan=scene_plan, timing_manifest=timing_manifest, aspect=aspect, output=output,
         report=report, stills_dir=stills_dir, clips_dir=clips_dir, renderer=renderer)
     subprocess.run(command, check=True, shell=False, timeout=900)
     sheet = assemble_contact_sheet(sorted(stills_dir.glob("scene_*.png")), contact_sheet)

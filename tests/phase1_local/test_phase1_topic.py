@@ -155,6 +155,9 @@ def test_director_script_and_scene_plan_preserve_fact_refs_and_variety() -> None
     assert len({scene["visual_type"] for scene in plan["scenes"]}) >= 3
     assert {ref for scene in plan["scenes"] for ref in scene["source_refs"]} == {"fact1", "fact2"}
     assert all(len({s["visual_type"] for s in plan["scenes"][i:i+3]}) > 1 for i in range(len(plan["scenes"]) - 2))
+    assert plan["scenes"][0]["information_role"] == "hook_question"
+    assert plan["scenes"][0]["source_refs"] == []
+    assert all(scene["source_refs"] for scene in plan["scenes"][1:])
 
 
 def test_selected_prose_changes_director_beats_and_only_matching_claims_get_refs() -> None:

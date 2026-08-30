@@ -11,6 +11,7 @@
   "dependencies": {
     "@remotion/bundler": "4.0.500",
     "@remotion/cli": "4.0.500",
+    "@remotion/layout-utils": "4.0.500",
     "@remotion/media-utils": "4.0.500",
     "@remotion/renderer": "4.0.500",
     "react": "19.2.8",
