@@ -133,10 +133,32 @@ def ingest_mpt_candidates(value: Path | Mapping[str, Any]) -> dict[str, Any]:
     return document
 
 
+_CONTRADICTION_MARKERS = ("不是", "并非", "无需", "不需要", "错误", "装饰", "只是关键词", "相反")
+
+
+def _longest_common_contiguous(left: str, right: str) -> int:
+    previous = [0] * (len(right) + 1)
+    best = 0
+    for left_char in left:
+        current = [0]
+        for index, right_char in enumerate(right, 1):
+            value = previous[index - 1] + 1 if left_char == right_char else 0
+            current.append(value)
+            best = max(best, value)
+        previous = current
+    return best
+
+
 def _claim_matches(script: str, claim: str) -> bool:
+    # Conservative by design: any contradiction marker makes the prose
+    # ineligible for factual binding. Uncertainty must produce no fact_refs.
+    if any(marker in script for marker in _CONTRADICTION_MARKERS):
+        return False
     left = re.sub(r"[^\w\u4e00-\u9fff]", "", script).casefold()
     right = re.sub(r"[^\w\u4e00-\u9fff]", "", claim).casefold()
-    return bool(right) and (right in left or any(right[index:index + 4] in left for index in range(max(1, len(right) - 3))))
+    if not right:
+        return False
+    return right in left or _longest_common_contiguous(left, right) / len(right) >= 0.8
 
 
 def _score(script: str, research: Mapping[str, Any]) -> dict[str, int]:
@@ -162,20 +184,23 @@ def select_candidate(candidates: Mapping[str, Any], research: Mapping[str, Any],
 
 def build_director_script(request: Mapping[str, Any], research: Mapping[str, Any], selected: Mapping[str, Any]) -> dict[str, Any]:
     prose = _normalized(str(selected["script"]))
-    narrations = [value.strip() for value in re.split(r"(?<=[。！？!?；;])", prose) if value.strip()]
-    if len(narrations) < 5:
-        width = max(1, (len(prose) + 4) // 5)
-        narrations = [prose[index:index + width] for index in range(0, len(prose), width)]
-    while len(narrations) < 5:
-        narrations.append(narrations[-1])
-    narrations = narrations[:9]
-    purposes = ["hook"] + ["explain"] * (len(narrations) - 2) + ["summary"]
-    beats = []
-    for purpose, text in zip(purposes, narrations):
-        refs = [str(fact["id"]) for fact in research["facts"] if _claim_matches(text, str(fact["claim"]))]
-        beats.append({"purpose": purpose, "narration": text, "subtitle": text[:80], "visual_intent": f"用{purpose}信息图表达当前知识点", "pose": "normal", "required_tags": ["technical"], "fact_refs": refs})
+    first_sentence = next((value.strip() for value in re.split(r"(?<=[。！？!?；;])", prose) if value.strip()), "")
+    hook = first_sentence if first_sentence and not any(marker in first_sentence for marker in _CONTRADICTION_MARKERS) else f"{request['subject']}真正需要验证的是什么？"
+    facts = list(research["facts"])
+    beats = [{"purpose": "hook", "narration": hook, "subtitle": hook[:80], "visual_intent": "用hook信息图表达当前知识点", "pose": "normal", "required_tags": ["technical"], "fact_refs": []}]
+    technical: list[tuple[str, dict[str, Any]]] = [(str(fact["claim"]), fact) for fact in facts]
+    cursor = 0
+    while len(technical) < 4:
+        fact = facts[cursor % len(facts)]
+        prefix = "核验依据：" if len(technical) < 3 else "工程结论："
+        technical.append((prefix + str(fact["claim"]), fact))
+        cursor += 1
+    for index, (text, fact) in enumerate(technical[:8], 1):
+        purpose = "summary" if index == min(8, len(technical)) else "explain"
+        beats.append({"purpose": purpose, "narration": text, "subtitle": text[:80], "visual_intent": f"用{purpose}信息图表达当前知识点", "pose": "normal", "required_tags": ["technical"], "fact_refs": [str(fact["id"])]})
     digest = str(research["topic_digest"])
-    script = {"schema_version": SCHEMA_VERSION, "script_id": f"script_{hashlib.sha256((prose+digest).encode('utf-8')).hexdigest()[:16]}", "topic_digest": digest, "title": str(request["subject"]), "hook": narrations[0], "narration": prose, "duration_target_seconds": int(request["duration"]), "style": {"language": "zh-CN", "tone": "technical_calm_dry_humor", "content_scope": "evergreen_embedded_mainline"}, "beats": beats}
+    narration = "".join(str(beat["narration"]) for beat in beats)
+    script = {"schema_version": SCHEMA_VERSION, "script_id": f"script_{hashlib.sha256((prose+digest).encode('utf-8')).hexdigest()[:16]}", "topic_digest": digest, "title": str(request["subject"]), "hook": hook, "narration": narration, "duration_target_seconds": int(request["duration"]), "style": {"language": "zh-CN", "tone": "technical_calm_dry_humor", "content_scope": "evergreen_embedded_mainline"}, "beats": beats}
     validation.validate(script, "director_script")
     return script
 

@@ -2600,3 +2600,12 @@ Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
 - [x] Enforce absolute HTTP(S) URLs with hosts and unique source/fact IDs.
 - RED quality evidence: focused tests initially reported 9 failures for the missing behaviors.
 - GREEN quality evidence: focused suite `31 passed`; final Phase 1 local plus projection suite `70 passed`.
+
+### P1 contradiction-probe remediation
+
+- [x] Replace four-character overlap with conservative full/80%-contiguous claim anchors.
+- [x] Reject fact binding when negation or contradiction markers make the prose uncertain.
+- [x] Use MPT prose only for a filtered hook; construct technical/evidence beats from verified claims.
+- [x] Require rewrite guidance to include complete verified claim anchors without negation.
+- RED: reviewer probe produced 3 expected focused failures.
+- GREEN: final Phase 1 local plus projection suite `72 passed`.

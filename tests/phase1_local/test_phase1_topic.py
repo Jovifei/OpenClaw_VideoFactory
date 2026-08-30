@@ -157,6 +157,32 @@ def test_selected_prose_changes_director_beats_and_only_matching_claims_get_refs
     second = {"script":"喂狗窗口应由最坏执行时间决定。工程师测量边界，然后记录结论。"}
     a = build_director_script(request, brief, first)
     b = build_director_script(request, brief, second)
-    assert [x["narration"] for x in a["beats"]] != [x["narration"] for x in b["beats"]]
-    assert any("fact1" in x["fact_refs"] for x in a["beats"])
-    assert all("fact2" not in x["fact_refs"] for x in a["beats"])
+    assert a["beats"][0]["narration"] != b["beats"][0]["narration"]
+    assert a["beats"][1:] == b["beats"][1:]
+    assert {ref for beat in a["beats"][1:] for ref in beat["fact_refs"]} == {"fact1", "fact2"}
+
+
+def test_contradictory_keyword_overlap_never_scores_or_binds_facts() -> None:
+    brief = research()
+    prose = "看门狗用于检测软件失去响应只是关键词，并非真实原理；喂狗窗口无需由最坏执行时间决定。"
+    candidates = ingest_mpt_candidates(mpt_document([prose] * 3))
+    with pytest.raises(FactoryContractError) as exc:
+        select_candidate(candidates, brief, rewrite_attempt=1)
+    assert exc.value.context["best_score"] < 85
+    script = build_director_script(build_topic_request(subject="看门狗定时器"), brief, {"script": prose})
+    assert not script["beats"][0]["fact_refs"]
+    assert prose not in script["narration"]
+
+
+def test_grounded_claim_anchors_pass_and_safe_hooks_only_change_hook() -> None:
+    brief = research()
+    grounded_a = "为什么系统会突然重启？看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"
+    grounded_b = "先别急着重启。看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"
+    selected = select_candidate(ingest_mpt_candidates(mpt_document([grounded_a] * 3)), brief)
+    assert selected["score_breakdown"]["factual_consistency"] == 100
+    request = build_topic_request(subject="看门狗定时器")
+    first = build_director_script(request, brief, {"script": grounded_a})
+    second = build_director_script(request, brief, {"script": grounded_b})
+    assert first["beats"][0]["narration"] != second["beats"][0]["narration"]
+    assert first["beats"][1:] == second["beats"][1:]
+    assert all(beat["fact_refs"] for beat in first["beats"][1:])

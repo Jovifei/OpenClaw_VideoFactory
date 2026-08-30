@@ -220,7 +220,7 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
             if exc.context.get("reason") != "selection_threshold_not_met" or rewrite_attempt == 1:
                 raise
             dimensions = ",".join(map(str, exc.context.get("failed_dimensions", [])))
-            rewrite_guidance = f"候选{exc.context.get('best_candidate')}总分{exc.context.get('best_score')}；改进维度：{dimensions}；保留事实引用并重写。"
+            rewrite_guidance = f"候选{exc.context.get('best_candidate')}总分{exc.context.get('best_score')}；改进维度：{dimensions}；必须包含完整已核验 claim 锚点，禁止否定或反转 claim，并重写。"
     if candidates is None or selected is None:  # pragma: no cover - loop is exhaustive
         raise FactoryContractError("phase1_topic_contract_invalid", "Subject selection failed closed.", {})
     director = build_director_script(request, research, selected)

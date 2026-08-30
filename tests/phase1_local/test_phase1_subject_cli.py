@@ -150,6 +150,7 @@ def test_subject_second_attempt_receives_score_informed_guidance(tmp_path, monke
     result = _output(capsys)
     assert calls[0]["rewrite_guidance"] is None
     assert "改进维度" in calls[1]["rewrite_guidance"]
+    assert "完整已核验 claim" in calls[1]["rewrite_guidance"]
     selected_path = tmp_path / next(a["relative_path"] for a in result["artifacts"] if a["artifact_type"] == "selected_script")
     assert json.loads(selected_path.read_text(encoding="utf-8"))["rewrite_attempt"] == 1
     assert "看门狗检测失去响应" in calls[0]["research_guidance"]
