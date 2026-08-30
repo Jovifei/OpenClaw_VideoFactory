@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "upstream_repository": "https://github.com/calesthio/OpenMontage",
+  "upstream_commit": "cd9f3c1f03368be87b140af494914b8ee4e3c7a4",
+  "license": "AGPL-3.0-only",
+  "files": [
+    {"source_path":"lib/events.py","upstream_sha256":"2e906a9148f2c179d831cf4caf4859880bd7271a2963c15291d8c1c7c3e8c21a","vendored_path":"third_party/openmontage/events.py","vendored_sha256":"f743f0b02603a8e71136c9d8fbc2baaf4803559c6c87fc4c018c5a2c447da874","modified":"bounded relative paths import"},
+    {"source_path":"lib/delivery_promise.py","upstream_sha256":"6183ddd954388b7bd734c67d2d689eff79842ca49a214f351a6db7e383f0dde4","vendored_path":"third_party/openmontage/delivery_promise.py","vendored_sha256":"f784405c5635538f92bba5fe9887f18b0329eda87850442f25c1567fdc9093bd","modified":"provenance header"},
+    {"source_path":"lib/slideshow_risk.py","upstream_sha256":"6076be1dcaacd8c4d6b97d775ff6dae71eecb3abe4b055b081fcc60213030f2d","vendored_path":"third_party/openmontage/slideshow_risk.py","vendored_sha256":"885c4ed5c5bc6be87c50dc09d9103996a0e9afb42176bec1c08ce03fc4cadc0c","modified":"provenance header"},
+    {"source_path":"lib/verify_scene_pacing.py","upstream_sha256":"e42df59316dccfc7fe3ecfdedf2b0da64052db83ceb001433df847dfa55b1ef2","vendored_path":"third_party/openmontage/verify_scene_pacing.py","vendored_sha256":"001adcbdd267353b4223ae9a93b5860d9d487a815f779ae9ac2c1e860ff835da","modified":"generic scene-plan pacing verifier"},
+    {"source_path":"lib/pipeline_loader.py","upstream_sha256":"7e3eb9c266a9c49ab2b8501cf11b53e1758e672eaae011a30e20b74f5f11f7ef","vendored_path":"third_party/openmontage/pipeline_loader.py","vendored_sha256":"b30a7953b21f6f611cbd172c84c6a2b7ea5c320553baeeadeb67b1d9d940c18e","modified":"package-local manifest and schema paths"},
+    {"source_path":"lib/paths.py","upstream_sha256":null,"vendored_path":"third_party/openmontage/paths.py","vendored_sha256":"a417ae6682894fa434f7246aa054722c21d632ba37aec81f6ffeef43a0ff480c","modified":"minimal derived bounded path constants"},
+    {"source_path":"schemas/pipelines/pipeline_manifest.schema.json","upstream_sha256":"6d929fdb0a79e081b2c0fc06646acffb4c6060df4208a0bd4cdd693d0e3c65ec","vendored_path":"third_party/openmontage/schemas/pipelines/pipeline_manifest.schema.json","vendored_sha256":"2a806282486c34744057c900f5803de1cf1eb04f35763e9a15d70988f4d36b9d","modified":"x-source and x-modified annotations"},
+    {"source_path":"schemas/checkpoints/checkpoint.schema.json","upstream_sha256":"39db408cd797cc5902ee55835a1f659ba26ba3d94c218d7111a6ff4df3da0833","vendored_path":"third_party/openmontage/schemas/checkpoints/checkpoint.schema.json","vendored_sha256":"62e9d9d45aafa5793ab45da1984e0252efd59e3526290a0b4617c2483c9ecd9e","modified":"x-source and x-modified annotations"},
+    {"source_path":"derived:pipeline_manifest","upstream_sha256":null,"vendored_path":"third_party/openmontage/pipelines/phase1-local-topic.yaml","vendored_sha256":"710bbeeb0b8920c3797b47e3a94408ebcb1e810a46586009b41494ab909eecad","modified":"project-local stages and final-only human gate"},
+    {"source_path":"backlot/state.py","upstream_sha256":"af3454f2b8f373a1f888c238cc10ac8bc426e9d9d083e5879555edc22f148589","vendored_path":"third_party/openmontage/backlot/state.py","vendored_sha256":"f065cf88329c62184946cee630d7ba61169b99806a5262306f1a4553e19c3983","modified":"minimal read-only projected state"},
+    {"source_path":"backlot/server.py","upstream_sha256":"12d3cb10a4340d29a129d2e1c0744d6468596a3e879a807c2b9021dfc8ed6653","vendored_path":"third_party/openmontage/backlot/server.py","vendored_sha256":"aaced70f76b40f7270b22aba28b772701323ac4fcd132c8df1b66ed38914c905","modified":"health and state only; loopback default; no writes"}
+  ]
+}
