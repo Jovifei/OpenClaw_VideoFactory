@@ -128,12 +128,17 @@ def _subject_root(job_id: str) -> Path:
     return INPUT_ROOT / "subjects" / job_id
 
 
+def _project_if_subject(store: CandidateStore, job: dict[str, Any]) -> None:
+    if job.get("fixture_id") == "local_subject":
+        project_job_read_only(store, str(job["job_id"]), OPENMONTAGE_PROJECTS_ROOT)
+
+
 def _create_subject(args: argparse.Namespace) -> dict[str, Any]:
     request = build_topic_request(subject=args.subject, duration=args.duration, aspect=args.aspect_ratio, mascot=args.mascot_mode)
     canonical = stable_subject_key(request)
-    key = args.idempotency_key or canonical
+    key = canonical
     store = _store()
-    result = store.create_job("local_subject", key, "phase1_subject_plan", request["subject"], requested_duration_seconds=request["duration"], metadata={"pipeline_type": "phase1-local-topic", "input_mode": "local_subject", "topic_digest": hashlib.sha256(request["subject"].casefold().encode("utf-8")).hexdigest(), "canonical_subject_key": canonical, "topic_request_path": "pending", "subject_input_root": "pending"})
+    result = store.create_job("local_subject", key, "phase1_subject_plan", request["subject"], requested_duration_seconds=request["duration"], metadata={"pipeline_type": "phase1-local-topic", "input_mode": "local_subject", "topic_digest": hashlib.sha256(request["subject"].casefold().encode("utf-8")).hexdigest(), "canonical_subject_key": canonical, "requested_idempotency_key": args.idempotency_key, "topic_request_path": "pending", "subject_input_root": "pending"})
     root = _subject_root(result["job_id"])
     root.mkdir(parents=True, exist_ok=True)
     request_path = root / "topic_request.json"
@@ -145,6 +150,7 @@ def _create_subject(args: argparse.Namespace) -> dict[str, Any]:
     if result["created"]:
         updated = store.update_metadata(result["job_id"], result["metadata"])
         result = {**updated, "created": True}
+    _project_if_subject(store, result)
     return {"status": "created" if result["created"] else "existing", "job": result, "topic_request_path": request_path.relative_to(PROJECT_ROOT).as_posix()}
 
 
@@ -199,11 +205,13 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
         if target is None:
             raise FactoryContractError("phase1_job_state_invalid", "Subject job cannot advance to scripting.", {"state": job["state"]})
         job = store.advance(job_id, target, reason="subject_research_validated")
+        _project_if_subject(store, job)
     candidates = None
     selected = None
     rewrite_guidance = None
+    research_guidance = "；".join(f"{fact['claim']} [fact={fact['id']};sources={','.join(fact['source_ids'])}]" for fact in research["facts"])
     for rewrite_attempt in (0, 1):
-        mpt_path = MPT_RUN_DRAFTS(subject=request["subject"], language="zh-CN", paragraphs=2, candidates=3, timeout_seconds=120.0, rewrite_guidance=rewrite_guidance)
+        mpt_path = MPT_RUN_DRAFTS(subject=request["subject"], language="zh-CN", paragraphs=2, candidates=3, timeout_seconds=120.0, rewrite_guidance=rewrite_guidance, research_guidance=research_guidance)
         candidates = ingest_mpt_candidates(Path(mpt_path))
         try:
             selected = select_candidate(candidates, research, rewrite_attempt=rewrite_attempt)
@@ -224,6 +232,7 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
         if target is None:
             raise FactoryContractError("phase1_job_state_invalid", "Subject job cannot advance to assets.", {"state": job["state"]})
         job = store.advance(job_id, target, reason="subject_plan_completed")
+        _project_if_subject(store, job)
     project_job_read_only(store, job_id, OPENMONTAGE_PROJECTS_ROOT)
     return {"status": "subject_plan_ready", "job": job, "artifacts": store.artifacts(job_id)}
 
@@ -315,7 +324,8 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
         except Exception:
             current = store.status(args.job_id)
             if current["state"] not in {"FAILED", "CANCELLED", "PENDING_REVIEW"}:
-                store.fail(args.job_id, "phase1_subject_planning_failed")
+                current = store.fail(args.job_id, "phase1_subject_planning_failed")
+                _project_if_subject(store, current)
             raise
     from generate_video import run_local_brief
     metadata = dict(job["metadata"])
@@ -412,9 +422,15 @@ def main(arguments: list[str] | None = None) -> int:
                 }
             )
         if args.command == "cancel":
-            return _emit({"status": "cancelled", "job": _store().cancel(args.job_id, "user_requested")})
+            store = _store()
+            job = store.cancel(args.job_id, "user_requested")
+            _project_if_subject(store, job)
+            return _emit({"status": "cancelled", "job": job})
         if args.command == "retry":
-            return _emit({"status": "retry_ready", "job": _store().retry(args.job_id, "user_requested")})
+            store = _store()
+            job = store.retry(args.job_id, "user_requested")
+            _project_if_subject(store, job)
+            return _emit({"status": "retry_ready", "job": job})
     except FactoryContractError as exc:
         return _emit({"status": "error", "error": exc.to_dict()}, 2)
     except KeyError:

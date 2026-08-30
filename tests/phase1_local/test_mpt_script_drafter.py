@@ -101,6 +101,16 @@ def test_run_drafts_applies_rewrite_guidance_without_changing_output_subject(tmp
     document = json.loads(out.read_text(encoding="utf-8"))
     assert "加强 hook" in commands[0][commands[0].index("--video-subject") + 1]
     assert document["subject"] == "看门狗"
+
+
+def test_run_drafts_applies_research_guidance(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    commands = []
+    def fake_run(command, **kwargs):
+        commands.append(command)
+        return type("Completed", (), {"returncode":0,"stdout":_cli_stdout("候选"),"stderr":""})()
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    run_drafts(subject="看门狗", language="zh-CN", paragraphs=2, candidates=1, timeout_seconds=5, out_root=tmp_path, research_guidance="事实：看门狗检测失去响应 [s1]")
+    assert "看门狗检测失去响应" in commands[0][commands[0].index("--video-subject") + 1]
     with pytest.raises(ValueError):
         run_drafts(
             subject="x",

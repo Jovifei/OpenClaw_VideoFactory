@@ -116,6 +116,7 @@ def run_drafts(
     mpt_root: Path = DEFAULT_MPT_ROOT,
     out_root: Path = DEFAULT_OUT_ROOT,
     rewrite_guidance: str | None = None,
+    research_guidance: str | None = None,
 ) -> Path:
     if not subject.strip():
         raise ValueError("subject must not be empty")
@@ -127,8 +128,10 @@ def run_drafts(
     out_dir.mkdir(parents=True, exist_ok=False)
 
     prompt_subject = subject
+    if research_guidance:
+        prompt_subject = f"{prompt_subject}\n\n已核验研究约束：{research_guidance.strip()}"
     if rewrite_guidance:
-        prompt_subject = f"{subject}\n\n确定性改写要求：{rewrite_guidance.strip()}"
+        prompt_subject = f"{prompt_subject}\n\n确定性改写要求：{rewrite_guidance.strip()}"
     results: list[dict[str, Any]] = []
     for index in range(1, candidates + 1):
         outcome = _draft_one_candidate(

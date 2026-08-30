@@ -20,6 +20,14 @@ def _output(capsys) -> dict:
     return json.loads(capsys.readouterr().out)
 
 
+def _projected_sqlite_state(job_id: str) -> str:
+    project = phase1_cli.OPENMONTAGE_PROJECTS_ROOT / job_id
+    pointer = json.loads((project / "current.json").read_text(encoding="utf-8"))
+    generation = project / pointer["generation"]
+    checkpoint = next(generation.glob("checkpoint_*.json"))
+    return json.loads(checkpoint.read_text(encoding="utf-8"))["metadata"]["sqlite_state"]
+
+
 def _research() -> dict:
     return build_research_brief(topic="看门狗", sources=[{"id":"s1","url":"https://x/a","title":"a","kind":"official_document"},{"id":"s2","url":"https://x/b","title":"b","kind":"research_paper"}], facts=[{"id":"f1","claim":"看门狗检测失去响应","source_ids":["s1"]},{"id":"f2","claim":"超时需验证","source_ids":["s2"]}])
 
@@ -29,6 +37,7 @@ def test_create_subject_is_stably_idempotent_and_parameter_sensitive(tmp_path, m
     args = ["create-subject", "--subject", "看门狗"]
     assert phase1_cli.main(args) == 0
     first = _output(capsys)
+    assert _projected_sqlite_state(first["job"]["job_id"]) == "NEW"
     assert first["job"]["fixture_id"] == "local_subject"
     assert first["job"]["metadata"]["pipeline_type"] == "phase1-local-topic"
     assert phase1_cli.main(args) == 0
@@ -37,6 +46,18 @@ def test_create_subject_is_stably_idempotent_and_parameter_sensitive(tmp_path, m
     assert second["job"]["job_id"] == first["job"]["job_id"]
     assert phase1_cli.main(args + ["--duration", "41"]) == 0
     assert _output(capsys)["job"]["job_id"] != first["job"]["job_id"]
+
+
+def test_requested_idempotency_key_is_audit_only(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject","--subject","看门狗","--idempotency-key","user-a"]) == 0
+    first = _output(capsys)["job"]
+    assert phase1_cli.main(["create-subject","--subject","看门狗","--idempotency-key","user-b"]) == 0
+    same = _output(capsys)["job"]
+    assert same["job_id"] == first["job_id"]
+    assert first["metadata"]["requested_idempotency_key"] == "user-a"
+    assert phase1_cli.main(["create-subject","--subject","串口 DMA","--idempotency-key","user-a"]) == 0
+    assert _output(capsys)["job"]["job_id"] != first["job_id"]
 
 
 def test_attach_research_contains_copy_and_subject_run_stops_before_render(tmp_path, monkeypatch, capsys) -> None:
@@ -53,7 +74,7 @@ def test_attach_research_contains_copy_and_subject_run_stops_before_render(tmp_p
 
     def fake_run_drafts(**kwargs):
         output = tmp_path / "mpt.json"
-        output.write_text(json.dumps({"schema_version":"1.0","kind":"phase1_script_drafts","subject":"看门狗","language":"zh-CN","requested_candidates":3,"successful_candidates":3,"mpt_version":"1.3.5","mpt_commit":MPT_COMMIT,"candidates":[{"candidate":i,"script":"看门狗发生故障后，先解释原理与配置，再通过时间轴验证超时和恢复边界 f1 f2","duration_seconds":1} for i in range(1,4)],"failures":[]}, ensure_ascii=False), encoding="utf-8")
+        output.write_text(json.dumps({"schema_version":"1.0","kind":"phase1_script_drafts","subject":"看门狗","language":"zh-CN","requested_candidates":3,"successful_candidates":3,"mpt_version":"1.3.5","mpt_commit":MPT_COMMIT,"candidates":[{"candidate":i,"script":"看门狗发生故障：看门狗检测失去响应，超时需验证。再解释原理、配置和恢复边界。","duration_seconds":1} for i in range(1,4)],"failures":[]}, ensure_ascii=False), encoding="utf-8")
         return output
 
     monkeypatch.setattr(phase1_cli, "MPT_RUN_DRAFTS", fake_run_drafts)
@@ -92,9 +113,20 @@ def test_subject_failure_is_persisted_and_retry_reenters_planning(tmp_path, monk
     _output(capsys)
     store = CandidateStore(phase1_cli.DATABASE_PATH)
     assert store.status(job_id)["state"] == "FAILED"
+    assert _projected_sqlite_state(job_id) == "FAILED"
     assert phase1_cli.main(["retry", "--job-id", job_id]) == 0
     retried = _output(capsys)
     assert retried["job"]["state"] == "SCRIPTING"
+    assert _projected_sqlite_state(job_id) == "SCRIPTING"
+
+
+def test_subject_cancel_is_projected(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject", "--subject", "看门狗"]) == 0
+    job_id = _output(capsys)["job"]["job_id"]
+    assert phase1_cli.main(["cancel", "--job-id", job_id]) == 0
+    _output(capsys)
+    assert _projected_sqlite_state(job_id) == "CANCELLED"
 
 
 def test_subject_second_attempt_receives_score_informed_guidance(tmp_path, monkeypatch, capsys) -> None:
@@ -109,7 +141,7 @@ def test_subject_second_attempt_receives_score_informed_guidance(tmp_path, monke
     def fake_run_drafts(**kwargs):
         calls.append(kwargs)
         strong = len(calls) == 2
-        script = "看门狗发生故障后，先解释原理与配置，再通过时间轴验证超时和恢复边界 f1 f2" if strong else "短"
+        script = "看门狗发生故障：看门狗检测失去响应，超时需验证。再解释原理、配置和恢复边界。" if strong else "短"
         output = tmp_path / f"mpt-{len(calls)}.json"
         output.write_text(json.dumps({"schema_version":"1.0","kind":"phase1_script_drafts","subject":"看门狗","language":"zh-CN","requested_candidates":3,"successful_candidates":3,"mpt_version":"1.3.5","mpt_commit":MPT_COMMIT,"candidates":[{"candidate":i,"script":script,"duration_seconds":1} for i in range(1,4)],"failures":[]}, ensure_ascii=False), encoding="utf-8")
         return output
@@ -120,3 +152,5 @@ def test_subject_second_attempt_receives_score_informed_guidance(tmp_path, monke
     assert "改进维度" in calls[1]["rewrite_guidance"]
     selected_path = tmp_path / next(a["relative_path"] for a in result["artifacts"] if a["artifact_type"] == "selected_script")
     assert json.loads(selected_path.read_text(encoding="utf-8"))["rewrite_attempt"] == 1
+    assert "看门狗检测失去响应" in calls[0]["research_guidance"]
+    assert "s1" in calls[0]["research_guidance"]

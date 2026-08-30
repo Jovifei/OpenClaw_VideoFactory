@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from urllib.parse import urlparse
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -74,6 +75,13 @@ def build_research_brief(*, topic: str, sources: list[dict[str, Any]], facts: li
     urls = [str(item.get("url", "")) for item in sources]
     if len(set(ids)) != len(ids) or len(set(urls)) != len(urls):
         raise _error("duplicate_source")
+    fact_ids = [str(item.get("id", "")) for item in facts]
+    if len(set(fact_ids)) != len(fact_ids):
+        raise _error("duplicate_fact")
+    for url in urls + [str(item.get("url", "")) for item in document["comparables"]]:
+        parsed = urlparse(url)
+        if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+            raise _error("url_invalid", url=url)
     if not any(item.get("kind") in _PRIMARY_KINDS for item in sources):
         raise _error("primary_source_required")
     known = set(ids)
@@ -125,10 +133,15 @@ def ingest_mpt_candidates(value: Path | Mapping[str, Any]) -> dict[str, Any]:
     return document
 
 
+def _claim_matches(script: str, claim: str) -> bool:
+    left = re.sub(r"[^\w\u4e00-\u9fff]", "", script).casefold()
+    right = re.sub(r"[^\w\u4e00-\u9fff]", "", claim).casefold()
+    return bool(right) and (right in left or any(right[index:index + 4] in left for index in range(max(1, len(right) - 3))))
+
+
 def _score(script: str, research: Mapping[str, Any]) -> dict[str, int]:
     compact = re.sub(r"\s+", "", script)
-    claims = [str(f["id"]) for f in research["facts"]]
-    factual = min(100, 70 + 15 * sum(ref in script for ref in claims))
+    factual = min(100, 40 + 30 * sum(_claim_matches(script, str(f["claim"])) for f in research["facts"]))
     dimensions = {"factual_consistency": factual, "hook": 90 if any(x in script for x in ("故障", "为什么", "？")) else 65, "clarity": 90 if len(compact) >= 18 else 55, "duration": 90 if 18 <= len(compact) <= 800 else 55, "visualizability": 90 if any(x in script for x in ("原理", "配置", "验证", "时间")) else 60, "originality": 88 if len(set(compact)) >= 12 else 55, "account_fit": 92 if any(x in script for x in ("看门狗", "工程", "配置", "芯片")) else 60}
     dimensions["total"] = round(sum(dimensions.values()) / 7)
     return dimensions
@@ -148,12 +161,21 @@ def select_candidate(candidates: Mapping[str, Any], research: Mapping[str, Any],
 
 
 def build_director_script(request: Mapping[str, Any], research: Mapping[str, Any], selected: Mapping[str, Any]) -> dict[str, Any]:
-    refs = [str(f["id"]) for f in research["facts"]]
-    purposes = ["hook", "problem", "principle", "verification", "summary"]
-    narrations = [f"{request['subject']}出故障时，第一步不是重启，而是确认失去响应的证据。", f"先界定故障现象与触发边界：{research['facts'][0]['claim']}", f"再拆解工作原理：{research['facts'][min(1, len(refs)-1)]['claim']}", "配置后用时间轴和故障注入验证超时、恢复与边界条件。", "最后把现象、原理、配置和验证闭环，留下可复查的工程结论。"]
-    beats = [{"purpose": purpose, "narration": text, "subtitle": text[:80], "visual_intent": f"用{purpose}信息图表达当前知识点", "pose": "normal", "required_tags": ["technical"], "fact_refs": refs} for purpose, text in zip(purposes, narrations)]
+    prose = _normalized(str(selected["script"]))
+    narrations = [value.strip() for value in re.split(r"(?<=[。！？!?；;])", prose) if value.strip()]
+    if len(narrations) < 5:
+        width = max(1, (len(prose) + 4) // 5)
+        narrations = [prose[index:index + width] for index in range(0, len(prose), width)]
+    while len(narrations) < 5:
+        narrations.append(narrations[-1])
+    narrations = narrations[:9]
+    purposes = ["hook"] + ["explain"] * (len(narrations) - 2) + ["summary"]
+    beats = []
+    for purpose, text in zip(purposes, narrations):
+        refs = [str(fact["id"]) for fact in research["facts"] if _claim_matches(text, str(fact["claim"]))]
+        beats.append({"purpose": purpose, "narration": text, "subtitle": text[:80], "visual_intent": f"用{purpose}信息图表达当前知识点", "pose": "normal", "required_tags": ["technical"], "fact_refs": refs})
     digest = str(research["topic_digest"])
-    script = {"schema_version": SCHEMA_VERSION, "script_id": f"script_{hashlib.sha256((selected['script']+digest).encode('utf-8')).hexdigest()[:16]}", "topic_digest": digest, "title": str(request["subject"]), "hook": narrations[0], "narration": "".join(narrations), "duration_target_seconds": int(request["duration"]), "style": {"language": "zh-CN", "tone": "technical_calm_dry_humor", "content_scope": "evergreen_embedded_mainline"}, "beats": beats}
+    script = {"schema_version": SCHEMA_VERSION, "script_id": f"script_{hashlib.sha256((prose+digest).encode('utf-8')).hexdigest()[:16]}", "topic_digest": digest, "title": str(request["subject"]), "hook": narrations[0], "narration": prose, "duration_target_seconds": int(request["duration"]), "style": {"language": "zh-CN", "tone": "technical_calm_dry_humor", "content_scope": "evergreen_embedded_mainline"}, "beats": beats}
     validation.validate(script, "director_script")
     return script
 

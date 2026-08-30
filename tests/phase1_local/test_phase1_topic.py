@@ -71,6 +71,20 @@ def test_research_requires_unique_sources_primary_kind_and_linked_facts() -> Non
         build_research_brief(topic="x", sources=[{"id": "a", "url": "https://x/a", "title": "a", "kind": "official_document"}, {"id": "b", "url": "https://x/a", "title": "b", "kind": "primary_source"}], facts=[{"id": "f", "claim": "c", "source_ids": ["missing"]}])
 
 
+@pytest.mark.parametrize("url", ["relative/path", "ftp://host/a", "https:///missing-host"])
+def test_research_rejects_non_http_absolute_urls(url: str) -> None:
+    sources = [{"id":"a","url":url,"title":"a","kind":"official_document"},{"id":"b","url":"https://x/b","title":"b","kind":"research_paper"}]
+    with pytest.raises(FactoryContractError):
+        build_research_brief(topic="x", sources=sources, facts=[{"id":"f","claim":"事实","source_ids":["a"]}])
+
+
+def test_research_rejects_duplicate_fact_and_source_ids() -> None:
+    with pytest.raises(FactoryContractError):
+        build_research_brief(topic="x", sources=[{"id":"a","url":"https://x/a","title":"a","kind":"official_document"},{"id":"a","url":"https://x/b","title":"b","kind":"research_paper"}], facts=[{"id":"f","claim":"事实","source_ids":["a"]}])
+    with pytest.raises(FactoryContractError):
+        build_research_brief(topic="x", sources=[{"id":"a","url":"https://x/a","title":"a","kind":"official_document"},{"id":"b","url":"https://x/b","title":"b","kind":"research_paper"}], facts=[{"id":"f","claim":"事实一","source_ids":["a"]},{"id":"f","claim":"事实二","source_ids":["b"]}])
+
+
 @pytest.mark.parametrize("injection", [{"path": "C:/secret"}, {"visual_grammar": {"audio": "x"}}, {"provider": "remote"}])
 def test_research_rejects_comparable_control_injection_recursively(injection: dict) -> None:
     doc = research()
@@ -112,7 +126,7 @@ def test_new_contracts_fail_closed_without_jsonschema(monkeypatch) -> None:
 
 
 def test_selection_threshold_tie_break_and_rewrite_fail_closed() -> None:
-    candidates = ingest_mpt_candidates(mpt_document(["看门狗故障 原理 验证 fact1 fact2", "看门狗故障 原理 验证 fact1 fact2", "短"] ))
+    candidates = ingest_mpt_candidates(mpt_document(["看门狗故障：看门狗用于检测软件失去响应，喂狗窗口应由最坏执行时间决定。原理配置验证。", "看门狗故障：看门狗用于检测软件失去响应，喂狗窗口应由最坏执行时间决定。原理配置验证。", "短"] ))
     selected = select_candidate(candidates, research(), rewrite_attempt=0)
     validate(selected, "phase1_selected_script")
     assert selected["selected_candidate"] == 1
@@ -124,7 +138,7 @@ def test_selection_threshold_tie_break_and_rewrite_fail_closed() -> None:
 
 
 def test_director_script_and_scene_plan_preserve_fact_refs_and_variety() -> None:
-    candidates = ingest_mpt_candidates(mpt_document(["看门狗故障 原理 配置 验证 总结 fact1 fact2"] * 3))
+    candidates = ingest_mpt_candidates(mpt_document(["看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。然后配置、验证并总结。"] * 3))
     selected = select_candidate(candidates, research())
     script = build_director_script(build_topic_request(subject="看门狗定时器"), research(), selected)
     validate(script, "director_script")
@@ -132,5 +146,17 @@ def test_director_script_and_scene_plan_preserve_fact_refs_and_variety() -> None
     validate(plan, "phase1_scene_plan")
     assert 5 <= len(plan["scenes"]) <= 9
     assert len({scene["visual_type"] for scene in plan["scenes"]}) >= 3
-    assert all(scene["source_refs"] for scene in plan["scenes"])
+    assert {ref for scene in plan["scenes"] for ref in scene["source_refs"]} == {"fact1", "fact2"}
     assert all(len({s["visual_type"] for s in plan["scenes"][i:i+3]}) > 1 for i in range(len(plan["scenes"]) - 2))
+
+
+def test_selected_prose_changes_director_beats_and_only_matching_claims_get_refs() -> None:
+    request = build_topic_request(subject="看门狗定时器")
+    brief = research()
+    first = {"script":"看门狗用于检测软件失去响应。工程师配置超时，然后验证恢复。"}
+    second = {"script":"喂狗窗口应由最坏执行时间决定。工程师测量边界，然后记录结论。"}
+    a = build_director_script(request, brief, first)
+    b = build_director_script(request, brief, second)
+    assert [x["narration"] for x in a["beats"]] != [x["narration"] for x in b["beats"]]
+    assert any("fact1" in x["fact_refs"] for x in a["beats"])
+    assert all("fact2" not in x["fact_refs"] for x in a["beats"])

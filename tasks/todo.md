@@ -2590,3 +2590,13 @@ Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
 - [x] Fail closed for the five new contracts when jsonschema is unavailable, without changing legacy validation behavior.
 - RED remediation evidence: focused tests initially reported 5 failures covering the missing behaviors.
 - GREEN remediation evidence: focused suite `24 passed`; full `tests/phase1_local` suite `49 passed`.
+
+### Quality review remediation
+
+- [x] Feed verified research claims/source bindings into the first MPT prompt and score factual consistency against claim text.
+- [x] Compile Director beats from selected prose and attach only semantically matching fact references.
+- [x] Keep requested idempotency keys as audit metadata while canonical content controls job identity.
+- [x] Project every local-subject lifecycle mutation, including failure, cancellation, and retry.
+- [x] Enforce absolute HTTP(S) URLs with hosts and unique source/fact IDs.
+- RED quality evidence: focused tests initially reported 9 failures for the missing behaviors.
+- GREEN quality evidence: focused suite `31 passed`; final Phase 1 local plus projection suite `70 passed`.
