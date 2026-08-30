@@ -56,6 +56,13 @@ def test_topic_request_defaults_and_stable_policy_key() -> None:
     assert MPT_COMMIT in stable_subject_key(request)
 
 
+def test_subject_policy_uses_vendored_openmontage_commit() -> None:
+    provenance = json.loads(Path("third_party/openmontage/PROVENANCE.json").read_text(encoding="utf-8"))
+    approved = provenance["upstream_commit"]
+    assert OPENMONTAGE_COMMIT == approved
+    assert approved in stable_subject_key(build_topic_request(subject="看门狗"))
+
+
 @pytest.mark.parametrize("field,value", [("duration", 24), ("aspect", "1:1"), ("mascot", "invented")])
 def test_topic_request_rejects_invalid_modes(field: str, value: object) -> None:
     args = {"subject": "看门狗", field: value}

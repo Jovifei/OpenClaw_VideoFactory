@@ -13,7 +13,7 @@ from video_factory.pipeline.errors import FactoryContractError
 from video_factory.pipeline import validation
 
 SCHEMA_VERSION = "1.0"
-OPENMONTAGE_COMMIT = "cd9b905d41c2e1ddfbb730323e57481e9a36bfe6"
+OPENMONTAGE_COMMIT = "cd9f3c1f03368be87b140af494914b8ee4e3c7a4"
 OPENMONTAGE_VERSION = "0.4.0"
 MPT_COMMIT = "eb8c23757e098a07bbcd93b3b50e252fc8d1869a"
 MPT_VERSION = "1.3.5"
