@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+import subprocess
 
 import pytest
 from fastapi.testclient import TestClient
@@ -74,4 +76,26 @@ def test_backlot_rejects_spoofed_project_identity(tmp_path: Path, payload: str) 
     (project / "current.json").write_text('{"generation":"generations/g-safe"}', encoding="utf-8")
     (generation / "project.json").write_text(payload, encoding="utf-8")
     with pytest.raises(ValueError, match="projection_identity_invalid"):
+        load_board_state(project)
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Windows junction regression")
+def test_backlot_rejects_generations_directory_junction(tmp_path: Path) -> None:
+    project = tmp_path / "job-safe"
+    external = tmp_path / "outside-generations"
+    generation = external / "g-safe"
+    generation.mkdir(parents=True)
+    project.mkdir()
+    result = subprocess.run(
+        ["cmd", "/c", "mklink", "/J", str(project / "generations"), str(external)],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        pytest.skip("junction creation unavailable")
+    (project / "current.json").write_text('{"generation":"generations/g-safe"}', encoding="utf-8")
+    (generation / "project.json").write_text(
+        '{"project_id":"job-safe","state_authority":"sqlite","projection_only":true}', encoding="utf-8"
+    )
+    with pytest.raises(ValueError, match="projection_pointer_invalid"):
         load_board_state(project)

@@ -2,7 +2,7 @@
 # Modified: validates and reads only the atomically published SQLite projection generation.
 import json
 import stat
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 
@@ -30,13 +30,29 @@ def load_board_state(project_dir: Path | str) -> dict[str, Any]:
     project = Path(project_dir)
     if not project.is_dir() or _is_link_or_reparse(project):
         raise ValueError("projection_project_invalid")
+    project_root = project.resolve()
     pointer = _read_object(project / "current.json", "projection_pointer_invalid")
     relative = pointer.get("generation")
-    if not isinstance(relative, str) or not relative.startswith("generations/"):
+    relative_path = PurePosixPath(relative) if isinstance(relative, str) else None
+    if (
+        relative_path is None
+        or relative_path.is_absolute()
+        or len(relative_path.parts) != 2
+        or relative_path.parts[0] != "generations"
+        or relative_path.parts[1] in {"", ".", ".."}
+    ):
         raise ValueError("projection_pointer_invalid")
-    generations = (project / "generations").resolve()
-    generation = (project / relative).resolve()
+    generations_original = project / "generations"
+    if not generations_original.is_dir() or _is_link_or_reparse(generations_original):
+        raise ValueError("projection_pointer_invalid")
+    generations = generations_original.resolve()
+    selected_original = project / Path(*relative_path.parts)
+    if _is_link_or_reparse(selected_original):
+        raise ValueError("projection_pointer_invalid")
+    generation = selected_original.resolve()
     try:
+        generations.relative_to(project_root)
+        generation.relative_to(project_root)
         generation.relative_to(generations)
     except ValueError as exc:
         raise ValueError("projection_pointer_invalid") from exc
