@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from src.factory.phase1_topic import build_director_script, build_research_brief, build_scene_plan, build_topic_request
-from src.factory.phase1_topic_visual import assemble_contact_sheet, build_renderer_command, validate_visual_inputs
+from src.factory.phase1_topic_visual import assemble_contact_sheet, build_renderer_command, validate_visual_inputs, verify_report_artifacts
 
 
 def _task2_outputs(aspect: str = "16:9") -> tuple[dict, dict]:
@@ -123,3 +123,34 @@ def test_contact_sheet_is_created_from_midpoint_stills(tmp_path: Path) -> None:
     result = assemble_contact_sheet(stills, output)
     assert output.is_file() and result["scene_count"] == 5
     assert result["sha256"] == hashlib.sha256(output.read_bytes()).hexdigest()
+
+
+def _artifact_report(tmp_path: Path) -> tuple[Path, Path, Path, Path]:
+    stills, clips = tmp_path / "stills", tmp_path / "clips"
+    stills.mkdir(); clips.mkdir()
+    entries = []
+    for index in range(2):
+        still = stills / f"scene_{index + 1:02d}_mid.png"; still.write_bytes(f"still{index}".encode())
+        clip = clips / f"scene_{index + 1:02d}.mp4"; clip.write_bytes(f"clip{index}".encode())
+        entries.append({"scene_index": index + 1, "still": {"filename": still.relative_to(tmp_path).as_posix(), "sha256": hashlib.sha256(still.read_bytes()).hexdigest()}, "clip": {"filename": clip.relative_to(tmp_path).as_posix(), "sha256": hashlib.sha256(clip.read_bytes()).hexdigest()}})
+    output = tmp_path / "visual_master.mp4"; output.write_bytes(b"master")
+    report = tmp_path / "render_report.json"
+    report.write_text(json.dumps({"visual": {"filename": output.name, "sha256": hashlib.sha256(output.read_bytes()).hexdigest(), "scene_timing": entries}}), encoding="utf-8")
+    return report, output, stills, clips
+
+
+def test_report_artifacts_verify_declared_current_set(tmp_path: Path) -> None:
+    report, output, stills, clips = _artifact_report(tmp_path)
+    result = verify_report_artifacts(report, output, stills, clips, scene_count=2)
+    assert [path.name for path in result["stills"]] == ["scene_01_mid.png", "scene_02_mid.png"]
+
+
+@pytest.mark.parametrize(("mutation", "error"), [("stale", "artifact_directory_contaminated"), ("hash", "artifact_hash_mismatch"), ("escape", "artifact_path_escape")])
+def test_report_artifacts_reject_stale_tamper_and_escape(tmp_path: Path, mutation: str, error: str) -> None:
+    report, output, stills, clips = _artifact_report(tmp_path)
+    value = json.loads(report.read_text(encoding="utf-8"))
+    if mutation == "stale": (stills / "scene_99_mid.png").write_bytes(b"stale")
+    if mutation == "hash": value["visual"]["scene_timing"][0]["still"]["sha256"] = "0" * 64
+    if mutation == "escape": value["visual"]["scene_timing"][0]["still"]["filename"] = "../escape.png"
+    report.write_text(json.dumps(value), encoding="utf-8")
+    with pytest.raises(ValueError, match=error): verify_report_artifacts(report, output, stills, clips, scene_count=2)

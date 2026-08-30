@@ -367,7 +367,7 @@ def run_gate(visual: Path, render_report: Path, output_report: Path, *, preview:
         raise ValueError("visual_must_not_contain_audio")
     if report.get("visual", {}).get("burned_in_subtitles") is not False:
         raise ValueError("burned_in_subtitles_forbidden")
-    layout = validate_layout_contract(report.get("layout_contract"))
+    layout = validate_layout_contract(report.get("layout_contract"), width=width, height=height)
     geometry = validate_rc_highpass_geometry(report["geometry_contract"]) if "geometry_contract" in report else None
     duration = float(visual_probe.get("format", {}).get("duration") or 0.0)
     if duration <= 0:

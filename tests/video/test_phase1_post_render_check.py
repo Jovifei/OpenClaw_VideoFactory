@@ -54,3 +54,10 @@ def test_declared_canvas_modes_are_allowlisted(aspect: str, canvas: tuple[int, i
 def test_declared_canvas_rejects_media_or_report_mismatch() -> None:
     with pytest.raises(ValueError, match="post_render_canvas_report_mismatch"):
         MODULE.validate_report_canvas({"layout_contract": {"aspect": "16:9"}, "visual": {"width": 1920, "height": 1080}}, 1080, 1920)
+
+
+def test_landscape_layout_rejects_subtitle_reserve_beyond_measured_canvas() -> None:
+    value = _contract()
+    value["subtitle_reserve"] = {"top": 1000, "height": 120}
+    with pytest.raises(ValueError, match="layout_subtitle_reserve_outside_canvas"):
+        MODULE.validate_layout_contract(value, width=1920, height=1080)
