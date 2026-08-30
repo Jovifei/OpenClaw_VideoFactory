@@ -2678,3 +2678,9 @@ Spec-review verification: focused `10 passed`; full `393 passed`; Draft 2020-12 
 - [x] RED: reject moved/truncated editor segments and status-only READY reports while allowing one-frame quantization.
 - [x] GREEN: measure and persist every imported visual segment, validate ordered starts/durations/gaps/end, and inspect required timing/render/review/preview/Jianying conclusions.
 - [x] VERIFY: focused `17 passed`; full video + Phase 1 `400 passed`; compileall and diff check passed.
+
+### Task 4A optimized-mode fail-close correction
+
+- [x] RED: `python -O` rejected incomplete reports but lacked the required stable field-specific error.
+- [x] GREEN: replace every READY validator assert with explicit `ready_report_contract_invalid:<field>` conditions.
+- [x] VERIFY: focused `7 passed`; full video + Phase 1 `401 passed`; production assert grep empty, compileall and diff check passed.

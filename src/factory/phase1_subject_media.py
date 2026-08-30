@@ -45,30 +45,51 @@ def _write_failure(workdir: Path, stage: str, exc: Exception) -> None:
 
 
 def validate_ready_reports(reports: dict[str, dict[str, Any]], *, scene_count: int, expanded_audio_count: int, visual_duration_us: int) -> None:
+    def require(condition: bool, field: str) -> None:
+        if not condition:
+            raise ValueError(f"ready_report_contract_invalid:{field}")
     try:
         timing, render, review, preview, draft = (reports[k] for k in ("timing","render","visual_review","preview","jianying"))
         voice = timing["voice"]
-        assert timing["status"] == "timing_manifest_ready" and len(timing["segments"]) == scene_count
-        assert voice["rendered_audio_segment_count"] == expanded_audio_count and voice["voice_end_microseconds"] <= visual_duration_us
+        require(timing["status"] == "timing_manifest_ready", "timing.status")
+        require(len(timing["segments"]) == scene_count, "timing.segment_count")
+        require(voice["rendered_audio_segment_count"] == expanded_audio_count, "timing.expanded_audio_count")
+        require(voice["voice_end_microseconds"] <= visual_duration_us, "timing.voice_end")
         visual = render["visual"]
-        assert render["status"] == "passed" and visual["audio_present"] is False and visual["burned_in_subtitles"] is False and len(visual["scene_timing"]) == scene_count
+        require(render["status"] == "passed", "render.status")
+        require(visual["audio_present"] is False, "render.audio_present")
+        require(visual["burned_in_subtitles"] is False, "render.burned_in_subtitles")
+        require(len(visual["scene_timing"]) == scene_count, "render.scene_count")
         post = review["post_render"]
-        assert review["status"] == "passed" and review["contact_sheet"]["sha256"] and review["post_render_report"]["sha256"]
-        assert post["full_decode"] is True and post["all_frame_scan"]["status"] == "passed"
+        require(review["status"] == "passed", "visual_review.status")
+        require(bool(review["contact_sheet"]["sha256"]), "visual_review.contact_sheet_hash")
+        require(bool(review["post_render_report"]["sha256"]), "visual_review.post_report_hash")
+        require(post["full_decode"] is True, "visual_review.full_decode")
+        require(post["all_frame_scan"]["status"] == "passed", "visual_review.all_frame_scan")
         out, sync = preview["output"], preview["sync_validation"]
-        assert preview["status"] == "audio_preview_ready_for_manual_listening" and out["audio_present"] is True and out["full_decode"] == "passed"
-        assert str(out["codec"]).lower() == "aac" and isinstance(out["mean_volume_db"], (int,float)) and isinstance(out["max_volume_db"], (int,float))
-        assert -100 < out["mean_volume_db"] <= out["max_volume_db"] <= 1 and sync["status"] == "passed" and preview["audio_source"]["segment_count"] == expanded_audio_count
-        assert draft["status"] == "draft_ready_for_manual_jianying_review" and draft["sync_validation"]["status"] == "passed"
+        require(preview["status"] == "audio_preview_ready_for_manual_listening", "preview.status")
+        require(out["audio_present"] is True and out["full_decode"] == "passed", "preview.decode")
+        require(str(out["codec"]).lower() == "aac", "preview.codec")
+        require(isinstance(out["mean_volume_db"], (int,float)) and isinstance(out["max_volume_db"], (int,float)), "preview.loudness_type")
+        require(-100 < out["mean_volume_db"] <= out["max_volume_db"] <= 1, "preview.loudness_range")
+        require(sync["status"] == "passed", "preview.sync")
+        require(preview["audio_source"]["segment_count"] == expanded_audio_count, "preview.segment_count")
+        require(draft["status"] == "draft_ready_for_manual_jianying_review", "jianying.status")
+        require(draft["sync_validation"]["status"] == "passed", "jianying.sync")
         audio, subtitle = draft["audio_validation"], draft["subtitle_validation"]
-        assert audio["status"] == "passed" and audio["muted"] is False and audio["segment_count"] == expanded_audio_count
-        assert subtitle["status"] == "passed" and subtitle["segment_count"] == scene_count and draft["export"]["automatic_export"] == "disabled"
+        require(audio["status"] == "passed" and audio["muted"] is False and audio["segment_count"] == expanded_audio_count, "jianying.audio_validation")
+        require(subtitle["status"] == "passed" and subtitle["segment_count"] == scene_count, "jianying.subtitle_validation")
+        require(draft["export"]["automatic_export"] == "disabled", "jianying.automatic_export")
         tracks = {item["name"]:item for item in draft["tracks"]}
-        assert set(tracks) == {"VideoTrack","VoiceOver","Subtitles"} and tracks["VideoTrack"]["segment_count"] == scene_count
-        assert tracks["VoiceOver"]["segment_count"] == expanded_audio_count and tracks["Subtitles"]["segment_count"] == scene_count
-        assert abs(int(tracks["VideoTrack"]["duration_microseconds"]) - visual_duration_us) <= 33_335
-    except (AssertionError, KeyError, TypeError, ValueError) as exc:
-        raise ValueError("ready_report_contract_invalid") from exc
+        require(set(tracks) == {"VideoTrack","VoiceOver","Subtitles"}, "jianying.track_names")
+        require(tracks["VideoTrack"]["segment_count"] == scene_count, "jianying.video_track_count")
+        require(tracks["VoiceOver"]["segment_count"] == expanded_audio_count, "jianying.voice_track_count")
+        require(tracks["Subtitles"]["segment_count"] == scene_count, "jianying.subtitle_track_count")
+        require(abs(int(tracks["VideoTrack"]["duration_microseconds"]) - visual_duration_us) <= 33_335, "jianying.video_track_duration")
+    except (KeyError, TypeError, ValueError) as exc:
+        if isinstance(exc, ValueError) and str(exc).startswith("ready_report_contract_invalid:"):
+            raise
+        raise ValueError("ready_report_contract_invalid:report_shape") from exc
 
 
 def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None = None,

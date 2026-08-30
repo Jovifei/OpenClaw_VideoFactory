@@ -3,6 +3,8 @@ from __future__ import annotations
 import hashlib
 import json
 import uuid
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -43,6 +45,16 @@ def test_ready_reports_reject_status_only_documents() -> None:
         "preview":"audio_preview_ready_for_manual_listening","jianying":"draft_ready_for_manual_jianying_review"}.items()}
     with pytest.raises(ValueError, match="ready_report_contract_invalid"):
         validate_ready_reports(reports, scene_count=5, expanded_audio_count=5, visual_duration_us=30_000_000)
+
+
+def test_ready_reports_fail_closed_under_python_optimized_mode() -> None:
+    code = """from src.factory.phase1_subject_media import validate_ready_reports
+r={k:{'status':v} for k,v in {'timing':'timing_manifest_ready','render':'passed','visual_review':'passed','preview':'audio_preview_ready_for_manual_listening','jianying':'draft_ready_for_manual_jianying_review'}.items()}
+validate_ready_reports(r,scene_count=5,expanded_audio_count=5,visual_duration_us=30000000)
+"""
+    done = subprocess.run([sys.executable, "-O", "-c", code], cwd=Path(__file__).resolve().parents[2], capture_output=True, text=True, check=False)
+    assert done.returncode != 0
+    assert "ready_report_contract_invalid:" in done.stderr
 
 
 def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
