@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {validateInput, TEMPLATE_IDS} from '../.contract-build/contracts.js';
+import fs from 'node:fs';
 
 const legacy = {
   schema_version: '1.0',
@@ -32,4 +33,9 @@ assert.throws(() => validateInput({...current, audio: {...current.audio, asset: 
 assert.throws(() => validateInput({...current, mascot: {...current.mascot, asset: '../secret.svg'}}), /mascot_asset_invalid/);
 assert.throws(() => validateInput({...current, captions: [{start: 0, end: 40, text: '第一行\n第二行\n第三行'}]}), /caption_invalid/);
 assert.equal(validateInput({...current, captions: [{start: 0, end: 40, text: '123456789012345678\n123456789012345678'}]}).captions.length, 1);
+const technicalSource=fs.readFileSync(new URL('../src/TechnicalExplainer.tsx',import.meta.url),'utf8');
+assert.match(technicalSource,/maxWidth:textLayout\.geometry\.titleMaxWidth/);
+assert.match(technicalSource,/fontSize:layout\.itemFontSizes\[i\]/);
+assert.match(technicalSource,/fontSize:layout\.mainFontSize/);
+assert.doesNotMatch(technicalSource,/fontSize:(68|30|27|29),fontWeight/);
 console.log(JSON.stringify({status: 'contracts_validated', templates: TEMPLATE_IDS.length, versions: ['1.0', '2.0']}));
