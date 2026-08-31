@@ -27,3 +27,6 @@ def test_repository_and_vendored_subset_are_agpl_and_hash_bound() -> None:
             head = data.decode("utf-8").splitlines()[:6]
             assert any("Source:" in line for line in head)
             assert any("Modified:" in line for line in head)
+def test_hash_bound_vendor_files_pin_checkout_line_endings() -> None:
+    attributes = (ROOT / ".gitattributes").read_text(encoding="utf-8")
+    assert "third_party/openmontage/** text eol=lf" in attributes
