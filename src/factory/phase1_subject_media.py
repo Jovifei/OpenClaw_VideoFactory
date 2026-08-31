@@ -46,6 +46,19 @@ def _write_failure(workdir: Path, stage: str, exc: Exception) -> None:
     (workdir / "media_failure.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def _write_json_atomically(path: Path, value: dict[str, Any]) -> dict[str, Any]:
+    temporary = path.with_name(f".{path.name}.tmp")
+    if temporary.exists():
+        raise ValueError("subject_media_result_temp_exists")
+    encoded = (json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    with temporary.open("xb") as handle:
+        handle.write(encoded)
+        handle.flush()
+        os.fsync(handle.fileno())
+    temporary.replace(path)
+    return _load(path)
+
+
 def validate_timing_coverage(timing: dict[str, Any], *, visual_duration_us: int,
                              minimum_ratio: float = MIN_SUBJECT_VOICE_COVERAGE) -> float:
     try:
@@ -142,6 +155,7 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
     visual_review = workdir / "visual_review.json"
     preview, preview_report = workdir / "audible_preview.mp4", workdir / "audible_preview.json"
     draft_report = workdir / "jianying_manifest.json"; draft_name = f"Subject_{script['script_id']}_{workdir.name}"
+    result_receipt = workdir / "subject_media_result.json"
     stage = "timing"
     try:
         runner(timing_cmd, check=True, shell=False, timeout=900)
@@ -166,9 +180,19 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
         validate_ready_reports({"timing":timing,"render":render,"visual_review":review,"preview":preview_value,"jianying":draft},
                                scene_count=len(plan["scenes"]), expanded_audio_count=expanded_count, visual_duration_us=round(duration * 1_000_000))
         paths = {"timing_manifest":manifest,"render_report":render_report,"visual_review":visual_review,"preview":preview,"preview_report":preview_report,"jianying_report":draft_report}
-        result = {"schema_version":"1.0","status":"PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW","paths":{k:str(v) for k,v in paths.items()},"hashes":{k:_sha(v) for k,v in paths.items()},"draft_name":draft_name}
+        result = {"schema_version":"1.0", "status":"PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW",
+                  "candidate_status":"PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW", "ready_status":"READY",
+                  "automatic_export":False, "paths":{k:str(v) for k,v in paths.items()},
+                  "hashes":{k:_sha(v) for k,v in paths.items()}, "draft_name":draft_name}
         validation.validate(result, "phase1_subject_media_result")
-        return result
+        persisted = _write_json_atomically(result_receipt, result)
+        validation.validate(persisted, "phase1_subject_media_result")
+        return persisted
     except Exception as exc:
+        if result_receipt.exists():
+            result_receipt.unlink()
+        temporary_receipt = result_receipt.with_name(f".{result_receipt.name}.tmp")
+        if temporary_receipt.exists():
+            temporary_receipt.unlink()
         _write_failure(workdir, stage, exc)
         raise

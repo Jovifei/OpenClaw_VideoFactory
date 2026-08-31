@@ -11,9 +11,9 @@ from src.factory.phase1_topic_visual import assemble_contact_sheet, build_render
 
 
 def _task2_outputs(aspect: str = "16:9") -> tuple[dict, dict]:
-    research = build_research_brief(topic="看门狗", sources=[{"id":"s1","url":"https://vendor.example/a","title":"手册","kind":"official_document"},{"id":"s2","url":"https://lab.example/b","title":"研究","kind":"research_paper"}], facts=[{"id":"f1","claim":"看门狗检测软件失去响应。","source_ids":["s1"]},{"id":"f2","claim":"窗口由最坏执行时间决定。","source_ids":["s1","s2"]}])
+    research = build_research_brief(topic="看门狗", sources=[{"id":"s1","url":"https://vendor.example/a","title":"手册","kind":"official_document"},{"id":"s2","url":"https://lab.example/b","title":"研究","kind":"research_paper"}], facts=[{"id":"f1","claim":"看门狗用于检测软件失去响应。","source_ids":["s1"]},{"id":"f2","claim":"喂狗窗口应由最坏执行时间决定。","source_ids":["s1","s2"]}])
     request = build_topic_request(subject="看门狗窗口", duration=40, aspect=aspect)
-    script = build_director_script(request, research, {"script":"为什么系统复位？看门狗检测软件失去响应。窗口由最坏执行时间决定。"})
+    script = build_director_script(request, research, {"script":"为什么系统复位？看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"})
     return script, build_scene_plan(script, research)
 
 

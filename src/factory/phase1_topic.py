@@ -20,22 +20,18 @@ MPT_VERSION = "1.3.5"
 POLICY_VERSION = "phase1-topic-policy-v1"
 _FORBIDDEN = {"path", "frame", "audio", "transcript", "logo", "provider", "render", "publish", "asset_id", "asset_ids", "temperature", "top_p", "model", "endpoint_host"}
 _PRIMARY_KINDS = {"official_document", "standard", "research_paper", "primary_source"}
-# SAMI timing probes for the genuine Task2 Chinese fixture average just over
-# five Han characters per second. Use five as a conservative local budget so
-# an 80% script estimate still supplies the 0.75 measured-voice gate.
-CHINESE_TTS_CHARS_PER_SECOND = 5.0
+# Conservative, unqualified planning estimate only. The measured SAMI timing
+# gate remains authoritative for every real candidate.
+CHINESE_TTS_CHARS_PER_SECOND = 4.7
 MIN_NARRATION_COVERAGE = 0.8
 _SAFE_FRAME_CHARACTERS = set("先再把这条结论写清核对日志记录边界现场逐项观察检查确认复核回到过程结果证据清单问题重点步骤接下来然后最后并且是否对应不提前替它下不补充额外原因方便下一次复查：，。！？；")
 _SAFE_PROCESS_FRAMES = (
-    "先核对记录。",
-    "再看现场。",
-    "逐项对照。",
-    "记录结果。",
-    "回到结论复核。",
-    "确认前后一致。",
-    "把它放进清单。",
-    "不补充额外原因。",
-    "方便下一次复查。",
+    ("scope_boundary", "先界定检查范围与边界，只讨论已核验的现象、条件和结果。"),
+    ("causal_path", "再沿因果路径核对触发、执行和反馈，记录每一步的观察。"),
+    ("measurement_evidence", "把测量证据放到同一时间线，保留采样点、阈值和原始日志。"),
+    ("normal_fault_comparison", "将正常与故障路径并列比较，标出分叉位置和不同观察。"),
+    ("recovery", "发现异常后按既定恢复步骤处理，再次测量确认恢复结果，不把恢复动作当作原因验证，并保存复测条件和过程记录。"),
+    ("source_bound_conclusion", "最后回到来源绑定的结论，只陈述已有证据支持的内容，并标出仍需核验的边界，避免越界推断和重复表述。"),
 )
 
 
@@ -232,14 +228,20 @@ def _safe_selected_frame(prose: str, fact: Mapping[str, Any]) -> str:
     return ""
 
 
-def _beat_total(target_seconds: int) -> int:
-    if target_seconds <= 30:
-        return 5
-    if target_seconds <= 40:
-        return 6
-    if target_seconds <= 50:
-        return 7
-    return 9
+def _normalized_narration_frame(text: str) -> str:
+    return re.sub(r"[\s\W_]+", "", text).casefold()
+
+
+def _new_beat(*, purpose: str, narration: str, fact_refs: list[str]) -> dict[str, Any]:
+    return {
+        "purpose": purpose,
+        "narration": narration,
+        "subtitle": narration[:80],
+        "visual_intent": f"用{purpose}信息图表达当前知识点",
+        "pose": "normal",
+        "required_tags": ["technical"],
+        "fact_refs": fact_refs,
+    }
 
 
 def build_director_script(request: Mapping[str, Any], research: Mapping[str, Any], selected: Mapping[str, Any]) -> dict[str, Any]:
@@ -248,32 +250,35 @@ def build_director_script(request: Mapping[str, Any], research: Mapping[str, Any
     if not facts:
         raise _error("facts_required")
     target_seconds = int(request["duration"])
-    target_chars = round(target_seconds * CHINESE_TTS_CHARS_PER_SECOND)
-    minimum_chars = round(target_chars * MIN_NARRATION_COVERAGE)
-    hook_fact = next((fact for sentence in _sentences(prose) for fact in facts if _claim_matches(sentence, str(fact["claim"]))), None)
-    hook = (f"{request['subject']}这一步该看什么？先从{hook_fact['claim']}开始核验。"
-            if hook_fact is not None else f"{request['subject']}这一步该看什么？先把核验顺序理清。")
-    beats = [{"purpose": "hook", "narration": hook, "subtitle": hook[:80], "visual_intent": "用hook信息图表达当前知识点", "pose": "normal", "required_tags": ["technical"], "fact_refs": []}]
-    technical_count = _beat_total(target_seconds) - 1
-    for index in range(technical_count):
-        fact = facts[index % len(facts)]
-        frame = _safe_selected_frame(prose, fact) if index == 0 else ""
-        text = f"{frame}{fact['claim']}。"
-        purpose = "summary" if index == technical_count - 1 else "explain"
-        beats.append({"purpose": purpose, "narration": text, "subtitle": text[:80], "visual_intent": f"用{purpose}信息图表达当前知识点", "pose": "normal", "required_tags": ["technical"], "fact_refs": [str(fact["id"])]})
-    frame_index = 0
-    while estimate_narration_duration_seconds("".join(str(beat["narration"]) for beat in beats)) * CHINESE_TTS_CHARS_PER_SECOND < minimum_chars:
-        frame = _SAFE_PROCESS_FRAMES[frame_index % len(_SAFE_PROCESS_FRAMES)]
-        recipient = beats[1 + frame_index % technical_count]
-        recipient["narration"] = str(recipient["narration"]) + frame
-        recipient["subtitle"] = str(recipient["narration"])[:80]
-        frame_index += 1
-        if frame_index > target_chars:  # defensive; a valid target always has usable process frames.
-            raise _error("narration_duration_unachievable")
+    minimum_chars = round(target_seconds * CHINESE_TTS_CHARS_PER_SECOND * MIN_NARRATION_COVERAGE)
+    hook_fact = next((fact for sentence in _sentences(prose) for fact in facts
+                      if _claim_matches(sentence, str(fact["claim"]))), None)
+    selected_frame = _safe_selected_frame(prose, hook_fact) if hook_fact is not None else ""
+    hook = f"{request['subject']}排查时，{selected_frame}先把问题范围、证据边界和检查顺序放在同一张图上。"
+    beats = [_new_beat(purpose="hook", narration=hook, fact_refs=[])]
+    for fact in facts:
+        beats.append(_new_beat(purpose="explain_verified_fact", narration=str(fact["claim"]), fact_refs=[str(fact["id"])]))
+    if len(beats) > 9:
+        raise _error("narration_beat_limit_exceeded", beat_count=len(beats))
+    used_frames = {_normalized_narration_frame(beat["narration"]) for beat in beats}
+    if len(used_frames) != len(beats):
+        raise _error("narration_frame_duplicate", purpose="verified_claim")
+    for purpose, frame in _SAFE_PROCESS_FRAMES:
+        narration = "".join(str(beat["narration"]) for beat in beats)
+        if len(beats) >= 5 and len(re.findall(r"[\u4e00-\u9fff]", narration)) >= minimum_chars:
+            break
+        normalized = _normalized_narration_frame(frame)
+        if not normalized or normalized in used_frames:
+            raise _error("narration_frame_duplicate", purpose=purpose)
+        if len(beats) >= 9:
+            break
+        beats.append(_new_beat(purpose=purpose, narration=frame, fact_refs=[]))
+        used_frames.add(normalized)
     narration = "".join(str(beat["narration"]) for beat in beats)
     estimate = estimate_narration_duration_seconds(narration)
     if not target_seconds * MIN_NARRATION_COVERAGE <= estimate <= target_seconds:
-        raise _error("narration_duration_unachievable", estimated_seconds=estimate, target_seconds=target_seconds)
+        raise _error("narration_budget_unreachable", estimated_seconds=estimate, target_seconds=target_seconds,
+                     available_process_frames=len(_SAFE_PROCESS_FRAMES))
     digest = str(research["topic_digest"])
     script = {"schema_version": SCHEMA_VERSION, "script_id": f"script_{hashlib.sha256((prose+digest).encode('utf-8')).hexdigest()[:16]}", "topic_digest": digest, "title": str(request["subject"]), "hook": hook, "narration": narration, "duration_target_seconds": int(request["duration"]), "style": {"language": "zh-CN", "tone": "technical_calm_dry_humor", "content_scope": "evergreen_embedded_mainline"}, "beats": beats}
     validation.validate(script, "director_script")
@@ -285,7 +290,8 @@ def build_scene_plan(script: Mapping[str, Any], research: Mapping[str, Any]) -> 
     scenes = []
     for index, beat in enumerate(script["beats"], 1):
         visual = visual_types[(index - 1) % len(visual_types)]
-        information_role = "hook_question" if beat["purpose"] == "hook" else "explain_verified_fact"
+        information_role = ("hook_question" if beat["purpose"] == "hook" else
+                            "explain_verified_fact" if beat["fact_refs"] else "engineering_process_frame")
         scenes.append({"scene_index": index, "scene_type": str(beat["purpose"]), "narration": str(beat["narration"]), "on_screen_knowledge": str(beat["subtitle"]), "information_role": information_role, "narrative_role": str(beat["purpose"]), "shot_intent": str(beat["visual_intent"]), "visual_type": visual, "motion": "progressive_reveal", "transition": "cut", "fallback_visual": "accessible_text_card", "source_refs": list(beat["fact_refs"])})
     plan = {"schema_version": SCHEMA_VERSION, "script_id": script["script_id"], "scenes": scenes}
     _validate_new(plan, "phase1_scene_plan")

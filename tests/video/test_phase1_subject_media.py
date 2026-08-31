@@ -65,10 +65,11 @@ def test_subject_media_timing_coverage_requires_three_quarters_of_visual_duratio
 
 def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     skill = tmp_path / "skill"; (skill / "scripts").mkdir(parents=True); (skill / "scripts" / "jy_wrapper.py").write_text("", encoding="utf-8")
-    request_value = build_topic_request(subject="watchdog", duration=30)
-    research = build_research_brief(topic="watchdog", sources=[{"id":"s1","url":"https://example.com/a","title":"a","kind":"official_document"},{"id":"s2","url":"https://example.com/b","title":"b","kind":"research_paper"}], facts=[{"id":"f1","claim":"watchdog detects stalled software","source_ids":["s1"]},{"id":"f2","claim":"window follows worst case execution time","source_ids":["s1","s2"]}])
-    script_value = build_director_script(request_value, research, {"script":"why reset? watchdog detects stalled software. window follows worst case execution time."})
+    request_value = build_topic_request(subject="看门狗", duration=30)
+    research = build_research_brief(topic="看门狗", sources=[{"id":"s1","url":"https://example.com/a","title":"a","kind":"official_document"},{"id":"s2","url":"https://example.com/b","title":"b","kind":"research_paper"}], facts=[{"id":"f1","claim":"看门狗用于检测软件失去响应。","source_ids":["s1"]},{"id":"f2","claim":"喂狗窗口应由最坏执行时间决定。","source_ids":["s1","s2"]}])
+    script_value = build_director_script(request_value, research, {"script":"看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"})
     plan_value = build_scene_plan(script_value, research)
+    scene_count = len(plan_value["scenes"])
     script = _write(tmp_path / "script.json", script_value)
     plan = _write(tmp_path / "plan.json", plan_value)
     request = _write(tmp_path / "request.json", request_value)
@@ -79,19 +80,19 @@ def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: p
         script_name = Path(command[1]).name
         def arg(name: str) -> Path: return Path(command[command.index(name) + 1])
         if script_name == "phase1_jianying_timing_probe.py":
-            _write(arg("--manifest"), {"schema_version":"1.0","status":"timing_manifest_ready","script":{"sha256":hashlib.sha256(script.read_bytes()).hexdigest()},"scene_plan":{"sha256":hashlib.sha256(plan.read_bytes()).hexdigest()},"segments":[{}]*5,"voice":{"rendered_audio_segment_count":5,"voice_end_microseconds":25_000_000,"coverage_ratio":0.8333333333333334}})
+            _write(arg("--manifest"), {"schema_version":"1.0","status":"timing_manifest_ready","script":{"sha256":hashlib.sha256(script.read_bytes()).hexdigest()},"scene_plan":{"sha256":hashlib.sha256(plan.read_bytes()).hexdigest()},"segments":[{}]*scene_count,"voice":{"rendered_audio_segment_count":scene_count,"voice_end_microseconds":25_000_000,"coverage_ratio":0.8333333333333334}})
         elif script_name == "assemble_jianying_voice_preview.py":
             visual_path, output_path = arg("--visual"), arg("--output"); output_path.write_bytes(b"preview")
-            _write(arg("--report"), {"status":"audio_preview_ready_for_manual_listening","visual":{"sha256":hashlib.sha256(visual_path.read_bytes()).hexdigest()},"render_report":{"sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"audio_source":{"segment_count":5},"output":{"sha256":hashlib.sha256(output_path.read_bytes()).hexdigest(),"audio_present":True,"full_decode":"passed","codec":"aac","mean_volume_db":-20.0,"max_volume_db":-2.0},"sync_validation":{"status":"passed"}})
+            _write(arg("--report"), {"status":"audio_preview_ready_for_manual_listening","visual":{"sha256":hashlib.sha256(visual_path.read_bytes()).hexdigest()},"render_report":{"sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"audio_source":{"segment_count":scene_count},"output":{"sha256":hashlib.sha256(output_path.read_bytes()).hexdigest(),"audio_present":True,"full_decode":"passed","codec":"aac","mean_volume_db":-20.0,"max_volume_db":-2.0},"sync_validation":{"status":"passed"}})
         elif script_name == "phase1_jianying_tts_draft.py":
-            _write(arg("--report"), {"status":"draft_ready_for_manual_jianying_review","inputs":{"script_sha256":hashlib.sha256(script.read_bytes()).hexdigest(),"timing_manifest_sha256":hashlib.sha256(arg("--timing-manifest").read_bytes()).hexdigest(),"render_report_sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"sync_validation":{"status":"passed"},"audio_validation":{"status":"passed","muted":False,"segment_count":5},"subtitle_validation":{"status":"passed","segment_count":5},"tracks":[{"name":"VideoTrack","segment_count":5,"duration_microseconds":30_000_000},{"name":"VoiceOver","segment_count":5},{"name":"Subtitles","segment_count":5}],"export":{"automatic_export":"disabled"}})
+            _write(arg("--report"), {"status":"draft_ready_for_manual_jianying_review","inputs":{"script_sha256":hashlib.sha256(script.read_bytes()).hexdigest(),"timing_manifest_sha256":hashlib.sha256(arg("--timing-manifest").read_bytes()).hexdigest(),"render_report_sha256":hashlib.sha256(arg("--visual-report").read_bytes()).hexdigest()},"sync_validation":{"status":"passed"},"audio_validation":{"status":"passed","muted":False,"segment_count":scene_count},"subtitle_validation":{"status":"passed","segment_count":scene_count},"tracks":[{"name":"VideoTrack","segment_count":scene_count,"duration_microseconds":30_000_000},{"name":"VoiceOver","segment_count":scene_count},{"name":"Subtitles","segment_count":scene_count}],"export":{"automatic_export":"disabled"}})
         return type("Done", (), {"returncode": 0, "stdout": "", "stderr": ""})()
 
     def visual(**kwargs: object) -> dict:
         output = Path(kwargs["output"]); output.parent.mkdir(parents=True, exist_ok=True); output.write_bytes(b"visual")
         clips = Path(kwargs["clips_dir"]); clips.mkdir(parents=True)
         report_entries = []
-        for i in range(1, 6):
+        for i in range(1, scene_count + 1):
             clip = clips / f"scene_{i:02d}.mp4"; clip.write_bytes(str(i).encode())
             report_entries.append({"scene_index":i,"clip":{"filename":f"clips/{clip.name}","sha256":hashlib.sha256(clip.read_bytes()).hexdigest()}})
         report = Path(kwargs["report"]); _write(report,{"status":"passed","visual":{"filename":output.name,"sha256":hashlib.sha256(output.read_bytes()).hexdigest(),"audio_present":False,"burned_in_subtitles":False,"scene_timing":report_entries}})
@@ -102,14 +103,24 @@ def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: p
     media_python = Path("E:/project/OpenClaw_VideoFactory/.venv/Scripts/python.exe")
     result = run_subject_media(SubjectMediaRequest(script, plan, request, workdir), skill_root=skill, media_python=media_python, runner=runner, render_runner=visual)
     assert result["status"] == "PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW"
+    receipt_path = workdir / "subject_media_result.json"
+    assert receipt_path.is_file()
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    validation.validate(receipt, "phase1_subject_media_result")
+    assert result == receipt
+    assert receipt["candidate_status"] == "PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW"
+    assert receipt["ready_status"] == "READY"
+    assert receipt["automatic_export"] is False
+    assert set(receipt["paths"]) == set(receipt["hashes"]) == {"timing_manifest", "render_report", "visual_review", "preview", "preview_report", "jianying_report"}
+    assert "subject_media_result" not in receipt["hashes"]
     assert len(calls) == 3
     assert all(str(workdir.resolve()) in " ".join(call) for call in calls)
 
 
 def test_subject_media_failure_writes_sanitized_stage_evidence(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
-    request_value = build_topic_request(subject="watchdog", duration=30)
-    research = build_research_brief(topic="watchdog", sources=[{"id":"s1","url":"https://example.com/a","title":"a","kind":"official_document"},{"id":"s2","url":"https://example.com/b","title":"b","kind":"research_paper"}], facts=[{"id":"f1","claim":"watchdog detects stalled software","source_ids":["s1"]},{"id":"f2","claim":"window follows worst case execution time","source_ids":["s1","s2"]}])
-    script_value = build_director_script(request_value, research, {"script":"why reset? watchdog detects stalled software. window follows worst case execution time."})
+    request_value = build_topic_request(subject="看门狗", duration=30)
+    research = build_research_brief(topic="看门狗", sources=[{"id":"s1","url":"https://example.com/a","title":"a","kind":"official_document"},{"id":"s2","url":"https://example.com/b","title":"b","kind":"research_paper"}], facts=[{"id":"f1","claim":"看门狗用于检测软件失去响应。","source_ids":["s1"]},{"id":"f2","claim":"喂狗窗口应由最坏执行时间决定。","source_ids":["s1","s2"]}])
+    script_value = build_director_script(request_value, research, {"script":"看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"})
     plan_value = build_scene_plan(script_value, research)
     script, plan, topic = _write(tmp_path/"s.json",script_value), _write(tmp_path/"p.json",plan_value), _write(tmp_path/"r.json",request_value)
     skill = tmp_path/"skill"; (skill/"scripts").mkdir(parents=True); (skill/"scripts"/"jy_wrapper.py").write_text("",encoding="utf-8")
@@ -119,3 +130,4 @@ def test_subject_media_failure_writes_sanitized_stage_evidence(monkeypatch: pyte
     failure = json.loads((workdir/"media_failure.json").read_text(encoding="utf-8"))
     assert failure["failed_stage"] == "timing" and "C:/private" not in json.dumps(failure)
     assert not (workdir/"jianying_manifest.json").exists()
+    assert not (workdir / "subject_media_result.json").exists()

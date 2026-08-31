@@ -64,11 +64,12 @@ def validate_visual_inputs(script_path: Path, scene_plan_path: Path, timing_mani
         if len(knowledge) > (120 if aspect == "16:9" else 90) or len(str(scene.get("narration", ""))) > 400:
             raise ValueError("layout_text_overflow_preflight")
         is_hook = scene.get("scene_type") == "hook" and scene.get("narrative_role") == "hook" and scene.get("information_role") == "hook_question"
-        if scene.get("information_role") not in {"hook_question", "explain_verified_fact"}:
+        information_role = scene.get("information_role")
+        if information_role not in {"hook_question", "explain_verified_fact", "engineering_process_frame"}:
             raise ValueError("information_role_invalid")
-        if not is_hook and not scene.get("source_refs"):
+        if information_role == "explain_verified_fact" and not scene.get("source_refs"):
             raise ValueError("source_refs_required")
-        if is_hook and scene.get("source_refs"):
+        if information_role in {"hook_question", "engineering_process_frame"} and scene.get("source_refs"):
             raise ValueError("hook_source_refs_forbidden")
         paced.append({"duration_seconds": (end - start) / 1_000_000})
     if previous_end != round(float(timing.get("visual_duration_seconds", 0)) * 1_000_000):

@@ -2690,6 +2690,10 @@ Spec-review verification: focused `10 passed`; full `393 passed`; Draft 2020-12 
 - [x] RED: add duration-budget and voice-coverage contract tests for the topic script, timing probe, and subject-media orchestration.
 - [x] GREEN: derive 25–60s Chinese narration from verified claims and safe non-factual process framing without weakening factual binding.
 - [x] GREEN: enforce the 0.75 voice/visual coverage floor for scene-plan timing and subject-media rendering.
+- [ ] RED: add no-duplicate narration-frame and atomic READY-receipt tests for final Task 4A review remediation.
+- [ ] GREEN: build a finite, non-repeating factual/process beat sequence and persist the validated subject-media receipt atomically.
+- [ ] VERIFY: run focused and full regressions, then one fresh 40-second E2E-06; stop on any failed gate.
+- [ ] REVIEW: inspect evidence and commit `fix(phase1): eliminate repetitive narration padding`.
 - [ ] VERIFY: run the final full Task4A regression after the six-to-nine-beat timing compatibility correction.
 - [ ] E2E: **BLOCKED:** new 40s timing passed at 38.280s / 0.957 coverage, then the one complete current subject-media run stopped at render with a sanitized `ModuleNotFoundError`; `media_failure.json` has `failed_stage=render`, so no preview/draft was created and no retry is permitted.
 - [ ] REVIEW: inspect the stopped E2E evidence and commit the scoped fix.

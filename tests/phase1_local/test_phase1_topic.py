@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -10,6 +11,7 @@ from video_factory.pipeline.errors import FactoryContractError
 from video_factory.pipeline.validation import validate
 
 from src.factory.phase1_topic import (
+    CHINESE_TTS_CHARS_PER_SECOND,
     estimate_narration_duration_seconds,
     MPT_COMMIT,
     OPENMONTAGE_COMMIT,
@@ -21,6 +23,7 @@ from src.factory.phase1_topic import (
     select_candidate,
     stable_subject_key,
 )
+import src.factory.phase1_topic as phase1_topic
 
 
 def research() -> dict:
@@ -158,14 +161,15 @@ def test_director_script_and_scene_plan_preserve_fact_refs_and_variety() -> None
     assert all(len({s["visual_type"] for s in plan["scenes"][i:i+3]}) > 1 for i in range(len(plan["scenes"]) - 2))
     assert plan["scenes"][0]["information_role"] == "hook_question"
     assert plan["scenes"][0]["source_refs"] == []
-    assert all(scene["source_refs"] for scene in plan["scenes"][1:])
+    assert all(scene["source_refs"] for scene in plan["scenes"] if scene["information_role"] == "explain_verified_fact")
+    assert all(not scene["source_refs"] for scene in plan["scenes"] if scene["information_role"] == "engineering_process_frame")
 
 
 def test_selected_prose_changes_director_beats_and_only_matching_claims_get_refs() -> None:
     request = build_topic_request(subject="看门狗定时器")
     brief = research()
-    first = {"script":"看门狗用于检测软件失去响应。工程师配置超时，然后验证恢复。"}
-    second = {"script":"喂狗窗口应由最坏执行时间决定。工程师测量边界，然后记录结论。"}
+    first = {"script":"先核对日志：看门狗用于检测软件失去响应。"}
+    second = {"script":"再记录边界：喂狗窗口应由最坏执行时间决定。"}
     a = build_director_script(request, brief, first)
     b = build_director_script(request, brief, second)
     assert a["beats"][0]["narration"] != b["beats"][0]["narration"]
@@ -197,7 +201,7 @@ def test_grounded_claim_anchors_pass_without_copying_unbound_opening_prose() -> 
     assert first["beats"][0]["narration"] == second["beats"][0]["narration"]
     assert "为什么系统会突然重启" not in first["narration"]
     assert "先别急着重启" not in second["narration"]
-    assert all(beat["fact_refs"] for beat in first["beats"][1:])
+    assert all(beat["fact_refs"] for beat in first["beats"] if beat["purpose"] == "explain_verified_fact")
 
 
 @pytest.mark.parametrize("target_seconds", [25, 40, 60])
@@ -224,10 +228,87 @@ def test_director_script_uses_only_grounded_selected_safe_framing_and_expands_sh
     second = build_director_script(request, brief, grounded)
 
     assert first == second
-    assert "先核对日志" in first["narration"]
+    assert "先核对日志" in first["beats"][0]["narration"]
     assert "软件会自动修复所有故障" not in first["narration"]
     for beat in first["beats"]:
         if beat["fact_refs"]:
             assert set(beat["fact_refs"]).issubset({"fact1", "fact2"})
         else:
-            assert beat["purpose"] == "hook"
+            assert beat["purpose"] in {"hook", "scope_boundary", "causal_path", "measurement_evidence", "normal_fault_comparison", "recovery", "source_bound_conclusion"}
+
+
+def _normalized_sentences(narration: str) -> list[str]:
+    return [re.sub(r"[\s\W_]+", "", sentence) for sentence in re.split(r"[。！？!?；;]", narration) if sentence.strip()]
+
+
+def test_sixty_second_director_script_never_reuses_claims_or_process_frames() -> None:
+    brief = research()
+    script = build_director_script(
+        build_topic_request(subject="看门狗定时器", duration=60),
+        brief,
+        {"script": "看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"},
+    )
+
+    sentences = _normalized_sentences(script["narration"])
+    assert 5 <= len(script["beats"]) <= 9
+    assert len(sentences) == len(set(sentences))
+    assert len([beat for beat in script["beats"] if beat["fact_refs"]]) == len(brief["facts"])
+    assert {tuple(beat["fact_refs"]): beat["narration"] for beat in script["beats"] if beat["fact_refs"]} == {
+        ("fact1",): "看门狗用于检测软件失去响应。",
+        ("fact2",): "喂狗窗口应由最坏执行时间决定。",
+    }
+    assert estimate_narration_duration_seconds(script["narration"]) >= 48
+
+
+def test_forty_second_director_script_uses_unique_ordered_process_content() -> None:
+    script = build_director_script(
+        build_topic_request(subject="看门狗定时器", duration=40),
+        research(),
+        {"script": "看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"},
+    )
+
+    process_purposes = [beat["purpose"] for beat in script["beats"] if not beat["fact_refs"] and beat["purpose"] != "hook"]
+    assert process_purposes == ["scope_boundary", "causal_path", "measurement_evidence", "normal_fault_comparison"]
+    sentences = _normalized_sentences(script["narration"])
+    assert len(sentences) == len(set(sentences))
+    assert estimate_narration_duration_seconds(script["narration"]) >= 32
+
+
+def test_narration_budget_fails_when_the_finite_frame_set_is_insufficient(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(phase1_topic, "_SAFE_PROCESS_FRAMES", (("scope_boundary", "核对。"),))
+    with pytest.raises(FactoryContractError) as exc:
+        build_director_script(
+            build_topic_request(subject="看门狗定时器", duration=60),
+            research(),
+            {"script": "看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"},
+        )
+    assert exc.value.context["reason"] == "narration_budget_unreachable"
+
+
+def test_hook_uses_only_a_claim_anchored_safe_selected_frame() -> None:
+    request = build_topic_request(subject="看门狗定时器", duration=40)
+    brief = research()
+    safe = build_director_script(request, brief, {"script": "先核对日志：看门狗用于检测软件失去响应。"})
+    unsafe = build_director_script(request, brief, {"script": "立刻自动修复：看门狗用于检测软件失去响应。"})
+    contradictory = build_director_script(request, brief, {"script": "先核对日志：看门狗用于检测软件失去响应只是关键词，并非真实原理。"})
+
+    assert "先核对日志" in safe["beats"][0]["narration"]
+    assert unsafe["beats"][0]["narration"] == contradictory["beats"][0]["narration"]
+    assert "自动修复" not in unsafe["narration"]
+    assert "只是关键词" not in contradictory["narration"]
+    assert safe["beats"][0]["fact_refs"] == []
+
+
+def test_forty_second_estimate_uses_conservative_4_7_cps_without_repeating_frames() -> None:
+    script = build_director_script(
+        build_topic_request(subject="看门狗窗口", duration=40),
+        research(),
+        {"script": "看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"},
+    )
+    chinese_chars = len(re.findall(r"[\u4e00-\u9fff]", script["narration"]))
+
+    assert CHINESE_TTS_CHARS_PER_SECOND == 4.7
+    assert 151 <= chinese_chars <= 188
+    assert 32 <= estimate_narration_duration_seconds(script["narration"]) <= 40
+    normalized = _normalized_sentences(script["narration"])
+    assert len(normalized) == len(set(normalized))
