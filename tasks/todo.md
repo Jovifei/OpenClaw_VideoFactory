@@ -2688,6 +2688,17 @@ Spec-review verification: focused `10 passed`; full `393 passed`; Draft 2020-12 
 ### Task 4A duration-coverage correction — IN PROGRESS
 
 - [x] RED: add duration-budget and voice-coverage contract tests for the topic script, timing probe, and subject-media orchestration.
+
+# PHASE1-TOPIC-OPENMONTAGE-010 — Task 4B subject review delivery
+
+- [ ] RED: add mocked-media tests for receipt containment/tamper detection, self-contained review packages, native-subtitle quality, lifecycle resume/cancellation, and aspect forwarding.
+- [ ] GREEN: add strict subject delivery schemas and receipt-to-package/quality verifier.
+- [ ] GREEN: make local-subject `run` execute planning plus one bounded media/delivery attempt by default; retain `--plan-only` as a diagnostic.
+- [ ] VERIFY: run the focused Task 4B, Phase 1 local, video, and OpenMontage tests with `D:\Python\Python3.14\python.exe`; no real media run.
+
+## Task 4B review
+
+- Pending implementation and verification. No automatic Jianying export, publication, deletion, Gate, PROJECT_STATUS, or Obsidian action is in scope.
 - [x] GREEN: derive 25–60s Chinese narration from verified claims and safe non-factual process framing without weakening factual binding.
 - [x] GREEN: enforce the 0.75 voice/visual coverage floor for scene-plan timing and subject-media rendering.
 - [ ] RED: add no-duplicate narration-frame and atomic READY-receipt tests for final Task 4A review remediation.

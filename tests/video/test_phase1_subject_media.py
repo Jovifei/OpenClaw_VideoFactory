@@ -63,9 +63,10 @@ def test_subject_media_timing_coverage_requires_three_quarters_of_visual_duratio
     assert validate_timing_coverage({"voice":{"voice_end_microseconds":30_000_000,"coverage_ratio":0.75}}, visual_duration_us=40_000_000) == 0.75
 
 
-def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+@pytest.mark.parametrize(("aspect", "width", "height"), [("16:9", 1920, 1080), ("9:16", 1080, 1920)])
+def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: pytest.MonkeyPatch, tmp_path: Path, aspect: str, width: int, height: int) -> None:
     skill = tmp_path / "skill"; (skill / "scripts").mkdir(parents=True); (skill / "scripts" / "jy_wrapper.py").write_text("", encoding="utf-8")
-    request_value = build_topic_request(subject="看门狗", duration=30)
+    request_value = build_topic_request(subject="看门狗", duration=30, aspect=aspect)
     research = build_research_brief(topic="看门狗", sources=[{"id":"s1","url":"https://example.com/a","title":"a","kind":"official_document"},{"id":"s2","url":"https://example.com/b","title":"b","kind":"research_paper"}], facts=[{"id":"f1","claim":"看门狗用于检测软件失去响应。","source_ids":["s1"]},{"id":"f2","claim":"喂狗窗口应由最坏执行时间决定。","source_ids":["s1","s2"]}])
     script_value = build_director_script(request_value, research, {"script":"看门狗用于检测软件失去响应。喂狗窗口应由最坏执行时间决定。"})
     plan_value = build_scene_plan(script_value, research)
@@ -115,6 +116,9 @@ def test_subject_media_uses_injected_runner_and_returns_candidate(monkeypatch: p
     assert "subject_media_result" not in receipt["hashes"]
     assert len(calls) == 3
     assert all(str(workdir.resolve()) in " ".join(call) for call in calls)
+    for command in (calls[0], calls[2]):
+        assert command[command.index("--width") + 1] == str(width)
+        assert command[command.index("--height") + 1] == str(height)
 
 
 def test_subject_media_failure_writes_sanitized_stage_evidence(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:

@@ -14,6 +14,7 @@ def _configure(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setattr(phase1_cli, "INPUT_ROOT", tmp_path / "state" / "inputs")
     monkeypatch.setattr(phase1_cli, "PROJECT_ROOT", tmp_path)
     monkeypatch.setattr(phase1_cli, "OPENMONTAGE_PROJECTS_ROOT", tmp_path / "state" / "openmontage_projects")
+    monkeypatch.setattr(phase1_cli, "SUBJECT_DELIVERY_ROOT", tmp_path / "dist" / "phase1_local")
 
 
 def _output(capsys) -> dict:
@@ -78,7 +79,7 @@ def test_attach_research_contains_copy_and_subject_run_stops_before_render(tmp_p
         return output
 
     monkeypatch.setattr(phase1_cli, "MPT_RUN_DRAFTS", fake_run_drafts)
-    assert phase1_cli.main(["run", "--job-id", job_id]) == 0
+    assert phase1_cli.main(["run", "--job-id", job_id, "--plan-only"]) == 0
     result = _output(capsys)
     assert result["status"] == "subject_plan_ready"
     assert result["job"]["state"] == "ASSETS"
@@ -146,7 +147,7 @@ def test_subject_second_attempt_receives_score_informed_guidance(tmp_path, monke
         output.write_text(json.dumps({"schema_version":"1.0","kind":"phase1_script_drafts","subject":"看门狗","language":"zh-CN","requested_candidates":3,"successful_candidates":3,"mpt_version":"1.3.5","mpt_commit":MPT_COMMIT,"candidates":[{"candidate":i,"script":script,"duration_seconds":1} for i in range(1,4)],"failures":[]}, ensure_ascii=False), encoding="utf-8")
         return output
     monkeypatch.setattr(phase1_cli, "MPT_RUN_DRAFTS", fake_run_drafts)
-    assert phase1_cli.main(["run", "--job-id", job_id]) == 0
+    assert phase1_cli.main(["run", "--job-id", job_id, "--plan-only"]) == 0
     result = _output(capsys)
     assert calls[0]["rewrite_guidance"] is None
     assert "改进维度" in calls[1]["rewrite_guidance"]
@@ -155,3 +156,110 @@ def test_subject_second_attempt_receives_score_informed_guidance(tmp_path, monke
     assert json.loads(selected_path.read_text(encoding="utf-8"))["rewrite_attempt"] == 1
     assert "看门狗检测失去响应" in calls[0]["research_guidance"]
     assert "s1" in calls[0]["research_guidance"]
+
+
+def test_subject_default_run_delivers_once_and_registers_preview_aliases(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject", "--subject", "看门狗"]) == 0
+    job_id = _output(capsys)["job"]["job_id"]
+    research_path = tmp_path / "research.json"; research_path.write_text(json.dumps(_research(), ensure_ascii=False), encoding="utf-8")
+    assert phase1_cli.main(["attach-research", "--job-id", job_id, "--research", str(research_path)]) == 0; _output(capsys)
+    monkeypatch.setattr(phase1_cli, "MPT_RUN_DRAFTS", lambda **_: _drafts(tmp_path))
+    calls: list[object] = []
+    def media(request, **_):
+        calls.append(request)
+        root = request.workdir; root.mkdir(parents=True)
+        preview = root / "audible_preview.mp4"; preview.write_bytes(b"synthetic-preview")
+        receipt = root / "subject_media_result.json"; receipt.write_text("{}", encoding="utf-8")
+        return {"paths": {"preview": str(preview)}, "output": str(preview), "receipt": str(receipt)}
+    def package(request, **_):
+        root = request.package_root / f"attempt_{request.attempt}" / "review_package"; root.mkdir(parents=True)
+        review = root / "review_package.json"; review.write_text("{}", encoding="utf-8")
+        quality = root / "subject_quality_report.json"; quality.write_text("{}", encoding="utf-8")
+        return {"package_path": str(root), "review_package": str(review), "quality_report": str(quality), "media_receipt": str(request.media_root / "subject_media_result.json"), "preview": str(request.media_root / "audible_preview.mp4")}
+    monkeypatch.setattr(phase1_cli, "run_subject_media", media)
+    monkeypatch.setattr(phase1_cli, "build_subject_review_package", package)
+    monkeypatch.setattr(phase1_cli, "validate_subject_media_receipt", lambda _: {})
+    assert phase1_cli.main(["run", "--job-id", job_id]) == 0
+    result = _output(capsys)
+    assert result["status"] == "pending_review" and result["job"]["state"] == "PENDING_REVIEW" and len(calls) == 1
+    artifacts = {item["artifact_type"]: item for item in result["artifacts"]}
+    assert {"final_master", "review_package", "media_receipt"}.issubset(artifacts)
+    assert artifacts["final_master"]["relative_path"].endswith("audible_preview.mp4")
+    assert phase1_cli.main(["run", "--job-id", job_id]) == 0
+    assert _output(capsys)["idempotent"] is True and len(calls) == 1
+
+
+def test_subject_media_failure_returns_review_blocked_and_retry_resumes_rendering(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject", "--subject", "串口 DMA"]) == 0
+    job = _output(capsys)["job"]
+    store = CandidateStore(phase1_cli.DATABASE_PATH)
+    for target in ("RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS", "ASSETS"):
+        store.advance(job["job_id"], target)
+    monkeypatch.setattr(phase1_cli, "run_subject_media", lambda *_args, **_kwargs: (_ for _ in ()).throw(RuntimeError("synthetic media failed")))
+    assert phase1_cli.main(["run", "--job-id", job["job_id"]]) == 0
+    assert _output(capsys)["status"] == "review_blocked"
+    assert store.status(job["job_id"])["state"] == "FAILED"
+    assert phase1_cli.main(["retry", "--job-id", job["job_id"]]) == 0
+    assert _output(capsys)["job"]["state"] == "RENDERING"
+
+
+def test_subject_cancelled_during_media_never_reaches_pending_review(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject", "--subject", "中断测试"]) == 0
+    job = _output(capsys)["job"]
+    store = CandidateStore(phase1_cli.DATABASE_PATH)
+    for target in ("RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS", "ASSETS"):
+        store.advance(job["job_id"], target)
+    def cancel_after_start(*_args, **_kwargs):
+        store.cancel(job["job_id"], "synthetic_cancel")
+        return {}
+    monkeypatch.setattr(phase1_cli, "run_subject_media", cancel_after_start)
+    assert phase1_cli.main(["run", "--job-id", job["job_id"]]) == 0
+    result = _output(capsys)
+    assert result["status"] == "cancelled" and result["job"]["state"] == "CANCELLED"
+    assert "final_master" not in {item["artifact_type"] for item in result["artifacts"]}
+
+
+def test_subject_missing_request_at_assets_is_review_blocked_and_projected(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    store = CandidateStore(phase1_cli.DATABASE_PATH); store.initialize()
+    job = store.create_job("local_subject", "missing-request", "phase1_subject_plan", "看门狗", metadata={"input_mode": "local_subject"})
+    for target in ("RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS", "ASSETS"):
+        store.advance(job["job_id"], target)
+    assert phase1_cli.main(["run", "--job-id", job["job_id"]]) == 0
+    assert _output(capsys)["status"] == "review_blocked"
+    assert store.status(job["job_id"])["state"] == "FAILED" and _projected_sqlite_state(job["job_id"]) == "FAILED"
+
+
+def test_subject_cancel_after_builder_withdraws_ready_manifest_before_publication(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject", "--subject", "撤回测试"]) == 0
+    job = _output(capsys)["job"]
+    store = CandidateStore(phase1_cli.DATABASE_PATH)
+    for target in ("RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS", "ASSETS"):
+        store.advance(job["job_id"], target)
+    monkeypatch.setattr(phase1_cli, "validate_subject_media_receipt", lambda _: {})
+    monkeypatch.setattr(phase1_cli, "run_subject_media", lambda *_args, **_kwargs: {})
+    def package(request, **_):
+        root = request.package_root / f"attempt_{request.attempt}" / "review_package"; root.mkdir(parents=True)
+        request.media_root.mkdir(parents=True, exist_ok=True)
+        review = root / "review_package.json"; review.write_text(json.dumps({"status": "ready_for_human_review"}), encoding="utf-8")
+        preview = request.media_root / "audible_preview.mp4"; preview.write_bytes(b"synthetic-preview")
+        receipt = request.media_root / "subject_media_result.json"; receipt.write_text("{}", encoding="utf-8")
+        store.cancel(job["job_id"], "synthetic_after_builder")
+        return {"review_package": str(review), "quality_report": str(root / "subject_quality_report.json"), "media_receipt": str(receipt), "preview": str(preview)}
+    monkeypatch.setattr(phase1_cli, "build_subject_review_package", package)
+    assert phase1_cli.main(["run", "--job-id", job["job_id"]]) == 0
+    result = _output(capsys)
+    manifest_root = phase1_cli.SUBJECT_DELIVERY_ROOT / f"phase1_subject_{job['job_id'].split('-')[-1]}" / "attempt_1" / "review_package"
+    assert result["status"] == "cancelled" and not (manifest_root / "review_package.json").exists()
+    assert (manifest_root / "review_package.cancelled.json").is_file()
+    assert not {"final_master", "review_package", "media_receipt"}.intersection({item["artifact_type"] for item in result["artifacts"]})
+
+
+def _drafts(tmp_path: Path) -> Path:
+    output = tmp_path / "mpt-default.json"
+    output.write_text(json.dumps({"schema_version":"1.0","kind":"phase1_script_drafts","subject":"看门狗","language":"zh-CN","requested_candidates":3,"successful_candidates":3,"mpt_version":"1.3.5","mpt_commit":MPT_COMMIT,"candidates":[{"candidate":i,"script":"看门狗发生故障：看门狗检测失去响应，超时需验证。再解释原理、配置和恢复边界。","duration_seconds":1} for i in range(1,4)],"failures":[]}, ensure_ascii=False), encoding="utf-8")
+    return output

@@ -16,6 +16,8 @@ from .config import PROJECT_ROOT
 from .db import CandidateStore
 from .phase1_local import load_local_brief
 from .openmontage_projection import project_job_read_only
+from .phase1_subject_delivery import SubjectDeliveryRequest, build_subject_review_package, validate_subject_media_receipt
+from .phase1_subject_media import SubjectMediaRequest, run_subject_media
 from .phase1_topic import (
     build_director_script,
     build_research_brief,
@@ -44,6 +46,7 @@ STATE_ROOT = PROJECT_ROOT / "state" / "phase1_local"
 DATABASE_PATH = STATE_ROOT / "phase1_jobs.sqlite3"
 INPUT_ROOT = STATE_ROOT / "inputs"
 OPENMONTAGE_PROJECTS_ROOT = STATE_ROOT / "openmontage_projects"
+SUBJECT_DELIVERY_ROOT = PROJECT_ROOT / "dist" / "phase1_local"
 
 
 def _emit(payload: dict[str, Any], code: int = 0) -> int:
@@ -75,6 +78,7 @@ def _parser() -> argparse.ArgumentParser:
     reference.add_argument("--idempotency-key")
     run = commands.add_parser("run")
     run.add_argument("--job-id", required=True)
+    run.add_argument("--plan-only", action="store_true", help="Local-subject diagnostic: stop after the ASSETS plan.")
     status = commands.add_parser("status")
     status.add_argument("--job-id", required=True)
     cancel = commands.add_parser("cancel")
@@ -304,6 +308,140 @@ def _advance_to_rendering(store: CandidateStore, job_id: str) -> dict[str, Any]:
     return job
 
 
+def _subject_project(store: CandidateStore, job_id: str) -> dict[str, Any]:
+    job = store.status(job_id)
+    _project_if_subject(store, job)
+    return job
+
+
+def _subject_delivery_base(job_id: str) -> Path:
+    return SUBJECT_DELIVERY_ROOT / f"phase1_subject_{job_id.rsplit('-', 1)[-1]}"
+
+
+def _subject_metadata_path(path: Path) -> str:
+    return path.resolve().relative_to(PROJECT_ROOT.resolve()).as_posix()
+
+
+def _subject_media_root(job: dict[str, Any]) -> Path | None:
+    raw = job.get("metadata", {}).get("subject_media_root")
+    if not isinstance(raw, str) or not raw:
+        return None
+    candidate = (PROJECT_ROOT / raw).resolve()
+    try:
+        candidate.relative_to(SUBJECT_DELIVERY_ROOT.resolve())
+    except ValueError:
+        return None
+    return candidate
+
+
+def _subject_cancelled(store: CandidateStore, job_id: str) -> bool:
+    return store.status(job_id)["state"] == "CANCELLED"
+
+
+def _subject_blocked(store: CandidateStore, job_id: str, reason: str) -> dict[str, Any]:
+    current = store.status(job_id)
+    if current["state"] not in {"FAILED", "CANCELLED", "PENDING_REVIEW"}:
+        current = store.fail(job_id, reason)
+        _project_if_subject(store, current)
+    return {"status": "review_blocked", "job": current, "artifacts": store.artifacts(job_id), "reason": reason}
+
+
+def _subject_cancelled_result(store: CandidateStore, job_id: str) -> dict[str, Any]:
+    return {"status": "cancelled", "job": store.status(job_id), "artifacts": store.artifacts(job_id)}
+
+
+def _withdraw_subject_ready_manifest(result: dict[str, Any]) -> None:
+    ready = Path(str(result.get("review_package", ""))).resolve()
+    if ready.name != "review_package.json" or ready.is_symlink() or not ready.is_file():
+        return
+    try:
+        ready.relative_to(SUBJECT_DELIVERY_ROOT.resolve())
+    except ValueError:
+        return
+    digest = hashlib.sha256(ready.read_bytes()).hexdigest()
+    ready.unlink()
+    ready.with_name("review_package.cancelled.json").write_text(json.dumps({"schema_version": "1.0", "status": "cancelled_before_publication", "withdrawn_ready_manifest": "review_package.json", "withdrawn_sha256": digest}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _run_subject_delivery(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
+    """Resume only ASSETS/RENDERING/QUALITY_CHECK; all outputs are attempt-scoped."""
+    job_id = str(job["job_id"])
+    if _subject_cancelled(store, job_id):
+        return {"status": "cancelled", "job": store.status(job_id), "artifacts": store.artifacts(job_id)}
+    root = _subject_root(job_id)
+    request_path = root / "topic_request.json"
+    try:
+        topic = _read_json_object(request_path)
+    except Exception:
+        return _subject_blocked(store, job_id, "phase1_subject_topic_request_invalid")
+    base = _subject_delivery_base(job_id)
+    media_root = _subject_media_root(job)
+    state = str(job["state"])
+    if state in {"ASSETS", "RENDERING"}:
+        reusable = False
+        if media_root is not None:
+            try:
+                validate_subject_media_receipt(media_root)
+                reusable = True
+            except ValueError:
+                reusable = False
+        if not reusable:
+            render_attempt = store.start_stage_attempt(job_id, "RENDERING")
+            media_root = base / f"attempt_{render_attempt}" / "media"
+            metadata = dict(store.status(job_id)["metadata"])
+            metadata.update({"subject_media_root": _subject_metadata_path(media_root), "subject_media_attempt": render_attempt})
+            store.update_metadata(job_id, metadata)
+            _subject_project(store, job_id)
+            if state == "ASSETS":
+                advanced = store.advance(job_id, "RENDERING", reason="subject_media_started")
+                _project_if_subject(store, advanced)
+            try:
+                run_subject_media(SubjectMediaRequest(root / "director_script.json", root / "scene_plan.json", request_path, media_root))
+                store.complete_stage_attempt(job_id, "RENDERING", render_attempt, "passed", {"media_root": _subject_metadata_path(media_root), "evidence_kind": "real_media_required"})
+            except Exception:
+                try:
+                    store.complete_stage_attempt(job_id, "RENDERING", render_attempt, "failed", {"media_root": _subject_metadata_path(media_root), "evidence_kind": "media_failure_preserved"})
+                except ValueError:
+                    pass
+                return _subject_blocked(store, job_id, "phase1_subject_media_failed")
+        if _subject_cancelled(store, job_id):
+            return {"status": "cancelled", "job": store.status(job_id), "artifacts": store.artifacts(job_id)}
+        current = store.status(job_id)
+        if current["state"] == "RENDERING":
+            current = store.advance(job_id, "QUALITY_CHECK", reason="subject_media_receipt_verified")
+            _project_if_subject(store, current)
+        job = current
+    if str(job["state"]) != "QUALITY_CHECK" or media_root is None:
+        return _subject_blocked(store, job_id, "phase1_subject_delivery_state_invalid")
+    try:
+        validate_subject_media_receipt(media_root)
+        quality_attempt = store.start_stage_attempt(job_id, "QUALITY_CHECK")
+        result = build_subject_review_package(SubjectDeliveryRequest(job_id, quality_attempt, root, media_root, base, int(topic["duration"]), str(topic["aspect"])), cancel_requested=lambda: _subject_cancelled(store, job_id))
+        store.complete_stage_attempt(job_id, "QUALITY_CHECK", quality_attempt, "passed", {"review_package": _subject_metadata_path(Path(result["review_package"])), "evidence_kind": "review_package"})
+    except Exception:
+        if _subject_cancelled(store, job_id):
+            try:
+                store.complete_stage_attempt(job_id, "QUALITY_CHECK", quality_attempt, "cancelled", {"evidence_kind": "cancelled_before_ready_manifest"})
+            except (UnboundLocalError, ValueError):
+                pass
+            return _subject_cancelled_result(store, job_id)
+        try:
+            store.complete_stage_attempt(job_id, "QUALITY_CHECK", quality_attempt, "failed", {"media_root": _subject_metadata_path(media_root), "evidence_kind": "review_blocked"})
+        except (UnboundLocalError, ValueError):
+            pass
+        return _subject_blocked(store, job_id, "phase1_subject_delivery_failed")
+    if _subject_cancelled(store, job_id):
+        _withdraw_subject_ready_manifest(result)
+        return _subject_cancelled_result(store, job_id)
+    for artifact_type, value in {"final_master": result["preview"], "review_package": result["review_package"], "media_receipt": result["media_receipt"]}.items():
+        path = Path(str(value)).resolve()
+        store.record_artifact(job_id, artifact_type, _subject_metadata_path(path), hashlib.sha256(path.read_bytes()).hexdigest())
+    _subject_project(store, job_id)
+    final_job = store.advance(job_id, "PENDING_REVIEW", reason="subject_review_package_ready")
+    _project_if_subject(store, final_job)
+    return {"status": "pending_review", "job": final_job, "artifacts": store.artifacts(job_id), "result": result}
+
+
 def _run_job(args: argparse.Namespace) -> dict[str, Any]:
     store = _store()
     job = store.status(args.job_id)
@@ -321,14 +459,21 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
             {"state": str(job["state"])},
         )
     if job["fixture_id"] == "local_subject":
-        try:
-            return _run_subject(store, job)
-        except Exception:
-            current = store.status(args.job_id)
-            if current["state"] not in {"FAILED", "CANCELLED", "PENDING_REVIEW"}:
-                current = store.fail(args.job_id, "phase1_subject_planning_failed")
-                _project_if_subject(store, current)
-            raise
+        if job["state"] in {"NEW", "RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS"}:
+            try:
+                planned = _run_subject(store, job)
+            except Exception:
+                current = store.status(args.job_id)
+                if current["state"] not in {"FAILED", "CANCELLED", "PENDING_REVIEW"}:
+                    current = store.fail(args.job_id, "phase1_subject_planning_failed")
+                    _project_if_subject(store, current)
+                raise
+            if args.plan_only:
+                return planned
+            job = store.status(args.job_id)
+        if args.plan_only:
+            return {"status": "subject_plan_ready", "job": job, "artifacts": store.artifacts(args.job_id), "idempotent": True}
+        return _run_subject_delivery(store, job)
     from generate_video import run_local_brief
     metadata = dict(job["metadata"])
     brief_ref = str(metadata.get("brief_path", ""))

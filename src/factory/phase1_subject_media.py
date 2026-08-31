@@ -146,10 +146,11 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
     workdir = request.workdir.resolve()
     if workdir.drive.upper() != "E:": raise ValueError("subject_media_workdir_must_use_e_drive")
     workdir.mkdir(parents=True, exist_ok=False)
+    width, height = ((1920, 1080) if topic["aspect"] == "16:9" else (1080, 1920))
     timing_root = workdir / "timing"; timing_root.mkdir()
     manifest = workdir / "timing_manifest.json"
     probe_name = f"subject_{script['script_id']}_{workdir.name}_timing"
-    timing_cmd = [str(python_path), str(Path(__file__).resolve().parents[2] / "scripts/phase1_jianying_timing_probe.py"), "--script", str(request.director_script.resolve()), "--scene-plan", str(request.scene_plan.resolve()), "--drafts-root", str(timing_root), "--name", probe_name, "--manifest", str(manifest), "--skill-root", str(skill), "--visual-duration-seconds", str(duration)]
+    timing_cmd = [str(python_path), str(Path(__file__).resolve().parents[2] / "scripts/phase1_jianying_timing_probe.py"), "--script", str(request.director_script.resolve()), "--scene-plan", str(request.scene_plan.resolve()), "--drafts-root", str(timing_root), "--name", probe_name, "--manifest", str(manifest), "--skill-root", str(skill), "--visual-duration-seconds", str(duration), "--width", str(width), "--height", str(height)]
     output, render_report = workdir / "visual_master.mp4", workdir / "render_report.json"
     clips, stills = workdir / "clips", workdir / "stills"
     visual_review = workdir / "visual_review.json"
@@ -172,7 +173,7 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
         preview_value = _require_report(preview_report, {"audio_preview_ready_for_manual_listening"})
         if not preview.is_file() or preview_value.get("visual", {}).get("sha256") != _sha(output) or preview_value.get("render_report", {}).get("sha256") != _sha(render_report) or preview_value.get("output", {}).get("sha256") != _sha(preview): raise ValueError("preview_output_hash_mismatch")
         stage = "jianying"
-        runner([str(python_path), str(Path(__file__).resolve().parents[2] / "scripts/phase1_jianying_tts_draft.py"), "--visual", str(output), "--visual-report", str(render_report), "--clips-root", str(clips), "--script", str(request.director_script.resolve()), "--timing-manifest", str(manifest), "--timing-root", str(timing_root), "--name", draft_name, "--report", str(draft_report), "--skill-root", str(skill)], check=True, shell=False, timeout=900)
+        runner([str(python_path), str(Path(__file__).resolve().parents[2] / "scripts/phase1_jianying_tts_draft.py"), "--visual", str(output), "--visual-report", str(render_report), "--clips-root", str(clips), "--script", str(request.director_script.resolve()), "--timing-manifest", str(manifest), "--timing-root", str(timing_root), "--name", draft_name, "--report", str(draft_report), "--skill-root", str(skill), "--width", str(width), "--height", str(height)], check=True, shell=False, timeout=900)
         draft = _require_report(draft_report, {"draft_ready_for_manual_jianying_review"})
         inputs = draft.get("inputs", {})
         if inputs.get("script_sha256") != _sha(request.director_script) or inputs.get("timing_manifest_sha256") != _sha(manifest) or inputs.get("render_report_sha256") != _sha(render_report) or draft.get("export", {}).get("automatic_export") != "disabled": raise ValueError("jianying_output_hash_mismatch")
