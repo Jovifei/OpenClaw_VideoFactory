@@ -16,7 +16,8 @@ from typing import Any
 from video_factory.pipeline.errors import FactoryContractError
 
 _PHASE = "PHASE_1_LOCAL_VIDEO_FACTORY"
-_REQUIRED_TOPIC_FIXTURES = frozenset({"modbus_rtu", "flash_watchdog", "freertos"})
+_LEGACY_TOPIC_FIXTURES = frozenset({"modbus_rtu", "flash_watchdog", "freertos"})
+_TOPIC_ONLY_FIXTURES = frozenset({"flash_watchdog", "freertos", "i2c"})
 _LIFECYCLE_TYPES = ("cancel", "retry", "restart_recovery", "encoder_fallback")
 
 
@@ -125,17 +126,28 @@ def evaluate_phase1_gate(manifest_path: Path, *, project_root: Path) -> dict[str
     checks = {
         "source_hashes_match": True,
         "topic_fixtures_ready": False,
+        "live_topic_ready": False,
         "reference_mode_ready": False,
         "lifecycle_ready": False,
         "boundary_ready": False,
     }
     blockers: list[str] = []
 
+    scope = str(manifest.get("acceptance_scope", "legacy_topic_reference_v1"))
+    required_topic_fixtures = (
+        _TOPIC_ONLY_FIXTURES if scope == "topic_only_v1" else _LEGACY_TOPIC_FIXTURES
+    )
     topic_entries = manifest.get("topic_jobs", [])
     fixture_ids = {
         str(item.get("fixture_id")) for item in topic_entries if isinstance(item, dict)
     }
-    topic_ready = fixture_ids == _REQUIRED_TOPIC_FIXTURES
+    topic_ready = fixture_ids == required_topic_fixtures
+    if scope == "topic_only_v1":
+        fixture_control_ids = [
+            str(item.get("control_job_id")) for item in topic_entries if isinstance(item, dict)
+        ]
+        if len(fixture_control_ids) != len(topic_entries) or len(set(fixture_control_ids)) != len(fixture_control_ids):
+            topic_ready = False
     for index, item in enumerate(topic_entries):
         if not isinstance(item, dict):
             topic_ready = False
@@ -156,15 +168,49 @@ def evaluate_phase1_gate(manifest_path: Path, *, project_root: Path) -> dict[str
             report.get("status") != "ready"
             or report.get("input_mode") != "topic"
             or report.get("control_job_id") != item.get("control_job_id")
+            or report.get("checks", {}).get("human_review_approved") is not True
         ):
             topic_ready = False
     checks["topic_fixtures_ready"] = topic_ready
     if not topic_ready:
         _append(blockers, "topic_fixtures_not_ready")
 
+    if scope == "topic_only_v1":
+        live_entry = manifest.get("live_topic_job", {})
+        live_report, live_hash_ok = _load_ref(
+            root,
+            live_entry.get("prereview", {}) if isinstance(live_entry, dict) else {},
+            field="live_topic_job.prereview",
+        )
+        checks["source_hashes_match"] = checks["source_hashes_match"] and live_hash_ok
+        live_ready = live_hash_ok and isinstance(live_report, dict) and isinstance(live_entry, dict)
+        if live_ready:
+            try:
+                _validate(root, "phase1_job_prereview", live_report)
+            except FactoryContractError:
+                live_ready = False
+        if live_ready:
+            fixture_control_ids = {
+                str(item.get("control_job_id")) for item in topic_entries if isinstance(item, dict)
+            }
+            live_ready = (
+                live_report.get("status") == "ready"
+                and live_report.get("input_mode") == "topic"
+                and live_report.get("control_job_id") == live_entry.get("control_job_id")
+                and live_report.get("checks", {}).get("human_review_approved") is True
+                and live_entry.get("control_job_id") not in fixture_control_ids
+            )
+        checks["live_topic_ready"] = bool(live_ready)
+        if not live_ready:
+            _append(blockers, "live_topic_not_ready")
+    else:
+        checks["live_topic_ready"] = True
+
     reference_ready = True
     reference_entries = manifest.get("reference_jobs", [])
-    if not isinstance(reference_entries, list) or not reference_entries:
+    if not isinstance(reference_entries, list) or (
+        not reference_entries and scope != "topic_only_v1"
+    ):
         reference_ready = False
     for index, item in enumerate(reference_entries if isinstance(reference_entries, list) else []):
         if not isinstance(item, dict):
@@ -187,6 +233,7 @@ def evaluate_phase1_gate(manifest_path: Path, *, project_root: Path) -> dict[str
             or report.get("input_mode") != "local_reference"
             or report.get("control_job_id") != item.get("control_job_id")
             or report.get("checks", {}).get("reference_difference_ready") is not True
+            or report.get("checks", {}).get("human_review_approved") is not True
         ):
             reference_ready = False
     checks["reference_mode_ready"] = reference_ready

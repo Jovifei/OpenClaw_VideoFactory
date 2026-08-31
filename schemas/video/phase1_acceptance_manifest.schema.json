@@ -8,59 +8,20 @@
   "properties": {
     "schema_version": {"type": "string", "const": "1.0"},
     "phase": {"type": "string", "const": "PHASE_1_LOCAL_VIDEO_FACTORY"},
-    "topic_jobs": {
-      "type": "array",
-      "minItems": 3,
-      "maxItems": 3,
-      "items": {"$ref": "#/$defs/topicJob"}
-    },
-    "reference_jobs": {
-      "type": "array",
-      "minItems": 1,
-      "items": {"$ref": "#/$defs/referenceJob"}
-    },
-    "lifecycle": {
-      "type": "object",
-      "required": ["cancel", "retry", "restart_recovery", "encoder_fallback"],
-      "additionalProperties": false,
-      "properties": {
-        "cancel": {"$ref": "#/$defs/evidenceRef"},
-        "retry": {"$ref": "#/$defs/evidenceRef"},
-        "restart_recovery": {"$ref": "#/$defs/evidenceRef"},
-        "encoder_fallback": {"$ref": "#/$defs/evidenceRef"}
-      }
-    },
+    "acceptance_scope": {"type": "string", "enum": ["legacy_topic_reference_v1", "topic_only_v1"], "default": "legacy_topic_reference_v1"},
+    "topic_jobs": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/topicJob"}},
+    "live_topic_job": {"$ref": "#/$defs/liveTopicJob"},
+    "reference_jobs": {"type": "array", "minItems": 0, "items": {"$ref": "#/$defs/referenceJob"}},
+    "lifecycle": {"type": "object", "required": ["cancel", "retry", "restart_recovery", "encoder_fallback"], "additionalProperties": false, "properties": {"cancel": {"$ref": "#/$defs/evidenceRef"}, "retry": {"$ref": "#/$defs/evidenceRef"}, "restart_recovery": {"$ref": "#/$defs/evidenceRef"}, "encoder_fallback": {"$ref": "#/$defs/evidenceRef"}}},
     "boundary_audit": {"$ref": "#/$defs/evidenceRef"}
   },
+  "allOf": [
+    {"if": {"required": ["acceptance_scope"], "properties": {"acceptance_scope": {"const": "topic_only_v1"}}}, "then": {"required": ["live_topic_job"]}, "else": {"properties": {"reference_jobs": {"minItems": 1}}, "not": {"required": ["live_topic_job"]}}}
+  ],
   "$defs": {
-    "evidenceRef": {
-      "type": "object",
-      "required": ["path", "sha256"],
-      "additionalProperties": false,
-      "properties": {
-        "path": {"type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!\\\\).+"},
-        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
-      }
-    },
-    "topicJob": {
-      "type": "object",
-      "required": ["fixture_id", "control_job_id", "prereview"],
-      "additionalProperties": false,
-      "properties": {
-        "fixture_id": {"type": "string", "enum": ["modbus_rtu", "flash_watchdog", "freertos"]},
-        "control_job_id": {"type": "string", "pattern": "^job-[a-f0-9]{24}$"},
-        "prereview": {"$ref": "#/$defs/evidenceRef"}
-      }
-    },
-    "referenceJob": {
-      "type": "object",
-      "required": ["label", "control_job_id", "prereview"],
-      "additionalProperties": false,
-      "properties": {
-        "label": {"type": "string", "minLength": 1, "maxLength": 80},
-        "control_job_id": {"type": "string", "pattern": "^job-[a-f0-9]{24}$"},
-        "prereview": {"$ref": "#/$defs/evidenceRef"}
-      }
-    }
+    "evidenceRef": {"type": "object", "required": ["path", "sha256"], "additionalProperties": false, "properties": {"path": {"type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!\\\\).+"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}},
+    "topicJob": {"type": "object", "required": ["fixture_id", "control_job_id", "prereview"], "additionalProperties": false, "properties": {"fixture_id": {"type": "string", "enum": ["modbus_rtu", "flash_watchdog", "freertos", "i2c"]}, "control_job_id": {"type": "string", "pattern": "^job-[a-f0-9]{24}$"}, "prereview": {"$ref": "#/$defs/evidenceRef"}}},
+    "liveTopicJob": {"type": "object", "required": ["control_job_id", "prereview"], "additionalProperties": false, "properties": {"control_job_id": {"type": "string", "pattern": "^job-[a-f0-9]{24}$"}, "prereview": {"$ref": "#/$defs/evidenceRef"}}},
+    "referenceJob": {"type": "object", "required": ["label", "control_job_id", "prereview"], "additionalProperties": false, "properties": {"label": {"type": "string", "minLength": 1, "maxLength": 80}, "control_job_id": {"type": "string", "pattern": "^job-[a-f0-9]{24}$"}, "prereview": {"$ref": "#/$defs/evidenceRef"}}}
   }
 }

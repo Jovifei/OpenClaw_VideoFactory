@@ -510,3 +510,10 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - A declared media timeline is not proof of the editor timeline. Capture the actual segment start/duration returned by the editor, validate ordered gap/overlap and measured max end, and persist those observations in the report.
 - READY validation must inspect safety and quality conclusions inside each report, not only terminal status and file hashes. Treat status-only documents as incomplete evidence.
 - Never use Python `assert` for a security, readiness, or media contract: optimized mode removes it. Use explicit field-specific rejection codes and test the validator under `python -O`.
+
+# 2026-08-31 - Cross-language contracts and acceptance identity
+
+- A Python-only regression can miss a renderer rejecting newly introduced scene roles. Test the same factual, hook, and non-factual process scenes through the actual Node input builder and Remotion validator; never invent source references to satisfy an outdated downstream check.
+- Review-package type, SQLite fixture, input mode, preview identity and human-review SHA must agree. A valid JSON schema or high test count does not establish that these cross-file identities are bound.
+- When changing artifact lookup from names to relative paths, explicitly test legacy artifacts in nested directories. Preserve declared paths without assuming every quality or difference report is at the package root.
+- Keep quality claims separate: API-only Backlot is not a visual production board, a layout smoke is not a technical-content review, and a local clone using existing dependencies is not remote/offline reproducibility evidence.

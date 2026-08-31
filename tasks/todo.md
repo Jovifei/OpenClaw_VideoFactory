@@ -2685,26 +2685,63 @@ Spec-review verification: focused `10 passed`; full `393 passed`; Draft 2020-12 
 - [x] GREEN: replace every READY validator assert with explicit `ready_report_contract_invalid:<field>` conditions.
 - [x] VERIFY: focused `7 passed`; full video + Phase 1 `401 passed`; production assert grep empty, compileall and diff check passed.
 
-### Task 4A duration-coverage correction — IN PROGRESS
+### Task 4A duration-coverage correction — code repaired; content E2E pending
 
 - [x] RED: add duration-budget and voice-coverage contract tests for the topic script, timing probe, and subject-media orchestration.
 
 # PHASE1-TOPIC-OPENMONTAGE-010 — Task 4B subject review delivery
 
-- [ ] RED: add mocked-media tests for receipt containment/tamper detection, self-contained review packages, native-subtitle quality, lifecycle resume/cancellation, and aspect forwarding.
-- [ ] GREEN: add strict subject delivery schemas and receipt-to-package/quality verifier.
-- [ ] GREEN: make local-subject `run` execute planning plus one bounded media/delivery attempt by default; retain `--plan-only` as a diagnostic.
-- [ ] VERIFY: run the focused Task 4B, Phase 1 local, video, and OpenMontage tests with `D:\Python\Python3.14\python.exe`; no real media run.
+Current authoritative checkpoint (2026-08-31): Task4B implementation is committed
+as `74203ac`, independently reviewed, and regression-tested. Task4A no-repeat
+and atomic receipt fixes are committed as `aa723c7`; latest real timing-only
+probe is 33.2s/40s. Historical unchecked entries below describe prior attempts,
+not the current code state. No full current content-qualified E2E exists.
+
+## Task 5 — topic-only acceptance adaptation
+
+- [x] RED: add subject prereview and topic-only Gate contract tests, while preserving legacy topic/reference cases.
+- [x] GREEN: strictly validate subject review packages, normalize only validated local-subject input, and bind the preview-native-caption review evidence.
+- [x] GREEN: add a schema-scoped `topic_only_v1` acceptance path without loosening legacy reference requirements.
+- [x] VERIFY: run focused acceptance/subject tests and inspect the resulting diff; do not execute the formal Gate.
+- [x] REVIEW: update status, phase/runbook documentation and current-policy override; no phase pass, export, or commit.
+
+### Task 5 review
+
+- RED: the new subject-prereview fixture was blocked because the implementation only accepted the legacy package; `topic_only_v1` manifests failed schema validation because both scope fields were unknown (4 expected failures).
+- RED review hardening: optional references without `human_review_approved` and duplicate topic-only fixture control jobs each produced their expected failure before the Gate checks were tightened.
+- RED identity/path hardening: a `phase1_subject` package with either non-`local_subject` metadata or fixture was accepted, and a valid nested legacy `difference_report.json` artifact was not found; both failed before the respective fixes.
+- GREEN: `D:\Python\Python3.14\python.exe -m pytest tests\phase1_acceptance tests\phase1_local\test_phase1_subject_delivery.py tests\phase1_local\test_phase1_subject_cli.py tests\video\test_phase1_subject_media.py -q` passed 54 tests.
+- Scope: no formal Gate execution, no real human approval, Jianying export, media render, status promotion, or commit. MOCK structured-review fixtures are test-only.
+
+- [x] RED: add mocked-media tests for receipt containment/tamper detection, self-contained review packages, native-subtitle quality, lifecycle resume/cancellation, and aspect forwarding.
+- [x] GREEN: add strict subject delivery schemas and receipt-to-package/quality verifier.
+- [x] GREEN: make local-subject `run` execute planning plus one bounded media/delivery attempt by default; retain `--plan-only` as a diagnostic.
+- [x] VERIFY: run the focused Task 4B, Phase 1 local, video, and OpenMontage tests with `D:\Python\Python3.14\python.exe`; no real media run.
 
 ## Task 4B review
 
-- Pending implementation and verification. No automatic Jianying export, publication, deletion, Gate, PROJECT_STATUS, or Obsidian action is in scope.
+- Implementation committed and reviewed at `74203ac`; no actual human approval, automatic export or publication is implied. Subsequent Task5 separately authorizes documentation and Obsidian updates.
 - [x] GREEN: derive 25–60s Chinese narration from verified claims and safe non-factual process framing without weakening factual binding.
 - [x] GREEN: enforce the 0.75 voice/visual coverage floor for scene-plan timing and subject-media rendering.
-- [ ] RED: add no-duplicate narration-frame and atomic READY-receipt tests for final Task 4A review remediation.
-- [ ] GREEN: build a finite, non-repeating factual/process beat sequence and persist the validated subject-media receipt atomically.
+- [x] RED: add no-duplicate narration-frame and atomic READY-receipt tests for final Task 4A review remediation.
+- [x] GREEN: build a finite, non-repeating factual/process beat sequence and persist the validated subject-media receipt atomically.
 - [ ] VERIFY: run focused and full regressions, then one fresh 40-second E2E-06; stop on any failed gate.
 - [ ] REVIEW: inspect evidence and commit `fix(phase1): eliminate repetitive narration padding`.
 - [ ] VERIFY: run the final full Task4A regression after the six-to-nine-beat timing compatibility correction.
 - [ ] E2E: **BLOCKED:** new 40s timing passed at 38.280s / 0.957 coverage, then the one complete current subject-media run stopped at render with a sanitized `ModuleNotFoundError`; `media_failure.json` has `failed_stage=render`, so no preview/draft was created and no retry is permitted.
 - [ ] REVIEW: inspect the stopped E2E evidence and commit the scoped fix.
+
+## Current remaining work (2026-08-31 continuation)
+
+Task5 parent review repair: six executable Schema negatives (missing/duplicate
+preview, native subtitles, quality roles) failed before moving `contains`
+constraints onto the artifacts array, then passed; full scoped set 60 passed.
+No mock approval is a real acceptance receipt.
+
+- [ ] Finish independent Task5 spec and quality reviews before committing its gate adaptation.
+- [ ] Repair Python/JavaScript/Remotion disagreement for `engineering_process_frame` without inventing fact references; add executable cross-language regression.
+- [ ] Replace lexical-only editorial acceptance with a source-bound machine review design; do not lower 85 or repeat generation beyond the approved rewrite budget.
+- [ ] Improve topic-specific diagram content; generic sparse cards are not content-qualified visuals.
+- [ ] Complete the read-only Backlot visual board (current implementation is state API only).
+- [ ] Run current full E2E and remote fresh-clone qualification, then obtain final Jovi review.
+- [x] Sync Obsidian current progress and decisions through verified checkpoint; preserve incomplete state and distinguish unmerged feature worktree from main.

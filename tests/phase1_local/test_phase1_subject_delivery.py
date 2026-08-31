@@ -7,6 +7,9 @@ from pathlib import Path
 import pytest
 
 from src.factory.phase1_subject_delivery import SubjectDeliveryRequest, build_subject_review_package
+
+
+_MOCK_CONTROL_JOB_ID = "job-" + "a" * 24
 from video_factory.pipeline import validation
 
 
@@ -65,9 +68,29 @@ def _probe(_: Path) -> dict[str, object]:
     return {"width": 1920, "height": 1080, "fps": 30.0, "duration_seconds": 30.0, "video_codec": "h264", "audio_codec": "aac"}
 
 
+@pytest.mark.parametrize("role", ["preview", "native_subtitles", "quality"])
+@pytest.mark.parametrize("mutation", ["missing", "duplicate"])
+def test_subject_package_requires_exactly_one_evidence_role(tmp_path: Path, role: str, mutation: str) -> None:
+    from video_factory.pipeline.errors import FactoryContractError
+
+    media_root, _ = _media_root(tmp_path)
+    result = build_subject_review_package(
+        SubjectDeliveryRequest(_MOCK_CONTROL_JOB_ID, 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"),
+        probe_media=_probe, decode_media=lambda _: True,
+    )
+    document = json.loads(Path(result["review_package"]).read_text(encoding="utf-8"))
+    entry = next(item for item in document["artifacts"] if item["role"] == role)
+    if mutation == "missing":
+        entry["role"] = "input"  # Preserve count: only the required role is absent.
+    else:
+        document["artifacts"].append({**entry, "name": "duplicate.bin", "path": "evidence/duplicate.bin"})
+    with pytest.raises(FactoryContractError):
+        validation.validate(document, "phase1_subject_review_package")
+
+
 def test_subject_delivery_builds_strict_self_contained_preview_package(tmp_path: Path) -> None:
     media_root, _ = _media_root(tmp_path)
-    outcome = build_subject_review_package(SubjectDeliveryRequest("job-subject", 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
+    outcome = build_subject_review_package(SubjectDeliveryRequest(_MOCK_CONTROL_JOB_ID, 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
     package = Path(outcome["package_path"])
     review = json.loads((package / "review_package.json").read_text(encoding="utf-8"))
     quality = json.loads((package / "subject_quality_report.json").read_text(encoding="utf-8"))
@@ -94,7 +117,7 @@ def test_subject_delivery_rejects_receipt_escape_or_tamper(tmp_path: Path, mutat
     else:
         paths["preview"].write_bytes(b"tampered")
     with pytest.raises(ValueError, match="subject_delivery_media_receipt_invalid"):
-        build_subject_review_package(SubjectDeliveryRequest("job-subject", 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
+        build_subject_review_package(SubjectDeliveryRequest(_MOCK_CONTROL_JOB_ID, 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
 
 
 def test_subject_delivery_rejects_package_reparse_escape(tmp_path: Path) -> None:
@@ -103,7 +126,7 @@ def test_subject_delivery_rejects_package_reparse_escape(tmp_path: Path) -> None
     package_root.mkdir()
     (package_root / "attempt_1").write_bytes(b"not a directory")
     with pytest.raises(ValueError, match="subject_delivery_package_path_invalid"):
-        build_subject_review_package(SubjectDeliveryRequest("job-subject", 1, _inputs(tmp_path), media_root, package_root, 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
+        build_subject_review_package(SubjectDeliveryRequest(_MOCK_CONTROL_JOB_ID, 1, _inputs(tmp_path), media_root, package_root, 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
 
 
 @pytest.mark.parametrize("mutation", ["render_hash", "native_subtitle"])
@@ -120,14 +143,14 @@ def test_subject_delivery_rechecks_genuine_render_and_native_subtitle_evidence(t
     receipt["hashes"]["render_report" if mutation == "render_hash" else "jianying_report"] = _sha(target)
     (media_root / "subject_media_result.json").write_text(json.dumps(receipt), encoding="utf-8")
     with pytest.raises(ValueError):
-        build_subject_review_package(SubjectDeliveryRequest("job-subject", 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
+        build_subject_review_package(SubjectDeliveryRequest(_MOCK_CONTROL_JOB_ID, 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
 
 
 def test_subject_delivery_fails_closed_without_schema_validation(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     media_root, _ = _media_root(tmp_path)
     monkeypatch.setattr(validation, "is_available", lambda: False)
     with pytest.raises(ValueError, match="subject_delivery_schema_validation_unavailable"):
-        build_subject_review_package(SubjectDeliveryRequest("job-subject", 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
+        build_subject_review_package(SubjectDeliveryRequest(_MOCK_CONTROL_JOB_ID, 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
 
 
 def test_subject_delivery_cancellation_during_decode_never_writes_ready_manifest(tmp_path: Path) -> None:
@@ -136,7 +159,7 @@ def test_subject_delivery_cancellation_during_decode_never_writes_ready_manifest
     def decode(_: Path) -> bool:
         cancelled["value"] = True
         return True
-    request = SubjectDeliveryRequest("job-subject", 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9")
+    request = SubjectDeliveryRequest(_MOCK_CONTROL_JOB_ID, 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9")
     with pytest.raises(ValueError, match="subject_delivery_cancelled"):
         build_subject_review_package(request, probe_media=_probe, decode_media=decode, cancel_requested=lambda: cancelled["value"])
     package = tmp_path / "dist" / "attempt_1" / "review_package"
@@ -150,7 +173,7 @@ def test_subject_delivery_canonicalizes_alternate_preview_filename(tmp_path: Pat
     receipt_path = media_root / "subject_media_result.json"; receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     receipt["paths"]["preview"] = str(alternate); receipt["hashes"]["preview"] = _sha(alternate)
     receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
-    outcome = build_subject_review_package(SubjectDeliveryRequest("job-subject", 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
+    outcome = build_subject_review_package(SubjectDeliveryRequest(_MOCK_CONTROL_JOB_ID, 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
     package_preview = Path(outcome["preview"])
     quality = json.loads((package_preview.parents[1] / "subject_quality_report.json").read_text(encoding="utf-8"))
     assert package_preview.name == "audible_preview.mp4" and package_preview.is_file()

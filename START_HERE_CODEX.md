@@ -2,6 +2,13 @@
 
 > 本文件是整个交付包的最高优先级执行说明。其他文档冲突时，以本文件、`PROJECT_STATUS.yaml`、`docs/PRODUCT_PHASES.md` 和实时 OpenClaw Schema 为准。
 
+> **010 current-policy override (Phase 1 only):** `topic_only_v1` is the approved
+> qualification target: Flash/watchdog, FreeRTOS, and I2C fixtures plus one
+> distinct live topic, all with explicit human review. Its 16:9 audible preview
+> and editable Jianying draft wait for Jovi's final review; automatic export and
+> publication remain disabled. Pink Pig is opt-in only. The legacy local-reference
+> capability remains available under `legacy_topic_reference_v1`.
+
 ## 0. 最终目标
 
 在 Windows 原生环境中，先实现一个由 Codex 本地完成的、可审阅的短视频工厂；
@@ -333,7 +340,7 @@ python .\scripts\90_acceptance_gate.py --gate p0
 
 当前 `scripts/factory.py` 必须fail closed，不得输出示例候选或伪装生产成功。Phase 1 的输入只能是 Jovi 给出的主题、本地参考视频，或 Jovi 明确授权的公开主题研究；本地参考视频只提取主题/结构/通用风格线索，必须重新创作。
 
-Phase 1 严格按小步推进：输入与主题简报；固定 JSON 生成 MP4；TTS 与字幕；逐个 Remotion 模板；确定性小粉飞猪；主题与本地参考视频两个 fixture；本地人工视听审核。Phase 1 禁止飞书交付、自动选题、Cron、AI 视频、剪映、抖音发布和 Codex Plugin OAuth 排障。
+Phase 1 严格按小步推进：输入与主题简报；固定 JSON 生成 MP4；TTS 与字幕；逐个 Remotion 模板；小粉飞猪仅 opt-in；本地人工视听审核。历史 `legacy_topic_reference_v1` 使用主题与本地参考视频 fixture；010 `topic_only_v1` 使用 Flash/看门狗、FreeRTOS、I2C 与一条独立 live topic。Phase 1 禁止飞书交付、自动选题、Cron、AI 视频、自动剪映导出、抖音发布和 Codex Plugin OAuth 排障。010 的本地 16:9 Jianying 草稿仅用于 Jovi 最终人工审阅。
 
 ## 9. Phase 2 飞书文件大小
 

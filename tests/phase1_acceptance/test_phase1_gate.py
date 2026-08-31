@@ -188,3 +188,113 @@ def test_gate_requires_reference_prereview(tmp_path: Path) -> None:
     report = evaluate_phase1_gate(manifest, project_root=tmp_path)
     assert report["status"] == "blocked"
     assert "reference_mode_not_ready" in report["blockers"]
+
+
+def _topic_only_manifest(root: Path) -> Path:
+    manifest = _ready_manifest(root)
+    value = json.loads(manifest.read_text(encoding="utf-8"))
+    value["acceptance_scope"] = "topic_only_v1"
+    value["reference_jobs"] = []
+    value["topic_jobs"][0]["fixture_id"] = "i2c"
+    live_job_id = "job-" + "9" * 24
+    live = _prereview(root, "live_i2c_topic", live_job_id, "topic")
+    value["live_topic_job"] = {
+        "control_job_id": live_job_id,
+        "prereview": _evidence_ref(live, root),
+    }
+    _write(manifest, value)
+    return manifest
+
+
+def test_topic_only_scope_accepts_empty_references_with_live_topic_review(tmp_path: Path) -> None:
+    manifest = _topic_only_manifest(tmp_path)
+    report = evaluate_phase1_gate(manifest, project_root=tmp_path)
+    assert report["status"] == "ready"
+    assert report["checks"]["reference_mode_ready"] is True
+    assert report["checks"]["live_topic_ready"] is True
+
+
+def test_legacy_scope_still_rejects_empty_references(tmp_path: Path) -> None:
+    manifest = _ready_manifest(tmp_path)
+    value = json.loads(manifest.read_text(encoding="utf-8"))
+    value["reference_jobs"] = []
+    _write(manifest, value)
+    import pytest
+    from video_factory.pipeline.errors import FactoryContractError
+
+    with pytest.raises(FactoryContractError, match="phase1_gate_schema_invalid"):
+        evaluate_phase1_gate(manifest, project_root=tmp_path)
+
+
+def test_topic_only_scope_validates_any_supplied_reference(tmp_path: Path) -> None:
+    manifest = _topic_only_manifest(tmp_path)
+    value = json.loads(manifest.read_text(encoding="utf-8"))
+    reference = tmp_path / "reports" / "reference.json"
+    reference.write_text("{}\n", encoding="utf-8")
+    value["reference_jobs"] = [{
+        "label": "optional-but-supplied",
+        "control_job_id": "job-" + "8" * 24,
+        "prereview": _evidence_ref(reference, tmp_path),
+    }]
+    _write(manifest, value)
+    report = evaluate_phase1_gate(manifest, project_root=tmp_path)
+    assert report["status"] == "blocked"
+    assert "reference_mode_not_ready" in report["blockers"]
+
+
+def test_topic_only_scope_requires_approved_review_for_any_supplied_reference(tmp_path: Path) -> None:
+    manifest = _topic_only_manifest(tmp_path)
+    value = json.loads(manifest.read_text(encoding="utf-8"))
+    reference_job_id = "job-" + "8" * 24
+    reference = _prereview(tmp_path, "optional_reference", reference_job_id, "local_reference")
+    reference_value = json.loads(reference.read_text(encoding="utf-8"))
+    reference_value["checks"]["human_review_approved"] = False
+    _write(reference, reference_value)
+    value["reference_jobs"] = [{
+        "label": "optional-but-supplied",
+        "control_job_id": reference_job_id,
+        "prereview": _evidence_ref(reference, tmp_path),
+    }]
+    _write(manifest, value)
+    report = evaluate_phase1_gate(manifest, project_root=tmp_path)
+    assert report["status"] == "blocked"
+    assert "reference_mode_not_ready" in report["blockers"]
+
+
+def test_topic_only_scope_schema_requires_live_topic(tmp_path: Path) -> None:
+    manifest = _topic_only_manifest(tmp_path)
+    value = json.loads(manifest.read_text(encoding="utf-8"))
+    value.pop("live_topic_job")
+    _write(manifest, value)
+    import pytest
+    from video_factory.pipeline.errors import FactoryContractError
+
+    with pytest.raises(FactoryContractError, match="phase1_gate_schema_invalid"):
+        evaluate_phase1_gate(manifest, project_root=tmp_path)
+
+
+def test_topic_only_scope_rejects_duplicate_live_topic(tmp_path: Path) -> None:
+    manifest = _topic_only_manifest(tmp_path)
+    value = json.loads(manifest.read_text(encoding="utf-8"))
+    value["live_topic_job"]["control_job_id"] = value["topic_jobs"][0]["control_job_id"]
+    _write(manifest, value)
+    report = evaluate_phase1_gate(manifest, project_root=tmp_path)
+    assert report["status"] == "blocked"
+    assert "live_topic_not_ready" in report["blockers"]
+
+
+def test_topic_only_scope_requires_distinct_fixture_control_jobs(tmp_path: Path) -> None:
+    manifest = _topic_only_manifest(tmp_path)
+    value = json.loads(manifest.read_text(encoding="utf-8"))
+    duplicate_id = value["topic_jobs"][0]["control_job_id"]
+    duplicate = value["topic_jobs"][1]
+    duplicate["control_job_id"] = duplicate_id
+    prereview = tmp_path / duplicate["prereview"]["path"]
+    prereview_value = json.loads(prereview.read_text(encoding="utf-8"))
+    prereview_value["control_job_id"] = duplicate_id
+    _write(prereview, prereview_value)
+    duplicate["prereview"]["sha256"] = _sha(prereview)
+    _write(manifest, value)
+    report = evaluate_phase1_gate(manifest, project_root=tmp_path)
+    assert report["status"] == "blocked"
+    assert "topic_fixtures_not_ready" in report["blockers"]

@@ -143,6 +143,16 @@ def _append(blockers: list[str], value: str) -> None:
         blockers.append(value)
 
 
+def _subject_render_job_id(control_job_id: str) -> str | None:
+    prefix = "job-"
+    suffix = control_job_id.removeprefix(prefix)
+    if not control_job_id.startswith(prefix) or len(suffix) != 24:
+        return None
+    if any(character not in "0123456789abcdef" for character in suffix):
+        return None
+    return f"phase1_subject_{suffix}"
+
+
 def evaluate_job_prereview(
     store: CandidateStore,
     control_job_id: str,
@@ -178,10 +188,15 @@ def evaluate_job_prereview(
         )
 
     metadata = job.get("metadata")
+    metadata_input_mode = "unknown"
+    fixture_id = str(job.get("fixture_id", ""))
     if isinstance(metadata, dict):
         candidate_mode = metadata.get("input_mode")
         if candidate_mode in {"topic", "local_reference", "authorized_public_research"}:
-            input_mode = str(candidate_mode)
+            metadata_input_mode = str(candidate_mode)
+            input_mode = metadata_input_mode
+        elif candidate_mode == "local_subject":
+            metadata_input_mode = "local_subject"
     checks["job_pending_review"] = job.get("state") == "PENDING_REVIEW"
     if not checks["job_pending_review"]:
         _append(blockers, "job_not_pending_review")
@@ -224,6 +239,7 @@ def evaluate_job_prereview(
         _append(blockers, "registered_artifact_hash_mismatch")
 
     package: dict[str, Any] | None = None
+    package_schema: str | None = None
     package_path = registered_paths.get("review_package")
     final_path = registered_paths.get("final_master")
     if final_path is not None:
@@ -231,14 +247,38 @@ def evaluate_job_prereview(
     if package_path is not None:
         try:
             package = _read_object(package_path, field="review_package")
-            _validate(root, "phase1_review_package", package)
-            render_job_id = str(package.get("job_id", "")) or None
-            package_mode = package.get("input_mode")
-            if package_mode in {"topic", "local_reference", "authorized_public_research"}:
-                if input_mode == "unknown":
-                    input_mode = str(package_mode)
-                elif input_mode != package_mode:
-                    _append(blockers, "input_mode_mismatch")
+            package_kind = package.get("package_kind")
+            if package_kind is None:
+                if metadata_input_mode == "local_subject":
+                    raise _fail(
+                        "phase1_prereview_subject_package_required",
+                        "Local subject metadata requires a strict subject review package.",
+                    )
+                package_schema = "phase1_review_package"
+                _validate(root, package_schema, package)
+                render_job_id = str(package.get("job_id", "")) or None
+                package_mode = package.get("input_mode")
+                if package_mode in {"topic", "local_reference", "authorized_public_research"}:
+                    if input_mode == "unknown":
+                        input_mode = str(package_mode)
+                    elif input_mode != package_mode:
+                        _append(blockers, "input_mode_mismatch")
+            elif package_kind == "phase1_subject":
+                package_schema = "phase1_subject_review_package"
+                _validate(root, package_schema, package)
+                if package.get("job_id") != control_job_id:
+                    raise _fail("phase1_prereview_subject_identity_invalid", "Subject review package job does not match its control job.")
+                render_job_id = _subject_render_job_id(control_job_id)
+                if render_job_id is None:
+                    raise _fail("phase1_prereview_subject_identity_invalid", "Subject review package control job is invalid.")
+                if metadata_input_mode != "local_subject" or fixture_id != "local_subject":
+                    raise _fail(
+                        "phase1_prereview_subject_identity_invalid",
+                        "Subject review packages require local_subject fixture and metadata.",
+                    )
+                input_mode = "topic"
+            else:
+                raise _fail("phase1_prereview_package_kind_invalid", "Review package kind is not supported.")
             checks["review_package_valid"] = True
         except FactoryContractError:
             _append(blockers, "review_package_invalid")
@@ -246,6 +286,7 @@ def evaluate_job_prereview(
         _append(blockers, "review_package_unavailable")
 
     package_files: dict[str, tuple[Path, dict[str, Any]]] = {}
+    package_files_by_name: dict[str, tuple[Path, dict[str, Any]]] = {}
     package_hashes_ok = package is not None and checks["review_package_valid"]
     if package is not None and package_path is not None:
         package_dir = package_path.parent
@@ -273,24 +314,49 @@ def evaluate_job_prereview(
                     ):
                         package_hashes_ok = False
                         continue
-                    package_files[name] = (artifact_path, entry)
+                    relative_path = str(entry.get("path", name))
+                    if relative_path in package_files or name in package_files_by_name:
+                        package_hashes_ok = False
+                        continue
+                    package_files[relative_path] = (artifact_path, entry)
+                    package_files_by_name[name] = (artifact_path, entry)
                 except (FactoryContractError, OSError, TypeError, ValueError):
                     package_hashes_ok = False
     checks["review_package_artifacts_match"] = package_hashes_ok
     if not package_hashes_ok:
         _append(blockers, "review_package_artifact_mismatch")
 
-    quality_item = package_files.get("quality_report.json")
+    if package_schema == "phase1_subject_review_package":
+        quality_item = package_files.get(str(package.get("quality_report", ""))) if package else None
+    else:
+        quality_item = package_files_by_name.get(str(package.get("quality_report", ""))) if package else None
     if quality_item is not None and final_master_sha is not None:
         try:
             quality = _read_object(quality_item[0], field="quality_report")
-            _validate(root, "phase1_quality_report", quality)
-            media = quality.get("media")
-            checks["quality_report_passed"] = (
-                quality.get("status") == "passed"
-                and isinstance(media, dict)
-                and media.get("sha256") == final_master_sha
-            )
+            if package_schema == "phase1_subject_review_package":
+                _validate(root, "phase1_subject_quality_report", quality)
+                preview = quality.get("preview")
+                subtitle = quality.get("subtitle")
+                preview_item = package_files.get(str(preview.get("path", ""))) if isinstance(preview, dict) else None
+                subtitle_item = package_files.get(str(subtitle.get("review_srt", ""))) if isinstance(subtitle, dict) else None
+                checks["quality_report_passed"] = (
+                    quality.get("job_id") == control_job_id
+                    and isinstance(preview, dict)
+                    and preview.get("sha256") == final_master_sha
+                    and preview_item is not None
+                    and preview_item[0] == final_path
+                    and preview_item[1].get("role") == "preview"
+                    and subtitle_item is not None
+                    and subtitle_item[1].get("role") == "native_subtitles"
+                )
+            else:
+                _validate(root, "phase1_quality_report", quality)
+                media = quality.get("media")
+                checks["quality_report_passed"] = (
+                    quality.get("status") == "passed"
+                    and isinstance(media, dict)
+                    and media.get("sha256") == final_master_sha
+                )
         except FactoryContractError:
             checks["quality_report_passed"] = False
     if not checks["quality_report_passed"]:
@@ -314,7 +380,13 @@ def evaluate_job_prereview(
         _append(blockers, "human_review_not_approved")
 
     if input_mode == "local_reference":
-        difference_item = package_files.get("difference_report.json")
+        reference_evidence = package.get("reference_evidence", {}) if package else {}
+        difference_name = (
+            str(reference_evidence.get("difference_report", ""))
+            if isinstance(reference_evidence, dict)
+            else ""
+        )
+        difference_item = package_files_by_name.get(difference_name)
         if difference_item is not None:
             try:
                 difference = _read_object(difference_item[0], field="difference_report")

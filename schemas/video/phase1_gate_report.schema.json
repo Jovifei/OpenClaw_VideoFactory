@@ -11,11 +11,12 @@
     "status": {"type": "string", "enum": ["ready", "blocked"]},
     "checks": {
       "type": "object",
-      "required": ["source_hashes_match", "topic_fixtures_ready", "reference_mode_ready", "lifecycle_ready", "boundary_ready"],
+      "required": ["source_hashes_match", "topic_fixtures_ready", "live_topic_ready", "reference_mode_ready", "lifecycle_ready", "boundary_ready"],
       "additionalProperties": false,
       "properties": {
         "source_hashes_match": {"type": "boolean"},
         "topic_fixtures_ready": {"type": "boolean"},
+        "live_topic_ready": {"type": "boolean"},
         "reference_mode_ready": {"type": "boolean"},
         "lifecycle_ready": {"type": "boolean"},
         "boundary_ready": {"type": "boolean"}

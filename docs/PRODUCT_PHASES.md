@@ -23,21 +23,28 @@ Jovi 提供主题 / 本地授权参考视频 / 明确授权的公开主题研究
 1. `topic`：Jovi 给出主题和经过核验的 factual brief；
 2. `local_reference`：Jovi 提供本地、拥有权利的 MP4 和 rights 记录；只提取主题、结构、节奏和通用表达线索；
 3. `authorized_public_research`：只在单独授权时使用公开来源，并记录日期与来源。
+4. `local_subject`：010 的内部 SQLite 入口；只有 `fixture_id=local_subject` 且严格 subject review package 有效时，
+   prereview 才把它规范化为 `topic`，不放宽其他输入模式。
 
 ### 必须输出
 
 - 原创脚本与 Storyboard；
-- Registry 内的小粉飞猪资产选择；
+- Registry 内的小粉飞猪资产选择，或明确 `mascot_mode=off`；小粉飞猪只在已验证原始资产和权利记录具备时 opt-in；
 - Timeline、TTS、SRT 与 Render Report；
-- 25–60 秒、1080×1920、30fps、H.264/AAC 的可解码 MP4；
+- 25–60 秒、30fps、H.264/AAC 的可解码 MP4；010 topic-only 目标为 1920×1080（16:9）audible preview 与可编辑 Jianying 草稿；
 - Cover、质量报告、发布信息和人工审阅清单；
 - SQLite Job、事件、阶段尝试和 Artifact Hash；
 - 参考视频模式的 receipt、rights、抽象分析、original brief 和 difference report。
 
 ### 正式通过条件
 
-- 三个固定主题 Fixture：Modbus RTU、Flash/看门狗、FreeRTOS；
-- 至少一个 Jovi 授权的真实本地参考视频；
+两种 schema-scoped acceptance scope 均保持 fail-closed，Gate 只读且不更新状态：
+
+- `legacy_topic_reference_v1`（未提供 scope 时的兼容默认）：Modbus RTU、Flash/看门狗、FreeRTOS，且至少一条完整验证的本地参考视频；
+- `topic_only_v1`（010 当前目标）：Flash/看门狗、FreeRTOS、I2C，`reference_jobs=[]` 可明确省略，另需一条 control job 不重复的 live topic prereview；任何实际提供的参考视频仍须完整验证。
+
+两个 scope 都要求每个 prereview 为 `ready`、有明确 `approved` 人工审阅且其 audible preview SHA-256 精确匹配。010 的 Jianying draft 仅供 Jovi 最终人工审阅，自动导出和发布均禁止。
+
 - 每个 Job 均处于 `PENDING_REVIEW`，Artifact Hash 与 Review Package 一致；
 - Jovi 对每个成片提交结构化人工审阅并批准；
 - 取消、失败重试、受控重启恢复和 CPU/NVENC 回退证据通过；

@@ -1,13 +1,13 @@
 version: 2.4
 project_root: E:\project\OpenClaw_VideoFactory
-status: ready_for_codex_phase_1_local_video_factory
-last_updated: 2026-08-22
+status: phase_1_topic_only_in_progress
+last_updated: 2026-08-31
 current_phase: PHASE_1_LOCAL_VIDEO_FACTORY
 phase_model: user_aligned_2026_08_14
 product_phases:
   PHASE_1_LOCAL_VIDEO_FACTORY:
-    status: not_started
-    goal: local Codex video creation from a user topic, a user-provided local reference video, or explicitly authorized public-topic research
+    status: in_progress
+    goal: topic-only local qualification toward a 16:9 audible preview and Jovi-reviewed Jianying draft, while preserving legacy local-reference and authorized-public-research capabilities
     excludes:
       - Feishu
       - OpenClaw runtime and daily state
@@ -67,8 +67,11 @@ exceptions:
       - handoff/codex/PHASE1_COMPLETION_PROMPT.md
       - reports/PHASE1_REMOTE_AUDIT_20260822.md
 known_implementation_gaps:
-  - Phase 1 formal human review, acceptance manifest, prereview, and final Gate have not passed
-  - Flash/watchdog and FreeRTOS fixed topic fixtures are not yet qualified
+  - Phase 1 remains in progress; no formal human review, acceptance manifest, prereview set, or final Gate has passed
+  - live MPT I2C topic was rejected twice at score 78; it is not qualified evidence
+  - content visuals still need editorial review
+  - final Jovi Jianying review, fresh-clone verification, and read-only formal Gate are pending
+  - topic_only_v1 still needs Flash/watchdog, FreeRTOS, I2C, and a distinct live-topic prereview with explicit approved reviews
   - cancel, retry, controlled restart recovery, and CPU/NVENC fallback need fresh unified evidence
   - one Jovi-authorized real local reference video still needs human originality review
   - Phase 2 Feishu runtime credentials and target IDs are not configured

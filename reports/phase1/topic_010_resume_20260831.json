@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "change_request": "PHASE1-TOPIC-TO-JIANYING-010",
+  "date": "2026-08-31",
+  "scope": "resumed code repair and live upstream diagnostics, not phase acceptance",
+  "narration_timing_probe": {
+    "status": "passed",
+    "visual_seconds": 40,
+    "voice_end_seconds": 33.2,
+    "coverage_ratio": 0.83,
+    "segments": 7,
+    "proof_kind": "real SAMI timing only; no current final video approval"
+  },
+  "live_i2c_mpt": {
+    "status": "selection_blocked",
+    "generation_attempts": 2,
+    "successful_candidates_per_attempt": [3, 3],
+    "best_scores": [78, 78],
+    "required_score": 85,
+    "failed_dimensions": ["duration", "factual_consistency"],
+    "candidate_artifact_sha256": [
+      "605dca7083ff48d20160d94c7b4e734926177fc76b7c8cd70a70f5440bf09a20",
+      "eb13d2c3fb126ab37207c0144a9c5360da651552ba2f5e4cc290e65a9de17772"
+    ],
+    "third_attempt": false,
+    "video_render_started": false,
+    "finding": "Strict textual anchors reject some paraphrases; other candidates add unsupported damage claims. This is not qualified automatic editorial review."
+  },
+  "visual_review": {
+    "artifact": "E2E-05 contact sheet",
+    "result": "engineering_smoke_only",
+    "finding": "Text cards and layout variation do not yet provide sufficient topic-specific technical diagrams."
+  },
+  "phase_pass": false,
+  "topic_gate_worktree_regression": {
+    "base_commit": "494de45041bbcfa71b7d2282aa78e699bd3fd77f",
+    "kind": "uncommitted topic-only gate adaptation; not formal acceptance",
+    "command": "python -m pytest tests/phase1_acceptance tests/phase1_local tests/video tests/openmontage tests/director tests/reference video_factory/tests -q",
+    "passed": 558,
+    "skipped": 1,
+    "warnings": 5,
+    "remotion_contracts": "npm run test:contracts passed; does not cover engineering_process_frame renderer mismatch",
+    "review_fixes": ["strict local_subject fixture and metadata identity", "legacy nested difference report lookup preserved", "artifact role cardinality applies to array, six RED/GREEN cases"],
+    "independent_reviews": "spec and code-quality approved; not real human content approval"
+  },
+  "local_fresh_clone_check": {
+    "commit": "494de45041bbcfa71b7d2282aa78e699bd3fd77f",
+    "kind": "local Git clone, not remote publication verification or offline dependency installation",
+    "tests": "tests/phase1_local tests/openmontage tests/phase1_acceptance",
+    "passed": 127,
+    "warnings": 1,
+    "repairs": ["mocked MPT tests no longer require an ignored venv", "vendored hash-bound files pinned to LF via gitattributes"],
+    "clone_worktree_clean": true
+  },
+  "automatic_export": false,
+  "automatic_publication": false,
+  "knowledge_checkpoint": {
+    "status": "MEMORY_UPDATED",
+    "slots": ["progress", "decisions"],
+    "progress_sha256": "7126d6b1e5a1192ea5459fc7f6ae17b0d2bc6e2fdee10a95b92ed35bbe3021e6",
+    "decisions_sha256": "7a8c6bb6cb596955320ae655e9cd054c3409eed28ee07f198e0af77b435be45b",
+    "boundary": "Feature worktree only; main not integrated, branch not pushed, actual quality and human gates pending"
+  }
+}
