@@ -46,6 +46,34 @@ def test_visual_inputs_accept_genuine_task2_outputs(tmp_path: Path, aspect: str,
     assert set(result["scene_plan"]) == {"schema_version", "script_id", "scenes"}
 
 
+@pytest.mark.parametrize("mutation", ["string_refs", "empty_ref", "misplaced_hook", "wrong_hook_type", "process_refs", "disguised_hook", "hook_refs", "wrong_hook_narrative"])
+def test_visual_evidence_role_rejects_malformed_bindings(tmp_path: Path, mutation: str) -> None:
+    script, plan, timing = _write_inputs(tmp_path)
+    value = json.loads(plan.read_text(encoding="utf-8"))
+    if mutation == "string_refs":
+        value["scenes"][1]["source_refs"] = "f1"
+    elif mutation == "empty_ref":
+        value["scenes"][1]["source_refs"] = [""]
+    elif mutation == "misplaced_hook":
+        value["scenes"][1].update(scene_type="hook", narrative_role="hook", information_role="hook_question", source_refs=[])
+    elif mutation == "wrong_hook_type":
+        value["scenes"][0]["scene_type"] = "not_hook"
+    elif mutation == "process_refs":
+        next(scene for scene in value["scenes"] if scene["information_role"] == "engineering_process_frame")["source_refs"] = ["invented_fact"]
+    elif mutation == "disguised_hook":
+        value["scenes"][1].update(scene_type="hook", narrative_role="hook", information_role="engineering_process_frame", source_refs=[])
+    elif mutation == "hook_refs":
+        value["scenes"][0]["source_refs"] = ["f1"]
+    else:
+        value["scenes"][0]["narrative_role"] = "not_hook"
+    plan.write_text(json.dumps(value), encoding="utf-8")
+    clock = json.loads(timing.read_text(encoding="utf-8"))
+    clock["scene_plan"]["sha256"] = hashlib.sha256(plan.read_bytes()).hexdigest()
+    timing.write_text(json.dumps(clock), encoding="utf-8")
+    with pytest.raises(ValueError, match="evidence|source_refs_forbidden"):
+        validate_visual_inputs(script, plan, timing, aspect="16:9")
+
+
 @pytest.mark.parametrize(("mutation", "error"), [
     ("knowledge", "visible_knowledge_required"), ("source", "source_refs_required"),
     ("variety", "visual_type_repetition"), ("promise", "information_role_invalid")])

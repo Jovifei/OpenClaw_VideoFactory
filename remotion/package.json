@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test:contracts": "tsc --noEmit false --outDir .contract-build && node scripts/verify-contracts.mjs",
+    "test:contracts": "tsc --noEmit false --outDir .contract-build && node scripts/verify-contracts.mjs && node scripts/verify-topic-evidence.mjs",
     "render:candidate": "node scripts/render-candidate.mjs"
   },
   "dependencies": {

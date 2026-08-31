@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "change_request": "PHASE1-TOPIC-TO-JIANYING-010",
+  "date": "2026-08-31",
+  "scope": "cross-language scene evidence contract repair; not product acceptance",
+  "base_commit": "ebecc78",
+  "red_evidence": [
+    "Node builder rejected valid engineering_process_frame with layout_text_overflow_preflight",
+    "Compiled Remotion accepted a hook missing the required scene_type",
+    "Python accepted string/empty reference IDs and a misplaced hook"
+  ],
+  "contracts": {
+    "python_visual_tests": 23,
+    "related_python_regression": {"passed": 566, "skipped": 1, "warnings": 5},
+    "independent_reviews": "spec and code quality approved, including reverse-hook binding",
+    "node_and_compiled_remotion": "npm run test:contracts passed",
+    "rule": "factual references required; process references absent; hook first, typed hook, and narrative hook"
+  },
+  "real_visual_smoke": {
+    "directory": "E:/Claude_allow/Download/phase1-topic-role-fix-20260831",
+    "source": "existing hash-bound real SAMI timing-only probe; synthetic technical script, not live editorial output",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration_seconds": 40,
+    "scenes": 7,
+    "sha256": "5f76c36914e64e7966c918ababf4a2c0d26e0f9c6a6ce0188df3bb6a45fe201e",
+    "contact_sheet_sha256": "642f171f18adcadd081f57ab24785263b727b4b0121877ad85f3bed3b6ec2801",
+    "frames_scanned": 1200,
+    "black_frames": 0,
+    "unsafe_edge_frames": 0,
+    "longest_near_static_run_frames": 321,
+    "full_decode": true,
+    "audio_present": false,
+    "note": "Visual-only input by design. Render bundle preceded final hook-validator tightening; visual markup and valid input were unchanged."
+  },
+  "semantic_review": {
+    "status": "changes_required",
+    "inspected": "seven-scene contact sheet and direct scene 4 still",
+    "findings": ["sparse generic text cards, not topic-specific diagrams", "generic process filler remains", "near-static run about 10.7 seconds despite mechanical gate pass"],
+    "jianying_draft_created": false,
+    "final_user_approval": false
+  },
+  "phase_pass": false,
+  "automatic_export": false,
+  "automatic_publication": false
+}

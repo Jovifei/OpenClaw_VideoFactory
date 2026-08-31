@@ -2738,8 +2738,12 @@ preview, native subtitles, quality roles) failed before moving `contains`
 constraints onto the artifacts array, then passed; full scoped set 60 passed.
 No mock approval is a real acceptance receipt.
 
-- [ ] Finish independent Task5 spec and quality reviews before committing its gate adaptation.
-- [ ] Repair Python/JavaScript/Remotion disagreement for `engineering_process_frame` without inventing fact references; add executable cross-language regression.
+- [x] Finish independent Task5 spec and quality reviews before committing its gate adaptation (`ebecc78`).
+- [x] Repair Python/JavaScript/Remotion disagreement for `engineering_process_frame` without inventing fact references; add executable cross-language regression.
+
+  - RED: actual Node builder rejected a legal process frame with `layout_text_overflow_preflight`; compiled Remotion had no isolated evidence-role validator. Three Python malformed-ref/hook negatives also failed.
+  - GREEN: Node and compiled Remotion now accept non-factual process frames with empty refs and reject missing factual refs, spurious process refs, unknown roles and malformed refs. Python validates reference shape and hook position too.
+  - Verification: `npm run test:contracts` includes executable Node+compiled Remotion checks; Python visual contracts 23 passed, full related regression 566 passed/1 skipped. Spec and quality reviews approved after reverse-hook binding repair. Real 40-second visual smoke rendered seven scenes, complete decode and 1200-frame scan passed. Contact-sheet semantic review requires changes (sparse cards, generic process filler, near-static 321 frames); no new Jianying draft or content approval. See reports/phase1/topic_scene_evidence_20260831.json.
 - [ ] Replace lexical-only editorial acceptance with a source-bound machine review design; do not lower 85 or repeat generation beyond the approved rewrite budget.
 - [ ] Improve topic-specific diagram content; generic sparse cards are not content-qualified visuals.
 - [ ] Complete the read-only Backlot visual board (current implementation is state API only).

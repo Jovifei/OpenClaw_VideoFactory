@@ -67,6 +67,13 @@ def validate_visual_inputs(script_path: Path, scene_plan_path: Path, timing_mani
         information_role = scene.get("information_role")
         if information_role not in {"hook_question", "explain_verified_fact", "engineering_process_frame"}:
             raise ValueError("information_role_invalid")
+        refs = scene.get("source_refs")
+        if not isinstance(refs, list) or any(not isinstance(ref, str) or not ref.strip() for ref in refs):
+            raise ValueError("scene_evidence_invalid")
+        if information_role == "hook_question" and (index != 1 or not is_hook):
+            raise ValueError("scene_evidence_invalid")
+        if (scene.get("scene_type") == "hook" or scene.get("narrative_role") == "hook") and information_role != "hook_question":
+            raise ValueError("scene_evidence_invalid")
         if information_role == "explain_verified_fact" and not scene.get("source_refs"):
             raise ValueError("source_refs_required")
         if information_role in {"hook_question", "engineering_process_frame"} and scene.get("source_refs"):
