@@ -26,9 +26,15 @@ from src.factory.reference_video import POLICY_VERSION, brief_digest, stable_ref
 
 _SCHEMA_NAME = "phase1_local_brief"
 _SUPPORTED_EXECUTION_MODES = frozenset({"topic", "local_reference"})
-_FORBIDDEN_CONTROL_FIELDS = frozenset({"asset_id", "path", "render", "provider_prompt", "mascot_asset", "mascot_path"})
+_FORBIDDEN_CONTROL_FIELDS = frozenset(
+    {"asset_id", "path", "render", "provider_prompt", "mascot_asset", "mascot_path"}
+)
 _MASCOT_MODES = frozenset({"off", "user_original_only"})
-_MASCOT_ASSET_MARKERS = ("assets/pink_pig/", "src/factory/assets/mascot/", "ian-fenzhu-illustrations")
+_MASCOT_ASSET_MARKERS = (
+    "assets/pink_pig/",
+    "src/factory/assets/mascot/",
+    "ian-fenzhu-illustrations",
+)
 
 
 def _render_profile(brief: dict[str, object]) -> dict[str, object]:
@@ -99,7 +105,10 @@ def _validate_local_brief_schema(brief: dict[str, object]) -> None:
     validator = _load_schema_validator()
     errors = sorted(
         validator.iter_errors(brief),
-        key=lambda error: (tuple(str(part) for part in error.absolute_path), str(error.validator)),
+        key=lambda error: (
+            tuple(str(part) for part in error.absolute_path),
+            str(error.validator),
+        ),
     )
     if errors:
         error = errors[0]
@@ -109,7 +118,10 @@ def _validate_local_brief_schema(brief: dict[str, object]) -> None:
 
 def _contains_forbidden_control_field(value: object) -> bool:
     if isinstance(value, dict):
-        return any(str(key) in _FORBIDDEN_CONTROL_FIELDS or _contains_forbidden_control_field(item) for key, item in value.items())
+        return any(
+            str(key) in _FORBIDDEN_CONTROL_FIELDS or _contains_forbidden_control_field(item)
+            for key, item in value.items()
+        )
     if isinstance(value, list):
         return any(_contains_forbidden_control_field(item) for item in value)
     return False
@@ -138,13 +150,13 @@ def load_local_brief(path: Path) -> dict[str, object]:
     return brief
 
 
-def _validated_factual_brief(brief: dict[str, object], *, topic: str, topic_digest: str) -> FactualBrief:
+def _validated_factual_brief(
+    brief: dict[str, object], *, topic: str, topic_digest: str
+) -> FactualBrief:
     value = brief.get("factual_brief")
     if not isinstance(value, dict):
         raise _brief_error("type", field="factual_brief")
     factual = dict(value)
-    # Reuse the canonical factual schema and enforce the same source-link
-    # invariants as the Provider path, while keeping the local brief inline.
     validate(factual, "director_factual_brief")
     if factual.get("topic_digest") != topic_digest:
         raise _brief_error("topic_digest_mismatch", field="factual_brief.topic_digest")
@@ -154,16 +166,26 @@ def _validated_factual_brief(brief: dict[str, object], *, topic: str, topic_dige
     facts = factual.get("facts")
     if not isinstance(sources, list) or not isinstance(facts, list):
         raise _brief_error("type", field="factual_brief")
-    source_ids = {str(item.get("source_id")) for item in sources if isinstance(item, dict)}
+    source_ids = {
+        str(item.get("source_id")) for item in sources if isinstance(item, dict)
+    }
     if len(source_ids) < 2:
         raise _brief_error("minimum_sources", field="factual_brief.sources")
     for fact in facts:
-        if not isinstance(fact, dict) or any(str(source_id) not in source_ids for source_id in fact.get("source_ids", [])):
+        if not isinstance(fact, dict) or any(
+            str(source_id) not in source_ids for source_id in fact.get("source_ids", [])
+        ):
             raise _brief_error("source_unresolved", field="factual_brief.facts")
     return FactualBrief(document=factual, relative_path="inline")
 
 
-def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: FactualBrief, duration_target_seconds: int = 40) -> dict[str, object]:
+def _deterministic_script(
+    *,
+    topic: str,
+    topic_digest: str,
+    factual_brief: FactualBrief,
+    duration_target_seconds: int = 40,
+) -> dict[str, object]:
     facts = factual_brief.document.get("facts", [])
     assert isinstance(facts, list) and facts and isinstance(facts[0], dict)
     fact_ids = {str(fact.get("fact_id")) for fact in facts if isinstance(fact, dict)}
@@ -175,105 +197,36 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
         "service_window_is_budget",
         "observable_recovery",
     }
+    freertos_mutex_ids = {
+        "mutex_task_ownership",
+        "isr_nonblocking_boundary",
+        "priority_inheritance_context",
+        "short_isr_handler",
+    }
     if flash_watchdog_ids.issubset(fact_ids):
-        # This fixture is deliberately concrete: its narration must teach the
-        # reviewed engineering point instead of falling back to a generic
-        # "object/boundary/input-output" template.
         beat_specs = [
-            {
-                "purpose": "hook",
-                "narration": "闪存擦除不是“点一下等结果”：看门狗还在倒计时，服务窗口怎么安排？",
-                "subtitle": "擦除时看门狗怎么办？",
-                "visual_intent": "用角色提出擦除与看门狗服务窗口的工程问题",
-                "pose": "question",
-                "required_tags": ["flash_watchdog", "flash_window", "education", "explain"],
-                "fact_refs": [],
-            },
-            {
-                "purpose": "explain",
-                "narration": "先按芯片手册拆成四拍：解锁并发起、等待忙状态、检查错误、确认完成。每一拍都要有可观察状态。",
-                "subtitle": "发起、等待、检查、确认",
-                "visual_intent": "展示闪存操作从发起到完成的四个可观察阶段",
-                "pose": "thinking",
-                "required_tags": ["flash_watchdog", "erase_sequence", "education", "explain", "protocol_frame"],
-                "fact_refs": ["flash_erase_sequence"],
-            },
-            {
-                "purpose": "evidence",
-                "narration": "独立看门狗用独立低速时钟持续倒计时；擦除时间和服务窗口算错，就可能在操作中触发复位。",
-                "subtitle": "服务窗口要算出来",
-                "visual_intent": "把独立时钟、倒计时和复位风险放入知识卡片",
-                "pose": "measure",
-                "required_tags": ["flash_watchdog", "watchdog_budget", "education", "measure"],
-                "fact_refs": ["iwdg_independent_timeout", "service_window_is_budget"],
-            },
-            {
-                "purpose": "repair",
-                "narration": "工程上先测最长擦除时间，再安排服务窗口；超过预算就记录错误、进入恢复路径，不能无限重试。",
-                "subtitle": "超预算就走恢复路径",
-                "visual_intent": "展示测量预算、记录错误和明确恢复动作",
-                "pose": "repair",
-                "required_tags": ["flash_watchdog", "recovery_path", "education", "warning", "repair"],
-                "fact_refs": ["observable_recovery", "service_window_is_budget"],
-            },
-            {
-                "purpose": "summary",
-                "narration": "记住四件事：按手册发起，观察忙状态，检查错误，给看门狗留出可计算的窗口。",
-                "subtitle": "按手册，留窗口，有恢复",
-                "visual_intent": "总结闪存操作与看门狗服务窗口的可复用检查表",
-                "pose": "success",
-                "required_tags": ["flash_watchdog", "checklist", "education", "summary"],
-                "fact_refs": [],
-            },
+            {"purpose":"hook","narration":"闪存擦除不是“点一下等结果”：看门狗还在倒计时，服务窗口怎么安排？","subtitle":"擦除时看门狗怎么办？","visual_intent":"用技术图提出擦除与看门狗服务窗口的工程问题","pose":"question","required_tags":["flash_watchdog","flash_window","education","explain"],"fact_refs":[]},
+            {"purpose":"explain","narration":"先按芯片手册拆成四拍：解锁并发起、等待忙状态、检查错误、确认完成。每一拍都要有可观察状态。","subtitle":"发起、等待、检查、确认","visual_intent":"展示闪存操作从发起到完成的四个可观察阶段","pose":"thinking","required_tags":["flash_watchdog","erase_sequence","education","explain","protocol_frame"],"fact_refs":["flash_erase_sequence"]},
+            {"purpose":"evidence","narration":"独立看门狗用独立低速时钟持续倒计时；擦除时间和服务窗口算错，就可能在操作中触发复位。","subtitle":"服务窗口要算出来","visual_intent":"把独立时钟、倒计时和复位风险放入知识卡片","pose":"measure","required_tags":["flash_watchdog","watchdog_budget","education","measure"],"fact_refs":["iwdg_independent_timeout","service_window_is_budget"]},
+            {"purpose":"repair","narration":"工程上先测最长擦除时间，再安排服务窗口；超过预算就记录错误、进入恢复路径，不能无限重试。","subtitle":"超预算就走恢复路径","visual_intent":"展示测量预算、记录错误和明确恢复动作","pose":"repair","required_tags":["flash_watchdog","recovery_path","education","warning","repair"],"fact_refs":["observable_recovery","service_window_is_budget"]},
+            {"purpose":"summary","narration":"记住四件事：按手册发起，观察忙状态，检查错误，给看门狗留出可计算的窗口。","subtitle":"按手册，留窗口，有恢复","visual_intent":"总结闪存操作与看门狗服务窗口的可复用检查表","pose":"success","required_tags":["flash_watchdog","checklist","education","summary"],"fact_refs":[]},
+        ]
+    elif freertos_mutex_ids.issubset(fact_ids):
+        beat_specs = [
+            {"purpose":"hook","narration":"FreeRTOS 里最危险的误区之一，是把 ISR 当成普通任务去碰 Mutex。Mutex 的所有权应该留在任务上下文。","subtitle":"Mutex 所有权属于任务","visual_intent":"对比任务持有 Mutex 与 ISR 禁止等待 Mutex 的边界","pose":"normal","required_tags":["freertos","freertos_mutex_plain","mutex_ownership","education","explain"],"fact_refs":["mutex_task_ownership"]},
+            {"purpose":"warning","narration":"ISR 不能阻塞等待互斥资源。中断里只做必要取数和清标志，再用 FromISR 通知、队列或信号量原语把工作交给任务。","subtitle":"ISR 不等待，直接交棒","visual_intent":"展示 ISR 通过中断安全原语唤醒处理任务的单向交棒","pose":"thinking","required_tags":["freertos","freertos_mutex_plain","isr_handoff","education","warning","explain"],"fact_refs":["isr_nonblocking_boundary"]},
+            {"purpose":"evidence","narration":"Mutex 的优先级继承解决的是任务持锁造成的优先级反转：高优先级任务等待时，持锁任务可以临时继承更高优先级，尽快释放 Mutex。","subtitle":"优先级继承是任务语义","visual_intent":"用任务时间线说明高优先级任务等待和持锁任务临时继承优先级","pose":"measure","required_tags":["freertos","freertos_mutex_plain","priority_inheritance","education","measure"],"fact_refs":["priority_inheritance_context"]},
+            {"purpose":"repair","narration":"工程上让 ISR 保持短小：取数、清标志、通知后尽快退出。共享资源访问、状态机修改和较长处理放到被唤醒的任务里。","subtitle":"短 ISR，重工作放任务","visual_intent":"把中断快速路径和任务延后处理路径分层展示","pose":"repair","required_tags":["freertos","freertos_mutex_plain","deferred_work","education","repair"],"fact_refs":["short_isr_handler"]},
+            {"purpose":"summary","narration":"检查顺序很简单：先判断是不是 ISR；ISR 不等 Mutex，只用 FromISR 原语交棒；Mutex、共享状态和优先级继承都回到任务上下文。","subtitle":"先判上下文，再选同步原语","visual_intent":"总结 FreeRTOS Mutex 与 ISR 边界检查表","pose":"success","required_tags":["freertos","freertos_mutex_plain","checklist","education","summary"],"fact_refs":["mutex_task_ownership","isr_nonblocking_boundary","priority_inheritance_context","short_isr_handler"]},
         ]
     else:
         fact_id = str(facts[0]["fact_id"])
         beat_specs = [
-            {
-                "purpose": "hook",
-                "narration": f"{clean_topic}最容易误判的地方是什么？先给出一个可观察的问题。",
-                "subtitle": "先找出可观察的问题",
-                "visual_intent": "用角色提出工程问题并标记边界",
-                "pose": "question",
-                "required_tags": ["education", "explain"],
-                "fact_refs": [],
-            },
-            {
-                "purpose": "explain",
-                "narration": "把流程拆成发起、执行、校验和收尾四步，先看状态，再下结论。",
-                "subtitle": "发起、执行、校验、收尾",
-                "visual_intent": "展示信息在受控边界内流动",
-                "pose": "thinking",
-                "required_tags": ["education", "explain"],
-                "fact_refs": [],
-            },
-            {
-                "purpose": "evidence",
-                "narration": f"已核验事实是：{clean_claim}。",
-                "subtitle": "先看已核验事实",
-                "visual_intent": "把已核验事实放入知识卡片",
-                "pose": "measure",
-                "required_tags": ["education", "protocol_frame", "measure"],
-                "fact_refs": [fact_id],
-            },
-            {
-                "purpose": "repair",
-                "narration": "出现异常时，记录触发条件、状态和恢复动作；超出预算就停止重试。",
-                "subtitle": "记录条件、状态和恢复",
-                "visual_intent": "展示由现象到证据的排错步骤",
-                "pose": "repair",
-                "required_tags": ["education", "warning", "repair"],
-                "fact_refs": [],
-            },
-            {
-                "purpose": "summary",
-                "narration": f"记住：按顺序执行，留下可观察证据，才能把{clean_topic}变成可复现的工程步骤。",
-                "subtitle": "按顺序，留证据，可复现",
-                "visual_intent": "总结可复用的工程说明方法",
-                "pose": "success",
-                "required_tags": ["education", "summary"],
-                "fact_refs": [],
-            },
+            {"purpose":"hook","narration":f"{clean_topic}最容易误判的地方是什么？先给出一个可观察的问题。","subtitle":"先找出可观察的问题","visual_intent":"提出工程问题并标记边界","pose":"question","required_tags":["education","explain"],"fact_refs":[]},
+            {"purpose":"explain","narration":"把流程拆成发起、执行、校验和收尾四步，先看状态，再下结论。","subtitle":"发起、执行、校验、收尾","visual_intent":"展示信息在受控边界内流动","pose":"thinking","required_tags":["education","explain"],"fact_refs":[]},
+            {"purpose":"evidence","narration":f"已核验事实是：{clean_claim}。","subtitle":"先看已核验事实","visual_intent":"把已核验事实放入知识卡片","pose":"measure","required_tags":["education","protocol_frame","measure"],"fact_refs":[fact_id]},
+            {"purpose":"repair","narration":"出现异常时，记录触发条件、状态和恢复动作；超出预算就停止重试。","subtitle":"记录条件、状态和恢复","visual_intent":"展示由现象到证据的排错步骤","pose":"repair","required_tags":["education","warning","repair"],"fact_refs":[]},
+            {"purpose":"summary","narration":f"记住：按顺序执行，留下可观察证据，才能把{clean_topic}变成可复现的工程步骤。","subtitle":"按顺序，留证据，可复现","visual_intent":"总结可复用的工程说明方法","pose":"success","required_tags":["education","summary"],"fact_refs":[]},
         ]
     beats = [dict(spec) for spec in beat_specs]
     script = {
@@ -284,11 +237,7 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
         "hook": str(beats[0]["narration"]),
         "narration": "\n".join(str(beat["narration"]) for beat in beats),
         "duration_target_seconds": duration_target_seconds,
-        "style": {
-            "language": "zh-CN",
-            "tone": "technical_calm_dry_humor",
-            "content_scope": "evergreen_embedded_mainline",
-        },
+        "style": {"language":"zh-CN","tone":"technical_calm_dry_humor","content_scope":"evergreen_embedded_mainline"},
         "beats": beats,
     }
     validate(script, "director_script")
@@ -296,51 +245,26 @@ def _deterministic_script(*, topic: str, topic_digest: str, factual_brief: Factu
 
 
 def _apply_mascot_policy(storyboard: dict[str, object], *, mascot_mode: str) -> dict[str, object]:
-    """Remove mascot composition intent when the brief did not opt in.
-
-    The Director storyboard contract still carries the registry identity for
-    deterministic asset resolution, but an ``off`` brief must not activate the
-    Pink Pig composition, signature, or character placement fields.
-    """
-
     result = dict(storyboard)
     if mascot_mode == "off":
         result.pop("composition", None)
         scenes = result.get("scenes", [])
         if isinstance(scenes, list):
             result["scenes"] = [
-                {key: value for key, value in scene.items() if key not in {
-                    "layout_mode", "subtitle_layout", "character_position", "content_region"
-                }}
-                if isinstance(scene, dict) else scene
-                for scene in scenes
+                {key: value for key, value in scene.items() if key not in {"layout_mode","subtitle_layout","character_position","content_region"}}
+                if isinstance(scene, dict) else scene for scene in scenes
             ]
     return result
 
 
-def _validate_mascot_policy(
-    brief: dict[str, object],
-    *,
-    mascot_context: dict[str, object] | None,
-) -> str:
+def _validate_mascot_policy(brief: dict[str, object], *, mascot_context: dict[str, object] | None) -> str:
     mascot_mode = str(brief.get("mascot_mode", "off"))
     if mascot_mode not in _MASCOT_MODES:
         raise _brief_error("unsupported_mascot_mode", field="mascot_mode")
     if mascot_mode == "user_original_only":
-        # The local renderer has no authority to discover or infer Jovi's
-        # personal-IP files.  A future adapter must provide a sanitized,
-        # receipt-bound ownership proof; absent that proof, fail closed.
         if not isinstance(mascot_context, dict) or mascot_context.get("verified") is not True or mascot_context.get("ownership") != "jovi_original":
-            raise FactoryContractError(
-                "phase1_mascot_original_asset_required",
-                "Mascot mode requires a verified Jovi-owned original asset receipt.",
-                {"field": "mascot_context", "reason": "missing_or_unverified"},
-            )
-        raise FactoryContractError(
-            "phase1_mascot_original_asset_adapter_unavailable",
-            "The local Phase 1 renderer has no approved adapter for Jovi's original mascot asset pack.",
-            {"field": "mascot_context", "reason": "adapter_not_implemented"},
-        )
+            raise FactoryContractError("phase1_mascot_original_asset_required","Mascot mode requires a verified Jovi-owned original asset receipt.",{"field":"mascot_context","reason":"missing_or_unverified"})
+        raise FactoryContractError("phase1_mascot_original_asset_adapter_unavailable","The local Phase 1 renderer has no approved adapter for Jovi's original mascot asset pack.",{"field":"mascot_context","reason":"adapter_not_implemented"})
     return mascot_mode
 
 
@@ -351,14 +275,6 @@ def build_local_plan(
     reference_context: dict[str, object] | None = None,
     mascot_context: dict[str, object] | None = None,
 ) -> dict[str, object]:
-    """Build deterministic Phase 1 planning artifacts for a validated brief.
-
-    ``local_reference`` is executable only when the caller supplies a
-    sanitized, analyzer-produced context.  The context contains no path or
-    media bytes; the CLI obtains it from the receipt/report bundle and the
-    renderer never trusts a user brief alone.
-    """
-
     if not isinstance(brief, dict):
         raise _brief_error("type", field="brief")
     _validate_local_brief_schema(brief)
@@ -367,43 +283,22 @@ def build_local_plan(
     mascot_mode = _validate_mascot_policy(brief, mascot_context=mascot_context)
     mode = str(brief.get("input_mode", ""))
     if mode not in _SUPPORTED_EXECUTION_MODES:
-        raise FactoryContractError(
-            "phase1_local_input_mode_unsupported",
-            "Phase 1 local brief input mode is not implemented.",
-            {"input_mode": mode, "reason": "not_implemented"},
-        )
+        raise FactoryContractError("phase1_local_input_mode_unsupported","Phase 1 local brief input mode is not implemented.",{"input_mode":mode,"reason":"not_implemented"})
     root = Path(repo_root).resolve()
     topic = normalize_topic(brief.get("topic"))
     topic_digest = hashlib.sha256(topic.encode("utf-8")).hexdigest()
     if mode == "local_reference":
         if not isinstance(reference_context, dict):
-            raise FactoryContractError(
-                "phase1_reference_context_required",
-                "A verified reference-analysis context is required for local_reference mode.",
-                {"reason": "missing"},
-            )
-        expected_context = {
-            "source_sha256": str(brief.get("reference_sha256", "")),
-            "policy_version": POLICY_VERSION,
-            "analysis_verified": True,
-        }
+            raise FactoryContractError("phase1_reference_context_required","A verified reference-analysis context is required for local_reference mode.",{"reason":"missing"})
+        expected_context = {"source_sha256":str(brief.get("reference_sha256","")),"policy_version":POLICY_VERSION,"analysis_verified":True}
         if any(reference_context.get(key) != value for key, value in expected_context.items()):
-            raise FactoryContractError(
-                "phase1_reference_context_invalid",
-                "Reference-analysis context does not match the original brief.",
-                {"reason": "digest_or_policy_mismatch"},
-            )
+            raise FactoryContractError("phase1_reference_context_invalid","Reference-analysis context does not match the original brief.",{"reason":"digest_or_policy_mismatch"})
     factual_brief = _validated_factual_brief(brief, topic=topic, topic_digest=topic_digest)
     context = load_director_context(root)
     render_profile = _render_profile(brief)
     abstraction = brief.get("reference_abstraction") if mode == "local_reference" else None
-    duration_target = int(abstraction.get("duration_target_seconds", 40)) if isinstance(abstraction, dict) else 40
-    script = _deterministic_script(
-        topic=topic,
-        topic_digest=topic_digest,
-        factual_brief=factual_brief,
-        duration_target_seconds=duration_target,
-    )
+    duration_target = int(abstraction.get("duration_target_seconds",40)) if isinstance(abstraction,dict) else 40
+    script = _deterministic_script(topic=topic,topic_digest=topic_digest,factual_brief=factual_brief,duration_target_seconds=duration_target)
     if mascot_mode == "off":
         beats = script.get("beats", [])
         if isinstance(beats, list):
@@ -411,7 +306,7 @@ def build_local_plan(
                 if not isinstance(beat, dict):
                     continue
                 tags = beat.get("required_tags")
-                if isinstance(tags, list) and "flash_watchdog" in tags and "flash_watchdog_plain" not in tags:
+                if isinstance(tags,list) and "flash_watchdog" in tags and "flash_watchdog_plain" not in tags:
                     tags.append("flash_watchdog_plain")
             validate(script, "director_script")
     storyboard = StoryboardAssembler(repo_root=root, registry=context.registry).from_script(script)
@@ -423,11 +318,7 @@ def build_local_plan(
                 continue
             path = str(item.get("relative_path", ""))
             if any(marker in path for marker in _MASCOT_ASSET_MARKERS):
-                raise FactoryContractError(
-                    "phase1_mascot_disabled_asset_selected",
-                    "Mascot mode is off but asset selection resolved to a mascot-owned path.",
-                    {"field": "asset_selection", "path": path},
-                )
+                raise FactoryContractError("phase1_mascot_disabled_asset_selected","Mascot mode is off but asset selection resolved to a mascot-owned path.",{"field":"asset_selection","path":path})
     if mode == "local_reference":
         stable_key = stable_reference_job_key(str(brief["reference_sha256"]), brief)
         job_id = f"phase1_ref_{hashlib.sha256(stable_key.encode('utf-8')).hexdigest()[:24]}"
@@ -435,19 +326,7 @@ def build_local_plan(
         job_id = f"phase1_{topic_digest[:16]}"
     asset_selection = {**selection.report, "job_id": job_id}
     validate(asset_selection, "asset_selection_report")
-    return {
-        "job_id": job_id,
-        "topic": topic,
-        "topic_digest": topic_digest,
-        "script": script,
-        "storyboard": selection.storyboard,
-        "asset_selection": asset_selection,
-        "factual_brief": factual_brief.document,
-        "input_mode": mode,
-        "mascot_mode": mascot_mode,
-        "reference_digest": brief_digest(brief) if mode == "local_reference" else None,
-        "render_profile": render_profile,
-    }
+    return {"job_id":job_id,"topic":topic,"topic_digest":topic_digest,"script":script,"storyboard":selection.storyboard,"asset_selection":asset_selection,"factual_brief":factual_brief.document,"input_mode":mode,"mascot_mode":mascot_mode,"reference_digest":brief_digest(brief) if mode == "local_reference" else None,"render_profile":render_profile}
 
 
 __all__ = ["build_local_plan", "load_local_brief"]

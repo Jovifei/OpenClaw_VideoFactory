@@ -12,21 +12,43 @@ from video_factory.pipeline.validation import validate
 from src.factory.assets.pink_pig.loader import PinkPigAsset, PinkPigRegistry
 
 
+_KNOWN_TOPIC_TAGS = frozenset({"modbus_rtu", "flash_watchdog", "freertos"})
+
+
 @dataclass(frozen=True, slots=True)
 class AssetSelectionResult:
     storyboard: dict[str, object]
     report: dict[str, object]
 
 
-def _score(asset: PinkPigAsset, *, requested_tags: set[str], pose: str, purpose: str, used: set[str]) -> tuple[int, int, int, int, str]:
+def _score(
+    asset: PinkPigAsset,
+    *,
+    requested_tags: set[str],
+    pose: str,
+    purpose: str,
+    used: set[str],
+) -> tuple[int, int, int, int, str]:
     tags = set(asset.tags)
     tag_score = len(tags & requested_tags) * 100
-    purpose_tag = {"hook": "explain", "summary": "summary", "warning": "warning", "repair": "repair", "measure": "measure"}.get(purpose)
+    purpose_tag = {
+        "hook": "explain",
+        "summary": "summary",
+        "warning": "warning",
+        "repair": "repair",
+        "measure": "measure",
+    }.get(purpose)
     purpose_score = 30 if purpose_tag and purpose_tag in tags else 0
     pose_score = 20 if asset.pose == pose else 0
     repeat_penalty = -1000 if asset.asset_id in used else 0
     knowledge_score = 15 if "knowledge_illustration" in tags else 0
-    return (tag_score + purpose_score + pose_score + repeat_penalty + knowledge_score, purpose_score, pose_score, knowledge_score, asset.asset_id)
+    return (
+        tag_score + purpose_score + pose_score + repeat_penalty + knowledge_score,
+        purpose_score,
+        pose_score,
+        knowledge_score,
+        asset.asset_id,
+    )
 
 
 class AssetSelector:
@@ -34,50 +56,132 @@ class AssetSelector:
         self.repo_root = Path(repo_root).resolve()
         self.registry = registry
 
-    def select_assets(self, storyboard: dict[str, object], registry: PinkPigRegistry | None = None) -> AssetSelectionResult:
+    def select_assets(
+        self, storyboard: dict[str, object], registry: PinkPigRegistry | None = None
+    ) -> AssetSelectionResult:
         active_registry = registry or self.registry
         resolved = dict(storyboard)
         selections: list[dict[str, object]] = []
         used: set[str] = set()
         scenes = resolved.get("scenes", [])
         if not isinstance(scenes, list):
-            raise FactoryContractError("director_asset_selection_invalid", "Storyboard scenes are invalid for asset selection.", {"field": "scenes"})
-        candidates = [asset for asset in active_registry.render_ready_assets() if asset.path and "signature" not in asset.tags]
+            raise FactoryContractError(
+                "director_asset_selection_invalid",
+                "Storyboard scenes are invalid for asset selection.",
+                {"field": "scenes"},
+            )
+        candidates = [
+            asset
+            for asset in active_registry.render_ready_assets()
+            if asset.path and "signature" not in asset.tags
+        ]
         for index, scene in enumerate(scenes):
             if not isinstance(scene, dict):
-                raise FactoryContractError("director_asset_selection_invalid", "Storyboard scene is not an object.", {"path": f"scenes.{index}"})
+                raise FactoryContractError(
+                    "director_asset_selection_invalid",
+                    "Storyboard scene is not an object.",
+                    {"path": f"scenes.{index}"},
+                )
             if scene.get("asset_id") is not None:
-                raise FactoryContractError("director_asset_selection_invalid", "Director asset IDs must be injected by Python.", {"path": f"scenes.{index}.asset_id", "reason": "provider_override"})
+                raise FactoryContractError(
+                    "director_asset_selection_invalid",
+                    "Director asset IDs must be injected by Python.",
+                    {"path": f"scenes.{index}.asset_id", "reason": "provider_override"},
+                )
             requested_tags = {str(value) for value in scene.get("asset_tags", [])}
             purpose = str(scene.get("director_notes", "")).split(":", 1)[0]
             pose = str(scene.get("pose", "normal"))
-            ranked = sorted(candidates, key=lambda asset: _score(asset, requested_tags=requested_tags, pose=pose, purpose=purpose, used=used), reverse=True)
+
+            # Technical fixture visuals are factual evidence, not decoration.
+            # If a scene names a known topic family, never silently substitute
+            # a card from another topic merely because its pose/purpose scores.
+            requested_topic_tags = requested_tags & _KNOWN_TOPIC_TAGS
+            if len(requested_topic_tags) > 1:
+                raise FactoryContractError(
+                    "director_asset_selection_invalid",
+                    "Storyboard scene requests multiple technical topic families.",
+                    {
+                        "path": f"scenes.{index}.asset_tags",
+                        "reason": "ambiguous_topic_family",
+                    },
+                )
+            scene_candidates = candidates
+            if requested_topic_tags:
+                topic_tag = next(iter(requested_topic_tags))
+                scene_candidates = [
+                    asset for asset in candidates if topic_tag in set(asset.tags)
+                ]
+                if not scene_candidates:
+                    raise FactoryContractError(
+                        "director_asset_unresolved",
+                        "No render-ready Registry asset matches the requested technical topic.",
+                        {
+                            "path": f"scenes.{index}.asset_id",
+                            "reason": "topic_family_unavailable",
+                            "topic_tag": topic_tag,
+                        },
+                    )
+
+            ranked = sorted(
+                scene_candidates,
+                key=lambda asset: _score(
+                    asset,
+                    requested_tags=requested_tags,
+                    pose=pose,
+                    purpose=purpose,
+                    used=used,
+                ),
+                reverse=True,
+            )
             if not ranked:
-                raise FactoryContractError("director_asset_unresolved", "No render-ready Registry asset is available.", {"path": f"scenes.{index}.asset_id"})
+                raise FactoryContractError(
+                    "director_asset_unresolved",
+                    "No render-ready Registry asset is available.",
+                    {"path": f"scenes.{index}.asset_id"},
+                )
             asset = ranked[0]
             if asset.asset_id in used and len(ranked) > 1:
                 asset = ranked[1]
             used.add(asset.asset_id)
             scene["asset_id"] = asset.asset_id
             selections.append(self._selection(scene, asset))
-        report = {"schema_version": "1.0", "job_id": "pending", "storyboard_id": str(resolved.get("storyboard_id", "")), "selections": selections}
+        report = {
+            "schema_version": "1.0",
+            "job_id": "pending",
+            "storyboard_id": str(resolved.get("storyboard_id", "")),
+            "selections": selections,
+        }
         validate(report, "asset_selection_report")
         return AssetSelectionResult(resolved, report)
 
-    def _selection(self, scene: dict[str, object], asset: PinkPigAsset) -> dict[str, object]:
+    def _selection(
+        self, scene: dict[str, object], asset: PinkPigAsset
+    ) -> dict[str, object]:
         try:
-            digest = hashlib.sha256((self.repo_root / str(asset.path)).read_bytes()).hexdigest() if asset.path else ""
+            digest = (
+                hashlib.sha256((self.repo_root / str(asset.path)).read_bytes()).hexdigest()
+                if asset.path
+                else ""
+            )
         except OSError as exc:
-            raise FactoryContractError("director_asset_unresolved", "Selected Registry asset cannot be read.", {"scene_order": scene.get("order"), "reason": "read"}) from exc
+            raise FactoryContractError(
+                "director_asset_unresolved",
+                "Selected Registry asset cannot be read.",
+                {"scene_order": scene.get("order"), "reason": "read"},
+            ) from exc
         return {
             "scene_id": str(scene.get("scene_id", "")),
             "asset_id": asset.asset_id,
             "tags": list(asset.tags),
             "relative_path": str(asset.path),
             "sha256": digest,
-            "source_type": "deterministic_diagram" if "knowledge_illustration" in asset.tags else "repository_owned",
+            "source_type": "deterministic_diagram"
+            if "knowledge_illustration" in asset.tags
+            else "repository_owned",
             "rights_basis": "repository-owned registry asset",
-            "classification": "factual" if "knowledge_illustration" in asset.tags else "decorative",
+            "classification": "factual"
+            if "knowledge_illustration" in asset.tags
+            else "decorative",
             "fallback_used": False,
             "crop": "contain",
             "transformation": "fit content region",

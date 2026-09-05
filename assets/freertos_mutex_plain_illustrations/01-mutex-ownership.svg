@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+<rect width="1672" height="941" fill="#FFFFFF"/><style>
+.ink{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#344054}.muted{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#667085}.white{font-family:"Noto Sans CJK SC",sans-serif;fill:#fff;font-weight:700}.line{stroke:#344054;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;fill:none}.thin{stroke:#667085;stroke-width:4;stroke-linecap:round;fill:none}</style>
+<text x="72" y="92" class="ink" font-size="48" font-weight="700">FreeRTOS Mutex：所有权属于任务</text>
+<text x="76" y="143" class="muted" font-size="26">互斥锁保护共享资源，但不要把 ISR 当成普通任务</text>
+<rect x="86" y="230" width="420" height="230" rx="28" fill="#EEF4FF" stroke="#5677B9" stroke-width="6"/>
+<text x="128" y="292" class="ink" font-size="34" font-weight="700">任务 A</text><text x="128" y="340" class="muted" font-size="27">xSemaphoreTake(mutex)</text>
+<rect x="620" y="230" width="390" height="230" rx="28" fill="#F2F4F7" stroke="#475467" stroke-width="6"/>
+<text x="680" y="292" class="ink" font-size="34" font-weight="700">Mutex</text><text x="680" y="340" class="muted" font-size="27">所有权 + 优先级继承</text>
+<rect x="1125" y="230" width="420" height="230" rx="28" fill="#ECFDF3" stroke="#3A9B6D" stroke-width="6"/>
+<text x="1170" y="292" class="ink" font-size="34" font-weight="700">共享资源</text><text x="1170" y="340" class="muted" font-size="27">任务上下文内访问</text>
+<path d="M506 345h105" class="line"/><path d="m590 322 40 23-40 23" fill="#344054"/><path d="M1010 345h105" class="line"/><path d="m1094 322 40 23-40 23" fill="#344054"/>
+<rect x="250" y="590" width="340" height="155" rx="24" fill="#FFF4ED" stroke="#E07941" stroke-width="6"/><text x="330" y="653" class="ink" font-size="33" font-weight="700">ISR</text><text x="290" y="700" class="muted" font-size="26">不能等待 Mutex</text>
+<path d="M590 668L730 520" stroke="#D92D20" stroke-width="12"/><path d="M590 520L730 668" stroke="#D92D20" stroke-width="12"/>
+<text x="830" y="625" class="ink" font-size="31" font-weight="700">核心边界：Mutex 的“拿 / 还”属于任务。</text><text x="830" y="678" class="muted" font-size="27">中断不要进入可能阻塞的所有权路径。</text>
+</svg>
