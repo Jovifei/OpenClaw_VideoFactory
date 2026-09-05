@@ -1,376 +1,257 @@
-# START HERE — Codex 最终执行入口（V2.5）
+# START HERE — OpenClaw VideoFactory current execution entry
 
-> 本文件是整个交付包的最高优先级执行说明。其他文档冲突时，以本文件、`PROJECT_STATUS.yaml`、`docs/PRODUCT_PHASES.md` 和实时 OpenClaw Schema 为准。
+Updated: 2026-09-05
 
-## 0. 最终目标
+> 新 Agent 先读本文件。历史 P0/Feishu/OAuth/Gateway 调试记录仍保留在 `reports/`、`runbook/` 和 Git 历史，但**当前产品主线是 Phase 1 本地视频工厂**。不要从旧任务编号推断当前阶段。
 
-在 Windows 原生环境中，先实现一个由 Codex 本地完成的、可审阅的短视频工厂；
-随后才由 OpenClaw/飞书编排自动化运营。
-
-```text
-Phase 1（当前）：Jovi 给主题 / 本地参考视频 / 明确授权的公开主题研究
-→ 研究与事实核查
-→ 结构化脚本与分镜
-→ AI TTS
-→ 字幕对齐
-→ 程序化技术画面
-→ 可选 ComfyUI 素材
-→ Remotion 合成
-→ FFmpeg/NVENC 导出
-→ 质量门禁
-→ 本地人工审阅包
-
-Phase 2（Phase 1 通过后）：
-飞书安全入站与受控交付
-→ 08:30 发送 3–5 个候选
-→ 用户选择，或 12:00 合格兜底
-→ 审阅包飞书交付
-→ 用户人工发布抖音
-```
-
-账号：嵌入式工程主线 + AI热点副线 + 小粉飞猪品牌角色。
-
-## 1. 已确认条件，不要重复询问
-
-| 项目 | 已确认值 |
-|---|---|
-| 操作系统 | Windows 原生 |
-| 项目目录 | `E:\project\OpenClaw_VideoFactory` |
-| 时区 | `Asia/Shanghai` |
-| 飞书 | 已有能力；仅 Phase 2 使用 |
-| Codex | ChatGPT/Codex 订阅已登录 |
-| ComfyUI | 已安装，由你自动发现路径 |
-| GPU | RTX 4070 SUPER 12GB |
-| 模型预算 | 新增模型合计不超过 30GB |
-| MVP 配音 | 先使用稳定 AI TTS |
-| 后续配音 | 本地中文 TTS、固定账号音色 |
-| 候选时间 | 08:30（仅 Phase 2） |
-| 自动制作时间 | 12:00（仅 Phase 2） |
-| 发布 | 用户人工发布 |
-| 当前用途 | 个人使用，保留未来产品化边界 |
-
-只能在本机安全配置、不能写进仓库：飞书凭据、open_id/chat_id、API Key、私有Git凭据。
-
-## 2. 第一门禁：目录结构
-
-最终目录必须是：
+## 0. 当前唯一产品顺序
 
 ```text
-E:\project\OpenClaw_VideoFactory\
-├── START_HERE_CODEX.md
-├── AGENTS.md
-├── skills\
-├── config\
-├── scripts\
-├── src\
-├── tests\
-├── runbook\
-├── handoff\
-└── ...
+Phase 1 — Local Video Factory  ← CURRENT
+  A. Jovi 给主题 → 自动生成本地可审阅视频
+  B. Jovi 给授权本地参考视频 → 分析 → 原创重构视频
+  C. 状态/恢复/质量/人工审核/正式 Gate
+
+Phase 2 — Feishu Automation
+  Phase 1 passed 后才实现候选卡、选择、12:00 合格兜底、受控交付、Cron
+
+Phase 3+ — GPU/ComfyUI/WhisperX/高级视觉/高级参考原创检查/可编辑交付
 ```
 
-特别注意：
+抖音最终发布由 Jovi 人工执行。
 
-- `skills\` 必须直接位于项目根目录；
-- 不允许在项目根目录下再套一层中文工作目录；
-- OpenClaw workspace 必须指向 `E:/project/OpenClaw_VideoFactory`；
-- workspace内本地Skill自动发现，不需要逐个重复安装。
+## 1. 当前仓库与分支
 
-目录不符合时，先修目录，禁止继续。
+- Root: `E:\project\OpenClaw_VideoFactory`
+- Active branch: `codex/phase1-reference-video-analysis-001`
+- Product phase: `PHASE_1_LOCAL_VIDEO_FACTORY`
+- Status: `in_progress`
 
-## 3. 执行原则
-
-必须：
-
-- 每阶段独立Git分支；
-- 每项工作对应 `handoff/codex/IMPLEMENTATION_BACKLOG.yaml`；
-- 命令与结果保存到 `reports/`；
-- OpenClaw配置写入前查询实时Schema；
-- 依赖记录版本、来源和许可证；
-- 自动消息使用幂等键；
-- 外部输入按不可信数据处理；
-- 长任务支持超时、取消、有限重试和清理；
-- 只有真实运行证据才能标记通过。
-- Phase 1 不得以飞书、OpenClaw、Cron、Provider 或历史 P0 未完成为借口阻塞本地成片。
-- Phase 2 的 OpenClaw 使用稳定 Default Runtime；Codex Plugin 仍为 `deferred_optional_not_blocking`。
-
-Phase 1 文中提到的 AI TTS 是能力目标而非外部调用授权：本地 TTS 可作为本地实现，任何远程
-TTS、AI Director 或其他外部 Provider 都须另有获批变更请求和预检。GPU、ComfyUI、NVENC 同为
-可选增强，不下载模型/节点，也不能成为 Phase 1 的最低通过条件；有疑似复刻参考视频表达的方案
-应停止并按 Phase 4 另行审查。
-
-禁止：
-
-- 直接覆盖用户 `~/.openclaw/openclaw.json`；
-- 假设示例JSON5符合当前版本；
-- 使用 `danger-full-access` 或无审批full/yolo；
-- 自动追加 `--yes` 绕过高风险确认；
-- 自动发布抖音；
-- 下载未经批准的模型或ComfyUI节点；
-- 将密钥写入项目、日志、聊天或截图；
-- Phase 2 门禁前注册正式Cron；
-- 把占位流水线当生产实现。
-- 把 Codex CLI 登录、OpenClaw OAuth Profile、Codex Plugin 和 `video-factory` 主 Runtime 绑定成同一门禁；
-- 在 P0 继续执行 Codex Plugin OAuth 登录、Profile 删除、auth order、模型或 Runtime 修改。
-
-## 4. 阅读顺序
-
-1. `START_HERE_CODEX.md`
-2. `PROJECT_STATUS.yaml`
-3. `AGENTS.md`
-4. `handoff/codex/CODEX_MASTER_PROMPT.md`
-5. `handoff/codex/IMPLEMENTATION_BACKLOG.yaml`
-6. `handoff/codex/ACCEPTANCE_MATRIX.md`
-7. `runbook/00_EXECUTION_OVERVIEW.md`
-8. `docs/PRODUCT_PHASES.md` 和当前产品阶段对应的 runbook
-9. `config/decisions.yaml`
-10. `config/account_columns.yaml`
-11. `config/mascot_usage.yaml`
-12. `config/pipeline_routes.yaml`
-13. 安全与架构文档
-
-产品和调研资料位于 `handoff/product/`、`handoff/research/`，用于业务理解，不替代门禁。
-
-## 5. 历史 Phase 2 飞书 P0 指令（当前不得执行）
-
-下文的历史 `P0` 命令与验收只属于 **Phase 2 飞书自动化** 的前置安全门。
-当前 `PROJECT_STATUS.yaml` 已将执行重点设为 Phase 1；除非 Jovi 单独授权进入
-Phase 2，禁止运行、重试或修改任何飞书/Gateway/Binding/Cron 流程。
-
-普通用户 PowerShell：
+接手时必须重新确认：
 
 ```powershell
 Set-Location E:\project\OpenClaw_VideoFactory
-Set-ExecutionPolicy -Scope Process Bypass
-
-powershell -File .\scripts\00_bootstrap_python.ps1 -Apply
-powershell -File .\scripts\00_package_check.ps1
-powershell -File .\scripts\01_machine_preflight.ps1
-powershell -File .\scripts\02_capture_openclaw_state.ps1
+git fetch
+git status --short --untracked-files=all
+git rev-parse HEAD
+git rev-parse origin/codex/phase1-reference-video-analysis-001
+git diff --check
 ```
 
-预期生成：
+禁止自动 `reset`、`clean`、`stash`、`rebase` 或 force push。
+
+## 2. 先读这些，不要先读历史 P0 报告
+
+按顺序：
+
+1. `PROJECT_STATUS.yaml`
+2. `docs/README.md`
+3. `docs/CURRENT_ARCHITECTURE.md`
+4. `docs/PRODUCT_PHASES.md`
+5. `handoff/codex/PROJECT_HANDOFF_20260905.md`
+6. `runbook/11_PHASE1_COMPLETION.md`
+7. `docs/OPEN_SOURCE_SKILL_MATRIX.md`
+8. `tasks/todo.md` 中最新 Phase 1 条目
+9. 当前任务对应 Change Request
+10. 相关源码和测试
+
+如果这些文件与 `docs/PINK_PIG_PHASE1_ARCHITECTURE.md`、旧 P0/P1/P2 报告、旧 Agent Prompt 冲突，以以上当前文档 + 当前源码/Schema/真实证据为准。
+
+## 3. 最终目标
+
+### 3.1 Topic → Video
+
+Jovi 输入一个技术主题，例如：
+
+`FreeRTOS 优先级反转是怎么发生的？`
+
+系统应自动完成：
 
 ```text
-reports\package_check.json
-reports\package_check.md
-reports\machine_inventory.json
-reports\machine_inventory.md
-reports\openclaw_state\
+verified factual brief
+→ script
+→ storyboard
+→ approved assets / deterministic technical visuals
+→ TTS
+→ subtitle/timing/speech cues
+→ Remotion/FFmpeg
+→ final local MP4
+→ quality report
+→ review package
+→ Jovi review
 ```
 
-任一命令非零：停止、读报告、修复、重跑；不得伪造通过标记。
+### 3.2 Reference → Analysis → Original Video
 
-## 6. 历史 Phase 2 P0 逐步执行（保留用于未来追溯）
-
-### P0-00 项目本地Python环境
-
-```powershell
-powershell -File .\scripts\00_bootstrap_python.ps1
-powershell -File .\scripts\00_bootstrap_python.ps1 -Apply
-```
-
-只在项目 `.venv` 中安装 PACKAGE gate 所需的最小依赖，不修改系统Python。
-
-### P0-01 包体与Git
-
-```powershell
-git status
-```
-
-未初始化：
-
-```powershell
-git init
-git checkout -b phase/p0-gate-correction
-git add .
-git commit -m "chore: import OpenClaw VideoFactory V2.4 handoff"
-```
-
-运行：
-
-```powershell
-powershell -File .\scripts\00_package_check.ps1
-```
-
-通过标准：根目录正确、核心文件齐全、结构化文件可解析、Skill frontmatter有效、无疑似密钥、`factory.py`处于fail-closed、SHA清单一致。
-
-### P0-02 机器预检
-
-```powershell
-powershell -File .\scripts\01_machine_preflight.ps1
-```
-
-必须记录Windows、PowerShell、CPU、内存、磁盘、Node/npm/npx、Python、Git、OpenClaw、Codex、lark-cli、FFmpeg/ffprobe/NVENC、NVIDIA/GPU/显存、ComfyUI候选、剪映候选、18789/8188/30000端口。只读，不安装驱动或模型。
-
-### P0-03 OpenClaw实时状态与Schema
-
-```powershell
-powershell -File .\scripts\02_capture_openclaw_state.ps1
-```
-
-原则：OpenClaw配置严格校验；必须先 `openclaw config schema`，再查询字段和当前值。`config/openclaw.fragment.example.json5`只是意图模板，不得覆盖整份配置。
-
-### P0-04 OpenClaw版本
-
-官方飞书Channel要求 OpenClaw `2026.5.29` 或更高。版本不足时，写升级/回滚计划，等待用户同意后升级，再重跑doctor、Gateway和配置验证。
-
-### P0-05 设置workspace和安全配置
-
-实时Schema确认后，目标为：
+Jovi 提供一条拥有权利的本地 MP4 和 rights evidence：
 
 ```text
-agents.defaults.workspace = E:/project/OpenClaw_VideoFactory
-agents.defaults.userTimezone = Asia/Shanghai
-tools.exec.mode = auto
-cron.enabled = true
-cron.maxConcurrentRuns = 1
-gateway.bind = loopback
+read-only ingest + SHA-256
+→ ffprobe / scenes / pace / optional local ASR
+→ abstract reference report
+→ original brief
+→ new script/storyboard/visuals/narration
+→ new MP4
+→ difference report
+→ Jovi originality review
 ```
 
-流程：备份→读取当前值→最小补丁→config validate→doctor→gateway status→保存补丁和回滚。
+禁止复用原音、水印、连续原镜头、完整原文案或可识别包装。
 
-不要在未确认实时Schema前设置全局工具allowlist；错误allowlist可能禁用研究或媒体工具。
+## 4. 已经完成的模块，不要重写
 
-### P0-06 Direct Codex CLI smoke
+- `src/factory/db.py` — SQLite Job/Event/Artifact/Stage Attempt；
+- `src/factory/state.py` — lifecycle；
+- `src/factory/phase1_cli.py` — local `create-topic/create-reference/run/status/cancel/retry`；
+- `src/factory/phase1_local.py` — local planning；
+- `src/factory/reference_video.py` — safe reference analysis / original brief / difference report；
+- `src/factory/director/` — provider-neutral Director contracts；
+- `video_factory/pipeline/` — Storyboard/Timeline/TTS/Subtitle/Composition/Renderer/Review Package；
+- `generate_video.py` — existing video entrypoint；
+- `src/factory/phase1_acceptance.py` — single-job prereview；
+- `src/factory/phase1_gate.py` — formal Phase 1 gate；
+- `remotion/` — deterministic technical visual implementations；
+- `skills/video-production-chain/` — current end-to-end Skill contract。
 
-`video-factory` 可以继续使用稳定的 OpenClaw Default Runtime。P0 不验证 OpenClaw Codex Plugin OAuth、`/codex status`、`/codex models` 或 `Runtime: OpenAI Codex`。
+只在当前测试/证据暴露真实兼容问题时修改这些模块。
 
-用户已经登录的 Codex CLI 用于后续 P1 代码实施。P0 只验证两条受控 smoke：
+## 5. 最新实际进展
 
-```powershell
-codex exec --ephemeral `
-  "Return exactly CODEX_CLI_READ_OK and do not edit any files."
+在早期 `355 passed, 1 skipped` reference baseline 之后，当前分支又前进多轮：
 
-codex exec --ephemeral --sandbox workspace-write `
-  "Create reports/codex_cli_smoke.txt containing exactly CODEX_CLI_WRITE_OK. Do not change any other file."
-```
+- Flash/Watchdog factual brief 与技术插图；
+- mascot-free Flash 修正；
+- 16:9 与 9:16 profile 并存；
+- Jianying visual-only + VoiceOver + native subtitle 实验链；
+- audio/visual timing 修复；
+- RC high-pass reference reconstruction；
+- corrected geometry；
+- local speech subsegments；
+- measured speech cues；
+- Remotion knowledge-card animation 绑定真实 speech cue；
+- post-render / critical-frame / all-frame quality checks；
+- FreeRTOS brief；
+- Phase 1 Human Review / Prereview / Acceptance / Gate contracts。
 
-必须记录退出码、精确输出、目标文件内容和完整工作区前后 SHA-256 清单。禁止使用 `danger-full-access`，禁止调用 `/codex` 命令，禁止修改 OpenClaw OAuth。
+这些是成熟实现增量，但整个 Phase 1 仍未通过最终 Gate。
 
-### P0-07 OpenClaw官方飞书Channel
+## 6. 当前真正缺口
 
-```powershell
-powershell -File .\scripts\04_setup_openclaw_feishu.ps1
-powershell -File .\scripts\04_setup_openclaw_feishu.ps1 -Apply
-```
+当前任务优先级：
 
-底层官方向导：
+1. 建立**当前统一 bounded regression 基线**；不要混用不同日期的测试计数。
+2. 完成 FreeRTOS 与当前 schema 同等级的 render/review/prereview。
+3. 重新对齐 Modbus / Flash / FreeRTOS 三个固定主题的统一证据格式。
+4. 生成 fresh machine evidence：cancel / failed retry / restart recovery / encoder fallback。
+5. 选定一个**唯一**最新 reference reconstruction candidate，禁止 v5/v6/v8 evidence 混用。
+6. Jovi 实际看/听该 reference candidate，并提交 human originality review。
+7. 如 final manifest 需要严格 `local_reference` fixture，则使用 Jovi 授权本地 MP4 + rights 走标准 CLI；synthetic reference 不算人工原创性证据。
+8. Acceptance Manifest + Boundary Audit。
+9. Independent read-only audit。
+10. Formal Phase 1 Gate only once。
 
-```powershell
-openclaw channels login --channel feishu
-```
+Gate 通过后才更新 Phase 1 `passed`，并停止当前任务等待 Phase 2 授权。
 
-使用中国大陆飞书域、WebSocket、DM/group allowlist、群默认要求@机器人。凭据不进项目。
+## 7. Render profile，不要再争论全局横竖屏
 
-验证：
+Aspect ratio 是 Job contract：
 
-```powershell
-openclaw gateway restart
-openclaw gateway status
-openclaw channels status
-openclaw logs --follow
-openclaw pairing list feishu
-```
+- vertical/Douyin knowledge: `1080×1920`, 9:16；
+- landscape/reference-edit: `1920×1080`, 16:9 when brief requests it；
+- 30 FPS；
+- H.264/AAC；
+- profile-specific safe area and subtitle rules。
 
-从飞书发送 `/status`、一个小文件和短视频。
+任何旧文档声称“全局只能竖屏”或“全局默认横屏且所有任务都如此”都不是当前产品真相。
 
-### P0-08 飞书官方 lark-cli
+## 8. Pink Pig 当前规则
 
-OpenClaw Channel是主要入站；lark-cli是Codex受控工具层。
+不要从旧 `PINK_PIG_PHASE1_ARCHITECTURE.md` 复制早期资产假设。
 
-```powershell
-powershell -File .\scripts\03_install_lark_cli.ps1
-powershell -File .\scripts\03_install_lark_cli.ps1 -Apply
-```
+Current:
 
-安装后记录实际版本，再根据 `runbook/02_OPENCLAW_CODEX_FEISHU_SETUP.md` 配置和测试。
+- `Jovifei/ian-fenzhu-illustrations` = style/persona/composition source；
+- personal mascot default off；
+- Jovi explicitly opt-in；
+- mascot-enabled production requires Jovi-owned original asset pack + receipt；
+- repository-created mascot / AI temp art / upstream sample cannot substitute；
+- normal technical video may continue mascot-off；
+- mascot cannot cover technical content。
 
-### P0-09 Skill可见性
+Read `docs/PINK_PIG_CURRENT_POLICY.md`.
 
-```powershell
-openclaw skills check
-```
+## 9. Jianying 当前规则
 
-应看到14个本地Skill。官方 `lark-*` Skill由lark-cli安装，缺失时修复官方CLI安装，不伪造文件。
+Jianying 已证明技术可行，但属于 optional editable-delivery/manual-review branch。
 
-### P0-10 P0验收
+Mandatory Phase 1 result remains:
 
-完成真实 P0 链路后写入：
+`local MP4 + quality report + review package`
 
-```text
-reports/CODEX_CLI_SMOKE.json
-reports/FEISHU_SINGLE_CONSUMER_TEST.json
-reports/FEISHU_INGRESS_TEST.json
-reports/FEISHU_EGRESS_TEST.json
-reports/OPENCLAW_EXISTING_AGENTS_REGRESSION.json
-reports/SKILL_VISIBILITY.json
-```
+Optional branch:
 
-P0 必须证明 TXT/PNG/MP4 使用生成 fixture 真实入站并安全入库、lark-cli Markdown/PNG/TXT/MP4 真实出站及幂等、原有 Agent/Binding 回归和无 VideoFactory 正式 Cron。Codex Plugin OAuth 为 `deferred_optional_not_blocking`。
+`visual-only MP4 → jianying-editor-skill → manual Jovi review/export`
 
-历史流程（仅在 Phase 2 另行获批并通过其安全门后）：
+No automatic export/publication.
 
-```powershell
-python .\scripts\90_acceptance_gate.py --gate p0
-```
+## 10. Open-source adoption
 
-通过后才能进入P1，并用 `scripts/91_update_project_status.py` 更新状态。
+Read `docs/OPEN_SOURCE_SKILL_MATRIX.md`.
 
-## 7. 产品阶段顺序
+Key points:
 
-| 阶段 | 目标 | 禁止提前做 |
-|---|---|---|
-| Phase 1（当前） | 本地主题/参考视频主题分析到原创稳定 MP4 | 飞书、Cron、自动选题、自动发布 |
-| Phase 2 | 飞书安全接入、候选、选择、12:00 兜底和受控交付 | 未通过 Phase 1 就启动自动化 |
-| Phase 3 | GPU、ComfyUI、Whisper、NVENC 增强 | 未批准模型下载 |
-| Phase 4 | 进阶参考视频原创再创作 | 复用原音、水印或连续镜头 |
-| Phase 5 | 可编辑剪映草稿 | 让剪映成为唯一渲染器 |
+- Remotion: direct deterministic visual engine；
+- FFmpeg: direct media engine；
+- PySceneDetect: direct reference scene analysis；
+- faster-whisper: optional reference ASR only；
+- VideoClaw: borrow stage-artifact/user-review/recoverable-workflow ideas, not its second backend/state DB；
+- video-podcast-maker: method reference only; current CC BY-NC 4.0 means no careless code/template copying into a commercial path；
+- ian-fenzhu-illustrations: MIT style/persona source, not final user-owned asset proof；
+- jianying-editor-skill: optional pinned MIT editor backend；
+- ComfyUI/WhisperX/OpenMontage/etc: deferred or method-only unless separately authorized。
 
-详细步骤在 `runbook/`。
+## 11. Phase 1 禁止事项
 
-## 8. Phase 1 本地成片安全锁
+- 不进入飞书/候选卡/Cron；
+- 不继续把历史 Codex Provider cache 修复当主线；
+- 不下载新模型或 ComfyUI 节点；
+- 不引入 n8n/LangGraph/Temporal/第二套 VideoClaw backend；
+- 不创建第二个 Job DB；
+- 不把 reference raw media 提交 Git；
+- 不自动发布抖音；
+- 不自动标记 Human Review approved；
+- 不为了 Gate 通过而放宽 Gate；
+- 不把一个 review-ready 子任务写成整个 Phase 1 passed。
 
-当前 `scripts/factory.py` 必须fail closed，不得输出示例候选或伪装生产成功。Phase 1 的输入只能是 Jovi 给出的主题、本地参考视频，或 Jovi 明确授权的公开主题研究；本地参考视频只提取主题/结构/通用风格线索，必须重新创作。
+## 12. 每次停止时必须更新
 
-Phase 1 严格按小步推进：输入与主题简报；固定 JSON 生成 MP4；TTS 与字幕；逐个 Remotion 模板；确定性小粉飞猪；主题与本地参考视频两个 fixture；本地人工视听审核。Phase 1 禁止飞书交付、自动选题、Cron、AI 视频、剪映、抖音发布和 Codex Plugin OAuth 排障。
+### Repository
 
-## 9. Phase 2 飞书文件大小
+- `tasks/todo.md` 当前任务状态；
+- Change Request / evidence；
+- 必要的 canonical docs（若事实改变）；
+- tested commit SHA。
 
-OpenClaw飞书Channel默认媒体上限约30MB。每个任务输出：
+### Obsidian（仓库外）
 
-```text
-final_master.mp4       本地抖音母版
-feishu_preview.mp4     飞书预览，目标≤25MB
-cover.png
-captions.srt
-voice.wav
-publish_info.md
-quality_report.json
-```
+Root:
 
-母版超限时，发预览版、报告和本地母版路径。
+`E:\AI_Tools\Obsidian\Data\notes-personal\codex_memory\03-项目记忆\OpenClaw_VideoFactory\`
 
-## 10. Phase 2 Cron门禁
+至少更新：
 
-正式 Cron 只能在 Phase 2 通过后注册：
+- `04-落地状态与执行计划.md`
+- `06-Phase1本地视频工厂收口.md`
 
-```powershell
-powershell -File .\scripts\06_register_cron.ps1 `
-  -TargetKind direct `
-  -TargetId "ou_xxx"
-```
+规则：只追加/校正当前状态，不抹历史；不写 Token、私有媒体路径、原始 Prompt、raw model output。
 
-先dry-run，确认后加 `-Apply`。注册后必须 `cron list`、`cron run --wait`、`cron runs` 验证。
+## 13. Stop conditions
 
-## 11. 最终生产验收
+Agent 只有在以下情况允许停下请求 Jovi：
 
-```powershell
-python .\scripts\90_acceptance_gate.py --gate production
-```
+- 需要 Jovi 观看/试听一个明确候选；
+- 需要 Jovi 提供授权 reference MP4 / original Pink Pig asset pack；
+- 存在有最小复现的真实 blocker；
+- Formal Gate 已得出结果。
 
-必须证明：Phase 1 本地成片、Phase 2 飞书主题与文件入站、候选和兜底、幂等恢复、GPU实际参与和回退、小粉飞猪一致、事实素材可追溯、不自动发布、七天试运行达标。
-
-## 12. 当前未实现项
-
-本包包含完整规则、配置、Skill、部署脚本和门禁，但仍需 Codex 实际开发：Phase 1 本地输入/主题分析、生产流水线、SQLite、TTS、字幕、Remotion 模板、质量审核与可复现视频；以及后续 Phase 2 飞书适配器、候选/Cron 和七天实机验证。不得无证据声称完成。
+不得“写了计划/报告”就当完成。
