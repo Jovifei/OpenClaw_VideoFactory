@@ -1,0 +1,211 @@
+version: 1
+updated: '2026-09-05'
+authority:
+  - PROJECT_STATUS.yaml
+  - docs/CURRENT_ARCHITECTURE.md
+  - docs/PRODUCT_PHASES.md
+  - handoff/codex/PROJECT_HANDOFF_20260905.md
+current_phase: PHASE_1_LOCAL_VIDEO_FACTORY
+status: in_progress
+branch: codex/phase1-reference-video-analysis-001
+rules:
+  - continue_current_branch
+  - fetch_before_work
+  - no_reset_clean_autostash_rebase_force_push
+  - no_feishu_openclaw_cron_in_phase1
+  - no_second_pipeline_or_state_db
+  - no_unapproved_model_or_node_download
+  - no_automatic_douyin_publish
+  - local_mp4_and_evidence_are_mandatory
+  - jianying_is_optional_editable_delivery
+  - aspect_ratio_is_job_scoped
+  - pink_pig_requires_explicit_opt_in_and_jovi_original_asset_receipt
+  - do_not_aggregate_test_counts_from_different_runs
+work_items:
+  - id: PH1-CLOSE-00
+    title: Establish current bounded regression and branch baseline
+    priority: P0
+    status: todo
+    deliverables:
+      - exact_remote_head
+      - git_status_snapshot
+      - git_diff_check
+      - bounded_test_commands_and_results
+      - non_phase1_test_exclusions_with_reason
+    acceptance:
+      - current remote HEAD is recorded
+      - phase1_acceptance, phase1_local, reference, director, video and video_factory suites are run explicitly
+      - no fake aggregate total is reported
+
+  - id: PH1-CLOSE-01
+    title: Rebind final Modbus candidate to current Review and Prereview contracts
+    priority: P0
+    status: todo
+    depends_on: [PH1-CLOSE-00]
+    acceptance:
+      - exactly one final Modbus candidate selected
+      - final MP4 hash matches review package and SQLite artifact
+      - Jovi human review binds the exact final MP4 hash
+      - prereview status is ready
+
+  - id: PH1-CLOSE-02
+    title: Select and qualify one final Flash/watchdog candidate
+    priority: P0
+    status: todo
+    depends_on: [PH1-CLOSE-00]
+    notes:
+      - prefer the corrected mascot-off technical candidate unless Jovi explicitly provides original Pink Pig assets
+      - do not mix old landscape/vertical/draft versions in one evidence chain
+    acceptance:
+      - exactly one candidate chosen
+      - current profile is explicit
+      - quality/review package matches artifact hash
+      - Jovi human review binds exact MP4
+      - prereview ready
+
+  - id: PH1-CLOSE-03
+    title: Complete FreeRTOS fixed fixture end-to-end
+    priority: P0
+    status: todo
+    depends_on: [PH1-CLOSE-00]
+    existing_input:
+      - examples/phase1_local_freertos/brief.json
+    deliverables:
+      - deterministic_technical_visuals
+      - script
+      - storyboard
+      - asset_selection
+      - narration
+      - subtitle_or_timing_evidence
+      - final_mp4
+      - quality_report
+      - review_package
+      - sqlite_pending_review
+      - human_review
+      - prereview
+    acceptance:
+      - no unverified technical claims
+      - no uncontrolled text-to-image technical fact diagrams
+      - same current evidence contract as Modbus and Flash
+
+  - id: PH1-CLOSE-04
+    title: Produce fresh lifecycle evidence
+    priority: P0
+    status: todo
+    depends_on: [PH1-CLOSE-00]
+    evidence:
+      - cancel
+      - failed_retry
+      - restart_recovery
+      - encoder_fallback
+    acceptance:
+      - each is machine-readable JSON
+      - each references real job IDs and actual assertions
+      - restart recovery uses a new process reading persisted state
+      - encoder fallback proves approved NVENC/CPU behavior without hiding fallback
+
+  - id: PH1-CLOSE-05
+    title: Qualify one final reference reconstruction candidate
+    priority: P0
+    status: todo
+    depends_on: [PH1-CLOSE-00]
+    existing_recent_work:
+      - RC high-pass reconstruction
+      - corrected geometry
+      - measured speech cues
+      - speech-cue-bound Remotion knowledge cards
+      - post-render and all-frame checks
+      - optional Jianying review draft
+    acceptance:
+      - exactly one final reference candidate is selected
+      - v5/v6/v8 or other historical evidence is not mixed
+      - source/output provenance is clear
+      - Jovi watches and listens to the exact candidate
+      - Jovi explicitly judges originality
+      - structured human review binds final hash
+      - prereview ready
+
+  - id: PH1-CLOSE-06
+    title: If required, qualify a standard Jovi-authorized local_reference fixture
+    priority: P0
+    status: conditional
+    depends_on: [PH1-CLOSE-05]
+    trigger: final acceptance manifest still requires a private local_reference input rather than the existing public/reference reconstruction evidence
+    human_input:
+      - Jovi-owned-or-licensed-local-mp4
+      - rights-evidence
+    acceptance:
+      - safe ingest
+      - abstract report
+      - original render
+      - difference report
+      - human originality review
+      - prereview ready
+
+  - id: PH1-CLOSE-07
+    title: Build final Phase 1 Acceptance Manifest and Boundary Audit
+    priority: P0
+    status: todo
+    depends_on:
+      - PH1-CLOSE-01
+      - PH1-CLOSE-02
+      - PH1-CLOSE-03
+      - PH1-CLOSE-04
+      - PH1-CLOSE-05
+    deliverables:
+      - reports/phase1/phase1_acceptance_manifest.json
+      - boundary_audit_json
+      - current_bounded_regression_summary
+    acceptance:
+      - all referenced evidence has SHA-256
+      - no private/raw reference media in Git
+      - no Feishu/OpenClaw/Cron side effects
+      - no automatic publication
+
+  - id: PH1-CLOSE-08
+    title: Independent read-only evidence audit
+    priority: P0
+    status: todo
+    depends_on: [PH1-CLOSE-07]
+    acceptance:
+      - validates branch/head and evidence hashes
+      - detects stale-version mixing
+      - validates human-review binding
+      - validates test-scope honesty
+      - does not modify gate/source to force pass
+
+  - id: PH1-CLOSE-09
+    title: Run formal Phase 1 Gate once
+    priority: P0
+    status: todo
+    depends_on: [PH1-CLOSE-08]
+    acceptance:
+      - formal gate is executed once on final manifest
+      - success writes PHASE1_READY.json
+      - failure preserves PHASE1_FAILED.json and starts remediation instead of overwriting evidence
+    terminal_success: PHASE1_LOCAL_VIDEO_FACTORY_READY
+    terminal_failure: PHASE1_COMPLETION_BLOCKED
+
+  - id: PH1-CLOSE-10
+    title: Phase promotion only after successful Gate and user authorization
+    priority: P0
+    status: blocked_by_gate
+    depends_on: [PH1-CLOSE-09]
+    acceptance:
+      - PROJECT_STATUS Phase 1 becomes passed only after gate success
+      - no Phase 2 implementation begins in the same task
+
+human_gates:
+  - watch_and_listen_selected_video_candidate
+  - provide_authorized_local_reference_if_required
+  - provide_original_pink_pig_asset_pack_if_a_final_brief_requires_mascot
+  - authorize_phase_promotion_after_gate
+next_phase_not_authorized:
+  phase: PHASE_2_FEISHU_AUTOMATION
+  includes:
+    - feishu_ingress_egress
+    - topic_cards
+    - user_selection
+    - qualified_1200_fallback
+    - controlled_delivery
+    - production_cron
