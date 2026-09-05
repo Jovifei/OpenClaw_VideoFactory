@@ -1,174 +1,154 @@
 # OpenClaw VideoFactory
 
-OpenClaw VideoFactory 是一个运行在 Windows 本机上的短视频生产工程。它首先提供由 Codex 驱动的本地主题/参考视频到原创短视频闭环；在该闭环稳定后，才由 OpenClaw 编排飞书选题、受控交付和自动化运营。
+OpenClaw VideoFactory 是一个 **Windows 本地 AI 短视频生产工程**。项目的产品顺序已经明确：
 
-本仓库同时保留历史 P0 飞书安全证据与本地视频工厂候选。当前产品重点是 Phase 1 本地成片，不是已经完成生产自动化的“黑盒脚本”，也不会绕过项目门禁替用户自动发布抖音。
+1. **Phase 1：先把本地视频工厂做完整**——用户给主题，系统自动完成事实输入、脚本、分镜、素材、配音、字幕、渲染、质量检查和本地审阅包；用户给一条有权处理的参考视频时，系统还能做安全分析并生成原创重构视频。
+2. **Phase 2：Phase 1 正式通过后才接飞书**——候选选题、用户选择、12:00 合格兜底、受控交付、取消/恢复和最终 Cron。
+3. GPU/ComfyUI、WhisperX、高级参考视频相似度检查、剪映深度编辑等属于后续增强，不得反过来阻塞 Phase 1 的本地 MP4 闭环。
+
+抖音发布始终由 Jovi 人工完成，除非未来另有明确授权。
+
+> **当前分支事实入口**：先读 `START_HERE_CODEX.md` → `PROJECT_STATUS.yaml` → `docs/README.md` → `docs/CURRENT_ARCHITECTURE.md` → `docs/PRODUCT_PHASES.md` → `handoff/codex/PROJECT_HANDOFF_20260905.md`。历史 P0/P1/P2 报告仍保留作证据，但不再定义产品执行顺序。
 
 GitHub：<https://github.com/Jovifei/OpenClaw_VideoFactory>
 
-## Phase 1 cloneable local Pink Pig Video Factory
+## 当前状态
 
-The cloneable offline baseline lives under `video_factory/` and does not
-require OpenClaw, Feishu, Gateway, OAuth, Binding, or Cron. After installing
-Python dependencies and ensuring `ffmpeg`/`ffprobe` are on `PATH`, run:
+当前产品阶段：`PHASE_1_LOCAL_VIDEO_FACTORY`，状态应理解为 **in progress / implementation mature, final gate not passed**。
 
-```powershell
-python -m pip install -r requirements-bootstrap.txt -r requirements-p1-candidate.txt
-python generate_video.py --config examples/pink_pig_demo/config.yaml
-```
+已经落地的核心能力：
 
-See [`video_factory/README.md`](video_factory/README.md) for legacy, job, and
-AI Director topic-mode commands. Runtime outputs under `dist/`, local session
-memory, historical probes, and control-plane state are intentionally excluded
-from the cloneable baseline.
+- `src/factory/db.py`：SQLite Job、事件、Artifact、Stage Attempt、幂等与状态记录；
+- `src/factory/phase1_cli.py`：`create-topic`、`create-reference`、`run`、`status`、`cancel`、`retry`；
+- `src/factory/phase1_local.py`：主题/参考抽象到结构化脚本、Storyboard、Registry 资产选择；
+- `src/factory/reference_video.py`：本地参考 MP4 安全入库、SHA-256、PySceneDetect、可选离线 ASR、original brief 与 difference report；
+- `src/factory/director/`：Provider-neutral Director 与受限结构化输出合同；
+- `video_factory/pipeline/`：Storyboard、Timeline、TTS、字幕、Composition、Renderer、Render Report、Review Package；
+- `generate_video.py`：现有统一渲染入口；
+- Remotion：已用于确定性技术画面和参考重构视觉；
+- FFmpeg/ffprobe：最终编码、探测、完整 decode 和质量证据；
+- 剪映草稿链：已形成可审阅实验/编辑分支，但 **不是 Phase 1 本地 MP4 Gate 的硬前置**；
+- 本地参考重构：已完成多个 RC 高通重构迭代，并将知识卡动效绑定到实测语音 cue；
+- Flash/看门狗：已有 factual brief、确定性技术插图、无 mascot 版本和本地成片证据；
+- FreeRTOS：已有 Phase 1 brief，但仍需完成与 Modbus/Flash 同等级的成片与资格证据；
+- Phase 1 acceptance/gate：已有 Schema、Prereview、人工审阅合同和 Gate 工具，尚未获得整阶段通过证据。
 
-> The command above is an existing candidate baseline, not evidence that Phase 1
-> has passed and not authorization to run an external Provider. Phase 1 needs
-> separately retained reproducible outputs and human review. Local TTS is a
-> local component; a remote TTS or AI Director Provider requires its own
-> approved integration scope and preflight.
+因此当前真正缺口不是“再造一个视频生成器”，而是：**把已完成子链统一收口为正式 Phase 1 产品验收，并补齐尚缺的 Fixture、生命周期和人工审阅证据。**
 
-## 1. 工程目标与交付顺序
+## 最终 Phase 1 用户体验
 
-完整阶段定义见 [`docs/PRODUCT_PHASES.md`](docs/PRODUCT_PHASES.md)。先完成本地成片，飞书自动化是后续 Phase 2：
-
-```text
-Phase 1（当前）
-Jovi 给主题 / 本地参考视频 / 明确授权的公开主题研究
-  → 研究与事实核查 → 原创脚本与分镜 → AI TTS → 字幕对齐
-        ↓
-技术图/程序化画面 → 可选 ComfyUI 素材 → Remotion 合成
-        ↓
-FFmpeg/NVENC 导出 → 质量门禁 → 本地人工审阅包
-
-Phase 2（仅 Phase 1 通过后）
-飞书安全入站/出站 → 08:30 候选卡 → 用户选择或 12:00 合格兜底
-→ 受控飞书交付 → 用户人工发布抖音
-```
-
-内容定位是“嵌入式工程主线 + AI 热点副线”，品牌角色是小粉飞猪。热点内容必须有日期、可靠来源和工程影响；角色只辅助表达，不遮挡代码、协议帧、图表或字幕。
-
-## 2. 设计原则与边界
-
-- Phase 1 的状态与工件是 job-scoped 本地目录；不依赖 OpenClaw、飞书、lark-cli 或 Cron。Phase 2 才由 OpenClaw 负责飞书入口、路由、日常任务状态、重试、取消、恢复和通知。
-- 外部输入、文件名、字幕、二维码和媒体元数据全部按不可信数据处理。
-- Phase 1 的本地参考视频只用于主题、结构和通用表达线索分析；所有原始参考内容保持只读并重新创作。Phase 2 附件先隔离入库、校验 MIME 和 SHA-256、生成 receipt，再决定是否分析；附件消息本身不触发分析。
-- Phase 1 基线不得依赖 GPU、ComfyUI 或 NVENC；它们只是在已有获批组件上可选的加速，不能触发模型/节点下载或成为本阶段验收条件。若参考分析会接近复制镜头顺序、节拍或可识别包装，应停止在 Phase 1 的保守边界，转入 Phase 4 审查。
-- 分析必须由同一群组、同一发送者对原附件的后续明确回复触发，并且只消费一次性 Ticket。
-- 分析器只读取隔离副本，不能获得原始 `MediaPath`、URL、`file_key` 或飞书凭据。
-- GPU 重任务串行使用共享媒体锁；视频的 ffprobe 和 CPU 抽帧不占用 GPU 锁，Whisper/VLM/ComfyUI 才需要 GPU 锁。
-- 不自动发布抖音、不绕过验证码、不自动下载模型或节点、不解析 DOCX/PDF 正文、不把本地测试报告冒充生产验收。
-
-## 3. 核心架构
-
-| 组件 | 责任 | 当前状态 |
-| --- | --- | --- |
-| 本地 Codex Video Factory | Phase 1：主题/本地参考视频到本地审阅包 | 当前主交付目标 |
-| OpenClaw Feishu Channel | Phase 2：接收群消息和附件，维护会话与通知 | 历史能力，仍受 P0 验收约束 |
-| `video-factory` Router | 纯文本路由；识别意图但不直接理解媒体 | 已按单群、单消费者规则收敛 |
-| `ingest_attachment` MCP | 隔离复制、MIME/大小校验、SHA-256、receipt | P0 核心能力 |
-| `analyzers` MCP | 图片、音频、视频的后置分析工具 | 3 个工具，分析器无飞书 Binding |
-| GPU media lock | 串行化 Whisper、VLM、ComfyUI 等重 GPU 任务 | 已实现并有离线测试 |
-| `jobs/<job_id>/` 产物 | 保存受控 analysis/transcript 结果 | 运行时目录，不提交 Git |
-| Remotion/FFmpeg | 生成和导出短视频 | Phase 1–3 逐阶段实现 |
-
-```mermaid
-flowchart LR
-    A0[Phase 1: 本地主题或参考视频] --> A1[本地原创视频审阅包]
-    A1 --> A2[Phase 2: 飞书自动化可选接入]
-    A[飞书附件消息] --> B[Router: ingress only]
-    B --> C[隔离入库 + receipt + SHA-256]
-    C --> D{后续回复是否匹配?}
-    D -- 否 --> E[保持安全入库，不分析]
-    D -- 是 --> F[一次性 analysis request]
-    F --> G[匹配的 image/audio/video analyzer]
-    G --> H[受控 jobs 产物]
-    H --> I[有限长度公开回复]
-```
-
-## 4. 媒体分析协议
-
-真实飞书客户端把“上传附件”和“请求分析”作为两条消息处理：
-
-1. 上传附件：只做入库，回复解析编号；不 OCR、不转录、不抽帧。
-2. 回复附件：必须携带真实 `reply_to_message_id`，并匹配群组、发送者、附件序号、SHA-256 和媒体类型。
-3. 创建一次性请求：使用新 Ticket 触发对应 Analyzer。
-4. 返回结果：从服务端生成的 JSON 产物读取展示内容；路径、Token、原始媒体数据不会回传给群聊。
-
-命令形式：
+### 主题模式
 
 ```text
-/vf text  <new-ticket>
-/vf image <new-ticket>
-/vf audio <new-ticket>
-/vf video <new-ticket>
+Jovi："做一个讲 FreeRTOS 优先级反转的视频"
+  ↓
+verified factual brief / 已授权公开研究
+  ↓
+脚本 → Storyboard → 技术素材/可选个人 IP → TTS → 字幕/语音 cue
+  ↓
+Remotion/确定性画面 + FFmpeg
+  ↓
+本地 MP4 + cover + quality report + review package
+  ↓
+Jovi 人工审阅
 ```
 
-聊天记录中的 Ticket 视为已暴露，不能复制重试；每次真实复测都必须重新上传文件并取得新 Ticket。
+### 参考视频模式
 
-## 5. 当前能力与证据边界
+```text
+Jovi 提供有权处理的本地 MP4 + rights
+  ↓
+只读入库 + SHA-256 + 场景/节奏/可选 ASR
+  ↓
+抽象 reference report / original brief
+  ↓
+重新写脚本、重新做分镜和视觉
+  ↓
+原创 MP4 + difference report + review package
+  ↓
+Jovi 人工原创性审阅
+```
 
-| 能力 | 当前结论 |
-| --- | --- |
-| TXT `text/plain` | 显式 Ticket 分析已修复；目标回归 170/170；真实文本回复已返回摘要和结构信息 |
-| 图片 | 安全入库和图片摘要/OCR 展示链路已有真实样例；仍需按 P0 矩阵补齐完整证据 |
-| 音频 | faster-whisper CUDA 已完成真实转录，完整英文测试句已返回；顶层 `transcript.json` 展示链路已修复 |
-| MP4 视频 | R5 真实复测已完成：4 秒 MP4 通过 ffprobe，`analyze_video` 完成并抽取 3 帧，用户收到可见完成回复；本机 `analyzers` MCP 请求窗口为 120 秒。 |
-| DOCX/PDF | 只允许元数据、SHA-256 和隔离复制；不解析正文 |
+参考视频模式禁止复用原音、水印、连续原镜头或完整原文案。高级感知相似度不是 Phase 1 最低门，但人工原创性审核必须保留。
 
-当前产品阶段为 `PHASE_1_LOCAL_VIDEO_FACTORY`。历史 P0 飞书门仍保留为 Phase 2 前置；任何本地测试或候选 MP4 都不能直接推断 Phase 1、Phase 2 或 Provider 已通过。
+## 渲染与画布策略
 
-## 6. 目录说明
+项目已经验证过竖屏和横屏两种路线，因此不要再把某一个分辨率写成全局唯一真理：
+
+- **Douyin/知识短视频 profile**：`1080×1920`，9:16；
+- **reference reconstruction / Jianying editing profile**：可按 brief 使用 `1920×1080`，16:9；
+- 每个 Job 的 `aspect_ratio` / render contract 才是当前视频的权威；
+- 质量 Gate 必须检查“是否符合该 Job 的 profile”，而不是用一个硬编码分辨率检查所有任务。
+
+Remotion 负责可审计、可编程的确定性画面；FFmpeg 负责编码、音视频合成和质量探测。剪映只作为可选的可编辑交付/人工编辑后端，不能替代本地可复现 MP4 主链。
+
+## 小粉飞猪策略
+
+`Jovifei/ian-fenzhu-illustrations` 是 **IP/style DNA 规范来源**，不是可直接当作完整角色图库使用的仓库。
+
+当前规则：
+
+- 个人 IP 默认 `off`；
+- Jovi 在当前 brief 明确要求时才启用；
+- 启用后必须使用 Jovi 提供并通过 receipt 绑定的原始资产包；
+- 仓库自制 PNG/SVG、AI 临时生成图、上游样例 JPG 都不能冒充 Jovi 原始 IP；
+- 缺少原始资产时 fail closed 或无 mascot 继续主视频；
+- 角色永远不能遮挡技术图、代码、协议帧、字幕或关键操作。
+
+这条规则解决了早期“生成出来的猪不像用户确定版 IP”的问题。
+
+## 当前开源借鉴
+
+项目坚持“借思想/借稳定组件，不引入第二套总编排”。完整清单见 `docs/OPEN_SOURCE_SKILL_MATRIX.md`。
+
+重点包括：
+
+- **Remotion / remotion-dev/skills**：程序化视频、时序、Composition、预览与 Agent 最佳实践；
+- **FFmpeg / ffprobe**：最终编解码、转码、探测和完整 decode；
+- **PySceneDetect**：参考视频切镜和节奏测量；
+- **faster-whisper**：参考视频可选本地 ASR，不是普通 TTS 成片的必需步骤；
+- **VideoClaw (HITsz-TMG/VideoClaw)**：借鉴“阶段 Artifact、可修改中间资产、可恢复工作流、人工确认节点”的产品思想，不引入它的第二套 backend/frontend/state DB；
+- **Agents365-ai/video-podcast-maker**：借鉴研究→脚本→TTS/timing→Remotion 的知识视频流程；其仓库当前为 CC BY-NC 4.0，不能把代码直接复制进未来商业产品；
+- **Jovifei/ian-fenzhu-illustrations**：小粉飞猪 style/persona/composition 规范来源；
+- **jianying-editor-skill**：当前唯一被选中的剪映编辑后端；与 CapCut Mate/JianYing MCP 不在同一 Job 双启；
+- **ComfyUI MCP / WhisperX / OpenMontage / Auto-Editor / Real-ESRGAN**：后续候选或方法参考，不是当前 Phase 1 Gate 的依赖。
+
+## 目录地图
 
 ```text
 .
-├── config/       配置模板、账号列定义、主题和媒体策略
-├── scripts/      入站、Ticket、MCP、分析器、GPU 锁和验收脚本
-├── services/     Feishu Gateway 与受控 RPC 接口
-├── src/          后续视频工厂的 Python 领域代码
-├── skills/       OpenClaw 本地 Skill（直接位于仓库根目录）
-├── schemas/      事件、receipt、Ticket、主题和视频工作流契约
-├── tests/        Python/Pester/Schema/Node 回归与安全边界测试
-├── runbook/      从 Phase 1 本地成片到最终验收的操作顺序
-├── handoff/codex/ 当前执行交接、决策和验收矩阵
-├── reports/      历史证据、变更单和未来阶段报告
-└── tasks/        当前计划、复盘和经验规则
+├── START_HERE_CODEX.md        新 Agent 的第一入口
+├── PROJECT_STATUS.yaml        当前产品阶段与已知缺口
+├── docs/                      当前架构、阶段、开源借鉴；含历史设计快照
+├── handoff/codex/             当前执行交接与验收合同
+├── src/factory/               Phase 1 领域逻辑、状态、Director、参考分析
+├── video_factory/pipeline/    Storyboard/Timeline/TTS/字幕/Renderer/Review
+├── remotion/                  程序化视觉实现
+├── skills/                    视频生产 Skill 合同
+├── schemas/video/             视频工作流与验收 Schema
+├── examples/                  可复现的主题/job/brief 示例
+├── assets/                    已审查技术素材与实验资产
+├── scripts/                   Phase 1/参考分析/质量/剪映与历史 Phase 2 工具
+├── tests/                     当前功能与历史安全回归
+├── reports/                   Change Request、证据和历史报告
+├── runbook/                   执行与验收步骤
+└── tasks/                     当前任务、计划与经验复盘
 ```
 
-运行时的 `input/`、`jobs/`、`media/`、`output/`、`state/`、模型缓存、研究文章和个人配置均不进入公开仓库。
+运行时媒体、SQLite、用户参考原件、模型缓存、私有审阅文件和凭据不得进入公开仓库。
 
-## 7. 验证边界
+## 当前下一步
 
-历史 P0 媒体回归只适用于 Phase 2 飞书接入，不是 Phase 1 的启动要求：
+Phase 1 收口顺序固定为：
 
-```powershell
-Set-Location E:\project\OpenClaw_VideoFactory
-& .\.venv\Scripts\python.exe -m unittest `
-  tests.test_analyzer_mcp `
-  tests.test_analysis_request `
-  tests.test_media_action_ticket `
-  tests.test_ingest_attachment_core `
-  tests.test_two_message_mcp_surface `
-  tests.test_two_message_flow `
-  tests.test_trusted_media_roots
+1. 重新跑当前分支的聚焦回归并记录统一测试基线；
+2. 完成 FreeRTOS 与缺失的固定主题资格证据；
+3. 把 Modbus / Flash / FreeRTOS 三个主题 Job 对齐同一 Review/Prereview 合同；
+4. 形成 cancel / retry / restart recovery / encoder fallback 的机器证据；
+5. 对当前最新参考重构成片做 Jovi 人工审阅；若仍需要 Phase 1 真实本地 reference fixture，使用 Jovi 授权素材完成同一 Prereview；
+6. 生成 Phase 1 Acceptance Manifest 与 Boundary Audit；
+7. 独立只读审核；
+8. 正式 Gate 只运行一次；
+9. Gate 通过后才更新 `PROJECT_STATUS.yaml` 为 passed，并另开 Phase 2 飞书任务。
 
-& .\.venv\Scripts\python.exe -m py_compile scripts\mcp_ingest_attachment.py
-```
-
-首次运行前先阅读 `START_HERE_CODEX.md`、`PROJECT_STATUS.yaml` 和 `AGENTS.md`。任何配置写入都必须先查询实时 Schema、备份、校验、记录证据并准备回滚。
-
-## 8. 分阶段路线图
-
-| 阶段 | 目标 | 不提前做的事情 |
-| --- | --- | --- |
-| Phase 1 | 本地主题/参考视频主题分析到原创 MP4 与人工审阅包 | 不接飞书、Cron 或自动发布 |
-| Phase 2 | 飞书安全、候选主题、用户选择、12:00 兜底、幂等恢复 | 不绕过 Phase 1 成片与安全门 |
-| Phase 3 | 4070 SUPER、ComfyUI、Whisper、NVENC 的受控生产能力 | 不绕过 GPU 锁和授权门禁 |
-| Phase 4 | 高级参考视频原创再创作约束 | 不复用原音、水印或连续原镜头 |
-| Phase 5 | 可编辑剪映草稿导出 | 不让剪映成为唯一渲染器 |
-
-## 9. 安全发布边界
-
-仓库只保留可复现的代码、模板、测试、Runbook、任务信息和脱敏 P0 证据。`.env`、飞书凭据、`open_id/chat_id`、API Key、本机 OpenClaw 配置、入站媒体、Ticket 状态、分析产物和个人/研究文章都必须留在本机。
-
-所有“通过”结论都必须对应真实日志、测试和产物。离线测试通过只证明代码契约；真实飞书事件、用户可见回复、GPU 运行和 P0 Gate 仍分别计证，不能互相替代。
+**不要提前接飞书、Cron、自动选题或自动发布。**
