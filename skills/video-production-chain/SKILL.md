@@ -1,7 +1,7 @@
 ---
 name: video-production-chain
-description: "Route one Chinese technical video job from verified text to an auditable Jianying draft without duplicating renderers, audio, or subtitle authority."
-version: 0.1.0
+description: "Route one technical video job from verified input to an auditable local MP4, with optional Jianying editable delivery, without duplicating renderers or state ownership."
+version: 0.2.0
 metadata:
   openclaw:
     emoji: "🧭"
@@ -9,68 +9,126 @@ metadata:
 
 # Video production chain
 
-This is the orchestration contract for a single video job. It composes the
-workspace-owned Skills; it does not replace them with an all-in-one generator.
+This is the orchestration contract for a single video job. It composes workspace-owned Skills and the existing pipeline; it does not create a second renderer or a second state database.
 
-## Canonical route
+Before using this Skill, read:
+
+- `PROJECT_STATUS.yaml`
+- `docs/CURRENT_ARCHITECTURE.md`
+- `docs/PRODUCT_PHASES.md`
+
+## Phase 1 canonical route
 
 ```text
 topic-intelligence / reference-video-analyzer
-        ↓ verified factual_brief + originality gate
+        ↓ verified factual brief / rights / originality boundary
 script-storyboard-director
-        ↓ script.json + storyboard.json + style_tokens.json
+        ↓ script.json + storyboard.json + style/render profile
 media-asset-curator
-        ↓ Registry-only asset_manifest
+        ↓ approved asset manifest
+        ├─ deterministic technical SVG/HTML/Remotion
+        └─ approved creative assets when allowed
 audio-subtitle-engine
-        ↓ local narration + captions/timing
+        ↓ local narration + subtitle/timing/speech cues
 remotion-layout-engine + existing FFmpeg pipeline
-        ↓ visual-only Jianying input (no audio, no burned subtitles)
-jianying-draft-exporter → jianying-editor-skill
-        ↓ one VoiceOver track + one native Subtitles track
+        ↓
 video-quality-gate
-        ↓ review package; manual Jianying listening/export gate
+        ↓
+final local MP4 + quality report + review package
+        ↓
+Jovi human review
+        └─ optional: jianying-draft-exporter → manual editable delivery
 ```
 
-## Stage ownership and handoffs
+**Phase 1 success is not defined as “Jianying exported”.** The mandatory result is the local auditable MP4 and evidence package. Jianying is an optional editing/review branch.
+
+## Reference route
+
+```text
+reference-video-analyzer
+        ↓ safe receipt + abstract report
+reference-video-recreator / original brief
+        ↓ new script/storyboard
+media-asset-curator
+        ↓ new deterministic/approved visuals
+audio-subtitle-engine
+        ↓ new narration + measured timing
+remotion-layout-engine
+        ↓ new visual
+existing FFmpeg pipeline
+        ↓ new MP4
+difference report + video-quality-gate
+        ↓ Jovi originality review
+```
+
+Never pass source frames/audio directly into the final renderer as production assets.
+
+## Stage ownership
 
 | Stage | Owner | Required handoff | Hard stop |
 |---|---|---|---|
-| Topic/reference | `topic-intelligence`, `reference-video-analyzer` | verified facts, source/rights receipt, abstract style only | reference audio, frames, full transcript, or unverified facts |
-| Text/structure | `script-storyboard-director` | five beats, 25–60s target, narration, on-screen text, visual intent | generic filler, unsupported claims, topic/asset mismatch |
-| Assets | `media-asset-curator` | Registry asset IDs, hashes, license basis, fallback | source paths, watermarks, unlicensed or cross-topic assets |
-| Audio/captions | `audio-subtitle-engine` | local WAV/SAMI or SRT timing, pronunciation decisions | silent audio, clipped audio, duplicated caption authority |
-| Visual | `remotion-layout-engine` and existing local renderer | 16:9 by default, neutral theme palette, H.264 visual-only input | C-drive output, portrait by accident, baked captions for Jianying |
-| Editing | `jianying-draft-exporter` using pinned `jianying-editor-skill` | new E-drive draft, track map, manual-open instructions | automatic UI export, muting VoiceOver, second editor backend |
-| Quality | `video-quality-gate` | ffprobe/decode/hash/report/review package | claim of publish-ready without human listening and visual review |
+| Topic/reference | `topic-intelligence`, `reference-video-analyzer` | verified facts; for reference: rights, digest, abstract structure | raw source reuse, unverified facts, unsafe input |
+| Text/structure | `script-storyboard-director` | script, scene intent, narration, on-screen text | generic filler, unsupported claims, renderer paths in model output |
+| Assets | `media-asset-curator` | approved Registry/technical asset IDs and provenance | unlicensed, cross-topic or source-video assets |
+| Audio/timing | `audio-subtitle-engine` | new narration, timing/speech cues, subtitle contract | silence, clipping, duplicate subtitle authority |
+| Visual | `remotion-layout-engine` + existing renderer | profile-specific deterministic visual | incorrect aspect ratio, C-drive private output, source-shot reuse |
+| Media | existing FFmpeg pipeline | H.264/AAC local MP4 + decode/probe evidence | broken decode, mismatched report, hidden fallback |
+| Quality | `video-quality-gate` | quality report + review package | claim of Phase-ready without human review |
+| Optional editing | `jianying-draft-exporter` using pinned `jianying-editor-skill` | visual-only input, VoiceOver, native Subtitles | automatic export, second editor backend |
 
-## Default media policy
+## Aspect ratio policy
 
-- Default canvas is 1920×1080, 30 FPS. Use 1080×1920 only when the brief
-  explicitly sets `aspect_ratio: "9:16"`.
-- Palette is selected from the topic's style tokens; Pink Pig pink is not a
-  global background. Pink Pig is off unless Jovi explicitly opts in and the
-  original-asset receipt is verified.
-- The deterministic local MP4 may contain an audio/subtitle variant for
-  technical quality evidence. The Jianying input is a separate visual-only
-  render with no audio and no burned-in subtitles.
-- Jianying is the only editing backend for a given job. Generate a new draft,
-  keep automatic export disabled, and require Jovi to listen and export.
-- All runtime, draft, report, and review outputs use the configured E-drive
-  roots. C-drive paths fail closed.
+Aspect ratio is job-scoped:
+
+- vertical/Douyin knowledge profile: 1080×1920 (9:16);
+- landscape/reference-edit profile: 1920×1080 (16:9) when the brief requests it.
+
+Never infer Phase 1 quality from one global resolution constant.
+
+## Pink Pig policy
+
+Personal IP is off by default. When Jovi explicitly opts in:
+
+- require the Jovi-owned original asset pack and receipt;
+- do not substitute repository-created mascot PNG/SVG, AI temporary art or upstream samples;
+- do not cover technical content or subtitles;
+- mascot failure must not block a normal mascot-off technical video.
+
+Read `docs/PINK_PIG_CURRENT_POLICY.md` and `config/mascot_usage.yaml`.
+
+## Jianying policy
+
+The currently reviewed optional editor backend is `luoluoluo22/jianying-editor-skill` at a pinned revision.
+
+For an optional draft:
+
+- use a separate visual-only render;
+- no audio and no burned-in subtitles in the visual input;
+- exactly one VoiceOver authority and one native Subtitles authority;
+- E-drive runtime;
+- automatic UI export/publication disabled;
+- Jovi manually listens, reviews and exports.
+
+A Jianying failure does not invalidate an already-qualified core MP4.
 
 ## External repository policy
 
-- `luoluoluo22/jianying-editor-skill` is the selected, pinned MIT backend.
-- `Hommy-master/capcut-mate` (Apache-2.0) is an isolated future adapter; do
-  not enable it in a job that uses Jianying.
-- `hey-jian-wei/jianying-mcp` is a research candidate only. Its project
-  generation path is not part of the production chain until a separate
-  license, version, permission, and recovery review is approved.
-- `video-podcast-maker` methods may inform script/timing contracts, but it
-  does not own job state or rendering.
+- `HITsz-TMG/VideoClaw`: architecture/method inspiration only; do not import its second backend/state DB.
+- `Agents365-ai/video-podcast-maker`: method inspiration; current CC BY-NC 4.0 means no unreviewed code/template copying into a future commercial path.
+- `Jovifei/ian-fenzhu-illustrations`: style/persona source, not proof of final original mascot assets.
+- `Hommy-master/capcut-mate`: isolated future adapter; not enabled with Jianying in one Job.
+- `hey-jian-wei/jianying-mcp`: research candidate only.
 
 ## Completion meaning
 
-`draft_ready_for_manual_jianying_review` means the chain produced a
-reviewable draft. It does not mean the audio was heard by Jovi, the draft was
-exported, or the video was published.
+### `local_review_package_ready`
+
+The system produced a qualified local MP4 and machine evidence. It still needs Jovi human review.
+
+### `draft_ready_for_manual_jianying_review`
+
+An optional editable draft exists. It does not mean Jovi listened, exported or published it.
+
+### `PHASE1_LOCAL_VIDEO_FACTORY_READY`
+
+Only the formal Phase 1 Gate can assign this meaning after all fixed fixtures, lifecycle evidence, reference review, acceptance manifest and independent audit pass.
