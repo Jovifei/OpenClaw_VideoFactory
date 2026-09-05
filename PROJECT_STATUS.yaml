@@ -1,80 +1,89 @@
-version: 2.4
+version: 2.5
 project_root: E:\project\OpenClaw_VideoFactory
-status: ready_for_codex_phase_1_local_video_factory
-last_updated: 2026-08-22
+status: phase_1_local_video_factory_in_progress
+last_updated: 2026-09-05
 current_phase: PHASE_1_LOCAL_VIDEO_FACTORY
-phase_model: user_aligned_2026_08_14
+phase_model: user_aligned_2026_09_05
 product_phases:
   PHASE_1_LOCAL_VIDEO_FACTORY:
-    status: not_started
-    goal: local Codex video creation from a user topic, a user-provided local reference video, or explicitly authorized public-topic research
+    status: in_progress
+    goal: local video creation from a user topic, a user-provided authorized local reference video, or explicitly authorized public-topic research; output an auditable MP4 and human review package
+    completed_capabilities:
+      - topic brief to deterministic script/storyboard/asset selection
+      - local reference MP4 safe ingest and abstract scene/pace analysis
+      - optional offline ASR from an already-cached faster-whisper model
+      - Remotion deterministic technical visuals and FFmpeg rendering
+      - local TTS, subtitle/timing contracts, render/quality reports
+      - SQLite job/event/artifact/stage-attempt control plane
+      - cancel and retry command surfaces
+      - review package, prereview schemas and formal Phase 1 gate implementation
+      - Modbus topic baseline
+      - Flash/watchdog topic brief, technical assets and rendered review candidates
+      - reference reconstruction experiments including RC high-pass speech-cue-bound visuals
+      - optional Jianying draft path for manual editing/review
     excludes:
-      - Feishu
-      - OpenClaw runtime and daily state
-      - Cron
-      - automatic topic selection
-      - automatic publication
-    canonical_document: docs/PRODUCT_PHASES.md
+      - Feishu production orchestration
+      - OpenClaw daily runtime as a Phase 1 dependency
+      - production Cron
+      - automatic topic scheduling
+      - automatic Douyin publication
+    canonical_documents:
+      - README.md
+      - docs/README.md
+      - docs/CURRENT_ARCHITECTURE.md
+      - docs/PRODUCT_PHASES.md
+      - handoff/codex/PROJECT_HANDOFF_20260905.md
   PHASE_2_FEISHU_AUTOMATION:
     status: blocked_by_PHASE_1_LOCAL_VIDEO_FACTORY
     goal: Feishu safety, topic cards, user selection, qualified 12:00 fallback, controlled delivery, and Cron after non-scheduled proof
     prerequisite: PHASE_1_LOCAL_VIDEO_FACTORY
-# Historical P0-P5 labels below are retained for existing evidence and tooling.
-# They are compatibility tracks, not the product-stage order, and P0 no longer
-# blocks the local Phase 1 video factory.
+# Historical P0-P5 labels below are retained only for evidence/tool compatibility.
+# They do not define current product-stage order and P0 does not block local Phase 1.
 phases:
   PACKAGE:
     status: passed
     evidence:
       - reports/package_release_validation.json
-  P0: {status: not_started, evidence: []}
-  P1: {status: blocked_by_P0, evidence: []}
-  P2: {status: blocked_by_P1, evidence: []}
-  P3: {status: blocked_by_P2, evidence: []}
-  P4: {status: blocked_by_P3, evidence: []}
-  P5: {status: blocked_by_P4, evidence: []}
+  P0: {status: historical_not_promoted, evidence: []}
+  P1: {status: historical_compatibility_track, evidence: []}
+  P2: {status: historical_compatibility_track, evidence: []}
+  P3: {status: historical_compatibility_track, evidence: []}
+  P4: {status: historical_compatibility_track, evidence: []}
+  P5: {status: historical_compatibility_track, evidence: []}
 exceptions:
   - id: PINK_PIG_VIDEO_FACTORY_PRODUCTIZATION_001
     scope: PHASE_1_LOCAL_VIDEO_FACTORY
     granted_by: user
-    summary: 小粉猪视频工厂产品化 Phase1（Registry + Schema + Storyboard 编译 + 多场景 Demo）
-    note: 本轮属于本地 Phase 1 产品工作，产出不构成 Phase 1 通过依据；历史 P0 飞书门禁移至 Phase 2
+    summary: Registry + Schema + Storyboard compiler + multi-scene video baseline
+    note: historical productization increment; does not itself prove Phase 1 pass
     does_not_imply_phase_pass: true
-    allowed_paths:
-      - video_factory/
-      - assets/
-      - schemas/video/
-      - src/factory/assets/pink_pig/
-      - external/
-      - docs/
-      - tests/video/
   - id: PHASE1-LOCAL-FACTORY-COMPLETION-002
     scope: PHASE_1_LOCAL_VIDEO_FACTORY
     granted_by: user
-    summary: Phase 1 人工审阅、证据对账和正式 Gate 收口
-    note: 只补充本地 Phase 1 验收合同和工具；不构成 Phase 1 通过，不进入飞书或 Cron
+    summary: Phase 1 human review, evidence reconciliation and formal Gate closure
+    note: current closure track; no Feishu/Cron promotion in the same task
     does_not_imply_phase_pass: true
-    allowed_paths:
-      - PROJECT_STATUS.yaml
-      - docs/PRODUCT_PHASES.md
-      - schemas/video/
-      - src/factory/phase1_acceptance.py
-      - src/factory/phase1_gate.py
-      - scripts/phase1_acceptance.py
-      - scripts/phase1_gate.py
-      - tests/phase1_acceptance/
-      - runbook/11_PHASE1_COMPLETION.md
-      - handoff/codex/PHASE1_COMPLETION_PROMPT.md
-      - reports/PHASE1_REMOTE_AUDIT_20260822.md
 known_implementation_gaps:
-  - Phase 1 formal human review, acceptance manifest, prereview, and final Gate have not passed
-  - Flash/watchdog and FreeRTOS fixed topic fixtures are not yet qualified
-  - cancel, retry, controlled restart recovery, and CPU/NVENC fallback need fresh unified evidence
-  - one Jovi-authorized real local reference video still needs human originality review
-  - Phase 2 Feishu runtime credentials and target IDs are not configured
-  - Phase 2 production Cron is not registered
+  - Phase 1 final acceptance manifest, boundary audit and one-shot formal Gate have not passed
+  - FreeRTOS fixed topic fixture has a brief but still needs the same rendered/review evidence level as Modbus and Flash/watchdog
+  - Modbus, Flash/watchdog and FreeRTOS need one unified prereview evidence format against the current schemas
+  - cancel, failed-retry, controlled restart-recovery and encoder-fallback need one fresh unified lifecycle evidence set
+  - the latest reference-reconstruction candidates still require Jovi human visual/audio/originality review before they can count as final Phase 1 evidence
+  - if the final Gate requires a private local-reference fixture, it must use a Jovi-authorized local MP4 plus rights receipt; synthetic references cannot substitute human originality review
+  - Pink Pig personal-IP mode requires a Jovi-owned original asset pack and receipt; without it the production path must keep mascot off or fail closed for mascot-required briefs
+  - root-level full pytest is not the Phase 1 truth source while unrelated vendor/P0 environment suites remain non-hermetic; the Phase 1 gate must enumerate its bounded suites explicitly
+  - Phase 2 Feishu credentials/target IDs and production Cron remain intentionally deferred
+non_blocking_deferred_items:
+  - historical Codex CLI provider cache/base_instructions recovery
+  - ComfyUI and new model downloads
+  - WhisperX and advanced perceptual-similarity tooling
+  - automatic Jianying export
+  - Feishu/OpenClaw/Cron production automation
 rules:
-  - never mark a phase passed without evidence
+  - never mark Phase 1 passed without machine evidence plus Jovi human review
+  - never use a successful subproject or one demo MP4 as proof that the whole phase passed
   - never register production cron before Phase 2 passes
-  - never download models without approval and budget check
+  - never download models or ComfyUI nodes without approval and budget check
   - never publish to Douyin automatically
+  - Phase 1 must remain operable without Feishu/OpenClaw runtime dependencies
+  - preserve one renderer/data-contract lineage; do not introduce a second all-in-one video backend
