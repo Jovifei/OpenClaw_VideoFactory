@@ -2784,3 +2784,14 @@ Change Request: `reports/change_requests/PHASE1-I2C-SEMANTIC-EDITORIAL-013.json`
 - [ ] Complete fresh lifecycle evidence (cancel, failed retry, new-process recovery, encoder fallback), independent audit and one Formal Gate.
 
 Review: This is a local topic candidate ready for human review. The I2C diagram is source-bound, but human technical/originality approval is still required; no Phase Promotion or Phase 2 action is implied.
+# PHASE1-I2C-VISUAL-CORRECTION-014 — IMPLEMENTED / HUMAN REVIEW PENDING
+
+- [x] Record Jovi's correction: current priority is vertical 9:16, not the prior 16:9 candidate.
+- [x] Remove visible information-role, scene-counter, mascot and source-binding authoring metadata from the final picture.
+- [x] Replace repeated generic I2C cards with real SDA/SCL waveform geometry and distinct open-drain, rise-time and sink-current focus panels.
+- [x] Re-render fresh subject-media attempt `attempt_006_9x16_subject`; receipt `READY`, quality and post-render checks `passed`.
+- [x] Inspect the actual scene 2/3/4 stills; no lower-corner authoring text remains and the event labels are separated from the waveform.
+- [ ] Jovi watches/listens to the corrected single candidate and submits structured review bound to audible-preview SHA `cf1c0220853c7de06c5f821c48824a49e35fc770ad19ba4edaa5460cff652568`.
+- [ ] Complete lifecycle evidence, independent audit and Formal Gate; do not mark Phase 1 passed.
+
+Review: The prior `i2c_semantic_013_candidate.json` is superseded because it was horizontal and visually contained authoring metadata. The corrected candidate is vertical and machine-ready for Jovi review only.

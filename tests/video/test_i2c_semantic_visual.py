@@ -47,6 +47,23 @@ def test_i2c_editorial_review_rejects_contradictory_paraphrase(i2c_research: dic
     assert result["sentences"][0]["reason"] == "contradiction_marker"
 
 
+def test_i2c_visual_source_has_no_visible_authoring_metadata() -> None:
+    source = (ROOT / "remotion" / "src" / "TechnicalExplainer.tsx").read_text(encoding="utf-8")
+    assert 'data-layout-box="roles"' not in source
+    assert "mascot absent" not in source
+    assert "来源绑定事实" not in source
+
+
+def test_i2c_visual_source_declares_real_bus_timing_geometry() -> None:
+    source = (ROOT / "remotion" / "src" / "TechnicalExplainer.tsx").read_text(encoding="utf-8")
+    for label in ("SDA", "SCL", "START", "ADDRESS", "ACK/NACK", "DATA", "STOP"):
+        assert label in source
+    assert "idle-high" in source
+    assert "data-i2c-waveform" in source
+    assert "rise-time-focus" in source
+    assert "sink-current-focus" in source
+
+
 def test_i2c_scene_plan_emits_source_bound_bus_diagram(i2c_research: dict) -> None:
     request = build_topic_request(subject=i2c_research["topic"], duration=40, aspect="16:9")
     script = build_director_script(
