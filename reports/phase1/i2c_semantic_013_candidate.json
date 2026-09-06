@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "change_request": "PHASE1-I2C-SEMANTIC-EDITORIAL-013",
+  "status": "ready_for_jovi_human_review",
+  "job_id": "job-876a5f89973bbaf8deadbeef",
+  "attempt_id": "attempt_002_16x9_subject",
+  "input_mode": "topic",
+  "topic": "I2C总线为什么要上拉电阻",
+  "selected_score": 86,
+  "timing": {"voice_coverage_ratio": 0.87, "duration_seconds": 40, "hash": "b3471c83c425da938985965bf53adea579c7cedea0113ba90002d527b4b77647"},
+  "artifacts": {
+    "visual_master": {"path": "attempt_002_16x9_subject/visual_master.mp4", "sha256": "1485f2a37141adf32a2fd292494ceacc6bcc6e9b93f99cee0834e2e886d586ad", "width": 1920, "height": 1080, "fps": 30, "audio_present": false},
+    "audible_preview": {"path": "packages_retry/attempt_1/review_package/evidence/audible_preview.mp4", "sha256": "8765534a946c92931dc8b918aa5776ab7277e3ac4df1956f4532f6e8eda47e95", "codec": "h264/aac", "full_decode": true},
+    "render_report_sha256": "8e1e4465ab928a8b559ae193cfed212241f8a303d555c0d0132ecbdbf484d4c8",
+    "visual_review_sha256": "1d17f576898c4c0a10fc986add2d657d307f050507bc50226c7ec8658625651f",
+    "media_receipt_sha256": "d0053eeb14024879e71a30098b3f93b2bad53dc9139066dcd85699c7335cb499",
+    "review_package_sha256": "148f714285ec18b6c1acf7ab4492f9bd30da5d5cf2ef289e1f1fb158422e2bb2",
+    "quality_report_sha256": "c083da35fb446182573571b9dfdb63e2e60e8ba5bcbc0206c20e6cac1c22efff"
+  },
+  "diagram_contract": {"kind": "i2c_bus_v1", "fact_refs": ["open_drain", "rise_time", "sink_current"], "labels": ["SDA", "SCL", "START", "ADDRESS", "ACK/NACK", "DATA", "STOP"]},
+  "quality": {"receipt": "READY", "quality_report": "passed", "review_package": "ready_for_human_review", "automatic_export": false},
+  "human_gate": {"required": true, "status": "pending", "checks": ["audio_clear", "subtitles_readable", "technical_content_acceptable", "visual_composition_acceptable", "originality_acceptable"], "approval_must_bind_to": "audible_preview_sha256"},
+  "phase_promotion": false,
+  "feishu_or_publication": false
+}
