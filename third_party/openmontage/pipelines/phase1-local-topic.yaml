@@ -1,0 +1,20 @@
+# Source: derived from the OpenMontage pipeline manifest contract at cd9f3c1f03368be87b140af494914b8ee4e3c7a4.
+# Modified: project-specific eight-stage Phase 1 pipeline with review as the only human gate.
+name: phase1-local-topic
+version: "1.0"
+description: Read-only OpenMontage view over the local Phase 1 topic pipeline.
+category: custom
+stability: production
+default_checkpoint_policy: auto_noncreative
+stages:
+  - {name: research, checkpoint_required: true, human_approval_default: false}
+  - {name: proposal, checkpoint_required: true, human_approval_default: false}
+  - {name: script, checkpoint_required: true, human_approval_default: false}
+  - {name: scene_plan, checkpoint_required: true, human_approval_default: false}
+  - {name: assets, checkpoint_required: true, human_approval_default: false}
+  - {name: edit, checkpoint_required: true, human_approval_default: false}
+  - {name: compose, checkpoint_required: true, human_approval_default: false}
+  - {name: review, checkpoint_required: true, human_approval_default: true}
+metadata:
+  state_authority: factory_sqlite
+  projection_only: true

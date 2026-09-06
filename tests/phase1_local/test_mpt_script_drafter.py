@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
+from scripts import phase1_mpt_script_drafter as drafter
 
 from scripts.phase1_mpt_script_drafter import (
     _parse_result_line,
@@ -29,6 +31,7 @@ def test_parse_result_line_returns_none_without_json() -> None:
 
 
 def test_run_drafts_writes_candidates(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(drafter, "_mpt_python", lambda _root: Path(sys.executable))
     scripts = iter(["候选一", "候选二"])
 
     def fake_run(*args, **kwargs):
@@ -60,6 +63,7 @@ def test_run_drafts_writes_candidates(tmp_path: Path, monkeypatch: pytest.Monkey
 def test_run_drafts_fails_closed_when_all_candidates_fail(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    monkeypatch.setattr(drafter, "_mpt_python", lambda _root: Path(sys.executable))
     def fake_run(*args, **kwargs):
         raise subprocess.TimeoutExpired(cmd="cli.py", timeout=1)
 
@@ -85,6 +89,34 @@ def test_run_drafts_rejects_bad_inputs(tmp_path: Path) -> None:
             timeout_seconds=1,
             out_root=tmp_path,
         )
+
+
+def test_run_drafts_applies_rewrite_guidance_without_changing_output_subject(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(drafter, "_mpt_python", lambda _root: Path(sys.executable))
+    commands = []
+    def fake_run(command, **kwargs):
+        commands.append(command)
+        class Completed:
+            returncode = 0
+            stdout = _cli_stdout("改写候选")
+            stderr = ""
+        return Completed()
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    out = run_drafts(subject="看门狗", language="zh-CN", paragraphs=2, candidates=1, timeout_seconds=5, out_root=tmp_path, rewrite_guidance="加强 hook 与 factual_consistency")
+    document = json.loads(out.read_text(encoding="utf-8"))
+    assert "加强 hook" in commands[0][commands[0].index("--video-subject") + 1]
+    assert document["subject"] == "看门狗"
+
+
+def test_run_drafts_applies_research_guidance(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(drafter, "_mpt_python", lambda _root: Path(sys.executable))
+    commands = []
+    def fake_run(command, **kwargs):
+        commands.append(command)
+        return type("Completed", (), {"returncode":0,"stdout":_cli_stdout("候选"),"stderr":""})()
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    run_drafts(subject="看门狗", language="zh-CN", paragraphs=2, candidates=1, timeout_seconds=5, out_root=tmp_path, research_guidance="事实：看门狗检测失去响应 [s1]")
+    assert "看门狗检测失去响应" in commands[0][commands[0].index("--video-subject") + 1]
     with pytest.raises(ValueError):
         run_drafts(
             subject="x",
@@ -94,3 +126,13 @@ def test_run_drafts_rejects_bad_inputs(tmp_path: Path) -> None:
             timeout_seconds=1,
             out_root=tmp_path,
         )
+def test_real_mpt_runtime_resolution_still_rejects_missing_venv(tmp_path: Path) -> None:
+    with pytest.raises(FileNotFoundError):
+        drafter._mpt_python(tmp_path / "missing")
+
+
+def test_real_mpt_runtime_resolution_accepts_explicit_venv(tmp_path: Path) -> None:
+    executable = tmp_path / ".venv" / "Scripts" / "python.exe"
+    executable.parent.mkdir(parents=True)
+    executable.write_bytes(b"fixture only; never executed")
+    assert drafter._mpt_python(tmp_path) == executable

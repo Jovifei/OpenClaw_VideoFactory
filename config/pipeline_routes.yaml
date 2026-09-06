@@ -1,5 +1,27 @@
 version: 2
+current_product_phase: PHASE_1_LOCAL_VIDEO_FACTORY
+phase1_local:
+  orchestrator: local_factory
+  control_entrypoint: scripts/factory.py phase1
+  render_entrypoint: generate_video.py
+  requires_openclaw: false
+  requires_feishu: false
+  requires_cron: false
+  mandatory_result:
+  - local_mp4
+  - quality_report
+  - review_package
+  - human_review
+  optional_finalizer:
+  - jianying-editor-skill
+  input_modes:
+  - topic
+  - local_reference
+  - authorized_public_research
+# The OpenClaw routes below are retained for future Phase 2. They are not the
+# current Phase 1 orchestrator and must not be executed before Phase 1 passes.
 orchestrator: openclaw
+orchestrator_scope: PHASE_2_FEISHU_AUTOMATION_ONLY
 code_maintainer: codex
 routes:
   topic_request:
@@ -82,16 +104,20 @@ routes:
     - quality_report
 services:
   comfyui:
+    phase: PHASE_3_OPTIONAL
     url: http://127.0.0.1:8188
     timeout_seconds: 900
   capcut_mate:
+    phase: FUTURE_ISOLATED_ADAPTER
     url: http://127.0.0.1:30000
     timeout_seconds: 120
   remotion:
+    phase: PHASE_1
     mode: local_cli
   codex:
     mode: delegated_only
   feishu:
+    phase: PHASE_2_ONLY
     provider: larksuite_cli
     inbound: openclaw_channel
     outbound: lark_cli_im

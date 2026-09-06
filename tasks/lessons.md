@@ -1,5 +1,11 @@
 # Lessons
 
+## 2026-08-30 — Renderer adapters must consume canonical artifacts without widening them
+
+- Do not add renderer-only title, aspect, promise, or hash fields to a strict scene-plan artifact. Pass the canonical director script separately, bind both files by actual SHA-256 in the timing manifest, and pass render options such as aspect as explicit CLI arguments.
+- Hooks are non-factual only when their scene/narrative/information roles all say so; every technical or evidence scene must remain source-bound.
+- A `data-layout-box` marker is not a layout gate. Remotion must measure every marked node before rendering and cancel on safe-area overflow, with structural length checks as the earlier fail-closed layer.
+
 ## 2026-07-28 — Backend completion is not a user-visible result
 
 - Do not classify a media flow as product-qualified merely because the Ticket, request, analyzer, and result artifact completed.
@@ -494,3 +500,20 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - A technical explainer must surface the facts it narrates: equation, boundary condition, curve marker, engineering check and design sequence need visible counterparts, not only voice-over.
 - Fast/select seeking into some H.264 outputs can produce a false partial-frame image even when sequential playback is intact. Use sequential decoding for both all-frame QA and saved critical screenshots; use direct Remotion stills to separate composition defects from encoded-frame tooling artifacts.
 - When a parent narration segment expands into semantic subsegments, every downstream consumer must expand it too: Jianying VoiceOver, visual-cue timing, and the QA preview mixer. Parent-count assumptions silently drop late narration; assert `amix` inputs equal the expanded audio-entry count.
+
+# 2026-08-30 - Orchestrator readiness requires closed evidence
+
+- A subprocess chain must not return a review-ready status merely because commands returned zero. Parse every expected report and media output, validate success states and cross-hashes, and validate the final strict result schema before emitting READY.
+- Keep media-runtime Python explicit and E-drive-bound. Do not silently fall back to the parent interpreter when pinned editor dependencies differ across environments.
+- On stage failure, preserve the workdir and prior evidence, write a sanitized stage failure record, and let the exact draft-producing adapter clean only the newly created draft.
+- Cross-file media contracts must carry explicit declared duration as an integer, not derive it only at the consumer. Validate the declared duration against report boundaries, the timing manifest, and the probed media duration within one frame.
+- A declared media timeline is not proof of the editor timeline. Capture the actual segment start/duration returned by the editor, validate ordered gap/overlap and measured max end, and persist those observations in the report.
+- READY validation must inspect safety and quality conclusions inside each report, not only terminal status and file hashes. Treat status-only documents as incomplete evidence.
+- Never use Python `assert` for a security, readiness, or media contract: optimized mode removes it. Use explicit field-specific rejection codes and test the validator under `python -O`.
+
+# 2026-08-31 - Cross-language contracts and acceptance identity
+
+- A Python-only regression can miss a renderer rejecting newly introduced scene roles. Test the same factual, hook, and non-factual process scenes through the actual Node input builder and Remotion validator; never invent source references to satisfy an outdated downstream check.
+- Review-package type, SQLite fixture, input mode, preview identity and human-review SHA must agree. A valid JSON schema or high test count does not establish that these cross-file identities are bound.
+- When changing artifact lookup from names to relative paths, explicitly test legacy artifacts in nested directories. Preserve declared paths without assuming every quality or difference report is at the package root.
+- Keep quality claims separate: API-only Backlot is not a visual production board, a layout smoke is not a technical-content review, and a local clone using existing dependencies is not remote/offline reproducibility evidence.

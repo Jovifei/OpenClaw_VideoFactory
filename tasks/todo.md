@@ -2548,3 +2548,204 @@ Plan: `docs/superpowers/plans/2026-08-24-rc-highpass-speech-cues.md`.
 - [x] Produce V8 visual, all-frame report, audible QA preview and actual-project-root Jianying draft.
 - [x] Fix QA preview mixing so all 11 speech subsegments—not only the five parent segments—are audible.
 - [ ] Jovi refreshes/reopens Jianying, listens to V8 and manually exports if approved.
+## PHASE1-TOPIC-TO-JIANYING-010 — IMPLEMENTING
+
+Plan: `tasks/plans/2026-08-30-phase1-topic-to-jianying-openmontage.md`.
+Change Request: `reports/change_requests/PHASE1-TOPIC-TO-JIANYING-010.json`.
+
+- [x] Create isolated E-drive worktree and prove the clean baseline.
+- [x] Vendor and qualify the pinned AGPLv3 OpenMontage subset.
+- [x] Add topic request/research/script selection/scene plan contracts.
+- [x] Connect `create-subject` to the existing SQLite lifecycle.
+- [x] Add generic Remotion scene/still/contact-sheet rendering and visual gates.
+- [ ] Bind SAMI timing, Jianying draft generation, and expanded review evidence.
+- [ ] Run three fixture qualifications, one real-topic E2E, full regression, and fresh clone.
+- [ ] Record the final candidate as `PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW`; wait for Jovi before any phase pass.
+- [ ] Sync repository docs, Obsidian project memory, and Codex durable memory.
+# PHASE1-TOPIC-OPENMONTAGE-010 / Task 2 — SUBJECT RESEARCH + SCRIPT PLANNING
+
+- [x] RED: add focused schema, policy, selection, scene-plan, CLI, containment, and lifecycle tests; capture expected failures.
+- [x] GREEN: add five strict versioned schemas and validation catalog registration.
+- [x] GREEN: implement `src/factory/phase1_topic.py` policy, normalization, validation, MPT ingestion, scoring/selection, director-script and scene-plan compilation.
+- [x] GREEN: extend Phase 1 CLI with idempotent `create-subject`, internal `attach-research`, and planning-only `run` lifecycle through ASSETS/`subject_plan_ready`.
+- [x] GREEN: update `video-production-chain` and `topic-intelligence` user-topic research contracts.
+- [x] VERIFY: run focused tests and full `tests/phase1_local` without `PYTHONPATH`; inspect diff and compatibility.
+- [x] REVIEW: record red/green evidence, files, residual concerns, and commit SHA.
+
+## Review
+
+- RED: `python -m pytest tests/phase1_local/test_phase1_topic.py tests/phase1_local/test_phase1_subject_cli.py -q` failed collection with two expected `ModuleNotFoundError: src.factory.phase1_topic` errors.
+- GREEN: focused topic/CLI/projection suite passed 26 tests; full Phase 1 local suite passed 43 tests.
+- Final combined verification: `python -m pytest tests/phase1_local tests/openmontage/test_projection.py -q` => `56 passed`.
+- Subject jobs stop at SQLite `ASSETS` with `subject_plan_ready`; no renderer, FFmpeg fallback, Remotion, Jianying, provider approval, or publication behavior was added.
+- MPT remains an injectable boundary. Real MPT/provider execution was not performed by these offline tests.
+
+### Spec review remediation
+
+- [x] Pass deterministic score/dimension rewrite guidance to the second MPT attempt while preserving the original output subject.
+- [x] Persist subject-planning failures as `FAILED` and verify retry resumes at `SCRIPTING`.
+- [x] Reject recursive raw candidate controls before canonical reconstruction.
+- [x] Require candidate IDs to be exactly `{1,2,3}` in code and schema.
+- [x] Bind attached and persisted research topic/digest to the subject request and SQLite metadata.
+- [x] Fail closed for the five new contracts when jsonschema is unavailable, without changing legacy validation behavior.
+- RED remediation evidence: focused tests initially reported 5 failures covering the missing behaviors.
+- GREEN remediation evidence: focused suite `24 passed`; full `tests/phase1_local` suite `49 passed`.
+
+### Quality review remediation
+
+- [x] Feed verified research claims/source bindings into the first MPT prompt and score factual consistency against claim text.
+- [x] Compile Director beats from selected prose and attach only semantically matching fact references.
+- [x] Keep requested idempotency keys as audit metadata while canonical content controls job identity.
+- [x] Project every local-subject lifecycle mutation, including failure, cancellation, and retry.
+- [x] Enforce absolute HTTP(S) URLs with hosts and unique source/fact IDs.
+- RED quality evidence: focused tests initially reported 9 failures for the missing behaviors.
+- GREEN quality evidence: focused suite `31 passed`; final Phase 1 local plus projection suite `70 passed`.
+
+### P1 contradiction-probe remediation
+
+- [x] Replace four-character overlap with conservative full/80%-contiguous claim anchors.
+- [x] Reject fact binding when negation or contradiction markers make the prose uncertain.
+- [x] Use MPT prose only for a filtered hook; construct technical/evidence beats from verified claims.
+- [x] Require rewrite guidance to include complete verified claim anchors without negation.
+- RED: reviewer probe produced 3 expected focused failures.
+- GREEN: final Phase 1 local plus projection suite `72 passed`.
+# PHASE1-TOPIC-OPENMONTAGE-010 — Task 3 Remotion technical explainer
+
+- [x] RED: add focused tests for scene/timing validation, visual semantics, render command safety, canvas modes, and report hashes.
+- [x] GREEN: add the generic `TechnicalExplainer` composition and dynamic metadata.
+- [x] GREEN: add the strict E-drive Node renderer and Python visual orchestration/review module.
+- [x] GREEN: generalize the post-render canvas gate while preserving RC behavior.
+- [x] VERIFY: run focused Python tests, relevant video tests, npm typecheck, and a real direct still.
+- [x] REVIEW: inspect diff/evidence, record concerns here, and commit the scoped implementation.
+
+### Review — completed locally
+
+- RED evidence: missing `phase1_topic_visual` module; then missing `validate_report_canvas` caused three expected failures.
+- GREEN evidence: 407 relevant tests passed; Remotion `npm run typecheck` passed.
+- Real render: 5 midpoint PNGs, 5 visual-only clips, and a 5-second 1920×1080 master. The first render exposed silent AAC; the renderer now strips audio explicitly and the post-render sequential 150-frame check passes.
+- Evidence root: `E:\Claude_allow\Download\phase1-topic-openmontage-010-smoke` (not repository evidence and not a Phase 1 pass).
+
+### Spec-review correction — completed locally
+
+- Canonical inputs are now the separate genuine Task2 `director_script.json` and strict three-key `scene_plan.json`; timing binds both actual byte hashes and the script ID must match.
+- Hook scenes use `hook_question` and may omit refs; every factual scene remains source-bound. Aspect is an explicit renderer argument.
+- Text validation uses pinned `@remotion/layout-utils@4.0.500` (`measureText`, `fitText`, `fillTextBox`) with declared minimum font sizes and line limits; the failed DOM measurement experiment was removed.
+- Genuine Task2 16:9 and 9:16 five-scene renders passed. The 16:9 contact sheet and sequential 150-frame post-render gate passed; an actual long-text Node probe failed before bundling with `layout_text_overflow_preflight`.
+- Relevant suites: 410 passed; Remotion typecheck and Python compile passed. Root `tests/` collection remains blocked by three pre-existing missing `experiments` modules unrelated to this task.
+- Final text-layout correction: aspect geometry is a single source of truth; the exact measured title width and per-scene main/item font sizes now drive JSX. Remotion contract tests reject any return to hardcoded grammar sizes, and both genuine Task2 aspect renders were refreshed.
+- Evidence-integrity correction: post-render layout validation now receives measured media dimensions. `render_and_review` verifies the report-declared master/still/clip paths and hashes, rejects stale or extra scene files, and binds render report, contact sheet, post report and media hashes in `visual_review.json`.
+- Fresh current-HEAD evidence: `E:\Claude_allow\Download\phase1-topic-openmontage-010-current\16x9` and `...\9x16`; both were created through `render_and_review` and passed their 150-frame post-render gates.
+
+# PHASE1-TOPIC-OPENMONTAGE-010 — Task 4A timing/audio/Jianying service
+
+- [x] RED: add strict topic timing tests for scene-plan identity/count/hash, duration range, voice overflow, and legacy compatibility.
+- [x] RED: add multi-clip Jianying import tests for render-report binding, containment, tamper/extra/index/duration failures, expanded audio, and track counts.
+- [x] RED: add audible-preview binding/decode/loudness tests and dependency-injected subject-media orchestration tests.
+- [x] GREEN: extend timing probe, Jianying draft builder, and audible preview without changing legacy CLI behavior.
+- [x] GREEN: add `src/factory/phase1_subject_media.py` and strict result validation needed by this service.
+- [x] VERIFY: run focused red/green cycles, relevant video + Phase 1 suites, and inspect the scoped diff.
+- [ ] E2E: run one bounded five-scene SAMI / current Task3 visual / pinned Jianying Skill proof on E:, with automatic export disabled. **BLOCKED:** the fresh 40s render correctly failed the existing all-frame gate because the 12.4s narration leaves an excessive static final-scene tail; preview and draft were not created.
+- [x] REVIEW: record evidence paths, residual concerns, and commit `feat(jianying): bind subject timing and editable draft`.
+
+## Task 4A review
+
+- RED: the new subject-media import failed collection as expected; focused contract failures then covered the missing bindings.
+- GREEN: focused Task4A plus legacy timing/Jianying tests passed 15 tests; final `tests/video tests/phase1_local` passed 389 tests; compileall passed.
+- Real evidence: `E:\Claude_allow\Download\phase1-topic-task4a-e2e-20260830-03` contains a new SAMI timing manifest, five fresh clips/stills, 40s visual master, render report, contact sheet, and failed post-render report. The post-render gate reported `all_frame_static_run_excessive` before preview/draft creation.
+- No package was installed or downloaded. The existing `E:\project\OpenClaw_VideoFactory\.venv\Scripts\python.exe` supplied the pinned Skill runtime dependencies through the explicit `media_python` boundary.
+- Automatic Jianying export remains disabled; no DB transition, CLI/review-package/status change, or phase promotion was added.
+
+### Task 4A spec-review hardening
+
+- [x] Add and register the strict `phase1_subject_media_result` schema.
+- [x] Require all timing/render/review/preview/Jianying outputs, passed statuses, and cross-hashes before READY.
+- [x] Persist sanitized `media_failure.json` with the exact failed stage while preserving workdir evidence.
+- [x] Require explicit `media_python` or `PHASE1_MEDIA_PYTHON`; retain explicit/env Jianying Skill root only.
+- [x] Bind each clip duration to both timing-manifest and render-report boundaries.
+- [x] Persist the exact render-report filename and SHA-256 in the preview report.
+- [x] Verify focused tests, full video + Phase 1 tests, Schema meta-validation, compileall, and diff checks.
+
+Spec-review verification: focused `10 passed`; full `393 passed`; Draft 2020-12 Schema check and compileall passed. The narration/static-tail issue remains deliberately unchanged and no E2E retry was run.
+
+### Task 4A clip-duration contract correction
+
+- [x] RED: missing and independently tampered `clip.duration_microseconds` produced three expected failures.
+- [x] GREEN: Remotion emits exact rounded microseconds; Jianying validates report boundary, timing window, declared duration, and probed duration within one frame.
+- [x] VERIFY: focused `28 passed`; full video + Phase 1 `396 passed`; Remotion typecheck and diff check passed.
+
+### Task 4A actual-timeline and READY-quality correction
+
+- [x] RED: reject moved/truncated editor segments and status-only READY reports while allowing one-frame quantization.
+- [x] GREEN: measure and persist every imported visual segment, validate ordered starts/durations/gaps/end, and inspect required timing/render/review/preview/Jianying conclusions.
+- [x] VERIFY: focused `17 passed`; full video + Phase 1 `400 passed`; compileall and diff check passed.
+
+### Task 4A optimized-mode fail-close correction
+
+- [x] RED: `python -O` rejected incomplete reports but lacked the required stable field-specific error.
+- [x] GREEN: replace every READY validator assert with explicit `ready_report_contract_invalid:<field>` conditions.
+- [x] VERIFY: focused `7 passed`; full video + Phase 1 `401 passed`; production assert grep empty, compileall and diff check passed.
+
+### Task 4A duration-coverage correction — code repaired; content E2E pending
+
+- [x] RED: add duration-budget and voice-coverage contract tests for the topic script, timing probe, and subject-media orchestration.
+
+# PHASE1-TOPIC-OPENMONTAGE-010 — Task 4B subject review delivery
+
+Current authoritative checkpoint (2026-08-31): Task4B implementation is committed
+as `74203ac`, independently reviewed, and regression-tested. Task4A no-repeat
+and atomic receipt fixes are committed as `aa723c7`; latest real timing-only
+probe is 33.2s/40s. Historical unchecked entries below describe prior attempts,
+not the current code state. No full current content-qualified E2E exists.
+
+## Task 5 — topic-only acceptance adaptation
+
+- [x] RED: add subject prereview and topic-only Gate contract tests, while preserving legacy topic/reference cases.
+- [x] GREEN: strictly validate subject review packages, normalize only validated local-subject input, and bind the preview-native-caption review evidence.
+- [x] GREEN: add a schema-scoped `topic_only_v1` acceptance path without loosening legacy reference requirements.
+- [x] VERIFY: run focused acceptance/subject tests and inspect the resulting diff; do not execute the formal Gate.
+- [x] REVIEW: update status, phase/runbook documentation and current-policy override; no phase pass, export, or commit.
+
+### Task 5 review
+
+- RED: the new subject-prereview fixture was blocked because the implementation only accepted the legacy package; `topic_only_v1` manifests failed schema validation because both scope fields were unknown (4 expected failures).
+- RED review hardening: optional references without `human_review_approved` and duplicate topic-only fixture control jobs each produced their expected failure before the Gate checks were tightened.
+- RED identity/path hardening: a `phase1_subject` package with either non-`local_subject` metadata or fixture was accepted, and a valid nested legacy `difference_report.json` artifact was not found; both failed before the respective fixes.
+- GREEN: `D:\Python\Python3.14\python.exe -m pytest tests\phase1_acceptance tests\phase1_local\test_phase1_subject_delivery.py tests\phase1_local\test_phase1_subject_cli.py tests\video\test_phase1_subject_media.py -q` passed 54 tests.
+- Scope: no formal Gate execution, no real human approval, Jianying export, media render, status promotion, or commit. MOCK structured-review fixtures are test-only.
+
+- [x] RED: add mocked-media tests for receipt containment/tamper detection, self-contained review packages, native-subtitle quality, lifecycle resume/cancellation, and aspect forwarding.
+- [x] GREEN: add strict subject delivery schemas and receipt-to-package/quality verifier.
+- [x] GREEN: make local-subject `run` execute planning plus one bounded media/delivery attempt by default; retain `--plan-only` as a diagnostic.
+- [x] VERIFY: run the focused Task 4B, Phase 1 local, video, and OpenMontage tests with `D:\Python\Python3.14\python.exe`; no real media run.
+
+## Task 4B review
+
+- Implementation committed and reviewed at `74203ac`; no actual human approval, automatic export or publication is implied. Subsequent Task5 separately authorizes documentation and Obsidian updates.
+- [x] GREEN: derive 25–60s Chinese narration from verified claims and safe non-factual process framing without weakening factual binding.
+- [x] GREEN: enforce the 0.75 voice/visual coverage floor for scene-plan timing and subject-media rendering.
+- [x] RED: add no-duplicate narration-frame and atomic READY-receipt tests for final Task 4A review remediation.
+- [x] GREEN: build a finite, non-repeating factual/process beat sequence and persist the validated subject-media receipt atomically.
+- [ ] VERIFY: run focused and full regressions, then one fresh 40-second E2E-06; stop on any failed gate.
+- [ ] REVIEW: inspect evidence and commit `fix(phase1): eliminate repetitive narration padding`.
+- [ ] VERIFY: run the final full Task4A regression after the six-to-nine-beat timing compatibility correction.
+- [ ] E2E: **BLOCKED:** new 40s timing passed at 38.280s / 0.957 coverage, then the one complete current subject-media run stopped at render with a sanitized `ModuleNotFoundError`; `media_failure.json` has `failed_stage=render`, so no preview/draft was created and no retry is permitted.
+- [ ] REVIEW: inspect the stopped E2E evidence and commit the scoped fix.
+
+## Current remaining work (2026-08-31 continuation)
+
+Task5 parent review repair: six executable Schema negatives (missing/duplicate
+preview, native subtitles, quality roles) failed before moving `contains`
+constraints onto the artifacts array, then passed; full scoped set 60 passed.
+No mock approval is a real acceptance receipt.
+
+- [x] Finish independent Task5 spec and quality reviews before committing its gate adaptation (`ebecc78`).
+- [x] Repair Python/JavaScript/Remotion disagreement for `engineering_process_frame` without inventing fact references; add executable cross-language regression.
+
+  - RED: actual Node builder rejected a legal process frame with `layout_text_overflow_preflight`; compiled Remotion had no isolated evidence-role validator. Three Python malformed-ref/hook negatives also failed.
+  - GREEN: Node and compiled Remotion now accept non-factual process frames with empty refs and reject missing factual refs, spurious process refs, unknown roles and malformed refs. Python validates reference shape and hook position too.
+  - Verification: `npm run test:contracts` includes executable Node+compiled Remotion checks; Python visual contracts 23 passed, full related regression 566 passed/1 skipped. Spec and quality reviews approved after reverse-hook binding repair. Real 40-second visual smoke rendered seven scenes, complete decode and 1200-frame scan passed. Contact-sheet semantic review requires changes (sparse cards, generic process filler, near-static 321 frames); no new Jianying draft or content approval. See reports/phase1/topic_scene_evidence_20260831.json.
+- [ ] Replace lexical-only editorial acceptance with a source-bound machine review design; do not lower 85 or repeat generation beyond the approved rewrite budget.
+- [ ] Improve topic-specific diagram content; generic sparse cards are not content-qualified visuals.
+- [ ] Complete the read-only Backlot visual board (current implementation is state API only).
+- [ ] Run current full E2E and remote fresh-clone qualification, then obtain final Jovi review.
+- [x] Sync Obsidian current progress and decisions through verified checkpoint; preserve incomplete state and distinguish unmerged feature worktree from main.

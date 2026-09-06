@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "topic": "I2C总线为什么要上拉电阻",
+  "topic_digest": "ceda09b09634e435b4856c2d4fef1484262d638e3c616c6f92696bfeac81c7a4",
+  "sources": [
+    {"id": "nxp_um10204", "url": "https://www.nxp.com/docs/en/user-guide/UM10204.pdf", "title": "I2C-bus specification and user manual", "kind": "standard"},
+    {"id": "ti_slva689", "url": "https://www.ti.com/lit/pdf/slva689", "title": "I2C Bus Pull-Up Resistor Calculation", "kind": "official_document"}
+  ],
+  "facts": [
+    {"id": "open_drain", "claim": "I2C线路通常采用开漏结构；器件主动拉低，释放后由上拉电阻恢复高电平。", "source_ids": ["nxp_um10204", "ti_slva689"]},
+    {"id": "rise_time", "claim": "上拉电阻与总线电容决定上升沿；电阻过大可能使线路来不及达到有效高电平。", "source_ids": ["ti_slva689"]},
+    {"id": "sink_current", "claim": "电阻过小则增加低电平灌电流，可能超出器件的拉低能力；阻值必须兼顾两端限制。", "source_ids": ["ti_slva689", "nxp_um10204"]}
+  ],
+  "comparables": [
+    {"url": "https://www.ti.com/lit/pdf/slva689", "title": "TI pull-up design explanation", "hook_style": "从常见阻值选择问题切入", "structure": "开漏原理、阻值上下限、速度与功耗、计算示例", "pace": "文档不包含时间轴，未推断视频节奏", "visual_grammar": "电路示意、公式和参数表；仅借鉴组织方式，不复制图像"}
+  ]
+}

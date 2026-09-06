@@ -1,0 +1,3 @@
+# Provenance hashes bind actual checkout bytes, including on Windows.
+third_party/openmontage/** text eol=lf
+LICENSE text eol=lf

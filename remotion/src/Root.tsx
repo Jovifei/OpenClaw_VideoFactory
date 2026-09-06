@@ -4,6 +4,7 @@ import {durationSeconds, fpsOf, validateInput, type CandidateRenderInput} from '
 import {CandidateVideo} from './Video';
 import {ReferenceFlashVisual, type FlashVisualInput} from './ReferenceFlashVisual';
 import {ReferenceRcHighPassVisual, type RcHighPassVisualInput} from './ReferenceRcHighPassVisual';
+import {TechnicalExplainer, validateTechnicalExplainer, type TechnicalExplainerInput} from './TechnicalExplainer';
 
 export const calculateCandidateMetadata: CalculateMetadataFunction<CandidateRenderInput> = ({props}) => {
   const input = validateInput(props);
@@ -80,7 +81,20 @@ const defaultRcHighPassProps: RcHighPassVisualInput = {
   ],
 };
 
+const defaultTechnicalProps: TechnicalExplainerInput = {schema_version:'1.0',title:'通用技术解释器',aspect:'16:9',fps:30,duration_seconds:5,scenes:[
+  'kinetic_typography','system_diagram','timeline','comparison_card','checklist'].map((visual_type,index)=>({start_seconds:index,end_seconds:index+1,scene_index:index+1,visual_type:visual_type as TechnicalExplainerInput['scenes'][number]['visual_type'],narration:`scene ${index+1}`,on_screen_knowledge:`知识点 ${index+1}：结构化事实`,information_role:'explain_verified_fact',narrative_role:'explain',shot_intent:'progressive evidence reveal',motion:'progressive_reveal',transition:'cut',source_refs:[`fact${index+1}`]}))};
+
 export const RemotionRoot: React.FC = () => <>
+  <Composition
+    id="TechnicalExplainer"
+    component={TechnicalExplainer}
+    durationInFrames={150}
+    fps={30}
+    width={1920}
+    height={1080}
+    defaultProps={defaultTechnicalProps}
+    calculateMetadata={({props})=>{const input=validateTechnicalExplainer(props as TechnicalExplainerInput);return {durationInFrames:Math.round(input.duration_seconds*input.fps),fps:30,width:input.aspect==='16:9'?1920:1080,height:input.aspect==='16:9'?1080:1920};}}
+  />
   <Composition
     id="P1Candidate"
     component={CandidateVideo}

@@ -1,35 +1,56 @@
 {
-  "version": "2.3",
-  "core_external": [
-    "larksuite/cli",
-    "remotion-dev/skills",
+  "version": "3.0",
+  "updated": "2026-09-05",
+  "current_product_phase": "PHASE_1_LOCAL_VIDEO_FACTORY",
+  "current_status": "in_progress",
+  "canonical_docs": [
+    "START_HERE_CODEX.md",
+    "PROJECT_STATUS.yaml",
+    "docs/README.md",
+    "docs/CURRENT_ARCHITECTURE.md",
+    "docs/PRODUCT_PHASES.md",
+    "handoff/codex/PROJECT_HANDOFF_20260905.md",
+    "handoff/codex/CURRENT_BACKLOG.yaml",
+    "runbook/11_PHASE1_COMPLETION.md"
+  ],
+  "phase1_core": {
+    "control": "src/factory/phase1_cli.py + src/factory/db.py",
+    "topic_planning": "src/factory/phase1_local.py + src/factory/director/",
+    "reference_analysis": "src/factory/reference_video.py",
+    "video_pipeline": "video_factory/pipeline/",
+    "visual_engine": "remotion/ + deterministic assets",
+    "media_engine": "FFmpeg/ffprobe",
+    "acceptance": "src/factory/phase1_acceptance.py + src/factory/phase1_gate.py",
+    "mandatory_result": "local MP4 + quality report + review package + human review",
+    "optional_editable_delivery": "jianying-editor-skill"
+  },
+  "aspect_ratio_policy": "job_scoped_9_16_or_16_9",
+  "mascot_policy": "explicit_opt_in_jovi_original_asset_receipt_required",
+  "direct_external_or_runtime_components": [
+    "FFmpeg/ffprobe",
+    "Remotion",
+    "PySceneDetect",
+    "faster-whisper (optional cached reference ASR)",
+    "luoluoluo22/jianying-editor-skill (optional editable backend)"
+  ],
+  "method_reference_projects": [
+    "HITsz-TMG/VideoClaw",
     "Agents365-ai/video-podcast-maker",
-    "artokun/comfyui-mcp",
-    "Jovifei/ian-fenzhu-illustrations",
-    "Hommy-master/capcut-mate OR luoluoluo22/jianying-editor-skill"
+    "OpenMontage",
+    "OpenReels/Code2MP4-like contract patterns"
   ],
-  "local_skills": [
-    "audio-subtitle-engine",
-    "codex-template-maintainer",
-    "comfyui-gpu-renderer",
-    "douyin-video-factory",
-    "feishu-video-factory-operator",
-    "jianying-draft-exporter",
-    "media-asset-curator",
-    "pink-pig-mascot-director",
-    "reference-video-analyzer",
-    "reference-video-recreator",
-    "remotion-layout-engine",
-    "script-storyboard-director",
-    "topic-intelligence",
-    "video-quality-gate",
-    "video-production-chain"
+  "phase2_only": [
+    "OpenClaw runtime orchestration",
+    "larksuite/cli",
+    "Feishu topic cards and controlled delivery",
+    "production Cron"
   ],
-  "editorial_plan": "config/account_columns.yaml",
-  "mascot_plan": "config/mascot_usage.yaml",
-  "feishu_plan": "config/feishu.example.yaml",
-  "default_draft_backend": "jianying-editor-skill",
-  "main_renderer": "remotion+ffmpeg",
-  "gpu": "RTX 4070 SUPER via ComfyUI/faster-whisper/Real-ESRGAN/NVENC",
+  "deferred": [
+    "ComfyUI model/node expansion",
+    "WhisperX",
+    "advanced perceptual similarity",
+    "automatic Jianying export",
+    "automatic Douyin publication"
+  ],
   "publish": "manual"
 }

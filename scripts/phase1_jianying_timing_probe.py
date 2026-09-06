@@ -29,6 +29,7 @@ from phase1_jianying_timing import (  # noqa: E402
 
 
 DEFAULT_DRAFTS_ROOT = Path("E:/OpenClaw_VideoFactory_Runtime/jianying_timing_probes")
+DEFAULT_MIN_VOICE_COVERAGE = 0.75
 
 
 def _output_root(path: Path, field: str) -> Path:
@@ -72,6 +73,7 @@ def _narration_parts(script_value: dict[str, Any], beat_index: int, beat: dict[s
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--script", required=True, type=Path)
+    parser.add_argument("--scene-plan", type=Path)
     parser.add_argument("--drafts-root", type=Path, default=DEFAULT_DRAFTS_ROOT)
     parser.add_argument("--name", required=True)
     parser.add_argument("--manifest", required=True, type=Path)
@@ -80,23 +82,62 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--skill-root", required=True, type=Path)
     parser.add_argument("--gap-ms", type=int, default=DEFAULT_GAP_MICROSECONDS // 1000)
     parser.add_argument("--visual-duration-seconds", type=float, default=50.0)
+    parser.add_argument("--min-voice-coverage", type=float, default=None,
+                        help="Subject scene plans require at least 0.75; legacy no-scene-plan runs may explicitly use 0.")
     parser.add_argument("--width", type=int, default=1920)
     parser.add_argument("--height", type=int, default=1080)
     return parser
 
 
+def resolve_min_voice_coverage(*, scene_plan_present: bool, requested: float | None) -> float:
+    if requested is None:
+        return DEFAULT_MIN_VOICE_COVERAGE if scene_plan_present else 0.0
+    if requested == 0.0:
+        if scene_plan_present:
+            raise ValueError("scene_plan_min_voice_coverage_invalid")
+        return 0.0
+    if not 0.6 <= requested <= 0.95:
+        raise ValueError("min_voice_coverage_invalid")
+    if scene_plan_present and requested < DEFAULT_MIN_VOICE_COVERAGE:
+        raise ValueError("scene_plan_min_voice_coverage_invalid")
+    return requested
+
+
+def validate_scene_plan_binding(script: dict[str, Any], scene_plan: dict[str, Any], *, target_duration_seconds: float,
+                                voice_end_microseconds: int, min_voice_coverage: float = DEFAULT_MIN_VOICE_COVERAGE) -> list[dict[str, Any]]:
+    scenes = scene_plan.get("scenes") if isinstance(scene_plan, dict) else None
+    beats = script.get("beats") if isinstance(script, dict) else None
+    if not isinstance(scenes, list) or not isinstance(beats, list) or len(scenes) != len(beats):
+        raise ValueError("scene_plan_scene_count_mismatch")
+    if not script.get("script_id") or scene_plan.get("script_id") != script.get("script_id"):
+        raise ValueError("scene_plan_script_id_mismatch")
+    if not 25 <= float(target_duration_seconds) <= 60:
+        raise ValueError("scene_plan_visual_duration_invalid")
+    if voice_end_microseconds > round(float(target_duration_seconds) * 1_000_000):
+        raise ValueError("voice_exceeds_visual_target")
+    coverage = voice_end_microseconds / round(float(target_duration_seconds) * 1_000_000)
+    if coverage < min_voice_coverage:
+        raise ValueError("voice_coverage_below_minimum")
+    return scenes
+
+
 def main() -> int:
     args = build_parser().parse_args()
     script_path = args.script.resolve()
+    scene_plan_path = args.scene_plan.resolve() if args.scene_plan else None
     drafts_root = _output_root(args.drafts_root, "drafts_root")
     manifest_path = _output_root(args.manifest, "manifest")
     skill_root = args.skill_root.resolve()
     if not script_path.is_file():
         raise ValueError("script_missing")
+    if scene_plan_path is not None and not scene_plan_path.is_file():
+        raise ValueError("scene_plan_missing")
     if args.gap_ms < 0 or args.gap_ms > 2000:
         raise ValueError("gap_invalid")
     if args.visual_duration_seconds < MIN_VISUAL_DURATION_SECONDS or args.visual_duration_seconds > MAX_VISUAL_DURATION_SECONDS:
         raise ValueError("visual_duration_invalid")
+    min_voice_coverage = resolve_min_voice_coverage(scene_plan_present=scene_plan_path is not None,
+                                                    requested=args.min_voice_coverage)
     if not (skill_root / "scripts" / "jy_wrapper.py").is_file():
         raise ValueError("skill_root_invalid")
     drafts_root.mkdir(parents=True, exist_ok=True)
@@ -190,6 +231,15 @@ def main() -> int:
             segments.append(parent)
             cursor_us = parent_end_us + (gap_us if index < len(beats) else 0)
         visual_duration_us = round(args.visual_duration_seconds * 1_000_000)
+        scene_plan_value = None
+        if scene_plan_path is not None:
+            scene_plan_value = json.loads(scene_plan_path.read_text(encoding="utf-8"))
+            validate_scene_plan_binding(script_value, scene_plan_value, target_duration_seconds=args.visual_duration_seconds,
+                                        voice_end_microseconds=int(segments[-1]["end_microseconds"]), min_voice_coverage=min_voice_coverage)
+        voice_end_microseconds = int(segments[-1]["end_microseconds"])
+        voice_coverage_ratio = voice_end_microseconds / visual_duration_us
+        if voice_coverage_ratio > 1.0 or voice_coverage_ratio < min_voice_coverage:
+            raise ValueError("voice_coverage_below_minimum")
         for index, segment in enumerate(segments):
             segment["scene_start_microseconds"] = int(segment["start_microseconds"])
             segment["scene_end_microseconds"] = (
@@ -228,8 +278,10 @@ def main() -> int:
                 "used_backends": backend_used,
                 "segment_count": len(segments),
                 "rendered_audio_segment_count": len(backend_used),
-                "voice_end_microseconds": segments[-1]["end_microseconds"],
-                "timeline_duration_seconds": round(float(segments[-1]["end_microseconds"]) / 1_000_000, 6),
+                "voice_end_microseconds": voice_end_microseconds,
+                "timeline_duration_seconds": round(float(voice_end_microseconds) / 1_000_000, 6),
+                "coverage_ratio": round(voice_coverage_ratio, 6),
+                "minimum_coverage_ratio": min_voice_coverage,
             },
             "visual_duration_seconds": args.visual_duration_seconds,
             "probe": {
@@ -240,9 +292,11 @@ def main() -> int:
             "segments": segments,
             "visual_cues": visual_cues,
         }
+        if scene_plan_path is not None:
+            manifest["scene_plan"] = {"filename": scene_plan_path.name, "sha256": sha256(scene_plan_path)}
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
         manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        print(json.dumps({"ok": True, "code": "timing_manifest_ready", "manifest": str(manifest_path), "segments": segments}, ensure_ascii=False))
+        print(json.dumps({"ok": True, "code": "timing_manifest_ready", "manifest": str(manifest_path), "segments": segments, "voice_coverage_ratio": round(voice_coverage_ratio, 6)}, ensure_ascii=False))
         return 0
     except Exception:
         if draft_path.exists():

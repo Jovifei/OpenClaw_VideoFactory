@@ -1,0 +1,77 @@
+{
+  "id": "GIT-REMOTE-BRANCH-CONSOLIDATION-011",
+  "mode": "remote_branch_consolidation",
+  "granted_by": "Jovi_user_request_2026-09-06",
+  "goal": "Audit every origin/codex branch and merge only the two non-ancestor Phase 1 branches into main after verification.",
+  "does_not_imply_phase_pass": true,
+  "scope": {
+    "integration_branch": "codex/branch-consolidation-011",
+    "target_branch": "main",
+    "target_remote": "origin",
+    "source_branches": [
+      "origin/codex/phase1-topic-openmontage-010",
+      "origin/codex/phase1-reference-video-analysis-001"
+    ],
+    "already_merged_branches": [
+      "origin/codex/ai-director-video-factory-phase2-001",
+      "origin/codex/p0-feishu-single-consumer-086",
+      "origin/codex/pink-pig-phase1-5-composition",
+      "origin/codex/product-optimization-093"
+    ],
+    "allowed_actions": [
+      "fetch",
+      "read_only_branch_audit",
+      "create_isolated_integration_worktree",
+      "merge",
+      "resolve_predicted_document_conflicts",
+      "repair_registry_fixture_compatibility",
+      "rebuild_existing_ignored_demo_artifacts",
+      "focused_test",
+      "commit_merge_result",
+      "merge_verified_result_into_local_main",
+      "push_verified_main"
+    ],
+    "forbidden_actions": [
+      "branch_delete",
+      "worktree_delete",
+      "reset",
+      "clean",
+      "rebase",
+      "force_push",
+      "phase_promotion",
+      "provider",
+      "model_download",
+      "openclaw",
+      "feishu",
+      "cron",
+      "new_media_render",
+      "automatic_export",
+      "publication"
+    ]
+  },
+  "stop_if": [
+    "unexpected_merge_conflict",
+    "structured_file_parse_failure",
+    "focused_regression_failure",
+    "unrelated_staged_change",
+    "push_failure"
+  ]
+  ,"verification": {
+    "registry_and_storyboard": "73 passed",
+    "media_and_schema": "88 passed",
+    "merged_phase1_scope": "502 passed, 1 external deprecation warning",
+    "network_provider_used": false,
+    "automatic_export_or_publication": false
+  }
+  ,"repair_boundary": {
+    "authorized_by": "Jovi_user_authorization_2026-09-06",
+    "source_path": "examples/pink_pig_story_demo/storyboard.json",
+    "allowed_runtime_outputs": [
+      "dist/pink_pig_story_demo.mp4",
+      "dist/story_demo/",
+      "dist/pink_pig_story_demo_offline.mp4",
+      "dist/story_demo_offline/"
+    ],
+    "purpose": "Align the committed fixture with registry 1.4.0 and recreate ignored legacy demo evidence only for regression verification."
+  }
+}

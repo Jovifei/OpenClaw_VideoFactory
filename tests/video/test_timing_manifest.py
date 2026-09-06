@@ -65,6 +65,13 @@ def test_manifest_rejects_absolute_audio_paths() -> None:
         timing.validate_manifest(value)
 
 
+def test_timing_helpers_accept_the_director_contract_six_beat_subject(tmp_path: Path) -> None:
+    timing = _load_module("scripts/phase1_jianying_timing.py", "timing_six_beat_subject")
+    script = {"beats":[{"narration":"旁白","subtitle":"字幕"} for _ in range(6)]}
+    source = tmp_path / "script.json"; source.write_text(__import__("json").dumps(script), encoding="utf-8")
+    assert len(timing.load_script(source)[1]) == 6
+
+
 def test_manifest_allows_explicit_long_form_tail() -> None:
     timing = _load_module("scripts/phase1_jianying_timing.py", "timing_manifest_long_form_test")
     value = _manifest()

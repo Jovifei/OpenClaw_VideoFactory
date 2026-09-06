@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test:contracts": "tsc --noEmit false --outDir .contract-build && node scripts/verify-contracts.mjs",
+    "test:contracts": "tsc --noEmit false --outDir .contract-build && node scripts/verify-contracts.mjs && node scripts/verify-topic-evidence.mjs",
     "render:candidate": "node scripts/render-candidate.mjs"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.500",
     "@remotion/cli": "4.0.500",
+    "@remotion/layout-utils": "4.0.500",
     "@remotion/media-utils": "4.0.500",
     "@remotion/renderer": "4.0.500",
     "react": "19.2.8",
