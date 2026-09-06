@@ -2,7 +2,8 @@ import React from 'react';
 import {fillTextBox, fitText, measureText} from '@remotion/layout-utils';
 import {AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 
-export type TechnicalScene = {start_seconds:number; end_seconds:number; scene_index:number; scene_type?:string; visual_type:'kinetic_typography'|'system_diagram'|'timeline'|'comparison_card'|'checklist'; narration:string; on_screen_knowledge:string; information_role:string; narrative_role:string; shot_intent:string; motion:string; transition:string; source_refs:string[]};
+export type I2CVisualSpec = {kind:'i2c_bus_v1'; fact_refs:string[]; labels:string[]};
+export type TechnicalScene = {start_seconds:number; end_seconds:number; scene_index:number; scene_type?:string; visual_type:'kinetic_typography'|'system_diagram'|'timeline'|'comparison_card'|'checklist'; narration:string; on_screen_knowledge:string; information_role:string; narrative_role:string; shot_intent:string; motion:string; transition:string; source_refs:string[]; visual_spec?:I2CVisualSpec};
 export type TechnicalExplainerInput = {schema_version:'1.0'; title:string; aspect:'16:9'|'9:16'; fps:30; duration_seconds:number; scenes:TechnicalScene[]};
 export const ASPECT_GEOMETRY={'16:9':{titleMaxWidth:1450,sceneWidth:1752,titleMinFont:42,titleMaxFont:58,itemMinFont:24},'9:16':{titleMaxWidth:900,sceneWidth:936,titleMinFont:40,titleMaxFont:54,itemMinFont:22}} as const;
 type SceneTextLayout={mainFontSize:number;itemFontSizes:number[];itemBoxWidth:number;maxLines:number;minFontSize:number;maxFontSize:number;columns:number};
@@ -12,9 +13,30 @@ const FONT='Microsoft YaHei';
 const clamp={extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const};
 const Box:React.FC<{children:React.ReactNode;style?:React.CSSProperties}>=({children,style})=><div style={{background:palette.panel,border:`2px solid ${palette.line}`,borderRadius:24,padding:28,...style}}>{children}</div>;
 
+const I2CBusDiagram:React.FC<{scene:TechnicalScene;local:number}>=({scene,local})=>{
+ const labels=scene.visual_spec?.labels??['SDA','SCL','START','ADDRESS','ACK/NACK','DATA','STOP'];
+ const reveal=interpolate(local,[0,24],[0,1],clamp);
+ const slots=[150,350,550,750,950,1150,1350];
+ return <div data-layout-box="i2c-bus-diagram" style={{width:'100%',opacity:reveal}}>
+  <svg viewBox="0 0 1500 520" width="100%" role="img" aria-label="I2C SDA SCL bus timing and open drain diagram">
+   <rect x="12" y="12" width="1476" height="496" rx="28" fill={palette.panel} stroke={palette.line} strokeWidth="4"/>
+   <text x="70" y="62" fill={palette.muted} fontSize="26" fontWeight="800">OPEN-DRAIN + PULL-UP · BUS TIMING</text>
+   <path d="M105 105V180M230 105V180M105 105H230" stroke={palette.amber} strokeWidth="8" fill="none"/>
+   <rect x="128" y="78" width="78" height="58" rx="8" fill={palette.panel} stroke={palette.amber} strokeWidth="5"/><text x="146" y="113" fill={palette.ink} fontSize="22" fontWeight="800">R↑</text>
+   <text x="78" y="215" fill={palette.ink} fontSize="28" fontWeight="900">SDA</text><text x="78" y="350" fill={palette.ink} fontSize="28" fontWeight="900">SCL</text>
+   <path d="M175 205H1425" stroke={palette.blue} strokeWidth="9" fill="none"/><path d="M175 340H1425" stroke={palette.teal} strokeWidth="9" fill="none"/>
+   <path d="M520 205v80h70v-80M760 205v80h70v-80" stroke={palette.ink} strokeWidth="7" fill="none"/><path d="M520 340v55h70v-55M760 340v55h70v-55" stroke={palette.ink} strokeWidth="7" fill="none"/>
+   <text x="470" y="455" fill={palette.muted} fontSize="24">device pulls low; release → R↑ restores high</text>
+   {labels.map((label,index)=><g key={label}><line x1={slots[index]} y1="390" x2={slots[index]} y2="425" stroke={palette.line} strokeWidth="3"/><text x={slots[index]} y="475" textAnchor="middle" fill={palette.ink} fontSize="22" fontWeight="800">{label}</text></g>)}
+  </svg>
+  <div data-layout-box="i2c-fact-focus" style={{fontSize:22,color:palette.muted,marginTop:10}}>来源绑定事实：{scene.visual_spec?.fact_refs.join(' · ')}</div>
+ </div>;
+};
+
 const Grammar:React.FC<{scene:TechnicalScene;layout:SceneTextLayout;local:number;fps:number}>=({scene,layout,local,fps})=>{
  const reveal=interpolate(local,[0,Math.min(24,fps)],[0,1],{...clamp,easing:Easing.bezier(.16,1,.3,1)});
  const words=scene.on_screen_knowledge.split(/[，。；:：]/).filter(Boolean).slice(0,4);
+ if(scene.visual_spec?.kind==='i2c_bus_v1') return <I2CBusDiagram scene={scene} local={local}/>;
  if(scene.visual_type==='kinetic_typography') return <div data-layout-box="knowledge-kinetic" style={{fontSize:layout.mainFontSize,fontWeight:950,lineHeight:1.18,maxWidth:layout.itemBoxWidth,opacity:reveal,translate:`0 ${(1-reveal)*32}px`}}>{scene.on_screen_knowledge}</div>;
  if(scene.visual_type==='system_diagram') return <div style={{display:'grid',gridTemplateColumns:`repeat(${layout.columns},minmax(0,1fr))`,alignItems:'stretch',gap:20,width:'100%'}}>{words.map((w,i)=><Box key={w} style={{fontSize:layout.itemFontSizes[i],fontWeight:900,opacity:interpolate(local,[i*8,i*8+18],[0,1],clamp),minWidth:0}}><span data-layout-box={`system-node-${i}`}>{w}</span></Box>)}</div>;
  if(scene.visual_type==='timeline') return <div style={{display:'grid',gridTemplateColumns:`repeat(${layout.columns},minmax(0,1fr))`,gap:18,width:'100%'}}>{words.map((w,i)=><Box key={w} style={{borderTop:`9px solid ${[palette.blue,palette.teal,palette.amber][i%3]}`,opacity:interpolate(local,[i*9,i*9+18],[0,1],clamp)}}><b style={{fontSize:22}}>0{i+1}</b><div data-layout-box={`timeline-node-${i}`} style={{fontSize:layout.itemFontSizes[i],fontWeight:900,marginTop:24}}>{w}</div></Box>)}</div>;
@@ -24,12 +46,13 @@ const Grammar:React.FC<{scene:TechnicalScene;layout:SceneTextLayout;local:number
 
 const fitBox=(text:string,width:number,maxLines:number,minFont:number,maxFont:number)=>{fitText({text,withinWidth:width,fontFamily:FONT,fontWeight:900});for(let fontSize=maxFont;fontSize>=minFont;fontSize--){const measured=measureText({text,fontFamily:FONT,fontSize,fontWeight:900});if(!Number.isFinite(measured.width)||!Number.isFinite(measured.height))throw new Error('layout_measurement_invalid');const box=fillTextBox({maxBoxWidth:width,maxLines});let overflow=false;for(const character of Array.from(text)){if(box.add({text:character,fontFamily:FONT,fontSize,fontWeight:900}).exceedsBox){overflow=true;break;}}if(!overflow)return fontSize;}throw new Error('layout_text_cannot_fit');};
 export const calculateTextLayout=(value:TechnicalExplainerInput)=>{const geometry=ASPECT_GEOMETRY[value.aspect],portrait=value.aspect==='9:16',titleFontSize=fitBox(value.title,geometry.titleMaxWidth,2,geometry.titleMinFont,geometry.titleMaxFont);const scenes:SceneTextLayout[]=value.scenes.map(scene=>{const parts=scene.on_screen_knowledge.split(/[，。；;:：]/).filter(Boolean).slice(0,4),items=parts.length?parts:[scene.on_screen_knowledge],count=items.length;let columns=1,itemBoxWidth=Math.min(1200,geometry.sceneWidth),maxLines=3,maxFontSize=portrait?54:68;if(scene.visual_type==='system_diagram'||scene.visual_type==='timeline'){columns=portrait?Math.min(2,count):count;itemBoxWidth=(geometry.sceneWidth-(columns-1)*20)/columns-56;maxFontSize=30;}if(scene.visual_type==='comparison_card'){columns=2;itemBoxWidth=(geometry.sceneWidth-28)/2-56;maxFontSize=27;}if(scene.visual_type==='checklist'){itemBoxWidth=geometry.sceneWidth-96;maxLines=2;maxFontSize=29;}const itemFontSizes=items.map(part=>fitBox(part,itemBoxWidth,maxLines,geometry.itemMinFont,maxFontSize));return {mainFontSize:fitBox(scene.on_screen_knowledge,itemBoxWidth,maxLines,geometry.itemMinFont,maxFontSize),itemFontSizes,itemBoxWidth,maxLines,minFontSize:geometry.itemMinFont,maxFontSize,columns};});return {method:'layout-utils:measureText+fitText+fillTextBox',geometry,titleFontSize,scenes,limits:{title:{maxLines:2,minFontSize:geometry.titleMinFont},knowledge:{maxLines:3,minFontSize:geometry.itemMinFont}}};};
-export const validateTechnicalSceneEvidence=(scene:Pick<TechnicalScene,'scene_index'|'scene_type'|'narrative_role'|'information_role'|'source_refs'>)=>{
+export const validateTechnicalSceneEvidence=(scene:Pick<TechnicalScene,'scene_index'|'scene_type'|'narrative_role'|'information_role'|'source_refs'|'visual_spec'>)=>{
  const role=scene.information_role,refs=scene.source_refs;
  if(!['hook_question','explain_verified_fact','engineering_process_frame'].includes(role)||!Array.isArray(refs)||refs.some(ref=>typeof ref!=='string'||!ref.trim()))throw new Error('technical_explainer_evidence_invalid');
  if(role==='explain_verified_fact'?refs.length===0:refs.length!==0)throw new Error('technical_explainer_evidence_invalid');
  if(role==='hook_question'&&(scene.scene_index!==1||scene.scene_type!=='hook'||scene.narrative_role!=='hook'))throw new Error('technical_explainer_evidence_invalid');
  if((scene.scene_type==='hook'||scene.narrative_role==='hook')&&role!=='hook_question')throw new Error('technical_explainer_evidence_invalid');
+ if(scene.visual_spec!==undefined){const spec=scene.visual_spec;if(spec.kind!=='i2c_bus_v1'||!Array.isArray(spec.fact_refs)||spec.fact_refs.length===0||spec.fact_refs.some(ref=>!refs.includes(ref))||!Array.isArray(spec.labels)||JSON.stringify(spec.labels)!==JSON.stringify(['SDA','SCL','START','ADDRESS','ACK/NACK','DATA','STOP']))throw new Error('technical_explainer_visual_spec_invalid');}
 };
 export const validateTechnicalExplainer=(value:TechnicalExplainerInput)=>{if(value.schema_version!=='1.0'||value.fps!==30||!['16:9','9:16'].includes(value.aspect)||!Array.isArray(value.scenes)||value.scenes.length<5||!value.title.trim()||value.title.length>80)throw new Error('technical_explainer_input_invalid');let end=0;for(const [i,s] of value.scenes.entries()){validateTechnicalSceneEvidence(s);if(s.scene_index!==i+1||s.start_seconds!==end||s.end_seconds<=s.start_seconds||!s.on_screen_knowledge.trim()||s.on_screen_knowledge.length>(value.aspect==='16:9'?120:90))throw new Error('technical_explainer_scene_invalid');end=s.end_seconds;}if(Math.abs(end-value.duration_seconds)>.001)throw new Error('technical_explainer_duration_invalid');calculateTextLayout(value);return value;};
 

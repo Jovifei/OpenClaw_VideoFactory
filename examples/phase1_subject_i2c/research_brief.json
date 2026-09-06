@@ -11,6 +11,15 @@
     {"id": "rise_time", "claim": "上拉电阻与总线电容决定上升沿；电阻过大可能使线路来不及达到有效高电平。", "source_ids": ["ti_slva689"]},
     {"id": "sink_current", "claim": "电阻过小则增加低电平灌电流，可能超出器件的拉低能力；阻值必须兼顾两端限制。", "source_ids": ["ti_slva689", "nxp_um10204"]}
   ],
+  "editorial_contract": {
+    "version": "i2c_v1",
+    "fact_bindings": [
+      {"fact_id": "open_drain", "required_concepts": [["I2C"], ["开漏", "开漏输出", "输出端只能把线路拉低"], ["拉低"], ["上拉", "高电平"]]},
+      {"fact_id": "rise_time", "required_concepts": [["上升沿"], ["总线电容", "电容"], ["上拉电阻", "电阻"], ["过大", "来不及", "有效高"]]},
+      {"fact_id": "sink_current", "required_concepts": [["低电平灌电流", "灌电流"], ["过小", "拉低能力"], ["两端", "阻值"]]}
+    ],
+    "diagram": {"kind": "i2c_bus_v1", "labels": ["SDA", "SCL", "START", "ADDRESS", "ACK/NACK", "DATA", "STOP"]}
+  },
   "comparables": [
     {"url": "https://www.ti.com/lit/pdf/slva689", "title": "TI pull-up design explanation", "hook_style": "从常见阻值选择问题切入", "structure": "开漏原理、阻值上下限、速度与功耗、计算示例", "pace": "文档不包含时间轴，未推断视频节奏", "visual_grammar": "电路示意、公式和参数表；仅借鉴组织方式，不复制图像"}
   ]

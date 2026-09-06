@@ -33,6 +33,7 @@ _SAFE_PROCESS_FRAMES = (
     ("recovery", "发现异常后按既定恢复步骤处理，再次测量确认恢复结果，不把恢复动作当作原因验证，并保存复测条件和过程记录。"),
     ("source_bound_conclusion", "最后回到来源绑定的结论，只陈述已有证据支持的内容，并标出仍需核验的边界，避免越界推断和重复表述。"),
 )
+_I2C_DIAGRAM_LABELS = ["SDA", "SCL", "START", "ADDRESS", "ACK/NACK", "DATA", "STOP"]
 
 
 def _error(reason: str, **context: Any) -> FactoryContractError:
@@ -174,6 +175,49 @@ def _claim_matches(script: str, claim: str) -> bool:
     return right in left or _longest_common_contiguous(left, right) / len(right) >= 0.8
 
 
+def _editorial_fact_matches(sentence: str, fact: Mapping[str, Any], research: Mapping[str, Any]) -> bool:
+    """Match an edited sentence against source-owned concept groups, never free keywords."""
+    if any(marker in sentence for marker in _CONTRADICTION_MARKERS):
+        return False
+    contract = research.get("editorial_contract")
+    if not isinstance(contract, Mapping):
+        return _claim_matches(sentence, str(fact["claim"]))
+    bindings = contract.get("fact_bindings")
+    binding = next((item for item in bindings or [] if item.get("fact_id") == fact.get("id")), None)
+    if not isinstance(binding, Mapping):
+        return _claim_matches(sentence, str(fact["claim"]))
+    compact = re.sub(r"\s+", "", sentence).casefold()
+    concepts = binding.get("required_concepts", [])
+    return bool(concepts) and all(any(str(alias).casefold() in compact for alias in group) for group in concepts)
+
+
+def review_candidate_prose(prose: str, research: Mapping[str, Any]) -> dict[str, Any]:
+    """Return a source-bound editorial decision for candidate prose.
+
+    Questions and the finite process frames are non-factual framing. Every other
+    sentence must bind to one or more verified facts; contradictions fail closed.
+    """
+    # Semicolons can join the two clauses of one verified engineering claim;
+    # split only at terminal sentence punctuation for source binding.
+    sentences = [value.strip() for value in re.split(r"(?<=[。！？!?])", _normalized(prose)) if value.strip()]
+    rows: list[dict[str, Any]] = []
+    safe_frames = {frame for _, frame in _SAFE_PROCESS_FRAMES}
+    facts = list(research.get("facts", []))
+    for sentence in sentences:
+        if any(marker in sentence for marker in _CONTRADICTION_MARKERS):
+            rows.append({"text": sentence, "fact_refs": [], "reason": "contradiction_marker"})
+            continue
+        refs = [str(fact["id"]) for fact in facts if _editorial_fact_matches(sentence, fact, research)]
+        if refs:
+            rows.append({"text": sentence, "fact_refs": refs})
+        elif sentence in safe_frames or "？" in sentence or "?" in sentence:
+            rows.append({"text": sentence, "fact_refs": [], "kind": "non_factual_framing"})
+        else:
+            rows.append({"text": sentence, "fact_refs": [], "reason": "unbound_factual_sentence"})
+    rejected = any("reason" in row for row in rows)
+    return {"schema_version": "1.0", "status": "rejected" if rejected else "passed", "validator": "source_bound_editorial_v1", "sentences": rows}
+
+
 def _grounded_chinese_characters(script: str, research: Mapping[str, Any]) -> int:
     return sum(len(re.findall(r"[\u4e00-\u9fff]", sentence)) for sentence in _sentences(script)
                if any(_claim_matches(sentence, str(fact["claim"])) for fact in research["facts"]))
@@ -181,11 +225,17 @@ def _grounded_chinese_characters(script: str, research: Mapping[str, Any]) -> in
 
 def _score(script: str, research: Mapping[str, Any], *, duration_target_seconds: int | None = None) -> dict[str, int]:
     compact = re.sub(r"\s+", "", script)
-    factual = min(100, 40 + 30 * sum(_claim_matches(script, str(f["claim"])) for f in research["facts"]))
+    if isinstance(research.get("editorial_contract"), Mapping):
+        editorial = review_candidate_prose(script, research)
+        factual = min(100, 40 + 30 * sum(bool(row.get("fact_refs")) for row in editorial["sentences"]))
+        if editorial["status"] == "rejected":
+            factual = min(factual, 70)
+    else:
+        factual = min(100, 40 + 30 * sum(_claim_matches(script, str(f["claim"])) for f in research["facts"]))
     grounded_chars = _grounded_chinese_characters(script, research)
     required_grounded_chars = max(12, round((duration_target_seconds or 25) * CHINESE_TTS_CHARS_PER_SECOND * 0.12))
     duration_ok = grounded_chars >= required_grounded_chars if re.search(r"[\u4e00-\u9fff]", script) else 18 <= len(compact) <= 800
-    dimensions = {"factual_consistency": factual, "hook": 90 if any(x in script for x in ("故障", "为什么", "？")) else 65, "clarity": 90 if len(compact) >= 18 else 55, "duration": 90 if duration_ok else 55, "visualizability": 90 if any(x in script for x in ("原理", "配置", "验证", "时间")) else 60, "originality": 88 if len(set(compact)) >= 12 else 55, "account_fit": 92 if any(x in script for x in ("看门狗", "工程", "配置", "芯片")) else 60}
+    dimensions = {"factual_consistency": factual, "hook": 90 if any(x in script for x in ("故障", "为什么", "？")) else 65, "clarity": 90 if len(compact) >= 18 else 55, "duration": 90 if duration_ok else 55, "visualizability": 90 if any(x in script for x in ("原理", "配置", "验证", "时间", "上升沿", "开漏", "总线")) else 60, "originality": 88 if len(set(compact)) >= 12 else 55, "account_fit": 92 if any(x in script for x in ("看门狗", "工程", "配置", "芯片", "I2C", "总线")) else 60}
     dimensions["total"] = round(sum(dimensions.values()) / 7)
     return dimensions
 
@@ -292,7 +342,11 @@ def build_scene_plan(script: Mapping[str, Any], research: Mapping[str, Any]) -> 
         visual = visual_types[(index - 1) % len(visual_types)]
         information_role = ("hook_question" if beat["purpose"] == "hook" else
                             "explain_verified_fact" if beat["fact_refs"] else "engineering_process_frame")
-        scenes.append({"scene_index": index, "scene_type": str(beat["purpose"]), "narration": str(beat["narration"]), "on_screen_knowledge": str(beat["subtitle"]), "information_role": information_role, "narrative_role": str(beat["purpose"]), "shot_intent": str(beat["visual_intent"]), "visual_type": visual, "motion": "progressive_reveal", "transition": "cut", "fallback_visual": "accessible_text_card", "source_refs": list(beat["fact_refs"])})
+        scene = {"scene_index": index, "scene_type": str(beat["purpose"]), "narration": str(beat["narration"]), "on_screen_knowledge": str(beat["subtitle"]), "information_role": information_role, "narrative_role": str(beat["purpose"]), "shot_intent": str(beat["visual_intent"]), "visual_type": visual, "motion": "progressive_reveal", "transition": "cut", "fallback_visual": "accessible_text_card", "source_refs": list(beat["fact_refs"])}
+        diagram = research.get("editorial_contract", {}).get("diagram") if isinstance(research.get("editorial_contract"), Mapping) else None
+        if isinstance(diagram, Mapping) and diagram.get("kind") == "i2c_bus_v1" and beat["fact_refs"]:
+            scene["visual_spec"] = {"kind": "i2c_bus_v1", "fact_refs": list(beat["fact_refs"]), "labels": list(diagram.get("labels", _I2C_DIAGRAM_LABELS))}
+        scenes.append(scene)
     plan = {"schema_version": SCHEMA_VERSION, "script_id": script["script_id"], "scenes": scenes}
     _validate_new(plan, "phase1_scene_plan")
     return plan

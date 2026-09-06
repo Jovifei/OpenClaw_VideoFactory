@@ -2767,3 +2767,19 @@ Change Requests: `reports/change_requests/PHASE1-RENDER-ONCE-REVIEW-012.json`,
 - [ ] Complete I2C subject-delivery/SQLite artifact binding, lifecycle evidence, independent audit and one Formal Gate.
 
 Review: 012 Windows visual/audio qualification is machine-ready for human listening, not Phase 1 promotion. Failed attempts `001`–`004` remain preserved under the runtime root; no old candidate was deleted or overwritten.
+# PHASE1-I2C-SEMANTIC-EDITORIAL-013 — IMPLEMENTED / HUMAN REVIEW PENDING
+
+Change Request: `reports/change_requests/PHASE1-I2C-SEMANTIC-EDITORIAL-013.json`.
+
+- [x] Add source-owned I2C editorial concept groups and diagram labels to the research brief contract.
+- [x] Add source-bound candidate review: controlled paraphrases pass; contradictions and unbound engineering additions fail closed.
+- [x] Preserve the existing 85 threshold; the verified I2C candidate scores 86 without keyword-only bypass.
+- [x] Emit `i2c_bus_v1` visual specs bound to `open_drain`, `rise_time`, and `sink_current` fact IDs.
+- [x] Render deterministic SDA/SCL, open-drain/pull-up, START/ADDRESS/ACK-NACK/DATA/STOP diagram in the existing Remotion composition.
+- [x] Run Python 57 focused tests, Remotion typecheck, cross-language contracts, and bounded Phase 1 regression (`506 passed`, one existing warning after ignored demo recovery).
+- [x] Produce subject-media Job `job-876a5f89973bbaf8deadbeef`, receipt `READY`, quality `passed`, and 29-artifact review package.
+- [x] Produce 40-second 1920×1080 H.264/AAC audible preview with voice coverage `0.87`; automatic export/publication disabled.
+- [ ] Jovi listens/views the unique candidate and submits structured human review bound to the final audible-preview SHA.
+- [ ] Complete fresh lifecycle evidence (cancel, failed retry, new-process recovery, encoder fallback), independent audit and one Formal Gate.
+
+Review: This is a local topic candidate ready for human review. The I2C diagram is source-bound, but human technical/originality approval is still required; no Phase Promotion or Phase 2 action is implied.

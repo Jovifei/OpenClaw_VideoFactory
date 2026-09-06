@@ -4,10 +4,10 @@ import vm from 'node:vm';
 
 // Execute the existing pure builder, without invoking rendering or media writes.
 const source = fs.readFileSync(new URL('../../scripts/render_phase1_topic_visual.mjs', import.meta.url), 'utf8');
-const start = source.indexOf('function build(');
-const end = source.indexOf('async function main(', start);
+const start = source.indexOf('export function buildVisualProps(');
+const end = source.indexOf('export async function main(', start);
 assert.ok(start >= 0 && end > start);
-const build = vm.runInNewContext(`(${source.slice(start, end).trim()})`);
+const build = vm.runInNewContext(`(()=>{const planReviewFrames=()=>{};return (${source.slice(start, end).replace(/^export /, '').trim()});})()`);
 const script = {schema_version: '1.0', script_id: 'test', title: 'Evidence role contract'};
 const scenes = [
   {scene_type: 'hook', narrative_role: 'hook', information_role: 'hook_question', source_refs: []},
@@ -35,6 +35,9 @@ console.log('topic_evidence_builder_verified');
 const {validateTechnicalSceneEvidence} = await import('../.contract-build/TechnicalExplainer.js');
 assert.equal(typeof validateTechnicalSceneEvidence, 'function');
 for (const scene of scenes) validateTechnicalSceneEvidence(scene);
+const i2cSpec = {...scenes[1], visual_spec: {kind: 'i2c_bus_v1', fact_refs: ['f1'], labels: ['SDA', 'SCL', 'START', 'ADDRESS', 'ACK/NACK', 'DATA', 'STOP']}};
+validateTechnicalSceneEvidence(i2cSpec);
+assert.throws(() => validateTechnicalSceneEvidence({...i2cSpec, visual_spec: {...i2cSpec.visual_spec, fact_refs: ['invented_fact']}}));
 for (const [index, patch] of invalidCases) {
   assert.throws(() => validateTechnicalSceneEvidence({...scenes[index], ...patch}));
 }

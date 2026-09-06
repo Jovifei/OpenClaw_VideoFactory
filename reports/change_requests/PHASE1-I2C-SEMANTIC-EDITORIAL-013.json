@@ -1,0 +1,41 @@
+{
+  "id": "PHASE1-I2C-SEMANTIC-EDITORIAL-013",
+  "date": "2026-09-06",
+  "authorization": "Jovi authorized continued Phase 1 local implementation, testing, fixes, commit and push.",
+  "scope": "Add source-bound I2C editorial review metadata and topic-specific deterministic diagrams within the existing topic/script/scene-plan/Remotion lineage.",
+  "allowed_paths": [
+    "src/factory/phase1_topic.py",
+    "schemas/video/phase1_research_brief.schema.json",
+    "schemas/video/phase1_scene_plan.schema.json",
+    "remotion/src/TechnicalExplainer.tsx",
+    "remotion/scripts/verify-topic-evidence.mjs",
+    "tests/phase1_local/test_phase1_topic.py",
+    "tests/video/test_phase1_topic_visual.py",
+    "tests/video/test_i2c_semantic_visual.py",
+    "examples/phase1_subject_i2c/research_brief.json",
+    "tasks/todo.md",
+    "reports/phase1/"
+  ],
+  "forbidden": [
+    "lower_score_threshold",
+    "keyword_only_bypass",
+    "unsupported_claims",
+    "second_renderer",
+    "second_state_database",
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "automatic_publication",
+    "phase_promotion",
+    "model_download"
+  ],
+  "acceptance": [
+    "I2C candidate prose binds each factual sentence to a verified fact or is explicitly non-factual framing",
+    "contradictions and unbound factual additions fail closed",
+    "I2C scene plan carries source-bound diagram semantics",
+    "Remotion visibly renders SDA/SCL, open-drain/pull-up, START/address/ACK/NACK/data/STOP",
+    "existing Phase 1 suites and cross-language contracts remain green"
+  ],
+  "status": "in_progress"
+}
