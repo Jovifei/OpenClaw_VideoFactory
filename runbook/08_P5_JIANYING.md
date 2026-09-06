@@ -1,15 +1,84 @@
-# 08 — P5 剪映可编辑草稿
+# 08 — Phase 5 / Optional Jianying Editable Draft
 
-Jovi 视频交付的编辑后端固定选择 `jianying-editor-skill`；本地 MP4、SRT、WAV、封面和素材只作为可审计输入，最终剪辑、配音/字幕时间线和人工导出由剪映完成。
+Updated: 2026-09-05
 
-Codex发现剪映路径、版本和草稿目录，记录 `JIANYING_COMPATIBILITY`；本项目不启用 CapCut Mate 双后端。
+## Position in the product
 
-固定使用 `jianying-editor-skill`；一个任务一个后端。草稿生成脚本必须位于本项目根目录或 `scripts/`，不得写入 Skill 安装目录。
+Jianying is an **optional editable-delivery and manual-review backend**. It is not the only renderer and is not a hard prerequisite for Phase 1 local MP4 qualification.
 
-默认优先使用 1920×1080/30 FPS；旧的 1080×1920 任务仍按 brief 显式保留。导入剪映的视觉文件必须是
-无音频、无烧录字幕的 visual-only MP4，字幕只允许存在于一个 `Subtitles` 轨道；旁白只允许存在于
-一个未静音的 `VoiceOver` 轨道。所有项目输出、报告和草稿根目录放在 E: 盘，C: 盘输出路径必须失败关闭。
+Core route:
 
-每次新建草稿，不反复改用户已编辑草稿；导入视频、音频、字幕、封面和素材；记录轨道；不默认控制活跃桌面、不自动导出、不自动发布。
+```text
+Storyboard/Timeline
+→ Remotion/deterministic visual
+→ FFmpeg
+→ final local MP4 + quality/review package
+```
 
-失败标记 `DRAFT_FAILED`，不伪报剪映导出成功；草稿失败只能阻塞剪映交付，不改写旧草稿。P5 验收草稿可开、至少一条视频轨、旁白位于音频轨、字幕与旁白对齐、路径有效、自动导出关闭、用户修改不被覆盖。
+Optional editing route:
+
+```text
+qualified visual output
+→ visual-only MP4
+→ jianying-editor-skill
+→ new Jianying draft
+→ Jovi manual listen/edit/export
+```
+
+A failed Jianying draft may block editable delivery, but it must not invalidate a qualified local MP4.
+
+## Selected backend
+
+Current reviewed backend: `luoluoluo22/jianying-editor-skill` (MIT), pinned by the current Change Request evidence.
+
+Do not enable CapCut Mate or JianYing MCP in the same Job.
+
+## Draft rules
+
+- Create a new draft; never overwrite a user-edited draft.
+- Store media/runtime/report/draft roots on E:.
+- A C: entry, if required for the desktop application to see an E: draft, must be an explicit non-overwriting junction/visibility mechanism and must be recorded.
+- Visual input contains **no audio and no burned-in subtitles**.
+- Exactly one `VoiceOver` authority.
+- Exactly one native `Subtitles` authority.
+- VoiceOver must not be muted.
+- Automatic export is disabled.
+- No mouse/keyboard desktop automation unless a later task explicitly authorizes it.
+- Jovi manually opens, listens, checks visual timing and exports.
+
+## Aspect ratio
+
+The draft follows the Job profile:
+
+- 16:9 / 1920×1080 for the current landscape reference-edit path;
+- 9:16 / 1080×1920 for vertical jobs that explicitly request it.
+
+Do not force landscape onto all future Douyin jobs.
+
+## Current evidence
+
+The branch has already produced Flash/Watchdog and RC high-pass Jianying experiments with:
+
+- visual-only media;
+- local narration;
+- native subtitle track;
+- timing manifests;
+- visible E-drive draft workflow;
+- manual review gates.
+
+These prove technical feasibility, not Phase 1 pass.
+
+## Acceptance
+
+A draft may be marked `draft_ready_for_manual_jianying_review` only when:
+
+- project opens;
+- video track exists;
+- VoiceOver exists and is unmuted;
+- subtitles exist once;
+- timing evidence exists;
+- paths are valid;
+- automatic export is off;
+- existing user drafts are untouched.
+
+Final publication remains a separate Jovi action.

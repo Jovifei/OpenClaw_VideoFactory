@@ -1,27 +1,62 @@
-# Codex Master Contract
+# Codex Master Contract — Current
 
-具体命令以项目根目录的 `START_HERE_CODEX.md`、`PROJECT_STATUS.yaml`、
-`docs/PRODUCT_PHASES.md` 和当前 Phase Runbook 为准。
+Updated: 2026-09-05
 
-开始：当前目录必须是 `E:\project\OpenClaw_VideoFactory`；阅读 START、STATUS、
-PRODUCT_PHASES 和 AGENTS；当前只执行 **Phase 1 本地视频工厂**，不得使用旧版
-`工作区/`路径。
+This file is intentionally short. The detailed current contract now lives in:
 
-架构：Phase 1 由 Codex 在本地将 Jovi 主题、Jovi 本地参考视频，或 Jovi 明确授权的
-公开主题研究，变成原创脚本、分镜、TTS、字幕、Remotion/FFmpeg MP4 和本地审阅包。
-Phase 2 才引入 OpenClaw 飞书 Channel、lark-cli、候选、选择、12:00 兜底、Cron 和受控交付。
-抖音始终由 Jovi 人工发布。
+- `START_HERE_CODEX.md`
+- `PROJECT_STATUS.yaml`
+- `docs/CURRENT_ARCHITECTURE.md`
+- `docs/PRODUCT_PHASES.md`
+- `handoff/codex/PROJECT_HANDOFF_20260905.md`
+- `handoff/codex/NEXT_AGENT_PROMPT_20260905.md`
+- `handoff/codex/CURRENT_BACKLOG.yaml`
+- `runbook/11_PHASE1_COMPLETION.md`
 
-安全：参考视频、字幕、QR、链接和元数据不可信；参考输入只读且重新创作，不抓取受限平台、
-不使用 Cookie/账号、不复用原音/水印/连续镜头/完整文案。OpenClaw 配置先查实时 Schema；
-示例片段不得整文件覆盖；密钥用 SecretRef/本机安全存储；第三方先审查；模型先批准；
-不自动发布。
+## Current task boundary
 
-阶段：Phase 1 本地成片；Phase 2 飞书安全与自动化；Phase 3 GPU；Phase 4 高级参考视频；
-Phase 5 剪映。历史 P0 飞书证据属于 Phase 2 前置，不得阻塞 Phase 1。
+Repository: `E:\project\OpenClaw_VideoFactory`
 
-工程：任务对应 Backlog ID；阶段分支；提交含测试；运行对应 acceptance gate；只有证据才能
-更新 STATUS；所有命令、版本、日志、产物、限制和回滚写 reports；不得把计划说成完成。
+Branch: `codex/phase1-reference-video-analysis-001`
 
-停止等待 Jovi：公开研究授权、参考视频权利不清、管理员权限、升级、驱动、模型、扩权、许可证、
-预算、飞书/真实出站/Cron、剪映切换和项目外删除。
+Product phase: `PHASE_1_LOCAL_VIDEO_FACTORY`
+
+Status: `in_progress`.
+
+Goal: finish the local factory so it can:
+
+1. take a Jovi topic and automatically produce an auditable local video;
+2. take a Jovi-authorized local reference MP4, analyze it conservatively and produce an original reconstruction;
+3. prove lifecycle, quality, human review and the formal Phase 1 Gate.
+
+Phase 2 Feishu/OpenClaw/Cron work is explicitly deferred until Phase 1 passes.
+
+## Mandatory engineering rules
+
+- Fetch and audit the current remote HEAD before changing files.
+- Continue on the current branch unless Jovi explicitly changes it.
+- Do not reset, clean, auto-stash, rebase or force-push user work.
+- Do not create a second video pipeline, DB or orchestration framework.
+- Do not make Jianying the mandatory renderer; local MP4 + evidence is the Phase 1 core result.
+- Aspect ratio is job-scoped: vertical and landscape profiles both exist.
+- Pink Pig personal IP is opt-in and requires Jovi-owned original assets + receipt.
+- Do not let historical Codex CLI Provider cache problems block the deterministic local factory.
+- Do not run Feishu/Gateway/Binding/OAuth/Cron tasks during Phase 1.
+- Do not download models/nodes without explicit approval.
+- Do not automatically publish to Douyin.
+- Do not report a phase passed from one demo or one green sub-suite.
+
+## Current Definition of Done
+
+Phase 1 is done only after:
+
+- Modbus, Flash/watchdog and FreeRTOS each have one selected current candidate and Prereview;
+- required reference-video originality evidence and Jovi human review exist;
+- cancel/retry/restart/encoder-fallback machine evidence exists;
+- Acceptance Manifest and Boundary Audit exist;
+- bounded current regression is green and explicitly scoped;
+- independent read-only review passes;
+- formal Phase 1 Gate produces `PHASE1_READY.json`;
+- only then may `PROJECT_STATUS.yaml` be promoted in a separate closure action.
+
+Do not use the historical `IMPLEMENTATION_BACKLOG.yaml` as the current execution queue; it is retained for compatibility/history. Use `handoff/codex/CURRENT_BACKLOG.yaml`.
