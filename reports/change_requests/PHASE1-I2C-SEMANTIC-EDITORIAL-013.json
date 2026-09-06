@@ -5,6 +5,7 @@
   "scope": "Add source-bound I2C editorial review metadata and topic-specific deterministic diagrams within the existing topic/script/scene-plan/Remotion lineage.",
   "allowed_paths": [
     "src/factory/phase1_topic.py",
+    "src/factory/phase1_cli.py",
     "schemas/video/phase1_research_brief.schema.json",
     "schemas/video/phase1_scene_plan.schema.json",
     "remotion/src/TechnicalExplainer.tsx",

@@ -11,6 +11,7 @@ from src.factory.phase1_topic import (
     build_topic_request,
     review_candidate_prose,
     select_candidate,
+    build_research_brief,
 )
 
 
@@ -66,3 +67,8 @@ def test_i2c_source_bound_candidate_can_reach_the_existing_threshold(i2c_researc
     candidates = {"schema_version": "1.0", "mpt_version": "1.3.5", "mpt_commit": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a", "candidates": [{"candidate": i, "script": prose} for i in (1, 2, 3)]}
     selected = select_candidate(candidates, i2c_research, duration_target_seconds=40)
     assert selected["score_breakdown"]["total"] >= 85
+
+
+def test_research_brief_round_trip_preserves_editorial_contract(i2c_research: dict) -> None:
+    rebuilt = build_research_brief(topic=i2c_research["topic"], sources=i2c_research["sources"], facts=i2c_research["facts"], comparables=i2c_research["comparables"], editorial_contract=i2c_research["editorial_contract"])
+    assert rebuilt["editorial_contract"] == i2c_research["editorial_contract"]

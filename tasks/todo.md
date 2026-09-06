@@ -2778,6 +2778,7 @@ Change Request: `reports/change_requests/PHASE1-I2C-SEMANTIC-EDITORIAL-013.json`
 - [x] Render deterministic SDA/SCL, open-drain/pull-up, START/ADDRESS/ACK-NACK/DATA/STOP diagram in the existing Remotion composition.
 - [x] Run Python 57 focused tests, Remotion typecheck, cross-language contracts, and bounded Phase 1 regression (`506 passed`, one existing warning after ignored demo recovery).
 - [x] Produce subject-media Job `job-876a5f89973bbaf8deadbeef`, receipt `READY`, quality `passed`, and 29-artifact review package.
+- [x] Preserve the I2C editorial contract through the real CLI attach/run path instead of dropping it during research normalization.
 - [x] Produce 40-second 1920×1080 H.264/AAC audible preview with voice coverage `0.87`; automatic export/publication disabled.
 - [ ] Jovi listens/views the unique candidate and submits structured human review bound to the final audible-preview SHA.
 - [ ] Complete fresh lifecycle evidence (cancel, failed retry, new-process recovery, encoder fallback), independent audit and one Formal Gate.
