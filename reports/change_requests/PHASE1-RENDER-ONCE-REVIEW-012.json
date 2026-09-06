@@ -1,0 +1,26 @@
+{
+  "id": "PHASE1-RENDER-ONCE-REVIEW-012",
+  "date": "2026-09-06",
+  "baseline_commit": "4eb3d37e1464d6f55f0a6bbff5abad98dcc664be",
+  "authorization": "Jovi requested remote audit, bounded open-source adoption, tests, commit/push and local Codex handoff.",
+  "scope": "Render the TechnicalExplainer visual master once; derive hash-bound frame-accurate review artifacts with existing FFmpeg; no new runtime dependencies.",
+  "excluded": [
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "model downloads",
+    "publication",
+    "human review approval",
+    "phase promotion",
+    "AGENTS.md"
+  ],
+  "verification_plan": [
+    "Node built-in contract tests",
+    "real FFmpeg synthetic media extraction tests",
+    "JavaScript syntax checks",
+    "Windows full regression/render handed to local Codex"
+  ],
+  "status": "implemented_scoped_tests_passed_windows_pending",
+  "evidence": "reports/phase1/render_once_review_012_tests.json"
+}
