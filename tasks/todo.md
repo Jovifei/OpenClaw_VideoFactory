@@ -2749,3 +2749,21 @@ No mock approval is a real acceptance receipt.
 - [ ] Complete the read-only Backlot visual board (current implementation is state API only).
 - [ ] Run current full E2E and remote fresh-clone qualification, then obtain final Jovi review.
 - [x] Sync Obsidian current progress and decisions through verified checkpoint; preserve incomplete state and distinguish unmerged feature worktree from main.
+# PHASE1-RENDER-ONCE-REVIEW-012 — WINDOWS CONTINUATION (2026-09-06)
+
+Change Requests: `reports/change_requests/PHASE1-RENDER-ONCE-REVIEW-012.json`,
+`reports/change_requests/PHASE1-RENDER-ONCE-WINDOWS-013.json`.
+
+- [x] Re-run Node syntax and isolated review-artifact tests: 25 passed.
+- [x] Re-run Python focused contracts: 54 passed.
+- [x] Re-run bounded Phase 1 suites: 502 passed, 1 existing FastAPI deprecation warning.
+- [x] Recreate ignored legacy demo evidence with local Windows SAPI/BGM and pass the bounded suite.
+- [x] Complete fresh 16:9 attempt `attempt_005_16x9`: visual SHA `59fa30279484a4875447b30e7b9b250774290904a25f6585667cb7905d8548e1`.
+- [x] Complete fresh 9:16 attempt `attempt_006_9x16`: visual SHA `1b9027d2d7db6389d4859f0226897945ee5949ad01b8fe19c612d710df25b5f4`.
+- [x] Verify one Remotion render per aspect, same-master still/clip hashes, 1200 decoded frames, no visual audio, safe area and post-render checks.
+- [x] Produce audible QA MP4s from the measured I2C SAMI timing; both are H.264/AAC and fully decodable.
+- [ ] Jovi listens to the unique candidate and submits structured human review; no approval is inferred from these machine checks.
+- [ ] Replace generic I2C cards with source-bound SDA/SCL, open-drain/pull-up, START/address/ACK/NACK/data/STOP visuals.
+- [ ] Complete I2C subject-delivery/SQLite artifact binding, lifecycle evidence, independent audit and one Formal Gate.
+
+Review: 012 Windows visual/audio qualification is machine-ready for human listening, not Phase 1 promotion. Failed attempts `001`–`004` remain preserved under the runtime root; no old candidate was deleted or overwritten.

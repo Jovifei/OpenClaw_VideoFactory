@@ -1,0 +1,38 @@
+{
+  "id": "PHASE1-RENDER-ONCE-WINDOWS-013",
+  "date": "2026-09-06",
+  "authorization": "Jovi authorized continued local Phase 1 implementation, verification, fixes, commit, and push.",
+  "scope": "Complete Windows verification for render-once review 012; repair only its stale Python implementation-location assertion and regenerate ignored legacy demo evidence required by bounded tests.",
+  "allowed_paths": [
+    "tests/video/test_phase1_jianying_topic_contract.py",
+    "tasks/todo.md",
+    "reports/phase1/",
+    "reports/change_requests/PHASE1-RENDER-ONCE-WINDOWS-013.json"
+  ],
+  "allowed_runtime_outputs": [
+    "dist/pink_pig_story_demo.mp4",
+    "dist/story_demo/",
+    "dist/pink_pig_story_demo_offline.mp4",
+    "dist/story_demo_offline/"
+  ],
+  "forbidden": [
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "model_download",
+    "automatic_export",
+    "publication",
+    "phase_promotion",
+    "new_renderer",
+    "new_state_database"
+  ],
+  "stop_if": [
+    "render_once_contract_failure",
+    "post_render_failure",
+    "bounded_regression_failure",
+    "unexpected_output_overwrite"
+  ],
+  "status": "dual_aspect_visual_and_audible_qa_ready_for_human_listening",
+  "evidence": "reports/phase1/render_once_review_012_windows_evidence.json"
+}
