@@ -2795,3 +2795,15 @@ Review: This is a local topic candidate ready for human review. The I2C diagram 
 - [ ] Complete lifecycle evidence, independent audit and Formal Gate; do not mark Phase 1 passed.
 
 Review: The prior `i2c_semantic_013_candidate.json` is superseded because it was horizontal and visually contained authoring metadata. The corrected candidate is vertical and machine-ready for Jovi review only.
+# PHASE1-LIFECYCLE-EVIDENCE-015 — LOCAL EVIDENCE COMPLETE / HUMAN REVIEW PENDING
+
+Change Request: `reports/change_requests/PHASE1-LIFECYCLE-EVIDENCE-015.json`.
+
+- [x] Real SQLite cancel evidence: `job-766f2c7bcdf3f29e1750a797`, state and event history observed.
+- [x] Real failed→retry evidence: `job-0d3926bc6d7c922c0420ae0d`, resumed at `RESEARCHING`, attempt incremented.
+- [x] Independent Python process restart evidence: `job-e5c0f9be3c22437069628d92`, event and artifact state re-read from the same SQLite file.
+- [x] Real forced NVENC failure followed by CPU fallback; output H.264 1080×1920, full decode passed, SHA `37d86b0311bcdd6a14003a2b5db92d4d1cd13012328f2f8d8e130a828af77f7b`.
+- [x] Validate all four evidence files against `phase1_lifecycle_evidence.schema.json`.
+- [ ] Bind these lifecycle files into the final `topic_only_v1` Acceptance Manifest after Jovi human review; do not run Formal Gate yet.
+
+Review: evidence is fresh local machine proof, not Phase 1 promotion. Feishu, Gateway, OAuth, Cron and publication remain untouched.

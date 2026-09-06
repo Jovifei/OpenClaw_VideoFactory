@@ -1,0 +1,42 @@
+{
+  "id": "PHASE1-LIFECYCLE-EVIDENCE-015",
+  "date": "2026-09-06",
+  "authorization": "Jovi requested continued Phase 1 local implementation and evidence collection.",
+  "scope": "Generate fresh offline lifecycle evidence for cancel, failed retry, new-process restart recovery and an actual NVENC-to-CPU fallback using the existing SQLite/FFmpeg chain.",
+  "allowed_paths": [
+    "reports/phase1/lifecycle/",
+    "tasks/todo.md",
+    "reports/change_requests/PHASE1-LIFECYCLE-EVIDENCE-015.json"
+  ],
+  "allowed_runtime_roots": [
+    "E:/OpenClaw_VideoFactory_Runtime/phase1_lifecycle_015/"
+  ],
+  "forbidden": [
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "phase_promotion",
+    "model_download",
+    "automatic_publication",
+    "reset",
+    "clean",
+    "rebase",
+    "force_push",
+    "fake_pass_marker"
+  ],
+  "acceptance": [
+    "each evidence file is produced from observed SQLite/FFmpeg state",
+    "job IDs and timestamps satisfy current schemas",
+    "failure/retry and independent process observations are retained",
+    "encoder fallback output is decoded and hash-bound",
+    "no production candidate or human review status is changed"
+  ],
+  "status": "passed_local_evidence",
+  "evidence": [
+    "reports/phase1/lifecycle/cancel.json",
+    "reports/phase1/lifecycle/retry.json",
+    "reports/phase1/lifecycle/restart_recovery.json",
+    "reports/phase1/lifecycle/encoder_fallback.json"
+  ]
+}
