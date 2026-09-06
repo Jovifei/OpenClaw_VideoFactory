@@ -82,8 +82,11 @@ def stable_subject_key(request: Mapping[str, Any]) -> str:
     return f"phase1-subject:{OPENMONTAGE_COMMIT}:{MPT_COMMIT}:{digest}"
 
 
-def build_research_brief(*, topic: str, sources: list[dict[str, Any]], facts: list[dict[str, Any]], comparables: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+def build_research_brief(*, topic: str, sources: list[dict[str, Any]], facts: list[dict[str, Any]], comparables: list[dict[str, Any]] | None = None, editorial_contract: dict[str, Any] | None = None) -> dict[str, Any]:
     document = {"schema_version": SCHEMA_VERSION, "topic": _normalized(topic), "topic_digest": hashlib.sha256(_normalized(topic).casefold().encode("utf-8")).hexdigest(), "sources": sources, "facts": facts, "comparables": comparables or []}
+    if editorial_contract is not None:
+        document["editorial_contract"] = editorial_contract
+        _reject_controls(editorial_contract, "$.editorial_contract")
     _reject_controls(document.get("comparables", []))
     ids = [str(item.get("id", "")) for item in sources]
     urls = [str(item.get("url", "")) for item in sources]

@@ -174,7 +174,7 @@ def _attach_research(args: argparse.Namespace) -> dict[str, Any]:
     if not source.is_file() or source.is_symlink():
         raise FactoryContractError("phase1_input_path_invalid", "Research input must be a regular JSON file.", {})
     raw = _read_json_object(source)
-    research = build_research_brief(topic=str(raw.get("topic", "")), sources=raw.get("sources", []), facts=raw.get("facts", []), comparables=raw.get("comparables", []))
+    research = build_research_brief(topic=str(raw.get("topic", "")), sources=raw.get("sources", []), facts=raw.get("facts", []), comparables=raw.get("comparables", []), editorial_contract=raw.get("editorial_contract"))
     request = _read_json_object(_subject_root(args.job_id) / "topic_request.json")
     expected_digest = str(job["metadata"].get("topic_digest", ""))
     if research["topic"] != request["subject"] or research["topic_digest"] != expected_digest:
@@ -201,7 +201,7 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
         raise FactoryContractError("phase1_research_required", "Validated research must be attached before running a subject job.", {})
     request = build_topic_request(**{ "subject": _read_json_object(request_path)["subject"], "duration": _read_json_object(request_path)["duration"], "aspect": _read_json_object(request_path)["aspect"], "language": _read_json_object(request_path)["language"], "mascot": _read_json_object(request_path)["mascot"]})
     raw = _read_json_object(research_path)
-    research = build_research_brief(topic=raw["topic"], sources=raw["sources"], facts=raw["facts"], comparables=raw.get("comparables", []))
+    research = build_research_brief(topic=raw["topic"], sources=raw["sources"], facts=raw["facts"], comparables=raw.get("comparables", []), editorial_contract=raw.get("editorial_contract"))
     if research["topic"] != request["subject"] or research["topic_digest"] != str(job["metadata"].get("topic_digest", "")):
         raise FactoryContractError("phase1_research_topic_mismatch", "Persisted research is not bound to this subject job.", {"job_id": job_id})
     while job["state"] != "SCRIPTING":
