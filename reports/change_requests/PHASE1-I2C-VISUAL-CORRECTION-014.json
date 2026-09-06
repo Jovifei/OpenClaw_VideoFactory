@@ -1,0 +1,36 @@
+{
+  "id": "PHASE1-I2C-VISUAL-CORRECTION-014",
+  "date": "2026-09-06",
+  "authorization": "Jovi correction of the prior candidate: vertical-first output, no debug metadata in picture, and semantically correct I2C diagram.",
+  "scope": "Correct I2C topic render profile and visual semantics in the existing Topic -> Scene Plan -> TechnicalExplainer chain.",
+  "allowed_paths": [
+    "src/factory/phase1_topic.py",
+    "remotion/src/TechnicalExplainer.tsx",
+    "schemas/video/phase1_scene_plan.schema.json",
+    "tests/video/test_i2c_semantic_visual.py",
+    "tests/video/test_phase1_topic_visual.py",
+    "tasks/lessons.md",
+    "tasks/todo.md",
+    "reports/phase1/"
+  ],
+  "forbidden": [
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "automatic_publication",
+    "phase_promotion",
+    "second_renderer",
+    "unsupported_i2c_claims",
+    "debug_metadata_in_final_visual"
+  ],
+  "acceptance": [
+    "I2C request and final candidate use 9:16 / 1080x1920",
+    "final visual contains no authoring-role/counter/debug labels",
+    "diagram visibly encodes SDA/SCL idle-high, START, address, ACK/NACK, data and STOP with source-bound labels",
+    "visual frame review and post-render checks pass",
+    "existing focused and bounded tests remain green"
+  ],
+  "status": "vertical_candidate_ready_for_human_review",
+  "evidence": "reports/phase1/i2c_visual_correction_014.json"
+}

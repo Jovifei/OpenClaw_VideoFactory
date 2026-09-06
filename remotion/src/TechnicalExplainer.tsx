@@ -15,21 +15,25 @@ const Box:React.FC<{children:React.ReactNode;style?:React.CSSProperties}>=({chil
 
 const I2CBusDiagram:React.FC<{scene:TechnicalScene;local:number}>=({scene,local})=>{
  const labels=scene.visual_spec?.labels??['SDA','SCL','START','ADDRESS','ACK/NACK','DATA','STOP'];
+ const eventLabels=labels.filter((label)=>label!=='SDA'&&label!=='SCL');
+ const focus=scene.visual_spec?.fact_refs[0]??'open_drain';
  const reveal=interpolate(local,[0,24],[0,1],clamp);
- const slots=[150,350,550,750,950,1150,1350];
+ const slots=[430,630,830,1030,1230];
+ const sdaPath='M 210 205 H 330 V 285 H 410 V 205 H 490 V 285 H 570 V 205 H 650 V 285 H 730 V 205 H 810 V 285 H 890 V 205 H 970 V 285 H 1050 V 205 H 1130 V 285 H 1210 V 205 H 1410';
+ const sclPath='M 210 340 H 270 V 400 H 330 V 340 H 390 V 400 H 450 V 340 H 510 V 400 H 570 V 340 H 630 V 400 H 690 V 340 H 750 V 400 H 810 V 340 H 870 V 400 H 930 V 340 H 990 V 400 H 1050 V 340 H 1110 V 400 H 1170 V 340 H 1230 V 400 H 1290 V 340 H 1410';
  return <div data-layout-box="i2c-bus-diagram" style={{width:'100%',opacity:reveal}}>
-  <svg viewBox="0 0 1500 520" width="100%" role="img" aria-label="I2C SDA SCL bus timing and open drain diagram">
+  <svg data-i2c-waveform="idle-high-start-address-ack-data-stop" viewBox="0 0 1500 560" width="100%" role="img" aria-label="I2C SDA SCL bus timing and open drain diagram">
    <rect x="12" y="12" width="1476" height="496" rx="28" fill={palette.panel} stroke={palette.line} strokeWidth="4"/>
-   <text x="70" y="62" fill={palette.muted} fontSize="26" fontWeight="800">OPEN-DRAIN + PULL-UP · BUS TIMING</text>
+   <text x="70" y="62" fill={palette.muted} fontSize="26" fontWeight="800">I2C BUS TIMING · OPEN-DRAIN + PULL-UP</text>
    <path d="M105 105V180M230 105V180M105 105H230" stroke={palette.amber} strokeWidth="8" fill="none"/>
    <rect x="128" y="78" width="78" height="58" rx="8" fill={palette.panel} stroke={palette.amber} strokeWidth="5"/><text x="146" y="113" fill={palette.ink} fontSize="22" fontWeight="800">R↑</text>
    <text x="78" y="215" fill={palette.ink} fontSize="28" fontWeight="900">SDA</text><text x="78" y="350" fill={palette.ink} fontSize="28" fontWeight="900">SCL</text>
-   <path d="M175 205H1425" stroke={palette.blue} strokeWidth="9" fill="none"/><path d="M175 340H1425" stroke={palette.teal} strokeWidth="9" fill="none"/>
-   <path d="M520 205v80h70v-80M760 205v80h70v-80" stroke={palette.ink} strokeWidth="7" fill="none"/><path d="M520 340v55h70v-55M760 340v55h70v-55" stroke={palette.ink} strokeWidth="7" fill="none"/>
-   <text x="470" y="455" fill={palette.muted} fontSize="24">device pulls low; release → R↑ restores high</text>
-   {labels.map((label,index)=><g key={label}><line x1={slots[index]} y1="390" x2={slots[index]} y2="425" stroke={palette.line} strokeWidth="3"/><text x={slots[index]} y="475" textAnchor="middle" fill={palette.ink} fontSize="22" fontWeight="800">{label}</text></g>)}
+   <text x="260" y="160" fill={palette.muted} fontSize="22" fontWeight="800">idle-high</text>
+   {focus==='rise_time'&&<g data-i2c-focus="rise-time-focus"><rect x="1030" y="75" width="390" height="90" rx="16" fill="#F4F8FF" stroke={palette.blue} strokeWidth="3"/><path d="M1060 140 C1120 135 1140 115 1190 105 S1310 95 1380 95" stroke={palette.blue} strokeWidth="6" fill="none"/><path d="M1060 140 C1120 140 1160 137 1210 130 S1320 105 1380 95" stroke={palette.amber} strokeWidth="6" fill="none"/><text x="1070" y="100" fill={palette.ink} fontSize="20" fontWeight="800">R↑C↑：上升沿变慢</text><text x="1070" y="157" fill={palette.muted} fontSize="18">快 / 慢</text></g>}
+   {focus==='sink_current'&&<g data-i2c-focus="sink-current-focus"><rect x="1030" y="75" width="390" height="90" rx="16" fill="#FFF8F0" stroke={palette.amber} strokeWidth="3"/><text x="1065" y="105" fill={palette.ink} fontSize="21" fontWeight="800">R↓ → I_sink↑</text><path d="M1080 135h90M1210 135h90" stroke={palette.amber} strokeWidth="6"/><path d="M1160 125v20M1290 125v20" stroke={palette.ink} strokeWidth="5"/><text x="1065" y="157" fill={palette.muted} fontSize="18">阻值过小：灌电流超限</text></g>}
+   <path d={sdaPath} stroke={palette.blue} strokeWidth="9" fill="none"/><path d={sclPath} stroke={palette.teal} strokeWidth="9" fill="none"/>
+   {eventLabels.map((label,index)=><g key={label}><line x1={slots[index]} y1="410" x2={slots[index]} y2="435" stroke={palette.line} strokeWidth="3"/><text x={slots[index]} y="455" textAnchor="middle" fill={palette.ink} fontSize="22" fontWeight="800">{label}</text></g>)}
   </svg>
-  <div data-layout-box="i2c-fact-focus" style={{fontSize:22,color:palette.muted,marginTop:10}}>来源绑定事实：{scene.visual_spec?.fact_refs.join(' · ')}</div>
  </div>;
 };
 
@@ -61,5 +65,4 @@ export const TechnicalExplainer:React.FC<TechnicalExplainerInput>=(input)=>{cons
  <div data-layout-box="title" style={{fontSize:textLayout.titleFontSize,fontWeight:950,lineHeight:1.15,maxWidth:textLayout.geometry.titleMaxWidth,marginTop:18}}>{input.title}</div>
  <div style={{height:5,background:palette.line,marginTop:30}}><div style={{height:'100%',width:`${interpolate(seconds,[0,input.duration_seconds],[0,100],clamp)}%`,background:palette.blue}}/></div>
  <div data-layout-box={`scene-${scene.scene_index}-knowledge`} style={{flex:1,display:'flex',alignItems:'center',opacity:entrance,marginTop:38,width:textLayout.geometry.sceneWidth}}><Grammar scene={scene} layout={textLayout.scenes[index]} local={local} fps={fps}/></div>
- <div style={{fontSize:17,color:palette.muted,display:'flex',justifyContent:'space-between'}}><span data-layout-box="roles">{scene.information_role} · {scene.narrative_role}</span><span data-layout-box="counter">{scene.scene_index}/{input.scenes.length} · mascot absent · native-caption reserve</span></div>
  </AbsoluteFill>;};

@@ -517,3 +517,15 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Review-package type, SQLite fixture, input mode, preview identity and human-review SHA must agree. A valid JSON schema or high test count does not establish that these cross-file identities are bound.
 - When changing artifact lookup from names to relative paths, explicitly test legacy artifacts in nested directories. Preserve declared paths without assuming every quality or difference report is at the package root.
 - Keep quality claims separate: API-only Backlot is not a visual production board, a layout smoke is not a technical-content review, and a local clone using existing dependencies is not remote/offline reproducibility evidence.
+# 2026-09-06 - Render profile and semantic picture review are delivery gates
+
+- A machine-valid candidate can still violate the user's requested aspect. The
+  final `topic_request.aspect` and the rendered canvas must be checked together;
+  for Jovi's current priority, I2C candidates use 9:16 / 1080x1920.
+- Authoring metadata such as information roles, scene counters and mascot/debug
+  notes must never be rendered into the visible picture. Keep those fields in
+  JSON evidence only.
+- A diagram title and labels do not prove the diagram is correct. Review the
+  actual signal geometry: I2C must show idle-high SDA/SCL, START/STOP conditions,
+  address/data bit windows, and ACK/NACK behavior; otherwise stop as content
+  failure even when codec and layout gates pass.

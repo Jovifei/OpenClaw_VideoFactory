@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "change_request": "PHASE1-I2C-VISUAL-CORRECTION-014",
+  "status": "ready_for_jovi_human_review",
+  "supersedes": {"path": "reports/phase1/i2c_semantic_013_candidate.json", "reason": "Jovi rejected horizontal profile, visible authoring metadata, and generic repeated diagrams."},
+  "job_id": "job-876a5f89973bbaf8deadbeef",
+  "attempt_id": "attempt_006_9x16_subject",
+  "input_mode": "topic",
+  "aspect": "9:16",
+  "canvas": {"width": 1080, "height": 1920, "fps": 30},
+  "visual_master": {"path": "E:/OpenClaw_VideoFactory_Runtime/phase1_i2c_semantic_013/attempt_006_9x16_subject/visual_master.mp4", "sha256": "9faf9cc02c12e74d103081d45974d8033ab0d174fd3246f2ae5d5df2fd854bd4", "audio_present": false},
+  "audible_preview": {"path": "E:/OpenClaw_VideoFactory_Runtime/phase1_i2c_semantic_013/attempt_006_9x16_subject/audible_preview.mp4", "sha256": "cf1c0220853c7de06c5f821c48824a49e35fc770ad19ba4edaa5460cff652568", "codec": "h264/aac", "duration_seconds": 40, "full_decode": true},
+  "reports": {"render": "65fba2693b8f2226e017054ac07f44a5f177be9f379cb4a240461389ca5927ec", "visual_review": "fdafb55f7d6b104bf41032ed91ae686e2706b7ff5eeb5a530cd9c3d8756d73b6", "post_render": "02153a86f5cb3deb4a19f50dcceaa4f178e7f03377c27351646218b029c47ed9", "audio_preview": "64dc5b9d7728be22452de765ed69ba7dfbb5155a6b144f0860d3b22164accc00", "jianying": "f3db3bd2e9363f046ca9a3a460eee95f635f514c96a70bc1cf84ff7b96d09893", "subject_receipt": "1e7a4f9219ca831892366ec147c3d42ce2a9fe47e4b39efd51221223b34833e5"},
+  "diagram_contract": {"kind": "i2c_bus_v1", "fact_refs": ["open_drain", "rise_time", "sink_current"], "visible_semantics": ["SDA", "SCL", "idle-high", "START", "ADDRESS", "ACK/NACK", "DATA", "STOP", "rise-time-focus", "sink-current-focus"]},
+  "quality": {"receipt": "READY", "quality_report": "passed", "post_render": "passed", "automatic_export": false},
+  "human_gate": {"required": true, "status": "pending", "approval_must_bind_to": "cf1c0220853c7de06c5f821c48824a49e35fc770ad19ba4edaa5460cff652568"},
+  "phase_promotion": false,
+  "feishu_or_publication": false
+}
