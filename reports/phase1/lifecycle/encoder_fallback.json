@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "phase": "PHASE_1_LOCAL_VIDEO_FACTORY",
+  "evidence_type": "encoder_fallback",
+  "status": "passed",
+  "job_id": "job-0d3926bc6d7c922c0420ae0d",
+  "assertions": {
+    "nvenc_attempt_failed": true,
+    "cpu_fallback_succeeded": true,
+    "fallback_codec_is_h264": true,
+    "fallback_output_sha256": "37d86b0311bcdd6a14003a2b5db92d4d1cd13012328f2f8d8e130a828af77f7b",
+    "fallback_output_dimensions": "1080x1920"
+  },
+  "observed_at": "2026-09-06T12:06:00.068197Z"
+}

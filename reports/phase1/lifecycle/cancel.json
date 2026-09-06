@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "phase": "PHASE_1_LOCAL_VIDEO_FACTORY",
+  "evidence_type": "cancel",
+  "status": "passed",
+  "job_id": "job-766f2c7bcdf3f29e1750a797",
+  "assertions": {
+    "state_is_cancelled": true,
+    "cancel_event_recorded": true,
+    "event_count": 2
+  },
+  "observed_at": "2026-09-06T12:05:59.300210Z"
+}
