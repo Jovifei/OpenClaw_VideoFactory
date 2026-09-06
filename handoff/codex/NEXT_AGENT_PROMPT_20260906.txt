@@ -1,0 +1,22 @@
+你接手 Jovifei/OpenClaw_VideoFactory 的 Phase 1。本任务是本地自动制作视频，不接 Feishu/Gateway/OAuth/Cron，不自动发布，不顺带 Phase Promotion。
+
+先在 E:\project\OpenClaw_VideoFactory 执行 git fetch origin；读取 git status --short --untracked-files=all、git diff --check、origin/main 与 origin/codex/phase1-render-once-review-012 的 SHA。保护我原有未提交 AGENTS.md，不 reset/clean/stash/rebase/force push，不删除分支。
+
+本轮远端交付分支：codex/phase1-render-once-review-012；基线 main=4eb3d37e1464d6f55f0a6bbff5abad98dcc664be。必须以最新远端为准，不能退回旧 c815 或1961。建议新建不存在的 E 盘隔离 worktree 检出交付分支；主分支若又前进，用正常 merge，不回退、不强推。
+
+完整阅读交付分支中的：
+1. handoff/codex/PHASE1_REMOTE_HANDOFF_20260906.md
+2. docs/PHASE1_REMOTE_AUDIT_20260906.md
+3. reports/phase1/render_once_review_012_tests.json
+4. 当前 START_HERE_CODEX.md、PROJECT_STATUS.yaml、docs/PRODUCT_PHASES.md、runbook/11_PHASE1_COMPLETION.md
+5. docs/OPEN_SOURCE_SKILL_MATRIX.md，以及本轮源码/测试/CR。
+
+本轮已实现：Topic visual master 只做一次 Remotion 渲染，从同一个最终 MP4 提取审阅PNG/分场景MP4；整数微秒按半开帧区间映射；每项绑定 master SHA；验证真实解码帧数、无声H264、分辨率、fresh输出/路径边界。未增加依赖，未改变TTS/SQLite/Gate/PNG资产。新测试25通过，只是隔离增量＋真实FFmpeg合成媒体测试，不是502完整回归，更不是Windows成片证据。完整Remotion/TTS仍由你跑。
+
+立即按交接文件执行：Node语法/25项测试→focused Python→当前bounded Phase1 suites→双aspect实机render/postcheck/delivery。输出必须使用新的attempt目录，禁止清空或覆盖旧候选。发现失败保留最小复现后做最小修复；所有实机检查通过后普通合并并推送main，无须为常规实现反复问我。
+
+随后继续解决I2C来源绑定编辑评审和真正的主题图解。现有78/85失败不允许降阈值、关键词作弊、凑时长或伪造事实审核；沿用研究brief/候选/scene-plan/Remotion，不能引入第二套生成器。当前OpenMontage是已经vendor的AGPL生产组件，不是仅方法参考；MPT已经是固定版本文案草稿adapter，不要重新部署完整MoviePy成片链。
+
+收口profile必须看当前schema：topic_only_v1=Flash+FreeRTOS+I2C+一个不同live topic；legacy_topic_reference_v1保持独立。不能用旧reference门槛卡住topic_only，也不能把topic_only通过说成reference已经完成。补真实cancel/retry/new-process recovery/encoder fallback，候选只绑定一个最终MP4 SHA给Jovi看听。证据齐后独立只读审计，再一次Formal Gate；不得伪造人审或跳阶段。
+
+最后更新tasks/todo、Obsidian项目状态与收口文件，给出exact HEAD、测试范围、候选job/SHA、剩余blocker、commit/push。只有看听候选、授权参考、原始IP资产、模型/预算/阶段审批或最小复现的真实阻塞才找我；你能自行做的全部继续做。

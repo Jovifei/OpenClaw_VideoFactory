@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "change_request": "PHASE1-RENDER-ONCE-REVIEW-012",
+  "baseline_commit": "4eb3d37e1464d6f55f0a6bbff5abad98dcc664be",
+  "generated_at": "2026-09-06T06:32:08.920084+00:00",
+  "scope": "isolated changed-file tests, NOT full repository or Windows qualification",
+  "status": "passed_scoped_tests_windows_pending",
+  "command": "node --test tests/video/phase1_review_artifacts.test.mjs",
+  "tests": {
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "environment": {
+    "platform": "Linux sandbox",
+    "node": "v22.16.0",
+    "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers"
+  },
+  "executed": [
+    "real synthetic H264 master and derived clips decoded by FFmpeg/ffprobe",
+    "PNG RGB bytes matched exact master midpoint frames",
+    "CFR clip frame counts 16/18/26",
+    "over 900 fractional-boundary cases checked against component membership",
+    "invalid timing/path/audio/corrupt/short-master cases rejected",
+    "fresh-output/no-overwrite checks",
+    "JavaScript node --check for two modules",
+    "scoped staged git diff --check in increment-only repository"
+  ],
+  "not_executed": [
+    "successful git clone/fetch",
+    "full repository pytest (56/502 not rerun)",
+    "Windows Chrome/Remotion/SAMI/TTS end-to-end",
+    "GPU encoder fallback",
+    "real job lifecycle qualification",
+    "human review",
+    "Formal Gate"
+  ],
+  "files": {
+    "scripts/lib/phase1_review_artifacts.mjs": {
+      "sha256": "13f38ed73733b0b54da36a27b24e1bb107d1068f9d6da76b4f55398d262fd846",
+      "git_blob_sha1": "fe8df883e6564bdee9b6814a5f5c9d88f147b17d"
+    },
+    "scripts/render_phase1_topic_visual.mjs": {
+      "sha256": "6e933405eabf5919a578d829e381689c56163bd40a6f25cb8df9bed7992d70a1",
+      "git_blob_sha1": "c9d4befd109ec893dbab6aa13b5888392faa1a80"
+    },
+    "tests/video/phase1_review_artifacts.test.mjs": {
+      "sha256": "1d102c14f9c0064fa3860b90bed5b8a84eaa53fd21504754c8c89acea6184ca2",
+      "git_blob_sha1": "e4e5d491f740cc3cd817cb50d07077f8833f16c3"
+    }
+  },
+  "tap_sha256": "7ecfa64fd2a05baab497bbb52a0e87ed05062a52e1e2727cd5c4ef1733a0d4a4"
+}

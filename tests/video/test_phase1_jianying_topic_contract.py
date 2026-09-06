@@ -81,8 +81,8 @@ def test_render_report_clip_duration_field_is_required_and_bound(tmp_path: Path,
 
 
 def test_renderer_emits_microsecond_clip_duration_contract() -> None:
-    source = (ROOT / "scripts" / "render_phase1_topic_visual.mjs").read_text(encoding="utf-8")
-    assert "duration_microseconds:Math.round((scene.end_seconds-scene.start_seconds)*1e6)" in source
+    source = (ROOT / "scripts" / "lib" / "phase1_review_artifacts.mjs").read_text(encoding="utf-8")
+    assert "duration_microseconds: range.duration_microseconds" in source
 
 
 @pytest.mark.parametrize("actual,error", [

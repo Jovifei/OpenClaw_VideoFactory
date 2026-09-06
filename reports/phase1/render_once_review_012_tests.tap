@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: fractional boundary never puts previous-scene frame in next review clip
+ok 1 - fractional boundary never puts previous-scene frame in next review clip
+  ---
+  duration_ms: 2.349151
+  type: 'test'
+  ...
+# Subtest: integer-second ranges cover composition exactly once
+ok 2 - integer-second ranges cover composition exactly once
+  ---
+  duration_ms: 0.224839
+  type: 'test'
+  ...
+# Subtest: last end obeys rounded composition duration
+ok 3 - last end obeys rounded composition duration
+  ---
+  duration_ms: 0.122254
+  type: 'test'
+  ...
+# Subtest: range membership agrees with component for thousands of boundary cases
+ok 4 - range membership agrees with component for thousands of boundary cases
+  ---
+  duration_ms: 6.522211
+  type: 'test'
+  ...
+# Subtest: reject gap timing
+ok 5 - reject gap timing
+  ---
+  duration_ms: 0.445762
+  type: 'test'
+  ...
+# Subtest: reject overlap timing
+ok 6 - reject overlap timing
+  ---
+  duration_ms: 0.112109
+  type: 'test'
+  ...
+# Subtest: reject NaN timing
+ok 7 - reject NaN timing
+  ---
+  duration_ms: 0.188044
+  type: 'test'
+  ...
+# Subtest: reject Infinity timing
+ok 8 - reject Infinity timing
+  ---
+  duration_ms: 0.108824
+  type: 'test'
+  ...
+# Subtest: reject string timing
+ok 9 - reject string timing
+  ---
+  duration_ms: 0.268805
+  type: 'test'
+  ...
+# Subtest: reject boolean timing
+ok 10 - reject boolean timing
+  ---
+  duration_ms: 0.302887
+  type: 'test'
+  ...
+# Subtest: reject negative timing
+ok 11 - reject negative timing
+  ---
+  duration_ms: 0.204428
+  type: 'test'
+  ...
+# Subtest: reject submicrosecond timing
+ok 12 - reject submicrosecond timing
+  ---
+  duration_ms: 0.089244
+  type: 'test'
+  ...
+# Subtest: reject wrong index timing
+ok 13 - reject wrong index timing
+  ---
+  duration_ms: 0.075364
+  type: 'test'
+  ...
+# Subtest: reject zero-frame scenes and total mismatch
+ok 14 - reject zero-frame scenes and total mismatch
+  ---
+  duration_ms: 0.113021
+  type: 'test'
+  ...
+# Subtest: reject non-30fps, empty and overlong plans
+ok 15 - reject non-30fps, empty and overlong plans
+  ---
+  duration_ms: 0.128694
+  type: 'test'
+  ...
+# Subtest: fresh targets support spaces and Chinese without shell
+ok 16 - fresh targets support spaces and Chinese without shell
+  ---
+  duration_ms: 12.391718
+  type: 'test'
+  ...
+# Subtest: existing master and report are never overwritten
+ok 17 - existing master and report are never overwritten
+  ---
+  duration_ms: 3.975351
+  type: 'test'
+  ...
+# Subtest: refuse stale, escaping, overlapping and input-as-output paths
+ok 18 - refuse stale, escaping, overlapping and input-as-output paths
+  ---
+  duration_ms: 5.751289
+  type: 'test'
+  ...
+# Subtest: refuse symlink artifact directories
+ok 19 - refuse symlink artifact directories
+  ---
+  duration_ms: 3.726347
+  type: 'test'
+  ...
+# Subtest: real FFmpeg extracts master-bound frames and clips; source is unchanged
+ok 20 - real FFmpeg extracts master-bound frames and clips; source is unchanged
+  ---
+  duration_ms: 1209.858967
+  type: 'test'
+  ...
+# Subtest: real probe rejects unexpected audio, wrong frame count and corruption
+ok 21 - real probe rejects unexpected audio, wrong frame count and corruption
+  ---
+  duration_ms: 434.336398
+  type: 'test'
+  ...
+# Subtest: renderer import requires no Remotion install and keeps input-role checks
+ok 22 - renderer import requires no Remotion install and keeps input-role checks
+  ---
+  duration_ms: 4.062662
+  type: 'test'
+  ...
+# Subtest: entrypoint contains one renderMedia call and no renderStill call
+ok 23 - entrypoint contains one renderMedia call and no renderStill call
+  ---
+  duration_ms: 1.370696
+  type: 'test'
+  ...
+# Subtest: command parser rejects missing, unknown and duplicate flags
+ok 24 - command parser rejects missing, unknown and duplicate flags
+  ---
+  duration_ms: 0.239261
+  type: 'test'
+  ...
+# Subtest: short master fails before emitting review derivatives or a success report
+ok 25 - short master fails before emitting review derivatives or a success report
+  ---
+  duration_ms: 148.112972
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1888.546651
