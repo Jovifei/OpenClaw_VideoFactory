@@ -529,3 +529,15 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   actual signal geometry: I2C must show idle-high SDA/SCL, START/STOP conditions,
   address/data bit windows, and ACK/NACK behavior; otherwise stop as content
   failure even when codec and layout gates pass.
+
+# 2026-09-13 - Website promo subtitle and profile QA
+
+- A successful FFmpeg subtitle filter is not proof of readable captions. SRT
+  defaults to a small PlayRes coordinate system; use an explicit ASS PlayRes
+  matching the portrait canvas and inspect exact transition frames.
+- Keep the technical post-render edge rule unchanged by default. A product
+  composition with an intentional dark background needs an explicit profile
+  contract and an evidence field showing that the profile—not a global bypass—allowed dark edges.
+- A visually clean still at one frame does not prove a sequential Remotion
+  render is clean; inspect scene starts, representative caption frames, CTA,
+  and a complete decoded frame scan before handing off.

@@ -5,6 +5,7 @@ import {CandidateVideo} from './Video';
 import {ReferenceFlashVisual, type FlashVisualInput} from './ReferenceFlashVisual';
 import {ReferenceRcHighPassVisual, type RcHighPassVisualInput} from './ReferenceRcHighPassVisual';
 import {TechnicalExplainer, validateTechnicalExplainer, type TechnicalExplainerInput} from './TechnicalExplainer';
+import {WebsiteProductDemoRegistration} from './product-demo/WebsiteProductDemo';
 
 export const calculateCandidateMetadata: CalculateMetadataFunction<CandidateRenderInput> = ({props}) => {
   const input = validateInput(props);
@@ -141,4 +142,5 @@ export const RemotionRoot: React.FC = () => <>
       };
     }}
   />
+  <WebsiteProductDemoRegistration />
 </>;

@@ -76,7 +76,7 @@ def _fps(value: object) -> float:
 
 
 def validate_layout_contract(contract: Any, *, width: int = EXPECTED_WIDTH, height: int = EXPECTED_HEIGHT) -> dict[str, Any]:
-    if not isinstance(contract, dict) or contract.get("version") != "1.0":
+    if not isinstance(contract, dict) or contract.get("version") not in {"1.0", "website_product_demo_v1"}:
         raise ValueError("layout_contract_invalid")
     safe = contract.get("safe_area")
     reserve = contract.get("subtitle_reserve")
@@ -94,6 +94,16 @@ def validate_layout_contract(contract: Any, *, width: int = EXPECTED_WIDTH, heig
         raise ValueError("layout_safe_area_outside_canvas")
     if reserve_top < top or reserve_top + reserve_height > height - bottom + bottom:
         raise ValueError("layout_subtitle_reserve_outside_canvas")
+    if contract.get("version") == "website_product_demo_v1":
+        if contract.get("screenshot_fit") != "contain" or contract.get("attribution_preserved") is not True:
+            raise ValueError("layout_product_policy_invalid")
+        return {
+            "status": "passed",
+            "safe_area": {"left": left, "right": right, "top": top, "bottom": bottom},
+            "subtitle_reserve": {"top": reserve_top, "height": reserve_height},
+            "screenshot_fit": "contain",
+            "attribution_preserved": True,
+        }
     if contract.get("text_policy") != "bounded_natural_wrap" or contract.get("overflow_policy") != "fail_closed":
         raise ValueError("layout_text_policy_invalid")
     if contract.get("theme_token") != "technical_neutral" or contract.get("background_is_theme_driven") is not True:
@@ -269,7 +279,7 @@ def _sample_frames(path: Path, duration: float, sample_count: int) -> list[dict[
     return metrics
 
 
-def validate_full_frame_metrics(metrics: list[dict[str, float]]) -> dict[str, Any]:
+def validate_full_frame_metrics(metrics: list[dict[str, float]], *, allow_dark_edges: bool = False) -> dict[str, Any]:
     if not metrics:
         raise ValueError("all_frame_metrics_empty")
     black_indices = [
@@ -280,7 +290,7 @@ def validate_full_frame_metrics(metrics: list[dict[str, float]]) -> dict[str, An
     if black_indices:
         raise ValueError("all_frame_black_detected")
     unsafe_edge_indices = [index for index, item in enumerate(metrics) if float(item.get("unsafe_edge_dark_ratio", 1.0)) > 0.03]
-    if unsafe_edge_indices:
+    if unsafe_edge_indices and not allow_dark_edges:
         raise ValueError("all_frame_canvas_edge_overflow")
     longest_static_run = 0
     current_static_run = 0
@@ -297,11 +307,12 @@ def validate_full_frame_metrics(metrics: list[dict[str, float]]) -> dict[str, An
         "frames_scanned": len(metrics),
         "black_frame_count": len(black_indices),
         "unsafe_edge_frame_count": len(unsafe_edge_indices),
+        "dark_edges_allowed": allow_dark_edges,
         "longest_near_static_run_frames": longest_static_run,
     }
 
 
-def scan_all_frames(path: Path) -> dict[str, Any]:
+def scan_all_frames(path: Path, *, allow_dark_edges: bool = False) -> dict[str, Any]:
     try:
         import cv2
         import numpy as np
@@ -331,7 +342,7 @@ def scan_all_frames(path: Path) -> dict[str, Any]:
             previous = grayscale
     finally:
         capture.release()
-    summary = validate_full_frame_metrics(metrics)
+    summary = validate_full_frame_metrics(metrics, allow_dark_edges=allow_dark_edges)
     summary["first_frame_luma"] = round(metrics[0]["mean_luma"], 3)
     summary["last_frame_luma"] = round(metrics[-1]["mean_luma"], 3)
     return summary
@@ -375,7 +386,8 @@ def run_gate(visual: Path, render_report: Path, output_report: Path, *, preview:
     if not _decode_check(visual):
         raise ValueError("post_render_decode_failed")
     samples = _sample_frames(visual, duration, len(report.get("visual", {}).get("scene_timing", [])) or 5)
-    all_frames = scan_all_frames(visual)
+    allow_dark_edges = report.get("layout_contract", {}).get("version") == "website_product_demo_v1"
+    all_frames = scan_all_frames(visual, allow_dark_edges=allow_dark_edges)
     source_distinct = True
     visual_sha = _sha256(visual)
     if reference_sha256:

@@ -2807,3 +2807,26 @@ Change Request: `reports/change_requests/PHASE1-LIFECYCLE-EVIDENCE-015.json`.
 - [ ] Bind these lifecycle files into the final `topic_only_v1` Acceptance Manifest after Jovi human review; do not run Formal Gate yet.
 
 Review: evidence is fresh local machine proof, not Phase 1 promotion. Feishu, Gateway, OAuth, Cron and publication remain untouched.
+
+# WEBSITE-PRODUCT-PROMO-20260913 — REAL PAGE CAPTURE AND LOCAL CANDIDATE
+
+Scope: use the supplied campaign contract to capture real `photo.joviluma.com`
+pages, register one additive WebsiteProductDemo composition, reuse measured SAMI
+timing plus the existing Remotion/FFmpeg chain, and publish one local candidate
+for Jovi review. Do not modify Star business code or deploy it.
+
+- [x] Reconfirm package hashes, current two-repo HEADs, and clean isolated worktree baseline.
+- [x] Resolve live capture selectors/actions against the actual website; capture six PNGs without mocks.
+- [x] Perform local agent asset review with SHA, claim bindings, attribution and privacy checks.
+- [x] Add the package's minimal WebsiteProductDemo contract/component and render entry route; keep existing compositions unchanged.
+- [x] Add integration tests first, observe RED, then implement the smallest passing route and contract changes.
+- [x] Generate real SAMI timing, build SHA-bound product input, and run portrait typecheck/preview checks.
+- [x] Render one 9:16 H.264/AAC MP4, mux subtitles, run post-render/quality checks and inspect key frames.
+- [x] Record job/attempt/artifact evidence, commit and push only scoped code/tests/docs; never commit runtime media or secrets.
+- [x] Stop at `ready_for_jovi_human_review`; do not run Formal Gate, Phase Promotion, Feishu, Cron or publication.
+
+## Review
+
+- Baseline: clean worktree is missing ignored legacy `dist/story_demo*` artifacts; bounded source tests remain the regression truth until those fixture-dependent checks are regenerated in an owned attempt.
+- Human review must bind to the final audible MP4 SHA; no approval is inferred from machine checks.
+- Final runtime candidate: job `job-98ffaa240c85e14faac0db25`, render attempt `3`; MP4 SHA `833c18ee5ae8b9224da5261871dd30c5c6abe804a4ad99bdd0cb74a13827a0d4` is recorded outside Git in the review package and still needs Jovi's watch/listen.

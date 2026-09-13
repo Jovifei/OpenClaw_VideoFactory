@@ -32,6 +32,24 @@ def test_layout_contract_passes_for_portrait_safe_area() -> None:
     assert result["safe_area"]["left"] == 72
 
 
+def test_product_layout_contract_passes_with_contained_capture() -> None:
+    value = {
+        "version": "website_product_demo_v1",
+        "aspect": "9:16",
+        "safe_area": {"left": 76, "right": 160, "top": 154, "bottom": 135},
+        "subtitle_reserve": {"top": 1640, "height": 120},
+        "screenshot_fit": "contain",
+        "attribution_preserved": True,
+    }
+    result = MODULE.validate_layout_contract(value)
+    assert result["status"] == "passed"
+
+
+def test_product_profile_allows_declared_dark_background_edges() -> None:
+    metrics = [{"mean_luma": 24.0, "black_ratio": 0.1, "unsafe_edge_dark_ratio": 0.8, "frame_delta": 1.0}]
+    assert MODULE.validate_full_frame_metrics(metrics, allow_dark_edges=True)["status"] == "passed"
+
+
 def test_layout_contract_rejects_global_pink() -> None:
     value = _contract()
     value["pink_global_background"] = True
