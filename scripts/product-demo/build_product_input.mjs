@@ -81,6 +81,7 @@ export async function buildInput(o){
       await probeImage(file);
       scene.asset=`runtime/${o.assetGroup}/${shot.capture_id}.png`;scene.assetSha256=capture.sha256;
       scene.capturedAt=capture.captured_at;scene.attribution=check.attribution_text;
+      scene.captureViewport=capture.viewport||null;scene.captureDeviceScaleFactor=capture.device_scale_factor||null;
       assets.push({relative:scene.asset,bytes});
     }
     scenes.push(scene);

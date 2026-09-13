@@ -6,7 +6,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {validateProductInput,sceneFrameRanges,findSceneIndex,isSafeAsset} from '../../remotion/src/product-demo/website-product-contract.mjs';
+import {validateProductInput,sceneFrameRanges,findSceneIndex,isSafeAsset,sceneLayout} from '../../remotion/src/product-demo/website-product-contract.mjs';
 import {safeUrl,validatePlan,waitForVisibleText} from '../../scripts/product-demo/capture_product_pages.mjs';
 import {buildInput} from '../../scripts/product-demo/build_product_input.mjs';
 const exec=promisify(execFile),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
@@ -69,14 +69,14 @@ async function fixture(t){
  segments:script.beats.map((b,i)=>({index:i+1,scene_start_microseconds:i*6000000,scene_end_microseconds:(i+1)*6000000,start_microseconds:i*6000000,end_microseconds:i*6000000+5900000,duration_microseconds:5900000,
  narration_sha256:sha(Buffer.from(b.narration)),subtitle_sha256:sha(Buffer.from(b.subtitle)),audio_relative_path:'audio.wav',audio_sha256:audioHash}))};
  // Deliberate unit-test fixture, not a claim of real website or SAMI capture.
- const manifest={schema_version:'1.0',status:'captured_unreviewed',site_origin:'https://photo.joviluma.com',captures:[{id:'screen',filename:'screen.png',sha256:pngHash,source_url:'https://photo.joviluma.com/',captured_at:'2026-09-13T07:00:00Z',status:'captured_unreviewed',method:'live_browser_no_mock',mocked:false}]};
+ const manifest={schema_version:'1.0',status:'captured_unreviewed',site_origin:'https://photo.joviluma.com',captures:[{id:'screen',filename:'screen.png',sha256:pngHash,source_url:'https://photo.joviluma.com/',captured_at:'2026-09-13T07:00:00Z',status:'captured_unreviewed',method:'live_browser_no_mock',mocked:false,viewport:{width:1440,height:900},device_scale_factor:1}]};
  const capturesFile=await write('captures.json',manifest);
  const review={schema_version:'1.0',review_kind:'local_agent_asset_review',status:'suitable_for_candidate',reviewer:'TEST FIXTURE',capture_manifest_sha256:sha(await fs.readFile(capturesFile)),captures:[{id:'screen',sha256:pngHash,content_verified:true,rights_checked:true,attribution_preserved:true,no_private_data:true,notes:'unit test fixture only',claim_ids:['test_claim'],attribution_text:'TEST ONLY'}]};
  return {script:scriptFile,story:await write('story.json',story),timing:await write('timing.json',timing),captures:capturesFile,review:await write('review.json',review),
   audioRoot,captureRoot:capturesRoot,publicRoot:path.join(root,'public'),assetGroup:'test_attempt',aspect:'9:16',out:path.join(root,'props.json')};
 }
 async function edit(file,callback){const v=JSON.parse(await fs.readFile(file,'utf8'));callback(v);await fs.writeFile(file,JSON.stringify(v));}
-test('build input decodes actual PNG/audio and stages SHA-bound captures',async t=>{const o=await fixture(t);const v=await buildInput(o);assert.equal(v.totalFrames,900);assert.equal(v.mode,'production_candidate');const copied=await fs.readFile(path.join(o.publicRoot,'runtime/test_attempt/screen.png'));assert.equal(sha(copied),v.scenes[1].assetSha256);});
+test('build input decodes actual PNG/audio and stages SHA-bound captures',async t=>{const o=await fixture(t);const v=await buildInput(o);assert.equal(v.totalFrames,900);assert.equal(v.mode,'production_candidate');assert.deepEqual(v.scenes[1].captureViewport,{width:1440,height:900});const copied=await fs.readFile(path.join(o.publicRoot,'runtime/test_attempt/screen.png'));assert.equal(sha(copied),v.scenes[1].assetSha256);});
 test('source file edit invalidates measured timing',async t=>{const o=await fixture(t);await fs.appendFile(o.script,' ');await assert.rejects(buildInput(o),/measured_sami_binding/);});
 test('unreviewed capture cannot be promoted',async t=>{const o=await fixture(t);await edit(o.review,v=>{v.status='pending';});await assert.rejects(buildInput(o),/asset_review_required/);});
 test('missing claim binding rejects',async t=>{const o=await fixture(t);await edit(o.review,v=>{v.captures[0].claim_ids=[];});await assert.rejects(buildInput(o),/claim_capture_binding/);});
@@ -84,3 +84,9 @@ test('asset bytes tampering rejects',async t=>{const o=await fixture(t);await fs
 test('incorrect measured audio duration rejects',async t=>{const o=await fixture(t);await edit(o.timing,v=>{v.segments[0].end_microseconds=5000000;v.segments[0].duration_microseconds=5000000;});await assert.rejects(buildInput(o),/measured_audio_duration/);});
 test('existing runtime group is never overwritten',async t=>{const o=await fixture(t);await buildInput(o);await assert.rejects(buildInput(o),e=>e.code==='EEXIST');});
 test('capture source contains no mocks or API fulfill',async()=>{const source=await fs.readFile(new URL('../../scripts/product-demo/capture_product_pages.mjs',import.meta.url),'utf8');assert.doesNotMatch(source,/route\.fulfill|installOpenMeteoMock|installNextApiMock/);});
+test('desktop homepage capture uses a wide portrait layout while feature captures keep their tall layout',()=>{
+ const home=sceneLayout('9:16','s02',{width:1440,height:900}),feature=sceneLayout('9:16','s03');
+ assert.equal(home.captureHeight,720); assert.equal(home.headlineFontSize,58);
+ assert.equal(feature.captureHeight,1000); assert.equal(feature.headlineFontSize,66);
+ assert.equal(sceneLayout('16:9','s02').captureHeight,445);
+});

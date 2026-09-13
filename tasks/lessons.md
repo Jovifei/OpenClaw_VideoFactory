@@ -541,3 +541,12 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - A visually clean still at one frame does not prove a sequential Remotion
   render is clean; inspect scene starts, representative caption frames, CTA,
   and a complete decoded frame scan before handing off.
+
+# 2026-09-14 - Website promo revision feedback
+
+- “竖屏成片”和“桌面大屏截图”是两个独立维度；锁定 9:16 输出时仍要把首页
+  采集视口明确写成桌面尺寸，不能把手机窄屏当作桌面页面。
+- 线上数据接口出现 429/502 时，真实错误页面不能作为宣传素材；保留 receipt
+  和 blocker 证据，等待健康数据或停在明确阻塞状态，绝不用 mock 补画面。
+- 更换声音必须重新测量整条旁白并让字幕跟随新时序；不能只替换音频文件而复用旧
+  timing 或旧字幕。

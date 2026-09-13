@@ -1,0 +1,25 @@
+{
+  "id": "PHASE1-WEBSITE-PRODUCT-PROMO-REVISION-017",
+  "date": "2026-09-14",
+  "baseline_commit": "bf709a0e0aaca306ead48708759460fc109fa583",
+  "authorization": "Jovi requested direct revision: portrait output, desktop homepage capture, a more natural voice, and rewritten copy for video plus social screenshots.",
+  "scope": "Replace the homepage capture with a verified 1440x900 live desktop capture when the weather upstream is healthy, regenerate the A SAMI voice timing, and use the functional-narrative copy V2 with revised portrait layout.",
+  "allowed_paths": [
+    "docs/WEBSITE_PRODUCT_PROMO_COPY_V2.md",
+    "docs/superpowers/specs/2026-09-13-website-product-promo-revision-design.md",
+    "tasks/plans/2026-09-13-website-product-promo-revision.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "remotion/src/product-demo/",
+    "scripts/product-demo/",
+    "scripts/assemble_product_preview.py",
+    "scripts/render_phase1_topic_visual.mjs",
+    "tests/product-demo/",
+    "tests/product_demo_integration.test.mjs",
+    "reports/change_requests/PHASE1-WEBSITE-PRODUCT-PROMO-REVISION-017.json"
+  ],
+  "excluded": ["Star_photo_addr business code/deployment", "Feishu", "Cron", "automatic publication", "model downloads", "Phase Promotion", "AGENTS.md"],
+  "verification_plan": ["real 1440x900 no-mock homepage capture", "A SAMI timing and coverage >= 0.75", "copy/text budget and portrait layout checks", "single visual render, ASS subtitle mux, full decode and frame review", "social copy card is static text only", "Jovi human review remains required"],
+  "status": "in_progress_live_weather_blocker",
+  "blocker": "photo.joviluma.com/api/forecast currently returns HTTP 502 while /api/data-status reports Open-Meteo upstream HTTP 429; the error-state desktop screenshot is not eligible for the candidate."
+}

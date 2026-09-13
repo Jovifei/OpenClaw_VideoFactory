@@ -24,6 +24,12 @@ export function sceneFrameRanges(segments, durationSeconds, fps = 30) {
       ranges.some((s, i) => i && s.startFrame !== ranges[i - 1].endFrame)) fail('timing_coverage');
   return {totalFrames, ranges};
 }
+export function sceneLayout(aspect, sceneId, captureViewport = null) {
+  if (!['9:16', '16:9'].includes(aspect)) fail('layout_aspect');
+  if (aspect === '16:9') return {captureTop: 288, captureHeight: 445, captureLabelTop: 748, detailTop: 822, headlineFontSize: 64};
+  if (captureViewport?.width >= 1200 && captureViewport?.height <= 1000) return {captureTop: 420, captureHeight: 720, captureLabelTop: 1160, detailTop: 1270, headlineFontSize: 58};
+  return {captureTop: 420, captureHeight: 1000, captureLabelTop: 1440, detailTop: 1525, headlineFontSize: 66};
+}
 export function validateProductInput(value, {requireProduction = false} = {}) {
   if (!value || typeof value !== 'object' || value.schema_version !== '1.0' ||
       !['layout_preview', 'production_candidate'].includes(value.mode) || value.fps !== 30 ||

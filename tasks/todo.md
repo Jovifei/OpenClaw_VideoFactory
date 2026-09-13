@@ -2830,3 +2830,19 @@ for Jovi review. Do not modify Star business code or deploy it.
 - Baseline: clean worktree is missing ignored legacy `dist/story_demo*` artifacts; bounded source tests remain the regression truth until those fixture-dependent checks are regenerated in an owned attempt.
 - Human review must bind to the final audible MP4 SHA; no approval is inferred from machine checks.
 - Final runtime candidate: job `job-98ffaa240c85e14faac0db25`, render attempt `3`; MP4 SHA `833c18ee5ae8b9224da5261871dd30c5c6abe804a4ad99bdd0cb74a13827a0d4` is recorded outside Git in the review package and still needs Jovi's watch/listen.
+
+# WEBSITE-PRODUCT-PROMO-REVISION-20260914 — DESKTOP CAPTURE / VOICE A / COPY V2
+
+- [x] Confirm 9:16 portrait output and 1440×900 desktop homepage capture contract.
+- [x] Select SAMI voice A `ICL_zh_male_shuyisyh` and generate an 8-beat timing candidate.
+- [x] Rewrite functional-narrative video copy and social screenshot copy.
+- [ ] Capture a clean homepage after the live weather upstream recovers; reject HTTP 502/error-state screenshots.
+- [ ] Build SHA-bound v2 product input with the desktop homepage and existing reviewed feature captures.
+- [ ] Render one new visual master, mux A voice/ASS subtitles, and inspect portrait keyframes.
+- [ ] Record new SQLite job/attempt/review package, commit and push the revision branch.
+- [ ] Stop at `ready_for_jovi_human_review`; do not publish or promote Phase 1.
+
+## Review
+
+- A voice timing manifest is ready in the E-drive runtime with coverage 0.983133.
+- Homepage desktop capture attempt is preserved but rejected because the live forecast upstream returned HTTP 429/502.

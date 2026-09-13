@@ -46,6 +46,9 @@ test('product demo source remains separate from the technical scene contract', (
 
 test('portrait product captures reserve readable space without cropping the source image', () => {
   const source = fs.readFileSync(path.join(ROOT, 'remotion', 'src', 'product-demo', 'WebsiteProductDemo.tsx'), 'utf8');
-  assert.match(source, /height: portrait \? 1000 : 445/);
-  assert.match(source, /top: portrait \? 1440 : 748/);
+  assert.match(source, /sceneLayout\(input\.aspect, scene\.id, scene\.captureViewport\)/);
+  assert.match(source, /objectFit: 'contain'/);
+  const contract = fs.readFileSync(path.join(ROOT, 'remotion', 'src', 'product-demo', 'website-product-contract.mjs'), 'utf8');
+  assert.match(contract, /captureHeight: 720/);
+  assert.match(contract, /captureHeight: 1000/);
 });

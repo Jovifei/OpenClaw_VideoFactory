@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, Composition, Img, interpolate, staticFile, useCurrentFrame} from 'remotion';
-import {findSceneIndex, validateProductInput, type ProductInput} from './website-product-contract.mjs';
+import {findSceneIndex, sceneLayout, validateProductInput, type ProductInput} from './website-product-contract.mjs';
 
 // Proposed promo palette, not a claim about the currently deployed website CSS.
 const colors = {bg: '#090F1B', panel: '#101E30', ink: '#F7F8FC', secondary: '#B6C5D8', accent: '#A5DDF4'};
@@ -13,7 +13,7 @@ const font = 'Microsoft YaHei, Noto Sans CJK SC, sans-serif';
 export const WebsiteProductDemo: React.FC<ProductInput> = (raw) => {
   const input = validateProductInput(raw), frame = useCurrentFrame();
   const scene = input.scenes[findSceneIndex(input, frame)], local = frame - scene.startFrame;
-  const portrait = input.aspect === '9:16', w = portrait ? 1080 : 1920;
+  const portrait = input.aspect === '9:16', layout = sceneLayout(input.aspect, scene.id, scene.captureViewport), w = portrait ? 1080 : 1920;
   const left = portrait ? 76 : 96, right = portrait ? 160 : 96, contentWidth = w-left-right;
   const fade = interpolate(local, [0, 9], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const preview = input.mode === 'layout_preview';
@@ -24,16 +24,16 @@ export const WebsiteProductDemo: React.FC<ProductInput> = (raw) => {
       <span style={{fontSize: 22, color: colors.secondary}}>摄影出发前的地图工作台</span>
     </div>
     <div data-layout-box="product-headline" style={{position: 'absolute', left, top: portrait ? 270 : 160,
-      width: contentWidth, fontSize: portrait ? 66 : 64, lineHeight: 1.3, fontWeight: 800,
+      width: contentWidth, fontSize: layout.headlineFontSize, lineHeight: 1.3, fontWeight: 800,
       whiteSpace: 'pre-wrap', opacity: fade}}>{scene.headline}</div>
     {scene.kind === 'capture' ? <>
-      <div data-layout-box="product-capture" style={{position: 'absolute', left, top: portrait ? 420 : 288,
-        width: contentWidth, height: portrait ? 1000 : 445, border: `1px solid ${colors.secondary}`,
+      <div data-layout-box="product-capture" style={{position: 'absolute', left, top: layout.captureTop,
+        width: contentWidth, height: layout.captureHeight, border: `1px solid ${colors.secondary}`,
         borderRadius: 16, background: colors.panel, overflow: 'hidden'}}>
         {scene.asset ? <Img src={staticFile(scene.asset)} style={{width: '100%', height: '100%', objectFit: 'contain', opacity: fade}}/>
           : <div style={{padding: 40, fontSize: 30}}>待采集真实页面。不是网站画面。</div>}
       </div>
-      <div data-layout-box="product-capture-label" style={{position: 'absolute', left, top: portrait ? 1440 : 748,
+      <div data-layout-box="product-capture-label" style={{position: 'absolute', left, top: layout.captureLabelTop,
         width: contentWidth, color: colors.secondary, fontSize: 20, lineHeight: 1.5}}>
         {preview ? '版式预览；无生产素材' : `页面截图演示 · ${scene.capturedAt.slice(0,10)} 采集`}
         <br/>{scene.attribution}
@@ -48,7 +48,7 @@ export const WebsiteProductDemo: React.FC<ProductInput> = (raw) => {
         marginTop: 48, color: colors.accent}}>photo.joviluma.com</div>}
     </div>}
     <div data-layout-box="product-detail" style={{position: 'absolute', left, width: contentWidth,
-      top: portrait ? 1525 : 822, fontSize: portrait ? 30 : 26, color: colors.secondary, lineHeight: 1.55}}>
+      top: layout.detailTop, fontSize: portrait ? 30 : 26, color: colors.secondary, lineHeight: 1.55}}>
       <strong style={{color: colors.accent}}>{scene.badge}</strong><br/>{scene.detail}
     </div>
     <div data-layout-box="product-disclaimer" style={{position: 'absolute', left, top: portrait ? 1810 : 1004,
