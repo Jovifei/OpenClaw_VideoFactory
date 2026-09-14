@@ -2831,18 +2831,21 @@ for Jovi review. Do not modify Star business code or deploy it.
 - Human review must bind to the final audible MP4 SHA; no approval is inferred from machine checks.
 - Final runtime candidate: job `job-98ffaa240c85e14faac0db25`, render attempt `3`; MP4 SHA `833c18ee5ae8b9224da5261871dd30c5c6abe804a4ad99bdd0cb74a13827a0d4` is recorded outside Git in the review package and still needs Jovi's watch/listen.
 
-# WEBSITE-PRODUCT-PROMO-REVISION-20260914 — DESKTOP CAPTURE / VOICE A / COPY V2
+# WEBSITE-PRODUCT-PROMO-REVISION-20260915 — DESKTOP CAPTURE / VOICE A / COPY V2
 
 - [x] Confirm 9:16 portrait output and 1440×900 desktop homepage capture contract.
 - [x] Select SAMI voice A `ICL_zh_male_shuyisyh` and generate an 8-beat timing candidate.
 - [x] Rewrite functional-narrative video copy and social screenshot copy.
-- [ ] Capture a clean homepage after the live weather upstream recovers; reject HTTP 502/error-state screenshots.
-- [ ] Build SHA-bound v2 product input with the desktop homepage and existing reviewed feature captures.
-- [ ] Render one new visual master, mux A voice/ASS subtitles, and inspect portrait keyframes.
-- [ ] Record new SQLite job/attempt/review package, commit and push the revision branch.
-- [ ] Stop at `ready_for_jovi_human_review`; do not publish or promote Phase 1.
+- [x] Capture a clean homepage after the live weather upstream recovers; reject HTTP 502/error-state screenshots.
+- [x] Build SHA-bound v2 product input with the desktop homepage and existing reviewed feature captures.
+- [x] Render one new visual master, mux A voice/ASS subtitles, and inspect portrait keyframes.
+- [x] Record new SQLite job/attempt/review package; commit and push the revision branch.
+- [x] Stop at `ready_for_jovi_human_review`; do not publish or promote Phase 1.
 
 ## Review
 
-- A voice timing manifest is ready in the E-drive runtime with coverage 0.983133.
-- Homepage desktop capture attempt is preserved but rejected because the live forecast upstream returned HTTP 429/502.
+- A voice timing manifest is ready in the E-drive runtime with coverage `0.983489`, speaker `ICL_zh_male_shuyisyh`, and eight SAMI segments.
+- The accepted homepage is `capture_home_v3`: real browser capture, no mock, viewport `1440×900`, PNG SHA `9798ee14909b270c2c5dfa795c1a07c975379de9cc2c04e0724b4d34f5468afb`; `data-status` was degraded/stale and visible `数据不足` states remain disclosed.
+- Product input `product_input_v2.json` and visual master `render_v2/visual_master.mp4` are SHA-bound; the visual report passed with one Remotion render.
+- Final runtime candidate: job `job-4de5499239aa4af877267315`, attempt `1`; `final_v2/final_master_v2.mp4` is 1080×1920/30fps/H.264/AAC/45s with SHA `73183808c78b0e31cfe3462c0fc1cb2ea4e0915dc4e9302e92a22149a3daac47`.
+- Final report, post-render check, sequential frame/字幕 visibility check, SQLite projection, and review package all pass machine gates; human watch/listen remains required.

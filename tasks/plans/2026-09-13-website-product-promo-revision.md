@@ -21,7 +21,7 @@
    - 文件：运行时 `capture_plan_v2.json`、新 capture manifest/PNG；代码仅在选择器契约需要时修改。
    - 证据：`method=live_browser_no_mock`、`mocked=false`、viewport、页面来源、版权和隐私 review。
    - 失败：写入 capture failure，不把部分截图提升为候选。
-   - 状态：`desktop_capture_reviewed`。
+   - 状态：`desktop_capture_reviewed`（`capture_home_v3`，真实 1440×900；degraded/stale 已披露）。
 
 3. **新脚本与静态文案卡**
    - 目的：把 8 段文案改成利益点/解释/边界三层，并生成朋友圈/小红书可截图文案。
@@ -42,18 +42,18 @@
    - 文件：必要时修改 `WebsiteProductDemo.tsx`、产品 contract/tests；保持 TechnicalExplainer 不变。
    - 证据：Node product tests、typecheck、关键帧不溢出、下角无重复作者文本。
    - 失败：不渲染，修复单一契约问题后重测。
-   - 状态：`product_input_v2_validated`。
+   - 状态：`product_input_v2_validated`（8 场景、1350 帧；竖屏关键帧已检查）。
 
 6. **单次视觉渲染与最终封装**
    - 目的：复用现有 Remotion/FFmpeg 链，生成一份新视觉母版，再封装 A 声音和 ASS 字幕。
    - 文件：运行时新 render/final/review 目录；不覆盖旧 003。
    - 证据：一次 Remotion render、1080×1920/30fps/H.264/AAC、SRT/ASS、CTA≥4秒、全帧解码。
    - 失败：保留新 attempt 和报告，不把 failed 输出标为候选。
-   - 状态：`ready_for_jovi_human_review`。
+   - 状态：`ready_for_jovi_human_review`（job `job-4de5499239aa4af877267315` / attempt `1`，MP4 SHA `73183808c78b0e31cfe3462c0fc1cb2ea4e0915dc4e9302e92a22149a3daac47`）。
 
 7. **双渠道交付与 Git**
    - 目的：生成朋友圈/小红书截图文案卡；记录 SQLite job/attempt/artifact，提交并推送任务分支。
    - 文件：只提交源码、测试、计划、设计和变更请求；所有媒体/音频/DB 在 E 盘 runtime。
    - 证据：review package、MP4 SHA、copy-card path、`git diff --check`、测试日志、远端分支 head。
    - 失败：停止在可审查状态，不合并 main、不做 Phase Promotion。
-   - 状态：`pushed_human_review_pending`。
+   - 状态：`pushed_human_review_pending`（review package 与社交卡已生成；未自动发布）。
