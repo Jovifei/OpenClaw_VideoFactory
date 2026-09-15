@@ -2858,7 +2858,7 @@ for Jovi review. Do not modify Star business code or deploy it.
 - [x] Add bounded focus rectangles and hook-cover role to the WebsiteProductDemo contract/component with tests.
 - [x] Generate faster SAMI `zh_male_ad` timing; cover voice starts at 1.76s and total voice coverage is 0.881875 for 32s.
 - [x] Render one focused 9:16 visual master and mux subtitles/audio; inspect all eight scene stills.
-- [x] Record SQLite job `job-68ebe2322d4a7930f2a05769`, attempt `1`, and review package.
+- [x] Record SQLite job `job-5c4659144bbcc20c01d08c34`, attempt `1`, and review package.
 - [x] Stop at `ready_for_jovi_human_review`; do not publish or promote Phase 1.
 
 ## Review
