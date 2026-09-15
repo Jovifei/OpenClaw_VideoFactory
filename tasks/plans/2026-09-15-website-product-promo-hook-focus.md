@@ -47,5 +47,5 @@
 ## Review
 
 - Latest capture set uses v1.0.18 / `3334e0c08f9a`; the first six shots plus a separate cloudsea detail shot are hash-bound in `capture_manifest_v3.json`.
-- Final job `job-68ebe2322d4a7930f2a05769` is `PENDING_REVIEW`; final MP4 SHA is `6106fab2c1606d53ff42ac2523945844c32614f29e91f1c366dedadede7b5cd3`.
+- Final job `job-5c4659144bbcc20c01d08c34` is `PENDING_REVIEW`; final MP4 SHA is `a126a82e133b57526e3353c1ef17729296968df4da8478f51cf1feee5044fc77`.
 - Remotion visual render, FFmpeg mux, full decode, sequential frame scan and subtitle visibility all passed; only Jovi human watch/listen remains.

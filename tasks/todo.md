@@ -2863,7 +2863,7 @@ for Jovi review. Do not modify Star business code or deploy it.
 
 ## Review
 
-- Final candidate: `E:\OpenClaw_VideoFactory_Runtime\zhuxing_promo_rebuild_20260915\final_v7\final_master_v7.mp4`, 1080×1920/30fps/H.264/AAC/32s, SHA `6106fab2c1606d53ff42ac2523945844c32614f29e91f1c366dedadede7b5cd3`.
+- Final candidate: `E:\OpenClaw_VideoFactory_Runtime\zhuxing_promo_rebuild_20260915\final_v8\final_master_v8.mp4`, 1080×1920/30fps/H.264/AAC/32s, SHA `a126a82e133b57526e3353c1ef17729296968df4da8478f51cf1feee5044fc77`.
 - Latest CloudSea focus shows current `59/100`, `+817m`, `5.1m/s`, and `山顶在云层上方`; no Beta/test wording is authored in the promo copy.
-- Final report `final_report_v7.json`, post-render check, sequential quality check, SQLite projection and `review_package_v7.json` are bound to the same job `job-68ebe2322d4a7930f2a05769`.
+- Final report `final_report_v8.json`, post-render check, sequential quality check, SQLite projection and `review_package_v8.json` are bound to the same job `job-5c4659144bbcc20c01d08c34`.
 - Machine gates passed; Jovi human watch/listen remains the only acceptance decision.
