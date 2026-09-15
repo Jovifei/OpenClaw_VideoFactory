@@ -24,11 +24,11 @@
    - 证据：每段有一个视觉焦点、文本预算、无作者/调试元数据。
 
 3. **快速 SAMI 声音**
-   - 目的：使用更有宣传感的本地 SAMI 男声，压缩停顿并以新时序生成字幕。
+   - 目的：使用更有宣传感的本地 SAMI 男声，压缩首句并以新时序生成字幕。
    - 证据：speaker、音频 SHA、覆盖率 ≥0.75、无混用 backend。
 
 4. **单次视觉渲染与封装**
-   - 目的：9:16/1080×1920，约 36 秒；只调用一次 Remotion，再用 FFmpeg 合成音频与 ASS 字幕。
+   - 目的：9:16/1080×1920，约 32 秒；只调用一次 Remotion，再用 FFmpeg 合成音频与 ASS 字幕。
    - 证据：视觉母版、最终 H.264/AAC、全帧解码、局部焦点关键帧、CTA ≥4 秒。
 
 5. **审核与交付**
@@ -43,3 +43,9 @@
 ## 回滚边界
 
 只保留新的 E 盘运行时目录和修订分支变更；失败候选不覆盖旧候选，Star 与根工作区不做 reset/clean/stash/rebase。
+
+## Review
+
+- Latest capture set uses v1.0.18 / `3334e0c08f9a`; the first six shots plus a separate cloudsea detail shot are hash-bound in `capture_manifest_v3.json`.
+- Final job `job-68ebe2322d4a7930f2a05769` is `PENDING_REVIEW`; final MP4 SHA is `6106fab2c1606d53ff42ac2523945844c32614f29e91f1c366dedadede7b5cd3`.
+- Remotion visual render, FFmpeg mux, full decode, sequential frame scan and subtitle visibility all passed; only Jovi human watch/listen remains.

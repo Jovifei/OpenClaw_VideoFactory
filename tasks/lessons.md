@@ -559,3 +559,5 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   区域并放大展示，同时保留来源/版权与边界说明。
 - 网站代码和宣传素材必须重新绑定到最新线上版本；旧采集不能代表当前功能，
   尤其不能用旧云海页面替代最新 `/cloudsea`。
+- 封装命令中的 `job_id` 必须直接复用 SQLite 创建结果；即使媒体可播放，报告写入
+  不存在的 job 也必须整次标为 rejected，不能靠事后改报告补救。

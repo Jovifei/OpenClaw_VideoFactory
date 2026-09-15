@@ -168,6 +168,7 @@ async function renderProduct(args) {
   await prepareReviewTargets({output, report, stills, clips, inputs: [productInputPath, timingPath]});
   const rendered = await renderMediaOnce({compositionId: 'WebsiteProductDemo', inputProps, output, aspect});
   const reviewScenes = inputProps.scenes.map((scene, index) => ({...scene, scene_index: index + 1, visual_type: `website_${scene.kind}`}));
+  const focusSceneCount = inputProps.scenes.filter(scene => scene.focus).length;
   const derived = await extractReviewArtifacts({output, report, stills, clips, segments: timing.segments,
     durationInFrames: rendered.durationInFrames, width: rendered.width, height: rendered.height, scenes: reviewScenes});
   const value = {
@@ -185,7 +186,7 @@ async function renderProduct(args) {
     layout_contract: {version: 'website_product_demo_v1', aspect,
       safe_area: aspect === '16:9' ? {left: 96, right: 96, top: 72, bottom: 72} : {left: 76, right: 160, top: 154, bottom: 135},
       subtitle_reserve: aspect === '16:9' ? {top: 918, height: 68} : {top: 1640, height: 120},
-      screenshot_fit: 'contain', attribution_preserved: true},
+       screenshot_fit: focusSceneCount ? 'focus_crop' : 'contain', focus_scene_count: focusSceneCount, attribution_preserved: true},
     mascot: {mode: 'off', present: false},
     human_review_required: true, automatic_export: false, outputs_on_e_drive: true,
   };

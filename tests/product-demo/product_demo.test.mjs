@@ -6,13 +6,14 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {validateProductInput,sceneFrameRanges,findSceneIndex,isSafeAsset,sceneLayout} from '../../remotion/src/product-demo/website-product-contract.mjs';
+import {validateProductInput,sceneFrameRanges,findSceneIndex,isSafeAsset,isFocusRect,sceneLayout} from '../../remotion/src/product-demo/website-product-contract.mjs';
 import {safeUrl,validatePlan,waitForVisibleText} from '../../scripts/product-demo/capture_product_pages.mjs';
 import {buildInput} from '../../scripts/product-demo/build_product_input.mjs';
 const exec=promisify(execFile),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const base=()=>({schema_version:'1.0',mode:'production_candidate',fps:30,aspect:'9:16',brand:'逐星',website:'photo.joviluma.com',totalFrames:900,
  scriptSha256:'a'.repeat(64),timingSha256:'b'.repeat(64),captureManifestSha256:'c'.repeat(64),captureReviewSha256:'d'.repeat(64),
  scenes:Array.from({length:5},(_,i)=>({id:`s${i+1}`,kind:i===0?'title':i===4?'cta':'capture',startFrame:i*180,endFrame:(i+1)*180,
+ visualRole:i===0?'hook':i===4?'cta':undefined,focus:i>0&&i<4?{x:0.2,y:0.2,width:0.6,height:0.6,zoom:1.2}:null,
  headline:'测试标题',detail:'测试，不是正式网站素材。',badge:'测试',asset:i>0&&i<4?`runtime/test/shot${i}.png`:null,
  assetSha256:i>0&&i<4?'e'.repeat(64):null,capturedAt:'2026-09-13T07:00:00Z',attribution:'test attribution'}))});
 test('valid dual aspect contract, last frame is last scene',()=>{
@@ -26,6 +27,7 @@ test('gaps and overlap reject',()=>{for(const delta of [-1,1]){const p=base();p.
 test('CTA must remain at least four seconds',()=>{const p=base();p.scenes[3].endFrame=800;p.scenes[4].startFrame=800;assert.throws(()=>validateProductInput(p),/cta_hold/);});
 test('oversized copy rejects',()=>{const p=base();p.scenes[1].headline='字'.repeat(25);assert.throws(()=>validateProductInput(p),/text_budget/);});
 test('production capture requires hash and attribution',()=>{const p=base();p.scenes[1].attribution='';assert.throws(()=>validateProductInput(p),/capture_binding/);});
+test('focus rectangles are bounded and production scenes require a hook',()=>{const p=base();assert.equal(isFocusRect(p.scenes[1].focus),true);p.scenes[1].focus={x:0.8,y:0,width:0.4,height:0.4,zoom:1.2};assert.throws(()=>validateProductInput(p),/focus_rect/);p.scenes[1].focus={x:0.2,y:0.2,width:0.6,height:0.6,zoom:1.2};p.scenes[0].visualRole=undefined;assert.throws(()=>validateProductInput(p),/scene_coverage/);});
 test('frame 15 remains first scene at 0.501s boundary',()=>{
  const ends=[501000,10000000,18000000,25000000,30000000];
  const segments=ends.map((end,i)=>({index:i+1,scene_start_microseconds:i?ends[i-1]:0,scene_end_microseconds:end}));
@@ -61,7 +63,7 @@ async function fixture(t){
  await exec('ffmpeg',['-nostdin','-v','error','-f','lavfi','-i','sine=frequency=440:duration=5.9','-c:a','pcm_s16le',audio]);
  const pngHash=sha(await fs.readFile(png)),audioHash=sha(await fs.readFile(audio));
  const script={schema_version:'1.0',script_id:'promo_test',beats:Array.from({length:5},(_,i)=>({id:`s${i+1}`,narration:`测试旁白${i+1}`,subtitle:`测试字幕${i+1}`}))};
- const story={schema_version:'1.0',script_id:'promo_test',shots:script.beats.map((b,i)=>({id:b.id,kind:i===0?'title':i===4?'cta':'capture',capture_id:'screen',headline:'测试标题',detail:'TEST ONLY',badge:'测试',claim_ids:['test_claim']}))};
+ const story={schema_version:'1.0',script_id:'promo_test',shots:script.beats.map((b,i)=>({id:b.id,kind:i===0?'title':i===4?'cta':'capture',visual_role:i===0?'hook':i===4?'cta':undefined,capture_id:'screen',headline:'测试标题',detail:'TEST ONLY',badge:'测试',claim_ids:['test_claim'],focus:i>0&&i<4?{x:0.2,y:0.2,width:0.6,height:0.6,zoom:1.2}:null}))};
  const write=async(name,v)=>{const p=path.join(root,name);await fs.writeFile(p,JSON.stringify(v));return p;};
  const scriptFile=await write('script.json',script);
  const timing={schema_version:'1.0',status:'timing_manifest_ready',script:{sha256:sha(await fs.readFile(scriptFile))},timing:{fps:30,authority:'local_jianying_sami_audio_files'},visual_duration_seconds:30,
@@ -86,7 +88,7 @@ test('existing runtime group is never overwritten',async t=>{const o=await fixtu
 test('capture source contains no mocks or API fulfill',async()=>{const source=await fs.readFile(new URL('../../scripts/product-demo/capture_product_pages.mjs',import.meta.url),'utf8');assert.doesNotMatch(source,/route\.fulfill|installOpenMeteoMock|installNextApiMock/);});
 test('desktop homepage capture uses a wide portrait layout while feature captures keep their tall layout',()=>{
  const home=sceneLayout('9:16','s02',{width:1440,height:900}),feature=sceneLayout('9:16','s03');
- assert.equal(home.captureHeight,720); assert.equal(home.headlineFontSize,58);
+ assert.equal(home.captureHeight,680); assert.equal(home.headlineFontSize,62);
  assert.equal(feature.captureHeight,1000); assert.equal(feature.headlineFontSize,66);
  assert.equal(sceneLayout('16:9','s02').captureHeight,445);
 });

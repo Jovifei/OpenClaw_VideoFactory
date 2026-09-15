@@ -2849,3 +2849,21 @@ for Jovi review. Do not modify Star business code or deploy it.
 - Product input `product_input_v2.json` and visual master `render_v2/visual_master.mp4` are SHA-bound; the visual report passed with one Remotion render.
 - Final runtime candidate: job `job-4de5499239aa4af877267315`, attempt `1`; `final_v2/final_master_v2.mp4` is 1080×1920/30fps/H.264/AAC/45s with SHA `73183808c78b0e31cfe3462c0fc1cb2ea4e0915dc4e9302e92a22149a3daac47`.
 - Final report, post-render check, sequential frame/字幕 visibility check, SQLite projection, and review package all pass machine gates; human watch/listen remains required.
+
+# WEBSITE-PRODUCT-PROMO-REBUILD-20260915 — HOOK / FOCUS / LATEST CLOUDSEA
+
+- [x] Record Jovi's correction: stronger cover, faster entry, focused information crops, and latest mature CloudSea page.
+- [x] Research public video skills and apply Remotion video-first layout, transition and caption principles without adding a second renderer.
+- [x] Re-capture current live v1.0.18 pages; keep strict-selector, forecast-502 and tile-timeout failures preserved.
+- [x] Add bounded focus rectangles and hook-cover role to the WebsiteProductDemo contract/component with tests.
+- [x] Generate faster SAMI `zh_male_ad` timing; cover voice starts at 1.76s and total voice coverage is 0.881875 for 32s.
+- [x] Render one focused 9:16 visual master and mux subtitles/audio; inspect all eight scene stills.
+- [x] Record SQLite job `job-68ebe2322d4a7930f2a05769`, attempt `1`, and review package.
+- [x] Stop at `ready_for_jovi_human_review`; do not publish or promote Phase 1.
+
+## Review
+
+- Final candidate: `E:\OpenClaw_VideoFactory_Runtime\zhuxing_promo_rebuild_20260915\final_v7\final_master_v7.mp4`, 1080×1920/30fps/H.264/AAC/32s, SHA `6106fab2c1606d53ff42ac2523945844c32614f29e91f1c366dedadede7b5cd3`.
+- Latest CloudSea focus shows current `59/100`, `+817m`, `5.1m/s`, and `山顶在云层上方`; no Beta/test wording is authored in the promo copy.
+- Final report `final_report_v7.json`, post-render check, sequential quality check, SQLite projection and `review_package_v7.json` are bound to the same job `job-68ebe2322d4a7930f2a05769`.
+- Machine gates passed; Jovi human watch/listen remains the only acceptance decision.

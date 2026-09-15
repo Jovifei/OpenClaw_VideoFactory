@@ -68,7 +68,7 @@ export async function buildInput(o){
     await exec('ffmpeg',['-nostdin','-v','error','-xerror','-i',audio,'-map','0:a:0','-f','null','-'],{timeout:30000,shell:false});
     // Still reuse factory final preview validator for mux/subtitle synchronization; this is not that gate.
     const scene={id:shot.id,kind:shot.kind,...ranges[i],headline:shot.headline,detail:shot.detail,badge:shot.badge,
-      asset:null,assetSha256:null,capturedAt:'',attribution:''};
+      visualRole:shot.visual_role??shot.visualRole,focus:shot.focus??null,asset:null,assetSha256:null,capturedAt:'',attribution:''};
     if(shot.kind==='capture'){
       const capture=captures.get(shot.capture_id),check=reviews.get(shot.capture_id);
       if(!capture||capture.method!=='live_browser_no_mock'||capture.mocked!==false||capture.status!=='captured_unreviewed'||

@@ -3,6 +3,10 @@ const fail = (code) => { throw new Error(`product_demo:${code}`); };
 export const isSafeAsset = (value) => typeof value === 'string' &&
   /^runtime\/[A-Za-z0-9_-]+\/[A-Za-z0-9_.-]+\.png$/.test(value) && !value.includes('..');
 export const isHash = (value) => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value);
+export const isFocusRect = (value) => value && typeof value === 'object' &&
+  ['x', 'y', 'width', 'height', 'zoom'].every(key => Number.isFinite(value[key])) &&
+  value.x >= 0 && value.y >= 0 && value.width > 0 && value.height > 0 &&
+  value.x + value.width <= 1 && value.y + value.height <= 1 && value.zoom >= 1 && value.zoom <= 3;
 export function sceneFrameRanges(segments, durationSeconds, fps = 30) {
   if (fps !== 30 || !Number.isFinite(durationSeconds) || durationSeconds < 25 || durationSeconds > 60 ||
       !Array.isArray(segments) || segments.length < 5 || segments.length > 9) fail('timing_shape');
@@ -27,7 +31,7 @@ export function sceneFrameRanges(segments, durationSeconds, fps = 30) {
 export function sceneLayout(aspect, sceneId, captureViewport = null) {
   if (!['9:16', '16:9'].includes(aspect)) fail('layout_aspect');
   if (aspect === '16:9') return {captureTop: 288, captureHeight: 445, captureLabelTop: 748, detailTop: 822, headlineFontSize: 64};
-  if (captureViewport?.width >= 1200 && captureViewport?.height <= 1000) return {captureTop: 420, captureHeight: 720, captureLabelTop: 1160, detailTop: 1270, headlineFontSize: 58};
+  if (captureViewport?.width >= 1200 && captureViewport?.height <= 1000) return {captureTop: 390, captureHeight: 680, captureLabelTop: 1095, detailTop: 1215, headlineFontSize: 62};
   return {captureTop: 420, captureHeight: 1000, captureLabelTop: 1440, detailTop: 1525, headlineFontSize: 66};
 }
 export function validateProductInput(value, {requireProduction = false} = {}) {
@@ -47,19 +51,21 @@ export function validateProductInput(value, {requireProduction = false} = {}) {
         !['title', 'capture', 'cta'].includes(s.kind) || !Number.isInteger(s.startFrame) ||
         !Number.isInteger(s.endFrame) || s.startFrame !== end || s.endFrame <= end ||
         s.endFrame > value.totalFrames) fail('scene_shape');
+    if (s.visualRole !== undefined && !['hook', 'message', 'cta'].includes(s.visualRole)) fail('visual_role');
     if (typeof s.headline !== 'string' || !s.headline.trim() || [...s.headline].length > 24 ||
         typeof s.detail !== 'string' || [...s.detail].length > 44 ||
         typeof s.badge !== 'string' || [...s.badge].length > 24) fail('text_budget');
     if (s.kind === 'capture') {
       if(s.asset !== null && !isSafeAsset(s.asset)) fail('capture_path');
+      if (s.focus !== undefined && s.focus !== null && !isFocusRect(s.focus)) fail('focus_rect');
       if (value.mode === 'production_candidate' && (!isSafeAsset(s.asset) || !isHash(s.assetSha256) ||
           !/^\d{4}-\d{2}-\d{2}T/.test(s.capturedAt) || !Number.isFinite(Date.parse(s.capturedAt)) ||
-          typeof s.attribution !== 'string' || !s.attribution.trim() || [...s.attribution].length > 80)) fail('capture_binding');
+          typeof s.attribution !== 'string' || !s.attribution.trim() || [...s.attribution].length > 80 || !isFocusRect(s.focus))) fail('capture_binding');
     } else if (s.asset !== null || s.assetSha256 !== null) fail('text_scene_has_asset');
     if (s.kind === 'cta' && (i !== value.scenes.length - 1 || s.endFrame - s.startFrame < 120)) fail('cta_hold');
     ids.add(s.id); end = s.endFrame;
   }
-  if (value.scenes[0].kind !== 'title' || value.scenes.at(-1).kind !== 'cta' || end !== value.totalFrames) fail('scene_coverage');
+  if (value.scenes[0].kind !== 'title' || (value.mode === 'production_candidate' && value.scenes[0].visualRole !== 'hook') || value.scenes.at(-1).kind !== 'cta' || end !== value.totalFrames) fail('scene_coverage');
   return value;
 }
 export function findSceneIndex(value, frame) {

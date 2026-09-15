@@ -1,7 +1,9 @@
+export type ProductFocus = {x: number; y: number; width: number; height: number; zoom: number};
 export type ProductScene = {
   id: string; kind: 'title'|'capture'|'cta'; startFrame: number; endFrame: number;
   headline: string; detail: string; badge: string; asset: string|null;
   assetSha256: string|null; capturedAt: string; attribution: string;
+  visualRole?: 'hook'|'message'|'cta'; focus?: ProductFocus | null;
   captureViewport?: {width: number; height: number} | null;
   captureDeviceScaleFactor?: number | null;
 };
@@ -15,6 +17,7 @@ export function validateProductInput(value: unknown, options?: {requireProductio
 export function findSceneIndex(value: ProductInput, frame: number): number;
 export function isSafeAsset(value: unknown): boolean;
 export function isHash(value: unknown): boolean;
+export function isFocusRect(value: unknown): value is ProductFocus;
 export function sceneFrameRanges(segments: unknown[], durationSeconds: number, fps?: number): {
   totalFrames: number; ranges: {startFrame: number; endFrame: number}[];
 };

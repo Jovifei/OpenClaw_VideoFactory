@@ -95,13 +95,13 @@ def validate_layout_contract(contract: Any, *, width: int = EXPECTED_WIDTH, heig
     if reserve_top < top or reserve_top + reserve_height > height - bottom + bottom:
         raise ValueError("layout_subtitle_reserve_outside_canvas")
     if contract.get("version") == "website_product_demo_v1":
-        if contract.get("screenshot_fit") != "contain" or contract.get("attribution_preserved") is not True:
+        if contract.get("screenshot_fit") not in {"contain", "focus_crop"} or contract.get("attribution_preserved") is not True:
             raise ValueError("layout_product_policy_invalid")
         return {
             "status": "passed",
             "safe_area": {"left": left, "right": right, "top": top, "bottom": bottom},
             "subtitle_reserve": {"top": reserve_top, "height": reserve_height},
-            "screenshot_fit": "contain",
+            "screenshot_fit": contract["screenshot_fit"],
             "attribution_preserved": True,
         }
     if contract.get("text_policy") != "bounded_natural_wrap" or contract.get("overflow_policy") != "fail_closed":
