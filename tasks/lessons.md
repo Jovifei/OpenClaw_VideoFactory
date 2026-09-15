@@ -550,3 +550,12 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   和 blocker 证据，等待健康数据或停在明确阻塞状态，绝不用 mock 补画面。
 - 更换声音必须重新测量整条旁白并让字幕跟随新时序；不能只替换音频文件而复用旧
   timing 或旧字幕。
+
+# 2026-09-15 - Website promo hook and focus correction
+
+- 宣传片首屏不能从品牌说明慢慢开始；必须在前两秒给出一个明确问题/收益封面，
+  再进入产品界面。
+- 整页截图在竖屏里会把有效信息缩小到不可读；每个功能镜头必须声明一个焦点
+  区域并放大展示，同时保留来源/版权与边界说明。
+- 网站代码和宣传素材必须重新绑定到最新线上版本；旧采集不能代表当前功能，
+  尤其不能用旧云海页面替代最新 `/cloudsea`。
