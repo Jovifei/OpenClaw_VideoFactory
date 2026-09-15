@@ -1,0 +1,24 @@
+{
+  "id": "PHASE1-WEBSITE-PRODUCT-PROMO-REBUILD-018",
+  "date": "2026-09-15",
+  "baseline_commit": "07c4aa620664ba1d6b3111cca2c53b8715ccf9cd",
+  "authorization": "Jovi requested a complete remake after reviewing the previous candidate: stronger cover, faster entry, focused information crops, and latest mature CloudSea code/data.",
+  "scope": "Re-capture the current live Star pages, add a data-bound hook cover and focus rectangles to WebsiteProductDemo, rewrite the short script, generate faster SAMI timing, and produce one new 9:16 review candidate.",
+  "allowed_paths": [
+    "docs/superpowers/specs/2026-09-15-website-product-promo-hook-focus-design.md",
+    "tasks/plans/2026-09-15-website-product-promo-hook-focus.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "remotion/src/product-demo/",
+    "scripts/product-demo/",
+    "scripts/assemble_product_preview.py",
+    "scripts/render_phase1_topic_visual.mjs",
+    "tests/product-demo/",
+    "tests/product_demo_integration.test.mjs",
+    "reports/change_requests/PHASE1-WEBSITE-PRODUCT-PROMO-REBUILD-018.json"
+  ],
+  "excluded": ["Star_photo_addr business code/deployment", "Feishu", "Cron", "automatic publication", "model downloads", "Phase Promotion", "AGENTS.md"],
+  "verification_plan": ["latest live 1440x900 captures including /cloudsea", "focused-crop contract and text budget tests", "faster SAMI timing coverage >= 0.75", "one Remotion render and ASS mux", "sequential keyframe/focus/subtitle review and full decode", "human review remains required"],
+  "status": "approved_in_progress",
+  "blocker": null
+}
