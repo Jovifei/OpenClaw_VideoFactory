@@ -2876,7 +2876,7 @@ for Jovi review. Do not modify Star business code or deploy it.
 - [x] Update the existing composition and assembler to support voice-cued pan/zoom/reticles, undistorted crops, a real-page moving hook, and flat SAMI subsegments.
 - [x] Render the final 9:16 candidate and review the cover, every scene, cue-paired keyframes, caption line breaks, media decode and audio peak.
 - [x] Record final job `job-07b5db48afc8bec16f75c326`, render attempt `2`, quality attempts `1=failed caption wrap / 2=passed`, and one SHA-bound review package.
-- [ ] Commit/push the scoped task branch; do not merge main, publish, connect Feishu/Cron, or promote Phase 1.
+- [x] Commit/push the scoped task branch; do not merge main, publish, connect Feishu/Cron, or promote Phase 1.
 - [ ] Jovi watches/listens to `final_master_v5_attempt4.mp4` and makes the human review decision bound to SHA `bf0b6f98415918ae6d4d320729b6739c036b6469ef76db89c26e73bcfc605f08`.
 
 ## Review
@@ -2884,3 +2884,4 @@ for Jovi review. Do not modify Star business code or deploy it.
 - Final candidate: `E:\OpenClaw_VideoFactory_Runtime\zhuxing_promo_sync_20260923\final_v5_attempt4\final_master_v5_attempt4.mp4`, 1080×1920/30fps/H.264/AAC/30s, SHA `bf0b6f98415918ae6d4d320729b6739c036b6469ef76db89c26e73bcfc605f08`.
 - SAMI 15 clips, measured voice end 26.04s, 86.8% coverage; all 15 cues are bounded to measured speech frames. Final post-render scan passed 900 frames with zero black frames; assembly peak -5.3 dB.
 - Review package: `E:\OpenClaw_VideoFactory_Runtime\zhuxing_promo_sync_20260923\final_v5_attempt4\review_package_v5_final.json`. State remains `PENDING_REVIEW`; no publication or phase promotion.
+- Scoped implementation and evidence changes are committed and pushed on `codex/website-product-promo-revision-20260913`; the original main-worktree `AGENTS.md` remains dirty and untouched.
