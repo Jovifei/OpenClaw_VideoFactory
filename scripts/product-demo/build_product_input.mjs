@@ -34,9 +34,10 @@ export async function buildInput(o){
   const manifestHash=sha(await fs.readFile(o.captures)),reviewHash=sha(await fs.readFile(o.review));
   if(story.schema_version!=='1.0'||!Array.isArray(story.shots)||!Array.isArray(script.beats)||
       story.script_id!==script.script_id||story.shots.length!==script.beats.length)fail('story_script_binding');
+  const expectedClipCount=script.beats.reduce((count,beat)=>count+(Array.isArray(beat.narration_parts)?beat.narration_parts.length:1),0);
   if(timing.status!=='timing_manifest_ready'||timing.script?.sha256!==scriptHash||timing.timing?.fps!==30||
       timing.timing?.authority!=='local_jianying_sami_audio_files'||timing.voice?.requested_backend!=='sami'||
-      !Array.isArray(timing.voice?.used_backends)||!timing.voice.used_backends.length||timing.voice.used_backends.length!==script.beats.length||timing.voice.used_backends.some(x=>String(x).toLowerCase()!=='sami'))fail('measured_sami_binding');
+      !Array.isArray(timing.voice?.used_backends)||timing.voice.used_backends.length!==expectedClipCount||timing.voice.used_backends.some(x=>String(x).toLowerCase()!=='sami'))fail('measured_sami_binding');
   if(manifest.status!=='captured_unreviewed'||manifest.site_origin!=='https://photo.joviluma.com'||!Array.isArray(manifest.captures))fail('capture_manifest');
   if(review.schema_version!=='1.0'||review.capture_manifest_sha256!==manifestHash||
       review.review_kind!=='local_agent_asset_review'||review.status!=='suitable_for_candidate'||
@@ -49,27 +50,46 @@ export async function buildInput(o){
   const assets=[],scenes=[]; let previousVoiceEnd=0;
   for(const [i,shot] of story.shots.entries()){
     const beat=script.beats[i],seg=timing.segments[i];
+    const parts=Array.isArray(beat.narration_parts)?beat.narration_parts:[{text:beat.narration}];
+    const entries=Array.isArray(seg.subsegments)?seg.subsegments:[seg];
+    const motion=shot.motion_cues;
     if(beat.id!==shot.id||!beat.narration||!beat.subtitle||
         seg.narration_sha256!==sha(Buffer.from(beat.narration,'utf8'))||
-        seg.subtitle_sha256!==sha(Buffer.from(beat.subtitle,'utf8'))||seg.subsegments)fail('narration_binding');
+        seg.subtitle_sha256!==sha(Buffer.from(beat.subtitle,'utf8'))||
+        parts.map(part=>part?.text).join('')!==beat.narration||entries.length!==parts.length||
+        !Array.isArray(motion)||motion.length!==entries.length)fail('narration_binding');
     if(!Number.isSafeInteger(seg.start_microseconds)||!Number.isSafeInteger(seg.end_microseconds)||
         seg.start_microseconds<previousVoiceEnd||seg.start_microseconds!==seg.scene_start_microseconds||
-        seg.end_microseconds<=seg.start_microseconds||seg.end_microseconds>seg.scene_end_microseconds)fail('voice_range');
-    previousVoiceEnd=seg.end_microseconds;
-    if(!isHash(seg.audio_sha256))fail('audio_hash');
-    const audio=await safeLocal(o.audioRoot,seg.audio_relative_path);
-    if(sha(await fs.readFile(audio))!==seg.audio_sha256)fail('audio_hash_mismatch');
-    if(!Number.isSafeInteger(seg.duration_microseconds)||seg.duration_microseconds!==seg.end_microseconds-seg.start_microseconds)fail('audio_duration_contract');
-    const {stdout: audioProbe}=await exec('ffprobe',['-v','error','-show_streams','-show_format','-of','json',audio],{timeout:30000,shell:false});
-    const probe=JSON.parse(audioProbe);
-    const audioSeconds=Number(probe.format?.duration);
-    if(probe.streams?.length!==1||probe.streams[0].codec_type!=='audio'||!Number.isFinite(audioSeconds)||
-        Math.abs(audioSeconds*1e6-seg.duration_microseconds)>33334)fail('measured_audio_duration_mismatch');
-    await exec('ffmpeg',['-nostdin','-v','error','-xerror','-i',audio,'-map','0:a:0','-f','null','-'],{timeout:30000,shell:false});
+        seg.end_microseconds<=seg.start_microseconds||seg.end_microseconds>seg.scene_end_microseconds||
+        (Array.isArray(seg.subsegments)&&seg.subsegments.some((part,j)=>part.narration_sha256!==sha(Buffer.from(parts[j]?.text??'','utf8')))))fail('voice_range');
+    const ceilFrame=us=>Number((BigInt(us)*30n+999999n)/1000000n);
+    const voiceCues=[];
+    for(const [j,entry] of entries.entries()){
+      const part=parts[j],cue=motion[j];
+      if(!part||typeof part.text!=='string'||entry.narration_sha256!==sha(Buffer.from(part.text,'utf8'))||
+          !Number.isSafeInteger(entry.start_microseconds)||!Number.isSafeInteger(entry.end_microseconds)||
+          !Number.isSafeInteger(entry.duration_microseconds)||entry.end_microseconds-entry.start_microseconds!==entry.duration_microseconds||
+          entry.start_microseconds<previousVoiceEnd||entry.start_microseconds<seg.scene_start_microseconds||
+          entry.end_microseconds>seg.scene_end_microseconds||!isHash(entry.audio_sha256))fail('voice_clip_range');
+      const audio=await safeLocal(o.audioRoot,entry.audio_relative_path);
+      if(sha(await fs.readFile(audio))!==entry.audio_sha256)fail('audio_hash_mismatch');
+      const {stdout: audioProbe}=await exec('ffprobe',['-v','error','-show_streams','-show_format','-of','json',audio],{timeout:30000,shell:false});
+      const probe=JSON.parse(audioProbe),audioSeconds=Number(probe.format?.duration);
+      if(probe.streams?.length!==1||probe.streams[0].codec_type!=='audio'||!Number.isFinite(audioSeconds)||
+          Math.abs(audioSeconds*1e6-entry.duration_microseconds)>33334)fail('measured_audio_duration_mismatch');
+      await exec('ffmpeg',['-nostdin','-v','error','-xerror','-i',audio,'-map','0:a:0','-f','null','-'],{timeout:30000,shell:false});
+      if(typeof cue?.label!=='string'||!cue.label.trim()||!Number.isFinite(cue.pan_x)||!Number.isFinite(cue.pan_y)||!Number.isFinite(cue.zoom)||
+          !Number.isFinite(cue.target_x)||!Number.isFinite(cue.target_y))fail('motion_cue_invalid');
+      voiceCues.push({startFrame:ceilFrame(entry.start_microseconds),endFrame:ceilFrame(entry.end_microseconds),label:cue.label,
+        panX:cue.pan_x,panY:cue.pan_y,zoom:cue.zoom,targetX:cue.target_x,targetY:cue.target_y});
+      previousVoiceEnd=entry.end_microseconds;
+    }
     // Still reuse factory final preview validator for mux/subtitle synchronization; this is not that gate.
     const scene={id:shot.id,kind:shot.kind,...ranges[i],headline:shot.headline,detail:shot.detail,badge:shot.badge,
-      visualRole:shot.visual_role??shot.visualRole,focus:shot.focus??null,asset:null,assetSha256:null,capturedAt:'',attribution:''};
-    if(shot.kind==='capture'){
+      visualRole:shot.visual_role??shot.visualRole,focus:shot.focus??null,voiceEndFrame:ceilFrame(seg.end_microseconds),voiceCues,
+      asset:null,assetSha256:null,capturedAt:'',attribution:''};
+    if(shot.kind==='capture'||shot.capture_id){
+      if(shot.kind==='title'&&scene.visualRole!=='hook')fail('hook_capture_role');
       const capture=captures.get(shot.capture_id),check=reviews.get(shot.capture_id);
       if(!capture||capture.method!=='live_browser_no_mock'||capture.mocked!==false||capture.status!=='captured_unreviewed'||
           !check||check.sha256!==capture.sha256||check.content_verified!==true||check.rights_checked!==true||

@@ -14,7 +14,7 @@ from typing import Any
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
-from phase1_jianying_timing import load_manifest, resolve_audio_path, sha256  # noqa: E402
+from phase1_jianying_timing import load_manifest, manifest_audio_entries, resolve_audio_path, sha256  # noqa: E402
 
 
 def _output_root(path: Path, field: str) -> Path:
@@ -261,10 +261,9 @@ def main() -> int:
     audio_entries: list[dict[str, Any]] = []
     audio_paths: list[Path] = []
     for segment in timing["segments"]:
-        if segment.get("subsegments") is not None:
-            raise ValueError("product_subsegments_not_supported")
-        audio_entries.append(segment)
-        audio_paths.append(resolve_audio_path(timing, timing_root, segment))
+        for entry in manifest_audio_entries(segment):
+            audio_entries.append(entry)
+            audio_paths.append(resolve_audio_path(timing, timing_root, entry))
     command = ["ffmpeg", "-y", "-nostdin", "-v", "error", "-i", str(visual)]
     for audio_path in audio_paths:
         command.extend(["-i", str(audio_path)])
@@ -307,8 +306,8 @@ def main() -> int:
             "capture_manifest_sha256": product.get("captureManifestSha256"),
             "capture_review_sha256": product.get("captureReviewSha256"),
         },
-        "captions": {"filename": captions.name, "sha256": sha256(captions), "ass_filename": ass_path.name, "ass_sha256": sha256(ass_path), "cue_count": len(audio_entries), "mode": "burned_in_ffmpeg_libass_ass", "burned_in": True, "safe_area": {"top": 1640, "height": 120, "margin_bottom": 220}},
-        "audio": {"authority": "local_jianying_sami_audio_files", "backend": "sami", "segment_count": len(audio_entries), "coverage_ratio": timing["voice"]["coverage_ratio"], "mean_volume_db": mean_volume, "max_volume_db": max_volume, "codec": final_meta["audio_codec"], "channels": final_meta["audio_channels"]},
+        "captions": {"filename": captions.name, "sha256": sha256(captions), "ass_filename": ass_path.name, "ass_sha256": sha256(ass_path), "cue_count": len(script["beats"]), "mode": "burned_in_ffmpeg_libass_ass", "burned_in": True, "safe_area": {"top": 1640, "height": 120, "margin_bottom": 220}},
+        "audio": {"authority": "local_jianying_sami_audio_files", "backend": "sami", "segment_count": len(timing["segments"]), "clip_count": len(audio_entries), "coverage_ratio": timing["voice"]["coverage_ratio"], "mean_volume_db": mean_volume, "max_volume_db": max_volume, "codec": final_meta["audio_codec"], "channels": final_meta["audio_channels"]},
         "output": {"filename": output.name, "sha256": sha256(output), **final_meta, "full_decode": True, "audio_present": True, "burned_in_subtitles": True},
         "cta": {"duration_seconds": cta_seconds, "website": "photo.joviluma.com"},
         "quality": {"status": "passed", "visual_master_unchanged": True, "single_visual_render": True, "subtitle_hashes_bound": True, "sami_timing_bound": True, "capture_review_bound": True, "automatic_export": False},

@@ -31,7 +31,7 @@ export function sceneFrameRanges(segments, durationSeconds, fps = 30) {
 export function sceneLayout(aspect, sceneId, captureViewport = null) {
   if (!['9:16', '16:9'].includes(aspect)) fail('layout_aspect');
   if (aspect === '16:9') return {captureTop: 288, captureHeight: 445, captureLabelTop: 748, detailTop: 822, headlineFontSize: 64};
-  if (captureViewport?.width >= 1200 && captureViewport?.height <= 1000) return {captureTop: 390, captureHeight: 680, captureLabelTop: 1095, detailTop: 1215, headlineFontSize: 62};
+  if (captureViewport?.width >= 1200 && captureViewport?.height <= 1000) return {captureTop: 420, captureHeight: 580, captureLabelTop: 1015, detailTop: 1115, headlineFontSize: 62};
   return {captureTop: 420, captureHeight: 1000, captureLabelTop: 1440, detailTop: 1525, headlineFontSize: 66};
 }
 export function validateProductInput(value, {requireProduction = false} = {}) {
@@ -55,13 +55,35 @@ export function validateProductInput(value, {requireProduction = false} = {}) {
     if (typeof s.headline !== 'string' || !s.headline.trim() || [...s.headline].length > 24 ||
         typeof s.detail !== 'string' || [...s.detail].length > 44 ||
         typeof s.badge !== 'string' || [...s.badge].length > 24) fail('text_budget');
-    if (s.kind === 'capture') {
+    const hasCapture = s.kind === 'capture' || (s.kind === 'title' && s.visualRole === 'hook' && s.asset !== null);
+    if (hasCapture) {
       if(s.asset !== null && !isSafeAsset(s.asset)) fail('capture_path');
       if (s.focus !== undefined && s.focus !== null && !isFocusRect(s.focus)) fail('focus_rect');
       if (value.mode === 'production_candidate' && (!isSafeAsset(s.asset) || !isHash(s.assetSha256) ||
           !/^\d{4}-\d{2}-\d{2}T/.test(s.capturedAt) || !Number.isFinite(Date.parse(s.capturedAt)) ||
           typeof s.attribution !== 'string' || !s.attribution.trim() || [...s.attribution].length > 80 || !isFocusRect(s.focus))) fail('capture_binding');
+      if (value.mode === 'production_candidate' && s.captureViewport?.width >= 1200 && value.aspect === '9:16') {
+        const focusAspect = s.focus.width * s.captureViewport.width / (s.focus.height * s.captureViewport.height);
+        const frameAspect = (1080 - 152) / sceneLayout(value.aspect, s.id, s.captureViewport).captureHeight;
+        if (Math.abs(focusAspect - frameAspect) / frameAspect > 0.01) fail('focus_aspect_distortion');
+      }
     } else if (s.asset !== null || s.assetSha256 !== null) fail('text_scene_has_asset');
+    if (value.mode === 'production_candidate') {
+      if (!Number.isInteger(s.voiceEndFrame) || s.voiceEndFrame < s.startFrame || s.voiceEndFrame > s.endFrame ||
+          !Array.isArray(s.voiceCues) || s.voiceCues.length === 0) fail('voice_cues_required');
+      let cueEnd = s.startFrame;
+      for (const cue of s.voiceCues) {
+        if (!cue || !Number.isInteger(cue.startFrame) || !Number.isInteger(cue.endFrame) ||
+            cue.startFrame < cueEnd || cue.endFrame <= cue.startFrame || cue.endFrame > s.voiceEndFrame ||
+            typeof cue.label !== 'string' || !cue.label.trim() || [...cue.label].length > 18 ||
+            !Number.isFinite(cue.panX) || Math.abs(cue.panX) > 28 ||
+            !Number.isFinite(cue.panY) || Math.abs(cue.panY) > 18 ||
+            !Number.isFinite(cue.zoom) || cue.zoom < 1 || cue.zoom > 1.12 ||
+            !Number.isFinite(cue.targetX) || cue.targetX < 0.05 || cue.targetX > 0.95 ||
+            !Number.isFinite(cue.targetY) || cue.targetY < 0.05 || cue.targetY > 0.95) fail('voice_cue_range');
+        cueEnd = cue.endFrame;
+      }
+    }
     if (s.kind === 'cta' && (i !== value.scenes.length - 1 || s.endFrame - s.startFrame < 120)) fail('cta_hold');
     ids.add(s.id); end = s.endFrame;
   }

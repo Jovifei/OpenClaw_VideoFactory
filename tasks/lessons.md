@@ -561,3 +561,10 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   尤其不能用旧云海页面替代最新 `/cloudsea`。
 - 封装命令中的 `job_id` 必须直接复用 SQLite 创建结果；即使媒体可播放，报告写入
   不存在的 job 也必须整次标为 rejected，不能靠事后改报告补救。
+
+# 2026-09-23 - Promo motion must follow measured speech
+
+- Scene boundaries matching whole narration beats is only coarse sync; a nearly still screenshot during a full sentence still feels detached. Split long copy at natural pauses, measure each SAMI subsegment, and bind visible focus changes to those exact clip windows.
+- Motion should advance while the related phrase is audible, settle at its measured end, and never continue through a different line. The cover should use a current real product capture as its visual source, with animated title/focus treatment layered over it.
+- Review crop-source tiles before composing: a technically valid screenshot can still contain a black tile gap or stale/empty panel that ruins the hook. Match crop aspect to the display frame to avoid distortion, and focus on one legible region.
+- Add a visible focus marker tied to each measured phrase when small camera moves are not perceptible; check paired early/late frames for every voice cue. Keep subtitle breaks at semantic punctuation and inspect the burned-in final frame, not only the SRT text.

@@ -6,6 +6,8 @@ export type ProductScene = {
   visualRole?: 'hook'|'message'|'cta'; focus?: ProductFocus | null;
   captureViewport?: {width: number; height: number} | null;
   captureDeviceScaleFactor?: number | null;
+  voiceEndFrame?: number;
+  voiceCues?: {startFrame: number; endFrame: number; label: string; panX: number; panY: number; zoom: number; targetX: number; targetY: number}[];
 };
 export type ProductInput = {
   schema_version: '1.0'; mode: 'layout_preview'|'production_candidate'; fps: 30;

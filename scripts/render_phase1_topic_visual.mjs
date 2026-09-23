@@ -184,7 +184,7 @@ async function renderProduct(args) {
       source_visual_sha256: derived.source_sha256, decoded_master_frames: derived.media.frames,
       clip_encoding: 'libx264_crf18_review_only', frame_intervals: 'half_open'},
     layout_contract: {version: 'website_product_demo_v1', aspect,
-      safe_area: aspect === '16:9' ? {left: 96, right: 96, top: 72, bottom: 72} : {left: 76, right: 160, top: 154, bottom: 135},
+      safe_area: aspect === '16:9' ? {left: 96, right: 96, top: 72, bottom: 72} : {left: 76, right: 76, top: 154, bottom: 135},
       subtitle_reserve: aspect === '16:9' ? {top: 918, height: 68} : {top: 1640, height: 120},
        screenshot_fit: focusSceneCount ? 'focus_crop' : 'contain', focus_scene_count: focusSceneCount, attribution_preserved: true},
     mascot: {mode: 'off', present: false},
