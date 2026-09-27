@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-AUDIO-CONTRACT-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested the remote-plan/local-execution loop. Remote ChatGPT confirmed shared TTS overflow truncation in Flash and FreeRTOS and authorized a bounded cross-topic fail-closed contract proof before any fresh full candidate.",
+  "category": "shared TTS overflow and source-aligned narration contract",
+  "scope": "Reject overflowing TTS instead of trimming; require duration evidence in review packages; measure Flash and FreeRTOS raw narration, perform at most one fact-preserving concise rewrite when needed, allocate frame-aligned scene windows, regenerate SRT and concatenate complete padded audio for audio-only proof.",
+  "allowed_paths": ["video_factory/pipeline/audio_planner.py", "video_factory/pipeline/narration_timing.py", "video_factory/pipeline/review_package.py", "generate_video.py", "scripts/phase1_audio_contract.py", "tests/phase1_local/", "reports/change_requests/PHASE1-AUDIO-CONTRACT-20260927.json", "reports/phase1/stage_20260927/", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_audio_contract_20260927/"],
+  "forbidden": ["full Flash/FreeRTOS render", "historical candidate or SQLite edits", "silent TTS truncation", "automatic atempo", "more than one rewrite per fixture", "fact loss/new claims", "Gate", "Phase 2 side effects"],
+  "acceptance": ["old overflow fixtures RED under new fail-closed contract", "shorter narration still pads", "measured allocation and SRT remain frame aligned", "Flash and FreeRTOS bounded audio-only proof reports raw/aligned durations and complete segment hashes", "25-60s budget enforced", "affected tests and independent read-only review pass"],
+  "status": "bounded_audio_only_proof_pending_listening"
+}

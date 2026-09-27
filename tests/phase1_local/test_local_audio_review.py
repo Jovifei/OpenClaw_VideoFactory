@@ -61,7 +61,13 @@ def _write_evidence(work_dir: Path, output: Path) -> None:
     (work_dir / "subtitle.srt").write_text("1\n00:00:00,000 --> 00:00:05,000\n字幕\n", encoding="utf-8")
     (work_dir / "timeline.json").write_text(json.dumps({"scenes": [{}, {}, {}, {}, {}]}), encoding="utf-8")
     (work_dir / "run_report.json").write_text(json.dumps({
-        "job_id": "phase1_modbus", "status": "success", "audio_plan": {"mode": "tts", "segments_count": 5},
+        "job_id": "phase1_modbus", "status": "success", "audio_plan": {
+            "mode": "tts", "segments_count": 5,
+            "segments": [
+                {"scene_id": f"s{index:02d}", "actual_duration": 5.0, "scene_duration": 5.0, "overflow": False}
+                for index in range(1, 6)
+            ],
+        },
     }), encoding="utf-8")
     (work_dir / "render_report.json").write_text(json.dumps({
         "resolution": {"width": 1080, "height": 1920}, "fps": 30.0, "codec": "h264",

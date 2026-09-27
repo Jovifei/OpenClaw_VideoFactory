@@ -2828,6 +2828,16 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 - [x] Candidate003 job `job-0a58d7692fb3dd4008d3a6ed` from `d5c13a7` passed media decode/SQLite/package checks and fixed scene-2/3 midpoints, but the 0.4-second xfade overlays adjacent technical diagrams at transitions. Semantic visual status is `CHANGES_REQUIRED`; preserve `reports/phase1/stage_20260927/candidate003_review.json`. No Jovi approval, prereview, or Candidate004.
 - [ ] WP3: qualify one distinct live topic and obtain SHA-bound Jovi review.
 
+### PHASE1-AUDIO-CONTRACT-20260927
+
+- [x] Add fail-closed TTS overflow and package duration evidence contracts.
+- [x] Add measured frame-aligned narration allocation and one-pass fact-preserving rewrite helpers.
+- [x] Run bounded Flash and FreeRTOS raw-TTS → optional rewrite → audio-only proof.
+- [x] Record complete segment/aligned hashes, SRT endpoints, budget result and listening-review status.
+- [x] Run affected tests, diff check and independent read-only review; do not render a new video yet.
+
+Review: `BOUNDED_AUDIO_ONLY_PROOF_PENDING_LISTENING`. Both fixtures fail the original measured budget, then pass after exactly one fact-preserving concise rewrite: Flash 45.199s, FreeRTOS 42.4s. All aligned segments are at least as long as raw TTS; no trim path remains. Affected tests: 461 passed, four fixture-dependent modules not run due missing ignored demo artifacts. Complete WAVs and scene markers are in `E:/OpenClaw_VideoFactory_Runtime/phase1_audio_contract_20260927_v4/`; human audio-only listening is still pending. No new video job.
+
 ### PHASE1-FLASH-GEOMETRY-20260927
 
 - [x] Replay old scene1/2/3/5 geometry through Chrome and record RED contracts.

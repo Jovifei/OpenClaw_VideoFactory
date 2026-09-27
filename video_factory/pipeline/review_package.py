@@ -195,6 +195,19 @@ def _validate_evidence_documents(
     audio = run_report.get("audio_plan")
     if not isinstance(audio, dict) or audio.get("mode") != "tts" or audio.get("segments_count") != scene_count:
         raise _fail("phase1_review_narration_incomplete", "Narration evidence is incomplete for the scene count.", "run_report.audio_plan")
+    segments = audio.get("segments")
+    if not isinstance(segments, list) or len(segments) != scene_count:
+        raise _fail("phase1_review_narration_incomplete", "Narration segment duration evidence is missing.", "run_report.audio_plan.segments")
+    for index, segment in enumerate(segments, start=1):
+        if not isinstance(segment, dict):
+            raise _fail("phase1_review_narration_incomplete", "Narration segment evidence is invalid.", f"run_report.audio_plan.segments.{index}")
+        try:
+            actual = float(segment["actual_duration"])
+            allocated = float(segment["scene_duration"])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise _fail("phase1_review_narration_incomplete", "Narration segment duration evidence is invalid.", f"run_report.audio_plan.segments.{index}") from exc
+        if bool(segment.get("overflow")) or actual > allocated + 0.01:
+            raise _fail("phase1_review_narration_incomplete", "Narration segment was longer than its allocated scene and cannot be accepted.", f"run_report.audio_plan.segments.{index}")
     subtitle = render_report.get("subtitle")
     if not isinstance(subtitle, dict) or subtitle.get("present") is not True or subtitle.get("mode") != "burned_in":
         raise _fail("phase1_review_subtitle_invalid", "Render report does not confirm burned-in subtitles.", "render_report.subtitle")
@@ -340,16 +353,26 @@ def _build_quality(
         region = render_report["subtitle_region"]
         style = render_report["style_profile"]
         layout_mode = render_report["layout_mode"]
+    segments = audio_plan.get("segments") if isinstance(audio_plan, dict) else None
+    tts_alignment_ok = (
+        isinstance(segments, list)
+        and len(segments) == scene_count
+        and all(
+            isinstance(segment, dict)
+            and not bool(segment.get("overflow"))
+            and float(segment.get("actual_duration", 0.0)) <= float(segment.get("scene_duration", 0.0)) + 0.01
+            for segment in segments
+        )
+    )
     check_names = (
         "mp4_exists", "landscape_1920x1080" if layout_mode == "plain_landscape" else "portrait_1080x1920", "fps_30", "h264_video", "aac_audio",
         "duration_25_to_60", "full_decode", "tts_scene_alignment", "subtitle_burned_in",
         "mascot_policy" if mascot_mode == "off" else "pink_pig_style",
         "subtitle_safe_region", "render_report_alignment",
     )
-    checks = [
-        {"name": name, "status": "passed"}
-        for name in check_names
-    ]
+    checks = [{"name": name, "status": "passed"} for name in check_names]
+    if not tts_alignment_ok:
+        raise _fail("phase1_review_narration_incomplete", "TTS alignment evidence is incomplete or overflowed.", "quality_report.tts_scene_alignment")
     return {
         "schema_version": "1.0",
         "job_id": job_id,

@@ -1,0 +1,52 @@
+{
+  "schema_version": "phase1_audio_contract_evidence_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-AUDIO-CONTRACT-20260927",
+  "source_commit": "a6414820e4c24ca7afca8d1f4264f7ee4acb9dd1",
+  "runtime_report": "E:/OpenClaw_VideoFactory_Runtime/phase1_audio_contract_20260927_v4/audio_contract_report.json",
+  "contract": {
+    "tts_overflow": "fail_closed",
+    "overflow_error": "audio_narration_overflow",
+    "padding": "allowed",
+    "trimming": "forbidden",
+    "tail_margin_seconds": 0.2,
+    "phase1_total_budget_seconds": [25, 60],
+    "rewrite_limit_per_fixture": 1
+  },
+  "fixtures": [
+    {
+      "name": "Flash watchdog",
+      "brief": "examples/phase1_local_flash_watchdog/brief.json",
+      "topic_digest": "d939208f4995f8d21c5cac1a99a9797291e1f82035bda067415211068fcc7512",
+      "original_raw_total_seconds": 69.656,
+      "first_allocation": "BLOCKED:narration_duration_budget_exceeded:70.733s",
+      "rewrite": "one fact-preserving deterministic concise pass",
+      "fact_bindings_preserved": true,
+      "final_raw_total_seconds": 44.094,
+      "final_allocated_duration_seconds": 45.199,
+      "final_scene_durations_seconds": [8.033, 9.4, 12.033, 7.2, 8.533],
+      "srt_end_seconds": 45.199,
+      "audio_only_sha256": "858924404b44c4578c36a2d692be7eafdc1a5228ed274f2bb75c72e58ed4cf40",
+      "audio_only_status": "AUDIO_ONLY_READY_FOR_LISTENING_REVIEW"
+    },
+    {
+      "name": "FreeRTOS mutex",
+      "brief": "examples/phase1_local_freertos/brief.json",
+      "topic_digest": "8958d25a694923c95ed151f3030877705957bc4378c6aceff46805a5e77bf1cb",
+      "original_raw_total_seconds": 90.999,
+      "first_allocation": "BLOCKED:narration_duration_budget_exceeded:92.067s",
+      "rewrite": "one fact-preserving deterministic concise pass",
+      "fact_bindings_preserved": true,
+      "final_raw_total_seconds": 41.266,
+      "final_allocated_duration_seconds": 42.4,
+      "final_scene_durations_seconds": [7.7, 8.133, 10.567, 7.967, 8.033],
+      "srt_end_seconds": 42.4,
+      "audio_only_sha256": "1e0fdb8fcab71f5300f84047dd97f15a50d711cbdf47d3ede2755281590fc2e5",
+      "audio_only_status": "AUDIO_ONLY_READY_FOR_LISTENING_REVIEW"
+    }
+  ],
+  "audio_review": "PENDING_HUMAN_AUDIO_REVIEW: complete audio-only WAVs and scene-boundary markers are retained in the runtime report; no video candidate is authorized.",
+  "tests": "461 passed in affected suites; four fixture-dependent modules were excluded because ignored dist/story_demo artifacts are absent in this fresh worktree; git diff --check passed.",
+  "historical_candidates": "Flash job-3643de66b508bacc03474cbd and FreeRTOS job-2da2a3ae112bac2ceaacb5d7 remain immutable CHANGES_REQUIRED_AUDIO_TRUNCATION evidence.",
+  "status": "BOUNDED_AUDIO_ONLY_PROOF_PENDING_LISTENING"
+}

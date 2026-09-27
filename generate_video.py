@@ -872,6 +872,7 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
             "fallback_reason": audio_plan.fallback_reason,
             "path": str(audio_plan.path) if audio_plan.path else None,
             "segments_count": len(audio_plan.segments),
+            "segments": [dict(segment) for segment in audio_plan.segments],
         },
         "mascot": mascot_contract,
         "ffprobe": ffprobe_meta,

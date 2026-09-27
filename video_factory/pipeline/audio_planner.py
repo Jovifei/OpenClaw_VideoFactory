@@ -11,12 +11,32 @@ Every level records ``fallback_reason`` in the returned :class:`AudioPlan`.
 from __future__ import annotations
 
 import json
+import math
 import subprocess
-import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from .voice_generator import generate_voice
+
+
+class AudioNarrationOverflowError(RuntimeError):
+    """A TTS segment is longer than its allocated visual scene.
+
+    TTS is source material.  It may be padded, but never shortened silently.
+    """
+
+    code = "audio_narration_overflow"
+
+    def __init__(self, segments: list[dict[str, object]]) -> None:
+        self.segments = tuple(segments)
+        ids = ",".join(str(item.get("scene_id", "?")) for item in segments)
+        super().__init__(f"{self.code}:{ids}")
+
+
+class NarrationDurationBudgetError(RuntimeError):
+    """Measured narration cannot fit the Phase 1 duration contract."""
+
+    code = "narration_duration_budget_exceeded"
 
 
 @dataclass(frozen=True)
@@ -76,6 +96,10 @@ def plan_audio(
     if strategy == "tts_with_offline_fallback" and (allow_network or local_tts):
         try:
             return _plan_tts(timeline_doc, work_dir, voice, provider)
+        except AudioNarrationOverflowError:
+            # Overflow is a product contract failure, not a reason to replace
+            # narration with BGM and call the render successful.
+            raise
         except Exception as exc:
             # Fall through to BGM
             reason = f"tts_failed:{_safe_error(exc)}"
@@ -117,7 +141,7 @@ def _plan_tts(
 
         # Measure actual duration
         seg_dur = _get_audio_duration(seg_path)
-        overflow = seg_dur > duration
+        overflow = seg_dur > duration + 0.01
 
         segments.append({
             "scene_id": scene.get("scene_id", f"s{idx+1:02d}"),
@@ -128,6 +152,10 @@ def _plan_tts(
             "overflow": overflow,
         })
         segment_paths.append(seg_path)
+
+    overflow_segments = [segment for segment in segments if bool(segment.get("overflow"))]
+    if overflow_segments:
+        raise AudioNarrationOverflowError(overflow_segments)
 
     # Concat all segments into a single audio.wav aligned to total video duration
     total_video_dur = float(timeline_doc.get("total_duration_seconds", sum(s["duration"] for s in scenes)))
@@ -153,6 +181,117 @@ def _plan_tts(
         fallback_reason=None,
         segments=tuple(segments),
     )
+
+
+def synthesize_tts_segments(
+    timeline_doc: dict,
+    *,
+    work_dir: Path,
+    voice: str,
+    provider: str,
+) -> tuple[dict, ...]:
+    """Synthesize and measure raw narration without aligning or trimming it."""
+
+    work_dir = Path(work_dir)
+    work_dir.mkdir(parents=True, exist_ok=True)
+    measured: list[dict] = []
+    for idx, scene in enumerate(timeline_doc.get("scenes", [])):
+        narration = str(scene.get("narration", ""))
+        suffix = ".wav" if provider == "windows-sapi" else ".mp3"
+        path = work_dir / f"seg_{idx:03d}{suffix}"
+        try:
+            generate_voice(narration, path, voice=voice, provider=provider)
+        except Exception as exc:
+            raise RuntimeError(f"tts_scene_{idx}_failed:{exc}") from exc
+        measured.append({
+            "scene_id": scene.get("scene_id", f"s{idx + 1:02d}"),
+            "narration": narration,
+            "audio_file": path.name,
+            "audio_path": str(path),
+            "actual_duration": round(_get_audio_duration(path), 3),
+            "scene_duration": round(float(scene["duration"]), 3),
+        })
+    if not measured:
+        raise ValueError("tts_scenes_missing")
+    return tuple(measured)
+
+
+def allocate_scene_durations(
+    timeline_doc: dict,
+    segments: tuple[dict, ...] | list[dict],
+    *,
+    tail_margin_seconds: float = 0.2,
+    fps: int | None = None,
+    min_total_seconds: float = 25.0,
+    max_total_seconds: float = 60.0,
+) -> dict:
+    """Allocate complete scene windows from measured narration durations.
+
+    Durations are frame aligned and include an explicit speech tail margin.
+    The function never shortens a source segment and returns a new timeline
+    document suitable for SRT generation and audio-only qualification.
+    """
+
+    if tail_margin_seconds < 0:
+        raise ValueError("narration_tail_margin_invalid")
+    scenes = timeline_doc.get("scenes")
+    if not isinstance(scenes, list) or len(scenes) != len(segments):
+        raise ValueError("narration_scene_count_mismatch")
+    frame_rate = int(fps or timeline_doc.get("fps", 30))
+    if frame_rate <= 0:
+        raise ValueError("narration_fps_invalid")
+    allocated: list[dict] = []
+    for scene, segment in zip(scenes, segments):
+        actual = float(segment.get("actual_duration", 0.0))
+        if actual <= 0:
+            raise ValueError("narration_segment_duration_invalid")
+        duration = math.ceil((actual + tail_margin_seconds) * frame_rate - 1e-9) / frame_rate
+        allocated.append({**scene, "duration": round(duration, 3)})
+    result = {**timeline_doc, "scenes": allocated}
+    mode = str(result.get("transition_mode", "xfade"))
+    transition = float(result.get("transition_seconds", 0.0))
+    if mode == "technical_cut":
+        total = sum(float(scene["duration"]) for scene in allocated)
+    else:
+        total = sum(float(scene["duration"]) for scene in allocated) - transition * max(0, len(allocated) - 1)
+    total = round(total, 3)
+    if not min_total_seconds <= total <= max_total_seconds:
+        raise NarrationDurationBudgetError(
+            f"{NarrationDurationBudgetError.code}:{total:.3f}s"
+        )
+    result["total_duration_seconds"] = total
+    return result
+
+
+def align_complete_segments(
+    segments: tuple[dict, ...] | list[dict],
+    timeline_doc: dict,
+    *,
+    output_dir: Path,
+    output_path: Path,
+) -> dict:
+    """Pad complete raw segments to allocated windows and concatenate them."""
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    aligned: list[dict] = []
+    paths: list[Path] = []
+    for index, (segment, scene) in enumerate(zip(segments, timeline_doc["scenes"])):
+        raw = Path(str(segment["audio_path"]))
+        target = output_dir / f"aligned_{index:03d}.wav"
+        _align_audio(raw, target, target_duration=float(scene["duration"]))
+        aligned_duration = _get_audio_duration(target)
+        if aligned_duration + 0.01 < float(segment["actual_duration"]):
+            raise AudioNarrationOverflowError([dict(segment, aligned_duration=aligned_duration)])
+        aligned.append(dict(
+            segment,
+            allocated_scene_duration=round(float(scene["duration"]), 3),
+            aligned_audio_file=target.name,
+            aligned_duration=round(aligned_duration, 3),
+        ))
+        paths.append(target)
+    _concat_audio(paths, Path(output_path))
+    return {"path": str(output_path), "segments": aligned, "duration_seconds": _get_audio_duration(Path(output_path))}
 
 
 def _plan_bgm(
@@ -216,7 +355,7 @@ def _get_audio_duration(audio_path: Path) -> float:
 
 
 def _align_audio(input_path: Path, output_path: Path, *, target_duration: float) -> None:
-    """Pad (apad) or trim (atrim) *input_path* to exactly *target_duration*."""
+    """Pad *input_path* to exactly *target_duration*; never trim narration."""
     actual = _get_audio_duration(input_path)
     if actual < target_duration:
         # Pad silence at end
@@ -229,14 +368,13 @@ def _align_audio(input_path: Path, output_path: Path, *, target_duration: float)
             str(output_path),
         ]
     elif actual > target_duration:
-        # Trim to target (overflow case — we truncate)
-        cmd = [
-            "ffmpeg", "-y", "-nostdin", "-loglevel", "error",
-            "-i", str(input_path),
-            "-t", str(target_duration),
-            "-acodec", "pcm_s16le",
-            str(output_path),
-        ]
+        raise AudioNarrationOverflowError([{
+            "scene_id": input_path.stem,
+            "audio_file": input_path.name,
+            "actual_duration": round(actual, 3),
+            "scene_duration": round(target_duration, 3),
+            "overflow": True,
+        }])
     else:
         # Exact match — just copy
         import shutil
