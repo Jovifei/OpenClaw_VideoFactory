@@ -44,6 +44,7 @@ def test_review_package_rejects_overflow_evidence(monkeypatch: pytest.MonkeyPatc
     (work / "timeline.json").write_text(json.dumps({"scenes": [{}]}), encoding="utf-8")
     (work / "run_report.json").write_text(json.dumps({
         "job_id": "phase1_modbus", "status": "success",
+        "mascot": {"mode": "required"},
         "audio_plan": {"mode": "tts", "segments_count": 1, "segments": [{
             "actual_duration": 6.0, "scene_duration": 5.0, "overflow": True,
         }]},
@@ -51,10 +52,42 @@ def test_review_package_rejects_overflow_evidence(monkeypatch: pytest.MonkeyPatc
     (work / "render_report.json").write_text(json.dumps({
         "resolution": {"width": 1080, "height": 1920}, "fps": 30.0, "codec": "h264",
         "audio": {"codec": "aac"}, "subtitle": {"present": True, "mode": "burned_in", "cue_count": 1},
-        "layout_mode": "plain_vertical", "subtitle_region": {"x": 90, "y": 1400, "width": 900, "height": 300},
+        "layout_mode": "knowledge_illustration", "style_profile": {"status": "pass"},
+        "subtitle_region": {"x": 90, "y": 1400, "width": 900, "height": 300},
     }), encoding="utf-8")
     with pytest.raises(FactoryContractError, match="phase1_review_narration_incomplete"):
         review_package.build_review_package(
             work_dir=work, output_path=output, job_id="phase1_modbus", input_mode="topic",
             title="测试", scene_count=1, asset_selection={},
         )
+
+
+def test_review_package_accepts_source_aligned_duration_evidence(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    work = tmp_path / "job"
+    work.mkdir()
+    output = work / "final_master.mp4"
+    output.write_bytes(b"fake-mp4")
+    (work / "subtitle.srt").write_text("1\n00:00:00,000 --> 00:00:28,000\n字幕\n", encoding="utf-8")
+    (work / "timeline.json").write_text(json.dumps({"scenes": [{}]}), encoding="utf-8")
+    (work / "run_report.json").write_text(json.dumps({
+        "job_id": "phase1_modbus", "status": "success",
+        "mascot": {"mode": "required"},
+        "audio_plan": {"mode": "tts", "segments_count": 1, "segments": [{
+            "actual_duration": 7.8, "scene_duration": 4.0, "allocated_scene_duration": 8.0,
+            "aligned_duration": 8.0, "overflow": False,
+        }]},
+    }), encoding="utf-8")
+    (work / "render_report.json").write_text(json.dumps({
+        "resolution": {"width": 1080, "height": 1920}, "fps": 30.0, "codec": "h264",
+        "audio": {"codec": "aac"}, "subtitle": {"present": True, "mode": "burned_in", "cue_count": 1},
+        "layout_mode": "knowledge_illustration", "style_profile": {"status": "pass"},
+        "subtitle_region": {"x": 90, "y": 1400, "width": 900, "height": 300},
+    }), encoding="utf-8")
+    monkeypatch.setattr(review_package, "_probe_media", lambda _: {"duration_seconds": 28.0, "width": 1080, "height": 1920, "fps": 30.0, "video_codec": "h264", "audio_codec": "aac"})
+    monkeypatch.setattr(review_package, "_decode_media", lambda _: None)
+    monkeypatch.setattr(review_package, "_extract_cover", lambda _source, target: target.write_bytes(b"png"))
+    result = review_package.build_review_package(
+        work_dir=work, output_path=output, job_id="phase1_modbus", input_mode="topic",
+        title="测试", scene_count=1, asset_selection={},
+    )
+    assert result["quality"]["status"] == "passed"

@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import pytest
+import yaml
 
 import generate_video
 from src.factory import phase1_local
@@ -60,6 +61,23 @@ def test_local_entrypoint_completes_with_declared_timeline_ref(
     assert state["state"] == "completed"
     assert state["timeline_ref"] == "timeline.json"
     assert state["output_ref"] == "final_master.mp4"
+
+
+def test_local_entrypoint_declares_measured_narration_for_outer_job(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    brief_path = _wire_local_entrypoint(monkeypatch, tmp_path)
+    captured: dict[str, object] = {}
+
+    def capture_job(path: Path, *, emit: bool = False) -> dict[str, object]:
+        captured["job"] = yaml.safe_load(path.read_text(encoding="utf-8"))
+        return {"audio_mode": "tts"}
+
+    monkeypatch.setattr(generate_video, "run_job", capture_job)
+    generate_video.run_local_brief(brief_path, emit=False)
+    job = captured["job"]
+    assert isinstance(job, dict)
+    assert job["audio"]["source_aligned_narration"] is True
 
 
 def test_local_entrypoint_persists_structured_failure(

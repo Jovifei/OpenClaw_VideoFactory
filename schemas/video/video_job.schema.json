@@ -54,6 +54,7 @@
           "default": {"provider": "edge-tts"}
         },
         "require_narration": {"type": "boolean", "default": false},
+        "source_aligned_narration": {"type": "boolean", "default": false},
         "fallback_bgm": {"type": "string", "description": "Repo-relative path to fallback BGM WAV file."}
       }
     },

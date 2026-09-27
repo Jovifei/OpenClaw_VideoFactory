@@ -11,6 +11,7 @@ Every level records ``fallback_reason`` in the returned :class:`AudioPlan`.
 from __future__ import annotations
 
 import json
+import hashlib
 import math
 import subprocess
 from dataclasses import dataclass, field
@@ -286,8 +287,10 @@ def align_complete_segments(
         aligned.append(dict(
             segment,
             allocated_scene_duration=round(float(scene["duration"]), 3),
+            overflow=False,
             aligned_audio_file=target.name,
             aligned_duration=round(aligned_duration, 3),
+            aligned_audio_sha256=hashlib.sha256(target.read_bytes()).hexdigest(),
         ))
         paths.append(target)
     _concat_audio(paths, Path(output_path))

@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 from typing import Any
+from pathlib import Path
 
 
 _FLASH_FACTS = {
@@ -23,7 +25,7 @@ _FLASH_COMPACT_NARRATION = (
     "擦除期间看门狗仍在倒计时，服务窗口怎么安排？",
     "按手册解锁、发起、等待 BUSY、检查错误、确认完成。",
     "独立看门狗持续倒计时；用最长擦除时间和响应延迟算服务窗口，超时会复位。",
-    "测量最长时间；超预算记录错误并进入恢复路径。",
+    "测量最长擦除时间和服务窗口；超预算记录错误并进入恢复路径。",
     "按手册发起，观察 BUSY，检查错误，给看门狗留窗口。",
 )
 _FREERTOS_COMPACT_NARRATION = (
@@ -31,8 +33,19 @@ _FREERTOS_COMPACT_NARRATION = (
     "ISR 只取数、清标志，用 FromISR 原语通知任务。",
     "高优先级任务等待时，持锁任务临时继承优先级并尽快释放 Mutex。",
     "ISR 保持短小；共享资源和状态机修改交给任务。",
-    "先判断上下文；ISR 交棒，Mutex 和共享状态留在任务。",
+    "先判断上下文；ISR 用 FromISR 交棒；Mutex、优先级继承和共享状态都回到任务。",
 )
+
+_FACT_ANCHORS: dict[str, tuple[tuple[str, ...], ...]] = {
+    "flash_erase_sequence": (("手册", "解锁", "发起"),),
+    "iwdg_independent_timeout": (("看门狗",), ("倒计时", "复位")),
+    "service_window_is_budget": (("服务窗口",), ("最长", "预算", "响应延迟", "擦除时间")),
+    "observable_recovery": (("错误",), ("恢复", "超预算")),
+    "mutex_task_ownership": (("Mutex",), ("任务",)),
+    "isr_nonblocking_boundary": (("ISR",), ("FromISR", "通知", "队列", "信号量")),
+    "priority_inheritance_context": (("优先级",), ("持锁", "继承", "反转")),
+    "short_isr_handler": (("ISR",), ("任务",), ("短小", "取数", "共享")),
+}
 
 
 def rewrite_narration_once(
@@ -68,6 +81,33 @@ def rewrite_narration_once(
     return rewritten, {"topic_kind": topic_kind, "fact_ids": sorted(fact_ids), "scene_count": len(replacement)}
 
 
+def validate_narration_claims(script: dict[str, Any], factual_brief: dict[str, Any]) -> dict[str, Any]:
+    """Check rewritten beats against conservative source-bound claim anchors."""
+
+    facts = {str(item.get("fact_id")): str(item.get("claim", "")) for item in factual_brief.get("facts", []) if isinstance(item, dict)}
+    beats = script.get("beats")
+    if not isinstance(beats, list):
+        raise ValueError("narration_claim_validation_beats_invalid")
+    checks: list[dict[str, Any]] = []
+    for index, beat in enumerate(beats):
+        if not isinstance(beat, dict):
+            raise ValueError(f"narration_claim_validation_beat_invalid:{index}")
+        text = str(beat.get("narration", ""))
+        for fact_ref in beat.get("fact_refs", []):
+            fact_id = str(fact_ref)
+            if fact_id not in facts or fact_id not in _FACT_ANCHORS:
+                raise ValueError(f"narration_claim_validation_unavailable:{fact_id}")
+            missing = [
+                "/".join(group)
+                for group in _FACT_ANCHORS[fact_id]
+                if not any(token in text for token in group)
+            ]
+            if missing:
+                raise ValueError(f"narration_fact_claim_missing:{fact_id}:{','.join(missing)}")
+            checks.append({"scene_index": index + 1, "fact_id": fact_id, "status": "passed"})
+    return {"status": "passed", "checks": checks}
+
+
 def storyboard_with_narration(storyboard: dict[str, Any], script: dict[str, Any]) -> dict[str, Any]:
     """Copy a storyboard and replace only scene narration from a script."""
 
@@ -81,3 +121,98 @@ def storyboard_with_narration(storyboard: dict[str, Any], script: dict[str, Any]
             raise ValueError("narration_storyboard_shape_invalid")
         scene["narration"] = str(beat["narration"])
     return result
+
+
+def plan_source_aligned_narration(
+    *,
+    storyboard: dict[str, Any],
+    script: dict[str, Any],
+    factual_brief: dict[str, Any],
+    registry: Any,
+    repo_root: Path,
+    work_dir: Path,
+    voice: str,
+    provider: str,
+    tail_margin_seconds: float = 0.2,
+) -> dict[str, Any]:
+    """Authoritative production helper shared by proof and outer job paths."""
+
+    from .audio_planner import (
+        NarrationDurationBudgetError,
+        allocate_scene_durations,
+        align_complete_segments,
+        synthesize_tts_segments,
+    )
+    from .storyboard import compile_storyboard
+
+    current_script = copy.deepcopy(script)
+    current_storyboard = copy.deepcopy(storyboard)
+    validate_narration_claims(current_script, factual_brief)
+    passes: list[dict[str, Any]] = []
+    rewrite_count = 0
+    for pass_index in range(2):
+        timeline = compile_storyboard(current_storyboard, registry, repo_root=Path(repo_root))
+        raw_dir = Path(work_dir) / f"narration_pass_{pass_index}" / "raw"
+        segments = synthesize_tts_segments(timeline, work_dir=raw_dir, voice=voice, provider=provider)
+        raw_total = round(sum(float(segment["actual_duration"]) for segment in segments), 3)
+        pass_record = {
+            "pass": pass_index,
+            "rewrite_count": rewrite_count,
+            "raw_total_seconds": raw_total,
+            "narration": [str(beat.get("narration", "")) for beat in current_script.get("beats", [])],
+            "segments": [
+                dict(segment, audio_sha256=hashlib.sha256(Path(str(segment["audio_path"])).read_bytes()).hexdigest())
+                for segment in segments
+            ],
+        }
+        try:
+            allocated = allocate_scene_durations(timeline, segments, tail_margin_seconds=tail_margin_seconds)
+        except NarrationDurationBudgetError as exc:
+            pass_record["allocation_error"] = str(exc)
+            passes.append(pass_record)
+            if rewrite_count >= 1:
+                raise
+            original_refs = [list(beat.get("fact_refs", [])) for beat in current_script.get("beats", [])]
+            current_script, rewrite_meta = rewrite_narration_once(current_script, factual_brief)
+            validate_narration_claims(current_script, factual_brief)
+            rewritten_refs = [list(beat.get("fact_refs", [])) for beat in current_script.get("beats", [])]
+            pass_record["fact_refs_preserved"] = original_refs == rewritten_refs
+            if not pass_record["fact_refs_preserved"]:
+                raise ValueError("narration_rewrite_fact_bindings_changed")
+            current_storyboard = storyboard_with_narration(storyboard, current_script)
+            rewrite_count += 1
+            pass_record["rewrite_meta"] = rewrite_meta
+            continue
+        subtitle_path = Path(work_dir) / f"narration_pass_{pass_index}" / "subtitle.srt"
+        from .subtitle import build_srt_from_timeline
+        cues = build_srt_from_timeline(allocated, subtitle_path)
+        aligned_dir = Path(work_dir) / f"narration_pass_{pass_index}" / "aligned"
+        audio_path = Path(work_dir) / f"narration_pass_{pass_index}" / "audio.wav"
+        aligned = align_complete_segments(segments, allocated, output_dir=aligned_dir, output_path=audio_path)
+        pass_record["allocation"] = {
+            "duration_seconds": allocated["total_duration_seconds"],
+            "scene_durations": [scene["duration"] for scene in allocated["scenes"]],
+            "srt_endpoint_seconds": cues[-1]["end"],
+            "srt_sha256": hashlib.sha256(subtitle_path.read_bytes()).hexdigest(),
+        }
+        pass_record["aligned_audio"] = aligned
+        pass_record["scene_boundary_markers"] = [
+            {
+                "scene_id": scene["scene_id"],
+                "start_seconds": round(sum(float(item["duration"]) for item in allocated["scenes"][:index]), 3),
+                "end_seconds": round(sum(float(item["duration"]) for item in allocated["scenes"][: index + 1]), 3),
+            }
+            for index, scene in enumerate(allocated["scenes"])
+        ]
+        passes.append(pass_record)
+        return {
+            "timeline": allocated,
+            "storyboard": current_storyboard,
+            "script": current_script,
+            "audio_path": Path(aligned["path"]),
+            "segments": tuple(aligned["segments"]),
+            "subtitle_path": subtitle_path,
+            "rewrite_count": rewrite_count,
+            "passes": passes,
+        }
+    raise AssertionError("source_aligned_narration_pass_exhausted")

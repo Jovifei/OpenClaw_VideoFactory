@@ -746,12 +746,52 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
     # --- Stage E: Audio planning ---
     from video_factory.pipeline.audio_planner import plan_audio
     t3 = time.perf_counter()
-    audio_plan = plan_audio(
-        tl_doc,
-        work_dir=work_dir,
-        audio_config=audio_cfg,
-        repo_root=ROOT,
-    )
+    narration_alignment: dict[str, object] | None = None
+    if bool(audio_cfg.get("source_aligned_narration", False)):
+        from video_factory.pipeline.audio_planner import AudioPlan
+        from video_factory.pipeline.narration_timing import plan_source_aligned_narration
+
+        script_path = work_dir / "script.json"
+        factual_path = work_dir / "factual_brief.json"
+        if not script_path.is_file() or not factual_path.is_file():
+            raise FactoryContractError(
+                "narration_source_missing",
+                "Measured narration mode requires the current script and factual brief.",
+                {"field": "audio.source_aligned_narration"},
+            )
+        measured = plan_source_aligned_narration(
+            storyboard=sb_doc,
+            script=json.loads(script_path.read_text(encoding="utf-8")),
+            factual_brief=json.loads(factual_path.read_text(encoding="utf-8")),
+            registry=registry,
+            repo_root=ROOT,
+            work_dir=work_dir,
+            voice=str(audio_cfg.get("tts", {}).get("voice", "Microsoft Huihui Desktop")),
+            provider=str(audio_cfg.get("tts", {}).get("provider", "windows-sapi")),
+        )
+        tl_doc = measured["timeline"]
+        write_json(work_dir / "timeline.json", tl_doc)
+        write_json(work_dir / "storyboard.resolved.json", measured["storyboard"])
+        write_json(work_dir / "script.json", measured["script"])
+        audio_plan = AudioPlan(
+            mode="tts",
+            path=Path(str(measured["audio_path"])),
+            loop=False,
+            fallback_reason=None,
+            segments=tuple(measured["segments"]),
+        )
+        narration_alignment = {
+            "mode": "source_aligned_measured_tts",
+            "rewrite_count": int(measured["rewrite_count"]),
+            "passes": measured["passes"],
+        }
+    else:
+        audio_plan = plan_audio(
+            tl_doc,
+            work_dir=work_dir,
+            audio_config=audio_cfg,
+            repo_root=ROOT,
+        )
     if bool(audio_cfg.get("require_narration", False)):
         segments = tuple(audio_plan.segments)
         if audio_plan.mode != "tts" or len(segments) != len(tl_doc.get("scenes", [])) or any(
@@ -874,6 +914,7 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
             "segments_count": len(audio_plan.segments),
             "segments": [dict(segment) for segment in audio_plan.segments],
         },
+        "narration_alignment": narration_alignment,
         "mascot": mascot_contract,
         "ffprobe": ffprobe_meta,
         "render_report": "render_report.json",
@@ -1088,6 +1129,7 @@ def run_local_brief(
                 "strategy": "tts_with_offline_fallback",
                 "allow_network": False,
                 "require_narration": True,
+                "source_aligned_narration": True,
                 "tts": {"provider": "windows-sapi", "voice": "Microsoft Huihui Desktop"},
                 "fallback_bgm": "assets/pink_pig/demo_music.wav",
             },

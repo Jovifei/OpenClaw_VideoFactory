@@ -203,7 +203,7 @@ def _validate_evidence_documents(
             raise _fail("phase1_review_narration_incomplete", "Narration segment evidence is invalid.", f"run_report.audio_plan.segments.{index}")
         try:
             actual = float(segment["actual_duration"])
-            allocated = float(segment["scene_duration"])
+            allocated = float(segment.get("allocated_scene_duration", segment["scene_duration"]))
         except (KeyError, TypeError, ValueError) as exc:
             raise _fail("phase1_review_narration_incomplete", "Narration segment duration evidence is invalid.", f"run_report.audio_plan.segments.{index}") from exc
         if bool(segment.get("overflow")) or actual > allocated + 0.01:
@@ -360,7 +360,7 @@ def _build_quality(
         and all(
             isinstance(segment, dict)
             and not bool(segment.get("overflow"))
-            and float(segment.get("actual_duration", 0.0)) <= float(segment.get("scene_duration", 0.0)) + 0.01
+            and float(segment.get("actual_duration", 0.0)) <= float(segment.get("allocated_scene_duration", segment.get("scene_duration", 0.0))) + 0.01
             for segment in segments
         )
     )

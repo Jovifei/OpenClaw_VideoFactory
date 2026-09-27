@@ -3,7 +3,11 @@ from __future__ import annotations
 import pytest
 
 from video_factory.pipeline.audio_planner import NarrationDurationBudgetError, allocate_scene_durations
-from video_factory.pipeline.narration_timing import rewrite_narration_once, storyboard_with_narration
+from video_factory.pipeline.narration_timing import (
+    rewrite_narration_once,
+    storyboard_with_narration,
+    validate_narration_claims,
+)
 
 
 def test_allocate_scene_durations_is_measured_and_frame_aligned() -> None:
@@ -58,3 +62,12 @@ def test_storyboard_with_narration_changes_only_narration() -> None:
     assert result["scenes"][0]["narration"] == "new"
     assert result["scenes"][0]["caption"] == "keep"
     assert storyboard["scenes"][0]["narration"] == "old"
+
+
+def test_rewritten_claims_require_source_bound_anchor_terms() -> None:
+    script = {"beats": [{"narration": "任务上下文持有 Mutex。", "fact_refs": ["mutex_task_ownership"]}]}
+    brief = {"facts": [{"fact_id": "mutex_task_ownership", "claim": "Mutex 所有权留在任务上下文。"}]}
+    assert validate_narration_claims(script, brief)["status"] == "passed"
+    script["beats"][0]["narration"] = "系统运行正常。"
+    with pytest.raises(ValueError, match="narration_fact_claim_missing"):
+        validate_narration_claims(script, brief)
