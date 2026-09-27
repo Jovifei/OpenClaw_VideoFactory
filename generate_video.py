@@ -976,6 +976,18 @@ def _prepare_phase1_work_dir(work_dir: Path) -> None:
             candidate.unlink()
 
 
+def _local_brief_subtitle_style(width: int, height: int) -> dict[str, object]:
+    """Use one subtitle style contract for local-brief renders and layout checks."""
+    return {
+        "layout": "bottom_safe_band",
+        "font_name": "Microsoft YaHei",
+        "font_size": 56,
+        "margin_left": 90,
+        "margin_right": 90,
+        "margin_vertical": 180 if width > height else 250,
+    }
+
+
 def run_local_brief(
     brief_path: Path,
     *,
@@ -1056,7 +1068,6 @@ def run_local_brief(
         render_height = int(render_profile.get("height", 1080))
         render_fps = int(render_profile.get("fps", 30))
         render_pad_color = str(render_profile.get("pad_color", "0xF4F6F8"))
-        subtitle_margin_vertical = 180 if render_width > render_height else 250
         render_job = {
             "schema_version": "1.0",
             "job_id": job_id,
@@ -1081,14 +1092,7 @@ def run_local_brief(
             "subtitle": {
                 "enabled": True,
                 "source": "scene_caption",
-                "style": {
-                    "layout": "bottom_safe_band",
-                    "font_name": "Microsoft YaHei",
-                    "font_size": 56,
-                    "margin_left": 90,
-                    "margin_right": 90,
-                    "margin_vertical": subtitle_margin_vertical,
-                },
+                "style": _local_brief_subtitle_style(render_width, render_height),
             },
             "mascot": {"mode": "off" if str(plan.get("mascot_mode", "off")) == "off" else "required"},
             "outputs": {

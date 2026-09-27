@@ -1,0 +1,43 @@
+{
+  "schema_version": "phase1_freertos_subtitle_safe_evidence_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FREERTOS-SUBTITLE-SAFE-20260927",
+  "rejected_candidate": {"job_id": "job-51fae0c8b47180bd49f2000e", "mp4_sha256": "f37c6b4f1d4c8c977a5de12dc64c85fd7610b3be50fbc72eb99263c2d5f1d7ee", "finding": "Scene-3 subtitle overlaps the priority-inheritance callout", "preserved": true},
+  "source_repair": {
+    "svg": "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.svg",
+    "new_svg_sha256": "d3d510767bef9df52d7b351fa3f2540c6faed86288331b3ac5089c7f2496406b",
+    "text_unchanged": true,
+    "font_size_unchanged": true,
+    "callout_before": {"rect_y": 650, "rect_height": 115, "text_baseline_y": 720, "rect_width": 1190},
+    "callout_after": {"rect_y": 560, "rect_height": 115, "text_baseline_y": 630, "rect_width": 1300},
+    "semantic_group_id": "priority-inheritance-callout"
+  },
+  "geometry_regression": {
+    "test": "tests/video/test_freertos_subtitle_geometry.py::test_priority_inheritance_callout_clears_production_subtitle_band",
+    "red": "callout_bottom=878.0, subtitle_top=815.6",
+    "green": "passed after source relayout",
+    "method": "Uses current local-brief render profile and shared subtitle style, production ASS scale, declared SVG rect geometry, and a 20px clearance."
+  },
+  "raster": {
+    "old_png_sha256": "6bf8bb75e5f7b04705e6c6f9346b37bafadf997578469e0de39425d88ce361da",
+    "new_png_sha256": "e4879ee6d21003ab4573b66223fe5406a9be7cf10452e0fdad0a88acc04c1d84",
+    "renderer": "installed Chrome with system Chinese fonts, existing FFmpeg scale to 836x471",
+    "pillow_full_decode": "passed",
+    "ffmpeg_one_frame_decode": "passed",
+    "visual": "Chinese text, priority timeline, and widened callout readable; no clipped label"
+  },
+  "production_style_still": {
+    "probe": "reports/phase1/stage_20260927/scene3_still_probe.json",
+    "probe_sha256": "6d66bf0041774bf60ff0e42bfb5badbb7ce6dbf0e91c85637b08bd16690b5780",
+    "image": "reports/phase1/stage_20260927/scene3_still_after.png",
+    "image_sha256": "14990cfd4a8aeb48385e300eedbabac1a130911d12bb721374dfdbd6aad0845a",
+    "visual_result": "Subtitle sits below the complete technical callout with visible separation."
+  },
+  "verification": [{"command": "D:/Python/Python3.14/python.exe -m pytest tests/video/test_freertos_subtitle_geometry.py tests/video/test_registry.py tests/video/test_mascot_and_subtitle.py tests/phase1_local -q", "result": "149 passed"}, {"command": "git diff --check", "result": "passed"}],
+  "raw_log_archive": "reports/phase1/stage_20260927/subtitle_safe_logs.zip",
+  "raw_log_archive_sha256": "c443f9bae1a70ae0d2eafb34ac9e8fb8c2e61c54b824107fc0aa0f98e90f252a",
+  "status": "STILL_LEVEL_REPAIR_VERIFIED",
+  "full_video_rerender": "NOT_RUN",
+  "human_review": "NOT_REQUESTED",
+  "phase_promotion": false
+}
