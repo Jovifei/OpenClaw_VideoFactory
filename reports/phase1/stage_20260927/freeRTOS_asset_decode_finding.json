@@ -1,0 +1,18 @@
+{
+  "schema_version": "phase1_asset_decode_finding_v1",
+  "date": "2026-09-27",
+  "source": "assets/freertos_mutex_plain_illustrations/01-mutex-ownership.png",
+  "source_sha256": "f8a3db5a9d6fe832180f1c19b0e62e8e1133d793b0cc5c44723ee3c816f69d1e",
+  "source_header": {"width": 836, "height": 471, "pillow_mode": "1"},
+  "registry_sha_matches": true,
+  "ffmpeg_null_probe": {
+    "report": "reports/phase1/stage_20260927/ffmpeg_layer_isolation.json",
+    "report_sha256": "2157e137101d2dcc9ad0ff9db8ae29256a10f29b8e48baf67d66e46752cfb8f9",
+    "status": "timeout",
+    "timeout_seconds": 30,
+    "stderr": "Failed to reallocate parser buffer to negative sizes"
+  },
+  "pillow_pixel_decode": {"status": "failed", "exception": "OSError: unrecognized data stream contents when reading image file"},
+  "conclusion": "PNG header and registry hash are insufficient; the first registered FreeRTOS asset cannot be fully decoded.",
+  "scope_limit": "Ordered FFmpeg isolation stopped at the first failing input; the other four assets were not probed in this diagnostic."
+}

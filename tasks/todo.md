@@ -2816,6 +2816,9 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 - [x] WP0: inventory exact final candidates, lifecycle files, hashes, SQLite state, and review gaps.
 - [x] WP1: run fresh bounded Phase 1 regression and record each suite separately.
 - [ ] WP2: close Flash, FreeRTOS, and I2C machine packages; request SHA-bound Jovi reviews.
+- [x] FreeRTOS attempt 001: existing brief selected five correct registered technical assets; the job failed from `RENDERING` after FFmpeg's 300-second timeout, with no final MP4. Preserve `reports/phase1/stage_20260927/freertos_attempt_001.json` and its raw log; remediate under a separate Change Request before any retry.
+- [x] One CPU-only probe kept the same five images, audio, subtitles, filter, profile and 300-second limit. It also timed out, produced no MP4, and captured parser-buffer errors; classify the renderer path as blocked pending a new bounded design. See `reports/phase1/stage_20260927/render_timeout_review_20260927.json`.
+- [x] Ordered short/null-output isolation stopped at the first PNG: FFmpeg reproduced the parser-buffer error and timed out at 30 seconds; Pillow pixel decode independently failed. See `reports/phase1/stage_20260927/freeRTOS_asset_decode_finding.json`. No other layer or full render was attempted.
 - [ ] WP3: qualify one distinct live topic and obtain SHA-bound Jovi review.
 - [ ] WP4: validate and bind the existing four lifecycle evidence files.
 - [ ] WP5: build boundary audit and `topic_only_v1` manifest.
