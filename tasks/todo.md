@@ -2836,7 +2836,7 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 - [x] Record complete segment/aligned hashes, SRT endpoints, budget result and listening-review status.
 - [x] Run affected tests, diff check and independent read-only review; do not render a new video yet.
 
-Review: `BOUNDED_AUDIO_ONLY_PROOF_PENDING_LISTENING`. Both fixtures fail the original measured budget, then pass after exactly one fact-preserving concise rewrite: Flash 45.199s, FreeRTOS 42.4s. All aligned segments are at least as long as raw TTS; no trim path remains. Affected tests: 461 passed, four fixture-dependent modules not run due missing ignored demo artifacts. Complete WAVs and scene markers are in `E:/OpenClaw_VideoFactory_Runtime/phase1_audio_contract_20260927_v4/`; human audio-only listening is still pending. No new video job.
+Review: `BOUNDED_AUDIO_ONLY_PROOF_PENDING_LISTENING`. Both fixtures fail the original measured budget, then pass after exactly one fact-preserving concise rewrite: current v7 proof Flash 48.466s, FreeRTOS 46.067s. All aligned segments are at least as long as raw TTS; no trim path remains. Actual fixed-fixture claim/contradiction regressions pass. Affected tests: 470 passed, four fixture-dependent modules not run due missing ignored demo artifacts. Complete WAVs and scene markers are in `E:/OpenClaw_VideoFactory_Runtime/phase1_audio_contract_20260927_v7/`; human audio-only listening is still pending. No new video job.
 
 ### PHASE1-FLASH-GEOMETRY-20260927
 

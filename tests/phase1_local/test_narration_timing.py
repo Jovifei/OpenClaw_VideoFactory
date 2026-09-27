@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from video_factory.pipeline.audio_planner import NarrationDurationBudgetError, allocate_scene_durations
@@ -70,4 +72,33 @@ def test_rewritten_claims_require_source_bound_anchor_terms() -> None:
     assert validate_narration_claims(script, brief)["status"] == "passed"
     script["beats"][0]["narration"] = "系统运行正常。"
     with pytest.raises(ValueError, match="narration_fact_claim_missing"):
+        validate_narration_claims(script, brief)
+
+
+@pytest.mark.parametrize("brief_name", ["flash_watchdog", "freertos"])
+def test_actual_fixed_fixture_compact_rewrites_are_fact_validated(brief_name: str) -> None:
+    from src.factory.phase1_local import build_local_plan, load_local_brief
+
+    root = Path(__file__).resolve().parents[2]
+    brief = load_local_brief(root / "examples" / f"phase1_local_{brief_name}" / "brief.json")
+    plan = build_local_plan(brief, repo_root=root)
+    rewritten, _meta = rewrite_narration_once(plan["script"], plan["factual_brief"])
+    result = validate_narration_claims(rewritten, plan["factual_brief"])
+    assert result["status"] == "passed"
+    assert len(result["checks"]) >= 4
+
+
+@pytest.mark.parametrize(
+    ("fact_id", "text"),
+    [
+        ("isr_nonblocking_boundary", "ISR 等待 Mutex 就能安全完成工作。"),
+        ("priority_inheritance_context", "ISR 使用优先级继承处理所有中断。"),
+        ("observable_recovery", "失败时无限重试直到成功。"),
+        ("service_window_is_budget", "服务窗口无需计算，任何器件都保证不复位。"),
+    ],
+)
+def test_claim_validation_rejects_contradictory_or_unsupported_compact_claims(fact_id: str, text: str) -> None:
+    script = {"beats": [{"narration": text, "fact_refs": [fact_id]}]}
+    brief = {"facts": [{"fact_id": fact_id, "claim": "source-bound claim"}]}
+    with pytest.raises(ValueError, match="narration_(fact_claim_contradiction|unsupported_assertion)"):
         validate_narration_claims(script, brief)

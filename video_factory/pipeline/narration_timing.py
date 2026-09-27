@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import re
 from typing import Any
 from pathlib import Path
 
@@ -46,6 +47,23 @@ _FACT_ANCHORS: dict[str, tuple[tuple[str, ...], ...]] = {
     "priority_inheritance_context": (("优先级",), ("持锁", "继承", "反转")),
     "short_isr_handler": (("ISR",), ("任务",), ("短小", "取数", "共享")),
 }
+
+_FACT_CONTRADICTIONS: dict[str, tuple[re.Pattern[str], ...]] = {
+    "mutex_task_ownership": (re.compile(r"ISR.{0,8}(?:取得|获取|持有).{0,8}Mutex"),),
+    "isr_nonblocking_boundary": (re.compile(r"ISR.{0,8}(?<!不等待)(?:等待|阻塞).{0,8}(?:Mutex|互斥)"),),
+    "priority_inheritance_context": (re.compile(r"ISR.{0,8}(?:优先级继承|继承优先级)"),),
+    "short_isr_handler": (re.compile(r"ISR.{0,12}(?:长时间|较长处理|处理共享资源)"),),
+    "flash_erase_sequence": (re.compile(r"(?:无需|不用|不必).{0,8}(?:手册|检查)"),),
+    "iwdg_independent_timeout": (re.compile(r"(?:看门狗|IWDG).{0,8}(?:停止|不会).{0,8}(?:倒计时|复位)"),),
+    "service_window_is_budget": (re.compile(r"(?:服务窗口|最长擦除时间).{0,8}(?:无需|不用).{0,8}计算"),),
+    "observable_recovery": (re.compile(r"(?<!不能)(?<!停止)(?:无限|无穷).{0,4}(?:重试|等待)"),),
+}
+_UNSUPPORTED_ASSERTIONS = (
+    re.compile(r"100%"),
+    re.compile(r"保证(?:永不|一定不)复位"),
+    re.compile(r"任意器件"),
+    re.compile(r"每次擦除\s*1\s*ms"),
+)
 
 
 def rewrite_narration_once(
@@ -97,6 +115,10 @@ def validate_narration_claims(script: dict[str, Any], factual_brief: dict[str, A
             fact_id = str(fact_ref)
             if fact_id not in facts or fact_id not in _FACT_ANCHORS:
                 raise ValueError(f"narration_claim_validation_unavailable:{fact_id}")
+            if any(pattern.search(text) for pattern in _FACT_CONTRADICTIONS.get(fact_id, ())):
+                raise ValueError(f"narration_fact_claim_contradiction:{fact_id}")
+            if any(pattern.search(text) for pattern in _UNSUPPORTED_ASSERTIONS):
+                raise ValueError(f"narration_unsupported_assertion:{fact_id}")
             missing = [
                 "/".join(group)
                 for group in _FACT_ANCHORS[fact_id]

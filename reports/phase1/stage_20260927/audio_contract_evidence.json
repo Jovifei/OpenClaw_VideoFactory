@@ -53,7 +53,7 @@
     "fresh_full_render": "NOT_RUN"
   },
   "audio_review": "PENDING_HUMAN_AUDIO_REVIEW: complete audio-only WAVs and scene-boundary markers are retained in the runtime report; no video candidate is authorized.",
-  "tests": "463 passed in affected suites; four fixture-dependent modules were excluded because ignored dist/story_demo artifacts are absent in this fresh worktree; git diff --check passed.",
+  "tests": "470 passed in affected suites; four fixture-dependent modules were excluded because ignored dist/story_demo artifacts are absent in this fresh worktree; git diff --check passed.",
   "historical_candidates": "Flash job-3643de66b508bacc03474cbd and FreeRTOS job-2da2a3ae112bac2ceaacb5d7 remain immutable CHANGES_REQUIRED_AUDIO_TRUNCATION evidence.",
   "status": "BOUNDED_AUDIO_ONLY_PROOF_PENDING_LISTENING"
 }
