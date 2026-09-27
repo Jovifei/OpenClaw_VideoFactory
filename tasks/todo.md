@@ -2828,6 +2828,16 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 - [x] Candidate003 job `job-0a58d7692fb3dd4008d3a6ed` from `d5c13a7` passed media decode/SQLite/package checks and fixed scene-2/3 midpoints, but the 0.4-second xfade overlays adjacent technical diagrams at transitions. Semantic visual status is `CHANGES_REQUIRED`; preserve `reports/phase1/stage_20260927/candidate003_review.json`. No Jovi approval, prereview, or Candidate004.
 - [ ] WP3: qualify one distinct live topic and obtain SHA-bound Jovi review.
 
+### PHASE1-FREERTOS-CANDIDATE004-20260927
+
+- [x] Bind commit, brief, asset hashes, technical_cut, 40s/1200-frame expectation and prior SRT/audio probes.
+- [x] Run the canonical local brief video entrypoint exactly once in this fresh worktree.
+- [x] Verify media streams, full decode, 40s audio/SRT tail, local package hashes and automated quality. Outer SQLite state was not produced by this entrypoint.
+- [x] Inspect all five scenes and frame pairs 239/240, 479/480, 719/720, 959/960; scene 4 subtitle covers the lower principle line and scene 5 subtitle touches the container border.
+- [x] Freeze the candidate with SHA and `CHANGES_REQUIRED`; no Jovi approval or prereview.
+
+Review: `CHANGES_REQUIRED`. Frozen MP4 SHA `238201bbeff201a155cbe4d682d1292f82cb28e8b3d3648fb12f7c573f47f20f`. Technical hard cuts, 40s/1200 frames, full decode and audio tail pass; visual semantics and outer SQLite gate do not. Independent read-only review confirmed scene 4/5 collisions. See `reports/phase1/stage_20260927/candidate004_review.json`. Prior Candidate000–003 outputs remain in their original locations.
+
 ### PHASE1-TECHNICAL-CUT-20260927
 
 - [x] RED: test explicit local technical-cut timeline, 40-second cues and no xfade while retaining legacy behavior.
