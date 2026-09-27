@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-FREERTOS-CANDIDATE003-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested Phase 1 execution. FreeRTOS scene-2 and scene-3 still repairs passed independent review and Codex with ChatGPT allowed one fresh immutable candidate.",
+  "category": "One FreeRTOS final machine and semantic candidate",
+  "scope": "At tested commit d5c13a7 in a fresh E-drive worktree, bind canonical brief and five asset hashes, create one new local-topic job, run normal pipeline once, then inspect full-scene intervals and transitions before deciding whether it is machine-review-ready.",
+  "allowed_paths": ["state/phase1_local/", "dist/phase1_local/", "reports/phase1/stage_20260927/", "reports/change_requests/PHASE1-FREERTOS-CANDIDATE003-20260927.json", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate003_20260927/"],
+  "forbidden": ["retry/mutate prior jobs", "Candidate004 without another review cycle", "manual FFmpeg production substitution", "timeout/source/renderer/Gate changes", "post-render patching", "human approval", "prereview before Jovi review", "Phase 2 work"],
+  "acceptance": ["One new job bound to d5c13a7 and current five asset hashes", "Normal pipeline reaches PENDING_REVIEW", "MP4 H.264/AAC, configured profile/FPS, complete decode and hash-bound review package", "Scene-2 and scene-3 fixes survive the full video", "Every scene and transition sampled for clipping, text/arrow or subtitle/content collision", "Freeze exact final MP4 SHA as FREE_RTOS_MACHINE_REVIEW_READY only if all checks pass"],
+  "status": "transition_semantics_changes_required"
+}

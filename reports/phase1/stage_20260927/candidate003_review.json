@@ -1,0 +1,31 @@
+{
+  "schema_version": "phase1_freertos_candidate_review_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FREERTOS-CANDIDATE003-20260927",
+  "input_binding": "reports/phase1/stage_20260927/candidate003_inputs.json",
+  "source_commit": "d5c13a74217ed489e7c132639e5375da662f5099",
+  "job_id": "job-0a58d7692fb3dd4008d3a6ed",
+  "historical_jobs_preserved": ["job-adfcf733dcba1d081bb8feaf", "job-51fae0c8b47180bd49f2000e", "job-4f834506b1f5283002dc3093"],
+  "media": {"path": "dist/phase1_local/phase1_8958d25a694923c9/final_master.mp4", "sha256": "b89f3ada4aca4870153f4842765497ed1dc992ab4bab56b2550192d614757382", "codec": "H.264/AAC", "profile": "1920x1080/30fps", "duration_seconds": 38.4, "full_decode_exit_code": 0},
+  "review_package": {"path": "dist/phase1_local/phase1_8958d25a694923c9/review_package.json", "sha256": "11ccfa00e224b0ff2afb6ead79aa11f1fa61c1f5c35596e39b74c57e8391b287", "final_media_sha_matches": true},
+  "sqlite": {"state": "PENDING_REVIEW", "final_master_artifact_sha_matches": true, "review_package_artifact_sha_matches": true},
+  "automated_quality_report": "passed",
+  "preserved_runtime_snapshot": "E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate003_20260927/candidate003_transition_changes_required/",
+  "semantic_visual_review": {
+    "status": "CHANGES_REQUIRED",
+    "scope_examined": "All five scene midpoints and the first two crossfade boundaries; review stopped at the first transition collision, so later transition frames were extracted but not qualified.",
+    "stable_scenes": "At sampled midpoints scenes 1–5 are readable. Scene 2 API label is inside its box and away from the arrow; scene 3 callout is below its timeline and above the subtitle.",
+    "remaining_defect": "The 0.4-second xfade overlays adjacent full technical diagrams and headings. During scene 1→2 and 2→3 transitions, titles, labels, boxes and arrows become simultaneous double exposure and are temporarily unreadable.",
+    "failing_samples": [
+      {"frame": 235, "time_seconds": 7.833, "path": "reports/phase1/stage_20260927/candidate003_frame_05.png", "sha256": "530bcf78ba85bc32719bf4b1f985fdd47e563767500735f7348ad258161f4395"},
+      {"frame": 458, "time_seconds": 15.267, "path": "reports/phase1/stage_20260927/candidate003_frame_10.png", "sha256": "65cc8ca43386396621e33a1fc51e35f7a31d0e5ba37ec86affa7ccb14565288d"}
+    ],
+    "review_archive": "reports/phase1/stage_20260927/candidate003_transition_review.zip",
+    "review_archive_sha256": "b83ac67f99b26fd32468ede5fd34b138ed9fa69c46b052c8ca99f64fd1e921d9"
+  },
+  "human_review": "NOT_REQUESTED",
+  "prereview": "NOT_RUN",
+  "phase_promotion": false,
+  "status": "MACHINE_MEDIA_VALID_TRANSITION_SEMANTICS_CHANGES_REQUIRED",
+  "next_step": "Preserve Candidate003; request a separate transition-contract remediation plan. Do not render Candidate004 under this authorization."
+}
