@@ -2,7 +2,7 @@
   "schema_version": "phase1_audio_contract_evidence_v1",
   "date": "2026-09-27",
   "change_request": "PHASE1-AUDIO-CONTRACT-20260927",
-  "source_commit": "PENDING_COMMIT",
+  "source_commit": "7c906a54a5b5bcd1fb6e740e24f00f87366b7f7a",
   "runtime_report": "E:/OpenClaw_VideoFactory_Runtime/phase1_audio_contract_20260927_v7/audio_contract_report.json",
   "contract": {
     "tts_overflow": "fail_closed",
