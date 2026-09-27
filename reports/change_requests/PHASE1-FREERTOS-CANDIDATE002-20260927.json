@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-FREERTOS-CANDIDATE002-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested Phase 1 local execution. The scene-3 subtitle-safe repair passed deterministic tests, a production-style still, independent review, and Codex with ChatGPT review.",
+  "category": "One immutable FreeRTOS final machine candidate",
+  "scope": "In a fresh E-drive worktree at f6b6c0e, bind all five registered FreeRTOS asset hashes, create one new job from the canonical brief, run the normal pipeline once, then inspect media and scene-3 subtitle interval before freezing any human-review candidate.",
+  "allowed_paths": ["state/phase1_local/", "dist/phase1_local/", "reports/phase1/stage_20260927/", "reports/change_requests/PHASE1-FREERTOS-CANDIDATE002-20260927.json", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate002_20260927/"],
+  "forbidden": ["retry/mutate historical jobs", "second full render", "post-render patching", "source/renderer/Gate changes", "human approval", "prereview before Jovi review", "Phase 2 work"],
+  "acceptance": ["One new job and final MP4 identity", "H.264/AAC 1920x1080/30fps and full decode", "SQLite/review-package/final MP4 hashes agree", "Automated quality passes", "Scene-3 active subtitle interval and all other technical scenes show no subtitle/content collision", "Stop at FREE_RTOS_MACHINE_REVIEW_READY or preserve a concrete failure"],
+  "status": "semantic_visual_changes_required"
+}
