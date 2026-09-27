@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-FREERTOS-CANDIDATE005-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested execution of the C2C Phase 1 stage. Remote ChatGPT accepted scene4/5 still repair 84e5665 and authorized exactly one fresh outer Phase 1 Candidate005 via create-topic then run.",
+  "category": "single FreeRTOS outer Phase 1 job and media qualification",
+  "scope": "In this isolated worktree, use scripts/factory.py phase1 create-topic once with canonical FreeRTOS brief, then phase1 run once for its new job ID. Verify genuine SQLite events/artifacts and full 40-second media semantics.",
+  "allowed_paths": ["state/phase1_local/", "dist/phase1_local/", "reports/change_requests/PHASE1-FREERTOS-CANDIDATE005-20260927.json", "reports/phase1/stage_20260927/", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate005_20260927/"],
+  "forbidden": ["source/asset changes", "prior candidate mutation", "second create-topic or run", "retry or resume after failure", "synthetic SQLite state edits", "human approval inference", "prereview", "Gate", "Phase 2 side effects"],
+  "acceptance": ["new unique outer job and genuine event history", "actual SQLite PENDING_REVIEW with registered matching final_master/review_package hashes", "40.0s 1200-frame H264/AAC 1920x1080 30fps full decode with final audio/SRT tail", "four clean cuts and all five scenes pass semantic review", "freeze exact MP4 SHA as machine review ready only"],
+  "status": "machine_review_ready_human_pending"
+}
