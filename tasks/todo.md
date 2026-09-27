@@ -2828,6 +2828,16 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 - [x] Candidate003 job `job-0a58d7692fb3dd4008d3a6ed` from `d5c13a7` passed media decode/SQLite/package checks and fixed scene-2/3 midpoints, but the 0.4-second xfade overlays adjacent technical diagrams at transitions. Semantic visual status is `CHANGES_REQUIRED`; preserve `reports/phase1/stage_20260927/candidate003_review.json`. No Jovi approval, prereview, or Candidate004.
 - [ ] WP3: qualify one distinct live topic and obtain SHA-bound Jovi review.
 
+### PHASE1-FLASH-PREFLIGHT-20260927
+
+- [x] Freeze canonical Flash brief, five selected assets, registry version, render profile and 37.8s technical-cut timeline.
+- [x] Validate five image hashes, declared dimensions, Pillow full decode and bounded FFmpeg frame decode.
+- [x] Compile real SRT and inspect five production-profile short stills with exact scene cues; scenes 1/2/3/5 need source-layout repair.
+- [x] Prove four hard-cut boundaries and reconcile visual/audio/SRT timing before any full render.
+- [x] Independent read-only preflight review returned `CHANGES_REQUIRED` for the four scenes.
+
+Review: `CHANGES_REQUIRED_BEFORE_FULL_RENDER`. Assets and 37.8s timing/cut probes pass. Production stills expose scene1 label/arrow and clock-caption collisions, scene2 subtitle/callout collision, scene3 timing-marker/label collision, and scene5 subtitle/checklist collision. Independent review confirmed. See `reports/phase1/stage_20260927/flash_preflight_review.json`; no new outer Flash job and Owner main unchanged.
+
 ### PHASE1-FREERTOS-SCENE45-GEOMETRY-20260927
 
 - [x] Reproduce Candidate004 scene 4/5 subtitle collisions as Chrome bbox RED tests using the production subtitle profile and replay old Git blobs with selector-only temporary IDs.

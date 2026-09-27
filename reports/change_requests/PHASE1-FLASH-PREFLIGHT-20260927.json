@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-FLASH-PREFLIGHT-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested execution of the remotely planned Phase 1 stage. Historical Flash master/package hashes disagree with SQLite; Codex with ChatGPT planned a new isolated asset, still, cut and timing preflight before any fresh outer job.",
+  "category": "Flash/watchdog bounded machine preflight",
+  "scope": "Freeze canonical brief and five selected plain technical assets, validate decode/hash/dimensions, compile production timeline and SRT, render only short per-scene/cut probes, and obtain independent read-only review.",
+  "allowed_paths": ["reports/change_requests/PHASE1-FLASH-PREFLIGHT-20260927.json", "reports/phase1/stage_20260927/", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_flash_preflight_20260927/"],
+  "forbidden": ["Owner main writes", "historical Flash SQLite/package/media edits", "FreeRTOS Candidate005 edits", "full Flash render before preflight PASS", "new outer Flash job before preflight PASS", "quality threshold reductions", "Gate", "Phase 2 side effects"],
+  "acceptance": ["brief/registry/assets hashes and five full decodes pass", "five production-style subtitle stills are semantically clear", "four cut probes contain no blend/blank frame", "visual/audio/SRT timing authority agrees on 37.8 seconds", "focused tests and independent review pass"],
+  "status": "changes_required_before_full_render"
+}
