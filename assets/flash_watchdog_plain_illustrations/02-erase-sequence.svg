@@ -18,5 +18,5 @@
   <g transform="translate(1400,250)">
     <rect width="210" height="230" rx="24" fill="#EEF8F2" stroke="#5BAE8C" stroke-width="6"/><circle cx="56" cy="68" r="30" fill="#5BAE8C"/><text x="46" y="79" class="label" font-size="30">4</text><text x="105" y="78" class="ink" font-size="30" font-weight="700">确认</text><text x="25" y="140" class="muted" font-size="25">完成</text><text x="25" y="181" class="muted" font-size="25">可复核</text>
   </g>
-  <rect x="470" y="615" width="1000" height="140" rx="28" fill="#F7E4EA"/><text x="520" y="685" class="ink" font-size="32" font-weight="700">每一拍都有状态，服务窗口才有工程含义。</text><text x="520" y="730" class="muted" font-size="25">校验顺序以具体器件参考手册为准。</text>
+  <rect id="flash-scene2-callout" x="470" y="530" width="1000" height="140" rx="28" fill="#F7E4EA"/><text id="flash-scene2-callout-main" x="520" y="600" class="ink" font-size="32" font-weight="700">每一拍都有状态，服务窗口才有工程含义。</text><text id="flash-scene2-callout-lower" x="520" y="645" class="muted" font-size="25">校验顺序以具体器件参考手册为准。</text>
 </svg>

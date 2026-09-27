@@ -1,0 +1,29 @@
+{
+  "subtitle_top_px": 815.625,
+  "scene1": {
+    "cpu_label_right": 272.15966796875,
+    "cpu_box_right": 295,
+    "arrow_start": 310,
+    "error_label_right": 764.3671875,
+    "error_box_right": 775,
+    "clock_rim_bottom": 414,
+    "clock_caption_top": 426,
+    "clock_caption_bottom": 459,
+    "callout_bottom_px": 786.1849096705632,
+    "callout_text_bottom_px": 774.7077577045696
+  },
+  "scene2": {
+    "callout_bottom_px": 768.9691817215728,
+    "lower_text_bottom_px": 748.3103081827843
+  },
+  "scene3": {
+    "erase_marker_bottom": 445,
+    "erase_label_top": 495,
+    "timeout_marker_bottom": 445,
+    "timeout_label_top": 495
+  },
+  "scene5": {
+    "fourth_box_bottom_px": 774.7077577045696,
+    "slogan_bottom_px": 743.7194473963868
+  }
+}

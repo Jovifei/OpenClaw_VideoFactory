@@ -2828,6 +2828,16 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 - [x] Candidate003 job `job-0a58d7692fb3dd4008d3a6ed` from `d5c13a7` passed media decode/SQLite/package checks and fixed scene-2/3 midpoints, but the 0.4-second xfade overlays adjacent technical diagrams at transitions. Semantic visual status is `CHANGES_REQUIRED`; preserve `reports/phase1/stage_20260927/candidate003_review.json`. No Jovi approval, prereview, or Candidate004.
 - [ ] WP3: qualify one distinct live topic and obtain SHA-bound Jovi review.
 
+### PHASE1-FLASH-GEOMETRY-20260927
+
+- [x] Replay old scene1/2/3/5 geometry through Chrome and record RED contracts.
+- [x] Relayout only those four SVGs with unchanged wording and fonts; require GREEN. Independent review found an omitted scene1 lower callout collision; added it to the RED/GREEN contract and repaired it before closure.
+- [x] Rasterize four PNGs, verify decode/dimensions and update only four registry hashes.
+- [x] Generate five real-subtitle production stills and review against failed preflight; scene1 final is v3, scene4 control pixels unchanged.
+- [x] Run affected tests, diff check and independent review; stop before outer Flash job.
+
+Review: `PASS_BOUNDED_STILL_ONLY`. Four selected SVG/PNG repairs retain wording/font sizes; Chrome old-source RED and current GREEN measurements are recorded. Five final real-cue stills are clear; scene4 is pixel-identical to preflight. Four registered PNG hashes match; 454 affected tests and independent read-only re-review PASS. See `reports/phase1/stage_20260927/flash_geometry_evidence.json`. No full Flash render or outer job yet.
+
 ### PHASE1-FLASH-PREFLIGHT-20260927
 
 - [x] Freeze canonical Flash brief, five selected assets, registry version, render profile and 37.8s technical-cut timeline.

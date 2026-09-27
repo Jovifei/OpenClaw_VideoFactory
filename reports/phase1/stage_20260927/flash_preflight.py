@@ -37,8 +37,9 @@ def run(command: list[str], *, timeout: int = 90) -> str:
 def short_render(
     label: str, scenes: list[dict[str, object]], cue_texts: list[str],
     style: dict[str, object], profile: dict[str, object], frame_numbers: tuple[int, ...],
+    *, output_dir: Path = OUTPUT,
 ) -> dict[str, object]:
-    subtitle = OUTPUT / f"{label}.srt"
+    subtitle = output_dir / f"{label}.srt"
     interval = 1.0 / len(scenes)
     def stamp(value: float) -> str:
         milliseconds = round(value * 1000)
@@ -52,7 +53,7 @@ def short_render(
         ), encoding="utf-8",
     )
     short_scenes = [{**scene, "duration": interval} for scene in scenes]
-    mp4 = OUTPUT / f"{label}.mp4"
+    mp4 = output_dir / f"{label}.mp4"
     command, duration = build_render_command(
         asset_dir=ROOT, timeline=short_scenes, subtitle_path=subtitle,
         output_path=mp4, transition_seconds=0.4, transition_mode="technical_cut",
@@ -63,7 +64,7 @@ def short_render(
     run(command)
     frames = []
     for number in frame_numbers:
-        png = OUTPUT / f"{label}_frame_{number:02d}.png"
+        png = output_dir / f"{label}_frame_{number:02d}.png"
         run(["ffmpeg", "-y", "-v", "error", "-i", str(mp4),
              "-vf", f"select=eq(n\\,{number})", "-vsync", "0", "-frames:v", "1", str(png)])
         frames.append({"number": number, "path": str(png), "sha256": sha(png)})
