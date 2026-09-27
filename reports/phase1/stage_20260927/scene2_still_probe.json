@@ -1,0 +1,40 @@
+{
+  "schema_version": "phase1_scene2_still_probe_v1",
+  "command": [
+    "ffmpeg",
+    "-nostdin",
+    "-v",
+    "error",
+    "-loop",
+    "1",
+    "-framerate",
+    "30",
+    "-t",
+    "1",
+    "-i",
+    "E:\\OpenClaw_VideoFactory_Runtime\\phase1_freertos_scene2_20260927\\02-isr-handoff-candidate.png",
+    "-vf",
+    "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=0xF4F6F8,fps=30,setsar=1,format=yuv420p,subtitles=filename='E\\:/project/worktrees/OpenClaw_VideoFactory/phase1-freertos-candidate002-20260927/reports/phase1/stage_20260927/scene2_one_cue.srt':charenc=UTF-8:force_style='FontName=Microsoft YaHei,FontSize=15,PrimaryColour=&H00151515,OutlineColour=&H00F7E4EA,BorderStyle=1,Outline=1,Shadow=0,Alignment=2,MarginL=18,MarginR=18,MarginV=48'",
+    "-frames:v",
+    "1",
+    "-pix_fmt",
+    "rgb24",
+    "E:\\OpenClaw_VideoFactory_Runtime\\phase1_freertos_scene2_20260927\\scene2_production_style_still.png"
+  ],
+  "exit_code": 0,
+  "stderr": "",
+  "source_candidate_sha256": "64c2e4d519463898b9800f5fbeeaea3c19f950956e4cb24b872089ae874cba1b",
+  "subtitle": "ISR 不等待，直接交棒",
+  "subtitle_style": {
+    "layout": "bottom_safe_band",
+    "font_name": "Microsoft YaHei",
+    "font_size": 56,
+    "margin_left": 90,
+    "margin_right": 90,
+    "margin_vertical": 180
+  },
+  "ass_force_style": "FontName=Microsoft YaHei,FontSize=15,PrimaryColour=&H00151515,OutlineColour=&H00F7E4EA,BorderStyle=1,Outline=1,Shadow=0,Alignment=2,MarginL=18,MarginR=18,MarginV=48",
+  "still_exists": true,
+  "still_sha256": "3ed00d371fd5a66d60693c27f9f0212d3b4f79ff0a5b2211a3b7e5c8361a7a6c",
+  "status": "rendered_for_visual_review"
+}
