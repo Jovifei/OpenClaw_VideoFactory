@@ -1,0 +1,21 @@
+{
+  "source_commit": "7585840",
+  "selector_change_only": true,
+  "subtitle_top_px": 815.625,
+  "scene4_old_bbox": {
+    "x": 205,
+    "y": 782,
+    "width": 896.9375,
+    "height": 41
+  },
+  "scene4_old_bottom_px": 944.5696068012752,
+  "scene5_old_bbox": {
+    "x": 110,
+    "y": 215,
+    "width": 1450,
+    "height": 570
+  },
+  "scene5_old_bottom_px": 900.9564293304994,
+  "scene4_red": true,
+  "scene5_red": true
+}

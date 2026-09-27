@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-FREERTOS-SCENE45-GEOMETRY-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested Phase 1 execution; Candidate004 visual review and independent audit found scene 4 subtitle/text and scene 5 subtitle/border collisions. Codex with ChatGPT prescribed a bounded geometry and still-only repair.",
+  "category": "FreeRTOS scene 4 and 5 source diagram geometry",
+  "scope": "Use production subtitle geometry and Chrome getBBox to reproduce both collisions, relayout only scene 4 and 5 SVG elements, rasterize those PNGs through installed Chrome, update only their registry hashes, and qualify production-style stills before any new full render.",
+  "allowed_paths": ["assets/freertos_mutex_plain_illustrations/04-short-isr-defer.svg", "assets/freertos_mutex_plain_illustrations/04-short-isr-defer.png", "assets/freertos_mutex_plain_illustrations/05-checklist.svg", "assets/freertos_mutex_plain_illustrations/05-checklist.png", "src/factory/assets/pink_pig/registry.json", "tests/video/", "reports/change_requests/PHASE1-FREERTOS-SCENE45-GEOMETRY-20260927.json", "reports/phase1/stage_20260927/", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_scene45_20260927/"],
+  "forbidden": ["wording or font-size changes", "other asset edits", "subtitle or renderer/global composition changes", "Candidate004 overwrite", "full Candidate005 render in this iteration", "human review", "Gate or Phase 2 side effects"],
+  "acceptance": ["Chrome-measured RED geometry contracts reproduce both Candidate004 collisions", "Same tests GREEN with unchanged wording/font sizes", "Only scene4/5 raster and registry hashes change", "Pillow and FFmpeg decode, exact dimensions and production-style stills pass", "Affected tests, diff check and independent read-only review pass"],
+  "status": "verified_still_only"
+}

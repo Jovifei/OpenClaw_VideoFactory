@@ -2828,6 +2828,16 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 - [x] Candidate003 job `job-0a58d7692fb3dd4008d3a6ed` from `d5c13a7` passed media decode/SQLite/package checks and fixed scene-2/3 midpoints, but the 0.4-second xfade overlays adjacent technical diagrams at transitions. Semantic visual status is `CHANGES_REQUIRED`; preserve `reports/phase1/stage_20260927/candidate003_review.json`. No Jovi approval, prereview, or Candidate004.
 - [ ] WP3: qualify one distinct live topic and obtain SHA-bound Jovi review.
 
+### PHASE1-FREERTOS-SCENE45-GEOMETRY-20260927
+
+- [x] Reproduce Candidate004 scene 4/5 subtitle collisions as Chrome bbox RED tests using the production subtitle profile and replay old Git blobs with selector-only temporary IDs.
+- [x] Move/reflow only scene 4/5 SVG geometry; preserve wording, typography and other assets.
+- [x] Rasterize only scene 4/5 PNGs; verify decode, dimensions and registry SHA.
+- [x] Check production-style stills with real scene subtitles, affected suites, diff check and independent review.
+- [x] Stop before any Candidate005 full render.
+
+Review: `PASS_BOUNDED_STILL_ONLY`. Candidate004 remains frozen `CHANGES_REQUIRED`. Chrome RED replay measured scene 4/5 bottoms at 944.57/900.96 px against subtitle top 815.63 px. GREEN bottoms are 789.63/786.18 px, with >20 px clearance. Scene 4/5 production-style stills, decode/hash checks, 450 affected tests and independent read-only review pass. See `reports/phase1/stage_20260927/scene45_geometry_evidence.json`. No full Candidate005 render or human review.
+
 ### PHASE1-FREERTOS-CANDIDATE004-20260927
 
 - [x] Bind commit, brief, asset hashes, technical_cut, 40s/1200-frame expectation and prior SRT/audio probes.
