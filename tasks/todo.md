@@ -2807,3 +2807,20 @@ Change Request: `reports/change_requests/PHASE1-LIFECYCLE-EVIDENCE-015.json`.
 - [ ] Bind these lifecycle files into the final `topic_only_v1` Acceptance Manifest after Jovi human review; do not run Formal Gate yet.
 
 Review: evidence is fresh local machine proof, not Phase 1 promotion. Feishu, Gateway, OAuth, Cron and publication remain untouched.
+
+## PHASE1-STAGE-PLAN-20260927 — current topic-only closure
+
+Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detailed plan: `tasks/plans/2026-09-27-phase1-topic-only-closure.md`.
+
+- [x] Reconcile current phase docs, prior Codex chat, Obsidian notes, open-source matrix, and remote C2C plan.
+- [x] WP0: inventory exact final candidates, lifecycle files, hashes, SQLite state, and review gaps.
+- [x] WP1: run fresh bounded Phase 1 regression and record each suite separately.
+- [ ] WP2: close Flash, FreeRTOS, and I2C machine packages; request SHA-bound Jovi reviews.
+- [ ] WP3: qualify one distinct live topic and obtain SHA-bound Jovi review.
+- [ ] WP4: validate and bind the existing four lifecycle evidence files.
+- [ ] WP5: build boundary audit and `topic_only_v1` manifest.
+- [ ] WP6: independent read-only evidence audit.
+- [ ] WP7: formal Gate once, only after prerequisites.
+- [ ] WP8: separate phase promotion and stop, only after Gate PASS.
+
+Review: `IN_PROGRESS`. WP0 inventory is `reports/phase1/stage_20260927/inventory.json`: I2C machine media is hash-verified but human review pending; Flash's current MP4 and SQLite artifact disagree on SHA; FreeRTOS has its brief and five assets but no final render; no live topic selected. Lifecycle SQLite states and final encoder MP4 are corroborated, while the original NVENC/CPU exit logs are unavailable. WP1 final baseline: 24/92/13/47/361/5 passed per suite, one reference skip and four deprecation warnings; Remotion typecheck/contracts passed. The initial interpreter/ignored-fixture failures and regeneration are retained in `reports/phase1/stage_20260927/regression_baseline.json`. This is not Phase 1 promotion. The 2026-09-05 runbook remains a procedural reference; current Gate source and 2026-09-06 evidence control the scope. The website-promo voice/copy complaint is a separate backlog.
