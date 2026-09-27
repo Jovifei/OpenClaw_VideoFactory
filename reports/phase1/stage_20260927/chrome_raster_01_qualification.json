@@ -1,0 +1,26 @@
+{
+  "schema_version": "phase1_chrome_raster_qualification_v1",
+  "date": "2026-09-27",
+  "source_svg": "assets/freertos_mutex_plain_illustrations/01-mutex-ownership.svg",
+  "source_svg_edited": false,
+  "renderer": "installed Google Chrome headless, local file URL, background networking disabled, installed system fonts",
+  "post_scale": "existing FFmpeg scale=836:471:flags=lanczos",
+  "raw_screenshot": {
+    "path": "E:/OpenClaw_VideoFactory_Runtime/phase1_chrome_raster_20260927/01-mutex-ownership-raw.png",
+    "dimensions": [1672, 941],
+    "sha256": "8d01aa97d8625261e5d500c27e981eafb1b25b18f913f19bf7e4543cd561248"
+  },
+  "candidate": {
+    "path": "E:/OpenClaw_VideoFactory_Runtime/phase1_chrome_raster_20260927/01-mutex-ownership-candidate.png",
+    "dimensions": [836, 471],
+    "sha256": "de1845711281c2841201bfb592299a67df2001ba57fbd29e2229b62141987775",
+    "pillow_full_decode": "passed",
+    "ffmpeg_one_frame_decode": "passed"
+  },
+  "visual_review": {
+    "status": "passed_for_raster_qualification",
+    "checks": ["Chinese heading and body text have real readable glyphs", "No square-glyph substitution", "No clipped labels", "Mutex/ISR geometry is intact", "Typography and colors are compatible with existing valid FreeRTOS PNGs 02 and 04"]
+  },
+  "status": "single_candidate_qualified",
+  "limits": ["This is a raster asset qualification, not Jovi approval of a final video.", "Registered PNG and registry SHA are not changed by this candidate record."]
+}

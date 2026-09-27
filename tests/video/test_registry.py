@@ -23,6 +23,7 @@ import subprocess
 
 import pytest
 from jsonschema import Draft202012Validator
+from PIL import Image
 
 from src.factory.assets.pink_pig.loader import (
     POSES,
@@ -151,6 +152,29 @@ class TestAssetFiles:
             if digest != asset.sha256:
                 mismatches.append(f"{asset.asset_id}: declared {asset.sha256}, measured {digest}")
         assert mismatches == []
+
+    def test_every_render_ready_png_fully_decodes(self, registry: PinkPigRegistry) -> None:
+        """A matching hash and readable PNG header do not prove valid pixels."""
+        failures = []
+        for asset in registry.render_ready_assets():
+            path = asset.absolute_path(ROOT)
+            if path.suffix.lower() != ".png":
+                continue
+            try:
+                with Image.open(path) as image:
+                    image.load()
+            except Exception as exc:
+                failures.append(f"{asset.asset_id}: Pillow {type(exc).__name__}: {exc}")
+            result = subprocess.run(
+                ["ffmpeg", "-nostdin", "-v", "error", "-i", str(path), "-frames:v", "1", "-f", "null", "-"],
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=10,
+            )
+            if result.returncode != 0:
+                failures.append(f"{asset.asset_id}: {result.stderr.strip()[-180:]}")
+        assert failures == []
 
     def test_paths_are_repo_relative_posix(self, registry: PinkPigRegistry) -> None:
         """§8.1 — repo-relative POSIX paths only; no drive letters, no ``..``."""

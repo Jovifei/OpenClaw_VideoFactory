@@ -1,0 +1,24 @@
+{
+  "id": "PHASE1-FREERTOS-CHROME-RASTER-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested Phase 1 execution and remediation; the installed CairoSVG converter failed the Chinese-text visual gate, and Codex with ChatGPT approved one installed-Chrome candidate qualification path.",
+  "category": "FreeRTOS Chinese-text rasterization qualification",
+  "scope": "Use installed Chrome and system fonts, with no network, to render unchanged 01-mutex-ownership.svg to a diagnostic PNG at the registry size. If and only if it passes visual, Pillow, FFmpeg and dimension checks, render the other two invalid SVGs and replace only their invalid PNGs plus exact registry hashes.",
+  "allowed_paths": [
+    "reports/change_requests/PHASE1-FREERTOS-CHROME-RASTER-20260927.json",
+    "reports/phase1/stage_20260927/",
+    "assets/freertos_mutex_plain_illustrations/01-mutex-ownership.png",
+    "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.png",
+    "assets/freertos_mutex_plain_illustrations/05-checklist.png",
+    "src/factory/assets/pink_pig/registry.json",
+    "tests/video/test_registry.py",
+    "dist/story_demo/",
+    "dist/story_demo_offline/",
+    "dist/pink_pig_story_demo.mp4",
+    "dist/pink_pig_story_demo_offline.mp4",
+    "tasks/todo.md"
+  ],
+  "forbidden": ["SVG edits", "valid 02/04 PNG changes", "new fonts/tools/packages", "network access", "full FreeRTOS render", "failed-job mutation", "renderer/timeout/Gate changes"],
+  "acceptance": ["First Chrome candidate shows readable Chinese with no clipping or material geometry drift", "All replacement candidates are 836x471 and pass Pillow and FFmpeg full-frame decode", "Valid assets remain byte-identical", "Only invalid PNG bytes and resulting registry SHA values change", "Registry decode regression and affected suites pass"],
+  "status": "verified_asset_repair_no_video_render"
+}
