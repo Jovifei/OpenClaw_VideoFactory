@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-FREERTOS-FRESH-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested execution of the current Phase 1 stage; the repaired FreeRTOS assets passed focused, affected-suite, visual, and independent review checks.",
+  "category": "One fresh FreeRTOS media qualification",
+  "scope": "Create exactly one new local-topic job from the unchanged canonical FreeRTOS brief at tested repair commit a7ff382 in this fresh E-drive worktree, then run it once through the normal pipeline.",
+  "allowed_paths": ["state/phase1_local/", "dist/phase1_local/", "reports/phase1/stage_20260927/", "reports/change_requests/PHASE1-FREERTOS-FRESH-20260927.json", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_stage_20260927/"],
+  "forbidden": ["retry/mutate failed job-adfcf733dcba1d081bb8feaf", "second full render", "asset or renderer edits", "timeout increase", "automatic human approval", "formal Gate", "Phase 2 side effects"],
+  "acceptance": ["Fresh worktree keeps the failed attempt directory untouched", "New job and idempotency key differ from failed attempt", "Input facts and three repaired registry hashes are bound to tested commit", "Job reaches PENDING_REVIEW only after quality checks", "MP4 H.264/AAC and complete decode", "Review package and SQLite artifacts match the final MP4 SHA", "Chinese text and all five visuals pass visual inspection"],
+  "status": "semantic_layout_changes_required"
+}
