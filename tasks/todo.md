@@ -2836,7 +2836,7 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 - [x] Review all five scenes, subtitle intervals, four hard cuts and final audio tail.
 - [x] Freeze exact candidate at `FREE_RTOS_MACHINE_REVIEW_READY`; no Jovi approval/prereview.
 
-Review: `FREE_RTOS_MACHINE_REVIEW_READY` for control job `job-2da2a3ae112bac2ceaacb5d7`, exact MP4 SHA `67f18d2b9169792b9e7996ccbcf8b644f23c79649b39f148f84722e2b4bac8fe`. SQLite 9-event path reached `PENDING_REVIEW`, registered and package hashes match, 40s/1200-frame H.264/AAC full decode and sampled semantic review pass. Independent read-only audit PASS for machine/visual evidence. Jovi's SHA-bound watch/listen and structured acceptance are still `PENDING`; no prereview, Gate or phase promotion. See `reports/phase1/stage_20260927/candidate005_review.json`. Candidate004 remains immutable `CHANGES_REQUIRED`.
+Review amendment: `CHANGES_REQUIRED_AUDIO_TRUNCATION` supersedes the earlier `FREE_RTOS_MACHINE_REVIEW_READY` label for control job `job-2da2a3ae112bac2ceaacb5d7`, exact MP4 SHA `67f18d2b9169792b9e7996ccbcf8b644f23c79649b39f148f84722e2b4bac8fe`. SQLite 9-event path reached `PENDING_REVIEW`, registered/package hashes, 40s/1200-frame H.264/AAC full decode and sampled visual checks pass, but all five raw TTS segments exceed their 8-second slots and `_align_audio` truncates them. The prior machine/visual audit did not check source narration completeness. Jovi's SHA-bound approval request was withdrawn; no prereview, Gate or phase promotion. See `reports/phase1/stage_20260927/candidate005_audio_amendment.json`. Candidate004 remains immutable `CHANGES_REQUIRED`.
 
 ### PHASE1-FREERTOS-SCENE45-GEOMETRY-20260927
 

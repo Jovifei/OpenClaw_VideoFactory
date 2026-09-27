@@ -1,0 +1,19 @@
+{
+  "schema_version": "phase1_candidate_audio_amendment_v1",
+  "date": "2026-09-27",
+  "candidate": "FreeRTOS Candidate005",
+  "control_job_id": "job-2da2a3ae112bac2ceaacb5d7",
+  "final_mp4_sha256": "67f18d2b9169792b9e7996ccbcf8b644f23c79649b39f148f84722e2b4bac8fe",
+  "prior_machine_visual_report": "reports/phase1/stage_20260927/candidate005_review.json",
+  "source_segments_seconds": [12.404898, 13.84458, 14.764082, 14.604444, 16.374104],
+  "assigned_scene_slots_seconds": [8.0, 8.0, 8.0, 8.0, 8.0],
+  "truncated_seconds_by_scene": [4.404898, 5.84458, 6.764082, 6.604444, 8.374104],
+  "mechanism": "The shared video_factory/pipeline/audio_planner.py _align_audio uses FFmpeg -t target_duration for overflowing TTS segments; all five source segments are longer than their 8-second slots. The padded WAVs and output video therefore omit source audio tails.",
+  "evidence_scope": "Raw seg_000..004.wav and padded_000..004.wav in the frozen Candidate005 snapshot were measured with ffprobe; no media or SQLite artifact was changed. Non-silent final 1.6 seconds of the already truncated video never proved narration completeness.",
+  "revised_status": "CHANGES_REQUIRED_AUDIO_TRUNCATION",
+  "previous_status_superseded": "FREE_RTOS_MACHINE_REVIEW_READY",
+  "human_review_request": "WITHDRAWN; Jovi was explicitly told to pause approval of this SHA.",
+  "prereview": "NOT_RUN",
+  "formal_gate": "NOT_RUN",
+  "next_step": "Obtain one cross-topic C2C plan for fail-closed TTS overflow and source-aligned narration before any new FreeRTOS or Flash candidate. Preserve this historical job/media/package and SQLite PENDING_REVIEW state as evidence."
+}
