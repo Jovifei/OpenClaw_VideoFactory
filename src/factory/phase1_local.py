@@ -324,9 +324,14 @@ def build_local_plan(
         job_id = f"phase1_ref_{hashlib.sha256(stable_key.encode('utf-8')).hexdigest()[:24]}"
     else:
         job_id = f"phase1_{topic_digest[:16]}"
+    # The local knowledge-video path shows complete technical diagrams.  Its
+    # cuts are explicit so unrelated legacy storyboards retain xfade.
+    selected_storyboard = dict(selection.storyboard)
+    selected_storyboard["globals"] = {**selected_storyboard["globals"], "transition_mode": "technical_cut"}
+    validate(selected_storyboard, "storyboard")
     asset_selection = {**selection.report, "job_id": job_id}
     validate(asset_selection, "asset_selection_report")
-    return {"job_id":job_id,"topic":topic,"topic_digest":topic_digest,"script":script,"storyboard":selection.storyboard,"asset_selection":asset_selection,"factual_brief":factual_brief.document,"input_mode":mode,"mascot_mode":mascot_mode,"reference_digest":brief_digest(brief) if mode == "local_reference" else None,"render_profile":render_profile}
+    return {"job_id":job_id,"topic":topic,"topic_digest":topic_digest,"script":script,"storyboard":selected_storyboard,"asset_selection":asset_selection,"factual_brief":factual_brief.document,"input_mode":mode,"mascot_mode":mascot_mode,"reference_digest":brief_digest(brief) if mode == "local_reference" else None,"render_profile":render_profile}
 
 
 __all__ = ["build_local_plan", "load_local_brief"]

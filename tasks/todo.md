@@ -2827,6 +2827,15 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 - [x] Scene-2 Chrome `getBBox()` regression measured old API label right edge 1018.2 beyond box edge 970 (RED). The exact wording/25px font now wraps into two lines with right edge 838.0 (GREEN); only scene-2 SVG/PNG/registry SHA changed. A production-style still shows box, arrow and subtitle separate; 150 focused tests pass. See `reports/phase1/stage_20260927/freertos_scene2_geometry_evidence.json`. No Candidate003 full render in this remediation.
 - [x] Candidate003 job `job-0a58d7692fb3dd4008d3a6ed` from `d5c13a7` passed media decode/SQLite/package checks and fixed scene-2/3 midpoints, but the 0.4-second xfade overlays adjacent technical diagrams at transitions. Semantic visual status is `CHANGES_REQUIRED`; preserve `reports/phase1/stage_20260927/candidate003_review.json`. No Jovi approval, prereview, or Candidate004.
 - [ ] WP3: qualify one distinct live topic and obtain SHA-bound Jovi review.
+
+### PHASE1-TECHNICAL-CUT-20260927
+
+- [x] RED: test explicit local technical-cut timeline, 40-second cues and no xfade while retaining legacy behavior.
+- [x] GREEN: thread the explicit mode through local storyboard, compiled timeline, subtitle generation and renderer.
+- [x] Prove all four cut boundaries with bounded probes and verify audio/SRT tail.
+- [x] Run affected regressions, diff check and independent read-only review; stop before Candidate004.
+
+Review: `PASS_BOUNDED_TECHNICAL_CUT_ONLY`. Candidate003 remains frozen `CHANGES_REQUIRED`. Four real-asset one-second probes each have 30 frames, and eight boundary frames were visually clean. The regenerated SRT ends at 40.0s; a 1.6s tail mux retained H.264/AAC and audible tail. Affected tests: 448 passed; four fixture-dependent modules were excluded because their ignored `dist/story_demo` artifacts are absent in this worktree. Independent read-only review PASS for this bounded repair. No Candidate004 or Jovi review yet; see `reports/phase1/stage_20260927/technical_cut_contract_review.json`.
 - [ ] WP4: validate and bind the existing four lifecycle evidence files.
 - [ ] WP5: build boundary audit and `topic_only_v1` manifest.
 - [ ] WP6: independent read-only evidence audit.

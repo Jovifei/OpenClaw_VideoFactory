@@ -28,11 +28,15 @@ def build_timeline(
     ]
 
 
-def rendered_duration_seconds(timeline: list[dict[str, object]], transition_seconds: float) -> float:
+def rendered_duration_seconds(timeline: list[dict[str, object]], transition_seconds: float, *, mode: str = "xfade") -> float:
     if not timeline:
         raise ValueError("timeline_empty")
+    if mode not in {"xfade", "technical_cut"}:
+        raise ValueError("transition_mode_invalid")
     if not 0 < transition_seconds < min(float(item["duration"]) for item in timeline):
         raise ValueError("transition_duration_invalid")
+    if mode == "technical_cut":
+        return round(sum(float(item["duration"]) for item in timeline), 3)
     return round(sum(float(item["duration"]) for item in timeline) - transition_seconds * (len(timeline) - 1), 3)
 
 

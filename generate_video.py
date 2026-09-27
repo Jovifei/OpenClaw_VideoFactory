@@ -787,6 +787,7 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
         subtitle_path=srt_path,
         output_path=output_path,
         transition_seconds=transition_sec,
+        transition_mode=str(tl_doc.get("transition_mode", "xfade")),
         audio_path=audio_plan.path,
         audio_loop=audio_plan.loop,
         repo_root=ROOT,

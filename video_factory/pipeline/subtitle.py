@@ -109,6 +109,8 @@ def build_srt_from_timeline(
         raise ValueError("timeline_empty")
 
     transition_seconds = float(timeline_doc.get("transition_seconds", 0.4))
+    if timeline_doc.get("transition_mode", "xfade") == "technical_cut":
+        transition_seconds = 0.0
     if not 0 <= transition_seconds < min(float(s["duration"]) for s in scenes):
         raise ValueError("subtitle_transition_duration_invalid")
 
@@ -239,6 +241,8 @@ class SubtitleLayoutEngine:
                 {"field": "timeline.scenes"},
             )
         transition = float(timeline_doc.get("transition_seconds", 0.4))
+        if timeline_doc.get("transition_mode", "xfade") == "technical_cut":
+            transition = 0.0
         max_chars = int(self.style.get("max_chars_per_line", self.DEFAULT_MAX_CHARS))
         max_lines = int(self.style.get("max_lines", self.DEFAULT_MAX_LINES))
         max_units = max_chars * max_lines

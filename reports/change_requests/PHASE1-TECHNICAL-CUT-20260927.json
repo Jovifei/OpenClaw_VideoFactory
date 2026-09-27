@@ -1,0 +1,11 @@
+{
+  "id": "PHASE1-TECHNICAL-CUT-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested execution of the remotely planned Phase 1 stage; Candidate003 revealed blended technical diagrams and a truncated non-silent 40-second narration tail. Codex with ChatGPT corrected the plan to a 40-second technical hard cut.",
+  "category": "Phase 1 technical timeline and transition contract",
+  "scope": "Introduce an explicit technical_cut mode only for the deterministic local Phase 1 path. Keep five complete scene windows, regenerate subtitles from the same timeline, and prove four boundaries and the 40-second audio tail before another candidate.",
+  "allowed_paths": ["src/factory/phase1_local.py", "generate_video.py", "video_factory/pipeline/timeline.py", "video_factory/pipeline/storyboard.py", "video_factory/pipeline/subtitle.py", "video_factory/pipeline/renderer.py", "schemas/video/storyboard.schema.json", "schemas/video/timeline.schema.json", "tests/video/", "tests/phase1_local/", "reports/phase1/stage_20260927/", "tasks/todo.md"],
+  "forbidden": ["legacy xfade behavior changes", "quality threshold reduction", "Candidate003 mutation", "full Candidate004 render in this iteration", "human review or phase promotion", "Phase 2 or Feishu side effects"],
+  "acceptance": ["RED then GREEN 40-second duration and no-xfade contract", "legacy xfade tests remain GREEN", "four bounded transition probes show single technical scene and no blank frame", "SRT and audio duration/tail bind to 40 seconds", "affected tests and independent read-only review pass"],
+  "status": "verified_bounded_only"
+}
