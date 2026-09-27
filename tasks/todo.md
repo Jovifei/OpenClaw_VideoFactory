@@ -2828,6 +2828,16 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 - [x] Candidate003 job `job-0a58d7692fb3dd4008d3a6ed` from `d5c13a7` passed media decode/SQLite/package checks and fixed scene-2/3 midpoints, but the 0.4-second xfade overlays adjacent technical diagrams at transitions. Semantic visual status is `CHANGES_REQUIRED`; preserve `reports/phase1/stage_20260927/candidate003_review.json`. No Jovi approval, prereview, or Candidate004.
 - [ ] WP3: qualify one distinct live topic and obtain SHA-bound Jovi review.
 
+### PHASE1-FLASH-CANDIDATE-20260927
+
+- [x] Bind a641482, fresh worktree, Flash brief, five asset hashes, 37.8s/1134-frame expectation and preflight audio/SRT.
+- [x] Call outer `phase1 create-topic` once, then `phase1 run` once for its returned ID.
+- [x] Verify real SQLite events, artifact/package hashes and media transport. Independent review found TTS completeness was not checked: all five source segments exceed their slots and were truncated.
+- [x] Sample all five scenes, four real cuts and final tail; independent visual review passes, audio completeness fails.
+- [x] Freeze exact candidate as `CHANGES_REQUIRED_AUDIO_TRUNCATION`; no Jovi approval/prereview.
+
+Review: `CHANGES_REQUIRED_AUDIO_TRUNCATION`, control job `job-3643de66b508bacc03474cbd`, MP4 SHA `bf7b37fc43209a0e3d2aa3c92e973358dbf3f0fd837f05fd85f01fd4ebf3a081`. SQLite, hashes, 37.8s/1134 frames and sampled visuals pass, but five raw TTS segments are cut to shorter scene slots by `_align_audio`; quality `passed` omitted this gate. Independent audit confirms. See `reports/phase1/stage_20260927/flash_candidate_review.json`. Prior historical Flash state and FreeRTOS files remain untouched.
+
 ### PHASE1-FLASH-GEOMETRY-20260927
 
 - [x] Replay old scene1/2/3/5 geometry through Chrome and record RED contracts.

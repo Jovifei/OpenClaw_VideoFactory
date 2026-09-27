@@ -1,0 +1,58 @@
+{
+  "schema_version": "phase1_flash_candidate_review_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FLASH-CANDIDATE-20260927",
+  "input_binding": "reports/phase1/stage_20260927/flash_candidate_inputs.json",
+  "source_commit": "a6414820e4c24ca7afca8d1f4264f7ee4acb9dd1",
+  "control_job_id": "job-3643de66b508bacc03474cbd",
+  "execution_count": {"create_topic": 1, "run": 1, "retry": 0},
+  "sqlite": {
+    "state": "PENDING_REVIEW",
+    "attempt": 0,
+    "event_count": 9,
+    "integrity_check": "ok",
+    "registered_artifact_hashes_match_files": true
+  },
+  "media": {
+    "path": "dist/phase1_local/phase1_d939208f4995f8d2/final_master.mp4",
+    "sha256": "bf7b37fc43209a0e3d2aa3c92e973358dbf3f0fd837f05fd85f01fd4ebf3a081",
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "profile": "1920x1080/30fps",
+    "duration_seconds": 37.8,
+    "decoded_video_frames": 1134,
+    "full_decode_exit_code": 0,
+    "last_srt_end_seconds": 37.8,
+    "last_1_6s_audio_mean_volume_db": -25.9,
+    "last_1_6s_audio_max_volume_db": -7.0
+  },
+  "review_package": {
+    "path": "dist/phase1_local/phase1_d939208f4995f8d2/review_package.json",
+    "sha256": "33d1b9d22517cc477e5ee1c7f6791fefdfc06a1e35fcd8edfeb71972bbd2a3cd",
+    "artifact_count": 6,
+    "all_internal_hashes_and_sizes_match": true,
+    "automated_quality_report": "passed_but_missing_audio_overflow_gate"
+  },
+  "semantic_visual_review": {
+    "status": "PASS_SAMPLED_VISUAL_ONLY",
+    "frames": [99, 197, 198, 318, 437, 438, 558, 677, 678, 798, 917, 918, 1026, 1086, 1120, 1133],
+    "four_hard_cuts": ["197/198", "437/438", "677/678", "917/918"],
+    "result": "Five technical scenes and all four cuts are visually clear at sampled frames; earlier source-layout repairs survive.",
+    "frame_root": "E:/OpenClaw_VideoFactory_Runtime/phase1_flash_candidate_20260927/frames"
+  },
+  "audio_overflow": {
+    "status": "CHANGES_REQUIRED",
+    "source_segments_seconds": [8.186848, 12.660272, 10.660726, 11.615238, 9.741088],
+    "assigned_scene_slots_seconds": [6.6, 8.0, 8.0, 8.0, 7.2],
+    "truncated_seconds_by_scene": [1.586848, 4.660272, 2.660726, 3.615238, 2.541088],
+    "mechanism": "video_factory/pipeline/audio_planner.py _align_audio uses FFmpeg -t target_duration whenever a source segment exceeds its scene slot. All five padded WAVs equal the shorter slots. End-of-track signal cannot prove full narration.",
+    "qualification": "Audio content completeness is unproven and raw TTS is demonstrably truncated; no human-ready status."
+  },
+  "snapshot": "E:/OpenClaw_VideoFactory_Runtime/phase1_flash_candidate_20260927/flash_single_outer_run",
+  "independent_read_only_review": "CHANGES_REQUIRED for all-five-segment audio truncation; machine transport/hash and sampled visual checks pass.",
+  "human_review": "NOT_REQUESTED",
+  "prereview": "NOT_RUN",
+  "formal_gate": "NOT_RUN",
+  "status": "CHANGES_REQUIRED_AUDIO_TRUNCATION",
+  "next_step": "Preserve this exact SQLite/media/package candidate; obtain C2C plan to fail closed on TTS overflow and align actual narration before any new full render."
+}
