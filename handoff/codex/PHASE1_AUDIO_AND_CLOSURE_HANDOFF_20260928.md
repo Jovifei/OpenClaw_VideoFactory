@@ -34,6 +34,8 @@ Implemented continuation commits:
 - `7045ca6` — record the bounded CAN outer-candidate change request.
 - `feb95e1` — record the single CAN candidate machine review and adjacent-frame audit.
 - `59bc37d` — update the candidate handoff and task ledger for remote review.
+- `b4d28d5` — record the remote iteration-27 acceptance change request.
+- `79eb0db` — record remote machine acceptance, provisional inventory refresh and I2C discovery.
 
 GitHub branch: `https://github.com/Jovifei/OpenClaw_VideoFactory/tree/codex/phase1-audio-closure-20260928`.
 
