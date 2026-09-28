@@ -1,0 +1,44 @@
+{
+  "id": "PHASE1-CAN-REMOTE-ACCEPTANCE-20260928",
+  "date": "2026-09-28",
+  "baseline_commit": "29b8031",
+  "authorization": "Remote GPT iteration 27 accepted CAN Candidate001 as LIVE_CAN_MACHINE_REVIEW_READY and prohibited a second candidate and Formal Gate.",
+  "scope": "Record remote machine-review acceptance, update the provisional inventory and handoff, and perform read-only I2C exact-SHA restoration discovery while CAN exact-SHA human review remains pending.",
+  "allowed_paths": [
+    "reports/phase1/stage_20260928/can_candidate001_remote_review.json",
+    "reports/phase1/stage_20260928/topic_only_v1_provisional_inventory.json",
+    "reports/phase1/stage_20260928/i2c_restoration_discovery.json",
+    "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
+    "tasks/todo.md",
+    "reports/change_requests/PHASE1-CAN-REMOTE-ACCEPTANCE-20260928.json"
+  ],
+  "forbidden": [
+    "rerender Candidate001",
+    "transcode or overwrite Candidate001",
+    "second CAN candidate",
+    "Formal Gate",
+    "I2C reconstruction",
+    "fresh I2C render",
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "model_download",
+    "publication",
+    "Owner-main mutation",
+    "historical evidence rewrite"
+  ],
+  "stop_if": [
+    "exact I2C SHA found without matching package/SQLite evidence",
+    "unexpected artifact mutation",
+    "private absolute path would enter tracked evidence"
+  ],
+  "remote_review": {
+    "iteration": 27,
+    "head_reviewed": "29b8031a2afda4bde746fa9864392262d847bc8a",
+    "result": "LIVE_CAN_MACHINE_REVIEW_READY_CONFIRMED",
+    "second_can_candidate": "NOT_AUTHORIZED",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "status": "authorized_pending_execution"
+}
