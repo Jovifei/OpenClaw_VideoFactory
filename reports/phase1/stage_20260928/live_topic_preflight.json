@@ -24,11 +24,11 @@
     "pink_pig.can_arbitration_checklist.v1"
   ],
   "asset_hashes": [
-    "9321562bd81a2dc582d904051a0a6a02700d8bbc5c2dcfeeeda5f36be39627b6",
-    "b46c30249e7a1dc5222f02ee8cd7dfd9789a940096cd374c120d19dbb9530158",
-    "c0b48d584b1e72244b32412d72fcd3da593a92a64a1177cd5a6d97113598b96f",
-    "a72bb1da476e56f0b442eea48aedd6e2fb9a343c4c226e80b32701f6c51017bf",
-    "6b8092f4c9c4b749017f011f2205aab411003f7dfc0e1d62456dc385f73a283b"
+    "07ddfbe6047f01b2b5a52d5bcd9d5f1ba9faf2068047e2e818e6cb16d054c3c1",
+    "3eaef4fb279cc66d9338848e88b52056939a7ac23cdf7e73360196221301284f",
+    "2cd7b0e184d7c124cd14746f860d6caa53379a040cc9380ee671b4ded69ad798",
+    "e60315f6f98fd5d60945139622d1cac59a72be842869a3fc9a466b72fb244bf3",
+    "ad730126a29bfc0a0bac4013522647b43fd93e3434bb5e57e952705e36ae42d7"
   ],
   "rewrite_count": 0,
   "final_duration_seconds": 51.033,
@@ -77,7 +77,7 @@
   "audio_relative_path": "audio.wav",
   "audio_sha256": "fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b",
   "visual_asset_decode": "PASS",
-  "visual_asset_content_safe_area": "PASS",
+  "visual_asset_content_safe_area": "FAIL",
   "visual_asset_checks": [
     {
       "path": "assets/can_arbitration_illustrations/01-dominant-recessive.png",
@@ -87,10 +87,10 @@
         941
       ],
       "content_bbox": [
-        10,
+        9,
         0,
-        1361,
-        550
+        1360,
+        535
       ],
       "safe_area": true
     },
@@ -102,12 +102,12 @@
         941
       ],
       "content_bbox": [
-        10,
+        9,
         0,
-        1361,
-        570
+        1360,
+        591
       ],
-      "safe_area": true
+      "safe_area": false
     },
     {
       "path": "assets/can_arbitration_illustrations/03-id-compare.png",
@@ -117,10 +117,10 @@
         941
       ],
       "content_bbox": [
-        10,
+        9,
         0,
         1108,
-        563
+        558
       ],
       "safe_area": true
     },
@@ -132,10 +132,10 @@
         941
       ],
       "content_bbox": [
-        10,
+        9,
         0,
-        1361,
-        562
+        1360,
+        571
       ],
       "safe_area": true
     },
@@ -147,10 +147,10 @@
         941
       ],
       "content_bbox": [
-        8,
+        7,
         0,
         1176,
-        563
+        558
       ],
       "safe_area": true
     }

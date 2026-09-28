@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+<rect width="1672" height="941" fill="#F4F6F8"/>
+<rect x="55" y="45" width="1562" height="851" rx="28" fill="none" stroke="#16324F" stroke-width="4"/>
+<text x="95" y="120" font-family="Arial" font-size="52" font-weight="700" fill="#16324F">CAN BUS STATES</text>
+<text x="98" y="175" font-family="Arial" font-size="28" fill="#5C677D">Dominant overwrites recessive on the shared bus</text>
+
+<text x="110" y="285" font-family="Arial" font-size="38" fill="#2D6CDF">Node A sends 1</text>
+<text x="110" y="505" font-family="Arial" font-size="38" fill="#D95D39">Node B sends 0</text>
+<line x1="420" y1="320" x2="1450" y2="320" stroke="#2D6CDF" stroke-width="12"/>
+<line x1="420" y1="540" x2="1450" y2="540" stroke="#D95D39" stroke-width="12"/>
+<text x="760" y="270" font-family="Arial" font-size="28" fill="#2D6CDF">RECESSIVE</text>
+<text x="760" y="490" font-family="Arial" font-size="28" fill="#D95D39">DOMINANT</text>
+<line x1="420" y1="640" x2="1450" y2="640" stroke="#16324F" stroke-width="20"/>
+<text x="720" y="705" font-family="Arial" font-size="38" fill="#16324F">BUS = DOMINANT 0</text>
+</svg>
