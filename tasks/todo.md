@@ -2958,11 +2958,12 @@ Review: `LOCAL_EVIDENCE_REFRESHED_REMOTE_REVIEW_PENDING`. No MP4 render, human g
 
 ## PHASE1-CAN-OUTER-CANDIDATE001-20260928 — remote WP-H2 authorization
 
-- [ ] Create one new CAN topic control job with a unique idempotency key from reviewed `5ceeb8e` lineage.
-- [ ] Run `phase1 run --job-id <new-id>` exactly once through the authentic local production path; do not reuse preflight WAV, retry, resume, or create a second candidate.
-- [ ] Verify genuine SQLite `PENDING_REVIEW`, attempt 0, event history, final master/review package and artifact SHA/size bindings.
-- [ ] Verify fresh source-aligned audio integrity, 25–60s duration, no rewrite, complete PCM prefix/silence-tail evidence, and audio/SRT/timeline endpoint agreement.
-- [ ] Verify H.264/AAC decode, declared profile/frame count, four real hard-cut frame-pair boundaries, and five-scene semantic/geometry review.
-- [ ] Write `reports/phase1/stage_20260928/can_candidate001_review.json`, update the current handoff with the exact result, push evidence-only changes, and return for remote independent review.
+- [x] Create one new CAN topic control job with a unique idempotency key from reviewed `5ceeb8e` lineage: `job-eb356764914b0d9f5ccb94ff`.
+- [x] Run `phase1 run --job-id job-eb356764914b0d9f5ccb94ff` exactly once through the authentic local production path; no preflight WAV reuse, retry, resume, or second candidate.
+- [x] Verify genuine SQLite `PENDING_REVIEW`, attempt 0, nine-event history, final master/review package and artifact SHA/size bindings.
+- [x] Verify fresh source-aligned audio integrity, 25–60s duration, no rewrite, complete PCM prefix/silence-tail evidence, and audio/SRT/timeline endpoint agreement.
+- [x] Verify H.264/AAC decode, 1920×1080/30fps/1531 frames, four real hard-cut frame-pair boundaries, and five-scene semantic/geometry review.
+- [x] Write `reports/phase1/stage_20260928/can_candidate001_review.json` with `LIVE_CAN_MACHINE_REVIEW_READY` and update the current handoff with the exact result.
+- [ ] Push the candidate evidence/handoff commit and return the exact candidate SHA to remote GPT for independent review.
 
-Review: `REMOTE_AUTHORIZED_ONE_CANDIDATE_PENDING`. Outer CAN render authorization is limited to this single run; no Phase 1 Gate, Phase 2, Cron, Feishu or publication action is included.
+Review: `LIVE_CAN_MACHINE_REVIEW_READY_REMOTE_REVIEW_PENDING`. The one-candidate authorization is consumed; no Phase 1 Gate, Phase 2, Cron, Feishu or publication action was performed.

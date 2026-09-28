@@ -30,6 +30,9 @@ Implemented continuation commits:
 - `80aa85b` — complete the five-scene CAN visual preflight still set.
 - `420dd83` — sanitize parallel closure lifecycle paths.
 - `9f95d3f` — compute CAN visual/transition evidence and remove the remaining I2C private path.
+- `386b3c0` — record the remote WP-H2 one-candidate authorization and local task boundary.
+- `7045ca6` — record the bounded CAN outer-candidate change request.
+- `feb95e1` — record the single CAN candidate machine review and adjacent-frame audit.
 
 GitHub branch: `https://github.com/Jovifei/OpenClaw_VideoFactory/tree/codex/phase1-audio-closure-20260928`.
 
@@ -212,32 +215,31 @@ promote Phase 1 and stop. FAIL remains evidence and starts remediation.
 
 ## NEXT_EXPECTED_STEP
 
-The WP-A/WP-B/WP-C/WP-E package is complete and independently accepted after the
-lineage seal. The parallel closure audit has now produced:
+Remote iteration 26 independently accepted the WP-H1B preflight at `5ceeb8e` and
+authorized exactly one fresh outer CAN candidate. The local run used descendant
+`7045ca6` and one unique control job:
 
-- WP-G1: `I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION`; exact control
-  job/attempt/SHA are preserved in `i2c_closure_audit.json`, and no rerender was
-  started;
-- WP-G2: `PASS` for all four lifecycle files with current SHA/schema checks;
-- WP-G3: `PASS_PRELIGHT`, not final Gate evidence;
-- WP-G4: CAN live topic `LIVE_TOPIC_PREFLIGHT_READY` after no-render source/audio preflight;
-- WP-G5: `PROVISIONAL_UNRESOLVED_NOT_GATE_READY`.
+- control job: `job-eb356764914b0d9f5ccb94ff`;
+- video job: `phase1_91c2a7cd2b692884`;
+- SQLite state: `PENDING_REVIEW`, attempt `0`, nine normal events, no retry/resume;
+- final MP4: `e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af`;
+- review package: `cef8dc5ab243f468c7aee69b0b628f9aba25d3ca85bb7d7ba5222b1ebbd0248f`;
+- media: 51.033008 s, 1920×1080, 30 fps, 1531 frames, H.264/AAC, full decode `PASS`;
+- source-aligned narration: zero rewrite, objective PCM integrity `PASS`, audio/SRT/timeline endpoint agreement;
+- transitions: four real adjacent rendered frame pairs, technical-cut/concat path, no xfade, no double exposure or blank frame;
+- whole-video semantic inspection: five scene midpoints plus all four cut boundaries `PASS`;
+- final machine status: `LIVE_CAN_MACHINE_REVIEW_READY`.
 
-The I2C closure report now exposes only `runtime_locator_id` plus a repo-independent
-relative path; it does not publish the private runtime root. The parallel audit
-preserves a ready CAN preflight instead of replacing it with a stale blocked report.
+The reproducible candidate audit is `scripts/phase1_can_candidate_audit.py`, with
+report `reports/phase1/stage_20260928/can_candidate001_review.json`. The report is
+evidence-only and keeps runtime media outside Git. It does not grant prereview or
+human approval: Jovi must review the exact MP4 SHA before prereview.
 
-Reports are under `reports/phase1/stage_20260928/`, and the reproducible runner is
-`scripts/phase1_parallel_closure_audit.py`. G1 through G5 are complete. The distinct
-live topic is now CAN arbitration: `CAN 总线仲裁为什么不会破坏高优先级报文？`.
-Its source-bound factual fixture, five deterministic diagrams and no-render
-source-aligned preflight are ready: job digest `91c2a7cd2b692884df3a7389e62c6ff4f940ddfc722b9c2edded2ba1dba17b09`,
-audio duration `51.033 s`, audio SHA
-`fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b`, objective
-integrity `PASS`, MP4/render `NOT_RUN`. The next bounded step is remote review of
-this CAN preflight and, only after that review plus the required human/product gates,
-authorization for one outer CAN candidate. Restore the I2C runtime package or obtain
-a separately authorized requalification; the missing I2C runtime is not permission
-to rerender. Human audio-quality decisions remain separate unresolved product gates;
-no fresh Flash/FreeRTOS video is authorized until the matching exact v7 SHA receives
-`AUDIO_APPROVED`.
+The next action is remote GPT independent review of candidate 001 and this handoff.
+If accepted, the remote plan will define the SHA-bound human review/prereview step
+or the next repair. If any defect is found, freeze this candidate as
+`CHANGES_REQUIRED`; do not create a second CAN candidate without a new remote
+authorization. I2C remains `I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION`;
+Flash and FreeRTOS remain blocked until their exact v7 audio SHAs receive
+`AUDIO_APPROVED`; lifecycle remains revalidated `PASS`; Formal Gate, Phase 2, Cron,
+Feishu and publication remain prohibited.

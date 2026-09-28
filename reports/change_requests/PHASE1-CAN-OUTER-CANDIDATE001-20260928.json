@@ -39,6 +39,7 @@
     "semantic_visual_failure",
     "unexpected_output_overwrite"
   ],
-  "status": "authorized_one_candidate_pending_execution",
-  "remote_review": "iteration_26_HEAD_REVIEWED_5ceeb8e_RESULT_CAN_PREFLIGHT_ACCEPTED"
+  "status": "executed_candidate001_pending_remote_review",
+  "remote_review": "iteration_26_HEAD_REVIEWED_5ceeb8e_RESULT_CAN_PREFLIGHT_ACCEPTED",
+  "evidence": "reports/phase1/stage_20260928/can_candidate001_review.json"
 }
