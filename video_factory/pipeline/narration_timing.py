@@ -218,6 +218,7 @@ def plan_source_aligned_narration(
             "srt_sha256": hashlib.sha256(subtitle_path.read_bytes()).hexdigest(),
         }
         pass_record["aligned_audio"] = aligned
+        pass_record["objective_audio_integrity"] = aligned["integrity"]
         pass_record["scene_boundary_markers"] = [
             {
                 "scene_id": scene["scene_id"],
@@ -236,5 +237,6 @@ def plan_source_aligned_narration(
             "subtitle_path": subtitle_path,
             "rewrite_count": rewrite_count,
             "passes": passes,
+            "objective_audio_integrity": aligned["integrity"],
         }
     raise AssertionError("source_aligned_narration_pass_exhausted")

@@ -2893,3 +2893,27 @@ Review: `PASS_BOUNDED_TECHNICAL_CUT_ONLY`. Candidate003 remains frozen `CHANGES_
 - [ ] WP8: separate phase promotion and stop, only after Gate PASS.
 
 Review: `IN_PROGRESS`. WP0 inventory is `reports/phase1/stage_20260927/inventory.json`: I2C machine media is hash-verified but human review pending; Flash's current MP4 and SQLite artifact disagree on SHA; FreeRTOS has its brief and five assets but no final render; no live topic selected. Lifecycle SQLite states and final encoder MP4 are corroborated, while the original NVENC/CPU exit logs are unavailable. WP1 final baseline: 24/92/13/47/361/5 passed per suite, one reference skip and four deprecation warnings; Remotion typecheck/contracts passed. The initial interpreter/ignored-fixture failures and regeneration are retained in `reports/phase1/stage_20260927/regression_baseline.json`. This is not Phase 1 promotion. The 2026-09-05 runbook remains a procedural reference; current Gate source and 2026-09-06 evidence control the scope. The website-promo voice/copy complaint is a separate backlog.
+
+## PHASE1-AUDIO-CLOSURE-20260928 — remote route audit continuation
+
+Remote GPT iteration 21 reviewed the `4136265` lineage and confirmed the current
+source-aligned TTS route. It rejected WhisperX/MFA/Piper/new TTS for Phase 1,
+narrowed the human gate to subjective quality, and authorized local WP-A/WP-B/WP-E
+while the exact v7 audio decisions remain pending.
+
+- [x] Receive and record the remote route audit and long-stage handoff.
+- [x] Create continuation branch `codex/phase1-audio-closure-20260928` from `4136265`.
+- [x] Synchronize canonical status/architecture/runbook documents and link the 2026-09-28 handoff.
+- [x] Add objective PCM raw-prefix/silence-tail/segment-order/endpoint contract and RED tests.
+- [x] Audit retained v7 Flash/FreeRTOS audio without regeneration; both pass objective integrity and retain human quality as pending.
+- [x] Run optional cached faster-whisper probe; record `NOT_RELIABLE_ENOUGH` as secondary warning only, with no download and no Gate authority.
+- [x] Add no-render outer-path integration regression and persist objective evidence in `run_report.narration_alignment`.
+- [x] Create `handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md`.
+- [ ] Run bounded affected suites and independent local read-only review.
+- [ ] Commit and push bounded WP-A/WP-B/WP-E evidence; do not render a new video in this package.
+- [ ] Return commit, tests, evidence and handoff to remote GPT for independent review and next plan.
+
+Review: `IN_PROGRESS`. Remote technical-route review is accepted as the current
+plan. Objective v7 integrity audit is `PASS` for both topics; human audio-quality
+decisions remain unresolved product gates. No full video render is authorized by
+this package.

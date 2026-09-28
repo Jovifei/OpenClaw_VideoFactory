@@ -10,6 +10,11 @@ Updated: 2026-09-05
 > `legacy_topic_reference_v1`. Jianying is optional/manual; export and
 > publication remain disabled.
 
+> **Current closure handoff (2026-09-28):** read
+> `handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md` after this
+> file. It records the source-aligned narration contract, objective audio
+> integrity evidence, current topic-only scope, and the ordered closure work.
+
 ## 0. 当前唯一产品顺序
 
 ```text
@@ -78,7 +83,9 @@ verified factual brief
 → script
 → storyboard
 → approved assets / deterministic technical visuals
-→ TTS
+→ source-bound script → measured local TTS (overflow fails closed)
+→ one bounded fact-preserving rewrite when the duration budget requires it
+→ complete-segment padding only
 → subtitle/timing/speech cues
 → Remotion/FFmpeg
 → final local MP4
@@ -141,22 +148,21 @@ read-only ingest + SHA-256
 
 这些是成熟实现增量，但整个 Phase 1 仍未通过最终 Gate。
 
-## 6. 当前真正缺口
+## 6. 当前真正缺口（2026-09-28 closure track）
 
-当前任务优先级：
+历史报告中“FreeRTOS 尚未渲染”“必须重新生成 lifecycle evidence”以及
+“先回到 Modbus/reference 实验”的描述已被当前闭环交接 superseded；不要据此
+重跑已完成的工作。当前顺序是：
 
-1. 建立**当前统一 bounded regression 基线**；不要混用不同日期的测试计数。
-2. 完成 FreeRTOS 与当前 schema 同等级的 render/review/prereview。
-3. 重新对齐 Modbus / Flash / FreeRTOS 三个固定主题的统一证据格式。
-4. 生成 fresh machine evidence：cancel / failed retry / restart recovery / encoder fallback。
-5. 选定一个**唯一**最新 reference reconstruction candidate，禁止 v5/v6/v8 evidence 混用。
-6. Jovi 实际看/听该 reference candidate，并提交 human originality review。
-7. 如 final manifest 需要严格 `local_reference` fixture，则使用 Jovi 授权本地 MP4 + rights 走标准 CLI；synthetic reference 不算人工原创性证据。
-8. Acceptance Manifest + Boundary Audit。
-9. Independent read-only audit。
-10. Formal Phase 1 Gate only once。
+1. 同步 canonical 文档与当前代码/Gate/evidence；
+2. 为源对齐 TTS 增加原始 PCM 前缀、静音尾、段序和最终端点的机器合同；
+3. 以同一 shared planner 完成外层生产路径的无渲染集成审计；
+4. 保留 Jovi 的独立音频质量听审门：只判断发音、可懂度、节奏、停顿和工程含义；
+5. 对每个获得 `AUDIO_APPROVED` 的主题只执行一个新的外层候选；
+6. 再做 MP4 SHA 绑定的人审、Prereview、I2C/live topic、manifest、独立审计和一次 Gate。
 
-Gate 通过后才更新 Phase 1 `passed`，并停止当前任务等待 Phase 2 授权。
+生命周期证据已完成，后续只做最终 hash/schema revalidation 和 manifest 绑定；
+reference reconstruction 在本 `topic_only_v1` 收口中保持可选。Phase 2、Cron、飞书和发布继续禁止。
 
 ## 7. Render profile，不要再争论全局横竖屏
 

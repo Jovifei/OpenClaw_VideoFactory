@@ -208,6 +208,23 @@ def _validate_evidence_documents(
             raise _fail("phase1_review_narration_incomplete", "Narration segment duration evidence is invalid.", f"run_report.audio_plan.segments.{index}") from exc
         if bool(segment.get("overflow")) or actual > allocated + 0.01:
             raise _fail("phase1_review_narration_incomplete", "Narration segment was longer than its allocated scene and cannot be accepted.", f"run_report.audio_plan.segments.{index}")
+    alignment = run_report.get("narration_alignment")
+    if isinstance(alignment, dict) and alignment.get("mode") == "source_aligned_measured_tts":
+        objective = alignment.get("objective_audio_integrity")
+        if not isinstance(objective, dict) or objective.get("status") != "passed":
+            raise _fail(
+                "phase1_review_narration_incomplete",
+                "Source-aligned narration is missing objective audio-integrity evidence.",
+                "run_report.narration_alignment.objective_audio_integrity",
+            )
+        for index, segment in enumerate(segments, start=1):
+            integrity = segment.get("audio_integrity")
+            if not isinstance(integrity, dict) or integrity.get("status") != "passed":
+                raise _fail(
+                    "phase1_review_narration_incomplete",
+                    "A source-aligned narration segment is missing objective audio-integrity evidence.",
+                    f"run_report.audio_plan.segments.{index}.audio_integrity",
+                )
     subtitle = render_report.get("subtitle")
     if not isinstance(subtitle, dict) or subtitle.get("present") is not True or subtitle.get("mode") != "burned_in":
         raise _fail("phase1_review_subtitle_invalid", "Render report does not confirm burned-in subtitles.", "render_report.subtitle")

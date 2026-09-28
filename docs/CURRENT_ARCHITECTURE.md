@@ -1,6 +1,6 @@
 # OpenClaw VideoFactory — Current Architecture
 
-Updated: 2026-09-05
+Updated: 2026-09-28
 
 本文件是当前 Phase 1 技术架构的权威说明。它吸收了 2026-08 至今的 Pink Pig、AI Director、Composition、reference-video、Remotion、Jianying 和 acceptance/gate 迭代，但不把任何单次实验当成全局默认。
 
@@ -22,7 +22,7 @@ Phase 1 的目标不是“写出一个能把图片拼成 MP4 的 Demo”，而�
 - Storyboard；
 - Asset Selection / Manifest；
 - Timeline；
-- 本地 TTS/Voice evidence；
+- source-bound 本地 TTS evidence（测量、overflow fail-closed、完整对齐段）；
 - subtitle / timing evidence；
 - Render Report；
 - H.264/AAC MP4；
@@ -98,6 +98,26 @@ Phase 1 **不依赖**飞书、OpenClaw Daily Runtime、Cron、自动选题或自
                      Acceptance Manifest / Gate
 ```
 
+### 2.1 Source-aligned narration contract
+
+源对齐旁白是当前 Phase 1 的唯一旁白主线：
+
+```text
+source-bound script
+→ local TTS raw segments + SHA/duration
+→ overflow fail-closed
+→ at most one deterministic fact-preserving fixture rewrite
+→ measured frame-aligned scene allocation
+→ complete raw segment + silence padding only
+→ SRT and renderer inputs from the same allocation
+```
+
+`align_complete_segments()` 必须用统一 PCM 表示证明每个对齐段以完整原始
+波形为前缀，后续只有静音填充；还必须证明段序、拼接端点和 review-package
+证据一致。机器合同负责波形完整性，Jovi 的音频质量门只负责发音、可懂度、
+节奏、停顿、工程含义和 TTS 瑕疵。WhisperX、MFA、Piper 及新的模型下载不属于
+当前 Phase 1 修复路线。
+
 ## 3. 状态与生命周期
 
 `src/factory/db.py` 是当前本地控制平面的核心，而不是未来待实现项。数据库已经覆盖：
@@ -156,7 +176,9 @@ Topic 模式当前可以通过 `phase1_local_brief` 与 verified factual brief �
 
 - Modbus RTU — 已形成稳定本地 baseline；
 - Flash/看门狗 — 已有 factual brief、两套技术卡片、无 mascot 修正版、本地成片/剪映实验；
-- FreeRTOS — brief 已进入仓库，但仍需达到与前两者同等级的 render/review/prereview evidence。
+- FreeRTOS — brief、技术资产修复和历史候选已保留；历史全量候选因共享 TTS
+  截断合同被永久标记 `CHANGES_REQUIRED_AUDIO_TRUNCATION`，必须在该主题的
+  音频质量批准后重新执行一个源对齐外层候选。
 
 ## 5. Reference 模式
 
@@ -279,6 +301,9 @@ FFmpeg/ffprobe 继续是最终媒体基础设施：
 
 - narration 是单一事实文本来源；
 - 音频实际时长必须反馈到 scene/timing；
+- TTS overflow 必须 fail closed；不得用 `-t` 或 `atempo` 静默缩短旁白；
+- raw/aligned PCM 前缀、静音尾、段序和最终端点必须有机器证据；
+- 机器完整性证据与 Jovi 的主观音频质量听审分开；
 - 动画重点应优先绑定真实 speech cue，而非固定百分比或 modulo 动画；
 - subtitle/caption 不得遮挡 content；
 - Jianying 路线只有一个 native subtitle track 和一个可听 VoiceOver track；
@@ -360,18 +385,16 @@ Renderer output ─┤
 
 必须补齐：
 
-1. FreeRTOS render/review/prereview；
-2. 三个固定主题统一 evidence；
-3. cancel；
-4. failed retry；
-5. restart recovery；
-6. encoder fallback；
-7. 最新 reference candidate 的 Jovi 人工音画/原创性审阅；
-8. 必要时一条明确授权本地 reference fixture 的正式 Gate evidence；
-9. Acceptance Manifest；
-10. Boundary Audit；
-11. bounded full Phase 1 regression；
-12. independent read-only audit；
-13. one-shot Phase 1 Gate。
+1. canonical 文档与当前 source-aligned audio contract 同步；
+2. raw-to-aligned PCM integrity RED/GREEN evidence；
+3. 外层 `create-topic → run` 的无渲染 audio-contract integration evidence；
+4. Flash、FreeRTOS 各自的 v7 音频质量人审和一个新的机器候选；
+5. I2C 与 distinct live topic 的同合同 evidence；
+6. 已完成 lifecycle evidence 的最终 hash/schema revalidation；
+7. Acceptance Manifest；
+8. Boundary Audit；
+9. bounded full Phase 1 regression；
+10. independent read-only audit；
+11. one-shot Phase 1 Gate。
 
 只有这些完成，才允许将 Phase 1 标记为 `passed` 并进入飞书 Phase 2。

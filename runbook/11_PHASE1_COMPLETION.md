@@ -1,6 +1,6 @@
 # 11 — Phase 1 本地视频工厂正式收口 Runbook
 
-Updated: 2026-09-05
+Updated: 2026-09-28
 
 ## 目的
 
@@ -14,6 +14,10 @@ Updated: 2026-09-05
 不重复的 live topic。它不删除 `legacy_topic_reference_v1`；未在 topic-only
 manifest 中提供 reference job 时可省略，但任何实际提供的 reference job 仍须
 完整验证。所有最终 Jianying 审阅、导出和抖音发布仅由 Jovi 人工完成。
+
+当前闭环交接见 `handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md`。
+本 Runbook 的历史候选描述必须服从该交接、当前代码和真实 evidence；历史
+Flash/FreeRTOS 截断候选不得重新进入验收。
 
 ---
 
@@ -115,20 +119,19 @@ $py = 'C:\Users\Admin\.workbuddy\binaries\python\envs\default\Scripts\python.exe
 
 - `examples/phase1_local_freertos/brief.json`。
 
-仍需完成：
+已有 brief、技术资产修复、历史外层候选和源对齐音频 v7 证据。历史候选因
+共享 TTS 截断合同被永久标记 `CHANGES_REQUIRED_AUDIO_TRUNCATION`，不能复用。
+当前缺口是：该主题的 v7 音频质量人审通过后，重新执行**一个**源对齐外层
+`create-topic → run`，完成机器审查、Jovi 最终 MP4 SHA 人审和 Prereview。
 
-- technical deterministic visuals；
-- script/storyboard/asset selection；
-- local narration；
-- subtitle/timing；
-- final MP4；
-- quality report；
-- review package；
-- SQLite `PENDING_REVIEW`；
-- Jovi Human Review；
-- Prereview。
+---
 
-这应是当前最明确的代码/执行缺口。
+## 5.1 Source-aligned audio contract
+
+旁白完整性必须由机器证明：原始 TTS PCM 是对齐段的完整前缀，对齐段尾部只能
+是静音填充，段序和最终端点必须与 timeline/SRT 一致。TTS overflow 直接失败，
+不能依赖 `-t`、`atempo` 或 BGM fallback。Jovi 的音频门只审主观质量，不代替
+机器完整性证据；因此机器工作可以与听审并行。
 
 ---
 
@@ -151,14 +154,16 @@ Gate/Review 必须从当前 Job 的 profile 判断：
 
 ## 6. Lifecycle Evidence
 
-必须用机器可解析 JSON 形成四类 fresh evidence：
+2026-09-06 的四类 lifecycle evidence 已完成并已通过 schema/hash 校验。当前
+只在最终闭环中做 revalidation 和 manifest 绑定；除非发现损坏或不兼容，不要
+重新执行一套“fresh lifecycle”任务：
 
 1. `cancel`；
 2. `retry`（先真实失败，再 retry，证明从正确 last completed state 恢复）；
 3. `restart_recovery`（进程终止/新进程继续读 SQLite 和 Artifact 状态）；
 4. `encoder_fallback`（NVENC → CPU 或明确的 CPU-only fallback contract）。
 
-每份记录：
+每份记录仍必须包含：
 
 - schema/version；
 - job_id；
@@ -172,7 +177,7 @@ Gate/Review 必须从当前 Job 的 profile 判断：
 
 ---
 
-## 7. Reference Candidate 收口
+## 7. Reference Candidate 收口（topic_only_v1 可选）
 
 ### 已有成果
 
@@ -188,7 +193,7 @@ Gate/Review 必须从当前 Job 的 profile 判断：
 - post-render checks；
 - Jianying visible/manual-review branch。
 
-### 当前必须做
+### 只有 manifest 明确包含 reference job 时才执行
 
 1. 确定最新唯一候选（不要混用 v5/v6/v8 报告）；
 2. 将它映射到当前 standard Review Package / Human Review contract；
@@ -276,7 +281,7 @@ Manifest 只引用**最终选择的证据**，不把整个 `reports/` 历史目�
 - Modbus Prereview；
 - Flash/Watchdog Prereview；
 - FreeRTOS Prereview；
-- Reference Prereview；
+- Reference Prereview（仅当 topic_only_v1 manifest 明确提供 reference job 时）；
 - cancel evidence；
 - retry evidence；
 - restart recovery evidence；

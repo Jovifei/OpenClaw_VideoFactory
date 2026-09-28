@@ -35,6 +35,64 @@ def test_plan_tts_rejects_overflow_before_alignment(monkeypatch: pytest.MonkeyPa
     assert not (tmp_path / "audio.wav").exists()
 
 
+def test_objective_audio_integrity_accepts_complete_prefix_and_silence_tail(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    raw = tmp_path / "raw.wav"
+    aligned = tmp_path / "aligned.wav"
+    raw.write_bytes(b"raw-container")
+    aligned.write_bytes(b"aligned-container")
+    raw_pcm = b"\x01\x02\x03\x04"
+    aligned_pcm = raw_pcm + b"\x00\x00\x00\x00"
+    monkeypatch.setattr(audio_planner, "_probe_pcm_layout", lambda _path: (16000, 1))
+    monkeypatch.setattr(
+        audio_planner,
+        "_decode_pcm_for_integrity",
+        lambda path, *, sample_rate, channels: raw_pcm if path == raw else aligned_pcm,
+    )
+
+    evidence, layout, decoded = audio_planner._verify_complete_aligned_segment(
+        raw, aligned, scene_id="s01"
+    )
+
+    assert evidence["status"] == "passed"
+    assert evidence["prefix_match"] is True
+    assert evidence["tail_is_silence"] is True
+    assert evidence["padding_pcm_bytes"] == 4
+    assert layout == (16000, 1)
+    assert decoded == aligned_pcm
+
+
+@pytest.mark.parametrize(
+    ("aligned_pcm", "reason"),
+    [
+        (b"\x01\x02", "aligned_pcm_shorter_than_raw"),
+        (b"\x01\x09\x03\x04", "aligned_pcm_prefix_mismatch"),
+        (b"\x01\x02\x03\x04\x05\x06", "aligned_tail_not_silence"),
+    ],
+)
+def test_objective_audio_integrity_rejects_truncation_or_non_silent_tail(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    aligned_pcm: bytes,
+    reason: str,
+) -> None:
+    raw = tmp_path / "raw.wav"
+    aligned = tmp_path / "aligned.wav"
+    raw.write_bytes(b"raw-container")
+    aligned.write_bytes(b"aligned-container")
+    raw_pcm = b"\x01\x02\x03\x04"
+    monkeypatch.setattr(audio_planner, "_probe_pcm_layout", lambda _path: (16000, 1))
+    monkeypatch.setattr(
+        audio_planner,
+        "_decode_pcm_for_integrity",
+        lambda path, *, sample_rate, channels: raw_pcm if path == raw else aligned_pcm,
+    )
+
+    with pytest.raises(audio_planner.AudioNarrationIntegrityError, match=reason):
+        audio_planner._verify_complete_aligned_segment(raw, aligned, scene_id="s01")
+
+
 def test_review_package_rejects_overflow_evidence(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     work = tmp_path / "job"
     work.mkdir()
@@ -91,3 +149,36 @@ def test_review_package_accepts_source_aligned_duration_evidence(monkeypatch: py
         title="测试", scene_count=1, asset_selection={},
     )
     assert result["quality"]["status"] == "passed"
+
+
+def test_review_package_rejects_source_aligned_without_objective_integrity() -> None:
+    run_report = {
+        "job_id": "phase1_modbus",
+        "status": "success",
+        "audio_plan": {
+            "mode": "tts",
+            "segments_count": 1,
+            "segments": [{
+                "actual_duration": 1.0,
+                "allocated_scene_duration": 1.2,
+                "scene_duration": 1.0,
+                "overflow": False,
+            }],
+        },
+        "narration_alignment": {
+            "mode": "source_aligned_measured_tts",
+            "objective_audio_integrity": {"status": "failed"},
+        },
+    }
+    render_report = {
+        "subtitle": {"present": True, "mode": "burned_in", "cue_count": 1},
+        "mascot": {"mode": "off"},
+    }
+    with pytest.raises(FactoryContractError, match="phase1_review_narration_incomplete"):
+        review_package._validate_evidence_documents(
+            run_report=run_report,
+            render_report=render_report,
+            timeline={"scenes": [{}]},
+            job_id="phase1_modbus",
+            scene_count=1,
+        )

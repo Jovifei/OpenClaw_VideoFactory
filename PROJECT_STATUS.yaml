@@ -34,6 +34,7 @@ product_phases:
       - docs/CURRENT_ARCHITECTURE.md
       - docs/PRODUCT_PHASES.md
       - handoff/codex/PROJECT_HANDOFF_20260905.md
+      - handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md
   PHASE_2_FEISHU_AUTOMATION:
     status: blocked_by_PHASE_1_LOCAL_VIDEO_FACTORY
     goal: Feishu safety, topic cards, user selection, qualified 12:00 fallback, controlled delivery, and Cron after non-scheduled proof
@@ -67,11 +68,12 @@ exceptions:
 known_implementation_gaps:
   - Phase 1 final acceptance manifest, boundary audit and one-shot formal Gate have not passed
   - topic_only_v1 still requires qualified Flash/watchdog, FreeRTOS, I2C and one distinct live-topic prereview with explicit Jovi-approved reviews
+  - source-aligned TTS now fails closed on overflow; objective raw-to-aligned PCM integrity evidence and the no-render outer-path audit are the active audio-contract work
   - the real I2C MPT candidate run stopped after its allowed rewrite budget at 78/85; a source-bound editorial review replacement is not yet implemented
   - topic visuals need subject-specific diagrams; the current seven-scene smoke passed media checks but its generic cards did not pass semantic visual review
-  - FreeRTOS fixed topic fixture has a brief but still needs the same rendered/review evidence level as Modbus and Flash/watchdog
+  - historical Flash/FreeRTOS full candidates are permanently CHANGES_REQUIRED_AUDIO_TRUNCATION; each topic needs one fresh source-aligned candidate after its own audio-quality approval
   - Modbus, Flash/watchdog and FreeRTOS need one unified prereview evidence format against the current schemas
-  - cancel, failed-retry, controlled restart-recovery and encoder-fallback need one fresh unified lifecycle evidence set
+  - the 2026-09-06 lifecycle evidence is complete and must be revalidated/bound, not rerun without a concrete incompatibility
   - the latest reference-reconstruction candidates still require Jovi human visual/audio/originality review before they can count as final Phase 1 evidence
   - if the final Gate requires a private local-reference fixture, it must use a Jovi-authorized local MP4 plus rights receipt; synthetic references cannot substitute human originality review
   - Pink Pig personal-IP mode requires a Jovi-owned original asset pack and receipt; without it the production path must keep mascot off or fail closed for mascot-required briefs

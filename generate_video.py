@@ -784,6 +784,7 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
             "mode": "source_aligned_measured_tts",
             "rewrite_count": int(measured["rewrite_count"]),
             "passes": measured["passes"],
+            "objective_audio_integrity": measured["objective_audio_integrity"],
         }
     else:
         audio_plan = plan_audio(
