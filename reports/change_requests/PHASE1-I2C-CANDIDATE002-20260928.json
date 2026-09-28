@@ -84,7 +84,16 @@
     "candidate001": "TERMINAL_FAILED_PRESERVE",
     "formal_gate": "NOT_AUTHORIZED"
   },
-  "status": "authorized_pending_execution",
+  "execution_binding": {
+    "control_job_id": "job-b1a186b7b265c2ed46b7c3cb",
+    "idempotency_key": "phase1-i2c-requalification-candidate002-20260928",
+    "created_state": "NEW",
+    "attempt": 0,
+    "brief_runtime_path": "state/phase1_local/inputs/dcc85f8913bc9bd6b1f3c049537745745f21b37a9fb4ff971bc91e1017948d00.json",
+    "brief_runtime_sha256": "f355b5161be0783a89bde0ccf7c121ac7135491593b4d3b3270c90f3dba90926",
+    "run_authorization": "one_run_only_after_this_frozen_change_request"
+  },
+  "status": "frozen_before_run",
   "expected_pass_state": "I2C_MACHINE_REVIEW_READY",
   "human_video_review_after_pass": "PENDING",
   "prereview_after_pass": "NOT_RUN"
