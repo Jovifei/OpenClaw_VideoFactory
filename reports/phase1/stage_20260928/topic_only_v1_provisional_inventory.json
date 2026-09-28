@@ -26,6 +26,16 @@
     "retry_or_resume_used": false,
     "candidate_review": "reports/phase1/stage_20260928/i2c_requalification_candidate001_review.json"
   },
+  "i2c_requalification_candidate002": {
+    "control_job_id": "job-b1a186b7b265c2ed46b7c3cb",
+    "status": "FAILED:PHASE1_LOCAL_RENDER_VALUE_ERROR_AND_I2C_LINEAGE_NOT_SELECTED",
+    "attempt": 0,
+    "last_completed_state": "ASSETS",
+    "media_output_created": false,
+    "retry_or_resume_used": false,
+    "candidate_review": "reports/phase1/stage_20260928/i2c_requalification_candidate002_review.json",
+    "semantic_precondition": "I2C_LINEAGE_NOT_SELECTED_GENERIC_REGISTRY_ASSETS_USED"
+  },
   "live_topic": {
     "topic": "CAN 总线仲裁为什么不会破坏高优先级报文?",
     "control_job_id": "job-eb356764914b0d9f5ccb94ff",

@@ -3028,9 +3028,9 @@ Review: `I2C_DIGEST_CONTRACT_REPAIR_ACCEPTED_CANDIDATE002_AUTHORIZED`. Failed jo
 
 ## PHASE1-I2C-CANDIDATE002-20260928 — remote iteration 33
 
-- [ ] Execute exactly one new I2C `create-topic` with idempotency key `phase1-i2c-requalification-candidate002-20260928` using the repaired brief SHA `f355b516...`; then exactly one `run`; no retry/resume/Candidate003.
-- [ ] Qualify authentic SQLite/package/media/source-aligned audio/technical-cut/whole-video I2C semantic evidence; stop fail-closed on any defect.
+- [x] Execute exactly one new I2C `create-topic` with idempotency key `phase1-i2c-requalification-candidate002-20260928` using the repaired brief SHA `f355b516...`; then exactly one `run`; no retry/resume/Candidate003. The job failed at rendering setup with `phase1_local_execution_failed:value_error`.
+- [x] Qualify authentic SQLite/package/media/source-aligned audio/technical-cut/whole-video I2C semantic evidence; stop fail-closed on any defect. Candidate002 selected generic registry assets and no I2C visual specs, so no machine-ready state was claimed.
 - [ ] If clean, freeze `I2C_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING`; do not infer human approval or run prereview.
 - [ ] Preserve Candidate001 terminal failure unchanged; keep CAN frozen, Flash/FreeRTOS audio gates pending, final contracts and Formal Gate prohibited.
 
-Review: `PENDING_I2C_CANDIDATE002_EXECUTION`. Remote iteration 33 authorization is exactly one new unique candidate from reviewed HEAD `a9d43d0...`.
+Review: `CHANGES_REQUIRED_I2C_CANDIDATE002_ROUTE`. Candidate002 is terminal failed with no media; the current executable local-brief route does not select the accepted I2C visual lineage. Remote remediation is required before any further run or Candidate003.

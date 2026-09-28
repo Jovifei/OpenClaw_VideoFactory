@@ -93,7 +93,18 @@
     "brief_runtime_sha256": "f355b5161be0783a89bde0ccf7c121ac7135491593b4d3b3270c90f3dba90926",
     "run_authorization": "one_run_only_after_this_frozen_change_request"
   },
-  "status": "frozen_before_run",
+  "status": "executed_single_run_failed",
+  "run_result": {
+    "candidate_review": "reports/phase1/stage_20260928/i2c_requalification_candidate002_review.json",
+    "final_state": "FAILED",
+    "last_completed_state": "ASSETS",
+    "failure_reason": "phase1_local_execution_failed:value_error",
+    "semantic_precondition": "I2C_LINEAGE_NOT_SELECTED_GENERIC_REGISTRY_ASSETS_USED",
+    "retry_or_resume_used": false,
+    "candidate003_created": false,
+    "media_output_created": false,
+    "next_remote_action": "Issue route-remediation decision; no retry or Candidate003 under current authorization."
+  },
   "expected_pass_state": "I2C_MACHINE_REVIEW_READY",
   "human_video_review_after_pass": "PENDING",
   "prereview_after_pass": "NOT_RUN"

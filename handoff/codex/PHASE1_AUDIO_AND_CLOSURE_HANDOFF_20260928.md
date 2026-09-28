@@ -412,3 +412,19 @@ binding, source-aligned objective audio integrity, 1080×1920/30fps H.264/AAC
 full decode, technical-cut frame proof, whole-video I2C semantic review and an
 independent local audit. Human video review remains pending; prereview and all
 final contracts remain unrun.
+
+## WP-L2 Candidate002 execution result — remote iteration 33 authorization
+
+The single authorized Candidate002 job was `job-b1a186b7b265c2ed46b7c3cb`,
+attempt 0, created from the repaired brief. Its one `run` advanced through
+`ASSETS` and `RENDERING`, then failed with
+`phase1_local_execution_failed:value_error` before media output.
+
+The plan artifacts also expose a route defect: the current executable local
+brief selected generic Modbus/Flash knowledge registry assets and emitted no
+I2C `visual_spec` for any scene. It did not select the accepted I2C 9:16
+source-bound lineage. This is recorded in
+`reports/phase1/stage_20260928/i2c_requalification_candidate002_review.json`.
+No MP4, review package, audio-integrity artifact or human decision exists;
+Candidate001 remains terminal and Candidate003 is forbidden. Do not retry
+Candidate002 until remote review authorizes the exact route repair.
