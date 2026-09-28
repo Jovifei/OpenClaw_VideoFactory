@@ -1,0 +1,48 @@
+{
+  "schema_version": "phase1_audio_closure_evidence_v1",
+  "source_commit": "cf02b37",
+  "branch": "codex/phase1-audio-closure-20260928",
+  "work_packages": {
+    "WP_A": "PASS_CANONICAL_DOC_SYNC",
+    "WP_B": "PASS_OBJECTIVE_PCM_INTEGRITY",
+    "WP_C": "NOT_RELIABLE_ENOUGH_SECONDARY_ONLY",
+    "WP_D": "PENDING_HUMAN_AUDIO_QUALITY",
+    "WP_E": "PASS_NO_RENDER_OUTER_PATH_INTEGRATION"
+  },
+  "objective_audio_integrity": {
+    "report": "reports/phase1/stage_20260928/audio_integrity_evidence.json",
+    "sha256": "fd69f9a54b86e50ea5175e8fb199013a8a28e02509fde7c6fbd2fb02ac05908f",
+    "status": "OBJECTIVE_AUDIO_INTEGRITY_PASS",
+    "topics": 2
+  },
+  "asr_secondary": {
+    "report": "reports/phase1/stage_20260928/audio_asr_secondary_evidence.json",
+    "sha256": "7a7815777fc41dd20cc5618221412e91b159c7d809dfe3486ac18a67ceb37080",
+    "status": "NOT_RELIABLE_ENOUGH",
+    "download_performed": false,
+    "phase1_gate_authority": false
+  },
+  "tests": {
+    "focused_audio_closure": "32 passed",
+    "phase1_local": "117 passed",
+    "phase1_acceptance": "24 passed",
+    "tests_video_bounded": "286 passed",
+    "tests_video_full": "355 passed, 12 failed, 7 errors; fixture-dependent ignored dist/story_demo and historical MP4/report modules excluded from bounded result",
+    "tests_director": "47 passed",
+    "tests_reference": "13 passed, 1 skipped, 4 warnings",
+    "video_factory_tests": "5 passed",
+    "compileall": "passed",
+    "git_diff_check": "passed"
+  },
+  "excluded_video_fixture_modules": [
+    "tests/video/test_schemas.py",
+    "tests/video/test_mp4_metadata.py",
+    "tests/video/test_quality_report.py",
+    "tests/video/test_error_contract.py"
+  ],
+  "full_video_render": "NOT_RUN",
+  "human_audio_quality": "PENDING_HUMAN_AUDIO_REVIEW",
+  "historical_candidates": "CHANGES_REQUIRED_AUDIO_TRUNCATION",
+  "handoff": "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
+  "next_step": "Remote independent review of cf02b37 and handoff; no fresh video until per-topic AUDIO_APPROVED."
+}

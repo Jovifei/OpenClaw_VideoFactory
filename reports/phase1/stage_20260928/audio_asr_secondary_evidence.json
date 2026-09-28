@@ -1,0 +1,59 @@
+{
+  "schema_version": "phase1_audio_asr_probe_v1",
+  "model": "faster-whisper-small",
+  "model_source": "already_cached_local_snapshot",
+  "download_performed": false,
+  "phase1_gate_authority": false,
+  "fixtures": [
+    {
+      "topic": "Flash 擦除时,如何安排微控制器的看门狗服务窗口",
+      "topic_digest": "d939208f4995f8d21c5cac1a99a9797291e1f82035bda067415211068fcc7512",
+      "audio_sha256": "d32e7332763c503ca4568bb55a4d3c61cb47d1b157a4d0a41f79209810a373df",
+      "audio_duration_seconds": 48.466,
+      "detected_language": "zh",
+      "transcript": "拿謊戀一念魯燕圈凳兼訴施歐元靈族俄認戀 歐該待與以搞同謙樂君瓦奔。 圈圈墜中文並歐元活發避風歐元權立環, 比子莫鬼莫收玄歐元權聰奢喜哄歐元。 鄧秀魯燕圈凳和十姿歐元靈族俄扶英向跨路咬路向村 忍於歐牌誤墮尊耿和契惡美元教護歐認讚之路美亞患展歐元。 賢燕戀歐元向跨路咬路向村忍戀歐該待與以奔合垂同城 聰闆福文亂謙墮語違反殘槍防還意歐元。 捐君墜中漢發避諷任腦效療比子莫本身收玄認資鑽戀向 韜稱鑽教護西歐元。",
+      "anchors": [
+        "看门狗",
+        "擦除",
+        "BUSY",
+        "错误",
+        "服务窗口"
+      ],
+      "matched_anchors": [],
+      "missing_anchors": [
+        "看门狗",
+        "擦除",
+        "BUSY",
+        "错误",
+        "服务窗口"
+      ],
+      "status": "NOT_RELIABLE_ENOUGH"
+    },
+    {
+      "topic": "FreeRTOS 互斥锁与中断通知边界",
+      "topic_digest": "8958d25a694923c95ed151f3030877705957bc4378c6aceff46805a5e77bf1cb",
+      "audio_sha256": "313cad7ac3c4fa55678b819a57dc29d7cc8eea858c9204761b10670d2ae8fed0",
+      "audio_duration_seconds": 46.067,
+      "detected_language": "zh",
+      "transcript": "Mutex 肺捐细炼群总是患恶捐荣尽奔锐 SR 捐区立环,Mutex 末。 ISR 护销所搬欧元鬼勒罗久之奔出可,From ISR 扎西捆养进西汇盖末。 查树红围保害西汇盖降虽重足额任捐行乱西汇盖捐存路滋框美化听网狗号及开阅从意,Mutex 末。 ISR 齐色石域和奔四瑞邦侠竟速拧中断欧元鬼满其以邦扶西汇盖末。 维国印欧捐荣尽奔锐 SR,From ISR 邦奔变Mutex 末恒红围保害滋框侠汗瑞邦颜搞行使妾台浪西汇盖末。",
+      "anchors": [
+        "Mutex",
+        "ISR",
+        "FromISR",
+        "任务",
+        "优先级"
+      ],
+      "matched_anchors": [
+        "Mutex",
+        "ISR",
+        "FromISR"
+      ],
+      "missing_anchors": [
+        "任务",
+        "优先级"
+      ],
+      "status": "NOT_RELIABLE_ENOUGH"
+    }
+  ],
+  "status": "NOT_RELIABLE_ENOUGH"
+}
