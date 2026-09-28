@@ -10,6 +10,14 @@
 - Previous source branch: `codex/phase1-audio-contract-20260927`.
 - Current continuation commits must not modify Owner `main` or historical evidence branches.
 
+Implemented continuation commits:
+
+- `6e4ce51` — canonical closure docs, handoff, objective PCM contract and no-render integration test;
+- `cf02b37` — scene identity/transition fail-closed checks and review-package artifact/hash binding;
+- `5e74b6a` — v7 objective/secondary evidence and bounded test summary.
+
+GitHub branch: `https://github.com/Jovifei/OpenClaw_VideoFactory/tree/codex/phase1-audio-closure-20260928`.
+
 ## Active scope
 
 `topic_only_v1` requires Flash/watchdog, FreeRTOS, I2C and one distinct live topic,
