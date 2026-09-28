@@ -1,6 +1,6 @@
 {
   "schema_version": "phase1_audio_closure_evidence_v1",
-  "source_commit": "cf02b37",
+  "source_commit": "54cb42e",
   "branch": "codex/phase1-audio-closure-20260928",
   "work_packages": {
     "WP_A": "PASS_CANONICAL_DOC_SYNC",
@@ -23,8 +23,8 @@
     "phase1_gate_authority": false
   },
   "tests": {
-    "focused_audio_closure": "32 passed",
-    "phase1_local": "117 passed",
+    "focused_audio_closure": "33 passed",
+    "phase1_local": "118 passed",
     "phase1_acceptance": "24 passed",
     "tests_video_bounded": "286 passed",
     "tests_video_full": "355 passed, 12 failed, 7 errors; fixture-dependent ignored dist/story_demo and historical MP4/report modules excluded from bounded result",
@@ -44,5 +44,5 @@
   "human_audio_quality": "PENDING_HUMAN_AUDIO_REVIEW",
   "historical_candidates": "CHANGES_REQUIRED_AUDIO_TRUNCATION",
   "handoff": "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
-  "next_step": "Remote independent review of cf02b37 and handoff; no fresh video until per-topic AUDIO_APPROVED."
+  "next_step": "Remote independent review of 54cb42e and handoff; no fresh video until per-topic AUDIO_APPROVED."
 }

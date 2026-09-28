@@ -15,6 +15,7 @@ Implemented continuation commits:
 - `6e4ce51` — canonical closure docs, handoff, objective PCM contract and no-render integration test;
 - `cf02b37` — scene identity/transition fail-closed checks and review-package artifact/hash binding;
 - `5e74b6a` — v7 objective/secondary evidence and bounded test summary.
+- `54cb42e` — close explicit transition, persisted-segment and script-hash fail-closed gaps found by independent review.
 
 GitHub branch: `https://github.com/Jovifei/OpenClaw_VideoFactory/tree/codex/phase1-audio-closure-20260928`.
 

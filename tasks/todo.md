@@ -2909,11 +2909,12 @@ while the exact v7 audio decisions remain pending.
 - [x] Run optional cached faster-whisper probe; record `NOT_RELIABLE_ENOUGH` as secondary warning only, with no download and no Gate authority.
 - [x] Add no-render outer-path integration regression and persist objective evidence in `run_report.narration_alignment`.
 - [x] Create `handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md`.
-- [ ] Run bounded affected suites and independent local read-only review.
-- [ ] Commit and push bounded WP-A/WP-B/WP-E evidence; do not render a new video in this package.
+- [x] Run bounded affected suites; initial independent read-only review found five blockers, which were fixed in `cf02b37` and `54cb42e`.
+- [x] Commit and push bounded WP-A/WP-B/WP-E evidence; do not render a new video in this package.
 - [ ] Return commit, tests, evidence and handoff to remote GPT for independent review and next plan.
 
-Review: `IN_PROGRESS`. Remote technical-route review is accepted as the current
-plan. Objective v7 integrity audit is `PASS` for both topics; human audio-quality
-decisions remain unresolved product gates. No full video render is authorized by
-this package.
+Review: `REMOTE_REVIEW_PENDING`. Objective v7 integrity audit is `PASS` for both
+topics; cached ASR is `NOT_RELIABLE_ENOUGH` and non-gating. Local bounded tests are
+focused 33, phase1_local 118, phase1_acceptance 24, and bounded video 286 passed.
+Human audio-quality decisions remain unresolved product gates. No full video render
+is authorized by this package.
