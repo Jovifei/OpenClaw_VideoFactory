@@ -77,7 +77,7 @@ def main() -> int:
 {bit_boxes(300, '0 0 1 0 0 0 0 0 0 0 0', BLUE)}
 {bit_boxes(460, '0 1 1 0 0 0 0 0 0 0 0', RED)}
 <line x1="520" y1="710" x2="1450" y2="710" stroke="{GOLD}" stroke-width="18"/>
-<text x="610" y="755" font-family="Arial" font-size="28" fill="{NAVY}">TX=1, BUS=0 → Node B stops</text>
+<text x="610" y="700" font-family="Arial" font-size="28" fill="{NAVY}">TX=1, BUS=0 → Node B stops</text>
 <text x="140" y="390" font-family="Arial" font-size="28" fill="{GRAY}">send + sample</text>
 <text x="140" y="550" font-family="Arial" font-size="28" fill="{GRAY}">send + sample</text>'''))
     write("03-id-compare", svg("IDENTIFIER COMPARISON", "Lower numeric ID reaches dominant first", f'''

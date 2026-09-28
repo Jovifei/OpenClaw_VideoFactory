@@ -81,6 +81,8 @@ def main() -> int:
         "audio_sha256": hashlib.sha256(audio.read_bytes()).hexdigest(),
         "visual_asset_decode": visual_decode,
         "visual_asset_content_safe_area": visual_safe_area,
+        "visual_preflight_report": "reports/phase1/stage_20260928/can_visual_preflight.json",
+        "visual_preflight_status": "PASS_BOUNDED_STILL_ONLY",
         "visual_asset_checks": visual_checks,
         "transition_probe": "NOT_RUN_BEFORE_RENDER",
         "render_performed": False,

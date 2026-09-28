@@ -1,0 +1,79 @@
+{
+  "schema_version": "phase1_can_visual_preflight_v1",
+  "status": "PASS_BOUNDED_STILL_ONLY",
+  "runtime_locator_id": "phase1_can_arbitration_preflight_20260928",
+  "subtitle_source": "narration_pass_0/subtitle.srt",
+  "checks": [
+    {
+      "scene_index": 1,
+      "asset_id": "pink_pig.can_arbitration_dominant_recessive.v1",
+      "source_svg": "scripts/generate_can_arbitration_assets.py",
+      "asset_png": "assets/can_arbitration_illustrations/01-dominant-recessive.png",
+      "registry_sha256": "07ddfbe6047f01b2b5a52d5bcd9d5f1ba9faf2068047e2e818e6cb16d054c3c1",
+      "actual_png_sha256": "07ddfbe6047f01b2b5a52d5bcd9d5f1ba9faf2068047e2e818e6cb16d054c3c1",
+      "source_binding": true,
+      "decode_and_dimensions": true,
+      "safe_area": true,
+      "subtitle_text": "同时发送会不会撞坏报文？",
+      "still_sha256": "ebf6e7c546244e47bba5b86d103ce281f94273e187be1a13d4b5a76ee8706abd"
+    },
+    {
+      "scene_index": 2,
+      "asset_id": "pink_pig.can_arbitration_two_node_bits.v1",
+      "source_svg": "scripts/generate_can_arbitration_assets.py",
+      "asset_png": "assets/can_arbitration_illustrations/02-two-node-bits.png",
+      "registry_sha256": "8a6b4cfa0941779ef1a2d67a58da95a5701f15f0b482db305a1c591e63157b9e",
+      "actual_png_sha256": "8a6b4cfa0941779ef1a2d67a58da95a5701f15f0b482db305a1c591e63157b9e",
+      "source_binding": true,
+      "decode_and_dimensions": true,
+      "safe_area": true,
+      "subtitle_text": "dominant 覆盖 recessive",
+      "still_sha256": "b42f3ebfe6454c06c61899fe4acc72b3d2fcc1e043b7741cb7429007bd47505b"
+    },
+    {
+      "scene_index": 3,
+      "asset_id": "pink_pig.can_arbitration_id_compare.v1",
+      "source_svg": "scripts/generate_can_arbitration_assets.py",
+      "asset_png": "assets/can_arbitration_illustrations/03-id-compare.png",
+      "registry_sha256": "2cd7b0e184d7c124cd14746f860d6caa53379a040cc9380ee671b4ded69ad798",
+      "actual_png_sha256": "2cd7b0e184d7c124cd14746f860d6caa53379a040cc9380ee671b4ded69ad798",
+      "source_binding": true,
+      "decode_and_dimensions": true,
+      "safe_area": true,
+      "subtitle_text": "逐位发送，逐位回读",
+      "still_sha256": "d708faeb52de71aced39e4916d39f9d3d0e6d79fb2e5efd9ea752fae41e24ff4"
+    },
+    {
+      "scene_index": 4,
+      "asset_id": "pink_pig.can_arbitration_loser_stops.v1",
+      "source_svg": "scripts/generate_can_arbitration_assets.py",
+      "asset_png": "assets/can_arbitration_illustrations/04-loser-stops.png",
+      "registry_sha256": "e60315f6f98fd5d60945139622d1cac59a72be842869a3fc9a466b72fb244bf3",
+      "actual_png_sha256": "e60315f6f98fd5d60945139622d1cac59a72be842869a3fc9a466b72fb244bf3",
+      "source_binding": true,
+      "decode_and_dimensions": true,
+      "safe_area": true,
+      "subtitle_text": "低 ID 获胜，失败者退出",
+      "still_sha256": "455ee78fc8c913e6ee056c64878cf6a7747708e03e414ae8dc5539abfa6d20c9"
+    },
+    {
+      "scene_index": 5,
+      "asset_id": "pink_pig.can_arbitration_checklist.v1",
+      "source_svg": "scripts/generate_can_arbitration_assets.py",
+      "asset_png": "assets/can_arbitration_illustrations/05-checklist.png",
+      "registry_sha256": "ad730126a29bfc0a0bac4013522647b43fd93e3434bb5e57e952705e36ae42d7",
+      "actual_png_sha256": "ad730126a29bfc0a0bac4013522647b43fd93e3434bb5e57e952705e36ae42d7",
+      "source_binding": true,
+      "decode_and_dimensions": true,
+      "safe_area": true,
+      "subtitle_text": "低 ID 获胜，报文不被破坏",
+      "still_sha256": "d58800693dbec467a5d76afe1c791ee1d8ad12154c4fd20b5c3037bb2c012d58"
+    }
+  ],
+  "transition_probe": {
+    "status": "PASS_BOUNDED_TIMELINE_ONLY",
+    "mode": "technical_cut",
+    "encoded_transition_frames": false
+  },
+  "outer_render_authorization": "NOT_AUTHORIZED"
+}

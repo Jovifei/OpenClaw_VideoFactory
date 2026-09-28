@@ -25,7 +25,7 @@
   ],
   "asset_hashes": [
     "07ddfbe6047f01b2b5a52d5bcd9d5f1ba9faf2068047e2e818e6cb16d054c3c1",
-    "3eaef4fb279cc66d9338848e88b52056939a7ac23cdf7e73360196221301284f",
+    "8a6b4cfa0941779ef1a2d67a58da95a5701f15f0b482db305a1c591e63157b9e",
     "2cd7b0e184d7c124cd14746f860d6caa53379a040cc9380ee671b4ded69ad798",
     "e60315f6f98fd5d60945139622d1cac59a72be842869a3fc9a466b72fb244bf3",
     "ad730126a29bfc0a0bac4013522647b43fd93e3434bb5e57e952705e36ae42d7"
@@ -77,7 +77,9 @@
   "audio_relative_path": "audio.wav",
   "audio_sha256": "fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b",
   "visual_asset_decode": "PASS",
-  "visual_asset_content_safe_area": "FAIL",
+  "visual_asset_content_safe_area": "PASS",
+  "visual_preflight_report": "reports/phase1/stage_20260928/can_visual_preflight.json",
+  "visual_preflight_status": "PASS_BOUNDED_STILL_ONLY",
   "visual_asset_checks": [
     {
       "path": "assets/can_arbitration_illustrations/01-dominant-recessive.png",
@@ -105,9 +107,9 @@
         9,
         0,
         1360,
-        591
+        549
       ],
-      "safe_area": false
+      "safe_area": true
     },
     {
       "path": "assets/can_arbitration_illustrations/03-id-compare.png",
