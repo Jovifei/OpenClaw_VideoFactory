@@ -36,7 +36,9 @@ Implemented continuation commits:
 - `59bc37d` — update the candidate handoff and task ledger for remote review.
 - `b4d28d5` — record the remote iteration-27 acceptance change request.
 - `79eb0db` — record remote machine acceptance, provisional inventory refresh and I2C discovery.
+- `a8caedd` — record the WP-J human-gate readiness change request.
 - `8a80f53` — prepare human-gate binding, prereview dry-contract and next-candidate readiness evidence.
+- `2e12423` — document the readiness package in the current handoff.
 
 GitHub branch: `https://github.com/Jovifei/OpenClaw_VideoFactory/tree/codex/phase1-audio-closure-20260928`.
 
