@@ -206,19 +206,10 @@ lineage seal. The parallel closure audit has now produced:
 - WP-G5: `PROVISIONAL_UNRESOLVED_NOT_GATE_READY`.
 
 Reports are under `reports/phase1/stage_20260928/`, and the reproducible runner is
-`scripts/phase1_parallel_closure_audit.py`. Local Codex next continues, without
-fresh Flash/FreeRTOS rendering:
-
-1. WP-G1 I2C exact-candidate audit;
-2. WP-G2 lifecycle evidence final schema/hash revalidation;
-3. WP-G3 boundary-audit preflight;
-4. WP-G4 distinct live-topic no-render preflight;
-5. WP-G5 provisional manifest inventory with unresolved human slots explicit.
-
-The next evidence commit must keep `code_contract_commit=cf02b37`,
-`evidence_commit=5e74b6a`, and the sealed handoff lineage explicit. The next
-external dependency is restoration of the I2C runtime package or a separately
-authorized requalification; the missing runtime is not permission to rerender.
-Human audio-quality decisions remain separate unresolved product gates; no fresh
-Flash/FreeRTOS video is authorized until the matching exact v7 SHA receives
+`scripts/phase1_parallel_closure_audit.py`. G1 through G5 are complete. Local Codex
+next continues without fresh Flash/FreeRTOS rendering: restore the I2C runtime
+package or obtain a separately authorized requalification, and select one distinct
+live topic for a no-render preflight. The missing I2C runtime is not permission to
+rerender. Human audio-quality decisions remain separate unresolved product gates;
+no fresh Flash/FreeRTOS video is authorized until the matching exact v7 SHA receives
 `AUDIO_APPROVED`.

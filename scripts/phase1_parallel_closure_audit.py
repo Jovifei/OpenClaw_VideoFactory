@@ -69,7 +69,7 @@ def revalidate_lifecycle() -> None:
         text = raw.decode("utf-8")
         items.append({
             "evidence_type": kind,
-            "path": str(path),
+            "path": f"reports/phase1/lifecycle/{kind}.json",
             "sha256": hashlib.sha256(raw).hexdigest(),
             "declared_sha256": declared,
             "sha_matches": hashlib.sha256(raw).hexdigest() == declared,
