@@ -394,3 +394,21 @@ RED/GREEN evidence is in
 The failed job `job-b4a2e8e851268bc14e5e4a15` remains terminal and must never be
 retried or mutated. Candidate002/new I2C media remains unauthorized pending
 remote review of this repair.
+
+## WP-L2 Candidate002 authorization — remote iteration 33
+
+Remote iteration 33 accepted the digest repair at reviewed HEAD `a9d43d0` and
+authorized exactly one new unique I2C Candidate002. The repaired executable brief
+is `examples/phase1_subject_i2c/phase1_local_brief_9x16_repaired.json` with SHA
+`f355b5161be0783a89bde0ccf7c121ac7135491593b4d3b3270c90f3dba90926` and current
+execution digest `dcc85f8913bc9bd6b1f3c049537745745f21b37a9fb4ff971bc91e1017948d00`.
+
+Execution boundary: create one new unique I2C control job with idempotency key
+`phase1-i2c-requalification-candidate002-20260928`, then run it exactly once.
+No retry, resume or Candidate003. Candidate001
+`job-b4a2e8e851268bc14e5e4a15` remains terminal and immutable. Machine acceptance
+requires authentic SQLite `PENDING_REVIEW`, attempt 0, package/artifact hash
+binding, source-aligned objective audio integrity, 1080×1920/30fps H.264/AAC
+full decode, technical-cut frame proof, whole-video I2C semantic review and an
+independent local audit. Human video review remains pending; prereview and all
+final contracts remain unrun.

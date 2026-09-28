@@ -1,0 +1,91 @@
+{
+  "id": "PHASE1-I2C-CANDIDATE002-20260928",
+  "date": "2026-09-28",
+  "baseline_commit": "a9d43d05d0ff5531a1eee13eb4c22717b7175e4e",
+  "authorization": "Remote GPT iteration 33 accepted WP-LR1 and authorized exactly one new unique I2C Candidate002 create-topic -> run.",
+  "scope": "Execute one fresh I2C outer candidate from the repaired immutable executable brief through the current source-aligned audio-integrity production path; qualify machine evidence only.",
+  "frozen_input": {
+    "brief_path": "examples/phase1_subject_i2c/phase1_local_brief_9x16_repaired.json",
+    "brief_sha256": "f355b5161be0783a89bde0ccf7c121ac7135491593b4d3b3270c90f3dba90926",
+    "topic": "I2C总线为什么要上拉电阻",
+    "execution_topic_digest": "dcc85f8913bc9bd6b1f3c049537745745f21b37a9fb4ff971bc91e1017948d00",
+    "fact_ids": ["open_drain", "rise_time", "sink_current"],
+    "source_ids": ["nxp_um10204", "ti_slva689"],
+    "visual_lineage_report": "reports/phase1/i2c_visual_correction_014.json",
+    "visual_lineage_report_sha256": "5d9e3541c715b367cea92d243e8aadb1bcaf9477afa34e9c5979c034dd431ccc",
+    "visual_generator": "remotion/src/TechnicalExplainer.tsx",
+    "visual_generator_sha256": "987ef6ab0efc76670919f2dc9466332b515fa2228992df796ee8d19a342d3f74",
+    "render_profile": {"aspect_ratio": "9:16", "width": 1080, "height": 1920, "fps": 30},
+    "transition_mode": "technical_cut",
+    "source_aligned_narration": true
+  },
+  "excluded_candidate001": {
+    "control_job_id": "job-b4a2e8e851268bc14e5e4a15",
+    "status": "FAILED_TERMINAL",
+    "reason": "stale historical digest ceda09b... in executable brief",
+    "retry": "FORBIDDEN",
+    "runtime_identity_reuse": "FORBIDDEN"
+  },
+  "execution_binding": {
+    "idempotency_key": "phase1-i2c-requalification-candidate002-20260928",
+    "create_topic": "EXACTLY_ONCE",
+    "run": "EXACTLY_ONCE",
+    "retry": false,
+    "resume": false,
+    "candidate003": false
+  },
+  "required_machine_acceptance": [
+    "new unique control job",
+    "attempt 0",
+    "normal lifecycle ending PENDING_REVIEW",
+    "registered final-master and review-package artifacts",
+    "SQLite/package/actual artifact hashes match",
+    "source_aligned_narration=true",
+    "25-60 second duration",
+    "objective raw-to-aligned PCM integrity PASS",
+    "no overflow, trim or atempo",
+    "audio/SRT/timeline endpoint agreement",
+    "1080x1920 30fps H.264/AAC full decode",
+    "technical-cut adjacent rendered frame proof",
+    "whole-video I2C semantic review",
+    "independent local read-only audit"
+  ],
+  "forbidden": [
+    "Candidate001 mutation/retry/resume",
+    "Candidate003",
+    "human decision creation",
+    "prereview",
+    "final regression contract",
+    "final boundary audit",
+    "final acceptance manifest",
+    "Formal Gate",
+    "Phase 2",
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "publication",
+    "unapproved downloads",
+    "generic narration rewrite",
+    "atempo"
+  ],
+  "stop_if": [
+    "narration cannot fit 25-60 seconds without a new rewrite",
+    "audio integrity, endpoint, package or hash mismatch",
+    "profile/codec/full-decode failure",
+    "I2C semantic inversion or geometry collision",
+    "retry/resume/second candidate would be required"
+  ],
+  "remote_review": {
+    "iteration": 33,
+    "head_reviewed": "a9d43d05d0ff5531a1eee13eb4c22717b7175e4e",
+    "result": "WP_LR1_ACCEPTED",
+    "candidate002": "ONE_NEW_UNIQUE_CANDIDATE_AUTHORIZED",
+    "candidate001": "TERMINAL_FAILED_PRESERVE",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "status": "authorized_pending_execution",
+  "expected_pass_state": "I2C_MACHINE_REVIEW_READY",
+  "human_video_review_after_pass": "PENDING",
+  "prereview_after_pass": "NOT_RUN"
+}

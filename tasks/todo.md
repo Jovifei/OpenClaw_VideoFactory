@@ -3024,4 +3024,13 @@ Review: `CHANGES_REQUIRED_WP_L_INPUT_DIGEST`. The one authorized I2C candidate r
 - [x] LR4: Add no-media RED/GREEN tests: stale `ceda09b...` brief is rejected with `topic_digest_mismatch`; repaired brief loads and `build_local_plan()` passes with the current digest, exact fact IDs/source bindings, technical-cut and 1080x1920/30fps profile.
 - [x] LR5: Write `i2c_digest_contract_repair.json` with failed job/runtime brief SHA, stale digest, recomputed digest, historical source hash, repaired brief hash, RED/GREEN results and `media_run=false`; push for independent remote review.
 
-Review: `I2C_DIGEST_CONTRACT_REPAIR_READY_FOR_REMOTE_REVIEW`. Failed job `job-b4a2e8e851268bc14e5e4a15` remains terminal; same-job retry, Candidate002 media and Formal Gate are not authorized.
+Review: `I2C_DIGEST_CONTRACT_REPAIR_ACCEPTED_CANDIDATE002_AUTHORIZED`. Failed job `job-b4a2e8e851268bc14e5e4a15` remains terminal; same-job retry is forbidden. Remote iteration 33 authorized exactly one new unique Candidate002 create-topic -> run using the repaired immutable brief.
+
+## PHASE1-I2C-CANDIDATE002-20260928 — remote iteration 33
+
+- [ ] Execute exactly one new I2C `create-topic` with idempotency key `phase1-i2c-requalification-candidate002-20260928` using the repaired brief SHA `f355b516...`; then exactly one `run`; no retry/resume/Candidate003.
+- [ ] Qualify authentic SQLite/package/media/source-aligned audio/technical-cut/whole-video I2C semantic evidence; stop fail-closed on any defect.
+- [ ] If clean, freeze `I2C_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING`; do not infer human approval or run prereview.
+- [ ] Preserve Candidate001 terminal failure unchanged; keep CAN frozen, Flash/FreeRTOS audio gates pending, final contracts and Formal Gate prohibited.
+
+Review: `PENDING_I2C_CANDIDATE002_EXECUTION`. Remote iteration 33 authorization is exactly one new unique candidate from reviewed HEAD `a9d43d0...`.
