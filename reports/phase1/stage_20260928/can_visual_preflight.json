@@ -12,8 +12,37 @@
       "registry_sha256": "07ddfbe6047f01b2b5a52d5bcd9d5f1ba9faf2068047e2e818e6cb16d054c3c1",
       "actual_png_sha256": "07ddfbe6047f01b2b5a52d5bcd9d5f1ba9faf2068047e2e818e6cb16d054c3c1",
       "source_binding": true,
+      "source_kind": "generator",
+      "source_sha256": "7f18af661d68855d2221d08e535551fd17c82463a85cc68f9a42ffd0b9a2710b",
+      "pillow_decode_and_dimensions": true,
+      "ffmpeg_decode": {
+        "status": "PASS",
+        "returncode": 0,
+        "error": null
+      },
       "decode_and_dimensions": true,
       "safe_area": true,
+      "semantic_mapping": {
+        "scene_id": "s01",
+        "storyboard_asset_id_matches": true,
+        "required_tags": [
+          "can_arbitration",
+          "dominant_recessive",
+          "education",
+          "explain"
+        ],
+        "asset_tags": [
+          "knowledge_illustration",
+          "can_arbitration",
+          "dominant_recessive",
+          "education",
+          "explain"
+        ],
+        "visual_semantic_tags": [
+          "dominant_recessive"
+        ],
+        "semantic_match": true
+      },
       "subtitle_text": "同时发送会不会撞坏报文？",
       "still_sha256": "ebf6e7c546244e47bba5b86d103ce281f94273e187be1a13d4b5a76ee8706abd"
     },
@@ -25,8 +54,37 @@
       "registry_sha256": "8a6b4cfa0941779ef1a2d67a58da95a5701f15f0b482db305a1c591e63157b9e",
       "actual_png_sha256": "8a6b4cfa0941779ef1a2d67a58da95a5701f15f0b482db305a1c591e63157b9e",
       "source_binding": true,
+      "source_kind": "generator",
+      "source_sha256": "7f18af661d68855d2221d08e535551fd17c82463a85cc68f9a42ffd0b9a2710b",
+      "pillow_decode_and_dimensions": true,
+      "ffmpeg_decode": {
+        "status": "PASS",
+        "returncode": 0,
+        "error": null
+      },
       "decode_and_dimensions": true,
       "safe_area": true,
+      "semantic_mapping": {
+        "scene_id": "s02",
+        "storyboard_asset_id_matches": true,
+        "required_tags": [
+          "can_arbitration",
+          "dominant_recessive",
+          "education",
+          "explain"
+        ],
+        "asset_tags": [
+          "knowledge_illustration",
+          "can_arbitration",
+          "two_node_bits",
+          "education",
+          "explain"
+        ],
+        "visual_semantic_tags": [
+          "two_node_bits"
+        ],
+        "semantic_match": true
+      },
       "subtitle_text": "dominant 覆盖 recessive",
       "still_sha256": "b42f3ebfe6454c06c61899fe4acc72b3d2fcc1e043b7741cb7429007bd47505b"
     },
@@ -38,8 +96,37 @@
       "registry_sha256": "2cd7b0e184d7c124cd14746f860d6caa53379a040cc9380ee671b4ded69ad798",
       "actual_png_sha256": "2cd7b0e184d7c124cd14746f860d6caa53379a040cc9380ee671b4ded69ad798",
       "source_binding": true,
+      "source_kind": "generator",
+      "source_sha256": "7f18af661d68855d2221d08e535551fd17c82463a85cc68f9a42ffd0b9a2710b",
+      "pillow_decode_and_dimensions": true,
+      "ffmpeg_decode": {
+        "status": "PASS",
+        "returncode": 0,
+        "error": null
+      },
       "decode_and_dimensions": true,
       "safe_area": true,
+      "semantic_mapping": {
+        "scene_id": "s03",
+        "storyboard_asset_id_matches": true,
+        "required_tags": [
+          "can_arbitration",
+          "two_node_bits",
+          "education",
+          "measure"
+        ],
+        "asset_tags": [
+          "knowledge_illustration",
+          "can_arbitration",
+          "id_compare",
+          "education",
+          "measure"
+        ],
+        "visual_semantic_tags": [
+          "id_compare"
+        ],
+        "semantic_match": true
+      },
       "subtitle_text": "逐位发送，逐位回读",
       "still_sha256": "d708faeb52de71aced39e4916d39f9d3d0e6d79fb2e5efd9ea752fae41e24ff4"
     },
@@ -51,8 +138,38 @@
       "registry_sha256": "e60315f6f98fd5d60945139622d1cac59a72be842869a3fc9a466b72fb244bf3",
       "actual_png_sha256": "e60315f6f98fd5d60945139622d1cac59a72be842869a3fc9a466b72fb244bf3",
       "source_binding": true,
+      "source_kind": "generator",
+      "source_sha256": "7f18af661d68855d2221d08e535551fd17c82463a85cc68f9a42ffd0b9a2710b",
+      "pillow_decode_and_dimensions": true,
+      "ffmpeg_decode": {
+        "status": "PASS",
+        "returncode": 0,
+        "error": null
+      },
       "decode_and_dimensions": true,
       "safe_area": true,
+      "semantic_mapping": {
+        "scene_id": "s04",
+        "storyboard_asset_id_matches": true,
+        "required_tags": [
+          "can_arbitration",
+          "id_compare",
+          "loser_stops",
+          "education",
+          "repair"
+        ],
+        "asset_tags": [
+          "knowledge_illustration",
+          "can_arbitration",
+          "loser_stops",
+          "education",
+          "repair"
+        ],
+        "visual_semantic_tags": [
+          "loser_stops"
+        ],
+        "semantic_match": true
+      },
       "subtitle_text": "低 ID 获胜，失败者退出",
       "still_sha256": "455ee78fc8c913e6ee056c64878cf6a7747708e03e414ae8dc5539abfa6d20c9"
     },
@@ -64,8 +181,37 @@
       "registry_sha256": "ad730126a29bfc0a0bac4013522647b43fd93e3434bb5e57e952705e36ae42d7",
       "actual_png_sha256": "ad730126a29bfc0a0bac4013522647b43fd93e3434bb5e57e952705e36ae42d7",
       "source_binding": true,
+      "source_kind": "generator",
+      "source_sha256": "7f18af661d68855d2221d08e535551fd17c82463a85cc68f9a42ffd0b9a2710b",
+      "pillow_decode_and_dimensions": true,
+      "ffmpeg_decode": {
+        "status": "PASS",
+        "returncode": 0,
+        "error": null
+      },
       "decode_and_dimensions": true,
       "safe_area": true,
+      "semantic_mapping": {
+        "scene_id": "s05",
+        "storyboard_asset_id_matches": true,
+        "required_tags": [
+          "can_arbitration",
+          "checklist",
+          "education",
+          "summary"
+        ],
+        "asset_tags": [
+          "knowledge_illustration",
+          "can_arbitration",
+          "checklist",
+          "education",
+          "summary"
+        ],
+        "visual_semantic_tags": [
+          "checklist"
+        ],
+        "semantic_match": true
+      },
       "subtitle_text": "低 ID 获胜，报文不被破坏",
       "still_sha256": "d58800693dbec467a5d76afe1c791ee1d8ad12154c4fd20b5c3037bb2c012d58"
     }
@@ -73,7 +219,15 @@
   "transition_probe": {
     "status": "PASS_BOUNDED_TIMELINE_ONLY",
     "mode": "technical_cut",
-    "encoded_transition_frames": false
+    "scene_count": 5,
+    "cue_boundaries_contiguous": true,
+    "filter_graph_contains_xfade": false,
+    "filter_graph_contains_concat": true,
+    "duration_seconds": 51.033,
+    "frame_count": 1531,
+    "command_sha256": "d70cd0c839f56eb8853ca1b3cdbdb9881f36757d912a499e1d0bcc32d3b3f4dd",
+    "encoded_transition_frames": false,
+    "rendered_output": false
   },
   "outer_render_authorization": "NOT_AUTHORIZED"
 }

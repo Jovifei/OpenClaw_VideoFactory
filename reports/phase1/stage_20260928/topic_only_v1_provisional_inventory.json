@@ -16,7 +16,7 @@
   ],
   "formal_gate": "NOT_RUN",
   "live_topic": {
-    "topic": "CAN 总线仲裁为什么不会破坏高优先级报文？",
+    "topic": "CAN 总线仲裁为什么不会破坏高优先级报文?",
     "job_id": "phase1_91c2a7cd2b692884",
     "status": "LIVE_TOPIC_PREFLIGHT_READY",
     "audio_sha256": "fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b",

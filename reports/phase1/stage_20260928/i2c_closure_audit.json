@@ -12,7 +12,8 @@
     "fps": 30
   },
   "sqlite_state": "NOT_AVAILABLE_IN_CURRENT_WORKTREE",
-  "runtime_media_path": "E:\\OpenClaw_VideoFactory_Runtime\\phase1_i2c_semantic_013\\attempt_006_9x16_subject\\audible_preview.mp4",
+  "runtime_locator_id": "phase1_i2c_semantic_013",
+  "runtime_relative_path": "attempt_006_9x16_subject/audible_preview.mp4",
   "runtime_media_exists": false,
   "runtime_media_sha256": null,
   "hash_matches": false,

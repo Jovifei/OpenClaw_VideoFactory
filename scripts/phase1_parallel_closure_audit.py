@@ -37,7 +37,8 @@ def audit_i2c() -> None:
         "expected_review_package_sha256": None,
         "render_profile": source["canvas"],
         "sqlite_state": "NOT_AVAILABLE_IN_CURRENT_WORKTREE",
-        "runtime_media_path": str(runtime),
+        "runtime_locator_id": "phase1_i2c_semantic_013",
+        "runtime_relative_path": "attempt_006_9x16_subject/audible_preview.mp4",
         "runtime_media_exists": exists,
         "runtime_media_sha256": sha256(runtime) if exists else None,
         "hash_matches": exists and sha256(runtime) == source["audible_preview"]["sha256"],
@@ -125,31 +126,53 @@ def boundary_preflight() -> None:
 
 
 def live_topic_and_manifest() -> None:
-    write("live_topic_preflight.json", {
-        "schema_version": "phase1_live_topic_preflight_v1",
-        "status": "LIVE_TOPIC_PREFLIGHT_BLOCKED:NO_DISTINCT_TOPIC_SELECTED",
-        "render_performed": False,
-        "contracts_checked": {
-            "local_entrypoint_sets_source_aligned_narration": True,
-            "fixture_rewrite_scope_is_flash_and_freertos_only": True,
-            "over_60_seconds_fails_closed_for_unrecognized_topic": True,
-        },
-        "next_action": "Select one distinct live topic before any final candidate run; no automatic topic choice in this package.",
-    })
-    write("topic_only_v1_provisional_inventory.json", {
+    live_report_path = STAGE / "live_topic_preflight.json"
+    live_report = None
+    if live_report_path.is_file():
+        try:
+            candidate = json.loads(live_report_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            candidate = None
+        if isinstance(candidate, dict) and candidate.get("status") == "LIVE_TOPIC_PREFLIGHT_READY":
+            live_report = candidate
+    if live_report is None:
+        live_report = {
+            "schema_version": "phase1_live_topic_preflight_v1",
+            "status": "LIVE_TOPIC_PREFLIGHT_BLOCKED:NO_DISTINCT_TOPIC_SELECTED",
+            "render_performed": False,
+            "contracts_checked": {
+                "local_entrypoint_sets_source_aligned_narration": True,
+                "fixture_rewrite_scope_is_flash_and_freertos_only": True,
+                "over_60_seconds_fails_closed_for_unrecognized_topic": True,
+            },
+            "next_action": "Select one distinct live topic before any final candidate run; no automatic topic choice in this package.",
+        }
+        write("live_topic_preflight.json", live_report)
+    inventory = {
         "schema_version": "topic_only_v1_provisional_inventory_v1",
         "status": "PROVISIONAL_UNRESOLVED_NOT_GATE_READY",
         "slots": {
             "flash_watchdog": "PENDING_AUDIO_APPROVAL",
             "freertos_mutex": "PENDING_AUDIO_APPROVAL",
             "i2c": "I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION",
-            "distinct_live_topic": "BLOCKED_NO_DISTINCT_TOPIC_SELECTED",
+            "distinct_live_topic": live_report.get("status", "BLOCKED_NO_DISTINCT_TOPIC_SELECTED"),
             "lifecycle": "PASS_REVALIDATED",
             "boundary": "PASS_PRELIGHT",
         },
         "rejected_evidence": ["historical Flash truncated candidate", "historical FreeRTOS truncated candidate", "superseded horizontal I2C candidate"],
         "formal_gate": "NOT_RUN",
-    })
+    }
+    if live_report.get("status") == "LIVE_TOPIC_PREFLIGHT_READY":
+        inventory["live_topic"] = {
+            "topic": live_report.get("topic"),
+            "job_id": live_report.get("job_id"),
+            "status": live_report.get("status"),
+            "audio_sha256": live_report.get("audio_sha256"),
+            "duration_seconds": live_report.get("final_duration_seconds"),
+            "render_performed": live_report.get("render_performed", False),
+            "human_review": live_report.get("human_review", "NOT_REQUESTED"),
+        }
+    write("topic_only_v1_provisional_inventory.json", inventory)
 
 
 if __name__ == "__main__":

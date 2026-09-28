@@ -2945,3 +2945,13 @@ publication action was performed.
 
 Review: `LIVE_TOPIC_PREFLIGHT_READY_FOR_REMOTE_REVIEW`. Human review and outer
 candidate authorization remain separate future gates; no full render was run.
+
+## PHASE1-CAN-EVIDENCE-HYGIENE-20260928 — remote iteration 25 follow-up
+
+- [x] Replace the I2C closure report's private absolute media path with a stable runtime locator and relative artifact path.
+- [x] Make the parallel closure audit preserve an already-ready CAN preflight instead of overwriting it with a stale blocked placeholder.
+- [x] Track the CAN visual preflight runner and compute source provenance, registry/file hashes, Pillow and FFmpeg decode, semantic mapping, subtitle stills, and technical-cut transition evidence.
+- [x] Regenerate the five real-subtitle stills and the no-render transition probe; keep outer render authorization `NOT_AUTHORIZED`.
+- [ ] Push the hygiene and CAN evidence commit, request independent remote audit, and record the next remote plan.
+
+Review: `LOCAL_EVIDENCE_REFRESHED_REMOTE_REVIEW_PENDING`. No MP4 render, human gate, Formal Gate, Phase 2, Cron, or publication action was performed.
