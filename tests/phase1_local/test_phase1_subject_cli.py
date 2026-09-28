@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 
 from src.factory import phase1_cli
@@ -192,8 +193,11 @@ def test_subject_default_run_delivers_once_and_registers_preview_aliases(tmp_pat
 
 def test_subject_media_failure_returns_review_blocked_and_retry_resumes_rendering(tmp_path, monkeypatch, capsys) -> None:
     _configure(tmp_path, monkeypatch)
-    assert phase1_cli.main(["create-subject", "--subject", "串口 DMA"]) == 0
+    assert phase1_cli.main(["create-subject", "--subject", "看门狗"]) == 0
     job = _output(capsys)["job"]
+    research_path = tmp_path / "research.json"; research_path.write_text(json.dumps(_research(), ensure_ascii=False), encoding="utf-8")
+    assert phase1_cli.main(["attach-research", "--job-id", job["job_id"], "--research", str(research_path)]) == 0
+    _output(capsys)
     store = CandidateStore(phase1_cli.DATABASE_PATH)
     for target in ("RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS", "ASSETS"):
         store.advance(job["job_id"], target)
@@ -207,8 +211,11 @@ def test_subject_media_failure_returns_review_blocked_and_retry_resumes_renderin
 
 def test_subject_cancelled_during_media_never_reaches_pending_review(tmp_path, monkeypatch, capsys) -> None:
     _configure(tmp_path, monkeypatch)
-    assert phase1_cli.main(["create-subject", "--subject", "中断测试"]) == 0
+    assert phase1_cli.main(["create-subject", "--subject", "看门狗"]) == 0
     job = _output(capsys)["job"]
+    research_path = tmp_path / "research.json"; research_path.write_text(json.dumps(_research(), ensure_ascii=False), encoding="utf-8")
+    assert phase1_cli.main(["attach-research", "--job-id", job["job_id"], "--research", str(research_path)]) == 0
+    _output(capsys)
     store = CandidateStore(phase1_cli.DATABASE_PATH)
     for target in ("RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS", "ASSETS"):
         store.advance(job["job_id"], target)
@@ -235,8 +242,11 @@ def test_subject_missing_request_at_assets_is_review_blocked_and_projected(tmp_p
 
 def test_subject_cancel_after_builder_withdraws_ready_manifest_before_publication(tmp_path, monkeypatch, capsys) -> None:
     _configure(tmp_path, monkeypatch)
-    assert phase1_cli.main(["create-subject", "--subject", "撤回测试"]) == 0
+    assert phase1_cli.main(["create-subject", "--subject", "看门狗"]) == 0
     job = _output(capsys)["job"]
+    research_path = tmp_path / "research.json"; research_path.write_text(json.dumps(_research(), ensure_ascii=False), encoding="utf-8")
+    assert phase1_cli.main(["attach-research", "--job-id", job["job_id"], "--research", str(research_path)]) == 0
+    _output(capsys)
     store = CandidateStore(phase1_cli.DATABASE_PATH)
     for target in ("RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS", "ASSETS"):
         store.advance(job["job_id"], target)
@@ -263,3 +273,57 @@ def _drafts(tmp_path: Path) -> Path:
     output = tmp_path / "mpt-default.json"
     output.write_text(json.dumps({"schema_version":"1.0","kind":"phase1_script_drafts","subject":"看门狗","language":"zh-CN","requested_candidates":3,"successful_candidates":3,"mpt_version":"1.3.5","mpt_commit":MPT_COMMIT,"candidates":[{"candidate":i,"script":"看门狗发生故障：看门狗检测失去响应，超时需验证。再解释原理、配置和恢复边界。","duration_seconds":1} for i in range(1,4)],"failures":[]}, ensure_ascii=False), encoding="utf-8")
     return output
+
+
+def _i2c_drafts(tmp_path: Path) -> Path:
+    output = tmp_path / "mpt-i2c.json"
+    prose = "为什么I2C总线要上拉？I2C线路通常采用开漏结构；器件主动拉低，释放后由上拉电阻恢复高电平。上拉电阻与总线电容决定上升沿；电阻过大可能使线路来不及达到有效高电平。电阻过小则增加低电平灌电流，可能超出器件的拉低能力；阻值必须兼顾两端限制。"
+    output.write_text(json.dumps({"schema_version":"1.0","kind":"phase1_script_drafts","subject":"I2C总线为什么要上拉电阻","language":"zh-CN","requested_candidates":3,"successful_candidates":3,"mpt_version":"1.3.5","mpt_commit":MPT_COMMIT,"candidates":[{"candidate":i,"script":prose,"duration_seconds":1} for i in range(1,4)],"failures":[]}, ensure_ascii=False), encoding="utf-8")
+    return output
+
+
+def test_real_subject_delivery_boundary_passes_exact_planning_research_to_audio_adapter(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject", "--subject", "I2C总线为什么要上拉电阻", "--duration", "40", "--aspect-ratio", "9:16"]) == 0
+    job_id = _output(capsys)["job"]["job_id"]
+    research_path = Path(__file__).resolve().parents[2] / "examples" / "phase1_subject_i2c" / "research_brief.json"
+    assert phase1_cli.main(["attach-research", "--job-id", job_id, "--research", str(research_path)]) == 0
+    _output(capsys)
+    monkeypatch.setattr(phase1_cli, "MPT_RUN_DRAFTS", lambda **_: _i2c_drafts(tmp_path))
+    captured: dict[str, object] = {}
+
+    def stop_before_media(request, **_):
+        captured["request"] = request
+        raise RuntimeError("stop_before_media_for_wiring_proof")
+
+    monkeypatch.setattr(phase1_cli, "run_subject_media", stop_before_media)
+    assert phase1_cli.main(["run", "--job-id", job_id]) == 0
+    assert _output(capsys)["status"] == "review_blocked"
+    request = captured["request"]
+    bound = Path(str(request.research_brief))
+    records = CandidateStore(phase1_cli.DATABASE_PATH).artifacts(job_id)
+    record = next(item for item in records if item["artifact_type"] == "research_brief")
+    assert bound == (phase1_cli.PROJECT_ROOT / record["relative_path"]).resolve()
+    assert hashlib.sha256(bound.read_bytes()).hexdigest() == record["sha256"]
+    assert request.scene_plan.parent == bound.parent and not list(request.workdir.glob("*.mp4"))
+
+
+def test_subject_delivery_blocks_changed_registered_research_before_media(tmp_path, monkeypatch, capsys) -> None:
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(["create-subject", "--subject", "看门狗"]) == 0
+    job = _output(capsys)["job"]
+    research_path = tmp_path / "research.json"; research_path.write_text(json.dumps(_research(), ensure_ascii=False), encoding="utf-8")
+    assert phase1_cli.main(["attach-research", "--job-id", job["job_id"], "--research", str(research_path)]) == 0
+    _output(capsys)
+    root = phase1_cli.INPUT_ROOT / "subjects" / job["job_id"]
+    bound = root / "research_brief.json"
+    bound.write_text(bound.read_text(encoding="utf-8").replace("看门狗检测失去响应", "被篡改的看门狗事实"), encoding="utf-8")
+    store = CandidateStore(phase1_cli.DATABASE_PATH)
+    for target in ("RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS", "ASSETS"):
+        store.advance(job["job_id"], target)
+    called = []
+    monkeypatch.setattr(phase1_cli, "run_subject_media", lambda *args, **kwargs: called.append(args))
+    assert phase1_cli.main(["run", "--job-id", job["job_id"]]) == 0
+    result = _output(capsys)
+    assert result["status"] == "review_blocked" and result["reason"] == "phase1_subject_research_artifact_invalid"
+    assert not called and store.status(job["job_id"])["state"] == "FAILED"

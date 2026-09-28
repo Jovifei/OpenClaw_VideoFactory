@@ -334,6 +334,60 @@ def _subject_media_root(job: dict[str, Any]) -> Path | None:
     return candidate
 
 
+def _subject_research_artifact(store: CandidateStore, job: dict[str, Any]) -> Path:
+    """Resolve and revalidate the exact research artifact bound during planning."""
+
+    job_id = str(job["job_id"])
+    root = _subject_root(job_id).resolve()
+    records = [item for item in store.artifacts(job_id) if item.get("artifact_type") == "research_brief"]
+    if len(records) != 1:
+        raise FactoryContractError(
+            "phase1_subject_research_artifact_invalid",
+            "A subject delivery requires exactly one planning-bound research artifact.",
+            {"reason": "count", "count": len(records)},
+        )
+    record = records[0]
+    raw_relative = str(record.get("relative_path", ""))
+    candidate = (PROJECT_ROOT / Path(*raw_relative.replace("\\", "/").split("/"))).resolve()
+    expected = (root / "research_brief.json").resolve()
+    try:
+        candidate.relative_to(root)
+    except ValueError as exc:
+        raise FactoryContractError(
+            "phase1_subject_research_artifact_invalid",
+            "The planning-bound research artifact escapes the subject input root.",
+            {"reason": "path"},
+        ) from exc
+    if candidate != expected or candidate.is_symlink() or not candidate.is_file():
+        raise FactoryContractError(
+            "phase1_subject_research_artifact_invalid",
+            "The planning-bound research artifact is missing or not canonical.",
+            {"reason": "missing_or_noncanonical"},
+        )
+    if hashlib.sha256(candidate.read_bytes()).hexdigest() != str(record.get("sha256", "")):
+        raise FactoryContractError(
+            "phase1_subject_research_artifact_invalid",
+            "The planning-bound research artifact hash changed before delivery.",
+            {"reason": "sha256_mismatch"},
+        )
+    request = _read_json_object(root / "topic_request.json")
+    raw = _read_json_object(candidate)
+    research = build_research_brief(
+        topic=str(raw.get("topic", "")),
+        sources=raw.get("sources", []),
+        facts=raw.get("facts", []),
+        comparables=raw.get("comparables", []),
+        editorial_contract=raw.get("editorial_contract"),
+    )
+    if research["topic"] != request["subject"] or research["topic_digest"] != str(job["metadata"].get("topic_digest", "")):
+        raise FactoryContractError(
+            "phase1_subject_research_artifact_invalid",
+            "The planning-bound research no longer matches the subject job.",
+            {"reason": "topic_or_digest_mismatch"},
+        )
+    return candidate
+
+
 def _subject_cancelled(store: CandidateStore, job_id: str) -> bool:
     return store.status(job_id)["state"] == "CANCELLED"
 
@@ -371,6 +425,10 @@ def _run_subject_delivery(store: CandidateStore, job: dict[str, Any]) -> dict[st
     root = _subject_root(job_id)
     request_path = root / "topic_request.json"
     try:
+        research_path = _subject_research_artifact(store, job)
+    except FactoryContractError as exc:
+        return _subject_blocked(store, job_id, exc.code)
+    try:
         topic = _read_json_object(request_path)
     except Exception:
         return _subject_blocked(store, job_id, "phase1_subject_topic_request_invalid")
@@ -396,7 +454,7 @@ def _run_subject_delivery(store: CandidateStore, job: dict[str, Any]) -> dict[st
                 advanced = store.advance(job_id, "RENDERING", reason="subject_media_started")
                 _project_if_subject(store, advanced)
             try:
-                run_subject_media(SubjectMediaRequest(root / "director_script.json", root / "scene_plan.json", request_path, media_root, root / "research_brief.json"))
+                run_subject_media(SubjectMediaRequest(root / "director_script.json", root / "scene_plan.json", request_path, media_root, research_path))
                 store.complete_stage_attempt(job_id, "RENDERING", render_attempt, "passed", {"media_root": _subject_metadata_path(media_root), "evidence_kind": "real_media_required"})
             except Exception:
                 try:

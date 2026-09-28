@@ -95,7 +95,8 @@
     "I2C": {
       "restoration": "EXHAUSTED",
       "qualification": "SUBJECT_ROUTE_PREFLIGHT_READY_NO_MEDIA",
-      "candidate003": "BLOCKED_PENDING_REMOTE_REVIEW"
+      "candidate003": "BLOCKED_PENDING_REMOTE_REVIEW",
+      "audio_wiring": "READY_FOR_REMOTE_REVIEW_NO_MEDIA"
     },
     "lifecycle": "PASS_REVALIDATED",
     "boundary": "PASS_PRELIGHT",
@@ -126,7 +127,7 @@
       "Flash exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED",
       "FreeRTOS exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED"
     ],
-    "i2c": "Remote review of source-bound subject route preflight and shared audio adapter; only a later explicit authorization may create one new I2C candidate via subject path.",
+    "i2c": "Remote review LR3 artifact binding and real CLI adapter invocation; only then consider one new unique subject-path I2C candidate.",
     "after_human_approval": "Run only the topic-specific read-only prereview or exactly one newly authorized topic candidate; do not cross-unlock topics.",
     "formal_gate": "Remain NOT_RUN until all four topic slots have final machine evidence, exact-SHA human review and prereview."
   },
@@ -157,5 +158,13 @@
     "full_render": false,
     "candidate003_authorized": false,
     "source_aligned_audio_adapter": "PRESENT_NO_PRODUCTION_MEDIA_RUN"
+  },
+  "i2c_subject_audio_wiring": {
+    "status": "I2C_SUBJECT_AUDIO_WIRING_READY_FOR_REMOTE_REVIEW",
+    "report": "reports/phase1/stage_20260928/i2c_subject_audio_wiring_repair.json",
+    "media_run": false,
+    "candidate003_authorized": false,
+    "research_artifact_binding": "SHA_AND_TOPIC_FAIL_CLOSED",
+    "source_id_normalization": "PASS"
   }
 }

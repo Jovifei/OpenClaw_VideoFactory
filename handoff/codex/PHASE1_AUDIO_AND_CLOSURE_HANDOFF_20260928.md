@@ -489,3 +489,36 @@ independent review. Candidate003 may be considered only after remote accepts
 the route proof and explicitly authorizes one new subject-path candidate. Keep
 CAN exact-SHA human review, Flash/FreeRTOS audio approvals, all prereviews,
 final contracts and Formal Gate unchanged and pending.
+
+## WP-LR3 subject-audio production wiring — remote iteration 35
+
+Remote iteration 35 accepted the LR2 visual/planning evidence but found one
+remaining production boundary before Candidate003: subject delivery must
+resolve the exact SQLite-registered research artifact, verify its path/SHA/topic
+identity, and pass that artifact into the shared source-aligned audio adapter.
+Candidate001/002 remain terminal; Candidate003 and all media remain
+unauthorized.
+
+The bounded repair must:
+
+- resolve the single `research_brief` artifact registered for the job;
+- require `subject_root/research_brief.json` inside the subject root, regular
+  and non-symlink;
+- recompute and compare its SHA to the SQLite artifact record;
+- verify topic and digest identity against `topic_request.json` and job metadata;
+- pass the exact path as `SubjectMediaRequest.research_brief`;
+- map subject source `id` to shared factual `source_id` and verify all fact
+  references resolve.
+
+Add a real CLI orchestration regression that stops before TTS/render/media while
+proving the bound request argument and artifact hash. The current isolated
+adapter test is not sufficient by itself; this boundary test is the remaining
+gate.
+
+### LR3 NEXT_EXPECTED_STEP
+
+Execute only the no-media wiring repair, create
+`reports/phase1/stage_20260928/i2c_subject_audio_wiring_repair.json` with
+RED/GREEN evidence, rerun focused suites and Phase 1 acceptance, push the
+bounded commit, and return for independent remote review. Do not create
+Candidate003, run create-topic, or enter any human/prereview/Gate state.

@@ -49,6 +49,17 @@ def test_shared_narration_claim_contract_accepts_i2c_source_facts(tmp_path: Path
     assert {item["fact_id"] for item in result["checks"]} == {"open_drain", "rise_time", "sink_current"}
 
 
+def test_shared_narration_claim_contract_rejects_contradictory_i2c_prose(tmp_path: Path) -> None:
+    script_path, _, _, research = _i2c_plan(tmp_path)
+    script = json.loads(script_path.read_text(encoding="utf-8"))
+    script["beats"][1]["narration"] = "I2C使用推挽输出，不需要上拉电阻。"
+    factual = phase1_subject_audio.build_subject_audio_factual_brief(research)
+    import pytest
+
+    with pytest.raises(ValueError, match="narration_fact_claim_missing"):
+        validate_narration_claims(script, factual)
+
+
 def test_subject_source_aligned_adapter_persists_manifest_and_integrity_without_render(
     tmp_path: Path, monkeypatch
 ) -> None:
@@ -100,6 +111,8 @@ def test_subject_source_aligned_adapter_persists_manifest_and_integrity_without_
     persisted = json.loads(result["audio_integrity_path"].read_text(encoding="utf-8"))
     loaded = load_manifest(result["manifest_path"], drafts_root=result["timing_root"])
     assert captured["factual_brief"]["facts"][0]["fact_id"] == "open_drain"
+    assert {item["source_id"] for item in captured["factual_brief"]["sources"]} == {"nxp_um10204", "ti_slva689"}
+    assert all(source_id in {item["source_id"] for item in captured["factual_brief"]["sources"]} for fact in captured["factual_brief"]["facts"] for source_id in fact["source_ids"])
     assert captured["storyboard"]["globals"]["transition_mode"] == "technical_cut"
     assert manifest["source_aligned_narration"] is True
     assert manifest["voice"]["source_kind"] == "shared_source_aligned_narration"

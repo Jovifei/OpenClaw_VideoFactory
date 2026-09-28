@@ -100,11 +100,31 @@ def build_subject_audio_factual_brief(research: Mapping[str, Any]) -> dict[str, 
                 "source_ids": [str(value) for value in fact.get("source_ids", [])],
             }
         )
+    source_values: list[dict[str, Any]] = []
+    source_ids: set[str] = set()
+    for source in research.get("sources", []):
+        if not isinstance(source, Mapping):
+            raise ValueError("subject_audio_research_source_invalid")
+        source_id = str(source.get("id", "")).strip()
+        if not source_id or source_id in source_ids:
+            raise ValueError("subject_audio_research_source_id_invalid")
+        source_ids.add(source_id)
+        source_values.append(
+            {
+                "source_id": source_id,
+                "title": str(source.get("title", source_id)),
+                "publisher": str(source.get("publisher", source.get("title", source_id))),
+                "url": str(source.get("url", "")),
+                "kind": str(source.get("kind", "primary_source")),
+            }
+        )
+    if any(source_id not in source_ids for fact in mapped for source_id in fact["source_ids"]):
+        raise ValueError("subject_audio_research_source_unresolved")
     return {
         "schema_version": "1.0",
         "topic": str(research.get("topic", "")),
         "topic_digest": str(research.get("topic_digest", "")),
-        "sources": list(research.get("sources", [])),
+        "sources": source_values,
         "facts": mapped,
     }
 

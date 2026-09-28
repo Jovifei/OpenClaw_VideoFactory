@@ -3063,7 +3063,7 @@ Formal Gate are prohibited.
 - [x] Write `i2c_subject_route_preflight.json`, refresh inventory/handoff and
   run focused subject/I2C/audio tests, acceptance tests, Remotion contracts,
   compile checks, diff check and independent local review.
-- [ ] Commit and push the bounded repair/evidence package, then return the
+- [x] Commit and push the bounded repair/evidence package, then return the
   exact HEAD to remote GPT for independent audit and next-stage authorization.
 
 Review: `EXECUTED_NO_FULL_RENDER_READY_FOR_REMOTE_REVIEW`. The isolated
@@ -3072,3 +3072,27 @@ TechnicalExplainer stills passed, and the shared audio adapter is covered by
 no-render tests. Candidate001/002 remain terminal; Candidate003 is not
 authorized. The only remaining local action is commit/push, followed by
 independent remote audit.
+
+## PHASE1-WP-LR3-I2C-SUBJECT-AUDIO-WIRING-20260929 — remote iteration 35
+
+Remote iteration 35 accepted the LR2 visual/planning route and found one
+remaining production-wiring gap before Candidate003: subject delivery must
+resolve the exact SQLite-registered research artifact, verify SHA/topic
+identity, and pass it into the source-aligned audio adapter. Candidate001/002
+remain terminal; no media or Candidate003 is authorized.
+
+- [x] Add a bounded LR3 change request and preserve the exact remote boundary.
+- [x] Resolve the planning-bound research artifact from the job artifact table,
+  fail closed on missing/path/hash/topic mismatch, and pass it to
+  `SubjectMediaRequest`.
+- [x] Normalize subject sources `id -> source_id` in the shared factual adapter
+  and verify every fact source reference resolves.
+- [x] Add a real CLI orchestration regression proving the bound artifact reaches
+  the adapter before TTS/render/media, with an injected stop before media.
+- [x] Add RED/GREEN wiring evidence, rerun focused subject/audio/I2C,
+  acceptance, compile and diff checks, then commit/push for remote audit.
+
+Review: `EXECUTED_NO_MEDIA_READY_FOR_REMOTE_REVIEW`. The real CLI boundary now
+resolves and hashes the planning-bound research artifact, passes it into the
+source-aligned adapter, and fails closed on tampering. Candidate003 remains
+unauthorized.

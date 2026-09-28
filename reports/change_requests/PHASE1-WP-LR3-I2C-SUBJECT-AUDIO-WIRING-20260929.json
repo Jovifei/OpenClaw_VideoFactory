@@ -1,0 +1,50 @@
+{
+  "id": "PHASE1-WP-LR3-I2C-SUBJECT-AUDIO-WIRING-20260929",
+  "date": "2026-09-29",
+  "baseline_commit": "839d115fa8d94518f3c64c93a6dad5130658eff5",
+  "authorization": "Remote GPT iteration 35 accepted LR2 visual/planning evidence and authorized no-media production-wiring closure only.",
+  "scope": "Resolve the exact SQLite-registered subject research artifact, verify its path/SHA/topic identity, pass it through the real phase1_cli subject delivery boundary into SubjectMediaRequest, and normalize source IDs for the shared audio factual adapter.",
+  "allowed_paths": [
+    "src/factory/phase1_cli.py",
+    "src/factory/phase1_subject_audio.py",
+    "tests/phase1_local/test_phase1_subject_cli.py",
+    "tests/phase1_local/test_phase1_subject_audio.py",
+    "tests/video/test_phase1_subject_media.py",
+    "reports/phase1/stage_20260928/i2c_subject_audio_wiring_repair.json",
+    "reports/change_requests/PHASE1-WP-LR3-I2C-SUBJECT-AUDIO-WIRING-20260929.json",
+    "reports/phase1/stage_20260928/topic_only_v1_provisional_inventory.json",
+    "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
+    "tasks/todo.md"
+  ],
+  "forbidden": [
+    "Candidate001 retry/resume/mutation",
+    "Candidate002 retry/resume/mutation",
+    "Candidate003",
+    "create-topic",
+    "TTS",
+    "render",
+    "MP4/WAV/media output",
+    "human decision",
+    "prereview",
+    "final regression",
+    "final boundary audit",
+    "Formal Gate",
+    "Phase 2",
+    "Feishu",
+    "Cron",
+    "publication"
+  ],
+  "remote_review": {
+    "iteration": 35,
+    "head_reviewed": "839d115fa8d94518f3c64c93a6dad5130658eff5",
+    "result": "I2C_SUBJECT_ROUTE_VISUAL_PASS_AUDIO_PRODUCTION_WIRING_INCOMPLETE",
+    "candidate003": "NOT_AUTHORIZED",
+    "new_media": "NOT_AUTHORIZED",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "terminal_candidates": {
+    "candidate001": "job-b4a2e8e851268bc14e5e4a15",
+    "candidate002": "job-b1a186b7b265c2ed46b7c3cb"
+  },
+  "status": "AUTHORIZED_NO_MEDIA_WIRING_REPAIR_IN_PROGRESS"
+}
