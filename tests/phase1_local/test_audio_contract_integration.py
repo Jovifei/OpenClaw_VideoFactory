@@ -93,6 +93,10 @@ def test_outer_job_persists_shared_audio_integrity_evidence_without_rendering(
             "rewrite_count": 0,
             "passes": [{"objective_audio_integrity": integrity}],
             "objective_audio_integrity": integrity,
+            "original_script_sha256": "original-script-sha",
+            "final_script_sha256": "final-script-sha",
+            "final_timeline_sha256": "final-timeline-sha",
+            "final_srt_sha256": "final-srt-sha",
         }
 
     monkeypatch.setattr(narration_timing, "plan_source_aligned_narration", fake_plan_source_aligned_narration)

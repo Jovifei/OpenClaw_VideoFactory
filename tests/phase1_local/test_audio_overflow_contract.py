@@ -93,6 +93,27 @@ def test_objective_audio_integrity_rejects_truncation_or_non_silent_tail(
         audio_planner._verify_complete_aligned_segment(raw, aligned, scene_id="s01")
 
 
+def test_align_complete_segments_rejects_scene_reordering_and_duplicate_identity(tmp_path: Path) -> None:
+    segments = (
+        {"scene_id": "s02", "audio_path": str(tmp_path / "s02.wav"), "actual_duration": 1.0},
+        {"scene_id": "s01", "audio_path": str(tmp_path / "s01.wav"), "actual_duration": 1.0},
+    )
+    timeline = {"transition_mode": "technical_cut", "scenes": [{"scene_id": "s01"}, {"scene_id": "s02"}]}
+    with pytest.raises(audio_planner.AudioNarrationIntegrityError, match="scene_identity_mismatch"):
+        audio_planner.align_complete_segments(
+            segments, timeline, output_dir=tmp_path / "aligned", output_path=tmp_path / "audio.wav"
+        )
+
+
+def test_align_complete_segments_rejects_xfade_endpoint_ambiguity(tmp_path: Path) -> None:
+    segment = {"scene_id": "s01", "audio_path": str(tmp_path / "s01.wav"), "actual_duration": 1.0}
+    timeline = {"transition_mode": "xfade", "scenes": [{"scene_id": "s01"}]}
+    with pytest.raises(audio_planner.AudioNarrationIntegrityError, match="transition_mode_not_supported"):
+        audio_planner.align_complete_segments(
+            (segment,), timeline, output_dir=tmp_path / "aligned", output_path=tmp_path / "audio.wav"
+        )
+
+
 def test_review_package_rejects_overflow_evidence(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     work = tmp_path / "job"
     work.mkdir()
@@ -178,6 +199,36 @@ def test_review_package_rejects_source_aligned_without_objective_integrity() -> 
         review_package._validate_evidence_documents(
             run_report=run_report,
             render_report=render_report,
+            timeline={"scenes": [{}]},
+            job_id="phase1_modbus",
+            scene_count=1,
+        )
+
+
+def test_review_package_rejects_source_aligned_without_segment_integrity() -> None:
+    run_report = {
+        "job_id": "phase1_modbus",
+        "status": "success",
+        "audio_plan": {
+            "mode": "tts",
+            "source_aligned_narration": True,
+            "segments_count": 1,
+            "segments": [{
+                "actual_duration": 1.0,
+                "allocated_scene_duration": 1.2,
+                "scene_duration": 1.0,
+                "overflow": False,
+            }],
+        },
+        "narration_alignment": {
+            "mode": "source_aligned_measured_tts",
+            "objective_audio_integrity": {"status": "passed"},
+        },
+    }
+    with pytest.raises(FactoryContractError, match="phase1_review_narration_incomplete"):
+        review_package._validate_evidence_documents(
+            run_report=run_report,
+            render_report={"subtitle": {"present": True, "mode": "burned_in", "cue_count": 1}, "mascot": {"mode": "off"}},
             timeline={"scenes": [{}]},
             job_id="phase1_modbus",
             scene_count=1,

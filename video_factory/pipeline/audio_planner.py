@@ -291,6 +291,17 @@ def align_complete_segments(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if len(segments) != len(timeline_doc.get("scenes", [])):
         raise ValueError("narration_scene_count_mismatch")
+    if str(timeline_doc.get("transition_mode", "technical_cut")) != "technical_cut":
+        raise AudioNarrationIntegrityError("timeline", "transition_mode_not_supported")
+    expected_scene_ids = [str(scene.get("scene_id", "")) for scene in timeline_doc.get("scenes", [])]
+    actual_scene_ids = [str(segment.get("scene_id", "")) for segment in segments]
+    if (
+        any(not scene_id for scene_id in expected_scene_ids + actual_scene_ids)
+        or len(set(expected_scene_ids)) != len(expected_scene_ids)
+        or len(set(actual_scene_ids)) != len(actual_scene_ids)
+        or actual_scene_ids != expected_scene_ids
+    ):
+        raise AudioNarrationIntegrityError("segments", "scene_identity_mismatch")
     aligned: list[dict] = []
     paths: list[Path] = []
     aligned_pcm_parts: list[bytes] = []

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import json
 import re
 from typing import Any
 from pathlib import Path
@@ -36,6 +37,11 @@ _FREERTOS_COMPACT_NARRATION = (
     "ISR 保持短小；共享资源和状态机修改交给任务。",
     "先判断上下文；ISR 用 FromISR 交棒；Mutex、优先级继承和共享状态都回到任务。",
 )
+
+
+def _canonical_sha256(value: Any) -> str:
+    encoded = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 _FACT_ANCHORS: dict[str, tuple[tuple[str, ...], ...]] = {
     "flash_erase_sequence": (("手册", "解锁", "发起"),),
@@ -169,6 +175,7 @@ def plan_source_aligned_narration(
 
     current_script = copy.deepcopy(script)
     current_storyboard = copy.deepcopy(storyboard)
+    original_script_sha256 = _canonical_sha256(script)
     validate_narration_claims(current_script, factual_brief)
     passes: list[dict[str, Any]] = []
     rewrite_count = 0
@@ -238,5 +245,9 @@ def plan_source_aligned_narration(
             "rewrite_count": rewrite_count,
             "passes": passes,
             "objective_audio_integrity": aligned["integrity"],
+            "original_script_sha256": original_script_sha256,
+            "final_script_sha256": _canonical_sha256(current_script),
+            "final_timeline_sha256": _canonical_sha256(allocated),
+            "final_srt_sha256": hashlib.sha256(subtitle_path.read_bytes()).hexdigest(),
         }
     raise AssertionError("source_aligned_narration_pass_exhausted")

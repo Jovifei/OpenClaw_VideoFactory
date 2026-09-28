@@ -35,6 +35,10 @@ from video_factory.pipeline.mascot import load_mascot_contract
 ROOT = Path(__file__).resolve().parent
 
 
+def _file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def load_config(path: Path) -> dict[str, Any]:
     if not path.is_file():
         raise ValueError("config_missing")
@@ -785,6 +789,10 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
             "rewrite_count": int(measured["rewrite_count"]),
             "passes": measured["passes"],
             "objective_audio_integrity": measured["objective_audio_integrity"],
+            "original_script_sha256": measured["original_script_sha256"],
+            "final_script_sha256": measured["final_script_sha256"],
+            "final_timeline_sha256": measured["final_timeline_sha256"],
+            "final_srt_sha256": measured["final_srt_sha256"],
         }
     else:
         audio_plan = plan_audio(
@@ -809,6 +817,32 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
     t4 = time.perf_counter()
     srt_path = work_dir / "subtitle.srt"
     captions = build_srt_from_timeline(tl_doc, srt_path, composition=composition)
+    if narration_alignment is not None:
+        artifact_hashes = {
+            "script_sha256": _file_sha256(work_dir / "script.json"),
+            "timeline_sha256": _file_sha256(work_dir / "timeline.json"),
+            "srt_sha256": _file_sha256(srt_path),
+            "audio_sha256": _file_sha256(Path(str(audio_plan.path))),
+        }
+        narration_alignment["artifact_hashes"] = artifact_hashes
+        audio_integrity_doc = {
+            "schema_version": "phase1_audio_integrity_v1",
+            "objective": narration_alignment["objective_audio_integrity"],
+            "artifact_hashes": artifact_hashes,
+            "segments": [
+                {
+                    "scene_id": segment.get("scene_id"),
+                    "raw_audio_sha256": segment.get("raw_audio_sha256"),
+                    "aligned_audio_sha256": segment.get("aligned_audio_sha256"),
+                    "audio_integrity": segment.get("audio_integrity"),
+                }
+                for segment in audio_plan.segments
+            ],
+        }
+        audio_integrity_path = work_dir / "audio_integrity.json"
+        write_json(audio_integrity_path, audio_integrity_doc)
+        narration_alignment["audio_integrity_ref"] = "audio_integrity.json"
+        narration_alignment["audio_integrity_sha256"] = _file_sha256(audio_integrity_path)
     t_sub = round(time.perf_counter() - t4, 3)
 
     # --- Stage G: Render ---
@@ -911,6 +945,7 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
             "mode": audio_plan.mode,
             "loop": audio_plan.loop,
             "fallback_reason": audio_plan.fallback_reason,
+            "source_aligned_narration": bool(audio_cfg.get("source_aligned_narration", False)),
             "path": str(audio_plan.path) if audio_plan.path else None,
             "segments_count": len(audio_plan.segments),
             "segments": [dict(segment) for segment in audio_plan.segments],
@@ -962,6 +997,7 @@ _PHASE1_OWNED_FILES = {
     "run_report.json",
     "render_manifest.json",
     "audio_manifest.json",
+    "audio_integrity.json",
     "quality_report.json",
     "review_package.json",
     "review_checklist.md",

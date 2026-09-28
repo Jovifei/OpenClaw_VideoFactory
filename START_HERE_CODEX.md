@@ -1,6 +1,6 @@
 # START HERE — OpenClaw VideoFactory current execution entry
 
-Updated: 2026-09-05
+Updated: 2026-09-28
 
 > 新 Agent 先读本文件。历史 P0/Feishu/OAuth/Gateway 调试记录仍保留在 `reports/`、`runbook/` 和 Git 历史，但**当前产品主线是 Phase 1 本地视频工厂**。不要从旧任务编号推断当前阶段。
 
