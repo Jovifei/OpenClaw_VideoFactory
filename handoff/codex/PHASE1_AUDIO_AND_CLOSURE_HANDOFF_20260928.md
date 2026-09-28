@@ -364,3 +364,33 @@ The provisional inventory keeps I2C blocked and records the exact failure.
 The failure is terminal under the iteration-31 authorization. Do not retry this
 job or silently edit the frozen brief. The next action is remote review of the
 digest-contract defect and a new bounded remediation/authorization decision.
+
+## WP-LR1 digest provenance repair — remote iteration 32
+
+Remote iteration 32 accepted the failed I2C Candidate001 as terminal and
+authorized no-media digest provenance repair only. The execution contract is
+consistent: `build_local_plan()` hashes `normalize_topic(topic)` directly. The
+failure came from carrying the historical research digest `ceda09b...` into the
+new executable brief.
+
+The historical research file remains byte-identical at SHA
+`fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21`. A small
+materializer, `scripts/phase1_i2c_brief_materializer.py`, now rebuilds the
+current executable brief with digest
+`dcc85f8913bc9bd6b1f3c049537745745f21b37a9fb4ff971bc91e1017948d00`, preserving
+the three fact IDs and two source IDs. The repaired brief is
+`examples/phase1_subject_i2c/phase1_local_brief_9x16_repaired.json` with SHA
+`f355b5161be0783a89bde0ccf7c121ac7135491593b4d3b3270c90f3dba90926`.
+
+RED/GREEN evidence is in
+`reports/phase1/stage_20260928/i2c_digest_contract_repair.json`:
+
+- the stale brief is rejected with `topic_digest_mismatch`;
+- the repaired brief passes `load_local_brief()` and `build_local_plan()`;
+- the plan retains `open_drain`, `rise_time`, `sink_current`, both source IDs,
+  and the 1080×1920/30fps 9:16 profile;
+- focused provenance tests pass 2/2; no create-topic, run, TTS or media ran.
+
+The failed job `job-b4a2e8e851268bc14e5e4a15` remains terminal and must never be
+retried or mutated. Candidate002/new I2C media remains unauthorized pending
+remote review of this repair.

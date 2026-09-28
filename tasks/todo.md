@@ -3015,3 +3015,13 @@ Review: `WP_K_CONTRACTS_FROZEN_NO_MEDIA`. Remote iteration 30 accepted WP-J6 and
 - [ ] Verify focused I2C/phase1_local, phase1_acceptance, relevant registry/video, compile and diff checks plus an independent local read-only audit.
 
 Review: `CHANGES_REQUIRED_WP_L_INPUT_DIGEST`. The one authorized I2C candidate reached `ASSETS`, entered `RENDERING`, then failed before media output because the frozen local brief's factual digest did not match the current execution contract. Candidate001 is frozen as failed; remote remediation is required before any further run. CAN remains frozen, Flash/FreeRTOS audio gates remain pending, and final regression/boundary/manifest/Formal Gate remain prohibited.
+
+## PHASE1-WP-LR1-DIGEST-PROVENANCE-20260928 — remote iteration 32
+
+- [x] LR1: Preserve `examples/phase1_subject_i2c/research_brief.json` and its original SHA; do not rewrite historical evidence.
+- [x] LR2: Add the smallest deterministic I2C materializer that computes executable `factual_brief.topic_digest` from `normalize_topic(topic)` using the current execution rule, while preserving facts, sources, 9:16 profile and I2C lineage.
+- [x] LR3: Generate a repaired executable brief as a new input path; keep the stale L0 brief unchanged for RED evidence.
+- [x] LR4: Add no-media RED/GREEN tests: stale `ceda09b...` brief is rejected with `topic_digest_mismatch`; repaired brief loads and `build_local_plan()` passes with the current digest, exact fact IDs/source bindings, technical-cut and 1080x1920/30fps profile.
+- [x] LR5: Write `i2c_digest_contract_repair.json` with failed job/runtime brief SHA, stale digest, recomputed digest, historical source hash, repaired brief hash, RED/GREEN results and `media_run=false`; push for independent remote review.
+
+Review: `I2C_DIGEST_CONTRACT_REPAIR_READY_FOR_REMOTE_REVIEW`. Failed job `job-b4a2e8e851268bc14e5e4a15` remains terminal; same-job retry, Candidate002 media and Formal Gate are not authorized.
