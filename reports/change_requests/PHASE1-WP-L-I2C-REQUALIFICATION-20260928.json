@@ -1,0 +1,106 @@
+{
+  "id": "PHASE1-WP-L-I2C-REQUALIFICATION-20260928",
+  "date": "2026-09-28",
+  "baseline_commit": "ba3507e877181a8ca66e825186554a5380542885",
+  "authorization": "Remote GPT iteration 31 authorized exactly one fresh I2C requalification outer candidate after accepting WP-K1 through WP-K5.",
+  "scope": "Use the accepted corrected 9:16 I2C source-bound visual lineage with the current source-aligned narration and objective audio-integrity production path; create one unique I2C control job, run it exactly once, and qualify machine evidence only.",
+  "frozen_inputs": {
+    "research_brief": {
+      "path": "examples/phase1_subject_i2c/research_brief.json",
+      "sha256": "fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21",
+      "topic": "I2C总线为什么要上拉电阻",
+      "fact_refs": ["open_drain", "rise_time", "sink_current"]
+    },
+    "accepted_visual_lineage": {
+      "source_report": "reports/phase1/i2c_visual_correction_014.json",
+      "source_report_sha256": "5d9e3541c715b367cea92d243e8aadb1bcaf9477afa34e9c5979c034dd431ccc",
+      "generator": "remotion/src/TechnicalExplainer.tsx",
+      "generator_sha256": "987ef6ab0efc76670919f2dc9466332b515fa2228992df796ee8d19a342d3f74",
+      "aspect_ratio": "9:16",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "visual_contract": "i2c_bus_v1",
+      "labels": ["SDA", "SCL", "START", "ADDRESS", "ACK/NACK", "DATA", "STOP"]
+    },
+    "audio_contract": {
+      "source_aligned_narration": true,
+      "rewrite_policy": "no_generic_rewrite",
+      "transition_mode": "technical_cut",
+      "duration_seconds_min": 25,
+      "duration_seconds_max": 60
+    },
+    "superseded_historical_candidate": {
+      "control_job_id": "job-876a5f89973bbaf8deadbeef",
+      "attempt_id": "attempt_006_9x16_subject",
+      "expected_mp4_sha256": "cf1c0220853c7de06c5f821c48824a49e35fc770ad19ba4edaa5460cff652568",
+      "selection": "superseded_unverifiable_not_parent_candidate"
+    }
+  },
+  "allowed_paths": [
+    "examples/phase1_subject_i2c/phase1_local_brief_9x16.json",
+    "reports/change_requests/PHASE1-WP-L-I2C-REQUALIFICATION-20260928.json",
+    "reports/phase1/stage_20260928/i2c_requalification_candidate001_review.json",
+    "reports/phase1/stage_20260928/topic_only_v1_provisional_inventory.json",
+    "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
+    "tasks/todo.md",
+    "scripts/phase1_i2c_candidate_audit.py"
+  ],
+  "forbidden": [
+    "historical candidate reconstruction",
+    "historical runtime identity reuse",
+    "retry",
+    "resume",
+    "second I2C candidate",
+    "Candidate002",
+    "human decision creation",
+    "I2C prereview",
+    "CAN prereview",
+    "Flash or FreeRTOS render",
+    "final regression contract",
+    "final boundary audit",
+    "final acceptance manifest",
+    "Formal Gate",
+    "Phase 2",
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "publication",
+    "unapproved model/node/download",
+    "atempo",
+    "generic narration rewrite",
+    "Owner-main mutation",
+    "historical evidence rewrite"
+  ],
+  "stop_if": [
+    "narration exceeds 60 seconds or cannot satisfy the current planner without a new rewrite",
+    "audio overflow, trimming, PCM mismatch or endpoint drift",
+    "SQLite/package/artifact hash mismatch",
+    "wrong profile, codec or full-decode failure",
+    "I2C semantic inversion or geometry collision",
+    "retry/resume/second candidate would be required",
+    "runtime artifact mutation outside the one authorized job"
+  ],
+  "remote_review": {
+    "iteration": 31,
+    "head_reviewed": "ba3507e877181a8ca66e825186554a5380542885",
+    "result": "WP_K_CONTRACT_FREEZE_ACCEPTED",
+    "fresh_i2c_candidate": "ONE_AUTHORIZED",
+    "new_media": "ONE_I2C_CANDIDATE_ONLY",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "execution_binding": {
+    "control_job_id": "job-b4a2e8e851268bc14e5e4a15",
+    "idempotency_key": "phase1-i2c-requalification-candidate001-20260928",
+    "created_state": "NEW",
+    "attempt": 0,
+    "brief_runtime_path": "state/phase1_local/inputs/ceda09b09634e435b4856c2d4fef1484262d638e3c616c6f92696bfeac81c7a4.json",
+    "brief_runtime_sha256": "b31fb7e7d0d602990116f7004658c99063d78d94701fc50576213987f6e7d5d9",
+    "run_authorization": "one_run_only_after_this_frozen_change_request"
+  },
+  "status": "frozen_before_run",
+  "expected_pass_state": "I2C_MACHINE_REVIEW_READY",
+  "human_gate_after_pass": "HUMAN_VIDEO_REVIEW_PENDING",
+  "prereview_after_pass": "NOT_RUN"
+}

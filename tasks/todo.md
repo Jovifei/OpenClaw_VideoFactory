@@ -3005,3 +3005,13 @@ Review: `READINESS_CONTRACTS_PASS_HUMAN_DECISIONS_PENDING`. Remote iteration 29 
 - [x] Verify JSON/schema assertions, focused acceptance tests, compile checks, diff check, and an independent local read-only review; keep Candidate001 frozen and all human decisions pending.
 
 Review: `WP_K_CONTRACTS_FROZEN_NO_MEDIA`. Remote iteration 30 accepted WP-J6 and authorized only no-media WP-K1 through WP-K5. The four closure contracts, I2C decision dossier, provisional inventory and handoff are complete; verification passed. New media, human decisions, I2C rerender/requalification, and Formal Gate remain prohibited.
+
+## PHASE1-WP-L-I2C-REQUALIFICATION-20260928 — remote iteration 31
+
+- [ ] L0: Freeze the canonical I2C research brief, corrected 9:16 source-bound visual lineage, fact refs, render profile, source-aligned audio contract and superseded historical candidate identity in a bounded change request.
+- [ ] L1: Run exactly one fresh I2C `create-topic` followed by one `run` from the reviewed `ba3507e...` lineage; no retry, resume or second candidate.
+- [ ] L2: Verify authentic SQLite `PENDING_REVIEW`, attempt 0, normal events, package/artifact hashes, 1080x1920/30fps H.264/AAC, 25–60s full decode, objective PCM/audio endpoint contract, technical-cut frame pairs and whole-video I2C semantics.
+- [ ] L3: If all machine checks pass, freeze `I2C_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING`, update the provisional inventory and handoff, and leave prereview/Formal Gate untouched. If any check fails, freeze the single failure and return for remote remediation; do not create Candidate002.
+- [ ] Verify focused I2C/phase1_local, phase1_acceptance, relevant registry/video, compile and diff checks plus an independent local read-only audit.
+
+Review: `PENDING_WP_L_EXECUTION`. Remote iteration 31 authorized exactly one bounded I2C requalification candidate; CAN remains frozen, Flash/FreeRTOS audio gates remain pending, and final regression/boundary/manifest/Formal Gate remain prohibited.
