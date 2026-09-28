@@ -166,6 +166,7 @@ def plan_source_aligned_narration(
     """Authoritative production helper shared by proof and outer job paths."""
 
     from .audio_planner import (
+        AudioNarrationIntegrityError,
         NarrationDurationBudgetError,
         allocate_scene_durations,
         align_complete_segments,
@@ -181,6 +182,8 @@ def plan_source_aligned_narration(
     rewrite_count = 0
     for pass_index in range(2):
         timeline = compile_storyboard(current_storyboard, registry, repo_root=Path(repo_root))
+        if str(timeline.get("transition_mode", "")) != "technical_cut":
+            raise AudioNarrationIntegrityError("timeline", "technical_cut_required")
         raw_dir = Path(work_dir) / f"narration_pass_{pass_index}" / "raw"
         segments = synthesize_tts_segments(timeline, work_dir=raw_dir, voice=voice, provider=provider)
         raw_total = round(sum(float(segment["actual_duration"]) for segment in segments), 3)

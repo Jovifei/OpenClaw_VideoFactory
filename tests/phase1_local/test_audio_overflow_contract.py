@@ -114,6 +114,14 @@ def test_align_complete_segments_rejects_xfade_endpoint_ambiguity(tmp_path: Path
         )
 
 
+def test_align_complete_segments_requires_explicit_technical_cut(tmp_path: Path) -> None:
+    segment = {"scene_id": "s01", "audio_path": str(tmp_path / "s01.wav"), "actual_duration": 1.0}
+    with pytest.raises(audio_planner.AudioNarrationIntegrityError, match="transition_mode_not_supported"):
+        audio_planner.align_complete_segments(
+            (segment,), {"scenes": [{"scene_id": "s01"}]}, output_dir=tmp_path / "aligned", output_path=tmp_path / "audio.wav"
+        )
+
+
 def test_review_package_rejects_overflow_evidence(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     work = tmp_path / "job"
     work.mkdir()

@@ -274,6 +274,10 @@ def _validate_source_aligned_artifacts(
     persisted_hashes = audio_integrity.get("artifact_hashes")
     if not isinstance(hashes, dict) or not isinstance(persisted_hashes, dict) or hashes != persisted_hashes:
         raise _fail("phase1_review_narration_incomplete", "Source-aligned artifact hashes are missing or inconsistent.", "audio_integrity.artifact_hashes")
+    for field in ("original_script_sha256", "final_script_sha256", "final_timeline_sha256", "final_srt_sha256"):
+        value = alignment.get(field)
+        if not isinstance(value, str) or not re.fullmatch(r"[a-f0-9]{64}", value):
+            raise _fail("phase1_review_narration_incomplete", "Source-aligned script/timeline hash evidence is missing.", f"run_report.narration_alignment.{field}")
     expected = {
         "script_sha256": work_dir / "script.json",
         "timeline_sha256": work_dir / "timeline.json",
@@ -292,6 +296,20 @@ def _validate_source_aligned_artifacts(
     objective = audio_integrity.get("objective")
     if not _objective_audio_integrity_is_complete(objective):
         raise _fail("phase1_review_narration_incomplete", "Persisted objective audio-integrity evidence is incomplete.", "audio_integrity.objective")
+    run_segments = ((run_report.get("audio_plan") or {}).get("segments"))
+    persisted_segments = audio_integrity.get("segments")
+    if not isinstance(run_segments, list) or not isinstance(persisted_segments, list) or len(run_segments) != len(persisted_segments):
+        raise _fail("phase1_review_narration_incomplete", "Persisted segment integrity evidence is incomplete.", "audio_integrity.segments")
+    for index, (run_segment, persisted_segment) in enumerate(zip(run_segments, persisted_segments), start=1):
+        if not isinstance(run_segment, dict) or not isinstance(persisted_segment, dict):
+            raise _fail("phase1_review_narration_incomplete", "Persisted segment integrity evidence is invalid.", f"audio_integrity.segments.{index}")
+        if (
+            persisted_segment.get("scene_id") != run_segment.get("scene_id")
+            or persisted_segment.get("raw_audio_sha256") != run_segment.get("raw_audio_sha256")
+            or persisted_segment.get("aligned_audio_sha256") != run_segment.get("aligned_audio_sha256")
+            or persisted_segment.get("audio_integrity") != run_segment.get("audio_integrity")
+        ):
+            raise _fail("phase1_review_narration_incomplete", "Persisted segment integrity evidence does not match the run report.", f"audio_integrity.segments.{index}")
     try:
         timeline = json.loads((work_dir / "timeline.json").read_text(encoding="utf-8"))
         expected_endpoint = float(timeline["total_duration_seconds"])
