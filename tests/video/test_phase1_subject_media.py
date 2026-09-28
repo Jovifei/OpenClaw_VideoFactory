@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pytest
 
+from src.factory import phase1_subject_media
 from src.factory.phase1_subject_media import SubjectMediaRequest, run_subject_media, validate_ready_reports, validate_timing_coverage
 from src.factory.phase1_topic import build_director_script, build_research_brief, build_scene_plan, build_topic_request
 from video_factory.pipeline import validation
@@ -135,3 +136,35 @@ def test_subject_media_failure_writes_sanitized_stage_evidence(monkeypatch: pyte
     assert failure["failed_stage"] == "timing" and "C:/private" not in json.dumps(failure)
     assert not (workdir/"jianying_manifest.json").exists()
     assert not (workdir / "subject_media_result.json").exists()
+
+
+def test_subject_media_source_bound_route_uses_shared_audio_adapter_before_media(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    request_value = build_topic_request(subject="看门狗", duration=30, aspect="9:16")
+    research = build_research_brief(
+        topic="看门狗",
+        sources=[{"id": "s1", "url": "https://example.com/a", "title": "a", "kind": "official_document"}, {"id": "s2", "url": "https://example.com/b", "title": "b", "kind": "research_paper"}],
+        facts=[{"id": "f1", "claim": "看门狗检测失去响应。", "source_ids": ["s1"]}],
+    )
+    script_value = build_director_script(request_value, research, {"script": "看门狗检测失去响应。"})
+    plan_value = build_scene_plan(script_value, research)
+    script = _write(tmp_path / "script.json", script_value)
+    plan = _write(tmp_path / "plan.json", plan_value)
+    topic = _write(tmp_path / "topic.json", request_value)
+    research_path = _write(tmp_path / "research.json", research)
+    skill = tmp_path / "skill"; (skill / "scripts").mkdir(parents=True); (skill / "scripts" / "jy_wrapper.py").write_text("", encoding="utf-8")
+    called: list[object] = []
+
+    def adapter(**kwargs: object) -> dict[str, object]:
+        called.append(kwargs)
+        raise RuntimeError("shared-adapter-called-before-media")
+
+    monkeypatch.setattr(phase1_subject_media, "build_subject_source_aligned_audio", adapter)
+    workdir = Path("E:/Claude_allow/Download") / f"subject-media-adapter-{uuid.uuid4().hex}"
+    with pytest.raises(RuntimeError, match="shared-adapter-called-before-media"):
+        run_subject_media(
+            SubjectMediaRequest(script, plan, topic, workdir, research_path),
+            skill_root=skill,
+            media_python=Path("E:/project/OpenClaw_VideoFactory/.venv/Scripts/python.exe"),
+        )
+    assert called and called[0]["research"] == json.loads(research_path.read_text(encoding="utf-8"))
+    assert not list(workdir.glob("*.mp4"))

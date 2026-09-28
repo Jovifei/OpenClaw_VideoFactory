@@ -396,7 +396,7 @@ def _run_subject_delivery(store: CandidateStore, job: dict[str, Any]) -> dict[st
                 advanced = store.advance(job_id, "RENDERING", reason="subject_media_started")
                 _project_if_subject(store, advanced)
             try:
-                run_subject_media(SubjectMediaRequest(root / "director_script.json", root / "scene_plan.json", request_path, media_root))
+                run_subject_media(SubjectMediaRequest(root / "director_script.json", root / "scene_plan.json", request_path, media_root, root / "research_brief.json"))
                 store.complete_stage_attempt(job_id, "RENDERING", render_attempt, "passed", {"media_root": _subject_metadata_path(media_root), "evidence_kind": "real_media_required"})
             except Exception:
                 try:

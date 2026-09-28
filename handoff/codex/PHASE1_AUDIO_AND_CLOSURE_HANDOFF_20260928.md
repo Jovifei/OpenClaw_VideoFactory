@@ -428,3 +428,64 @@ source-bound lineage. This is recorded in
 No MP4, review package, audio-integrity artifact or human decision exists;
 Candidate001 remains terminal and Candidate003 is forbidden. Do not retry
 Candidate002 until remote review authorizes the exact route repair.
+
+## WP-LR2 subject-route integration — remote iteration 34
+
+Remote iteration 34 independently accepted Candidate002's terminal failure as
+a route mismatch. The local-brief deterministic fallback selected generic
+Modbus/Flash registry assets and emitted no I2C visual specs. Candidate001
+(`job-b4a2e8e851268bc14e5e4a15`) and Candidate002
+(`job-b1a186b7b265c2ed46b7c3cb`) remain immutable terminal failures;
+Candidate003, full media, prereview and Formal Gate remain unauthorized.
+
+The canonical route is now explicitly:
+
+```text
+create-subject
+→ attach-research (examples/phase1_subject_i2c/research_brief.json)
+→ run --plan-only
+→ source-bound director script / scene plan
+→ TechnicalExplainer i2c_bus_v1
+```
+
+No-render route evidence is in
+`reports/phase1/stage_20260928/i2c_subject_route_preflight.json`:
+
+- isolated non-candidate plan-only job `job-d0ad2349f3a61c8250603737` reached
+  `ASSETS` without TTS, MP4, WAV, MP3 or AAC output;
+- canonical research SHA remains
+  `fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21`;
+- three fact-bound scenes emit `i2c_bus_v1` for
+  `open_drain`, `rise_time`, and `sink_current`;
+- labels are exactly `SDA/SCL/START/ADDRESS/ACK/NACK/DATA/STOP`;
+- bounded Remotion still evidence is `PASS_BOUNDED_STILL_ONLY` at 1080x1920,
+  30fps; no `renderMedia` or MP4 was created;
+- technical-cut boundaries are contiguous in the still timing contract only.
+
+Verification on the current worktree: the focused subject/I2C/audio/video set
+passes `102`; `tests/phase1_acceptance` passes `24`; compileall, diff check,
+Remotion typecheck and Remotion contracts pass. The broader schema test was
+not counted because its ignored `dist/story_demo/timeline.json` fixture is
+absent in this isolated worktree (93 passed plus 7 fixture setup errors when
+that file-dependent module is included).
+
+The smallest source-aligned audio adapter is
+`src/factory/phase1_subject_audio.py`. It reuses
+`plan_source_aligned_narration()` and maps subject research facts into the
+shared validator; I2C anchors were added to that shared validation table. The
+subject media path now receives `research_brief`, uses the adapter before any
+media stage, emits runtime `audio_integrity.json`, and binds the optional
+integrity artifact into the subject receipt/package when a media candidate is
+later authorized. Adapter and route regressions are in
+`tests/phase1_local/test_phase1_subject_audio.py`,
+`tests/video/test_phase1_subject_media.py` and
+`tests/video/test_i2c_semantic_visual.py`. The current preflight intentionally
+does not claim production PCM evidence because full media is not authorized.
+
+### Current NEXT_EXPECTED_STEP
+
+Return exact pushed HEAD and the WP-LR2 reports/tests to remote GPT for
+independent review. Candidate003 may be considered only after remote accepts
+the route proof and explicitly authorizes one new subject-path candidate. Keep
+CAN exact-SHA human review, Flash/FreeRTOS audio approvals, all prereviews,
+final contracts and Formal Gate unchanged and pending.

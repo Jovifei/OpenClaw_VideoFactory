@@ -4,7 +4,7 @@
   "slots": {
     "flash_watchdog": "PENDING_AUDIO_APPROVAL",
     "freertos_mutex": "PENDING_AUDIO_APPROVAL",
-    "i2c": "I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION",
+    "i2c": "I2C_SUBJECT_ROUTE_PREFLIGHT_READY_NO_MEDIA/CANDIDATE003_BLOCKED",
     "distinct_live_topic": "LIVE_CAN_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING",
     "lifecycle": "PASS_REVALIDATED",
     "boundary": "PASS_PRELIGHT",
@@ -51,12 +51,12 @@
     "remote_machine_review": "PASS"
   },
   "remote_review": {
-    "iteration": 30,
-    "head_reviewed": "4028236a61a4a329427eaf27edb846d89a44f751",
-    "result": "WP_J6_ACCEPTED",
-    "new_media": "NOT_AUTHORIZED",
+    "iteration": 34,
+    "head_reviewed": "e51b45b0050b2e20b23fb874cb70ef82aa1e3e9a",
+    "result": "CANDIDATE002_FAILURE_ACCEPTED_ROUTE_MISMATCH_CONFIRMED",
+    "new_media": "NOT_AUTHORIZED_UNTIL_ROUTE_PROOF",
     "human_decisions": "PENDING",
-    "i2c_rerender": "NOT_AUTHORIZED",
+    "i2c_candidate003": "NOT_AUTHORIZED",
     "formal_gate": "NOT_AUTHORIZED"
   },
   "remote_review_history": [
@@ -69,6 +69,11 @@
       "iteration": 30,
       "head_reviewed": "4028236a61a4a329427eaf27edb846d89a44f751",
       "result": "WP_J6_ACCEPTED"
+    },
+    {
+      "iteration": 34,
+      "head_reviewed": "e51b45b0050b2e20b23fb874cb70ef82aa1e3e9a",
+      "result": "CANDIDATE002_FAILURE_ACCEPTED_ROUTE_MISMATCH_CONFIRMED"
     }
   ],
   "closure_graph": {
@@ -88,8 +93,9 @@
       "fresh_video": "BLOCKED_BY_HUMAN_AUDIO"
     },
     "I2C": {
-      "restoration": "EXHAUSTED_OR_IN_PROGRESS",
-      "qualification": "BLOCKED"
+      "restoration": "EXHAUSTED",
+      "qualification": "SUBJECT_ROUTE_PREFLIGHT_READY_NO_MEDIA",
+      "candidate003": "BLOCKED_PENDING_REMOTE_REVIEW"
     },
     "lifecycle": "PASS_REVALIDATED",
     "boundary": "PASS_PRELIGHT",
@@ -120,7 +126,7 @@
       "Flash exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED",
       "FreeRTOS exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED"
     ],
-    "i2c": "Await a separate remote authorization decision before any fresh requalification job.",
+    "i2c": "Remote review of source-bound subject route preflight and shared audio adapter; only a later explicit authorization may create one new I2C candidate via subject path.",
     "after_human_approval": "Run only the topic-specific read-only prereview or exactly one newly authorized topic candidate; do not cross-unlock topics.",
     "formal_gate": "Remain NOT_RUN until all four topic slots have final machine evidence, exact-SHA human review and prereview."
   },
@@ -134,5 +140,22 @@
     "final_regression_contract": "reports/phase1/stage_20260928/final_regression_contract.json",
     "final_boundary_contract": "reports/phase1/stage_20260928/final_boundary_contract.json",
     "i2c_decision": "reports/phase1/stage_20260928/i2c_requalification_decision.json"
+  },
+  "i2c_subject_route_preflight": {
+    "status": "I2C_SUBJECT_ROUTE_PREFLIGHT_READY_FOR_REMOTE_REVIEW",
+    "report": "reports/phase1/stage_20260928/i2c_subject_route_preflight.json",
+    "plan_only_job_id": "job-d0ad2349f3a61c8250603737",
+    "plan_only_job_is_non_candidate": true,
+    "scene_plan_visual_spec": "i2c_bus_v1",
+    "fact_ids": [
+      "open_drain",
+      "rise_time",
+      "sink_current"
+    ],
+    "aspect_ratio": "9:16",
+    "still_evidence": "PASS_BOUNDED_STILL_ONLY",
+    "full_render": false,
+    "candidate003_authorized": false,
+    "source_aligned_audio_adapter": "PRESENT_NO_PRODUCTION_MEDIA_RUN"
   }
 }

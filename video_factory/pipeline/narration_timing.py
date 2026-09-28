@@ -56,6 +56,11 @@ _FACT_ANCHORS: dict[str, tuple[tuple[str, ...], ...]] = {
     "can_bitwise_arbitration": (("节点", "逐位"), ("回读", "读到"), ("仲裁", "失败")),
     "can_identifier_priority": (("标识符", "ID"), ("更低", "低"), ("dominant", "优先")),
     "can_nondestructive_arbitration": (("失败节点", "失败者"), ("停止", "退出"), ("获胜", "继续")),
+    # Source-bound I2C subject route.  These anchors validate the existing
+    # editorial claims; they do not authorize a fixture-specific rewrite.
+    "open_drain": (("I2C",), ("开漏", "开漏输出"), ("拉低",), ("上拉", "高电平")),
+    "rise_time": (("上升沿",), ("总线电容", "电容"), ("上拉电阻", "电阻"), ("过大", "来不及", "有效高")),
+    "sink_current": (("低电平灌电流", "灌电流"), ("过小", "拉低能力"), ("两端", "阻值")),
 }
 
 _FACT_CONTRADICTIONS: dict[str, tuple[re.Pattern[str], ...]] = {

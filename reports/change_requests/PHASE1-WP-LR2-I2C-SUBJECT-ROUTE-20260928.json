@@ -1,0 +1,124 @@
+{
+  "id": "PHASE1-WP-LR2-I2C-SUBJECT-ROUTE-20260928",
+  "date": "2026-09-28",
+  "baseline_commit": "e51b45b0050b2e20b23fb874cb70ef82aa1e3e9a",
+  "authorization": "Remote GPT iteration 34 accepted Candidate002 as a terminal route-mismatch failure and authorized no-full-render subject-route proof plus the smallest source-aligned audio integration repair if required.",
+  "scope": "Use the existing create-subject -> attach-research -> run --plan-only source-bound editorial route for I2C; prove the i2c_bus_v1 plan and bounded visual/timeline evidence; integrate the existing shared measured narration/objective PCM contract only where the subject media adapter lacks it.",
+  "canonical_inputs": {
+    "research_path": "examples/phase1_subject_i2c/research_brief.json",
+    "research_sha256_must_remain": "fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21",
+    "subject": "I2C总线为什么要上拉电阻",
+    "aspect_ratio": "9:16",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "fact_ids": [
+      "open_drain",
+      "rise_time",
+      "sink_current"
+    ],
+    "required_labels": [
+      "SDA",
+      "SCL",
+      "START",
+      "ADDRESS",
+      "ACK/NACK",
+      "DATA",
+      "STOP"
+    ],
+    "visual_spec_kind": "i2c_bus_v1",
+    "transition_mode": "technical_cut",
+    "full_render": false
+  },
+  "route": {
+    "create_subject": true,
+    "attach_research": true,
+    "run_plan_only": true,
+    "plan_only_job_is_non_candidate": true,
+    "generic_local_brief_route": "FORBIDDEN_AS_I2C_VISUAL_AUTHORITY"
+  },
+  "allowed_paths": [
+    "src/factory/phase1_subject_audio.py",
+    "src/factory/phase1_subject_media.py",
+    "src/factory/phase1_cli.py",
+    "src/factory/phase1_topic.py (only if a real planning defect is proven)",
+    "scripts/phase1_i2c_subject_route_preflight.py",
+    "scripts/render_i2c_subject_stills.mjs",
+    "tests/phase1_local/test_phase1_subject_cli.py",
+    "tests/phase1_local/test_phase1_subject_audio.py",
+    "tests/video/test_i2c_semantic_visual.py",
+    "tests/video/test_phase1_subject_media.py",
+    "tests/phase1_local/test_audio_contract_integration.py",
+    "reports/phase1/stage_20260928/i2c_subject_route_preflight.json",
+    "reports/change_requests/PHASE1-WP-LR2-I2C-SUBJECT-ROUTE-20260928.json",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md"
+  ],
+  "forbidden": [
+    "mutate or retry I2C Candidate001 job-b4a2e8e851268bc14e5e4a15",
+    "mutate or retry I2C Candidate002 job-b1a186b7b265c2ed46b7c3cb",
+    "Candidate003",
+    "full MP4 render or media candidate",
+    "I2C-specific deterministic local-brief branch",
+    "generic AssetSelector I2C special case",
+    "generic narration rewrite",
+    "human decision creation",
+    "prereview",
+    "final regression contract",
+    "final boundary audit",
+    "final manifest",
+    "Formal Gate",
+    "Phase 2",
+    "Feishu",
+    "Cron",
+    "publication",
+    "unapproved downloads"
+  ],
+  "stop_if": [
+    "canonical historical research bytes or SHA change",
+    "plan lacks i2c_bus_v1 on every fact-bound I2C scene",
+    "fact-ref union differs from open_drain/rise_time/sink_current",
+    "generic Modbus or Flash registry assets become semantic authority",
+    "source-aligned objective PCM adapter cannot prove fail-closed integrity",
+    "any full render or new candidate would be required"
+  ],
+  "excluded_candidates": {
+    "candidate001": {
+      "control_job_id": "job-b4a2e8e851268bc14e5e4a15",
+      "status": "FAILED_TERMINAL",
+      "retry": "FORBIDDEN"
+    },
+    "candidate002": {
+      "control_job_id": "job-b1a186b7b265c2ed46b7c3cb",
+      "status": "FAILED_TERMINAL_ROUTE_MISMATCH",
+      "retry": "FORBIDDEN"
+    }
+  },
+  "remote_review": {
+    "iteration": 34,
+    "head_reviewed": "e51b45b0050b2e20b23fb874cb70ef82aa1e3e9a",
+    "result": "CANDIDATE002_FAILURE_ACCEPTED_ROUTE_MISMATCH_CONFIRMED",
+    "candidate003": "NOT_AUTHORIZED",
+    "media": "NOT_AUTHORIZED_UNTIL_ROUTE_PROOF",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "status": "EXECUTED_NO_FULL_RENDER_READY_FOR_REMOTE_REVIEW",
+  "evidence": {
+    "route_report": "reports/phase1/stage_20260928/i2c_subject_route_preflight.json",
+    "route_report_status": "I2C_SUBJECT_ROUTE_PREFLIGHT_READY_FOR_REMOTE_REVIEW",
+    "plan_only_job_id": "job-d0ad2349f3a61c8250603737",
+    "plan_only_state": "ASSETS",
+    "plan_only_non_candidate": true,
+    "stills": "PASS_BOUNDED_STILL_ONLY",
+    "full_render": false,
+    "candidate003_authorized": false,
+    "focused_tests": "102 passed",
+    "phase1_acceptance": "24 passed",
+    "compileall": "PASS",
+    "remotion_typecheck": "PASS",
+    "remotion_contracts": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "next_remote_action": "Independently audit exact pushed HEAD, source-bound I2C plan/stills, shared audio adapter and terminal candidate exclusions; authorize at most one new subject-path Candidate003 only if route proof is accepted."
+}

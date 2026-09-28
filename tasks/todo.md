@@ -3034,3 +3034,41 @@ Review: `I2C_DIGEST_CONTRACT_REPAIR_ACCEPTED_CANDIDATE002_AUTHORIZED`. Failed jo
 - [ ] Preserve Candidate001 terminal failure unchanged; keep CAN frozen, Flash/FreeRTOS audio gates pending, final contracts and Formal Gate prohibited.
 
 Review: `CHANGES_REQUIRED_I2C_CANDIDATE002_ROUTE`. Candidate002 is terminal failed with no media; the current executable local-brief route does not select the accepted I2C visual lineage. Remote remediation is required before any further run or Candidate003.
+
+## PHASE1-WP-LR2-I2C-SUBJECT-ROUTE-20260928 — remote iteration 34
+
+Remote iteration 34 accepted Candidate002's terminal failure and identified a
+route mismatch: the local-brief deterministic fallback selected generic
+Modbus/Flash registry assets and emitted no `i2c_bus_v1` visual specs. The
+canonical I2C route is the existing `create-subject -> attach-research ->
+run --plan-only` source-bound editorial path. Candidate001 and Candidate002
+remain immutable terminal failures; Candidate003, full media, prereview and
+Formal Gate are prohibited.
+
+- [x] Freeze a bounded WP-LR2 change request with the exact remote authorization,
+  terminal candidate exclusions and allowed file scope.
+- [x] Exercise the real subject CLI route in an isolated plan-only runtime using
+  the canonical historical I2C research; prove the exact subject, source facts,
+  editorial validation, `i2c_bus_v1` specs, fact-ref union, labels and 9:16
+  profile without invoking media.
+- [x] Add only the smallest subject-route adapter needed to use the existing
+  source-aligned measured narration / objective PCM helper; no second planner,
+  no I2C-specific rewrite and no generic local-brief I2C branch.
+- [x] Add RED regressions for missing/partial `i2c_bus_v1` specs and generic
+  Modbus/Flash asset lineage; add GREEN proof for source-aligned integration
+  without a full render.
+- [x] Produce bounded 9:16 TechnicalExplainer stills and a technical-cut
+  transition probe; keep full MP4/render, Candidate003, human decisions,
+  prereview, final contracts and Formal Gate disabled.
+- [x] Write `i2c_subject_route_preflight.json`, refresh inventory/handoff and
+  run focused subject/I2C/audio tests, acceptance tests, Remotion contracts,
+  compile checks, diff check and independent local review.
+- [ ] Commit and push the bounded repair/evidence package, then return the
+  exact HEAD to remote GPT for independent audit and next-stage authorization.
+
+Review: `EXECUTED_NO_FULL_RENDER_READY_FOR_REMOTE_REVIEW`. The isolated
+subject route reached `ASSETS`, the source-bound I2C plan and bounded
+TechnicalExplainer stills passed, and the shared audio adapter is covered by
+no-render tests. Candidate001/002 remain terminal; Candidate003 is not
+authorized. The only remaining local action is commit/push, followed by
+independent remote audit.
