@@ -297,3 +297,52 @@ Verification: `PYTHONPATH=. python scripts/phase1_human_gate_readiness.py`,
 `python -m pytest -q tests/phase1_acceptance/test_phase1_acceptance.py` (13
 passed), `py_compile`, and `git diff --check` all pass. No new job, render,
 prereview, human decision, or Formal Gate was run.
+
+## WP-K closure-contract freeze — remote iteration 30
+
+Remote iteration 30 independently accepted the J6 hardening at reviewed HEAD
+`4028236a61a4a329427eaf27edb846d89a44f751` as `WP_J6_ACCEPTED`. It confirmed
+that the real `evaluate_job_prereview()` path rejects both wrong-SHA and
+wrong-control-job temporary fixtures. The limitation remains explicit: those
+synthetic fixtures use `decision=changes_required`; the eventual final audit
+must also confirm that `approved=true` cannot override a mismatched binding.
+No persisted synthetic approval is allowed.
+
+The no-media WP-K1 through WP-K5 package is now frozen in these reports:
+
+- `topic_only_v1_manifest_contract_readiness.json`:
+  `MANIFEST_CONTRACT_READY_FINAL_EVIDENCE_PENDING`. It enumerates the four
+  topic slots (Flash, FreeRTOS, I2C and CAN Candidate001), required exact-SHA
+  fields, lifecycle hashes, final-boundary requirement and negative blockers.
+- `final_regression_contract.json`:
+  `FINAL_REGRESSION_PLAN_FROZEN_NOT_RUN`. It records the exact Phase 1,
+  local, bounded-video, director, reference, video-factory, Remotion and
+  compile/diff commands. The four ignored-fixture video modules are explicitly
+  excluded from the bounded run and cannot be silently aggregated into a final
+  count.
+- `final_boundary_contract.json`:
+  `FINAL_BOUNDARY_CONTRACT_FROZEN_NOT_RUN`. `PASS_PRELIGHT` is recorded as a
+  preflight limitation and cannot substitute for a manifest-bound final audit.
+- `i2c_requalification_decision.json`:
+  `I2C_RESTORATION_EXHAUSTED_FRESH_REQUALIFICATION_IS_ONLY_VERIFIABLE_PATH`.
+  Existing runtime/worktree/owner scopes found no exact MP4/package/SQLite
+  snapshot. The report lists the minimal future requalification package but
+  does not authorize it.
+
+The provisional inventory now records CAN machine-ready/human-pending,
+independent Flash and FreeRTOS audio gates, I2C blocked, lifecycle revalidated,
+boundary preflight-only, final regression not run, manifest not ready and Formal
+Gate not run. Candidate001 remains frozen at control job
+`job-eb356764914b0d9f5ccb94ff`, video job `phase1_91c2a7cd2b692884`, MP4 SHA
+`e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af`.
+
+### Current NEXT_EXPECTED_STEP
+
+Wait for the event-driven exact-SHA human decisions. CAN `APPROVED` permits only
+the existing read-only CAN prereview; Flash or FreeRTOS `AUDIO_APPROVED` permits
+exactly one candidate for that topic; approvals never cross topics. I2C remains
+unrendered until a separate remote review authorizes the bounded requalification
+package described in K4. Once all four topic prereviews exist, run the frozen
+regression and final boundary contracts, assemble the actual manifest, perform
+the independent audit, and only then request a Formal Gate. No new media,
+prereview, human decision or Gate action is part of the current handoff.

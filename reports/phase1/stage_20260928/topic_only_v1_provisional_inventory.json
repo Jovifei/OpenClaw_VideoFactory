@@ -7,7 +7,9 @@
     "i2c": "I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION",
     "distinct_live_topic": "LIVE_CAN_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING",
     "lifecycle": "PASS_REVALIDATED",
-    "boundary": "PASS_PRELIGHT"
+    "boundary": "PASS_PRELIGHT",
+    "final_regression": "NOT_RUN",
+    "manifest": "NOT_READY"
   },
   "rejected_evidence": [
     "historical Flash truncated candidate",
@@ -30,12 +32,26 @@
     "remote_machine_review": "PASS"
   },
   "remote_review": {
-    "iteration": 27,
-    "head_reviewed": "29b8031a2afda4bde746fa9864392262d847bc8a",
-    "result": "LIVE_CAN_MACHINE_REVIEW_READY_CONFIRMED",
-    "second_can_candidate": "NOT_AUTHORIZED",
+    "iteration": 30,
+    "head_reviewed": "4028236a61a4a329427eaf27edb846d89a44f751",
+    "result": "WP_J6_ACCEPTED",
+    "new_media": "NOT_AUTHORIZED",
+    "human_decisions": "PENDING",
+    "i2c_rerender": "NOT_AUTHORIZED",
     "formal_gate": "NOT_AUTHORIZED"
   },
+  "remote_review_history": [
+    {
+      "iteration": 27,
+      "head_reviewed": "29b8031a2afda4bde746fa9864392262d847bc8a",
+      "result": "LIVE_CAN_MACHINE_REVIEW_READY_CONFIRMED"
+    },
+    {
+      "iteration": 30,
+      "head_reviewed": "4028236a61a4a329427eaf27edb846d89a44f751",
+      "result": "WP_J6_ACCEPTED"
+    }
+  ],
   "closure_graph": {
     "CAN": {
       "machine": "READY",
@@ -60,11 +76,44 @@
     "boundary": "PASS_PRELIGHT",
     "formal_gate": "NOT_RUN"
   },
+  "closure_contracts": {
+    "manifest_contract": {
+      "path": "reports/phase1/stage_20260928/topic_only_v1_manifest_contract_readiness.json",
+      "status": "MANIFEST_CONTRACT_READY_FINAL_EVIDENCE_PENDING"
+    },
+    "final_regression_contract": {
+      "path": "reports/phase1/stage_20260928/final_regression_contract.json",
+      "status": "FINAL_REGRESSION_PLAN_FROZEN_NOT_RUN"
+    },
+    "final_boundary_contract": {
+      "path": "reports/phase1/stage_20260928/final_boundary_contract.json",
+      "status": "FINAL_BOUNDARY_CONTRACT_FROZEN_NOT_RUN"
+    },
+    "i2c_requalification_decision": {
+      "path": "reports/phase1/stage_20260928/i2c_requalification_decision.json",
+      "status": "I2C_RESTORATION_EXHAUSTED_FRESH_REQUALIFICATION_IS_ONLY_VERIFIABLE_PATH",
+      "fresh_job_authorized": false
+    }
+  },
+  "next_actions": {
+    "human_events": [
+      "CAN exact-SHA APPROVED or CHANGES_REQUIRED for Candidate001",
+      "Flash exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED",
+      "FreeRTOS exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED"
+    ],
+    "i2c": "Await a separate remote authorization decision before any fresh requalification job.",
+    "after_human_approval": "Run only the topic-specific read-only prereview or exactly one newly authorized topic candidate; do not cross-unlock topics.",
+    "formal_gate": "Remain NOT_RUN until all four topic slots have final machine evidence, exact-SHA human review and prereview."
+  },
   "readiness_reports": {
     "human_gate_binding": "reports/phase1/stage_20260928/human_gate_binding_readiness.json",
     "can_prereview_contract": "reports/phase1/stage_20260928/can_prereview_contract_readiness.json",
     "flash_next_candidate": "reports/phase1/stage_20260928/flash_next_candidate_readiness.json",
     "freertos_next_candidate": "reports/phase1/stage_20260928/freertos_next_candidate_readiness.json",
-    "i2c_dossier": "reports/phase1/stage_20260928/i2c_requalification_dossier.json"
+    "i2c_dossier": "reports/phase1/stage_20260928/i2c_requalification_dossier.json",
+    "manifest_contract": "reports/phase1/stage_20260928/topic_only_v1_manifest_contract_readiness.json",
+    "final_regression_contract": "reports/phase1/stage_20260928/final_regression_contract.json",
+    "final_boundary_contract": "reports/phase1/stage_20260928/final_boundary_contract.json",
+    "i2c_decision": "reports/phase1/stage_20260928/i2c_requalification_decision.json"
   }
 }

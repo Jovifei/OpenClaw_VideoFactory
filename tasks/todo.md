@@ -2994,3 +2994,14 @@ Review: `REMOTE_MACHINE_REVIEW_ACCEPTED_HUMAN_REVIEW_PENDING`. Candidate001 is f
 - [ ] Jovi exact-SHA human review and any subsequent read-only prereview remain pending.
 
 Review: `READINESS_CONTRACTS_PASS_HUMAN_DECISIONS_PENDING`. Remote iteration 29 requested concrete wrong-SHA/wrong-job rejection coverage. The hardened readiness script and report now prove those bindings fail closed using ephemeral fixtures; focused acceptance tests remain 13 passed. No human decision, prereview, new job or media artifact was created.
+
+## PHASE1-WP-K-CLOSURE-CONTRACT-FREEZE-20260928 — remote iteration 30
+
+- [x] K1: Create `topic_only_v1_manifest_contract_readiness.json` as a readiness contract, not the final manifest; enumerate four topic slots, lifecycle refs, boundary audit binding, and fail-closed blockers for pending human/prereview/I2C/preflight/historical candidates.
+- [x] K2: Create `final_regression_contract.json` with the exact post-settlement suites and known ignored-fixture exclusions; mark the regression plan frozen but not run.
+- [x] K3: Create `final_boundary_contract.json` with the exact final boundary requirements and source/report hash binding; keep it frozen but not run and do not reuse `PASS_PRELIGHT`.
+- [x] K4: Create `i2c_requalification_decision.json` distinguishing genuinely unsearched restoration scopes from the minimal fresh requalification package; do not authorize or run an I2C job.
+- [x] K5: Refresh the provisional inventory and handoff so event-driven human gates and the later remote I2C authorization decision are the next actions; do not repeat completed J-series work.
+- [x] Verify JSON/schema assertions, focused acceptance tests, compile checks, diff check, and an independent local read-only review; keep Candidate001 frozen and all human decisions pending.
+
+Review: `WP_K_CONTRACTS_FROZEN_NO_MEDIA`. Remote iteration 30 accepted WP-J6 and authorized only no-media WP-K1 through WP-K5. The four closure contracts, I2C decision dossier, provisional inventory and handoff are complete; verification passed. New media, human decisions, I2C rerender/requalification, and Formal Gate remain prohibited.
