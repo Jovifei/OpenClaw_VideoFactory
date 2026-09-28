@@ -203,6 +203,12 @@ def _deterministic_script(
         "priority_inheritance_context",
         "short_isr_handler",
     }
+    can_arbitration_ids = {
+        "can_dominant_recessive",
+        "can_bitwise_arbitration",
+        "can_identifier_priority",
+        "can_nondestructive_arbitration",
+    }
     if flash_watchdog_ids.issubset(fact_ids):
         beat_specs = [
             {"purpose":"hook","narration":"闪存擦除不是“点一下等结果”：看门狗还在倒计时，服务窗口怎么安排？","subtitle":"擦除时看门狗怎么办？","visual_intent":"用技术图提出擦除与看门狗服务窗口的工程问题","pose":"question","required_tags":["flash_watchdog","flash_window","education","explain"],"fact_refs":[]},
@@ -218,6 +224,14 @@ def _deterministic_script(
             {"purpose":"evidence","narration":"Mutex 的优先级继承解决的是任务持锁造成的优先级反转：高优先级任务等待时，持锁任务可以临时继承更高优先级，尽快释放 Mutex。","subtitle":"优先级继承是任务语义","visual_intent":"用任务时间线说明高优先级任务等待和持锁任务临时继承优先级","pose":"measure","required_tags":["freertos","freertos_mutex_plain","priority_inheritance","education","measure"],"fact_refs":["priority_inheritance_context"]},
             {"purpose":"repair","narration":"工程上让 ISR 保持短小：取数、清标志、通知后尽快退出。共享资源访问、状态机修改和较长处理放到被唤醒的任务里。","subtitle":"短 ISR，重工作放任务","visual_intent":"把中断快速路径和任务延后处理路径分层展示","pose":"repair","required_tags":["freertos","freertos_mutex_plain","deferred_work","education","repair"],"fact_refs":["short_isr_handler"]},
             {"purpose":"summary","narration":"检查顺序很简单：先判断是不是 ISR；ISR 不等 Mutex，只用 FromISR 原语交棒；Mutex、共享状态和优先级继承都回到任务上下文。","subtitle":"先判上下文，再选同步原语","visual_intent":"总结 FreeRTOS Mutex 与 ISR 边界检查表","pose":"success","required_tags":["freertos","freertos_mutex_plain","checklist","education","summary"],"fact_refs":["mutex_task_ownership","isr_nonblocking_boundary","priority_inheritance_context","short_isr_handler"]},
+        ]
+    elif can_arbitration_ids.issubset(fact_ids):
+        beat_specs = [
+            {"purpose":"hook","narration":"两个 CAN 节点同时发送时，为什么高优先级报文不会被撞坏？","subtitle":"同时发送会不会撞坏报文？","visual_intent":"展示两个 CAN 节点同时竞争总线的工程问题","pose":"question","required_tags":["can_arbitration","dominant_recessive","education","explain"],"fact_refs":[]},
+            {"purpose":"explain","narration":"CAN 用 dominant 和 recessive 表示总线状态；dominant 位会覆盖同时出现的 recessive 位。","subtitle":"dominant 覆盖 recessive","visual_intent":"对比 CAN dominant 与 recessive 总线状态","pose":"thinking","required_tags":["can_arbitration","dominant_recessive","education","explain"],"fact_refs":["can_dominant_recessive"]},
+            {"purpose":"evidence","narration":"节点逐位发送并回读总线：如果自己发送 recessive，却读到 dominant，就判定仲裁失败。","subtitle":"逐位发送，逐位回读","visual_intent":"展示两个节点逐位比较并在冲突位发现仲裁失败","pose":"measure","required_tags":["can_arbitration","two_node_bits","education","measure"],"fact_refs":["can_bitwise_arbitration"]},
+            {"purpose":"repair","narration":"仲裁标识符按位比较，数值更低的 ID 先出现 dominant；失败节点停止发送，获胜节点继续完成报文。","subtitle":"低 ID 获胜，失败者退出","visual_intent":"展示 ID 比较、失败节点退出和获胜报文继续发送","pose":"repair","required_tags":["can_arbitration","id_compare","loser_stops","education","repair"],"fact_refs":["can_identifier_priority","can_nondestructive_arbitration"]},
+            {"purpose":"summary","narration":"记住：dominant 覆盖 recessive，节点边发边回读；低 ID 获胜，失败节点退出，获胜节点继续发送，所以仲裁是非破坏性的。","subtitle":"低 ID 获胜，报文不被破坏","visual_intent":"总结 CAN 仲裁的状态、比较、退出和非破坏结果","pose":"success","required_tags":["can_arbitration","checklist","education","summary"],"fact_refs":["can_dominant_recessive","can_bitwise_arbitration","can_identifier_priority","can_nondestructive_arbitration"]},
         ]
     else:
         fact_id = str(facts[0]["fact_id"])

@@ -202,14 +202,20 @@ lineage seal. The parallel closure audit has now produced:
   started;
 - WP-G2: `PASS` for all four lifecycle files with current SHA/schema checks;
 - WP-G3: `PASS_PRELIGHT`, not final Gate evidence;
-- WP-G4: `LIVE_TOPIC_PREFLIGHT_BLOCKED:NO_DISTINCT_TOPIC_SELECTED`;
+- WP-G4: CAN live topic `LIVE_TOPIC_PREFLIGHT_READY` after no-render source/audio preflight;
 - WP-G5: `PROVISIONAL_UNRESOLVED_NOT_GATE_READY`.
 
 Reports are under `reports/phase1/stage_20260928/`, and the reproducible runner is
-`scripts/phase1_parallel_closure_audit.py`. G1 through G5 are complete. Local Codex
-next continues without fresh Flash/FreeRTOS rendering: restore the I2C runtime
-package or obtain a separately authorized requalification, and select one distinct
-live topic for a no-render preflight. The missing I2C runtime is not permission to
-rerender. Human audio-quality decisions remain separate unresolved product gates;
+`scripts/phase1_parallel_closure_audit.py`. G1 through G5 are complete. The distinct
+live topic is now CAN arbitration: `CAN 总线仲裁为什么不会破坏高优先级报文？`.
+Its source-bound factual fixture, five deterministic diagrams and no-render
+source-aligned preflight are ready: job digest `91c2a7cd2b692884df3a7389e62c6ff4f940ddfc722b9c2edded2ba1dba17b09`,
+audio duration `51.033 s`, audio SHA
+`fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b`, objective
+integrity `PASS`, MP4/render `NOT_RUN`. The next bounded step is remote review of
+this CAN preflight and, only after that review plus the required human/product gates,
+authorization for one outer CAN candidate. Restore the I2C runtime package or obtain
+a separately authorized requalification; the missing I2C runtime is not permission
+to rerender. Human audio-quality decisions remain separate unresolved product gates;
 no fresh Flash/FreeRTOS video is authorized until the matching exact v7 SHA receives
 `AUDIO_APPROVED`.

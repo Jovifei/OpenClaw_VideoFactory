@@ -12,7 +12,7 @@ from video_factory.pipeline.validation import validate
 from src.factory.assets.pink_pig.loader import PinkPigAsset, PinkPigRegistry
 
 
-_KNOWN_TOPIC_TAGS = frozenset({"modbus_rtu", "flash_watchdog", "freertos"})
+_KNOWN_TOPIC_TAGS = frozenset({"modbus_rtu", "flash_watchdog", "freertos", "can_arbitration"})
 
 
 @dataclass(frozen=True, slots=True)

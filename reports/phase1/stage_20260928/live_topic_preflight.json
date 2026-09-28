@@ -1,11 +1,86 @@
 {
   "schema_version": "phase1_live_topic_preflight_v1",
-  "status": "LIVE_TOPIC_PREFLIGHT_BLOCKED:NO_DISTINCT_TOPIC_SELECTED",
-  "render_performed": false,
-  "contracts_checked": {
-    "local_entrypoint_sets_source_aligned_narration": true,
-    "fixture_rewrite_scope_is_flash_and_freertos_only": true,
-    "over_60_seconds_fails_closed_for_unrecognized_topic": true
+  "status": "LIVE_TOPIC_PREFLIGHT_READY",
+  "topic": "CAN 总线仲裁为什么不会破坏高优先级报文?",
+  "job_id": "phase1_91c2a7cd2b692884",
+  "topic_digest": "91c2a7cd2b692884df3a7389e62c6ff4f940ddfc722b9c2edded2ba1dba17b09",
+  "brief": "examples/phase1_local_can_arbitration/brief.json",
+  "facts": [
+    "can_dominant_recessive",
+    "can_bitwise_arbitration",
+    "can_identifier_priority",
+    "can_nondestructive_arbitration"
+  ],
+  "sources": [
+    "ti_can_intro",
+    "nxp_can_arbitration",
+    "nxp_can_blog"
+  ],
+  "assets": [
+    "pink_pig.can_arbitration_dominant_recessive.v1",
+    "pink_pig.can_arbitration_two_node_bits.v1",
+    "pink_pig.can_arbitration_id_compare.v1",
+    "pink_pig.can_arbitration_loser_stops.v1",
+    "pink_pig.can_arbitration_checklist.v1"
+  ],
+  "asset_hashes": [
+    "9321562bd81a2dc582d904051a0a6a02700d8bbc5c2dcfeeeda5f36be39627b6",
+    "b46c30249e7a1dc5222f02ee8cd7dfd9789a940096cd374c120d19dbb9530158",
+    "c0b48d584b1e72244b32412d72fcd3da593a92a64a1177cd5a6d97113598b96f",
+    "a72bb1da476e56f0b442eea48aedd6e2fb9a343c4c226e80b32701f6c51017bf",
+    "6b8092f4c9c4b749017f011f2205aab411003f7dfc0e1d62456dc385f73a283b"
+  ],
+  "rewrite_count": 0,
+  "final_duration_seconds": 51.033,
+  "srt_endpoint_seconds": 51.033,
+  "objective_audio_integrity": {
+    "status": "passed",
+    "comparison": "decoded_pcm_prefix_and_silence_tail",
+    "sample_rate": 22050,
+    "channels": 1,
+    "segments_in_order": true,
+    "scene_offsets": [
+      {
+        "scene_id": "s01",
+        "start_seconds": 0.0,
+        "end_seconds": 7.067
+      },
+      {
+        "scene_id": "s02",
+        "start_seconds": 7.067,
+        "end_seconds": 15.7
+      },
+      {
+        "scene_id": "s03",
+        "start_seconds": 15.7,
+        "end_seconds": 25.5
+      },
+      {
+        "scene_id": "s04",
+        "start_seconds": 25.5,
+        "end_seconds": 36.933
+      },
+      {
+        "scene_id": "s05",
+        "start_seconds": 36.933,
+        "end_seconds": 51.033
+      }
+    ],
+    "expected_concatenated_pcm_sha256": "407cc7e2660b0bf9daba7e87e5eb8c177f3cb6a1d331d852540a69f59ea079ae",
+    "actual_concatenated_pcm_sha256": "407cc7e2660b0bf9daba7e87e5eb8c177f3cb6a1d331d852540a69f59ea079ae",
+    "expected_endpoint_seconds": 51.033,
+    "actual_endpoint_seconds": 51.033,
+    "endpoint_delta_seconds": 1.6e-05,
+    "endpoint_tolerance_seconds": 0.05
   },
-  "next_action": "Select one distinct live topic before any final candidate run; no automatic topic choice in this package."
+  "audio_path": "E:/OpenClaw_VideoFactory_Runtime/phase1_can_arbitration_preflight_20260928/audio.wav",
+  "audio_sha256": "fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b",
+  "visual_asset_decode": "PASS",
+  "visual_asset_content_safe_area": "PASS",
+  "transition_probe": "NOT_RUN_BEFORE_RENDER",
+  "render_performed": false,
+  "mp4_created": false,
+  "transition_mode": "technical_cut",
+  "human_review": "NOT_REQUESTED",
+  "next_step": "Remote review of CAN source-bound no-render preflight; authorize one outer CAN candidate only after preflight and later human gate."
 }

@@ -5,7 +5,7 @@
     "flash_watchdog": "PENDING_AUDIO_APPROVAL",
     "freertos_mutex": "PENDING_AUDIO_APPROVAL",
     "i2c": "I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION",
-    "distinct_live_topic": "BLOCKED_NO_DISTINCT_TOPIC_SELECTED",
+    "distinct_live_topic": "LIVE_TOPIC_PREFLIGHT_READY",
     "lifecycle": "PASS_REVALIDATED",
     "boundary": "PASS_PRELIGHT"
   },
@@ -14,5 +14,14 @@
     "historical FreeRTOS truncated candidate",
     "superseded horizontal I2C candidate"
   ],
-  "formal_gate": "NOT_RUN"
+  "formal_gate": "NOT_RUN",
+  "live_topic": {
+    "topic": "CAN 总线仲裁为什么不会破坏高优先级报文？",
+    "job_id": "phase1_91c2a7cd2b692884",
+    "status": "LIVE_TOPIC_PREFLIGHT_READY",
+    "audio_sha256": "fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b",
+    "duration_seconds": 51.033,
+    "render_performed": false,
+    "human_review": "NOT_REQUESTED"
+  }
 }

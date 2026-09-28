@@ -2925,7 +2925,7 @@ is authorized by this package.
 - [x] WP-G1 exact I2C candidate audit: identify `job-876a5f89973bbaf8deadbeef` / `attempt_006_9x16_subject` / SHA `cf1c022...`; classify `I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION` without rerender.
 - [x] WP-G2 revalidate all four 2026-09-06 lifecycle JSONs: `PASS`, SHA and schema match.
 - [x] WP-G3 boundary preflight: `PASS_PRELIGHT`; Formal Gate not run.
-- [x] WP-G4 live-topic preflight: `LIVE_TOPIC_PREFLIGHT_BLOCKED:NO_DISTINCT_TOPIC_SELECTED`.
+- [x] WP-G4 live-topic preflight: CAN arbitration fixture is `LIVE_TOPIC_PREFLIGHT_READY` with 51.033s source-aligned audio and no MP4 render.
 - [x] WP-G5 provisional topic-only inventory: `PROVISIONAL_UNRESOLVED_NOT_GATE_READY`; unresolved human slots remain explicit.
 - [ ] Restore/revalidate I2C runtime package or obtain a separately authorized requalification path.
 - [ ] Select one distinct live topic and execute only its no-render preflight before any final candidate run.
@@ -2933,3 +2933,15 @@ is authorized by this package.
 Review: `PARALLEL_CLOSURE_AUDIT_COMPLETE_WITH_BLOCKERS`. Reports are in
 `reports/phase1/stage_20260928/`; no fresh video, Phase 1 Gate, Phase 2, Cron or
 publication action was performed.
+
+## PHASE1-LIVE-CAN-20260928 — WP-H0/H1 no-render preflight
+
+- [x] Select distinct topic by remote plan: `CAN 总线仲裁为什么不会破坏高优先级报文？`.
+- [x] Add verified factual brief with TI/NXP primary/vendor sources and four fact IDs.
+- [x] Add five source-specific deterministic CAN diagrams and registry hashes.
+- [x] Add CAN-specific source-bound script/fact-anchor validation and asset selection.
+- [x] Run real local TTS → measured technical-cut allocation → SRT → PCM integrity without MP4; final 51.033s, integrity `PASS`.
+- [ ] Remote review of CAN preflight before any outer candidate authorization.
+
+Review: `LIVE_TOPIC_PREFLIGHT_READY_FOR_REMOTE_REVIEW`. Human review and outer
+candidate authorization remain separate future gates; no full render was run.
