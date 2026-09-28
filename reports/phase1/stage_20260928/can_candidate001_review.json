@@ -1,0 +1,289 @@
+{
+  "schema_version": "phase1_can_candidate001_review_v1",
+  "source_commit": "7045ca6",
+  "preflight_reviewed_head": "5ceeb8e",
+  "authorization": "remote_iteration_26_one_fresh_outer_can_candidate",
+  "control_job_id": "job-eb356764914b0d9f5ccb94ff",
+  "video_job_id": "phase1_91c2a7cd2b692884",
+  "topic": "CAN 总线仲裁为什么不会破坏高优先级报文？",
+  "topic_digest": "91c2a7cd2b692884df3a7389e62c6ff4f940ddfc722b9c2edded2ba1dba17b09",
+  "runtime_locator_id": "phase1_can_candidate001_20260928",
+  "control_plane": {
+    "state": "PENDING_REVIEW",
+    "attempt": 0,
+    "event_count": 9,
+    "event_states": [
+      "NEW",
+      "RESEARCHING",
+      "SCRIPTING",
+      "VOICE",
+      "CAPTIONS",
+      "ASSETS",
+      "RENDERING",
+      "QUALITY_CHECK",
+      "PENDING_REVIEW"
+    ],
+    "terminal_event": "PENDING_REVIEW",
+    "retry_or_resume_used": false,
+    "artifacts": [
+      {
+        "artifact_type": "final_master",
+        "relative_path": "dist/phase1_local/phase1_91c2a7cd2b692884/final_master.mp4",
+        "sha256": "e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af"
+      },
+      {
+        "artifact_type": "review_package",
+        "relative_path": "dist/phase1_local/phase1_91c2a7cd2b692884/review_package.json",
+        "sha256": "cef8dc5ab243f468c7aee69b0b628f9aba25d3ca85bb7d7ba5222b1ebbd0248f"
+      }
+    ],
+    "status": "PASS"
+  },
+  "media": {
+    "relative_path": "dist/phase1_local/phase1_91c2a7cd2b692884/final_master.mp4",
+    "sha256": "e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af",
+    "review_package_sha256": "cef8dc5ab243f468c7aee69b0b628f9aba25d3ca85bb7d7ba5222b1ebbd0248f",
+    "bytes": 1812461,
+    "duration_seconds": 51.033008,
+    "duration_matches_timeline": true,
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "frame_count": 1531,
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "full_decode": "PASS"
+  },
+  "audio_timing": {
+    "source_aligned_narration": true,
+    "rewrite_count": 0,
+    "duration_seconds": 51.033,
+    "srt_endpoint_seconds": 51.033,
+    "audio_integrity_relative_path": "dist/phase1_local/phase1_91c2a7cd2b692884/audio_integrity.json",
+    "audio_integrity_sha256": "a4bbec0f4bef282d1e88f332457cb2a0b6a7ce83277da4c5abc03b277f877cb0",
+    "objective_integrity": {
+      "status": "passed",
+      "comparison": "decoded_pcm_prefix_and_silence_tail",
+      "sample_rate": 22050,
+      "channels": 1,
+      "segments_in_order": true,
+      "scene_offsets": [
+        {
+          "scene_id": "s01",
+          "start_seconds": 0.0,
+          "end_seconds": 7.067
+        },
+        {
+          "scene_id": "s02",
+          "start_seconds": 7.067,
+          "end_seconds": 15.7
+        },
+        {
+          "scene_id": "s03",
+          "start_seconds": 15.7,
+          "end_seconds": 25.5
+        },
+        {
+          "scene_id": "s04",
+          "start_seconds": 25.5,
+          "end_seconds": 36.933
+        },
+        {
+          "scene_id": "s05",
+          "start_seconds": 36.933,
+          "end_seconds": 51.033
+        }
+      ],
+      "expected_concatenated_pcm_sha256": "407cc7e2660b0bf9daba7e87e5eb8c177f3cb6a1d331d852540a69f59ea079ae",
+      "actual_concatenated_pcm_sha256": "407cc7e2660b0bf9daba7e87e5eb8c177f3cb6a1d331d852540a69f59ea079ae",
+      "expected_endpoint_seconds": 51.033,
+      "actual_endpoint_seconds": 51.033,
+      "endpoint_delta_seconds": 1.6e-05,
+      "endpoint_tolerance_seconds": 0.05
+    },
+    "status": "PASS"
+  },
+  "transition_contract": {
+    "mode": "technical_cut",
+    "transition_seconds": 0.4,
+    "hard_cut_boundaries": [
+      {
+        "boundary_index": 1,
+        "outgoing_scene_id": "s01",
+        "incoming_scene_id": "s02",
+        "boundary_seconds": 7.067,
+        "before_frame": 211,
+        "after_frame": 212,
+        "before_frame_sha256": "ade5795ebc03c1d87d0fe72897ddf2c0552201ae619bb9b63d20e78a696160d5",
+        "after_frame_sha256": "d5453dbca8ab2af95711eb68b06a225915f6e632f474766f0cc70c709d78c72d",
+        "mean_absolute_pixel_delta": 14.963,
+        "adjacent_rendered_frames_distinct": true,
+        "visual_inspection": "PASS_NO_DOUBLE_EXPOSURE_OR_BLANK_FRAME",
+        "status": "PASS"
+      },
+      {
+        "boundary_index": 2,
+        "outgoing_scene_id": "s02",
+        "incoming_scene_id": "s03",
+        "boundary_seconds": 15.7,
+        "before_frame": 470,
+        "after_frame": 471,
+        "before_frame_sha256": "f157698dda8e8ac88f74d0ff57128db01e838877c6b5ca6e45e3956674ff698e",
+        "after_frame_sha256": "ab208ff70f301746ec452b7a60a83e8f687df692441430b867b0df436e157431",
+        "mean_absolute_pixel_delta": 14.366,
+        "adjacent_rendered_frames_distinct": true,
+        "visual_inspection": "PASS_NO_DOUBLE_EXPOSURE_OR_BLANK_FRAME",
+        "status": "PASS"
+      },
+      {
+        "boundary_index": 3,
+        "outgoing_scene_id": "s03",
+        "incoming_scene_id": "s04",
+        "boundary_seconds": 25.5,
+        "before_frame": 764,
+        "after_frame": 765,
+        "before_frame_sha256": "11356660e0b05806144389821ecfda876066d2c0b43f62612227ddc5d6e0a60e",
+        "after_frame_sha256": "f3c2841dbb85d643b749f9a66bc0ac1ebccd318cbad13079f98aa2805b714d62",
+        "mean_absolute_pixel_delta": 11.461,
+        "adjacent_rendered_frames_distinct": true,
+        "visual_inspection": "PASS_NO_DOUBLE_EXPOSURE_OR_BLANK_FRAME",
+        "status": "PASS"
+      },
+      {
+        "boundary_index": 4,
+        "outgoing_scene_id": "s04",
+        "incoming_scene_id": "s05",
+        "boundary_seconds": 36.933,
+        "before_frame": 1107,
+        "after_frame": 1108,
+        "before_frame_sha256": "3c6e41fd4852655b3f654a7184cdc1c70828c2be19254199b85d56097bb8663c",
+        "after_frame_sha256": "2e3a7187450aaaabb67b7e8ff315705fb6c0cbd84d8df0f55a65ca915c40459b",
+        "mean_absolute_pixel_delta": 8.849,
+        "adjacent_rendered_frames_distinct": true,
+        "visual_inspection": "PASS_NO_DOUBLE_EXPOSURE_OR_BLANK_FRAME",
+        "status": "PASS"
+      }
+    ],
+    "xfade_used": false,
+    "status": "PASS"
+  },
+  "semantic_review": {
+    "scenes": [
+      {
+        "scene_id": "s01",
+        "asset_id": "pink_pig.can_arbitration_dominant_recessive.v1",
+        "fact_refs": [
+          "can_dominant_recessive"
+        ],
+        "visible_semantics": [
+          "dominant_overrides_recessive",
+          "bus_dominant_0"
+        ],
+        "status": "PASS"
+      },
+      {
+        "scene_id": "s02",
+        "asset_id": "pink_pig.can_arbitration_two_node_bits.v1",
+        "fact_refs": [
+          "can_dominant_recessive",
+          "can_bitwise_arbitration"
+        ],
+        "visible_semantics": [
+          "TX_recessive_BUS_dominant",
+          "losing_node_stops"
+        ],
+        "status": "PASS"
+      },
+      {
+        "scene_id": "s03",
+        "asset_id": "pink_pig.can_arbitration_id_compare.v1",
+        "fact_refs": [
+          "can_bitwise_arbitration",
+          "can_identifier_priority"
+        ],
+        "visible_semantics": [
+          "bitwise_order",
+          "lower_identifier_wins"
+        ],
+        "status": "PASS"
+      },
+      {
+        "scene_id": "s04",
+        "asset_id": "pink_pig.can_arbitration_loser_stops.v1",
+        "fact_refs": [
+          "can_identifier_priority",
+          "can_nondestructive_arbitration"
+        ],
+        "visible_semantics": [
+          "loser_stops_at_arbitration",
+          "winner_continues_same_frame"
+        ],
+        "status": "PASS"
+      },
+      {
+        "scene_id": "s05",
+        "asset_id": "pink_pig.can_arbitration_checklist.v1",
+        "fact_refs": [
+          "can_dominant_recessive",
+          "can_bitwise_arbitration",
+          "can_identifier_priority",
+          "can_nondestructive_arbitration"
+        ],
+        "visible_semantics": [
+          "lossless_arbitration_checklist",
+          "winner_frame_intact"
+        ],
+        "status": "PASS"
+      }
+    ],
+    "frame_probe": {
+      "runtime_locator_id": "phase1_can_candidate001_20260928",
+      "scene_midpoint_frames": [
+        100,
+        340,
+        600,
+        900,
+        1300
+      ],
+      "cut_boundary_frame_pairs": [
+        [
+          211,
+          212
+        ],
+        [
+          470,
+          471
+        ],
+        [
+          764,
+          765
+        ],
+        [
+          1107,
+          1108
+        ]
+      ],
+      "contact_sheets": [
+        "scene_midpoints.png",
+        "cut_boundaries.png"
+      ],
+      "method": "FFmpeg frame extraction plus Codex read-only visual inspection",
+      "status": "PASS_BOUNDED_WHOLE_VIDEO_SEMANTIC_INSPECTION"
+    },
+    "status": "PASS"
+  },
+  "quality_report_status": "passed",
+  "independent_read_only_audit": {
+    "status": "PASS_READ_ONLY_LOCAL",
+    "scope": [
+      "SQLite state/events/artifacts",
+      "package hashes",
+      "ffprobe/full decode",
+      "PCM integrity",
+      "adjacent rendered cut frames",
+      "five-scene semantic frame inspection"
+    ],
+    "remote_review": "PENDING"
+  },
+  "final_status": "LIVE_CAN_MACHINE_REVIEW_READY"
+}
