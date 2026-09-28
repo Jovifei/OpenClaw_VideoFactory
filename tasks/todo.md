@@ -2990,6 +2990,7 @@ Review: `REMOTE_MACHINE_REVIEW_ACCEPTED_HUMAN_REVIEW_PENDING`. Candidate001 is f
 - [x] Freeze `flash_next_candidate_readiness.json` and `freertos_next_candidate_readiness.json` as `READY_PENDING_EXACT_AUDIO_APPROVAL`; no create-topic or render was run.
 - [x] Record `i2c_requalification_dossier.json` as analysis-only; restoration search is exhausted in allowed scopes, old audio-contract compatibility is not provable, and no I2C job is authorized.
 - [x] Refresh the provisional closure graph with CAN/Flash/FreeRTOS/I2C dependencies and keep the final manifest/Formal Gate blocked.
+- [x] Harden the prereview binding evidence with ephemeral wrong-SHA and wrong-job negative fixtures; both reject with `human_review_not_approved` and are discarded without creating a decision.
 - [ ] Jovi exact-SHA human review and any subsequent read-only prereview remain pending.
 
-Review: `READINESS_CONTRACTS_PASS_HUMAN_DECISIONS_PENDING`. Focused acceptance tests: 13 passed; no human decision, prereview, new job or media artifact was created.
+Review: `READINESS_CONTRACTS_PASS_HUMAN_DECISIONS_PENDING`. Remote iteration 29 requested concrete wrong-SHA/wrong-job rejection coverage. The hardened readiness script and report now prove those bindings fail closed using ephemeral fixtures; focused acceptance tests remain 13 passed. No human decision, prereview, new job or media artifact was created.

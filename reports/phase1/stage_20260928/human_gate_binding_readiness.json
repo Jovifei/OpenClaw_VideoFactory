@@ -15,9 +15,12 @@
     "missing_review_blocks": true,
     "malformed_review_blocks": true,
     "unresolved_review_blocks": true,
+    "wrong_sha_binding_blocks": true,
+    "wrong_job_binding_blocks": true,
     "candidate_package_status": "ready_for_human_review",
     "candidate_machine_status": "LIVE_CAN_MACHINE_REVIEW_READY"
   },
+  "negative_fixture_scope": "ephemeral_tempdir_only_discarded_not_a_human_decision",
   "human_review_status": "PENDING_EXACT_SHA_DECISION",
   "prereview_status": "BLOCKED_BY_HUMAN_REVIEW",
   "fixture_test_evidence": "tests/phase1_acceptance/test_phase1_acceptance.py"

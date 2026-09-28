@@ -281,3 +281,19 @@ The focused acceptance binding suite passed 13 tests. No human decision, prerevi
 new job, I2C requalification or media artifact was created. The next authorized
 action is Jovi's exact-SHA CAN review; once an explicit approval arrives, only the
 existing read-only CAN prereview may run for the frozen control job.
+
+### WP-J review hardening follow-up
+
+Remote iteration 29 identified one contract-test gap: the readiness evidence had
+to exercise concrete wrong-SHA and wrong-control-job review inputs, not only
+missing/malformed/unresolved inputs. The local script now creates both cases only
+inside a temporary directory, evaluates them through the real prereview binding,
+and discards them. Both report `human_review_not_approved`; no human decision file
+is persisted. The refreshed report records
+`wrong_sha_binding_blocks=true`, `wrong_job_binding_blocks=true`, and
+`negative_fixture_scope=ephemeral_tempdir_only_discarded_not_a_human_decision`.
+
+Verification: `PYTHONPATH=. python scripts/phase1_human_gate_readiness.py`,
+`python -m pytest -q tests/phase1_acceptance/test_phase1_acceptance.py` (13
+passed), `py_compile`, and `git diff --check` all pass. No new job, render,
+prereview, human decision, or Formal Gate was run.

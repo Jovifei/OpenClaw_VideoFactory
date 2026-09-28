@@ -70,6 +70,32 @@ def main() -> int:
         unresolved = temp_root / "unresolved_human_review.json"
         unresolved.write_text(json.dumps({"schema_version": "1.0", "control_job_id": CAN_JOB}, ensure_ascii=False) + "\n", encoding="utf-8")
         unresolved_report = evaluate_job_prereview(store, CAN_JOB, unresolved, project_root=ROOT)
+        wrong_sha = temp_root / "wrong_sha_changes_required.json"
+        wrong_sha.write_text(json.dumps({
+            "schema_version": "1.0",
+            "control_job_id": CAN_JOB,
+            "render_job_id": CAN_RENDER_JOB,
+            "reviewer": "synthetic-negative-fixture",
+            "decision": "changes_required",
+            "reviewed_at": "2026-09-28T00:00:00Z",
+            "reviewed_artifact_sha256": "0" * 64,
+            "checklist": {name: True for name in ["video_playable", "audio_clear", "subtitles_readable", "pink_pig_consistent", "technical_content_acceptable", "originality_acceptable"]},
+            "notes": "ephemeral negative fixture; not a human decision",
+        }, ensure_ascii=False) + "\n", encoding="utf-8")
+        wrong_sha_report = evaluate_job_prereview(store, CAN_JOB, wrong_sha, project_root=ROOT)
+        wrong_job = temp_root / "wrong_job_changes_required.json"
+        wrong_job.write_text(json.dumps({
+            "schema_version": "1.0",
+            "control_job_id": "job-000000000000000000000000",
+            "render_job_id": CAN_RENDER_JOB,
+            "reviewer": "synthetic-negative-fixture",
+            "decision": "changes_required",
+            "reviewed_at": "2026-09-28T00:00:00Z",
+            "reviewed_artifact_sha256": "e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af",
+            "checklist": {name: True for name in ["video_playable", "audio_clear", "subtitles_readable", "pink_pig_consistent", "technical_content_acceptable", "originality_acceptable"]},
+            "notes": "ephemeral negative fixture; not a human decision",
+        }, ensure_ascii=False) + "\n", encoding="utf-8")
+        wrong_job_report = evaluate_job_prereview(store, CAN_JOB, wrong_job, project_root=ROOT)
 
     candidate = json.loads((STAGE / "can_candidate001_review.json").read_text(encoding="utf-8"))
     package = json.loads((ROOT / "dist/phase1_local/phase1_91c2a7cd2b692884/review_package.json").read_text(encoding="utf-8"))
@@ -86,9 +112,12 @@ def main() -> int:
             "missing_review_blocks": "human_review_not_approved" in missing_report["blockers"],
             "malformed_review_blocks": "human_review_not_approved" in malformed_report["blockers"],
             "unresolved_review_blocks": "human_review_not_approved" in unresolved_report["blockers"],
+            "wrong_sha_binding_blocks": "human_review_not_approved" in wrong_sha_report["blockers"],
+            "wrong_job_binding_blocks": "human_review_not_approved" in wrong_job_report["blockers"],
             "candidate_package_status": package.get("status"),
             "candidate_machine_status": candidate.get("final_status"),
         },
+        "negative_fixture_scope": "ephemeral_tempdir_only_discarded_not_a_human_decision",
         "human_review_status": "PENDING_EXACT_SHA_DECISION",
         "prereview_status": "BLOCKED_BY_HUMAN_REVIEW",
         "fixture_test_evidence": "tests/phase1_acceptance/test_phase1_acceptance.py",

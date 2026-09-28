@@ -46,7 +46,7 @@
     "head_reviewed": "212b1bcffe89d58678ba53fc94fbc2674ce93ba9",
     "result": "EVIDENCE_CONTINUATION_ACCEPTED"
   },
-  "status": "executed_readiness_contracts_no_human_decisions",
+  "status": "executed_readiness_contracts_no_human_decisions_hardened",
   "evidence": [
     "reports/phase1/stage_20260928/human_gate_binding_readiness.json",
     "reports/phase1/stage_20260928/can_prereview_contract_readiness.json",
@@ -57,7 +57,13 @@
   "tests": {
     "phase1_acceptance": "13 passed",
     "readiness_assertions": "PASS",
+    "negative_binding_assertions": {
+      "wrong_sha_binding_blocks": true,
+      "wrong_job_binding_blocks": true,
+      "fixture_scope": "ephemeral_tempdir_only_discarded_not_a_human_decision"
+    },
     "human_decision_created": false,
     "prereview_executed": false
-  }
+  },
+  "follow_up": "Remote iteration 29 requested concrete wrong-SHA and wrong-job rejection coverage; the readiness script now exercises both through the real binding evaluator without persisting a decision."
 }
