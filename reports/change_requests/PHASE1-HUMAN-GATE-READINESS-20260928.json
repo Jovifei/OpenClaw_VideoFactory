@@ -46,5 +46,18 @@
     "head_reviewed": "212b1bcffe89d58678ba53fc94fbc2674ce93ba9",
     "result": "EVIDENCE_CONTINUATION_ACCEPTED"
   },
-  "status": "authorized_pending_execution"
+  "status": "executed_readiness_contracts_no_human_decisions",
+  "evidence": [
+    "reports/phase1/stage_20260928/human_gate_binding_readiness.json",
+    "reports/phase1/stage_20260928/can_prereview_contract_readiness.json",
+    "reports/phase1/stage_20260928/flash_next_candidate_readiness.json",
+    "reports/phase1/stage_20260928/freertos_next_candidate_readiness.json",
+    "reports/phase1/stage_20260928/i2c_requalification_dossier.json"
+  ],
+  "tests": {
+    "phase1_acceptance": "13 passed",
+    "readiness_assertions": "PASS",
+    "human_decision_created": false,
+    "prereview_executed": false
+  }
 }

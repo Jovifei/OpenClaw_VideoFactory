@@ -2911,9 +2911,9 @@ while the exact v7 audio decisions remain pending.
 - [x] Create `handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md`.
 - [x] Run bounded affected suites; initial independent read-only review found five blockers, which were fixed in `cf02b37` and `54cb42e`.
 - [x] Commit and push bounded WP-A/WP-B/WP-E evidence; do not render a new video in this package.
-- [ ] Return commit, tests, evidence and handoff to remote GPT for independent review and next plan.
+- [x] Return commit, tests, evidence and handoff to remote GPT for independent review and next plan; iterations 22–28 recorded the resulting audit loop.
 
-Review: `REMOTE_REVIEW_PENDING`. Objective v7 integrity audit is `PASS` for both
+Review: `REMOTE_ROUTE_ACCEPTED_AND_CONTINUED`. Objective v7 integrity audit is `PASS` for both
 topics; cached ASR is `NOT_RELIABLE_ENOUGH` and non-gating. Local bounded tests are
 focused 33, phase1_local 118, phase1_acceptance 24, and bounded video 286 passed.
 Human audio-quality decisions remain unresolved product gates. No full video render
@@ -2927,8 +2927,8 @@ is authorized by this package.
 - [x] WP-G3 boundary preflight: `PASS_PRELIGHT`; Formal Gate not run.
 - [x] WP-G4 live-topic preflight: CAN arbitration fixture is `LIVE_TOPIC_PREFLIGHT_READY` with 51.033s source-aligned audio and no MP4 render.
 - [x] WP-G5 provisional topic-only inventory: `PROVISIONAL_UNRESOLVED_NOT_GATE_READY`; unresolved human slots remain explicit.
-- [ ] Restore/revalidate I2C runtime package or obtain a separately authorized requalification path.
-- [ ] Select one distinct live topic and execute only its no-render preflight before any final candidate run.
+- [ ] Restore/revalidate I2C runtime package or obtain a separately authorized requalification path. **BLOCKED:** iteration-28 read-only exact-SHA discovery found no matching media/package/SQLite identity; no rerender is authorized.
+- [x] Select one distinct live topic and execute only its no-render preflight before any final candidate run; CAN Candidate001 subsequently completed under the separate remote WP-H2 authorization.
 
 Review: `PARALLEL_CLOSURE_AUDIT_COMPLETE_WITH_BLOCKERS`. Reports are in
 `reports/phase1/stage_20260928/`; no fresh video, Phase 1 Gate, Phase 2, Cron or
@@ -2941,10 +2941,10 @@ publication action was performed.
 - [x] Add five source-specific deterministic CAN diagrams and registry hashes.
 - [x] Add CAN-specific source-bound script/fact-anchor validation and asset selection.
 - [x] Run real local TTS → measured technical-cut allocation → SRT → PCM integrity without MP4; final 51.033s, integrity `PASS`.
-- [ ] Remote review of CAN preflight before any outer candidate authorization.
+- [x] Remote review of CAN preflight before outer candidate authorization; iteration 26 authorized exactly one candidate.
 
-Review: `LIVE_TOPIC_PREFLIGHT_READY_FOR_REMOTE_REVIEW`. Human review and outer
-candidate authorization remain separate future gates; no full render was run.
+Review: `LIVE_TOPIC_PREFLIGHT_ACCEPTED_FOR_ONE_OUTER_CANDIDATE`. Human review and
+candidate acceptance remain separate gates; the single outer run is recorded below.
 
 ## PHASE1-CAN-EVIDENCE-HYGIENE-20260928 — remote iteration 25 follow-up
 
@@ -2952,9 +2952,10 @@ candidate authorization remain separate future gates; no full render was run.
 - [x] Make the parallel closure audit preserve an already-ready CAN preflight instead of overwriting it with a stale blocked placeholder.
 - [x] Track the CAN visual preflight runner and compute source provenance, registry/file hashes, Pillow and FFmpeg decode, semantic mapping, subtitle stills, and technical-cut transition evidence.
 - [x] Regenerate the five real-subtitle stills and the no-render transition probe; keep outer render authorization `NOT_AUTHORIZED`.
-- [ ] Push the hygiene and CAN evidence commit, request independent remote audit, and record the next remote plan.
+- [x] Push the hygiene and CAN evidence commit, request independent remote audit, and record the next remote plan.
 
-Review: `LOCAL_EVIDENCE_REFRESHED_REMOTE_REVIEW_PENDING`. No MP4 render, human gate, Formal Gate, Phase 2, Cron, or publication action was performed.
+Review: `LOCAL_EVIDENCE_REFRESHED_AND_REMOTE_ACCEPTED`. No MP4 render occurred in
+this hygiene package; the later single outer candidate is tracked separately.
 
 ## PHASE1-CAN-OUTER-CANDIDATE001-20260928 — remote WP-H2 authorization
 
@@ -2964,9 +2965,11 @@ Review: `LOCAL_EVIDENCE_REFRESHED_REMOTE_REVIEW_PENDING`. No MP4 render, human g
 - [x] Verify fresh source-aligned audio integrity, 25–60s duration, no rewrite, complete PCM prefix/silence-tail evidence, and audio/SRT/timeline endpoint agreement.
 - [x] Verify H.264/AAC decode, 1920×1080/30fps/1531 frames, four real hard-cut frame-pair boundaries, and five-scene semantic/geometry review.
 - [x] Write `reports/phase1/stage_20260928/can_candidate001_review.json` with `LIVE_CAN_MACHINE_REVIEW_READY` and update the current handoff with the exact result.
-- [ ] Push the candidate evidence/handoff commit and return the exact candidate SHA to remote GPT for independent review.
+- [x] Push the candidate evidence/handoff commit and return the exact candidate SHA to remote GPT for independent review; iteration 27 accepted Candidate001 and prohibited Candidate002.
 
-Review: `LIVE_CAN_MACHINE_REVIEW_READY_REMOTE_REVIEW_PENDING`. The one-candidate authorization is consumed; no Phase 1 Gate, Phase 2, Cron, Feishu or publication action was performed.
+Review: `LIVE_CAN_MACHINE_REVIEW_READY_REMOTE_ACCEPTED_HUMAN_REVIEW_PENDING`. The
+one-candidate authorization is consumed; no Phase 1 Gate, Phase 2, Cron, Feishu or
+publication action was performed.
 
 ## PHASE1-CAN-REMOTE-ACCEPTANCE-20260928 — iteration 27 continuation
 
@@ -2978,3 +2981,15 @@ Review: `LIVE_CAN_MACHINE_REVIEW_READY_REMOTE_REVIEW_PENDING`. The one-candidate
 - [ ] Continue independent Flash/FreeRTOS v7 audio gates without authorizing fresh video until each exact SHA receives `AUDIO_APPROVED`.
 
 Review: `REMOTE_MACHINE_REVIEW_ACCEPTED_HUMAN_REVIEW_PENDING`. Candidate001 is frozen; second CAN candidate and Formal Gate are not authorized.
+
+## PHASE1-HUMAN-GATE-READINESS-20260928 — remote WP-J1/J2/J3/J4/J5
+
+- [x] Verify the existing structured human-review/prereview binding fails closed for missing, malformed and unresolved review inputs without creating a human decision.
+- [x] Record `human_gate_binding_readiness.json` as `PASS_NO_HUMAN_DECISION_CREATED`.
+- [x] Record `can_prereview_contract_readiness.json` as `READY_PENDING_HUMAN_APPROVAL`; no prereview artifact was created or executed.
+- [x] Freeze `flash_next_candidate_readiness.json` and `freertos_next_candidate_readiness.json` as `READY_PENDING_EXACT_AUDIO_APPROVAL`; no create-topic or render was run.
+- [x] Record `i2c_requalification_dossier.json` as analysis-only; restoration search is exhausted in allowed scopes, old audio-contract compatibility is not provable, and no I2C job is authorized.
+- [x] Refresh the provisional closure graph with CAN/Flash/FreeRTOS/I2C dependencies and keep the final manifest/Formal Gate blocked.
+- [ ] Jovi exact-SHA human review and any subsequent read-only prereview remain pending.
+
+Review: `READINESS_CONTRACTS_PASS_HUMAN_DECISIONS_PENDING`. Focused acceptance tests: 13 passed; no human decision, prereview, new job or media artifact was created.

@@ -35,5 +35,36 @@
     "result": "LIVE_CAN_MACHINE_REVIEW_READY_CONFIRMED",
     "second_can_candidate": "NOT_AUTHORIZED",
     "formal_gate": "NOT_AUTHORIZED"
+  },
+  "closure_graph": {
+    "CAN": {
+      "machine": "READY",
+      "human_video": "PENDING_EXACT_SHA",
+      "prereview": "BLOCKED_BY_HUMAN"
+    },
+    "Flash": {
+      "audio_machine": "PASS",
+      "human_audio": "PENDING_EXACT_SHA",
+      "fresh_video": "BLOCKED_BY_HUMAN_AUDIO"
+    },
+    "FreeRTOS": {
+      "audio_machine": "PASS",
+      "human_audio": "PENDING_EXACT_SHA",
+      "fresh_video": "BLOCKED_BY_HUMAN_AUDIO"
+    },
+    "I2C": {
+      "restoration": "EXHAUSTED_OR_IN_PROGRESS",
+      "qualification": "BLOCKED"
+    },
+    "lifecycle": "PASS_REVALIDATED",
+    "boundary": "PASS_PRELIGHT",
+    "formal_gate": "NOT_RUN"
+  },
+  "readiness_reports": {
+    "human_gate_binding": "reports/phase1/stage_20260928/human_gate_binding_readiness.json",
+    "can_prereview_contract": "reports/phase1/stage_20260928/can_prereview_contract_readiness.json",
+    "flash_next_candidate": "reports/phase1/stage_20260928/flash_next_candidate_readiness.json",
+    "freertos_next_candidate": "reports/phase1/stage_20260928/freertos_next_candidate_readiness.json",
+    "i2c_dossier": "reports/phase1/stage_20260928/i2c_requalification_dossier.json"
   }
 }

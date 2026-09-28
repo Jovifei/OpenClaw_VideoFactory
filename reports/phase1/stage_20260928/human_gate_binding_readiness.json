@@ -1,0 +1,24 @@
+{
+  "schema_version": "phase1_human_gate_binding_readiness_v1",
+  "status": "PASS_NO_HUMAN_DECISION_CREATED",
+  "candidate_bindings": {
+    "can": {
+      "control_job_id": "job-eb356764914b0d9f5ccb94ff",
+      "render_job_id": "phase1_91c2a7cd2b692884",
+      "mp4_sha256": "e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af"
+    },
+    "flash_audio_sha256": "d32e7332763c503ca4568bb55a4d3c61cb47d1b157a4d0a41f79209810a373df",
+    "freertos_audio_sha256": "313cad7ac3c4fa55678b819a57dc29d7cc8eea858c9204761b10670d2ae8fed0"
+  },
+  "no_human_decision_created": true,
+  "checks": {
+    "missing_review_blocks": true,
+    "malformed_review_blocks": true,
+    "unresolved_review_blocks": true,
+    "candidate_package_status": "ready_for_human_review",
+    "candidate_machine_status": "LIVE_CAN_MACHINE_REVIEW_READY"
+  },
+  "human_review_status": "PENDING_EXACT_SHA_DECISION",
+  "prereview_status": "BLOCKED_BY_HUMAN_REVIEW",
+  "fixture_test_evidence": "tests/phase1_acceptance/test_phase1_acceptance.py"
+}

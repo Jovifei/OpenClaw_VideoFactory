@@ -1,0 +1,23 @@
+{
+  "schema_version": "phase1_can_prereview_contract_readiness_v1",
+  "status": "READY_PENDING_HUMAN_APPROVAL",
+  "control_job_id": "job-eb356764914b0d9f5ccb94ff",
+  "render_job_id": "phase1_91c2a7cd2b692884",
+  "final_master_sha256": "e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af",
+  "required_reconciliation": [
+    "same_control_job",
+    "same_final_master_sha",
+    "same_review_package_sha",
+    "PENDING_REVIEW",
+    "audio_integrity_artifact_and_hash",
+    "quality_report",
+    "structured_human_review_approved_true"
+  ],
+  "negative_checks": {
+    "missing_review_blocks": true,
+    "malformed_review_blocks": true,
+    "unresolved_review_blocks": true,
+    "prereview_executed": false
+  },
+  "human_decision_created": false
+}
