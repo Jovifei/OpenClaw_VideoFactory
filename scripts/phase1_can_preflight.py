@@ -7,6 +7,8 @@ import json
 import sys
 from pathlib import Path
 
+from PIL import Image, ImageChops
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.factory.phase1_local import build_local_plan, load_local_brief
@@ -15,6 +17,26 @@ from video_factory.pipeline.registry import load_pink_pig_registry
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _asset_checks(paths: list[Path]) -> tuple[str, str, list[dict[str, object]]]:
+    checks: list[dict[str, object]] = []
+    for path in paths:
+        try:
+            with Image.open(path) as image:
+                image.load()
+                size = image.size
+                background = Image.new("RGB", (1490, 630), "#F4F6F8")
+                bbox = ImageChops.difference(image.convert("RGB").crop((90, 170, 1580, 800)), background).getbbox()
+            safe = bool(bbox and bbox[3] <= 590)
+            checks.append({"path": path.relative_to(ROOT).as_posix(), "decoded": True, "size": list(size), "content_bbox": list(bbox) if bbox else None, "safe_area": safe})
+        except Exception as exc:
+            checks.append({"path": path.relative_to(ROOT).as_posix(), "decoded": False, "error": type(exc).__name__})
+    return (
+        "PASS" if checks and all(item.get("decoded") and item.get("size") == [1672, 941] for item in checks) else "FAIL",
+        "PASS" if checks and all(item.get("safe_area") is True for item in checks) else "FAIL",
+        checks,
+    )
 
 
 def main() -> int:
@@ -37,6 +59,8 @@ def main() -> int:
     )
     final_pass = result["passes"][-1]
     audio = Path(result["audio_path"])
+    asset_paths = [ROOT / str(selection["relative_path"]) for selection in plan["asset_selection"]["selections"]]
+    visual_decode, visual_safe_area, visual_checks = _asset_checks(asset_paths)
     report = {
         "schema_version": "phase1_live_topic_preflight_v1",
         "status": "LIVE_TOPIC_PREFLIGHT_READY",
@@ -52,10 +76,12 @@ def main() -> int:
         "final_duration_seconds": final_pass["allocation"]["duration_seconds"],
         "srt_endpoint_seconds": final_pass["allocation"]["srt_endpoint_seconds"],
         "objective_audio_integrity": result["objective_audio_integrity"],
-        "audio_path": "E:/OpenClaw_VideoFactory_Runtime/phase1_can_arbitration_preflight_20260928/" + audio.name,
+        "runtime_locator_id": "phase1_can_arbitration_preflight_20260928",
+        "audio_relative_path": audio.name,
         "audio_sha256": hashlib.sha256(audio.read_bytes()).hexdigest(),
-        "visual_asset_decode": "PASS",
-        "visual_asset_content_safe_area": "PASS",
+        "visual_asset_decode": visual_decode,
+        "visual_asset_content_safe_area": visual_safe_area,
+        "visual_asset_checks": visual_checks,
         "transition_probe": "NOT_RUN_BEFORE_RENDER",
         "render_performed": False,
         "mp4_created": False,

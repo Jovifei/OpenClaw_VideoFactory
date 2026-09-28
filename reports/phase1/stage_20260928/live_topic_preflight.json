@@ -73,10 +73,88 @@
     "endpoint_delta_seconds": 1.6e-05,
     "endpoint_tolerance_seconds": 0.05
   },
-  "audio_path": "E:/OpenClaw_VideoFactory_Runtime/phase1_can_arbitration_preflight_20260928/audio.wav",
+  "runtime_locator_id": "phase1_can_arbitration_preflight_20260928",
+  "audio_relative_path": "audio.wav",
   "audio_sha256": "fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b",
   "visual_asset_decode": "PASS",
   "visual_asset_content_safe_area": "PASS",
+  "visual_asset_checks": [
+    {
+      "path": "assets/can_arbitration_illustrations/01-dominant-recessive.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "content_bbox": [
+        10,
+        0,
+        1361,
+        550
+      ],
+      "safe_area": true
+    },
+    {
+      "path": "assets/can_arbitration_illustrations/02-two-node-bits.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "content_bbox": [
+        10,
+        0,
+        1361,
+        570
+      ],
+      "safe_area": true
+    },
+    {
+      "path": "assets/can_arbitration_illustrations/03-id-compare.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "content_bbox": [
+        10,
+        0,
+        1108,
+        563
+      ],
+      "safe_area": true
+    },
+    {
+      "path": "assets/can_arbitration_illustrations/04-loser-stops.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "content_bbox": [
+        10,
+        0,
+        1361,
+        562
+      ],
+      "safe_area": true
+    },
+    {
+      "path": "assets/can_arbitration_illustrations/05-checklist.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "content_bbox": [
+        8,
+        0,
+        1176,
+        563
+      ],
+      "safe_area": true
+    }
+  ],
   "transition_probe": "NOT_RUN_BEFORE_RENDER",
   "render_performed": false,
   "mp4_created": false,

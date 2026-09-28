@@ -52,6 +52,10 @@ _FACT_ANCHORS: dict[str, tuple[tuple[str, ...], ...]] = {
     "isr_nonblocking_boundary": (("ISR",), ("FromISR", "通知", "队列", "信号量")),
     "priority_inheritance_context": (("优先级",), ("持锁", "继承", "反转")),
     "short_isr_handler": (("ISR",), ("任务",), ("短小", "取数", "共享")),
+    "can_dominant_recessive": (("dominant", "recessive"), ("覆盖", "总线")),
+    "can_bitwise_arbitration": (("节点", "逐位"), ("回读", "读到"), ("仲裁", "失败")),
+    "can_identifier_priority": (("标识符", "ID"), ("更低", "低"), ("dominant", "优先")),
+    "can_nondestructive_arbitration": (("失败节点", "失败者"), ("停止", "退出"), ("获胜", "继续")),
 }
 
 _FACT_CONTRADICTIONS: dict[str, tuple[re.Pattern[str], ...]] = {
@@ -63,6 +67,10 @@ _FACT_CONTRADICTIONS: dict[str, tuple[re.Pattern[str], ...]] = {
     "iwdg_independent_timeout": (re.compile(r"(?:看门狗|IWDG).{0,8}(?:停止|不会).{0,8}(?:倒计时|复位)"),),
     "service_window_is_budget": (re.compile(r"(?:服务窗口|最长擦除时间).{0,8}(?:无需|不用).{0,8}计算"),),
     "observable_recovery": (re.compile(r"(?<!不能)(?<!停止)(?:无限|无穷).{0,4}(?:重试|等待)"),),
+    "can_dominant_recessive": (re.compile(r"recessive.{0,8}(?:覆盖|压过|胜过).{0,8}dominant"),),
+    "can_bitwise_arbitration": (re.compile(r"(?:无需|不用).{0,8}(?:回读|监听).{0,8}(?:仲裁|总线)"),),
+    "can_identifier_priority": (re.compile(r"(?:ID|标识符).{0,8}(?:越高|数值更大).{0,8}(?:优先|获胜)"),),
+    "can_nondestructive_arbitration": (re.compile(r"(?:失败节点|失败者).{0,8}(?:继续发送|破坏).{0,8}(?:报文|获胜)"),),
 }
 _UNSUPPORTED_ASSERTIONS = (
     re.compile(r"100%"),
