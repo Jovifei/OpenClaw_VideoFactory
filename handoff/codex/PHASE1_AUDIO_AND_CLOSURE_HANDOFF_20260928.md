@@ -20,6 +20,16 @@ Implemented continuation commits:
 - `ff02100` — refresh closure status and bounded test counts.
 - `8bcab34` — seal the evidence lineage metadata.
 - `825c924` — record the final lineage seal hash.
+- `7d08cdc` — add the parallel Phase 1 closure audit and provisional inventory.
+- `f603da5` — repair the closure audit script newline handling.
+- `8456862` — add the no-render CAN live-topic preflight.
+- `c1776f6` — repair the CAN preflight script newline handling.
+- `3671da5` — harden CAN asset decode, dimensions and safe-area evidence.
+- `9cae148` — bind CAN assets to deterministic generator provenance.
+- `ef84f28` — repair the CAN asset generator newline handling.
+- `80aa85b` — complete the five-scene CAN visual preflight still set.
+- `420dd83` — sanitize parallel closure lifecycle paths.
+- `9f95d3f` — compute CAN visual/transition evidence and remove the remaining I2C private path.
 
 GitHub branch: `https://github.com/Jovifei/OpenClaw_VideoFactory/tree/codex/phase1-audio-closure-20260928`.
 
@@ -110,6 +120,14 @@ gate is pending. Record a separate SHA-bound `AUDIO_APPROVED` or
 - The 2026-09-06 cancel, failed-retry, restart-recovery and encoder-fallback
   lifecycle evidence is complete. Revalidate hashes/schema before manifest binding;
   do not rerun without a concrete incompatibility.
+- CAN visual preflight is now reproducible from `scripts/phase1_can_visual_preflight.py`:
+  each registry SHA is compared to the PNG, Pillow and FFmpeg decode are checked,
+  dimensions and safe-area bounds are measured, generator provenance is hashed,
+  scene/asset/tag mapping is checked, five real subtitle stills are emitted, and
+  the technical-cut command is inspected for concat/no-xfade behavior. The report
+  is `PASS_BOUNDED_STILL_ONLY` with transition probe
+  `PASS_BOUNDED_TIMELINE_ONLY`; it does not create an MP4 or grant outer render
+  authorization.
 - I2C candidate and its human review remain unresolved and must be bound to its exact
   final SHA before Prereview.
 
@@ -204,6 +222,10 @@ lineage seal. The parallel closure audit has now produced:
 - WP-G3: `PASS_PRELIGHT`, not final Gate evidence;
 - WP-G4: CAN live topic `LIVE_TOPIC_PREFLIGHT_READY` after no-render source/audio preflight;
 - WP-G5: `PROVISIONAL_UNRESOLVED_NOT_GATE_READY`.
+
+The I2C closure report now exposes only `runtime_locator_id` plus a repo-independent
+relative path; it does not publish the private runtime root. The parallel audit
+preserves a ready CAN preflight instead of replacing it with a stale blocked report.
 
 Reports are under `reports/phase1/stage_20260928/`, and the reproducible runner is
 `scripts/phase1_parallel_closure_audit.py`. G1 through G5 are complete. The distinct
