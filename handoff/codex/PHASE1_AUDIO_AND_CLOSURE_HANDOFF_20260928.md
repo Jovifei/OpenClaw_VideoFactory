@@ -346,3 +346,21 @@ package described in K4. Once all four topic prereviews exist, run the frozen
 regression and final boundary contracts, assemble the actual manifest, perform
 the independent audit, and only then request a Formal Gate. No new media,
 prereview, human decision or Gate action is part of the current handoff.
+
+## WP-L execution result — remote iteration 31 authorization
+
+The single authorized I2C `create-topic` created control job
+`job-b4a2e8e851268bc14e5e4a15` at attempt 0 from the frozen L0 input. The one
+authorized `run` was invoked exactly once. The control plane advanced through
+`NEW → RESEARCHING → SCRIPTING → VOICE → CAPTIONS → ASSETS → RENDERING` and
+then failed closed before media output with
+`phase1_local_brief_invalid / factual_brief.topic_digest / topic_digest_mismatch`.
+
+Evidence: `reports/phase1/stage_20260928/i2c_requalification_candidate001_review.json`.
+No MP4, review package, audio-integrity artifact or human decision was created;
+attempt remains 0, no retry/resume occurred, and no second I2C candidate exists.
+The provisional inventory keeps I2C blocked and records the exact failure.
+
+The failure is terminal under the iteration-31 authorization. Do not retry this
+job or silently edit the frozen brief. The next action is remote review of the
+digest-contract defect and a new bounded remediation/authorization decision.

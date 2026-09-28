@@ -99,7 +99,18 @@
     "brief_runtime_sha256": "b31fb7e7d0d602990116f7004658c99063d78d94701fc50576213987f6e7d5d9",
     "run_authorization": "one_run_only_after_this_frozen_change_request"
   },
-  "status": "frozen_before_run",
+  "status": "executed_single_run_changes_required",
+  "run_result": {
+    "candidate_review": "reports/phase1/stage_20260928/i2c_requalification_candidate001_review.json",
+    "final_state": "FAILED",
+    "last_completed_state": "ASSETS",
+    "failure_code": "phase1_local_brief_invalid",
+    "failure_reason": "topic_digest_mismatch",
+    "retry_or_resume_used": false,
+    "second_candidate_created": false,
+    "media_output_created": false,
+    "next_remote_action": "Issue a bounded remediation decision; local Codex will not retry this job without new authorization."
+  },
   "expected_pass_state": "I2C_MACHINE_REVIEW_READY",
   "human_gate_after_pass": "HUMAN_VIDEO_REVIEW_PENDING",
   "prereview_after_pass": "NOT_RUN"

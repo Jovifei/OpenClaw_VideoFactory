@@ -17,6 +17,15 @@
     "superseded horizontal I2C candidate"
   ],
   "formal_gate": "NOT_RUN",
+  "i2c_requalification_attempt": {
+    "control_job_id": "job-b4a2e8e851268bc14e5e4a15",
+    "status": "CHANGES_REQUIRED:PHASE1_LOCAL_BRIEF_TOPIC_DIGEST_MISMATCH",
+    "attempt": 0,
+    "last_completed_state": "ASSETS",
+    "media_output_created": false,
+    "retry_or_resume_used": false,
+    "candidate_review": "reports/phase1/stage_20260928/i2c_requalification_candidate001_review.json"
+  },
   "live_topic": {
     "topic": "CAN 总线仲裁为什么不会破坏高优先级报文?",
     "control_job_id": "job-eb356764914b0d9f5ccb94ff",

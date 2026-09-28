@@ -1,0 +1,44 @@
+{
+  "schema_version": "phase1_i2c_requalification_candidate_review_v1",
+  "status": "CHANGES_REQUIRED:PHASE1_LOCAL_BRIEF_TOPIC_DIGEST_MISMATCH",
+  "source_commit": "98c497b12f1533d6ca7040dbfeb5fa9f9a354630",
+  "authorization": "remote_iteration_31_one_fresh_i2c_candidate",
+  "control_job_id": "job-b4a2e8e851268bc14e5e4a15",
+  "idempotency_key": "phase1-i2c-requalification-candidate001-20260928",
+  "attempt": 0,
+  "control_plane": {
+    "final_state": "FAILED",
+    "last_completed_state": "ASSETS",
+    "event_count": 8,
+    "event_states": [
+      "NEW",
+      "RESEARCHING",
+      "SCRIPTING",
+      "VOICE",
+      "CAPTIONS",
+      "ASSETS",
+      "RENDERING",
+      "FAILED"
+    ],
+    "retry_or_resume_used": false,
+    "second_candidate_created": false
+  },
+  "failure": {
+    "phase": "local_brief_validation_before_media_output",
+    "error_code": "phase1_local_brief_invalid",
+    "error_field": "factual_brief.topic_digest",
+    "error_reason": "topic_digest_mismatch",
+    "observed_brief_topic": "I2C总线为什么要上拉电阻",
+    "observed_factual_topic_digest": "ceda09b09634e435b4856c2d4fef1484262d638e3c616c6f92696bfeac81c7a4",
+    "runtime_brief_sha256": "b31fb7e7d0d602990116f7004658c99063d78d94701fc50576213987f6e7d5d9",
+    "media_output_created": false,
+    "review_package_created": false,
+    "audio_integrity_created": false,
+    "failure_is_terminal_under_current_authorization": true
+  },
+  "artifacts": [],
+  "human_video_review": "NOT_CREATED",
+  "prereview": "NOT_RUN",
+  "formal_gate": "NOT_RUN",
+  "next_action": "Return for remote remediation plan; do not retry this failed job or create a second I2C candidate under the iteration-31 authorization."
+}
