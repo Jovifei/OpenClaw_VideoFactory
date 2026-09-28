@@ -33,6 +33,7 @@ Implemented continuation commits:
 - `386b3c0` — record the remote WP-H2 one-candidate authorization and local task boundary.
 - `7045ca6` — record the bounded CAN outer-candidate change request.
 - `feb95e1` — record the single CAN candidate machine review and adjacent-frame audit.
+- `59bc37d` — update the candidate handoff and task ledger for remote review.
 
 GitHub branch: `https://github.com/Jovifei/OpenClaw_VideoFactory/tree/codex/phase1-audio-closure-20260928`.
 
