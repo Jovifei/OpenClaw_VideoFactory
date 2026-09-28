@@ -1,6 +1,6 @@
 {
   "schema_version": "phase1_audio_closure_evidence_v1",
-  "source_commit": "54cb42e",
+  "source_commit": "cf02b37",
   "branch": "codex/phase1-audio-closure-20260928",
   "work_packages": {
     "WP_A": "PASS_CANONICAL_DOC_SYNC",
@@ -44,5 +44,12 @@
   "human_audio_quality": "PENDING_HUMAN_AUDIO_REVIEW",
   "historical_candidates": "CHANGES_REQUIRED_AUDIO_TRUNCATION",
   "handoff": "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
-  "next_step": "Remote independent review of 54cb42e and handoff; no fresh video until per-topic AUDIO_APPROVED."
+  "next_step": "After the evidence-only lineage seal, execute WP-G1 I2C exact-candidate audit, WP-G2 lifecycle revalidation, WP-G3 boundary preflight, WP-G4 live-topic no-render preflight, and WP-G5 provisional manifest inventory; no fresh Flash/FreeRTOS video until per-topic AUDIO_APPROVED.",
+  "lineage": {
+    "code_contract_commit": "cf02b37",
+    "evidence_commit": "5e74b6a",
+    "handoff_head_parent": "ff02100",
+    "reviewed_continuation_head": "ff02100",
+    "lineage_seal_commit": "PENDING_CURRENT_COMMIT"
+  }
 }

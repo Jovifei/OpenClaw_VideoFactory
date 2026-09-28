@@ -16,6 +16,8 @@ Implemented continuation commits:
 - `cf02b37` — scene identity/transition fail-closed checks and review-package artifact/hash binding;
 - `5e74b6a` — v7 objective/secondary evidence and bounded test summary.
 - `54cb42e` — close explicit transition, persisted-segment and script-hash fail-closed gaps found by independent review.
+- `5eace26` — update handoff with the pushed lineage.
+- `ff02100` — refresh closure status and bounded test counts.
 
 GitHub branch: `https://github.com/Jovifei/OpenClaw_VideoFactory/tree/codex/phase1-audio-closure-20260928`.
 
@@ -190,8 +192,17 @@ promote Phase 1 and stop. FAIL remains evidence and starts remediation.
 
 ## NEXT_EXPECTED_STEP
 
-Local Codex completes and tests WP-A, WP-B and WP-E on
-`codex/phase1-audio-closure-20260928`, optionally records WP-C only from an existing
-cached model, commits and pushes the bounded evidence, then sends the commit,
-tests, evidence and this handoff back to remote GPT for independent review and the
-next plan. Human audio-quality decisions remain separate unresolved product gates.
+The WP-A/WP-B/WP-C/WP-E package is complete and independently accepted after the
+lineage seal. Local Codex next executes, without fresh Flash/FreeRTOS rendering:
+
+1. WP-G1 I2C exact-candidate audit;
+2. WP-G2 lifecycle evidence final schema/hash revalidation;
+3. WP-G3 boundary-audit preflight;
+4. WP-G4 distinct live-topic no-render preflight;
+5. WP-G5 provisional manifest inventory with unresolved human slots explicit.
+
+The next evidence commit must keep `code_contract_commit=cf02b37`,
+`evidence_commit=5e74b6a`, and the sealed handoff parent lineage explicit. Human
+audio-quality decisions remain separate unresolved product gates; no fresh
+Flash/FreeRTOS video is authorized until the matching exact v7 SHA receives
+`AUDIO_APPROVED`.
