@@ -36,6 +36,7 @@ Implemented continuation commits:
 - `59bc37d` — update the candidate handoff and task ledger for remote review.
 - `b4d28d5` — record the remote iteration-27 acceptance change request.
 - `79eb0db` — record remote machine acceptance, provisional inventory refresh and I2C discovery.
+- `8a80f53` — prepare human-gate binding, prereview dry-contract and next-candidate readiness evidence.
 
 GitHub branch: `https://github.com/Jovifei/OpenClaw_VideoFactory/tree/codex/phase1-audio-closure-20260928`.
 
@@ -258,3 +259,23 @@ The next evidence-only update must preserve Candidate001, record the remote revi
 keep the provisional inventory explicit, and never run a second CAN candidate or
 Formal Gate. Final topic closure remains blocked until all four topic slots have
 exact-SHA human approvals and read-only prereviews.
+
+### WP-J readiness evidence
+
+Remote iteration 28 accepted the evidence continuation at `212b1bc`. The local
+readiness package at `8a80f53` contains:
+
+- `human_gate_binding_readiness.json`: `PASS_NO_HUMAN_DECISION_CREATED`;
+- `can_prereview_contract_readiness.json`: `READY_PENDING_HUMAN_APPROVAL`;
+- `flash_next_candidate_readiness.json` and `freertos_next_candidate_readiness.json`:
+  `READY_PENDING_EXACT_AUDIO_APPROVAL`, with no create-topic or render;
+- `i2c_requalification_dossier.json`:
+  `I2C_RESTORATION_EXHAUSTED_REQUALIFICATION_NOT_YET_JUSTIFIED` because the old
+  audio-contract compatibility cannot be proven from missing runtime media;
+- the provisional inventory now exposes explicit CAN/Flash/FreeRTOS/I2C
+  dependencies while remaining unresolved and Gate-blocked.
+
+The focused acceptance binding suite passed 13 tests. No human decision, prereview,
+new job, I2C requalification or media artifact was created. The next authorized
+action is Jovi's exact-SHA CAN review; once an explicit approval arrives, only the
+existing read-only CAN prereview may run for the frozen control job.
