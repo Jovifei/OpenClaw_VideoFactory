@@ -2955,3 +2955,14 @@ candidate authorization remain separate future gates; no full render was run.
 - [ ] Push the hygiene and CAN evidence commit, request independent remote audit, and record the next remote plan.
 
 Review: `LOCAL_EVIDENCE_REFRESHED_REMOTE_REVIEW_PENDING`. No MP4 render, human gate, Formal Gate, Phase 2, Cron, or publication action was performed.
+
+## PHASE1-CAN-OUTER-CANDIDATE001-20260928 — remote WP-H2 authorization
+
+- [ ] Create one new CAN topic control job with a unique idempotency key from reviewed `5ceeb8e` lineage.
+- [ ] Run `phase1 run --job-id <new-id>` exactly once through the authentic local production path; do not reuse preflight WAV, retry, resume, or create a second candidate.
+- [ ] Verify genuine SQLite `PENDING_REVIEW`, attempt 0, event history, final master/review package and artifact SHA/size bindings.
+- [ ] Verify fresh source-aligned audio integrity, 25–60s duration, no rewrite, complete PCM prefix/silence-tail evidence, and audio/SRT/timeline endpoint agreement.
+- [ ] Verify H.264/AAC decode, declared profile/frame count, four real hard-cut frame-pair boundaries, and five-scene semantic/geometry review.
+- [ ] Write `reports/phase1/stage_20260928/can_candidate001_review.json`, update the current handoff with the exact result, push evidence-only changes, and return for remote independent review.
+
+Review: `REMOTE_AUTHORIZED_ONE_CANDIDATE_PENDING`. Outer CAN render authorization is limited to this single run; no Phase 1 Gate, Phase 2, Cron, Feishu or publication action is included.
