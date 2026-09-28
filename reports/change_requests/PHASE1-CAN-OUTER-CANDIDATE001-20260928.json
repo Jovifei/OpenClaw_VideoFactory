@@ -1,0 +1,44 @@
+{
+  "id": "PHASE1-CAN-OUTER-CANDIDATE001-20260928",
+  "date": "2026-09-28",
+  "baseline_commit": "5ceeb8e",
+  "authorization": "Remote GPT iteration 26 independently accepted WP-H1B and authorized exactly one fresh outer CAN candidate.",
+  "scope": "Run one authentic phase1 create-topic -> run candidate for the CAN brief with fresh measured TTS, real SQLite lifecycle, full media/package evidence, four hard-cut boundary checks, and whole-video semantic review.",
+  "allowed_paths": [
+    "examples/phase1_local_can_arbitration/brief.json",
+    "state/phase1_local/",
+    "dist/phase1_local/",
+    "reports/phase1/stage_20260928/",
+    "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
+    "tasks/todo.md",
+    "reports/change_requests/PHASE1-CAN-OUTER-CANDIDATE001-20260928.json"
+  ],
+  "forbidden": [
+    "second CAN candidate",
+    "retry",
+    "resume",
+    "preflight WAV reuse as production media",
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "model_download",
+    "automatic_export",
+    "publication",
+    "phase_promotion",
+    "Phase 2",
+    "Owner-main mutation",
+    "historical evidence rewrite"
+  ],
+  "stop_if": [
+    "narration_over_60_seconds",
+    "source_aligned_integrity_failure",
+    "SQLite_not_PENDING_REVIEW",
+    "render_or_package_failure",
+    "cut_boundary_failure",
+    "semantic_visual_failure",
+    "unexpected_output_overwrite"
+  ],
+  "status": "authorized_one_candidate_pending_execution",
+  "remote_review": "iteration_26_HEAD_REVIEWED_5ceeb8e_RESULT_CAN_PREFLIGHT_ACCEPTED"
+}
