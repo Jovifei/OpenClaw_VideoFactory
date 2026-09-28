@@ -1,0 +1,56 @@
+{
+  "schema_version": "phase1_lifecycle_revalidation_v1",
+  "source_inventory": "reports/phase1/stage_20260927/inventory.json",
+  "items": [
+    {
+      "evidence_type": "cancel",
+      "path": "C:\\Users\\Admin\\.codex\\worktrees\\phase1-audio-closure\\OpenClaw_VideoFactory\\reports\\phase1\\lifecycle\\cancel.json",
+      "sha256": "4bdff1a6d3e2dd86fef6b13060390e995fc581f43f8e3146b46b5fa3a1da9706",
+      "declared_sha256": "4bdff1a6d3e2dd86fef6b13060390e995fc581f43f8e3146b46b5fa3a1da9706",
+      "sha_matches": true,
+      "schema_status": "PASS",
+      "private_absolute_path_detected": false,
+      "job_id": "job-766f2c7bcdf3f29e1750a797",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "evidence_type": "retry",
+      "path": "C:\\Users\\Admin\\.codex\\worktrees\\phase1-audio-closure\\OpenClaw_VideoFactory\\reports\\phase1\\lifecycle\\retry.json",
+      "sha256": "45ce5cbf6159c15ee63e9a73b7e220e3402bcefebb4285f9ec28ad68acc0f698",
+      "declared_sha256": "45ce5cbf6159c15ee63e9a73b7e220e3402bcefebb4285f9ec28ad68acc0f698",
+      "sha_matches": true,
+      "schema_status": "PASS",
+      "private_absolute_path_detected": false,
+      "job_id": "job-0d3926bc6d7c922c0420ae0d",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "evidence_type": "restart_recovery",
+      "path": "C:\\Users\\Admin\\.codex\\worktrees\\phase1-audio-closure\\OpenClaw_VideoFactory\\reports\\phase1\\lifecycle\\restart_recovery.json",
+      "sha256": "ff8ffaf5bb216ae3b5efa956423b70845ee5902c460e0c3ff61a057c4bca7e55",
+      "declared_sha256": "ff8ffaf5bb216ae3b5efa956423b70845ee5902c460e0c3ff61a057c4bca7e55",
+      "sha_matches": true,
+      "schema_status": "PASS",
+      "private_absolute_path_detected": false,
+      "job_id": "job-e5c0f9be3c22437069628d92",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "evidence_type": "encoder_fallback",
+      "path": "C:\\Users\\Admin\\.codex\\worktrees\\phase1-audio-closure\\OpenClaw_VideoFactory\\reports\\phase1\\lifecycle\\encoder_fallback.json",
+      "sha256": "d74be8eb55e9da74b40c3111da41ebaa42d78895a51dda67939a0f3a56ba10e1",
+      "declared_sha256": "d74be8eb55e9da74b40c3111da41ebaa42d78895a51dda67939a0f3a56ba10e1",
+      "sha_matches": true,
+      "schema_status": "PASS",
+      "private_absolute_path_detected": false,
+      "job_id": "job-0d3926bc6d7c922c0420ae0d",
+      "status": "passed",
+      "errors": []
+    }
+  ],
+  "status": "PASS",
+  "rerun_performed": false
+}

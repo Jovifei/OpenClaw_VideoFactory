@@ -2918,3 +2918,18 @@ topics; cached ASR is `NOT_RELIABLE_ENOUGH` and non-gating. Local bounded tests 
 focused 33, phase1_local 118, phase1_acceptance 24, and bounded video 286 passed.
 Human audio-quality decisions remain unresolved product gates. No full video render
 is authorized by this package.
+
+## PHASE1-CLOSURE-PARALLEL-20260928 — WP-G1 through WP-G5
+
+- [x] Seal evidence lineage: `code_contract_commit=cf02b37`, `evidence_commit=5e74b6a`, `lineage_seal_commit=825c924`.
+- [x] WP-G1 exact I2C candidate audit: identify `job-876a5f89973bbaf8deadbeef` / `attempt_006_9x16_subject` / SHA `cf1c022...`; classify `I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION` without rerender.
+- [x] WP-G2 revalidate all four 2026-09-06 lifecycle JSONs: `PASS`, SHA and schema match.
+- [x] WP-G3 boundary preflight: `PASS_PRELIGHT`; Formal Gate not run.
+- [x] WP-G4 live-topic preflight: `LIVE_TOPIC_PREFLIGHT_BLOCKED:NO_DISTINCT_TOPIC_SELECTED`.
+- [x] WP-G5 provisional topic-only inventory: `PROVISIONAL_UNRESOLVED_NOT_GATE_READY`; unresolved human slots remain explicit.
+- [ ] Restore/revalidate I2C runtime package or obtain a separately authorized requalification path.
+- [ ] Select one distinct live topic and execute only its no-render preflight before any final candidate run.
+
+Review: `PARALLEL_CLOSURE_AUDIT_COMPLETE_WITH_BLOCKERS`. Reports are in
+`reports/phase1/stage_20260928/`; no fresh video, Phase 1 Gate, Phase 2, Cron or
+publication action was performed.

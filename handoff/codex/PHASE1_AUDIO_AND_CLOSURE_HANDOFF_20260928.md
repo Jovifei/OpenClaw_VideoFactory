@@ -18,6 +18,8 @@ Implemented continuation commits:
 - `54cb42e` — close explicit transition, persisted-segment and script-hash fail-closed gaps found by independent review.
 - `5eace26` — update handoff with the pushed lineage.
 - `ff02100` — refresh closure status and bounded test counts.
+- `8bcab34` — seal the evidence lineage metadata.
+- `825c924` — record the final lineage seal hash.
 
 GitHub branch: `https://github.com/Jovifei/OpenClaw_VideoFactory/tree/codex/phase1-audio-closure-20260928`.
 
@@ -193,7 +195,19 @@ promote Phase 1 and stop. FAIL remains evidence and starts remediation.
 ## NEXT_EXPECTED_STEP
 
 The WP-A/WP-B/WP-C/WP-E package is complete and independently accepted after the
-lineage seal. Local Codex next executes, without fresh Flash/FreeRTOS rendering:
+lineage seal. The parallel closure audit has now produced:
+
+- WP-G1: `I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION`; exact control
+  job/attempt/SHA are preserved in `i2c_closure_audit.json`, and no rerender was
+  started;
+- WP-G2: `PASS` for all four lifecycle files with current SHA/schema checks;
+- WP-G3: `PASS_PRELIGHT`, not final Gate evidence;
+- WP-G4: `LIVE_TOPIC_PREFLIGHT_BLOCKED:NO_DISTINCT_TOPIC_SELECTED`;
+- WP-G5: `PROVISIONAL_UNRESOLVED_NOT_GATE_READY`.
+
+Reports are under `reports/phase1/stage_20260928/`, and the reproducible runner is
+`scripts/phase1_parallel_closure_audit.py`. Local Codex next continues, without
+fresh Flash/FreeRTOS rendering:
 
 1. WP-G1 I2C exact-candidate audit;
 2. WP-G2 lifecycle evidence final schema/hash revalidation;
@@ -202,7 +216,9 @@ lineage seal. Local Codex next executes, without fresh Flash/FreeRTOS rendering:
 5. WP-G5 provisional manifest inventory with unresolved human slots explicit.
 
 The next evidence commit must keep `code_contract_commit=cf02b37`,
-`evidence_commit=5e74b6a`, and the sealed handoff parent lineage explicit. Human
-audio-quality decisions remain separate unresolved product gates; no fresh
+`evidence_commit=5e74b6a`, and the sealed handoff lineage explicit. The next
+external dependency is restoration of the I2C runtime package or a separately
+authorized requalification; the missing runtime is not permission to rerender.
+Human audio-quality decisions remain separate unresolved product gates; no fresh
 Flash/FreeRTOS video is authorized until the matching exact v7 SHA receives
 `AUDIO_APPROVED`.

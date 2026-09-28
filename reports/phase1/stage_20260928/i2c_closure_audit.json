@@ -1,0 +1,43 @@
+{
+  "schema_version": "phase1_i2c_closure_audit_v1",
+  "source_report": "reports/phase1/i2c_visual_correction_014.json",
+  "source_report_sha256": "5d9e3541c715b367cea92d243e8aadb1bcaf9477afa34e9c5979c034dd431ccc",
+  "control_job_id": "job-876a5f89973bbaf8deadbeef",
+  "attempt_id": "attempt_006_9x16_subject",
+  "expected_final_mp4_sha256": "cf1c0220853c7de06c5f821c48824a49e35fc770ad19ba4edaa5460cff652568",
+  "expected_review_package_sha256": null,
+  "render_profile": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "sqlite_state": "NOT_AVAILABLE_IN_CURRENT_WORKTREE",
+  "runtime_media_path": "E:\\OpenClaw_VideoFactory_Runtime\\phase1_i2c_semantic_013\\attempt_006_9x16_subject\\audible_preview.mp4",
+  "runtime_media_exists": false,
+  "runtime_media_sha256": null,
+  "hash_matches": false,
+  "visual_source_bound": {
+    "kind": "i2c_bus_v1",
+    "fact_refs": [
+      "open_drain",
+      "rise_time",
+      "sink_current"
+    ],
+    "visible_semantics": [
+      "SDA",
+      "SCL",
+      "idle-high",
+      "START",
+      "ADDRESS",
+      "ACK/NACK",
+      "DATA",
+      "STOP",
+      "rise-time-focus",
+      "sink-current-focus"
+    ]
+  },
+  "human_review": "pending",
+  "prereview": "NOT_RUN",
+  "status": "I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION",
+  "decision": "Do not rerender automatically. The preserved report identifies the exact candidate and SHA, but the current runtime file/package/SQLite identity cannot be revalidated from this workspace. Require evidence restoration or concrete audio-contract incompatibility before any new job."
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": "phase1_live_topic_preflight_v1",
+  "status": "LIVE_TOPIC_PREFLIGHT_BLOCKED:NO_DISTINCT_TOPIC_SELECTED",
+  "render_performed": false,
+  "contracts_checked": {
+    "local_entrypoint_sets_source_aligned_narration": true,
+    "fixture_rewrite_scope_is_flash_and_freertos_only": true,
+    "over_60_seconds_fails_closed_for_unrecognized_topic": true
+  },
+  "next_action": "Select one distinct live topic before any final candidate run; no automatic topic choice in this package."
+}

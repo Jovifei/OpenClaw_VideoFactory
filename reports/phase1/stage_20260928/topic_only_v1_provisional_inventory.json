@@ -1,0 +1,18 @@
+{
+  "schema_version": "topic_only_v1_provisional_inventory_v1",
+  "status": "PROVISIONAL_UNRESOLVED_NOT_GATE_READY",
+  "slots": {
+    "flash_watchdog": "PENDING_AUDIO_APPROVAL",
+    "freertos_mutex": "PENDING_AUDIO_APPROVAL",
+    "i2c": "I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION",
+    "distinct_live_topic": "BLOCKED_NO_DISTINCT_TOPIC_SELECTED",
+    "lifecycle": "PASS_REVALIDATED",
+    "boundary": "PASS_PRELIGHT"
+  },
+  "rejected_evidence": [
+    "historical Flash truncated candidate",
+    "historical FreeRTOS truncated candidate",
+    "superseded horizontal I2C candidate"
+  ],
+  "formal_gate": "NOT_RUN"
+}
