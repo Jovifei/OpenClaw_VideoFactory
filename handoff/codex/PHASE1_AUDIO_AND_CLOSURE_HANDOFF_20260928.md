@@ -216,31 +216,43 @@ promote Phase 1 and stop. FAIL remains evidence and starts remediation.
 
 ## NEXT_EXPECTED_STEP
 
-Remote iteration 26 independently accepted the WP-H1B preflight at `5ceeb8e` and
-authorized exactly one fresh outer CAN candidate. The local run used descendant
-`7045ca6` and one unique control job:
+Remote iteration 27 independently accepted Candidate001 at reviewed HEAD
+`29b8031a2afda4bde746fa9864392262d847bc8a`:
 
-- control job: `job-eb356764914b0d9f5ccb94ff`;
-- video job: `phase1_91c2a7cd2b692884`;
-- SQLite state: `PENDING_REVIEW`, attempt `0`, nine normal events, no retry/resume;
-- final MP4: `e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af`;
-- review package: `cef8dc5ab243f468c7aee69b0b628f9aba25d3ca85bb7d7ba5222b1ebbd0248f`;
-- media: 51.033008 s, 1920×1080, 30 fps, 1531 frames, H.264/AAC, full decode `PASS`;
-- source-aligned narration: zero rewrite, objective PCM integrity `PASS`, audio/SRT/timeline endpoint agreement;
-- transitions: four real adjacent rendered frame pairs, technical-cut/concat path, no xfade, no double exposure or blank frame;
-- whole-video semantic inspection: five scene midpoints plus all four cut boundaries `PASS`;
-- final machine status: `LIVE_CAN_MACHINE_REVIEW_READY`.
+- `RESULT: LIVE_CAN_MACHINE_REVIEW_READY_CONFIRMED`;
+- `SECOND_CAN_CANDIDATE: NOT_AUTHORIZED`;
+- `FORMAL_GATE: NOT_AUTHORIZED`;
+- Candidate001 is frozen and must not be rerendered, transcoded, overwritten or replaced.
 
-The reproducible candidate audit is `scripts/phase1_can_candidate_audit.py`, with
-report `reports/phase1/stage_20260928/can_candidate001_review.json`. The report is
-evidence-only and keeps runtime media outside Git. It does not grant prereview or
-human approval: Jovi must review the exact MP4 SHA before prereview.
+Remote acceptance is recorded separately in
+`reports/phase1/stage_20260928/can_candidate001_remote_review.json`; the original
+local audit remains unchanged with `PASS_READ_ONLY_LOCAL`. Candidate001 remains:
+control job `job-eb356764914b0d9f5ccb94ff`, video job `phase1_91c2a7cd2b692884`, MP4
+SHA `e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af`, review
+package SHA `cef8dc5ab243f468c7aee69b0b628f9aba25d3ca85bb7d7ba5222b1ebbd0248f`.
 
-The next action is remote GPT independent review of candidate 001 and this handoff.
-If accepted, the remote plan will define the SHA-bound human review/prereview step
-or the next repair. If any defect is found, freeze this candidate as
-`CHANGES_REQUIRED`; do not create a second CAN candidate without a new remote
-authorization. I2C remains `I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION`;
-Flash and FreeRTOS remain blocked until their exact v7 audio SHAs receive
-`AUDIO_APPROVED`; lifecycle remains revalidated `PASS`; Formal Gate, Phase 2, Cron,
-Feishu and publication remain prohibited.
+### WP-H3 — exact-SHA human review
+
+Jovi must watch/listen to the complete 51.033008 s MP4 and record a structured
+decision bound to the exact control job, video job and MP4 SHA. Review dimensions:
+audio intelligibility/quality, subtitle readability/timing, technical correctness,
+visual composition, transition acceptability and overall acceptability. Machine
+evidence cannot fill this decision. If `CHANGES_REQUIRED`, freeze Candidate001 and
+return for a new remote remediation plan. If explicitly `APPROVED`, persist the
+exact-SHA human-review artifact and run only the existing read-only CAN prereview;
+do not rerender.
+
+### Parallel work
+
+- `reports/phase1/stage_20260928/i2c_restoration_discovery.json` records a read-only
+  search for expected I2C SHA `cf1c022...`; no exact MP4 match was found, so the
+  status remains `I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION`.
+- The provisional inventory now records
+  `LIVE_CAN_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING` while keeping the final
+  manifest and Formal Gate blocked.
+- Flash and FreeRTOS exact v7 audio gates remain independent and unresolved.
+
+The next evidence-only update must preserve Candidate001, record the remote review,
+keep the provisional inventory explicit, and never run a second CAN candidate or
+Formal Gate. Final topic closure remains blocked until all four topic slots have
+exact-SHA human approvals and read-only prereviews.

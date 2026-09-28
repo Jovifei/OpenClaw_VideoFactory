@@ -5,7 +5,7 @@
     "flash_watchdog": "PENDING_AUDIO_APPROVAL",
     "freertos_mutex": "PENDING_AUDIO_APPROVAL",
     "i2c": "I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION",
-    "distinct_live_topic": "LIVE_TOPIC_PREFLIGHT_READY",
+    "distinct_live_topic": "LIVE_CAN_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING",
     "lifecycle": "PASS_REVALIDATED",
     "boundary": "PASS_PRELIGHT"
   },
@@ -17,11 +17,23 @@
   "formal_gate": "NOT_RUN",
   "live_topic": {
     "topic": "CAN 总线仲裁为什么不会破坏高优先级报文?",
-    "job_id": "phase1_91c2a7cd2b692884",
-    "status": "LIVE_TOPIC_PREFLIGHT_READY",
+    "control_job_id": "job-eb356764914b0d9f5ccb94ff",
+    "video_job_id": "phase1_91c2a7cd2b692884",
+    "status": "LIVE_CAN_MACHINE_REVIEW_READY",
     "audio_sha256": "fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b",
-    "duration_seconds": 51.033,
-    "render_performed": false,
-    "human_review": "NOT_REQUESTED"
+    "mp4_sha256": "e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af",
+    "review_package_sha256": "cef8dc5ab243f468c7aee69b0b628f9aba25d3ca85bb7d7ba5222b1ebbd0248f",
+    "duration_seconds": 51.033008,
+    "render_performed": true,
+    "human_review": "PENDING_EXACT_SHA",
+    "prereview": "NOT_RUN",
+    "remote_machine_review": "PASS"
+  },
+  "remote_review": {
+    "iteration": 27,
+    "head_reviewed": "29b8031a2afda4bde746fa9864392262d847bc8a",
+    "result": "LIVE_CAN_MACHINE_REVIEW_READY_CONFIRMED",
+    "second_can_candidate": "NOT_AUTHORIZED",
+    "formal_gate": "NOT_AUTHORIZED"
   }
 }

@@ -40,5 +40,9 @@
     "second_can_candidate": "NOT_AUTHORIZED",
     "formal_gate": "NOT_AUTHORIZED"
   },
-  "status": "authorized_pending_execution"
+  "status": "executed_remote_acceptance_and_i2c_discovery",
+  "evidence": [
+    "reports/phase1/stage_20260928/can_candidate001_remote_review.json",
+    "reports/phase1/stage_20260928/i2c_restoration_discovery.json"
+  ]
 }

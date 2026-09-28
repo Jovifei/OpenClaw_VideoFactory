@@ -1,0 +1,25 @@
+{
+  "schema_version": "phase1_can_candidate001_remote_review_v1",
+  "reviewed_head": "29b8031a2afda4bde746fa9864392262d847bc8a",
+  "candidate": "CAN Candidate001",
+  "control_job_id": "job-eb356764914b0d9f5ccb94ff",
+  "video_job_id": "phase1_91c2a7cd2b692884",
+  "mp4_sha256": "e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af",
+  "review_package_sha256": "cef8dc5ab243f468c7aee69b0b628f9aba25d3ca85bb7d7ba5222b1ebbd0248f",
+  "audio_integrity_sha256": "a4bbec0f4bef282d1e88f332457cb2a0b6a7ce83277da4c5abc03b277f877cb0",
+  "result": "LIVE_CAN_MACHINE_REVIEW_READY_CONFIRMED",
+  "remote_machine_review": "PASS",
+  "second_can_candidate": "NOT_AUTHORIZED",
+  "formal_gate": "NOT_AUTHORIZED",
+  "candidate_frozen": true,
+  "human_video_review": "PENDING",
+  "prereview": "NOT_RUN",
+  "next_remote_plan": "WP-H3 exact-SHA human review, then read-only CAN prereview only after explicit APPROVED; parallel I2C restoration discovery and fixed-fixture audio gates.",
+  "remote_findings": [
+    "control-plane and package hashes agree",
+    "fresh source-aligned rewrite_count=0 audio integrity passes",
+    "four real adjacent rendered cut pairs pass with no double exposure or blank frame",
+    "five-scene CAN semantic review passes",
+    "no technical-route correction required"
+  ]
+}

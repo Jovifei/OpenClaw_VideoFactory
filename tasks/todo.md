@@ -2967,3 +2967,14 @@ Review: `LOCAL_EVIDENCE_REFRESHED_REMOTE_REVIEW_PENDING`. No MP4 render, human g
 - [ ] Push the candidate evidence/handoff commit and return the exact candidate SHA to remote GPT for independent review.
 
 Review: `LIVE_CAN_MACHINE_REVIEW_READY_REMOTE_REVIEW_PENDING`. The one-candidate authorization is consumed; no Phase 1 Gate, Phase 2, Cron, Feishu or publication action was performed.
+
+## PHASE1-CAN-REMOTE-ACCEPTANCE-20260928 — iteration 27 continuation
+
+- [ ] Jovi exact-SHA human review of MP4 `e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af` remains pending; do not substitute machine evidence.
+- [ ] If Jovi explicitly approves, persist the structured exact-SHA human review and run only the existing read-only CAN prereview; never rerender Candidate001.
+- [x] Record remote machine acceptance in `reports/phase1/stage_20260928/can_candidate001_remote_review.json`.
+- [x] Update `topic_only_v1_provisional_inventory.json` to `LIVE_CAN_MACHINE_REVIEW_READY / HUMAN_REVIEW_PENDING` while keeping final manifest/Gate blocked.
+- [x] Perform read-only I2C exact-SHA restoration discovery; preserve `I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION` unless the exact media, package and SQLite identity are all found.
+- [ ] Continue independent Flash/FreeRTOS v7 audio gates without authorizing fresh video until each exact SHA receives `AUDIO_APPROVED`.
+
+Review: `REMOTE_MACHINE_REVIEW_ACCEPTED_HUMAN_REVIEW_PENDING`. Candidate001 is frozen; second CAN candidate and Formal Gate are not authorized.
