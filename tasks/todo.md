@@ -3130,9 +3130,32 @@ jianying-editor-skill has no local clone and the exact network fetch was blocked
   blocker without changing the pin.
 - [x] Write `i2c_subject_dependency_restoration.json`; stop before M2/M3 because
   one required dependency remains blocked.
-- [ ] Run a non-candidate MPT plan-only probe only after both pinned dependencies
-  are restored and remote accepts the restoration evidence.
+- [x] Run the separately authorized non-candidate MPT plan-only probe after
+  remote iteration 38 accepted the exact MPT restoration; it failed at the
+  MPT CLI script boundary and created no media.
 - [ ] Run Jianying dry readiness only after exact pinned restoration; no media.
 
 Review: `I2C_SUBJECT_DEPENDENCY_BLOCKED:jianying-editor-skill`. Candidate003
 remains terminal; no retry or Candidate004 is authorized.
+
+## PHASE1-WP-M2-MPT-PLANNING-PROBE-20260929 — remote iteration 38
+
+Remote iteration 38 accepted the exact MPT restoration and authorized one
+fresh non-candidate diagnostic only. Jianying remains blocked at the exact
+approved revision; Candidate003 is permanently terminal and Candidate004,
+media, TTS, prereview and Formal Gate remain prohibited.
+
+- [x] Freeze the M2 change request with the reviewed baseline, diagnostic
+  idempotency key and isolated runtime/database boundary.
+- [x] Execute exactly one `create-subject` -> `attach-research` ->
+  `run --plan-only` diagnostic for the canonical I2C subject; do not retry,
+  resume or promote this job into Candidate004.
+- [x] Prove the restored MPT revision/venv/CLI actually ran; record the
+  exact CLI exit-1/no-script-JSON failure before selected/director/scene
+  artifacts and `ASSETS` could be reached.
+- [x] Prove no TTS/WAV/PCM/audio-integrity/MP4/Jianying output or invocation;
+  preserve the exact job/events/artifact hashes and MPT runtime evidence.
+- [ ] Write the M2 report, refresh dependency/inventory/handoff evidence,
+  run bounded checks, commit/push and return the exact HEAD for remote audit.
+
+Review: pending remote audit; Jianying restoration remains separately blocked.

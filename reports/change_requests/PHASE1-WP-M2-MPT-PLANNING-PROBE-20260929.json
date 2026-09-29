@@ -1,0 +1,59 @@
+{
+  "id": "PHASE1-WP-M2-MPT-PLANNING-PROBE-20260929",
+  "date": "2026-09-29",
+  "baseline_commit": "de1b32af2c4074a08862ce9b9e3945e7def2f4ea",
+  "authorization": "Remote GPT iteration 38 authorized one fresh non-candidate MPT plan-only diagnostic after exact pinned MPT restoration.",
+  "scope": "Execute one isolated create-subject -> attach-research -> run --plan-only diagnostic for the canonical I2C subject and prove planning reaches ASSETS.",
+  "diagnostic": {
+    "idempotency_key": "phase1-i2c-mpt-plan-probe-20260929",
+    "subject": "I2C总线为什么要上拉电阻",
+    "duration_seconds": 40,
+    "aspect_ratio": "9:16",
+    "research_path": "examples/phase1_subject_i2c/research_brief.json",
+    "research_sha256": "fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21",
+    "runtime_boundary": "isolated non-candidate diagnostic runtime and SQLite database"
+  },
+  "required": [
+    "actual MPT eb8c23757e098a07bbcd93b3b50e252fc8d1869a CLI/venv invocation",
+    "selected_script, director_script and scene_plan artifacts",
+    "source-bound open_drain/rise_time/sink_current facts",
+    "three i2c_bus_v1 fact-bound visual specs",
+    "SDA/SCL/START/ADDRESS/ACK-NACK/DATA/STOP labels",
+    "final SQLite state ASSETS",
+    "no Jianying invocation"
+  ],
+  "forbidden": [
+    "Candidate003 retry or resume",
+    "Candidate004",
+    "TTS",
+    "WAV/PCM/audio_integrity",
+    "MP4/render/media",
+    "Jianying restoration or rendering",
+    "pin change or backend substitution",
+    "prereview",
+    "Formal Gate",
+    "Phase 2",
+    "Feishu/Cron/publication"
+  ],
+  "evidence_outputs": [
+    "reports/phase1/stage_20260929/i2c_subject_mpt_planning_probe.json",
+    "reports/phase1/stage_20260929/i2c_subject_dependency_restoration.json",
+    "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
+    "tasks/todo.md"
+  ],
+  "status": "EXECUTED_M2_FAILED_MPT_CLI_EXIT_1_NO_SCRIPT_JSON",
+  "candidate003": "TERMINAL_PRESERVE",
+  "candidate004": "NOT_AUTHORIZED",
+  "jianying": "DEPENDENCY_BLOCKED_EXACT_PIN_UNAVAILABLE",
+  "result": {
+    "report": "reports/phase1/stage_20260929/i2c_subject_mpt_planning_probe.json",
+    "runtime_locator_id": "i2c-mpt-plan-probe-20260929",
+    "job_id": "job-d0ad2349f3a61c8250603737",
+    "final_state": "FAILED",
+    "mpt_cli_exit_code": 1,
+    "mpt_successful_candidates": 0,
+    "media_created": false,
+    "candidate004_authorized": false,
+    "jianying_dry_readiness": "NOT_RUN_BLOCKED_EXACT_PIN"
+  }
+}

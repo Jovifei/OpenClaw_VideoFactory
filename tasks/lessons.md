@@ -542,3 +542,11 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   actual signal geometry: I2C must show idle-high SDA/SCL, START/STOP conditions,
   address/data bit windows, and ACK/NACK behavior; otherwise stop as content
   failure even when codec and layout gates pass.
+
+# 2026-09-29 - Keep the remote planning and local execution loop live
+
+- A remote C2C review is a stage boundary, not the end of the project. After
+  each accepted review, execute the exact bounded next step, preserve terminal
+  exclusions and forbidden gates, push the evidence package, and return it for
+  independent audit. Pause only at an explicit external dependency or human
+  decision, while continuing any separately authorized diagnostic work.

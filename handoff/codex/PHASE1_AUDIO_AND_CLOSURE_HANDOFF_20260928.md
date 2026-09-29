@@ -561,3 +561,44 @@ Per the remote stop condition, M2/M3 planning and Jianying dry readiness were
 not run. Candidate003 remains terminal, no retry/Candidate004 is authorized,
 and no media or Gate action occurred. Await remote decision on an approved
 offline Jianying dependency source before further work.
+
+## WP-M2 MPT planning-only diagnostic — remote iteration 38
+
+Remote iteration 38 accepted the exact restored MoneyPrinterTurbo pin and
+authorized one fresh non-candidate diagnostic. The job must use an isolated
+runtime/database and execute exactly `create-subject -> attach-research ->
+run --plan-only` for `I2C总线为什么要上拉电阻`, then stop at `ASSETS`.
+
+Required proof is actual MPT `eb8c23757e098a07bbcd93b3b50e252fc8d1869a`
+CLI/venv invocation, selected/director/scene-plan artifacts, source-bound
+`open_drain`, `rise_time`, `sink_current` facts, three `i2c_bus_v1` scenes and
+the required SDA/SCL/START/ADDRESS/ACK-NACK/DATA/STOP labels. The diagnostic
+must create no TTS/WAV/PCM/audio-integrity/MP4/Jianying output and cannot be
+promoted into Candidate004. Candidate003 remains permanently terminal.
+
+Jianying exact pin `f421c8a036f4fda888a83b38fc90bb9c00d6faa9` remains blocked;
+only an exact local clone/archive or exact-pin network fetch may unblock M3.
+
+### WP-M2 result — terminal planning failure
+
+The separately authorized non-candidate diagnostic used runtime
+`i2c-mpt-plan-probe-20260929` and isolated SQLite. `create-subject`,
+`attach-research` and `run --plan-only` each ran exactly once for the
+canonical I2C subject. The restored MPT revision
+`eb8c23757e098a07bbcd93b3b50e252fc8d1869a` and its Python 3.12.10 venv were
+actually used; `cli.py --stop-at script` ran three candidate processes, all
+exited 1, and produced no parseable script JSON. The adapter wrote a failure
+summary and the control job ended `FAILED` at the planning boundary.
+
+Evidence: `reports/phase1/stage_20260929/i2c_subject_mpt_planning_probe.json`.
+The job has only the attached research artifact; no selected/director/scene
+plan, TTS, WAV, PCM integrity, MP4, Jianying call, review package, human
+decision, prereview or Gate artifact exists. The diagnostic is non-candidate
+and cannot become Candidate004. Candidate003 remains permanently terminal;
+the same deterministic job id is isolated in a separate diagnostic database
+and is not a retry of the production Candidate003 database.
+
+Current next action: return the exact MPT CLI failure for remote independent
+audit. Do not retry the diagnostic, change the MPT pin/provider, restore
+Jianying from an unverified source, create Candidate004, or run media. M3 is
+still blocked on exact Jianying pin `f421c8a...`.

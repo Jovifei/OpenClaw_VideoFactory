@@ -4,7 +4,7 @@
   "slots": {
     "flash_watchdog": "PENDING_AUDIO_APPROVAL",
     "freertos_mutex": "PENDING_AUDIO_APPROVAL",
-    "i2c": "I2C_CANDIDATE003_FAILED_SUBJECT_PLANNING_EXTERNAL_MPT_UNAVAILABLE",
+    "i2c": "I2C_CANDIDATE003_TERMINAL_MPT_PLAN_ONLY_FAILED_JIANYING_BLOCKED",
     "distinct_live_topic": "LIVE_CAN_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING",
     "lifecycle": "PASS_REVALIDATED",
     "boundary": "PASS_PRELIGHT",
@@ -51,10 +51,10 @@
     "remote_machine_review": "PASS"
   },
   "remote_review": {
-    "iteration": 37,
-    "head_reviewed": "4c2043cf6d24d005cf38f06dbce4c0aa18326df8",
-    "result": "CANDIDATE003_TERMINAL_DEPENDENCY_FAILURE_ACCEPTED",
-    "candidate003": "TERMINAL_DEPENDENCY_FAILURE",
+    "iteration": 38,
+    "head_reviewed": "de1b32af2c4074a08862ce9b9e3945e7def2f4ea",
+    "result": "MPT_RESTORATION_ACCEPTED_JIANYING_DEPENDENCY_BLOCKED",
+    "candidate003": "TERMINAL_PRESERVE",
     "candidate004": "NOT_AUTHORIZED",
     "formal_gate": "NOT_AUTHORIZED"
   },
@@ -83,6 +83,11 @@
       "iteration": 37,
       "head_reviewed": "4c2043cf6d24d005cf38f06dbce4c0aa18326df8",
       "result": "CANDIDATE003_TERMINAL_DEPENDENCY_FAILURE_ACCEPTED"
+    },
+    {
+      "iteration": 38,
+      "head_reviewed": "de1b32af2c4074a08862ce9b9e3945e7def2f4ea",
+      "result": "MPT_RESTORATION_ACCEPTED_JIANYING_DEPENDENCY_BLOCKED"
     }
   ],
   "closure_graph": {
@@ -103,8 +108,9 @@
     },
     "I2C": {
       "restoration": "EXHAUSTED",
-      "qualification": "CANDIDATE003_FAILED_PLANNING_DEPENDENCY",
-      "candidate004": "BLOCKED_PENDING_REMOTE_DECISION",
+      "qualification": "M2_DIAGNOSTIC_MPT_PLAN_ONLY_FAILED",
+      "candidate003": "TERMINAL_DEPENDENCY_FAILURE",
+      "candidate004": "BLOCKED_PENDING_REMOTE_REVIEW",
       "dependency_restoration": "BLOCKED_JIANYING_SKILL"
     },
     "lifecycle": "PASS_REVALIDATED",
@@ -136,7 +142,7 @@
       "Flash exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED",
       "FreeRTOS exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED"
     ],
-    "i2c": "Await remote decision on approved offline Jianying dependency source; no Candidate003 retry or Candidate004.",
+    "i2c": "M2 non-candidate plan-only diagnostic failed: pinned MPT CLI exited 1 for all three script candidates and emitted no parseable script JSON. Await remote decision on the exact MPT configuration/runtime defect and approved Jianying source; no Candidate003 retry or Candidate004.",
     "after_human_approval": "Run only the topic-specific read-only prereview or exactly one newly authorized topic candidate; do not cross-unlock topics.",
     "formal_gate": "Remain NOT_RUN until all four topic slots have final machine evidence, exact-SHA human review and prereview."
   },
@@ -193,6 +199,21 @@
     "jianying_editor_skill": "BLOCKED_NO_LOCAL_CLONE_NETWORK_UNAVAILABLE",
     "candidate_run": false,
     "candidate003_retry": false,
-    "candidate004_authorized": false
+    "candidate004_authorized": false,
+    "m2_planning_probe": "FAILED_MPT_CLI_EXIT_1_NO_SCRIPT_JSON",
+    "m2_report": "reports/phase1/stage_20260929/i2c_subject_mpt_planning_probe.json"
+  },
+  "i2c_subject_mpt_planning_probe": {
+    "status": "FAILED:PHASE1_MPT_PLAN_ONLY_MPT_CLI_EXIT_1_NO_SCRIPT_JSON",
+    "report": "reports/phase1/stage_20260929/i2c_subject_mpt_planning_probe.json",
+    "runtime_locator_id": "i2c-mpt-plan-probe-20260929",
+    "job_id": "job-d0ad2349f3a61c8250603737",
+    "candidate": false,
+    "promotable_to_candidate004": false,
+    "mpt_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "mpt_venv": "PRESENT_AND_USED",
+    "mpt_successful_candidates": 0,
+    "media_output_created": false,
+    "jianying_invocation": false
   }
 }

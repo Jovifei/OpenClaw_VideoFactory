@@ -28,12 +28,29 @@
       "source_modified": false
     }
   },
-  "wp_m2_planning_probe": "NOT_RUN_PER_STOP_ON_DEPENDENCY_BLOCK",
+  "wp_m2_planning_probe": "FAILED:PHASE1_MPT_PLAN_ONLY_MPT_CLI_EXIT_1_NO_SCRIPT_JSON",
   "wp_m3_jianying_dry_readiness": "NOT_RUN_PER_STOP_ON_DEPENDENCY_BLOCK",
   "excluded_candidates": {
     "candidate001": "job-b4a2e8e851268bc14e5e4a15",
     "candidate002": "job-b1a186b7b265c2ed46b7c3cb",
     "candidate003": "job-d0ad2349f3a61c8250603737"
   },
-  "next_remote_action": "Decide whether an approved offline Jianying archive/cache can be supplied or whether the project remains blocked; no candidate retry or Candidate004."
+  "next_remote_action": "Independently audit M2 exact MPT failure; keep I2C blocked, Candidate003 terminal, Candidate004 prohibited, and require an explicit dependency/configuration plan before any new diagnostic or candidate.",
+  "m2_planning_probe": {
+    "status": "FAILED:PHASE1_MPT_PLAN_ONLY_MPT_CLI_EXIT_1_NO_SCRIPT_JSON",
+    "report": "reports/phase1/stage_20260929/i2c_subject_mpt_planning_probe.json",
+    "runtime_locator_id": "i2c-mpt-plan-probe-20260929",
+    "job_id": "job-d0ad2349f3a61c8250603737",
+    "candidate": false,
+    "create_subject": "EXACTLY_ONCE",
+    "attach_research": "EXACTLY_ONCE",
+    "run_plan_only": "EXACTLY_ONCE",
+    "mpt_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "mpt_venv": "PRESENT_AND_USED",
+    "mpt_cli_process_count": 3,
+    "successful_candidates": 0,
+    "state": "FAILED",
+    "media_created": false,
+    "jianying_invoked": false
+  }
 }
