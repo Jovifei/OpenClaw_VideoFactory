@@ -3185,9 +3185,14 @@ Formal Gate remain prohibited.
   otherwise freeze the exact dependency blocker and stop.
 - [ ] Run the corrected direct diagnostic only after remote reauthorization;
   no M6 or media is authorized.
-- [ ] Run bounded redaction/compile/diff checks, commit/push the evidence and
+- [x] Run bounded redaction/compile/diff checks, commit/push the evidence and
   return the exact HEAD for independent remote audit.
 
 Review: `MPT_PROVIDER_BLOCKED:UNCLASSIFIED` because the authorized call did not
 reach the provider; endpoint reachability is `REACHABLE`, and a corrected
 direct diagnostic is pending remote reauthorization.
+
+Verification: 45 focused subject/audio/diagnostic/Phase1 acceptance tests
+passed; diagnostic compile/redaction checks and git diff --check passed.
+Evidence commit: `8fab3f8`; corrected direct call remains NOT_RUN pending remote
+reauthorization.

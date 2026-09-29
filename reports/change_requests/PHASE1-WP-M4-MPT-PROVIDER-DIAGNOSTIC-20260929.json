@@ -62,6 +62,8 @@
     "endpoint_reachability": "REACHABLE",
     "media_created": false,
     "candidate_store_touched": false,
-    "candidate004_authorized": false
+    "candidate004_authorized": false,
+    "evidence_commit": "8fab3f8",
+    "verification": "45 focused subject/audio/diagnostic/Phase1 acceptance tests; compile/redaction/diff checks PASS"
   }
 }

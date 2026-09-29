@@ -65,6 +65,8 @@
     "endpoint_reachability": "REACHABLE",
     "corrected_direct_call": "REQUIRES_REMOTE_REAUTHORIZATION",
     "media_created": false,
-    "candidate_store_touched": false
+    "candidate_store_touched": false,
+    "evidence_commit": "8fab3f8",
+    "verification": "45 focused tests and compile/redaction/diff checks PASS"
   }
 }

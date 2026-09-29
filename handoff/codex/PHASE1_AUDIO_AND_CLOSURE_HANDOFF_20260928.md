@@ -657,3 +657,9 @@ Evidence: `reports/phase1/stage_20260929/mpt_provider_diagnostic.json` and
 Until remote reauthorization, do not run the corrected direct command, create
 a Phase1 job, retry Candidate003, create Candidate004, invoke Jianying or run
 media.
+
+The diagnostic sanitizer/structural checks and the affected subject/audio/
+Phase1 acceptance suite passed: 45 tests total. Python compile and diff checks
+also passed. Evidence is pushed in commit `8fab3f8` on
+`codex/phase1-audio-closure-20260928`; the corrected direct MPT call remains
+unexecuted pending remote reauthorization.

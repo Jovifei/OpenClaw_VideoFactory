@@ -228,6 +228,8 @@
     "corrected_direct_call": "REQUIRES_REMOTE_REAUTHORIZATION",
     "media_output_created": false,
     "candidate_store_touched": false,
-    "candidate004_authorized": false
+    "candidate004_authorized": false,
+    "evidence_commit": "8fab3f8",
+    "verification": "45 focused tests; compile/redaction/diff checks PASS"
   }
 }
