@@ -142,7 +142,7 @@
       "Flash exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED",
       "FreeRTOS exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED"
     ],
-    "i2c": "M4B direct MPT diagnostic reached the configured provider and returned sanitized HTTP 401 Invalid API Key. Await remote decision on an approved existing credential/config restoration source; do not invent/rotate credentials, change provider/model, run M6, retry Candidate003 or create Candidate004.",
+    "i2c": "M5A found no distinct approved credential source: effective app.openai_api_key and MIMO_API_KEY fingerprints are equal and both represent the rejected 401 value; MPT_LLM_API_KEY is missing. Freeze I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE; do not run M5B/provider retest/M6/Candidate004.",
     "after_human_approval": "Run only the topic-specific read-only prereview or exactly one newly authorized topic candidate; do not cross-unlock topics.",
     "formal_gate": "Remain NOT_RUN until all four topic slots have final machine evidence, exact-SHA human review and prereview."
   },
@@ -235,5 +235,16 @@
     "candidate004_authorized": false,
     "evidence_commit": "d81ff87",
     "verification": "45 focused tests; diagnostic compile/redaction/diff checks PASS"
+  },
+  "i2c_mpt_credential_provenance": {
+    "status": "NO_APPROVED_EXISTING_CREDENTIAL_SOURCE_FOUND",
+    "report": "reports/phase1/stage_20260929/mpt_credential_provenance.json",
+    "effective_config_equals_mimo_env": true,
+    "mpt_llm_api_key": "MISSING",
+    "workspace_env_template_only": true,
+    "m5b": "NOT_RUN_SAME_REJECTED_FINGERPRINT",
+    "provider_called": false,
+    "config_changed": false,
+    "blocker": "I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE"
   }
 }

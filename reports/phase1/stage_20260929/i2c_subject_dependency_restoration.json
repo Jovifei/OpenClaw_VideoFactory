@@ -35,7 +35,7 @@
     "candidate002": "job-b1a186b7b265c2ed46b7c3cb",
     "candidate003": "job-d0ad2349f3a61c8250603737"
   },
-  "next_remote_action": "Independently audit the sanitized MPT_PROVIDER_BLOCKED:AUTH result and decide whether an approved existing credential/config restoration source may be used. Do not invent/rotate credentials, change provider/model, run M6, retry Candidate003 or create Candidate004.",
+  "next_remote_action": "Independently audit M5A; no approved distinct credential exists. Freeze I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE and await external credential decision; do not run M5B, provider retest, M6, Candidate003 retry or Candidate004.",
   "m2_planning_probe": {
     "status": "FAILED:PHASE1_MPT_PLAN_ONLY_MPT_CLI_EXIT_1_NO_SCRIPT_JSON",
     "report": "reports/phase1/stage_20260929/i2c_subject_mpt_planning_probe.json",
@@ -71,5 +71,16 @@
     "candidate004_authorized": false,
     "evidence_commit": "d81ff87",
     "verification": "45 focused tests; diagnostic compile/redaction/diff checks PASS"
+  },
+  "m5a_credential_provenance": {
+    "status": "NO_APPROVED_EXISTING_CREDENTIAL_SOURCE_FOUND",
+    "report": "reports/phase1/stage_20260929/mpt_credential_provenance.json",
+    "effective_config_equals_mimo_env": true,
+    "mpt_llm_api_key": "MISSING",
+    "workspace_env_template_only": true,
+    "m5b": "NOT_RUN_SAME_REJECTED_FINGERPRINT",
+    "provider_called": false,
+    "config_changed": false,
+    "blocker": "I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE"
   }
 }

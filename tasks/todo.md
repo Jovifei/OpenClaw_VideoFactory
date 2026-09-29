@@ -3197,3 +3197,24 @@ credential/provider change or M6 plan-only run is authorized.
 Verification: 45 focused subject/audio/diagnostic/Phase1 acceptance tests
 passed; diagnostic compile/redaction checks and git diff --check passed.
 Evidence commit: `d81ff87`; M6 remains NOT_AUTHORIZED.
+
+## PHASE1-WP-M5A-CREDENTIAL-PROVENANCE-20260929 — remote iteration 41
+
+Remote iteration 41 authorized read-only credential provenance discovery within
+approved Owner/workspace sources. Candidate003, M6, Candidate004, provider
+calls, TTS, media, Jianying and Gate remain prohibited.
+
+- [x] Freeze the M5A change request and source boundary.
+- [x] Compare the effective ignored MPT config credential and approved
+  environment inputs by SHA-256 only; never print or persist values.
+- [x] Record symbolic source locators, presence, fingerprints, provenance and
+  whether each fingerprint equals the rejected effective credential.
+- [x] Search only the workspace's approved config/history roots; do not scan
+  unrelated user directories or accounts.
+- [x] No distinct approved existing credential source exists; freeze
+  `I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE`; do not run M5B/provider.
+- [ ] Run secret-leak assertions, commit/push evidence and return for remote
+  audit. M5B is conditional and must not run for an equal rejected value.
+
+Review: `I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE`; M5B, MPT AUTH
+retest, M6, Candidate004 and media remain blocked pending remote audit.

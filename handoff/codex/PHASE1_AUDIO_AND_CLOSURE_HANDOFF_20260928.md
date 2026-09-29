@@ -682,3 +682,37 @@ also passed. Evidence is pushed in commit `8fab3f8` on
 `codex/phase1-audio-closure-20260928`; the corrected direct MPT call executed
 exactly once and returned the AUTH blocker. The updated AUTH evidence commit is
 `d81ff87`; M6 remains NOT_AUTHORIZED pending remote review.
+
+## WP-M5A credential provenance — remote iteration 41
+
+Remote iteration 41 authorized read-only comparison of approved Owner/workspace
+credential sources after the MPT 401. The effective ignored MPT field is
+`app.openai_api_key`; the documented approved environment inputs are
+`MIMO_API_KEY` and `MPT_LLM_API_KEY`. Compare only SHA-256 fingerprints and
+presence/provenance. Do not print values, scan unrelated user directories, call
+the provider, or change config.
+
+The initial read-only comparison shows `MIMO_API_KEY` is present and its
+fingerprint equals the currently rejected `app.openai_api_key`; no distinct
+replacement has been identified. `MPT_LLM_API_KEY` is missing and the workspace
+contains only the `.env.example` template outside the ignored MPT config.
+M5B must not rewrite the same rejected value. If the report confirms no other
+approved existing source, freeze `I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE`
+and return for remote review. M6, Candidate004, provider retest, media and Gate
+remain prohibited.
+
+### WP-M5A result — no approved distinct credential source
+
+The read-only provenance report compares only approved workspace/config and
+documented environment sources by SHA-256. The effective ignored
+`app.openai_api_key` fingerprint equals the present `MIMO_API_KEY` fingerprint;
+that same value was rejected by the MPT endpoint with HTTP 401. `MPT_LLM_API_KEY`
+is missing. The workspace has only `.env.example` as a template and no second
+approved credential source. No provider call or config write occurred during
+M5A, and no values were persisted.
+
+Evidence: `reports/phase1/stage_20260929/mpt_credential_provenance.json` and
+`reports/change_requests/PHASE1-WP-M5A-CREDENTIAL-PROVENANCE-20260929.json`.
+Freeze `I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE`; do not run M5B,
+provider retest, M6, Candidate004, media or Gate until an external approved
+credential decision/source changes the state.
