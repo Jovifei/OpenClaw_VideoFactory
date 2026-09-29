@@ -51,10 +51,10 @@
     "remote_machine_review": "PASS"
   },
   "remote_review": {
-    "iteration": 36,
-    "head_reviewed": "3c6a14dc26557ce805699162939a23a8f6d0775e",
-    "result": "WP_LR3_ACCEPTED_CANDIDATE003_AUTHORIZED",
-    "candidate003": "ONE_NEW_UNIQUE_SUBJECT_CANDIDATE_EXECUTED_FAILED_PLANNING",
+    "iteration": 37,
+    "head_reviewed": "4c2043cf6d24d005cf38f06dbce4c0aa18326df8",
+    "result": "CANDIDATE003_TERMINAL_DEPENDENCY_FAILURE_ACCEPTED",
+    "candidate003": "TERMINAL_DEPENDENCY_FAILURE",
     "candidate004": "NOT_AUTHORIZED",
     "formal_gate": "NOT_AUTHORIZED"
   },
@@ -78,6 +78,11 @@
       "iteration": 36,
       "head_reviewed": "3c6a14dc26557ce805699162939a23a8f6d0775e",
       "result": "WP_LR3_ACCEPTED_CANDIDATE003_AUTHORIZED"
+    },
+    {
+      "iteration": 37,
+      "head_reviewed": "4c2043cf6d24d005cf38f06dbce4c0aa18326df8",
+      "result": "CANDIDATE003_TERMINAL_DEPENDENCY_FAILURE_ACCEPTED"
     }
   ],
   "closure_graph": {
@@ -99,7 +104,8 @@
     "I2C": {
       "restoration": "EXHAUSTED",
       "qualification": "CANDIDATE003_FAILED_PLANNING_DEPENDENCY",
-      "candidate004": "BLOCKED_PENDING_REMOTE_DECISION"
+      "candidate004": "BLOCKED_PENDING_REMOTE_DECISION",
+      "dependency_restoration": "BLOCKED_JIANYING_SKILL"
     },
     "lifecycle": "PASS_REVALIDATED",
     "boundary": "PASS_PRELIGHT",
@@ -130,7 +136,7 @@
       "Flash exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED",
       "FreeRTOS exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED"
     ],
-    "i2c": "Remote audit of Candidate003 terminal planning failure and explicit decision on dependency restoration/new candidate; do not retry job-d0ad2349f3a61c8250603737.",
+    "i2c": "Await remote decision on approved offline Jianying dependency source; no Candidate003 retry or Candidate004.",
     "after_human_approval": "Run only the topic-specific read-only prereview or exactly one newly authorized topic candidate; do not cross-unlock topics.",
     "formal_gate": "Remain NOT_RUN until all four topic slots have final machine evidence, exact-SHA human review and prereview."
   },
@@ -178,6 +184,15 @@
     "media_output_created": false,
     "retry_or_resume_used": false,
     "candidate_review": "reports/phase1/stage_20260929/i2c_requalification_candidate003_review.json",
+    "candidate004_authorized": false
+  },
+  "i2c_subject_dependency_restoration": {
+    "status": "I2C_SUBJECT_DEPENDENCY_BLOCKED:jianying-editor-skill:network_unavailable_and_no_local_clone",
+    "report": "reports/phase1/stage_20260929/i2c_subject_dependency_restoration.json",
+    "moneyprinterturbo": "RESTORED_PINNED_LOCAL_CACHE",
+    "jianying_editor_skill": "BLOCKED_NO_LOCAL_CLONE_NETWORK_UNAVAILABLE",
+    "candidate_run": false,
+    "candidate003_retry": false,
     "candidate004_authorized": false
   }
 }

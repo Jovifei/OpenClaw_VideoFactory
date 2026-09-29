@@ -1,0 +1,39 @@
+{
+  "schema_version": "phase1_i2c_subject_dependency_restoration_v1",
+  "status": "I2C_SUBJECT_DEPENDENCY_BLOCKED:jianying-editor-skill:network_unavailable_and_no_local_clone",
+  "authorization": "Remote GPT iteration 37 WP-M0 dependency restoration only",
+  "candidate_run": false,
+  "candidate003_retry": false,
+  "candidate004_authorized": false,
+  "dependencies": {
+    "MoneyPrinterTurbo": {
+      "expected_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+      "actual_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+      "restoration_source": "local_owner_external_cache_via_ignored_worktree_junction",
+      "checkout_locator": "owner_external/MoneyPrinterTurbo",
+      "clean_checkout": true,
+      "cli_entrypoint": "present",
+      "python_executable": "present",
+      "source_modified": false
+    },
+    "jianying-editor-skill": {
+      "expected_revision": "f421c8a036f4fda888a83b38fc90bb9c00d6faa9",
+      "actual_revision": null,
+      "restoration_source": "local_cache_then_network_attempt",
+      "checkout_locator": null,
+      "clean_checkout": null,
+      "wrapper_entrypoint": "NOT_PRESENT",
+      "python_executable": "NOT_VERIFIED",
+      "network_attempt": "FAILED_GITHUB_443_UNAVAILABLE",
+      "source_modified": false
+    }
+  },
+  "wp_m2_planning_probe": "NOT_RUN_PER_STOP_ON_DEPENDENCY_BLOCK",
+  "wp_m3_jianying_dry_readiness": "NOT_RUN_PER_STOP_ON_DEPENDENCY_BLOCK",
+  "excluded_candidates": {
+    "candidate001": "job-b4a2e8e851268bc14e5e4a15",
+    "candidate002": "job-b1a186b7b265c2ed46b7c3cb",
+    "candidate003": "job-d0ad2349f3a61c8250603737"
+  },
+  "next_remote_action": "Decide whether an approved offline Jianying archive/cache can be supplied or whether the project remains blocked; no candidate retry or Candidate004."
+}

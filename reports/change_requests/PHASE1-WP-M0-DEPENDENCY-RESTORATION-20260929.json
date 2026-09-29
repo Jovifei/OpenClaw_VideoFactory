@@ -1,0 +1,43 @@
+{
+  "id": "PHASE1-WP-M0-DEPENDENCY-RESTORATION-20260929",
+  "date": "2026-09-29",
+  "baseline_commit": "4c2043cf6d24d005cf38f06dbce4c0aa18326df8",
+  "authorization": "Remote GPT iteration 37 authorized dependency restoration/identity verification only after Candidate003 terminal planning failure.",
+  "scope": "Restore and verify only the already-approved pinned MoneyPrinterTurbo and jianying-editor-skill dependencies; no candidate run, media, retry or Candidate004.",
+  "expected_pins": {
+    "MoneyPrinterTurbo": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "jianying-editor-skill": "f421c8a036f4fda888a83b38fc90bb9c00d6faa9"
+  },
+  "allowed_sources": [
+    "existing local clone/cache",
+    "existing preserved archive/cache",
+    "network fetch of exact approved revision only if available"
+  ],
+  "forbidden": [
+    "latest/default branch",
+    "pin changes/version upgrades",
+    "alternate script generator",
+    "alternate editor backend",
+    "model/provider configuration changes",
+    "Candidate003 retry",
+    "Candidate004",
+    "TTS",
+    "render",
+    "media",
+    "prereview",
+    "Formal Gate",
+    "Phase 2",
+    "Feishu",
+    "Cron",
+    "publication"
+  ],
+  "remote_review": {
+    "iteration": 37,
+    "head_reviewed": "4c2043cf6d24d005cf38f06dbce4c0aa18326df8",
+    "candidate003": "TERMINAL_DEPENDENCY_FAILURE_ACCEPTED",
+    "candidate003_retry": "NOT_AUTHORIZED",
+    "candidate004": "NOT_AUTHORIZED",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "status": "EXECUTED_M0_JIAN_YING_BLOCKED_MPT_RESTORED_NO_CANDIDATE_RUN"
+}

@@ -546,3 +546,18 @@ to remote GPT. Await an explicit dependency-restoration/new-candidate plan;
 do not retry this job or create Candidate004. CAN human review and Flash/
 FreeRTOS audio gates remain pending; prereview, final contracts and Formal Gate
 remain prohibited.
+
+## WP-M0-M3 dependency restoration — remote iteration 37
+
+Remote iteration 37 authorized dependency restoration and identity verification
+only. MoneyPrinterTurbo was restored from the existing local Owner cache at
+approved revision `eb8c23757e098a07bbcd93b3b50e252fc8d1869a`, with its CLI and
+venv present and checkout clean. The exact pinned `jianying-editor-skill`
+revision `f421c8a036f4fda888a83b38fc90bb9c00d6faa9` has no local clone/archive;
+the network fetch failed at GitHub connectivity. Evidence:
+`reports/phase1/stage_20260929/i2c_subject_dependency_restoration.json`.
+
+Per the remote stop condition, M2/M3 planning and Jianying dry readiness were
+not run. Candidate003 remains terminal, no retry/Candidate004 is authorized,
+and no media or Gate action occurred. Await remote decision on an approved
+offline Jianying dependency source before further work.

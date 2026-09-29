@@ -3117,3 +3117,22 @@ candidate from reviewed HEAD `3c6a14dc...`.
 Review: `CHANGES_REQUIRED:PHASE1_SUBJECT_PLANNING_EXTERNAL_MPT_UNAVAILABLE`.
 The exactly-one run authorization was consumed by a terminal planning failure
 before director/scene artifacts or media; no retry or Candidate004 is allowed.
+
+## PHASE1-WP-M0-M3-DEPENDENCY-RESTORATION-20260929 — remote iteration 37
+
+Remote iteration 37 accepted Candidate003 as a terminal dependency failure and
+authorized dependency restoration/identity verification only. MoneyPrinterTurbo
+was restored from the existing local Owner cache at its approved revision;
+jianying-editor-skill has no local clone and the exact network fetch was blocked.
+
+- [x] Restore/verify pinned MoneyPrinterTurbo revision, CLI and venv.
+- [x] Attempt restore/verify pinned Jianying skill; record exact network/local
+  blocker without changing the pin.
+- [x] Write `i2c_subject_dependency_restoration.json`; stop before M2/M3 because
+  one required dependency remains blocked.
+- [ ] Run a non-candidate MPT plan-only probe only after both pinned dependencies
+  are restored and remote accepts the restoration evidence.
+- [ ] Run Jianying dry readiness only after exact pinned restoration; no media.
+
+Review: `I2C_SUBJECT_DEPENDENCY_BLOCKED:jianying-editor-skill`. Candidate003
+remains terminal; no retry or Candidate004 is authorized.
