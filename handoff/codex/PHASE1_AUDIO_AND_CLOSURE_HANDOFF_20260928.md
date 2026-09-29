@@ -522,3 +522,27 @@ Execute only the no-media wiring repair, create
 RED/GREEN evidence, rerun focused suites and Phase 1 acceptance, push the
 bounded commit, and return for independent remote review. Do not create
 Candidate003, run create-topic, or enter any human/prereview/Gate state.
+
+## WP-L3 Candidate003 execution result — remote iteration 36
+
+Remote iteration 36 authorized exactly one fresh I2C subject-path Candidate003.
+The exact create-subject, attach-research and run boundaries were consumed once
+for control job `job-d0ad2349f3a61c8250603737`, attempt 0, idempotency key
+`phase1-i2c-requalification-candidate003-20260929`. The control plane reached
+`NEW -> RESEARCHING -> SCRIPTING -> FAILED` during subject planning.
+
+Evidence: `reports/phase1/stage_20260929/i2c_requalification_candidate003_review.json`.
+No director script, scene plan, TTS, audio-integrity file, MP4, review package,
+human decision, prereview or Gate artifact was created. The failure is
+`phase1_subject_planning_failed`; the isolated worktree lacks the pinned
+`external/MoneyPrinterTurbo` runtime/venv required by the script-drafter before
+planning can produce candidates. Candidate001/002 remain immutable terminal
+failures. Candidate004 is not authorized and Candidate003 must not be retried.
+
+### Current NEXT_EXPECTED_STEP
+
+Return the terminal Candidate003 planning failure and exact dependency evidence
+to remote GPT. Await an explicit dependency-restoration/new-candidate plan;
+do not retry this job or create Candidate004. CAN human review and Flash/
+FreeRTOS audio gates remain pending; prereview, final contracts and Formal Gate
+remain prohibited.

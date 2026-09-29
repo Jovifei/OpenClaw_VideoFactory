@@ -4,7 +4,7 @@
   "slots": {
     "flash_watchdog": "PENDING_AUDIO_APPROVAL",
     "freertos_mutex": "PENDING_AUDIO_APPROVAL",
-    "i2c": "I2C_SUBJECT_ROUTE_PREFLIGHT_READY_NO_MEDIA/CANDIDATE003_BLOCKED",
+    "i2c": "I2C_CANDIDATE003_FAILED_SUBJECT_PLANNING_EXTERNAL_MPT_UNAVAILABLE",
     "distinct_live_topic": "LIVE_CAN_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING",
     "lifecycle": "PASS_REVALIDATED",
     "boundary": "PASS_PRELIGHT",
@@ -51,12 +51,11 @@
     "remote_machine_review": "PASS"
   },
   "remote_review": {
-    "iteration": 34,
-    "head_reviewed": "e51b45b0050b2e20b23fb874cb70ef82aa1e3e9a",
-    "result": "CANDIDATE002_FAILURE_ACCEPTED_ROUTE_MISMATCH_CONFIRMED",
-    "new_media": "NOT_AUTHORIZED_UNTIL_ROUTE_PROOF",
-    "human_decisions": "PENDING",
-    "i2c_candidate003": "NOT_AUTHORIZED",
+    "iteration": 36,
+    "head_reviewed": "3c6a14dc26557ce805699162939a23a8f6d0775e",
+    "result": "WP_LR3_ACCEPTED_CANDIDATE003_AUTHORIZED",
+    "candidate003": "ONE_NEW_UNIQUE_SUBJECT_CANDIDATE_EXECUTED_FAILED_PLANNING",
+    "candidate004": "NOT_AUTHORIZED",
     "formal_gate": "NOT_AUTHORIZED"
   },
   "remote_review_history": [
@@ -74,6 +73,11 @@
       "iteration": 34,
       "head_reviewed": "e51b45b0050b2e20b23fb874cb70ef82aa1e3e9a",
       "result": "CANDIDATE002_FAILURE_ACCEPTED_ROUTE_MISMATCH_CONFIRMED"
+    },
+    {
+      "iteration": 36,
+      "head_reviewed": "3c6a14dc26557ce805699162939a23a8f6d0775e",
+      "result": "WP_LR3_ACCEPTED_CANDIDATE003_AUTHORIZED"
     }
   ],
   "closure_graph": {
@@ -94,9 +98,8 @@
     },
     "I2C": {
       "restoration": "EXHAUSTED",
-      "qualification": "SUBJECT_ROUTE_PREFLIGHT_READY_NO_MEDIA",
-      "candidate003": "BLOCKED_PENDING_REMOTE_REVIEW",
-      "audio_wiring": "READY_FOR_REMOTE_REVIEW_NO_MEDIA"
+      "qualification": "CANDIDATE003_FAILED_PLANNING_DEPENDENCY",
+      "candidate004": "BLOCKED_PENDING_REMOTE_DECISION"
     },
     "lifecycle": "PASS_REVALIDATED",
     "boundary": "PASS_PRELIGHT",
@@ -127,7 +130,7 @@
       "Flash exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED",
       "FreeRTOS exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED"
     ],
-    "i2c": "Remote review LR3 artifact binding and real CLI adapter invocation; only then consider one new unique subject-path I2C candidate.",
+    "i2c": "Remote audit of Candidate003 terminal planning failure and explicit decision on dependency restoration/new candidate; do not retry job-d0ad2349f3a61c8250603737.",
     "after_human_approval": "Run only the topic-specific read-only prereview or exactly one newly authorized topic candidate; do not cross-unlock topics.",
     "formal_gate": "Remain NOT_RUN until all four topic slots have final machine evidence, exact-SHA human review and prereview."
   },
@@ -166,5 +169,15 @@
     "candidate003_authorized": false,
     "research_artifact_binding": "SHA_AND_TOPIC_FAIL_CLOSED",
     "source_id_normalization": "PASS"
+  },
+  "i2c_requalification_candidate003": {
+    "control_job_id": "job-d0ad2349f3a61c8250603737",
+    "status": "FAILED:PHASE1_SUBJECT_PLANNING_EXTERNAL_MPT_UNAVAILABLE",
+    "attempt": 0,
+    "last_completed_state": "RESEARCHING",
+    "media_output_created": false,
+    "retry_or_resume_used": false,
+    "candidate_review": "reports/phase1/stage_20260929/i2c_requalification_candidate003_review.json",
+    "candidate004_authorized": false
   }
 }

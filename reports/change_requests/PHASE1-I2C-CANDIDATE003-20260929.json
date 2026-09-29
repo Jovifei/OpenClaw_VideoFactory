@@ -12,8 +12,20 @@
     "width": 1080,
     "height": 1920,
     "fps": 30,
-    "fact_ids": ["open_drain", "rise_time", "sink_current"],
-    "labels": ["SDA", "SCL", "START", "ADDRESS", "ACK/NACK", "DATA", "STOP"],
+    "fact_ids": [
+      "open_drain",
+      "rise_time",
+      "sink_current"
+    ],
+    "labels": [
+      "SDA",
+      "SCL",
+      "START",
+      "ADDRESS",
+      "ACK/NACK",
+      "DATA",
+      "STOP"
+    ],
     "visual_spec_kind": "i2c_bus_v1",
     "source_aligned_narration": true,
     "transition_mode": "technical_cut"
@@ -25,11 +37,24 @@
     "run": "EXACTLY_ONCE",
     "retry": false,
     "resume": false,
-    "candidate004": false
+    "candidate004": false,
+    "control_job_id": "job-d0ad2349f3a61c8250603737",
+    "attempt": 0,
+    "final_state": "FAILED",
+    "last_completed_state": "RESEARCHING",
+    "retry_or_resume_used": false
   },
   "excluded_candidates": {
-    "candidate001": {"control_job_id": "job-b4a2e8e851268bc14e5e4a15", "status": "FAILED_TERMINAL", "retry": "FORBIDDEN"},
-    "candidate002": {"control_job_id": "job-b1a186b7b265c2ed46b7c3cb", "status": "FAILED_TERMINAL_ROUTE_MISMATCH", "retry": "FORBIDDEN"}
+    "candidate001": {
+      "control_job_id": "job-b4a2e8e851268bc14e5e4a15",
+      "status": "FAILED_TERMINAL",
+      "retry": "FORBIDDEN"
+    },
+    "candidate002": {
+      "control_job_id": "job-b1a186b7b265c2ed46b7c3cb",
+      "status": "FAILED_TERMINAL_ROUTE_MISMATCH",
+      "retry": "FORBIDDEN"
+    }
   },
   "required_acceptance": [
     "new unique local_subject job",
@@ -74,5 +99,14 @@
     "candidate003": "ONE_NEW_UNIQUE_SUBJECT_CANDIDATE_AUTHORIZED",
     "formal_gate": "NOT_AUTHORIZED"
   },
-  "status": "FROZEN_BEFORE_EXACTLY_ONE_SUBJECT_CANDIDATE_RUN"
+  "status": "EXECUTED_SINGLE_RUN_FAILED_SUBJECT_PLANNING",
+  "run_result": {
+    "report": "reports/phase1/stage_20260929/i2c_requalification_candidate003_review.json",
+    "failure": "phase1_subject_planning_failed",
+    "root_cause": "external/MoneyPrinterTurbo missing in isolated worktree before director/scene planning",
+    "media_output_created": false,
+    "audio_integrity_created": false,
+    "candidate004_created": false,
+    "next_remote_action": "Audit terminal failure; no retry under iteration-36 authorization."
+  }
 }
