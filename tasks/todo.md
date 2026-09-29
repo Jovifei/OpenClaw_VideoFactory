@@ -3155,7 +3155,10 @@ media, TTS, prereview and Formal Gate remain prohibited.
   artifacts and `ASSETS` could be reached.
 - [x] Prove no TTS/WAV/PCM/audio-integrity/MP4/Jianying output or invocation;
   preserve the exact job/events/artifact hashes and MPT runtime evidence.
-- [ ] Write the M2 report, refresh dependency/inventory/handoff evidence,
+- [x] Write the M2 report, refresh dependency/inventory/handoff evidence,
   run bounded checks, commit/push and return the exact HEAD for remote audit.
 
-Review: pending remote audit; Jianying restoration remains separately blocked.
+Verification: 42 focused subject/audio/Phase1 acceptance tests passed;
+compileall, Remotion typecheck, Remotion contracts and git diff --check passed.
+Evidence commit: `5e551f1`. Review: pending remote audit; Jianying restoration
+remains separately blocked.

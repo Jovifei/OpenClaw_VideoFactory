@@ -214,6 +214,7 @@
     "mpt_venv": "PRESENT_AND_USED",
     "mpt_successful_candidates": 0,
     "media_output_created": false,
-    "jianying_invocation": false
+    "jianying_invocation": false,
+    "evidence_commit": "5e551f1"
   }
 }

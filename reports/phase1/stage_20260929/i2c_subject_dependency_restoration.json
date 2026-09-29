@@ -51,6 +51,7 @@
     "successful_candidates": 0,
     "state": "FAILED",
     "media_created": false,
-    "jianying_invoked": false
+    "jianying_invoked": false,
+    "evidence_commit": "5e551f1"
   }
 }

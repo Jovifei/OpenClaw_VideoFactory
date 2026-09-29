@@ -598,6 +598,11 @@ and cannot become Candidate004. Candidate003 remains permanently terminal;
 the same deterministic job id is isolated in a separate diagnostic database
 and is not a retry of the production Candidate003 database.
 
+Bounded verification passed: 42 focused subject/audio/Phase1 acceptance tests,
+Python compileall, Remotion typecheck, Remotion contracts and git diff check.
+The pushed evidence commit is `5e551f1` on
+`codex/phase1-audio-closure-20260928`.
+
 Current next action: return the exact MPT CLI failure for remote independent
 audit. Do not retry the diagnostic, change the MPT pin/provider, restore
 Jianying from an unverified source, create Candidate004, or run media. M3 is

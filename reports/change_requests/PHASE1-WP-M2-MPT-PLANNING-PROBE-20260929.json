@@ -54,6 +54,7 @@
     "mpt_successful_candidates": 0,
     "media_created": false,
     "candidate004_authorized": false,
-    "jianying_dry_readiness": "NOT_RUN_BLOCKED_EXACT_PIN"
+    "jianying_dry_readiness": "NOT_RUN_BLOCKED_EXACT_PIN",
+    "evidence_commit": "5e551f1"
   }
 }
