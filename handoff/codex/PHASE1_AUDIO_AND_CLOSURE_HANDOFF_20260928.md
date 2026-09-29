@@ -681,4 +681,4 @@ Phase1 acceptance suite passed: 45 tests total. Python compile and diff checks
 also passed. Evidence is pushed in commit `8fab3f8` on
 `codex/phase1-audio-closure-20260928`; the corrected direct MPT call executed
 exactly once and returned the AUTH blocker. The updated AUTH evidence commit is
-pending this handoff commit.
+`d81ff87`; M6 remains NOT_AUTHORIZED pending remote review.

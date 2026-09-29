@@ -232,6 +232,8 @@
     "media_output_created": false,
     "candidate_store_touched": false,
     "m6_authorized": false,
-    "candidate004_authorized": false
+    "candidate004_authorized": false,
+    "evidence_commit": "d81ff87",
+    "verification": "45 focused tests; diagnostic compile/redaction/diff checks PASS"
   }
 }

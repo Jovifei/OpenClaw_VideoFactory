@@ -3196,4 +3196,4 @@ credential/provider change or M6 plan-only run is authorized.
 
 Verification: 45 focused subject/audio/diagnostic/Phase1 acceptance tests
 passed; diagnostic compile/redaction checks and git diff --check passed.
-Evidence commit: pending after AUTH evidence update; M6 remains NOT_AUTHORIZED.
+Evidence commit: `d81ff87`; M6 remains NOT_AUTHORIZED.
