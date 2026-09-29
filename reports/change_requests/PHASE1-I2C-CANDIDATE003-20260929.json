@@ -1,0 +1,78 @@
+{
+  "id": "PHASE1-I2C-CANDIDATE003-20260929",
+  "date": "2026-09-29",
+  "baseline_commit": "3c6a14dc26557ce805699162939a23a8f6d0775e",
+  "authorization": "Remote GPT iteration 36 accepted LR3 and authorized exactly one fresh unique I2C subject-path Candidate003.",
+  "scope": "Create one new subject job, attach canonical I2C research, run the subject production path exactly once, and qualify machine evidence only.",
+  "frozen_inputs": {
+    "subject": "I2C总线为什么要上拉电阻",
+    "research_path": "examples/phase1_subject_i2c/research_brief.json",
+    "research_sha256": "fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21",
+    "aspect_ratio": "9:16",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "fact_ids": ["open_drain", "rise_time", "sink_current"],
+    "labels": ["SDA", "SCL", "START", "ADDRESS", "ACK/NACK", "DATA", "STOP"],
+    "visual_spec_kind": "i2c_bus_v1",
+    "source_aligned_narration": true,
+    "transition_mode": "technical_cut"
+  },
+  "execution_binding": {
+    "idempotency_key": "phase1-i2c-requalification-candidate003-20260929",
+    "create_subject": "EXACTLY_ONCE",
+    "attach_research": "EXACTLY_ONCE",
+    "run": "EXACTLY_ONCE",
+    "retry": false,
+    "resume": false,
+    "candidate004": false
+  },
+  "excluded_candidates": {
+    "candidate001": {"control_job_id": "job-b4a2e8e851268bc14e5e4a15", "status": "FAILED_TERMINAL", "retry": "FORBIDDEN"},
+    "candidate002": {"control_job_id": "job-b1a186b7b265c2ed46b7c3cb", "status": "FAILED_TERMINAL_ROUTE_MISMATCH", "retry": "FORBIDDEN"}
+  },
+  "required_acceptance": [
+    "new unique local_subject job",
+    "attempt 0",
+    "normal lifecycle ending PENDING_REVIEW",
+    "research artifact SHA equals canonical SHA",
+    "director/scene plan bound to canonical research",
+    "three i2c_bus_v1 scenes and exact fact-ref union",
+    "source-aligned Windows-SAPI planner actually invoked",
+    "25-60 second measured timeline",
+    "no overflow, trim, atempo or generic rewrite",
+    "raw PCM prefix and silence-only aligned tail",
+    "audio/SRT/timeline endpoint agreement",
+    "package-bound audio_integrity.json SHA",
+    "1080x1920 30fps H.264/AAC full decode",
+    "actual rendered hard-cut boundary pairs",
+    "whole-video I2C semantic review",
+    "independent local read-only audit"
+  ],
+  "forbidden": [
+    "Candidate001/002 mutation or retry",
+    "Candidate004",
+    "second run",
+    "prereview",
+    "human approval",
+    "final regression",
+    "final boundary audit",
+    "final manifest",
+    "Formal Gate",
+    "Phase 2",
+    "Feishu",
+    "Cron",
+    "publication",
+    "generic I2C local-brief route",
+    "generic narration rewrite",
+    "atempo"
+  ],
+  "remote_review": {
+    "iteration": 36,
+    "head_reviewed": "3c6a14dc26557ce805699162939a23a8f6d0775e",
+    "result": "WP_LR3_ACCEPTED",
+    "candidate003": "ONE_NEW_UNIQUE_SUBJECT_CANDIDATE_AUTHORIZED",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "status": "FROZEN_BEFORE_EXACTLY_ONE_SUBJECT_CANDIDATE_RUN"
+}

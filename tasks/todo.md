@@ -3096,3 +3096,23 @@ Review: `EXECUTED_NO_MEDIA_READY_FOR_REMOTE_REVIEW`. The real CLI boundary now
 resolves and hashes the planning-bound research artifact, passes it into the
 source-aligned adapter, and fails closed on tampering. Candidate003 remains
 unauthorized.
+
+## PHASE1-WP-L3-I2C-CANDIDATE003-20260929 — remote iteration 36
+
+Remote iteration 36 accepted LR3 and authorized exactly one fresh I2C subject
+candidate from reviewed HEAD `3c6a14dc...`.
+
+- [ ] Freeze Candidate003 change request with canonical research SHA, 9:16
+  profile, fact/label contract and Candidate001/002 exclusions.
+- [ ] Execute exactly one `create-subject` with a new unique idempotency key,
+  attach canonical research, then exactly one `run`; no retry/resume/Candidate004.
+- [ ] Qualify authentic SQLite/job artifacts, source-bound `i2c_bus_v1` plan,
+  Windows-SAPI source-aligned PCM integrity, package binding, 1080x1920 media,
+  hard-cut frame pairs and whole-video I2C semantics.
+- [ ] If clean, freeze `I2C_MACHINE_REVIEW_READY/HUMAN_VIDEO_REVIEW_PENDING`;
+  otherwise freeze the exact terminal failure and return. Do not infer human
+  approval or run prereview/Gate.
+- [ ] Update Candidate003 report, inventory, handoff and verification evidence;
+  commit/push and return for independent remote audit.
+
+Review: `AUTHORIZED_ONE_FRESH_SUBJECT_CANDIDATE_IN_PROGRESS`.
