@@ -3183,16 +3183,17 @@ Formal Gate remain prohibited.
 - [ ] If and only if the direct diagnostic is `MPT_PROVIDER_READY`, return for
   remote authorization of one new isolated non-candidate M6 plan-only job;
   otherwise freeze the exact dependency blocker and stop.
-- [ ] Run the corrected direct diagnostic only after remote reauthorization;
-  no M6 or media is authorized.
-- [x] Run bounded redaction/compile/diff checks, commit/push the evidence and
-  return the exact HEAD for independent remote audit.
+- [x] Run the corrected valid-UUID direct diagnostic exactly once after remote
+  reauthorization; it reached the provider and returned sanitized HTTP 401
+  `Invalid API Key`. No M6 or media was authorized.
+- [ ] Return the AUTH evidence for independent remote audit and await an
+  explicit approved credential/config restoration plan; do not change secrets
+  or provider/model locally.
 
-Review: `MPT_PROVIDER_BLOCKED:UNCLASSIFIED` because the authorized call did not
-reach the provider; endpoint reachability is `REACHABLE`, and a corrected
-direct diagnostic is pending remote reauthorization.
+Review: `MPT_PROVIDER_BLOCKED:AUTH`; provider execution reached the configured
+endpoint and returned HTTP 401. Endpoint reachability is `REACHABLE`, but no
+credential/provider change or M6 plan-only run is authorized.
 
 Verification: 45 focused subject/audio/diagnostic/Phase1 acceptance tests
 passed; diagnostic compile/redaction checks and git diff --check passed.
-Evidence commit: `8fab3f8`; corrected direct call remains NOT_RUN pending remote
-reauthorization.
+Evidence commit: pending after AUTH evidence update; M6 remains NOT_AUTHORIZED.

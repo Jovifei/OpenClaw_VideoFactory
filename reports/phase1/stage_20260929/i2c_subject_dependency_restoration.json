@@ -35,7 +35,7 @@
     "candidate002": "job-b1a186b7b265c2ed46b7c3cb",
     "candidate003": "job-d0ad2349f3a61c8250603737"
   },
-  "next_remote_action": "Review M4 evidence; authorize one corrected direct pinned MPT CLI diagnostic with a valid UUID if desired. Do not create a Phase1 job, retry Candidate003, create Candidate004, or run media.",
+  "next_remote_action": "Independently audit the sanitized MPT_PROVIDER_BLOCKED:AUTH result and decide whether an approved existing credential/config restoration source may be used. Do not invent/rotate credentials, change provider/model, run M6, retry Candidate003 or create Candidate004.",
   "m2_planning_probe": {
     "status": "FAILED:PHASE1_MPT_PLAN_ONLY_MPT_CLI_EXIT_1_NO_SCRIPT_JSON",
     "report": "reports/phase1/stage_20260929/i2c_subject_mpt_planning_probe.json",
@@ -55,18 +55,19 @@
     "evidence_commit": "5e551f1"
   },
   "m4_provider_diagnostic": {
-    "status": "MPT_PROVIDER_BLOCKED:UNCLASSIFIED",
+    "status": "MPT_PROVIDER_BLOCKED:AUTH",
     "report": "reports/phase1/stage_20260929/mpt_provider_diagnostic.json",
-    "provider_request_reached": false,
-    "invocation_contract_error": "invalid UUID task id stopped CLI before provider execution",
+    "corrected_direct_call": "EXECUTED_EXACTLY_ONCE",
+    "provider_request_reached": true,
+    "safe_http_status": 401,
+    "safe_error": "Invalid API Key",
     "configured_provider": "openai",
     "configured_model": "mimo-v2.5",
     "configured_endpoint_hostname": "token-plan-cn.xiaomimimo.com",
     "endpoint_reachability": "REACHABLE",
-    "corrected_direct_call": "REQUIRES_REMOTE_REAUTHORIZATION",
     "media_created": false,
     "candidate_store_touched": false,
-    "evidence_commit": "8fab3f8",
-    "verification": "45 focused tests and compile/redaction/diff checks PASS"
+    "m6_authorized": false,
+    "candidate004_authorized": false
   }
 }

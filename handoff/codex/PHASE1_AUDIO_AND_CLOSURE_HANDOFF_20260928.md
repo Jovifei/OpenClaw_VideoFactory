@@ -658,8 +658,27 @@ Until remote reauthorization, do not run the corrected direct command, create
 a Phase1 job, retry Candidate003, create Candidate004, invoke Jianying or run
 media.
 
+### WP-M4B corrected direct diagnostic — provider AUTH blocker
+
+Remote iteration 40 separately authorized exactly one corrected direct call
+using valid task UUID `d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6`, unchanged exact
+MPT pin/venv/config/provider/model and no Phase1 job. The call reached the
+configured provider path and returned sanitized HTTP `401 Invalid API Key`.
+The report status is now `MPT_PROVIDER_BLOCKED:AUTH`. No key, header, raw
+config or generated script text was persisted; no media or CandidateStore
+mutation occurred. The prior invalid-UUID attempt remains under
+`prior_invalid_invocation` as historical evidence.
+
+This proves the configured credential is rejected by the approved endpoint; it
+does not authorize credential rotation, provider/model changes, or a new
+plan-only job. Candidate003 remains terminal, Candidate004 and M6 remain
+prohibited, and Jianying exact pin `f421c8a...` remains unavailable. Return
+the AUTH evidence for remote review and await an approved existing credential
+or config restoration source.
+
 The diagnostic sanitizer/structural checks and the affected subject/audio/
 Phase1 acceptance suite passed: 45 tests total. Python compile and diff checks
 also passed. Evidence is pushed in commit `8fab3f8` on
-`codex/phase1-audio-closure-20260928`; the corrected direct MPT call remains
-unexecuted pending remote reauthorization.
+`codex/phase1-audio-closure-20260928`; the corrected direct MPT call executed
+exactly once and returned the AUTH blocker. The updated AUTH evidence commit is
+pending this handoff commit.

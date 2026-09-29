@@ -46,24 +46,27 @@
     "tasks/todo.md"
   ],
   "m6_condition": "Only a direct diagnostic status MPT_PROVIDER_READY may be returned for separate remote authorization of one fresh non-candidate plan-only job.",
-  "status": "EXECUTED_M4_DIRECT_INVOCATION_INVALID_BEFORE_PROVIDER_REAUTH_REQUIRED",
+  "status": "EXECUTED_M4B_MPT_PROVIDER_BLOCKED_AUTH",
   "candidate003": "TERMINAL_PRESERVE",
   "candidate004": "NOT_AUTHORIZED",
   "jianying": "BLOCKED_EXACT_PIN_F421C8A_NO_LOCAL_OR_OFFLINE_SOURCE",
   "result": {
     "report": "reports/phase1/stage_20260929/mpt_provider_diagnostic.json",
-    "diagnostic_status": "MPT_PROVIDER_BLOCKED:UNCLASSIFIED",
-    "provider_request_reached": false,
-    "invocation_contract_error": "cli.py rejected non-UUID --task-id before provider execution",
-    "corrected_direct_call": "NOT_EXECUTED_REQUIRES_REMOTE_REAUTHORIZATION",
+    "diagnostic_status": "MPT_PROVIDER_BLOCKED:AUTH",
+    "corrected_direct_call": "EXECUTED_EXACTLY_ONCE",
+    "valid_task_uuid": "d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6",
+    "provider_request_reached": true,
+    "exit_code": 1,
+    "safe_http_status": 401,
+    "safe_error": "Invalid API Key",
     "configured_provider": "openai",
     "configured_model": "mimo-v2.5",
     "configured_endpoint_hostname": "token-plan-cn.xiaomimimo.com",
     "endpoint_reachability": "REACHABLE",
     "media_created": false,
     "candidate_store_touched": false,
+    "m6_authorized": false,
     "candidate004_authorized": false,
-    "evidence_commit": "8fab3f8",
-    "verification": "45 focused subject/audio/diagnostic/Phase1 acceptance tests; compile/redaction/diff checks PASS"
+    "credential_or_provider_change_authorized": false
   }
 }

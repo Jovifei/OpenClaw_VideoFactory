@@ -1,10 +1,13 @@
 {
   "schema_version": "phase1_mpt_provider_diagnostic_v1",
-  "status": "MPT_PROVIDER_BLOCKED:UNCLASSIFIED",
+  "status": "MPT_PROVIDER_BLOCKED:AUTH",
   "authorization": "Remote GPT iteration 39 WP-M4 sanitized MPT provider/config diagnosis",
-  "source_commit": "1ed763773ec6016adf3a4a1f115278d9f47933c8",
+  "source_commit": "ffcebfd238e487c4dda03e49af586088aa736b1a",
   "diagnostic": {
     "identity": "mpt-provider-diagnostic-20260929",
+    "attempt_kind": "corrected_valid_uuid",
+    "corrected_direct_call": "EXECUTED_EXACTLY_ONCE",
+    "task_uuid": "d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6",
     "phase1_job": false,
     "candidate": false,
     "candidate_store_touched": false,
@@ -20,33 +23,23 @@
       "--stop-at",
       "script",
       "--task-id",
-      "mpt-provider-diagnostic-20260929"
-    ],
-    "exit_code": 2,
-    "timed_out": false,
-    "duration_seconds": 0.24,
-    "result_json_with_script": false,
-    "safe_error_lines": [
-      "cli.py: error: argument --task-id: task-id must be a valid UUID, got 'mpt-provider-diagnostic-20260929'"
-    ],
-    "underlying_raw_output_persisted": false,
-    "direct_invocation_valid": false,
-    "provider_request_reached": false,
-    "invocation_contract_error": "cli.py rejected the diagnostic --task-id before provider execution because it was not a UUID",
-    "corrected_command_requires_remote_reauthorization": [
-      "pinned_venv_python",
-      "cli.py",
-      "--video-subject",
-      "MPT provider diagnostic",
-      "--video-language",
-      "zh-CN",
-      "--paragraph-number",
-      "1",
-      "--stop-at",
-      "script",
-      "--task-id",
       "d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6"
-    ]
+    ],
+    "exit_code": 1,
+    "timed_out": false,
+    "duration_seconds": 2.8,
+    "result_json_with_script": false,
+    "provider_execution_reached": true,
+    "safe_error_lines": [
+      "2026-09-29 09:27:41 | INFO | \"./app/services/llm.py:526\": generate_script - generating video script: subject=MPT provider diagnostic, paragraph_number=1, has_custom_prompt=False, has_custom_system_prompt=False",
+      "2026-09-29 09:27:41 | INFO | \"./app/services/llm.py:155\": _generate_response - llm provider: openai",
+      "2026-09-29 09:27:42 | ERROR | \"./app/services/llm.py:577\": generate_script - failed to generate video script: Error: Error code: 401 - {'error': {'message': 'Invalid API Key', 'param': 'Please provide valid API Key', 'code': '401', 'type': 'invalid_key'}}",
+      "2026-09-29 09:27:42 | ERROR | \"./app/services/task.py:263\": _mark_task_failed - task failed, task_id: d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6, stage: script, error: Error code: 401 - {'error': {'message': 'Invalid API Key', 'param': 'Please provide valid API Key', 'code': '401', 'type': 'invalid_key'}}",
+      "2026-09-29 09:27:42 | ERROR | \"./cli.py:1489\": run_cli - CLI task failed: task_id=d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6, stop_at=script, stage=script, error=Error code: 401 - {'error': {'message': 'Invalid API Key', 'param': 'Please provide valid API Key', 'code': '401', 'type': 'invalid_key'}}",
+      "2026-09-29 09:27:40.126 | INFO     | app.config.config:load_config:471 - load config from file: <PATH>",
+      "2026-09-29 09:27:40.131 | INFO     | app.config.config:<module>:588 - MoneyPrinterTurbo v1.3.5"
+    ],
+    "underlying_raw_output_persisted": false
   },
   "configuration": {
     "path": "worktree_external/MoneyPrinterTurbo/config.toml",
@@ -125,5 +118,20 @@
   "candidate004": "NOT_AUTHORIZED",
   "jianying": "BLOCKED_EXACT_PIN_F421C8A_NO_LOCAL_OR_OFFLINE_SOURCE",
   "m6_authorization": "NOT_AUTHORIZED_UNLESS_STATUS_MPT_PROVIDER_READY_AND_REMOTE_REVIEW_ACCEPTS",
-  "next_remote_action": "Re-authorize one corrected direct pinned MPT CLI diagnostic; this attempt did not reach the provider and cannot establish MPT_PROVIDER_READY or a provider blocker."
+  "prior_invalid_invocation": {
+    "attempt_kind": "iteration39_invalid_uuid",
+    "status": "MPT_PROVIDER_BLOCKED:UNCLASSIFIED",
+    "exit_code": 2,
+    "timed_out": false,
+    "provider_request_reached": false,
+    "invocation_contract_error": "cli.py rejected the diagnostic --task-id before provider execution because it was not a UUID",
+    "safe_error_lines": [
+      "cli.py: error: argument --task-id: task-id must be a valid UUID, got 'mpt-provider-diagnostic-20260929'"
+    ],
+    "media_created": false,
+    "candidate_store_touched": false
+  },
+  "execution_base_commit": "ffcebfd238e487c4dda03e49af586088aa736b1a",
+  "diagnostic_script_execution_state": "corrected_redaction_patch_applied_after_reviewed_base_before_evidence_commit",
+  "next_remote_action": "Independently audit MPT_PROVIDER_BLOCKED:AUTH and decide whether an approved existing credential/config restoration source may be used. Do not change credentials/provider/model or run M6 without separate authorization."
 }

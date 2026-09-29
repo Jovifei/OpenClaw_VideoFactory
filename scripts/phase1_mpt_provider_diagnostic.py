@@ -253,6 +253,28 @@ def _classify_direct_result(returncode: int | None, timed_out: bool, safe_output
     return "MPT_PROVIDER_BLOCKED:UNCLASSIFIED"
 
 
+def _provider_execution_reached(safe_output: str, result_json: bool) -> bool | None:
+    if result_json:
+        return True
+    lowered = safe_output.lower()
+    if any(
+        marker in lowered
+        for marker in (
+            "llm provider:",
+            "requesting azure chat completion",
+            "chat.completions",
+            "returned an error response",
+            "api_key is not set",
+            "connectionerror",
+            "connecttimeout",
+        )
+    ):
+        return True
+    if "cli.py: error:" in lowered:
+        return False
+    return None
+
+
 def run_diagnostic(mpt_root: Path = DEFAULT_MPT_ROOT) -> dict[str, Any]:
     mpt_root = mpt_root.resolve()
     mpt_python = _mpt_python(mpt_root)
@@ -313,6 +335,7 @@ def run_diagnostic(mpt_root: Path = DEFAULT_MPT_ROOT) -> dict[str, Any]:
     phase1_after = phase1_db.stat() if phase1_db.exists() else None
     identity_after = _git_identity(mpt_root)
     status = _classify_direct_result(returncode, timed_out, safe_combined, result_json)
+    provider_execution_reached = _provider_execution_reached(safe_combined, result_json)
     changed_media = sorted(path for path, value in media_after.items() if media_before.get(path) != value)
     new_media = sorted(path for path in media_after if path not in media_before)
     report: dict[str, Any] = {
@@ -322,6 +345,9 @@ def run_diagnostic(mpt_root: Path = DEFAULT_MPT_ROOT) -> dict[str, Any]:
         "source_commit": "1ed763773ec6016adf3a4a1f115278d9f47933c8",
         "diagnostic": {
             "identity": "mpt-provider-diagnostic-20260929",
+            "attempt_kind": "corrected_valid_uuid",
+            "corrected_direct_call": "EXECUTED_EXACTLY_ONCE",
+            "task_uuid": DIRECT_TASK_UUID,
             "phase1_job": False,
             "candidate": False,
             "candidate_store_touched": phase1_before != phase1_after,
@@ -330,6 +356,7 @@ def run_diagnostic(mpt_root: Path = DEFAULT_MPT_ROOT) -> dict[str, Any]:
             "timed_out": timed_out,
             "duration_seconds": duration,
             "result_json_with_script": result_json,
+            "provider_execution_reached": provider_execution_reached,
             "safe_error_lines": _safe_lines(f"{raw_stdout}\n{raw_stderr}", secret_values),
             "underlying_raw_output_persisted": False,
         },
@@ -375,8 +402,27 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--mpt-root", type=Path, default=DEFAULT_MPT_ROOT)
     parser.add_argument("--report", type=Path, default=REPORT_PATH)
     args = parser.parse_args(argv)
-    report = run_diagnostic(args.mpt_root)
     report_path = args.report if args.report.is_absolute() else REPO_ROOT / args.report
+    prior: dict[str, Any] | None = None
+    if report_path.is_file():
+        try:
+            prior = json.loads(report_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            prior = None
+    report = run_diagnostic(args.mpt_root)
+    if prior:
+        previous_diagnostic = prior.get("diagnostic", {})
+        report["prior_invalid_invocation"] = {
+            "attempt_kind": "iteration39_invalid_uuid",
+            "status": prior.get("status"),
+            "exit_code": previous_diagnostic.get("exit_code"),
+            "timed_out": previous_diagnostic.get("timed_out"),
+            "provider_request_reached": previous_diagnostic.get("provider_request_reached", False),
+            "invocation_contract_error": previous_diagnostic.get("invocation_contract_error"),
+            "safe_error_lines": previous_diagnostic.get("safe_error_lines", []),
+            "media_created": prior.get("media_boundary", {}).get("media_created", False),
+            "candidate_store_touched": prior.get("safety", {}).get("candidate_store_touched", False),
+        }
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"status": report["status"], "report": report_path.relative_to(REPO_ROOT).as_posix(), "media_created": report["media_boundary"]["media_created"], "candidate_store_touched": report["safety"]["candidate_store_touched"]}, ensure_ascii=False))

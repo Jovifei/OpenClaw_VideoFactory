@@ -142,7 +142,7 @@
       "Flash exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED",
       "FreeRTOS exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED"
     ],
-    "i2c": "M4 structural config and endpoint reachability are recorded, but the sole direct CLI attempt stopped at invalid UUID validation before provider execution. Await remote reauthorization for one corrected direct MPT diagnostic; no Phase1 job, Candidate003 retry, Candidate004 or media.",
+    "i2c": "M4B direct MPT diagnostic reached the configured provider and returned sanitized HTTP 401 Invalid API Key. Await remote decision on an approved existing credential/config restoration source; do not invent/rotate credentials, change provider/model, run M6, retry Candidate003 or create Candidate004.",
     "after_human_approval": "Run only the topic-specific read-only prereview or exactly one newly authorized topic candidate; do not cross-unlock topics.",
     "formal_gate": "Remain NOT_RUN until all four topic slots have final machine evidence, exact-SHA human review and prereview."
   },
@@ -218,18 +218,20 @@
     "evidence_commit": "5e551f1"
   },
   "i2c_subject_mpt_provider_diagnostic": {
-    "status": "MPT_PROVIDER_BLOCKED_UNCLASSIFIED_DIRECT_INVOCATION_BEFORE_PROVIDER",
+    "status": "MPT_PROVIDER_BLOCKED:AUTH",
     "report": "reports/phase1/stage_20260929/mpt_provider_diagnostic.json",
+    "corrected_direct_call": "EXECUTED_EXACTLY_ONCE",
+    "valid_task_uuid": "d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6",
+    "provider_request_reached": true,
+    "safe_http_status": 401,
+    "safe_error": "Invalid API Key",
     "configured_provider": "openai",
     "configured_model": "mimo-v2.5",
     "configured_endpoint_hostname": "token-plan-cn.xiaomimimo.com",
     "endpoint_reachability": "REACHABLE",
-    "provider_request_reached": false,
-    "corrected_direct_call": "REQUIRES_REMOTE_REAUTHORIZATION",
     "media_output_created": false,
     "candidate_store_touched": false,
-    "candidate004_authorized": false,
-    "evidence_commit": "8fab3f8",
-    "verification": "45 focused tests; compile/redaction/diff checks PASS"
+    "m6_authorized": false,
+    "candidate004_authorized": false
   }
 }
