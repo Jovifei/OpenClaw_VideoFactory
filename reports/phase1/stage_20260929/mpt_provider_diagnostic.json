@@ -1,0 +1,129 @@
+{
+  "schema_version": "phase1_mpt_provider_diagnostic_v1",
+  "status": "MPT_PROVIDER_BLOCKED:UNCLASSIFIED",
+  "authorization": "Remote GPT iteration 39 WP-M4 sanitized MPT provider/config diagnosis",
+  "source_commit": "1ed763773ec6016adf3a4a1f115278d9f47933c8",
+  "diagnostic": {
+    "identity": "mpt-provider-diagnostic-20260929",
+    "phase1_job": false,
+    "candidate": false,
+    "candidate_store_touched": false,
+    "command": [
+      "pinned_venv_python",
+      "cli.py",
+      "--video-subject",
+      "MPT provider diagnostic",
+      "--video-language",
+      "zh-CN",
+      "--paragraph-number",
+      "1",
+      "--stop-at",
+      "script",
+      "--task-id",
+      "mpt-provider-diagnostic-20260929"
+    ],
+    "exit_code": 2,
+    "timed_out": false,
+    "duration_seconds": 0.24,
+    "result_json_with_script": false,
+    "safe_error_lines": [
+      "cli.py: error: argument --task-id: task-id must be a valid UUID, got 'mpt-provider-diagnostic-20260929'"
+    ],
+    "underlying_raw_output_persisted": false,
+    "direct_invocation_valid": false,
+    "provider_request_reached": false,
+    "invocation_contract_error": "cli.py rejected the diagnostic --task-id before provider execution because it was not a UUID",
+    "corrected_command_requires_remote_reauthorization": [
+      "pinned_venv_python",
+      "cli.py",
+      "--video-subject",
+      "MPT provider diagnostic",
+      "--video-language",
+      "zh-CN",
+      "--paragraph-number",
+      "1",
+      "--stop-at",
+      "script",
+      "--task-id",
+      "d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6"
+    ]
+  },
+  "configuration": {
+    "path": "worktree_external/MoneyPrinterTurbo/config.toml",
+    "exists": true,
+    "sha256": "64087f78cf39c25efe7b6f6777d8c577beba97c313ab8cd973d53be9f67c6a78",
+    "parse_status": "OK",
+    "provider": "openai",
+    "model": "mimo-v2.5",
+    "endpoint_hostname": "token-plan-cn.xiaomimimo.com",
+    "endpoint_scheme": "https",
+    "endpoint_port": null,
+    "config_section": "app",
+    "credential_field": "app.openai_api_key",
+    "credential_field_presence": "PRESENT",
+    "approved_credential_env_presence": {
+      "MPT_LLM_API_KEY": "MISSING",
+      "MIMO_API_KEY": "PRESENT"
+    },
+    "required_credential_variable_names": [
+      "MPT_LLM_API_KEY",
+      "MIMO_API_KEY"
+    ]
+  },
+  "mpt_runtime": {
+    "expected_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "actual_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "clean_checkout": true,
+    "cli_entrypoint": "worktree_external/MoneyPrinterTurbo/cli.py",
+    "cli_sha256": "7b2d5be1829cbfc49f1f45199a06a82b4921db1ccce936f0bcdede43979eefc1",
+    "identity_after": {
+      "expected_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+      "actual_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+      "clean_checkout": true,
+      "cli_entrypoint": "worktree_external/MoneyPrinterTurbo/cli.py",
+      "cli_sha256": "7b2d5be1829cbfc49f1f45199a06a82b4921db1ccce936f0bcdede43979eefc1"
+    },
+    "python_executable": "worktree_external/MoneyPrinterTurbo/.venv/Scripts/python.exe",
+    "python_version": "Python 3.12.10",
+    "config_unchanged": true
+  },
+  "configured_endpoint_reachability": {
+    "hostname": "token-plan-cn.xiaomimimo.com",
+    "port": 443,
+    "scheme": "https",
+    "dns": {
+      "status": "PASS",
+      "address_count": 2
+    },
+    "tcp": {
+      "status": "PASS"
+    },
+    "tls": {
+      "status": "PASS",
+      "protocol": "TLSv1.3"
+    },
+    "overall": "REACHABLE"
+  },
+  "media_boundary": {
+    "new_media_files": [],
+    "changed_media_files": [],
+    "media_created": false,
+    "tts": false,
+    "pcm": false,
+    "mp4": false,
+    "jianying_invoked": false
+  },
+  "safety": {
+    "raw_config_persisted": false,
+    "credential_values_persisted": false,
+    "secret_redaction_applied": true,
+    "alternate_provider_probed": false,
+    "configuration_changed": false,
+    "candidate_store_touched": false
+  },
+  "candidate003": "TERMINAL_PRESERVE",
+  "candidate004": "NOT_AUTHORIZED",
+  "jianying": "BLOCKED_EXACT_PIN_F421C8A_NO_LOCAL_OR_OFFLINE_SOURCE",
+  "m6_authorization": "NOT_AUTHORIZED_UNLESS_STATUS_MPT_PROVIDER_READY_AND_REMOTE_REVIEW_ACCEPTS",
+  "next_remote_action": "Re-authorize one corrected direct pinned MPT CLI diagnostic; this attempt did not reach the provider and cannot establish MPT_PROVIDER_READY or a provider blocker."
+}

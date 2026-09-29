@@ -142,7 +142,7 @@
       "Flash exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED",
       "FreeRTOS exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED"
     ],
-    "i2c": "M2 non-candidate plan-only diagnostic failed: pinned MPT CLI exited 1 for all three script candidates and emitted no parseable script JSON. Await remote decision on the exact MPT configuration/runtime defect and approved Jianying source; no Candidate003 retry or Candidate004.",
+    "i2c": "M4 structural config and endpoint reachability are recorded, but the sole direct CLI attempt stopped at invalid UUID validation before provider execution. Await remote reauthorization for one corrected direct MPT diagnostic; no Phase1 job, Candidate003 retry, Candidate004 or media.",
     "after_human_approval": "Run only the topic-specific read-only prereview or exactly one newly authorized topic candidate; do not cross-unlock topics.",
     "formal_gate": "Remain NOT_RUN until all four topic slots have final machine evidence, exact-SHA human review and prereview."
   },
@@ -216,5 +216,18 @@
     "media_output_created": false,
     "jianying_invocation": false,
     "evidence_commit": "5e551f1"
+  },
+  "i2c_subject_mpt_provider_diagnostic": {
+    "status": "MPT_PROVIDER_BLOCKED_UNCLASSIFIED_DIRECT_INVOCATION_BEFORE_PROVIDER",
+    "report": "reports/phase1/stage_20260929/mpt_provider_diagnostic.json",
+    "configured_provider": "openai",
+    "configured_model": "mimo-v2.5",
+    "configured_endpoint_hostname": "token-plan-cn.xiaomimimo.com",
+    "endpoint_reachability": "REACHABLE",
+    "provider_request_reached": false,
+    "corrected_direct_call": "REQUIRES_REMOTE_REAUTHORIZATION",
+    "media_output_created": false,
+    "candidate_store_touched": false,
+    "candidate004_authorized": false
   }
 }

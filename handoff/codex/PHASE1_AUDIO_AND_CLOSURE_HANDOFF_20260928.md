@@ -607,3 +607,53 @@ Current next action: return the exact MPT CLI failure for remote independent
 audit. Do not retry the diagnostic, change the MPT pin/provider, restore
 Jianying from an unverified source, create Candidate004, or run media. M3 is
 still blocked on exact Jianying pin `f421c8a...`.
+
+## WP-M4 MPT provider/config diagnosis — remote iteration 39
+
+Remote iteration 39 classified the M2 diagnostic as terminal with an opaque
+provider execution failure. The exact MPT source/venv/CLI started and loaded
+`config.toml`, but the three script subprocesses exited 1; the adapter did not
+retain the underlying exception. The accepted architecture remains:
+verified subject research → pinned MPT planning → source-bound I2C scenes →
+shared measured narration/PCM → exact Jianying media path.
+
+M4 is authorized without any Phase1 job, CandidateStore mutation, candidate,
+TTS or media. Read only structural config metadata and record provider/model,
+endpoint hostname, required credential-variable names and PRESENT/MISSING
+status, config SHA, exact MPT revision and Python/CLI identity. Test only DNS,
+TCP/TLS reachability for that configured endpoint. Then execute exactly one
+direct pinned `cli.py --stop-at script` diagnostic outside the Phase1 path and
+persist only sanitized exception class, safe message, HTTP status, host,
+provider/model and traceback modules. Never persist raw config, keys, tokens or
+auth headers; do not change provider/model/config/credentials.
+
+Report: `reports/phase1/stage_20260929/mpt_provider_diagnostic.json` with one
+of the remote-approved `MPT_PROVIDER_*` statuses. Only
+`MPT_PROVIDER_READY` can return for separate M6 authorization of one new
+non-candidate `create-subject -> attach-research -> run --plan-only` job.
+Jianying exact pin `f421c8a...` remains independently blocked; Candidate003,
+Candidate004, media and Formal Gate remain prohibited.
+
+### WP-M4 execution result — direct invocation stopped before provider
+
+The M4 structural inventory is complete without persisting raw config. The
+effective `[app]` configuration is provider `openai`, model `mimo-v2.5`,
+endpoint host `token-plan-cn.xiaomimimo.com`, and the active config credential
+field is present. The approved `MIMO_API_KEY` environment input is present;
+`MPT_LLM_API_KEY` is missing. The config SHA, exact MPT revision, Python 3.12.10
+and CLI SHA are recorded in the report. DNS, TCP and TLS 1.3 to the configured
+host all passed.
+
+The one authorized direct CLI attempt was outside Phase1/CandidateStore and
+created no media or job state, but MPT rejected the diagnostic `--task-id`
+before provider execution because the value was not a UUID. Therefore the
+report status remains `MPT_PROVIDER_BLOCKED:UNCLASSIFIED`; it does not prove
+provider readiness or a provider/network/auth blocker. The corrected command
+uses UUID `d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6` but has not been run and
+requires remote reauthorization.
+
+Evidence: `reports/phase1/stage_20260929/mpt_provider_diagnostic.json` and
+`reports/change_requests/PHASE1-WP-M4-MPT-PROVIDER-DIAGNOSTIC-20260929.json`.
+Until remote reauthorization, do not run the corrected direct command, create
+a Phase1 job, retry Candidate003, create Candidate004, invoke Jianying or run
+media.

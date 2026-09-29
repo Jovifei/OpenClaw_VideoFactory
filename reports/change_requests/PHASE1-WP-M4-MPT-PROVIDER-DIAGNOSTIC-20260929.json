@@ -1,0 +1,67 @@
+{
+  "id": "PHASE1-WP-M4-MPT-PROVIDER-DIAGNOSTIC-20260929",
+  "date": "2026-09-29",
+  "baseline_commit": "1ed763773ec6016adf3a4a1f115278d9f47933c8",
+  "authorization": "Remote GPT iteration 39 authorized WP-M4 sanitized MPT provider/config diagnosis only.",
+  "scope": "Read effective exact-pin MPT configuration structurally, classify only the configured endpoint reachability, and execute one direct pinned CLI --stop-at script diagnostic outside CandidateStore and Phase1.",
+  "allowed": [
+    "read config structure without credential values",
+    "record config SHA",
+    "record provider/model/hostname and credential variable presence",
+    "DNS/TCP/TLS checks for the configured endpoint only",
+    "one direct MPT CLI invocation using the existing approved config",
+    "sanitized diagnostic report and redaction tests",
+    "handoff/inventory/todo updates"
+  ],
+  "forbidden": [
+    "raw config.toml or credential values in Git/logs/chat",
+    "provider/model/config/credential changes",
+    "credential rotation or invention",
+    "alternate provider probes",
+    "CandidateStore or Phase1 job creation",
+    "Candidate003 retry",
+    "Candidate004",
+    "TTS/WAV/PCM/audio_integrity",
+    "MP4/render/media",
+    "Jianying invocation or restoration",
+    "prereview",
+    "Formal Gate",
+    "Phase 2",
+    "Feishu/Cron/publication"
+  ],
+  "expected_statuses": [
+    "MPT_PROVIDER_READY",
+    "MPT_PROVIDER_BLOCKED:NETWORK",
+    "MPT_PROVIDER_BLOCKED:MISSING_CREDENTIAL",
+    "MPT_PROVIDER_BLOCKED:AUTH",
+    "MPT_PROVIDER_BLOCKED:CONFIG",
+    "MPT_PROVIDER_BLOCKED:MODEL_OR_API",
+    "MPT_PROVIDER_BLOCKED:APPLICATION_ERROR",
+    "MPT_PROVIDER_BLOCKED:UNCLASSIFIED"
+  ],
+  "evidence_outputs": [
+    "scripts/phase1_mpt_provider_diagnostic.py",
+    "reports/phase1/stage_20260929/mpt_provider_diagnostic.json",
+    "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
+    "tasks/todo.md"
+  ],
+  "m6_condition": "Only a direct diagnostic status MPT_PROVIDER_READY may be returned for separate remote authorization of one fresh non-candidate plan-only job.",
+  "status": "EXECUTED_M4_DIRECT_INVOCATION_INVALID_BEFORE_PROVIDER_REAUTH_REQUIRED",
+  "candidate003": "TERMINAL_PRESERVE",
+  "candidate004": "NOT_AUTHORIZED",
+  "jianying": "BLOCKED_EXACT_PIN_F421C8A_NO_LOCAL_OR_OFFLINE_SOURCE",
+  "result": {
+    "report": "reports/phase1/stage_20260929/mpt_provider_diagnostic.json",
+    "diagnostic_status": "MPT_PROVIDER_BLOCKED:UNCLASSIFIED",
+    "provider_request_reached": false,
+    "invocation_contract_error": "cli.py rejected non-UUID --task-id before provider execution",
+    "corrected_direct_call": "NOT_EXECUTED_REQUIRES_REMOTE_REAUTHORIZATION",
+    "configured_provider": "openai",
+    "configured_model": "mimo-v2.5",
+    "configured_endpoint_hostname": "token-plan-cn.xiaomimimo.com",
+    "endpoint_reachability": "REACHABLE",
+    "media_created": false,
+    "candidate_store_touched": false,
+    "candidate004_authorized": false
+  }
+}

@@ -3162,3 +3162,32 @@ Verification: 42 focused subject/audio/Phase1 acceptance tests passed;
 compileall, Remotion typecheck, Remotion contracts and git diff --check passed.
 Evidence commit: `5e551f1`. Review: pending remote audit; Jianying restoration
 remains separately blocked.
+
+## PHASE1-WP-M4-MPT-PROVIDER-DIAGNOSTIC-20260929 — remote iteration 39
+
+Remote iteration 39 accepted the terminal M2 classification and authorized only
+read-only MPT provider/config diagnosis. Candidate003 and the M2 diagnostic are
+terminal; Candidate004, any Phase1 job, TTS, media, Jianying dry readiness and
+Formal Gate remain prohibited.
+
+- [x] Freeze the M4 change request and sanitizer/redaction boundary.
+- [x] Inventory the effective pinned MPT configuration structurally without
+  persisting raw config or credential values: provider, model, host, required
+  variable names/presence, config SHA, MPT revision and Python/CLI identity.
+- [x] Classify DNS/TCP/TLS reachability only for the configured endpoint; do
+  not probe alternate providers or change configuration.
+- [x] Execute the one authorized direct pinned MPT `--stop-at script`
+  diagnostic outside CandidateStore/Phase1. It stopped at CLI UUID validation
+  before provider execution; record that exact invocation defect and prove no
+  media or job state was created. A corrected direct call requires reauthorization.
+- [ ] If and only if the direct diagnostic is `MPT_PROVIDER_READY`, return for
+  remote authorization of one new isolated non-candidate M6 plan-only job;
+  otherwise freeze the exact dependency blocker and stop.
+- [ ] Run the corrected direct diagnostic only after remote reauthorization;
+  no M6 or media is authorized.
+- [ ] Run bounded redaction/compile/diff checks, commit/push the evidence and
+  return the exact HEAD for independent remote audit.
+
+Review: `MPT_PROVIDER_BLOCKED:UNCLASSIFIED` because the authorized call did not
+reach the provider; endpoint reachability is `REACHABLE`, and a corrected
+direct diagnostic is pending remote reauthorization.
