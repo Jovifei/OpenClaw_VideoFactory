@@ -716,3 +716,7 @@ Evidence: `reports/phase1/stage_20260929/mpt_credential_provenance.json` and
 Freeze `I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE`; do not run M5B,
 provider retest, M6, Candidate004, media or Gate until an external approved
 credential decision/source changes the state.
+
+The M5A provenance tests and affected subject/audio/Phase1 acceptance checks
+passed: 47 tests total. Compile and diff checks passed. Evidence is pushed in
+commit `968b2a1`; M5B and any provider retest remain unauthorized.

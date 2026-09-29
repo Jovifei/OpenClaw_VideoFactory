@@ -3213,8 +3213,11 @@ calls, TTS, media, Jianying and Gate remain prohibited.
   unrelated user directories or accounts.
 - [x] No distinct approved existing credential source exists; freeze
   `I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE`; do not run M5B/provider.
-- [ ] Run secret-leak assertions, commit/push evidence and return for remote
+- [x] Run secret-leak assertions, commit/push evidence and return for remote
   audit. M5B is conditional and must not run for an equal rejected value.
 
 Review: `I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE`; M5B, MPT AUTH
 retest, M6, Candidate004 and media remain blocked pending remote audit.
+
+Verification: 47 focused tests passed, including M5A secret-leak assertions;
+compile and diff checks passed. Evidence commit: `968b2a1`.

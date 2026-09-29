@@ -81,6 +81,8 @@
     "m5b": "NOT_RUN_SAME_REJECTED_FINGERPRINT",
     "provider_called": false,
     "config_changed": false,
-    "blocker": "I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE"
+    "blocker": "I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE",
+    "evidence_commit": "968b2a1",
+    "verification": "47 focused tests; secret-leak assertions; compile/diff checks PASS"
   }
 }
