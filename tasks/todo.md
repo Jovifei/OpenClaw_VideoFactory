@@ -2807,3 +2807,28 @@ Change Request: `reports/change_requests/PHASE1-LIFECYCLE-EVIDENCE-015.json`.
 - [ ] Bind these lifecycle files into the final `topic_only_v1` Acceptance Manifest after Jovi human review; do not run Formal Gate yet.
 
 Review: evidence is fresh local machine proof, not Phase 1 promotion. Feishu, Gateway, OAuth, Cron and publication remain untouched.
+
+# PHASE1-DAVINCI-EDITOR-FEASIBILITY-001 — RESEARCH / REMOTE PLAN PENDING
+
+Change Request: `reports/change_requests/PHASE1-DAVINCI-EDITOR-FEASIBILITY-001.json`.
+
+- [x] Read the current Phase 1 status, render/editor architecture, open-source
+  adoption matrix, current Jianying branch, and relevant media adapter contracts.
+- [x] Search GitHub for real DaVinci Resolve MCP/editor workflows and review
+  current upstream capability, activity, license, client support, safety and
+  scripting/API boundaries.
+- [x] Confirm current Codex MCP capability and inspect this machine for a
+  Resolve installation using standard paths, process and uninstall registry.
+- [x] Send the evidence and current constraints to the existing OpenClaw
+  VideoFactory ChatGPT Project for independent route review and a bounded
+  long-stage DaVinci feasibility plan.
+- [x] Keep the required Remotion/FFmpeg local MP4 + review-package route and
+  Phase 1 Gate unchanged until the remote plan is reviewed; any DaVinci route
+  change needs a separately authorized Change Request and explicit acceptance.
+
+Current review: GitHub shows a maintained Codex-compatible Resolve MCP candidate.
+Remote iteration 43 accepted it as an optional Jianying-branch candidate only;
+the required Remotion/FFmpeg route remains unchanged. No local Resolve install
+was detected in standard locations. The bounded compatibility and human
+comparison plan is recorded in `tasks/plans/2026-10-11-davinci-editor-feasibility-note.md`.
+No software/backend configuration or canonical product route changed.
