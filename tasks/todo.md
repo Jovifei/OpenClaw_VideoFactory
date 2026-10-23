@@ -1,3 +1,17 @@
+# REPO-CONSOLIDATION-20261023 — IN PROGRESS
+
+Change Request: `reports/change_requests/REPO-CONSOLIDATION-20261023.json`.
+
+- [x] Confirm product scope with Jovi: video factory for app, web, schematic and hardware engineering content; later optional web/App operation interfaces.
+- [x] Fetch origin and inspect branches, owner changes and worktrees.
+- [ ] Merge unique feature histories in an isolated E-drive worktree; preserve all initial feature heads as ancestors.
+- [ ] Tag the complete pre-cleanup tree for historical retrieval.
+- [ ] Consolidate requirements, architecture, roadmap and current delivery review; remove obsolete process files after dependency checks.
+- [ ] Verify bounded regressions, media-contract checks, documentation references and diff hygiene.
+- [ ] Publish tested main and archive tag; report exact SHA, branch counts and cleanup counts for Jovi review.
+
+Review: baseline main `f1d94e980526ab7d0a06faadf9c78596b09db565`; owner tree has three pre-existing dirty documentation files and remains untouched. Hub revision read failed with WinError 10061; automatic retry stopped. Phase 1 remains in progress.
+
 # PHASE1-JIANYING-VISUAL-AUDIO-REMEDIATION-002 — IMPLEMENTED / HUMAN REVIEW PENDING
 
 Execution plan: `tasks/plans/2026-08-23-phase1-jianying-visual-audio-remediation.md`.
