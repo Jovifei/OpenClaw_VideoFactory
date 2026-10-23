@@ -1,0 +1,58 @@
+{
+  "schema_version": "phase1_freertos_candidate_review_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FREERTOS-CANDIDATE005-20260927",
+  "input_binding": "reports/phase1/stage_20260927/candidate005_inputs.json",
+  "source_commit": "84e5665acbbbef74071cf0444b9f69c6b838d2b8",
+  "control_job_id": "job-2da2a3ae112bac2ceaacb5d7",
+  "execution": {
+    "create_topic_count": 1,
+    "run_count": 1,
+    "entrypoint": "scripts/factory.py phase1 create-topic --brief examples/phase1_local_freertos/brief.json; scripts/factory.py phase1 run --job-id job-2da2a3ae112bac2ceaacb5d7",
+    "sqlite_state": "PENDING_REVIEW",
+    "sqlite_attempt": 0,
+    "sqlite_event_count": 9,
+    "sqlite_integrity_check": "ok",
+    "artifact_paths_and_hashes_match": true,
+    "source": "E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate005_20260927/status_after_once.json"
+  },
+  "media": {
+    "path": "dist/phase1_local/phase1_8958d25a694923c9/final_master.mp4",
+    "sha256": "67f18d2b9169792b9e7996ccbcf8b644f23c79649b39f148f84722e2b4bac8fe",
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "duration_seconds": 40.0,
+    "decoded_video_frames": 1200,
+    "full_decode_exit_code": 0,
+    "final_audio_38_4_to_40_mean_db": -26.6,
+    "final_audio_38_4_to_40_max_db": -9.1,
+    "srt_cues": 5,
+    "final_srt_end_seconds": 40.0,
+    "timeline_mode": "technical_cut"
+  },
+  "review_package": {
+    "path": "dist/phase1_local/phase1_8958d25a694923c9/review_package.json",
+    "sha256": "ff2150cbe058bbe10ef9501ff675839ac1cbf1ba8f27aa9da7168307d365b084",
+    "status_field": "ready_for_human_review",
+    "artifact_count": 6,
+    "all_internal_hashes_and_sizes_match": true,
+    "automated_quality_report": "passed"
+  },
+  "semantic_visual_review": {
+    "status": "PASS_SAMPLED_MACHINE_REVIEW",
+    "sampled_frames": [120, 239, 240, 360, 479, 480, 600, 719, 720, 840, 959, 960, 1080, 1152, 1180, 1199],
+    "cut_boundaries": ["239/240", "479/480", "719/720", "959/960"],
+    "result": "All four cut pairs show one technical scene and no blank/blend. Scene2 API label clears arrow; scene3/4/5 technical content clears subtitles; no sampled tofu or clipping.",
+    "sample_root": "E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate005_20260927/frames"
+  },
+  "snapshot": "E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate005_20260927/candidate005_single_outer_run",
+  "independent_read_only_review": "PASS for SQLite/media/hash/semantic sampled machine qualification; human listening and acceptance pending.",
+  "human_review": "PENDING_JOVI_SHA_BOUND_WATCH_AND_LISTEN",
+  "prereview": "NOT_RUN",
+  "formal_gate": "NOT_RUN",
+  "phase_promotion": false,
+  "status": "FREE_RTOS_MACHINE_REVIEW_READY"
+}
