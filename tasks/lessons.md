@@ -550,3 +550,42 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   exclusions and forbidden gates, push the evidence package, and return it for
   independent audit. Pause only at an explicit external dependency or human
   decision, while continuing any separately authorized diagnostic work.
+
+# 2026-09-13 - Website promo subtitle and profile QA
+
+- A successful FFmpeg subtitle filter is not proof of readable captions. SRT
+  defaults to a small PlayRes coordinate system; use an explicit ASS PlayRes
+  matching the portrait canvas and inspect exact transition frames.
+- Keep the technical post-render edge rule unchanged by default. A product
+  composition with an intentional dark background needs an explicit profile
+  contract and an evidence field showing that the profile—not a global bypass—allowed dark edges.
+- A visually clean still at one frame does not prove a sequential Remotion
+  render is clean; inspect scene starts, representative caption frames, CTA,
+  and a complete decoded frame scan before handing off.
+
+# 2026-09-14 - Website promo revision feedback
+
+- “竖屏成片”和“桌面大屏截图”是两个独立维度；锁定 9:16 输出时仍要把首页
+  采集视口明确写成桌面尺寸，不能把手机窄屏当作桌面页面。
+- 线上数据接口出现 429/502 时，真实错误页面不能作为宣传素材；保留 receipt
+  和 blocker 证据，等待健康数据或停在明确阻塞状态，绝不用 mock 补画面。
+- 更换声音必须重新测量整条旁白并让字幕跟随新时序；不能只替换音频文件而复用旧
+  timing 或旧字幕。
+
+# 2026-09-15 - Website promo hook and focus correction
+
+- 宣传片首屏不能从品牌说明慢慢开始；必须在前两秒给出一个明确问题/收益封面，
+  再进入产品界面。
+- 整页截图在竖屏里会把有效信息缩小到不可读；每个功能镜头必须声明一个焦点
+  区域并放大展示，同时保留来源/版权与边界说明。
+- 网站代码和宣传素材必须重新绑定到最新线上版本；旧采集不能代表当前功能，
+  尤其不能用旧云海页面替代最新 `/cloudsea`。
+- 封装命令中的 `job_id` 必须直接复用 SQLite 创建结果；即使媒体可播放，报告写入
+  不存在的 job 也必须整次标为 rejected，不能靠事后改报告补救。
+
+# 2026-09-23 - Promo motion must follow measured speech
+
+- Scene boundaries matching whole narration beats is only coarse sync; a nearly still screenshot during a full sentence still feels detached. Split long copy at natural pauses, measure each SAMI subsegment, and bind visible focus changes to those exact clip windows.
+- Motion should advance while the related phrase is audible, settle at its measured end, and never continue through a different line. The cover should use a current real product capture as its visual source, with animated title/focus treatment layered over it.
+- Review crop-source tiles before composing: a technically valid screenshot can still contain a black tile gap or stale/empty panel that ruins the hook. Match crop aspect to the display frame to avoid distortion, and focus on one legible region.
+- Add a visible focus marker tied to each measured phrase when small camera moves are not perceptible; check paired early/late frames for every voice cue. Keep subtitle breaks at semantic punctuation and inspect the burned-in final frame, not only the SRT text.

@@ -3235,3 +3235,81 @@ retest, M6, Candidate004 and media remain blocked pending remote audit.
 
 Verification: 47 focused tests passed, including M5A secret-leak assertions;
 compile and diff checks passed. Evidence commit: `968b2a1`.
+
+# WEBSITE-PRODUCT-PROMO-20260913 — REAL PAGE CAPTURE AND LOCAL CANDIDATE
+
+Scope: use the supplied campaign contract to capture real `photo.joviluma.com`
+pages, register one additive WebsiteProductDemo composition, reuse measured SAMI
+timing plus the existing Remotion/FFmpeg chain, and publish one local candidate
+for Jovi review. Do not modify Star business code or deploy it.
+
+- [x] Reconfirm package hashes, current two-repo HEADs, and clean isolated worktree baseline.
+- [x] Resolve live capture selectors/actions against the actual website; capture six PNGs without mocks.
+- [x] Perform local agent asset review with SHA, claim bindings, attribution and privacy checks.
+- [x] Add the package's minimal WebsiteProductDemo contract/component and render entry route; keep existing compositions unchanged.
+- [x] Add integration tests first, observe RED, then implement the smallest passing route and contract changes.
+- [x] Generate real SAMI timing, build SHA-bound product input, and run portrait typecheck/preview checks.
+- [x] Render one 9:16 H.264/AAC MP4, mux subtitles, run post-render/quality checks and inspect key frames.
+- [x] Record job/attempt/artifact evidence, commit and push only scoped code/tests/docs; never commit runtime media or secrets.
+- [x] Stop at `ready_for_jovi_human_review`; do not run Formal Gate, Phase Promotion, Feishu, Cron or publication.
+
+## Review
+
+- Baseline: clean worktree is missing ignored legacy `dist/story_demo*` artifacts; bounded source tests remain the regression truth until those fixture-dependent checks are regenerated in an owned attempt.
+- Human review must bind to the final audible MP4 SHA; no approval is inferred from machine checks.
+- Final runtime candidate: job `job-98ffaa240c85e14faac0db25`, render attempt `3`; MP4 SHA `833c18ee5ae8b9224da5261871dd30c5c6abe804a4ad99bdd0cb74a13827a0d4` is recorded outside Git in the review package and still needs Jovi's watch/listen.
+
+# WEBSITE-PRODUCT-PROMO-REVISION-20260915 — DESKTOP CAPTURE / VOICE A / COPY V2
+
+- [x] Confirm 9:16 portrait output and 1440×900 desktop homepage capture contract.
+- [x] Select SAMI voice A `ICL_zh_male_shuyisyh` and generate an 8-beat timing candidate.
+- [x] Rewrite functional-narrative video copy and social screenshot copy.
+- [x] Capture a clean homepage after the live weather upstream recovers; reject HTTP 502/error-state screenshots.
+- [x] Build SHA-bound v2 product input with the desktop homepage and existing reviewed feature captures.
+- [x] Render one new visual master, mux A voice/ASS subtitles, and inspect portrait keyframes.
+- [x] Record new SQLite job/attempt/review package; commit and push the revision branch.
+- [x] Stop at `ready_for_jovi_human_review`; do not publish or promote Phase 1.
+
+## Review
+
+- A voice timing manifest is ready in the E-drive runtime with coverage `0.983489`, speaker `ICL_zh_male_shuyisyh`, and eight SAMI segments.
+- The accepted homepage is `capture_home_v3`: real browser capture, no mock, viewport `1440×900`, PNG SHA `9798ee14909b270c2c5dfa795c1a07c975379de9cc2c04e0724b4d34f5468afb`; `data-status` was degraded/stale and visible `数据不足` states remain disclosed.
+- Product input `product_input_v2.json` and visual master `render_v2/visual_master.mp4` are SHA-bound; the visual report passed with one Remotion render.
+- Final runtime candidate: job `job-4de5499239aa4af877267315`, attempt `1`; `final_v2/final_master_v2.mp4` is 1080×1920/30fps/H.264/AAC/45s with SHA `73183808c78b0e31cfe3462c0fc1cb2ea4e0915dc4e9302e92a22149a3daac47`.
+- Final report, post-render check, sequential frame/字幕 visibility check, SQLite projection, and review package all pass machine gates; human watch/listen remains required.
+
+# WEBSITE-PRODUCT-PROMO-REBUILD-20260915 — HOOK / FOCUS / LATEST CLOUDSEA
+
+- [x] Record Jovi's correction: stronger cover, faster entry, focused information crops, and latest mature CloudSea page.
+- [x] Research public video skills and apply Remotion video-first layout, transition and caption principles without adding a second renderer.
+- [x] Re-capture current live v1.0.18 pages; keep strict-selector, forecast-502 and tile-timeout failures preserved.
+- [x] Add bounded focus rectangles and hook-cover role to the WebsiteProductDemo contract/component with tests.
+- [x] Generate faster SAMI `zh_male_ad` timing; cover voice starts at 1.76s and total voice coverage is 0.881875 for 32s.
+- [x] Render one focused 9:16 visual master and mux subtitles/audio; inspect all eight scene stills.
+- [x] Record SQLite job `job-5c4659144bbcc20c01d08c34`, attempt `1`, and review package.
+- [x] Stop at `ready_for_jovi_human_review`; do not publish or promote Phase 1.
+
+## Review
+
+- Final candidate: `E:\OpenClaw_VideoFactory_Runtime\zhuxing_promo_rebuild_20260915\final_v8\final_master_v8.mp4`, 1080×1920/30fps/H.264/AAC/32s, SHA `a126a82e133b57526e3353c1ef17729296968df4da8478f51cf1feee5044fc77`.
+- Latest CloudSea focus shows current `59/100`, `+817m`, `5.1m/s`, and `山顶在云层上方`; no Beta/test wording is authored in the promo copy.
+- Final report `final_report_v8.json`, post-render check, sequential quality check, SQLite projection and `review_package_v8.json` are bound to the same job `job-5c4659144bbcc20c01d08c34`.
+- Machine gates passed; Jovi human watch/listen remains the only acceptance decision.
+
+# WEBSITE-PRODUCT-PROMO-AUDIO-MOTION-SYNC-20260923 — NATURAL VOICE CUES / MOVING COVER
+
+- [x] Register approved change request 019 and preserve the previous v8 candidate.
+- [x] Refresh no-mock screenshots from the live Star v1.0.19 pages; retain upstream-degraded/stale-forecast disclosures.
+- [x] Write the focused six-beat v5 script/storyboard; measure 15 natural SAMI clips and bind camera/focus cues to exact clip windows.
+- [x] Update the existing composition and assembler to support voice-cued pan/zoom/reticles, undistorted crops, a real-page moving hook, and flat SAMI subsegments.
+- [x] Render the final 9:16 candidate and review the cover, every scene, cue-paired keyframes, caption line breaks, media decode and audio peak.
+- [x] Record final job `job-07b5db48afc8bec16f75c326`, render attempt `2`, quality attempts `1=failed caption wrap / 2=passed`, and one SHA-bound review package.
+- [x] Commit/push the scoped task branch; do not merge main, publish, connect Feishu/Cron, or promote Phase 1.
+- [ ] Jovi watches/listens to `final_master_v5_attempt4.mp4` and makes the human review decision bound to SHA `bf0b6f98415918ae6d4d320729b6739c036b6469ef76db89c26e73bcfc605f08`.
+
+## Review
+
+- Final candidate: `E:\OpenClaw_VideoFactory_Runtime\zhuxing_promo_sync_20260923\final_v5_attempt4\final_master_v5_attempt4.mp4`, 1080×1920/30fps/H.264/AAC/30s, SHA `bf0b6f98415918ae6d4d320729b6739c036b6469ef76db89c26e73bcfc605f08`.
+- SAMI 15 clips, measured voice end 26.04s, 86.8% coverage; all 15 cues are bounded to measured speech frames. Final post-render scan passed 900 frames with zero black frames; assembly peak -5.3 dB.
+- Review package: `E:\OpenClaw_VideoFactory_Runtime\zhuxing_promo_sync_20260923\final_v5_attempt4\review_package_v5_final.json`. State remains `PENDING_REVIEW`; no publication or phase promotion.
+- Scoped implementation and evidence changes are committed and pushed on `codex/website-product-promo-revision-20260913`; the original main-worktree `AGENTS.md` remains dirty and untouched.

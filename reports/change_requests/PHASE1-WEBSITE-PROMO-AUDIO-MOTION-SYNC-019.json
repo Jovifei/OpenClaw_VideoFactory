@@ -1,0 +1,35 @@
+{
+  "id": "PHASE1-WEBSITE-PROMO-AUDIO-MOTION-SYNC-019",
+  "date": "2026-09-23",
+  "baseline_commit": "d31c336077386cfc00f84231529fc7146159ee01",
+  "authorization": "Jovi requested another remake after stating that narration and picture must sync and the visuals and cover must have motion.",
+  "scope": "Re-capture latest Star v1.0.19 pages, split promo narration at natural pauses, bind Remotion camera/focus cues to measured SAMI subsegment timestamps, use a real CloudSea detail crop in the hook cover, and produce one local 9:16 candidate.",
+  "allowed_paths": [
+    "docs/WEBSITE_PRODUCT_PROMO_COPY_V3.md",
+    "docs/superpowers/specs/2026-09-15-website-product-promo-hook-focus-design.md",
+    "tasks/plans/2026-09-15-website-product-promo-hook-focus.md",
+    "tasks/plans/2026-09-23-website-promo-voice-motion-sync.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "remotion/src/product-demo/",
+    "scripts/product-demo/",
+    "scripts/assemble_product_preview.py",
+    "scripts/render_phase1_topic_visual.mjs",
+    "reports/change_requests/PHASE1-WEBSITE-PROMO-AUDIO-MOTION-SYNC-019.json"
+  ],
+  "excluded": ["Star_photo_addr business code/deployment", "Feishu", "Cron", "automatic publication", "model downloads", "Phase Promotion", "AGENTS.md"],
+  "verification_plan": ["fresh no-mock live captures bound to v1.0.19", "exact narration_parts reconstruction and per-clip SAMI hashes", "scene/camera motion cue times bounded by measured voice subsegments", "single Remotion visual render and existing FFmpeg audio/ASS path", "manual review of cover and all voice-aligned scene transitions", "human watch/listen remains required"],
+  "status": "candidate_ready_for_human_review",
+  "blocker": "Jovi must watch/listen and decide; no human approval or Phase Promotion is inferred.",
+  "outcome": {
+    "job_id": "job-07b5db48afc8bec16f75c326",
+    "render_attempt": 2,
+    "quality_attempts": ["attempt 1 rejected after final caption frame showed a phrase broken across lines", "attempt 2 passed after script/timing remeter and re-render"],
+    "final_mp4": "E:/OpenClaw_VideoFactory_Runtime/zhuxing_promo_sync_20260923/final_v5_attempt4/final_master_v5_attempt4.mp4",
+    "final_mp4_sha256": "bf0b6f98415918ae6d4d320729b6739c036b6469ef76db89c26e73bcfc605f08",
+    "review_package": "E:/OpenClaw_VideoFactory_Runtime/zhuxing_promo_sync_20260923/final_v5_attempt4/review_package_v5_final.json",
+    "post_render_status": "passed",
+    "phase_promotion": false,
+    "automatic_export": false
+  }
+}

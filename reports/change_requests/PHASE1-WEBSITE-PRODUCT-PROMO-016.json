@@ -1,0 +1,41 @@
+{
+  "id": "PHASE1-WEBSITE-PRODUCT-PROMO-016",
+  "date": "2026-09-13",
+  "baseline_commit": "f1d94e980526ab7d0a06faadf9c78596b09db565",
+  "authorization": "Jovi supplied the Zhuxing website-promo handoff and authorized implementation, tests, task-branch commit and push.",
+  "scope": "Add one WebsiteProductDemo Remotion composition and a thin local audio/subtitle assembly adapter using live photo.joviluma.com captures and measured local SAMI timing.",
+  "allowed_paths": [
+    "remotion/src/Root.tsx",
+    "remotion/src/product-demo/",
+    "scripts/product-demo/",
+    "scripts/assemble_product_preview.py",
+    "scripts/render_phase1_topic_visual.mjs",
+    "scripts/phase1_post_render_check.py",
+    "tests/product-demo/",
+    "tests/product_demo_integration.test.mjs",
+    "tests/video/test_phase1_post_render_check.py",
+    "tasks/plans/2026-09-13-website-product-promo.md",
+    "tasks/todo.md",
+    "tasks/lessons.md",
+    "reports/change_requests/PHASE1-WEBSITE-PRODUCT-PROMO-016.json"
+  ],
+  "excluded": [
+    "Star_photo_addr business code and deployment",
+    "Feishu",
+    "Cron",
+    "automatic publication",
+    "model downloads",
+    "Phase Promotion",
+    "AGENTS.md"
+  ],
+  "verification_plan": [
+    "live no-mock six-page capture and SHA-bound local asset review",
+    "measured SAMI timing and product-input hash validation",
+    "Remotion typecheck, contract tests and focused product tests",
+    "single visual render plus derived review artifacts",
+    "FFmpeg AAC mux, ASS burn-in, full decode, sequential frame scan and subtitle visibility check",
+    "Jovi human watch/listen remains required"
+  ],
+  "status": "implemented_scoped_tests_passed_human_review_pending",
+  "evidence": "Runtime review package is kept outside Git under E:/OpenClaw_VideoFactory_Runtime/zhuxing_promo_20260913/review_package_003.json."
+}
