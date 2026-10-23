@@ -1,0 +1,52 @@
+{
+  "schema_version": "phase1_i2c_requalification_decision_v1",
+  "status": "I2C_RESTORATION_EXHAUSTED_FRESH_REQUALIFICATION_IS_ONLY_VERIFIABLE_PATH",
+  "decision_evidence_only": true,
+  "source_commit": "4028236a61a4a329427eaf27edb846d89a44f751",
+  "preserved_candidate": {
+    "control_job_id": "job-876a5f89973bbaf8deadbeef",
+    "attempt_id": "attempt_006_9x16_subject",
+    "expected_mp4_sha256": "cf1c0220853c7de06c5f821c48824a49e35fc770ad19ba4edaa5460cff652568",
+    "source_report": "reports/phase1/i2c_visual_correction_014.json",
+    "source_report_sha256": "5d9e3541c715b367cea92d243e8aadb1bcaf9477afa34e9c5979c034dd431ccc"
+  },
+  "restoration_search": {
+    "prior_discovery_report": "reports/phase1/stage_20260928/i2c_restoration_discovery.json",
+    "prior_search_scopes": [
+      "runtime_root:OpenClaw_VideoFactory_Runtime",
+      "codex_worktrees",
+      "owner_workspace_artifacts"
+    ],
+    "exact_mp4_match_found": false,
+    "matching_review_package_found": false,
+    "matching_sqlite_snapshot_found": false,
+    "mutation_performed": false,
+    "fresh_render_performed": false,
+    "new_restoration_scope_available": false,
+    "unsearched_realistic_scopes": [],
+    "conclusion": "No additional trusted artifact store is configured or evidenced that could contain the exact MP4/package/SQLite snapshot; the authorized restoration scopes are exhausted."
+  },
+  "compatibility_boundary": {
+    "old_audio_trimming_path_provable": false,
+    "objective_audio_contract_compatibility": "NOT_PROVABLE_FROM_MISSING_RUNTIME",
+    "lesser_truthful_alternative": "NONE",
+    "reason": "The missing runtime media and package identity prevent retrospective proof of the current objective PCM prefix/silence-tail contract and endpoint binding."
+  },
+  "minimal_fresh_requalification_package": [
+    "one new unique I2C control job",
+    "reuse accepted 9:16 source-bound visual repair lineage",
+    "fresh source-aligned narration",
+    "objective PCM integrity and complete segment evidence",
+    "authentic SQLite lifecycle and review-package hash binding",
+    "H.264/AAC output with full decode",
+    "whole-video semantic and geometry review",
+    "exact-SHA human video review",
+    "read-only prereview for the same control job"
+  ],
+  "authorization": {
+    "fresh_job_authorized": false,
+    "rerender_authorized": false,
+    "formal_gate": "NOT_RUN",
+    "next_decision_owner": "Remote GPT must separately authorize one bounded I2C requalification job after reviewing this dossier."
+  }
+}

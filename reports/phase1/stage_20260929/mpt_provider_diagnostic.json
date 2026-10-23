@@ -1,0 +1,137 @@
+{
+  "schema_version": "phase1_mpt_provider_diagnostic_v1",
+  "status": "MPT_PROVIDER_BLOCKED:AUTH",
+  "authorization": "Remote GPT iteration 39 WP-M4 sanitized MPT provider/config diagnosis",
+  "source_commit": "ffcebfd238e487c4dda03e49af586088aa736b1a",
+  "diagnostic": {
+    "identity": "mpt-provider-diagnostic-20260929",
+    "attempt_kind": "corrected_valid_uuid",
+    "corrected_direct_call": "EXECUTED_EXACTLY_ONCE",
+    "task_uuid": "d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6",
+    "phase1_job": false,
+    "candidate": false,
+    "candidate_store_touched": false,
+    "command": [
+      "pinned_venv_python",
+      "cli.py",
+      "--video-subject",
+      "MPT provider diagnostic",
+      "--video-language",
+      "zh-CN",
+      "--paragraph-number",
+      "1",
+      "--stop-at",
+      "script",
+      "--task-id",
+      "d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6"
+    ],
+    "exit_code": 1,
+    "timed_out": false,
+    "duration_seconds": 2.8,
+    "result_json_with_script": false,
+    "provider_execution_reached": true,
+    "safe_error_lines": [
+      "2026-09-29 09:27:41 | INFO | \"./app/services/llm.py:526\": generate_script - generating video script: subject=MPT provider diagnostic, paragraph_number=1, has_custom_prompt=False, has_custom_system_prompt=False",
+      "2026-09-29 09:27:41 | INFO | \"./app/services/llm.py:155\": _generate_response - llm provider: openai",
+      "2026-09-29 09:27:42 | ERROR | \"./app/services/llm.py:577\": generate_script - failed to generate video script: Error: Error code: 401 - {'error': {'message': 'Invalid API Key', 'param': 'Please provide valid API Key', 'code': '401', 'type': 'invalid_key'}}",
+      "2026-09-29 09:27:42 | ERROR | \"./app/services/task.py:263\": _mark_task_failed - task failed, task_id: d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6, stage: script, error: Error code: 401 - {'error': {'message': 'Invalid API Key', 'param': 'Please provide valid API Key', 'code': '401', 'type': 'invalid_key'}}",
+      "2026-09-29 09:27:42 | ERROR | \"./cli.py:1489\": run_cli - CLI task failed: task_id=d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6, stop_at=script, stage=script, error=Error code: 401 - {'error': {'message': 'Invalid API Key', 'param': 'Please provide valid API Key', 'code': '401', 'type': 'invalid_key'}}",
+      "2026-09-29 09:27:40.126 | INFO     | app.config.config:load_config:471 - load config from file: <PATH>",
+      "2026-09-29 09:27:40.131 | INFO     | app.config.config:<module>:588 - MoneyPrinterTurbo v1.3.5"
+    ],
+    "underlying_raw_output_persisted": false
+  },
+  "configuration": {
+    "path": "worktree_external/MoneyPrinterTurbo/config.toml",
+    "exists": true,
+    "sha256": "64087f78cf39c25efe7b6f6777d8c577beba97c313ab8cd973d53be9f67c6a78",
+    "parse_status": "OK",
+    "provider": "openai",
+    "model": "mimo-v2.5",
+    "endpoint_hostname": "token-plan-cn.xiaomimimo.com",
+    "endpoint_scheme": "https",
+    "endpoint_port": null,
+    "config_section": "app",
+    "credential_field": "app.openai_api_key",
+    "credential_field_presence": "PRESENT",
+    "approved_credential_env_presence": {
+      "MPT_LLM_API_KEY": "MISSING",
+      "MIMO_API_KEY": "PRESENT"
+    },
+    "required_credential_variable_names": [
+      "MPT_LLM_API_KEY",
+      "MIMO_API_KEY"
+    ]
+  },
+  "mpt_runtime": {
+    "expected_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "actual_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "clean_checkout": true,
+    "cli_entrypoint": "worktree_external/MoneyPrinterTurbo/cli.py",
+    "cli_sha256": "7b2d5be1829cbfc49f1f45199a06a82b4921db1ccce936f0bcdede43979eefc1",
+    "identity_after": {
+      "expected_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+      "actual_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+      "clean_checkout": true,
+      "cli_entrypoint": "worktree_external/MoneyPrinterTurbo/cli.py",
+      "cli_sha256": "7b2d5be1829cbfc49f1f45199a06a82b4921db1ccce936f0bcdede43979eefc1"
+    },
+    "python_executable": "worktree_external/MoneyPrinterTurbo/.venv/Scripts/python.exe",
+    "python_version": "Python 3.12.10",
+    "config_unchanged": true
+  },
+  "configured_endpoint_reachability": {
+    "hostname": "token-plan-cn.xiaomimimo.com",
+    "port": 443,
+    "scheme": "https",
+    "dns": {
+      "status": "PASS",
+      "address_count": 2
+    },
+    "tcp": {
+      "status": "PASS"
+    },
+    "tls": {
+      "status": "PASS",
+      "protocol": "TLSv1.3"
+    },
+    "overall": "REACHABLE"
+  },
+  "media_boundary": {
+    "new_media_files": [],
+    "changed_media_files": [],
+    "media_created": false,
+    "tts": false,
+    "pcm": false,
+    "mp4": false,
+    "jianying_invoked": false
+  },
+  "safety": {
+    "raw_config_persisted": false,
+    "credential_values_persisted": false,
+    "secret_redaction_applied": true,
+    "alternate_provider_probed": false,
+    "configuration_changed": false,
+    "candidate_store_touched": false
+  },
+  "candidate003": "TERMINAL_PRESERVE",
+  "candidate004": "NOT_AUTHORIZED",
+  "jianying": "BLOCKED_EXACT_PIN_F421C8A_NO_LOCAL_OR_OFFLINE_SOURCE",
+  "m6_authorization": "NOT_AUTHORIZED_UNLESS_STATUS_MPT_PROVIDER_READY_AND_REMOTE_REVIEW_ACCEPTS",
+  "prior_invalid_invocation": {
+    "attempt_kind": "iteration39_invalid_uuid",
+    "status": "MPT_PROVIDER_BLOCKED:UNCLASSIFIED",
+    "exit_code": 2,
+    "timed_out": false,
+    "provider_request_reached": false,
+    "invocation_contract_error": "cli.py rejected the diagnostic --task-id before provider execution because it was not a UUID",
+    "safe_error_lines": [
+      "cli.py: error: argument --task-id: task-id must be a valid UUID, got 'mpt-provider-diagnostic-20260929'"
+    ],
+    "media_created": false,
+    "candidate_store_touched": false
+  },
+  "execution_base_commit": "ffcebfd238e487c4dda03e49af586088aa736b1a",
+  "diagnostic_script_execution_state": "corrected_redaction_patch_applied_after_reviewed_base_before_evidence_commit",
+  "next_remote_action": "Independently audit MPT_PROVIDER_BLOCKED:AUTH and decide whether an approved existing credential/config restoration source may be used. Do not change credentials/provider/model or run M6 without separate authorization."
+}

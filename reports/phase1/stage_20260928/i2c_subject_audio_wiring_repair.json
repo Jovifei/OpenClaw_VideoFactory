@@ -1,0 +1,53 @@
+{
+  "schema_version": "phase1_i2c_subject_audio_wiring_repair_v1",
+  "status": "I2C_SUBJECT_AUDIO_WIRING_READY_FOR_REMOTE_REVIEW",
+  "authorization": "Remote GPT iteration 35 WP-LR3 no-media wiring closure",
+  "baseline_head": "839d115fa8d94518f3c64c93a6dad5130658eff5",
+  "candidate001": "job-b4a2e8e851268bc14e5e4a15",
+  "candidate002": "job-b1a186b7b265c2ed46b7c3cb",
+  "candidate003_authorized": false,
+  "red": {
+    "kind": "ephemeral_legacy_request_negative",
+    "request_shape": "SubjectMediaRequest(director_script, scene_plan, topic_request, workdir) without research_brief",
+    "result": "legacy_request_would_not_enter_source_aligned_adapter",
+    "persisted_job_or_media": false,
+    "current_production_call_replayed": false,
+    "note": "The reviewed HEAD already contains the fifth research_brief argument; the RED fixture preserves the pre-wiring failure mode without mutating history."
+  },
+  "green": {
+    "test": "tests/phase1_local/test_phase1_subject_cli.py::test_real_subject_delivery_boundary_passes_exact_planning_research_to_audio_adapter",
+    "workflow": "create-subject -> attach-research -> run -> _run_subject_delivery -> SubjectMediaRequest -> injected adapter stop",
+    "canonical_research_path": "examples/phase1_subject_i2c/research_brief.json",
+    "canonical_research_sha256": "fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21",
+    "research_source": "SQLite registered research_brief artifact",
+    "sha_and_topic_identity": "PASS",
+    "adapter_called_before_media": "PASS",
+    "legacy_timing_probe_called_first": "FALSE",
+    "media_created": "FALSE",
+    "cli_subject_aspect": "9:16"
+  },
+  "artifact_binding_implementation": {
+    "phase1_cli": "src/factory/phase1_cli.py",
+    "phase1_cli_sha256": "4521302aba5d593f2a04f89626ae36b256916fcf9806929d7c48ea67635be4f2",
+    "subject_audio": "src/factory/phase1_subject_audio.py",
+    "subject_audio_sha256": "9a1e20d9cea3aa6a81824595239e16f1c387549fd41616347caa95fe907a543a",
+    "source_id_normalization": "id -> source_id; all fact source_ids resolve",
+    "source_contract_test": "tests/phase1_local/test_phase1_subject_audio.py"
+  },
+  "verification": {
+    "focused_wiring_and_subject_audio": "6 passed",
+    "candidate003": "NOT_RUN",
+    "media": "NOT_RUN",
+    "human_decisions": "PENDING",
+    "prereview": "NOT_RUN",
+    "formal_gate": "NOT_AUTHORIZED",
+    "changed_artifact_negative": "PASS",
+    "focused_wiring_subject_audio_i2c_media": "39 passed",
+    "phase1_acceptance": "24 passed",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "remotion_typecheck": "PASS",
+    "remotion_contracts": "PASS"
+  },
+  "next_remote_action": "Independently audit exact LR3 HEAD and the real CLI boundary; only after acceptance may one new unique subject-path Candidate003 be considered."
+}

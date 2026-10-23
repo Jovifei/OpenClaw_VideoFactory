@@ -143,7 +143,7 @@ def main() -> int:
         "timing_manifest": {"filename": manifest_path.name, "sha256": sha256(manifest_path)},
         "render_report": render_report_binding(args.visual_report.resolve(), sha256(args.visual_report.resolve())) if args.visual_report else None,
         "audio_source": {
-            "kind": "jianying_editor_skill_timing_probe_assets",
+            "kind": str(manifest.get("voice", {}).get("source_kind", "jianying_editor_skill_timing_probe_assets")),
             "segment_count": len(audio_entries),
             "parent_segment_count": len(segments),
             "source_audio_reused": False,

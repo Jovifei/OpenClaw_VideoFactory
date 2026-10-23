@@ -1,0 +1,54 @@
+{
+  "schema_version": "phase1_next_candidate_readiness_v1",
+  "status": "READY_PENDING_EXACT_AUDIO_APPROVAL",
+  "topic": "Flash watchdog",
+  "source_commit": "212b1bc",
+  "brief": "examples/phase1_local_flash_watchdog/brief.json",
+  "brief_sha256": "42e23ecb2a4e0af19d1f04446cf1e239dcc9040e327d1067352222ba63dc8918",
+  "topic_digest": "d939208f4995f8d21c5cac1a99a9797291e1f82035bda067415211068fcc7512",
+  "asset_hashes": [
+    {
+      "asset_id": "pink_pig.flash_watchdog_plain_window.v1",
+      "sha256": "c3cbd11171a6711c2dfe9ee70786561bfdf8a8136a78924573d717452daae44f",
+      "relative_path": "assets/flash_watchdog_plain_illustrations/01-flash-window.png"
+    },
+    {
+      "asset_id": "pink_pig.flash_watchdog_plain_erase_sequence.v1",
+      "sha256": "172363dd623668e3937132055ef6894074bd70b5b29598bc8f1d1dba6f623752",
+      "relative_path": "assets/flash_watchdog_plain_illustrations/02-erase-sequence.png"
+    },
+    {
+      "asset_id": "pink_pig.flash_watchdog_plain_budget.v1",
+      "sha256": "b4c0bcd29d7593fdba8d417342d1069ec0cf94134c7956f94a0179190c567870",
+      "relative_path": "assets/flash_watchdog_plain_illustrations/03-watchdog-budget.png"
+    },
+    {
+      "asset_id": "pink_pig.flash_watchdog_plain_recovery.v1",
+      "sha256": "ac9c9211b9ac1317ba38e67865e667c07fbe6630e46078f30817b7b5a503e3fa",
+      "relative_path": "assets/flash_watchdog_plain_illustrations/04-recovery-path.png"
+    },
+    {
+      "asset_id": "pink_pig.flash_watchdog_plain_checklist.v1",
+      "sha256": "22af4ae20529728d65ffb658523be2aca56c8a0418a5709ba1a49befdeaf07eb",
+      "relative_path": "assets/flash_watchdog_plain_illustrations/05-checklist.png"
+    }
+  ],
+  "geometry_lineage": [
+    "reports/phase1/stage_20260927/flash_geometry_evidence.json",
+    "reports/phase1/stage_20260927/flash_green_measure.json"
+  ],
+  "production_contract": {
+    "source_aligned_narration": true,
+    "rewrite_policy": "exactly_one_fixture_specific_rewrite_allowed",
+    "transition_mode": "technical_cut",
+    "historical_truncated_jobs_forbidden": [
+      "job-3643de66b508bacc03474cbd",
+      "historical_truncated_flash_candidate"
+    ],
+    "fresh_candidate_requires": "exact_audio_approval_for_this_topic"
+  },
+  "required_human_audio_sha256": "d32e7332763c503ca4568bb55a4d3c61cb47d1b157a4d0a41f79209810a373df",
+  "create_topic": "NOT_RUN",
+  "full_render": "NOT_RUN",
+  "human_decision": "PENDING"
+}

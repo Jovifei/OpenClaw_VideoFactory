@@ -1,0 +1,40 @@
+{
+  "schema_version": "phase1_scene3_still_probe_v1",
+  "command": [
+    "ffmpeg",
+    "-nostdin",
+    "-v",
+    "error",
+    "-loop",
+    "1",
+    "-framerate",
+    "30",
+    "-t",
+    "1",
+    "-i",
+    "E:\\OpenClaw_VideoFactory_Runtime\\phase1_freertos_subtitle_safe_20260927\\03-priority-inheritance-candidate-v2.png",
+    "-vf",
+    "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=0xF4F6F8,fps=30,setsar=1,format=yuv420p,subtitles=filename='E\\:/project/worktrees/OpenClaw_VideoFactory/phase1-freertos-fresh-20260927/reports/phase1/stage_20260927/scene3_one_cue.srt':charenc=UTF-8:force_style='FontName=Microsoft YaHei,FontSize=15,PrimaryColour=&H00151515,OutlineColour=&H00F7E4EA,BorderStyle=1,Outline=1,Shadow=0,Alignment=2,MarginL=18,MarginR=18,MarginV=48'",
+    "-frames:v",
+    "1",
+    "-pix_fmt",
+    "rgb24",
+    "E:\\OpenClaw_VideoFactory_Runtime\\phase1_freertos_subtitle_safe_20260927\\scene3_production_style_still.png"
+  ],
+  "exit_code": 0,
+  "stderr": "",
+  "source_candidate_sha256": "e4879ee6d21003ab4573b66223fe5406a9be7cf10452e0fdad0a88acc04c1d84",
+  "subtitle": "优先级继承是任务语义",
+  "subtitle_style": {
+    "layout": "bottom_safe_band",
+    "font_name": "Microsoft YaHei",
+    "font_size": 56,
+    "margin_left": 90,
+    "margin_right": 90,
+    "margin_vertical": 180
+  },
+  "ass_force_style": "FontName=Microsoft YaHei,FontSize=15,PrimaryColour=&H00151515,OutlineColour=&H00F7E4EA,BorderStyle=1,Outline=1,Shadow=0,Alignment=2,MarginL=18,MarginR=18,MarginV=48",
+  "still_exists": true,
+  "still_sha256": "14990cfd4a8aeb48385e300eedbabac1a130911d12bb721374dfdbd6aad0845a",
+  "status": "rendered_for_visual_review"
+}

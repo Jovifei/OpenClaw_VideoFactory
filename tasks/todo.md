@@ -2821,3 +2821,417 @@ Change Request: `reports/change_requests/PHASE1-LIFECYCLE-EVIDENCE-015.json`.
 - [ ] Bind these lifecycle files into the final `topic_only_v1` Acceptance Manifest after Jovi human review; do not run Formal Gate yet.
 
 Review: evidence is fresh local machine proof, not Phase 1 promotion. Feishu, Gateway, OAuth, Cron and publication remain untouched.
+
+## PHASE1-STAGE-PLAN-20260927 — current topic-only closure
+
+Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detailed plan: `tasks/plans/2026-09-27-phase1-topic-only-closure.md`.
+
+- [x] Reconcile current phase docs, prior Codex chat, Obsidian notes, open-source matrix, and remote C2C plan.
+- [x] WP0: inventory exact final candidates, lifecycle files, hashes, SQLite state, and review gaps.
+- [x] WP1: run fresh bounded Phase 1 regression and record each suite separately.
+- [ ] WP2: close Flash, FreeRTOS, and I2C machine packages; request SHA-bound Jovi reviews.
+- [x] FreeRTOS attempt 001: existing brief selected five correct registered technical assets; the job failed from `RENDERING` after FFmpeg's 300-second timeout, with no final MP4. Preserve `reports/phase1/stage_20260927/freertos_attempt_001.json` and its raw log; remediate under a separate Change Request before any retry.
+- [x] One CPU-only probe kept the same five images, audio, subtitles, filter, profile and 300-second limit. It also timed out, produced no MP4, and captured parser-buffer errors; classify the renderer path as blocked pending a new bounded design. See `reports/phase1/stage_20260927/render_timeout_review_20260927.json`.
+- [x] Ordered short/null-output isolation stopped at the first PNG: FFmpeg reproduced the parser-buffer error and timed out at 30 seconds; Pillow pixel decode independently failed. See `reports/phase1/stage_20260927/freeRTOS_asset_decode_finding.json`. No other layer or full render was attempted.
+- [x] Asset repair audit: three FreeRTOS PNGs fail both decoders; two are valid. CairoSVG candidates decode but render Chinese as boxes, so no registered asset or hash was changed. See `reports/phase1/stage_20260927/freertos_asset_repair_result.json`; a qualified Chinese-text rasterizer is still required.
+- [x] Installed Chrome + system fonts produced readable Chinese replacements from the three unchanged SVGs. Valid assets 02/04 stayed byte-identical; all five now pass full Pillow and FFmpeg frame decode, registry hash/dimension checks, focused 61 tests and affected video/Phase 1 suites (362/92/24 passed). See `reports/phase1/stage_20260927/freertos_asset_repair_evidence.json`. No full FreeRTOS render or human approval in this iteration.
+- [x] One fresh FreeRTOS job `job-51fae0c8b47180bd49f2000e` from repair commit `a7ff382` reached SQLite `PENDING_REVIEW`; MP4 H.264/AAC and full decode passed. Semantic frame inspection found scene 3's subtitle covering the technical callout, so status is `CHANGES_REQUIRED` despite the automated quality report's `passed`. Preserve `reports/phase1/stage_20260927/freertos_fresh_candidate_001.json`; no Jovi approval or prereview was requested.
+- [x] Scene-3 source callout geometry now clears the production subtitle band. The regression failed at 878.0 vs 815.6 before the fix and passes after; a Chrome-rasterized replacement PNG, registry hash, 149 focused tests, and one real-style still all pass. See `reports/phase1/stage_20260927/freertos_subtitle_safe_evidence.json`. Candidate 001 remains frozen `CHANGES_REQUIRED`; no second full render in this remediation.
+- [x] Candidate002 job `job-4f834506b1f5283002dc3093` from commit `f6b6c0e` produced a hash-bound H.264/AAC MP4 and reached `PENDING_REVIEW`. Scene-3 active subtitle interval is clear, but scene 2's FromISR label touches the outgoing arrow; overall semantic visual status remains `CHANGES_REQUIRED`. Preserve `reports/phase1/stage_20260927/candidate002_review.json`; no Jovi approval or prereview.
+- [x] Scene-2 Chrome `getBBox()` regression measured old API label right edge 1018.2 beyond box edge 970 (RED). The exact wording/25px font now wraps into two lines with right edge 838.0 (GREEN); only scene-2 SVG/PNG/registry SHA changed. A production-style still shows box, arrow and subtitle separate; 150 focused tests pass. See `reports/phase1/stage_20260927/freertos_scene2_geometry_evidence.json`. No Candidate003 full render in this remediation.
+- [x] Candidate003 job `job-0a58d7692fb3dd4008d3a6ed` from `d5c13a7` passed media decode/SQLite/package checks and fixed scene-2/3 midpoints, but the 0.4-second xfade overlays adjacent technical diagrams at transitions. Semantic visual status is `CHANGES_REQUIRED`; preserve `reports/phase1/stage_20260927/candidate003_review.json`. No Jovi approval, prereview, or Candidate004.
+- [ ] WP3: qualify one distinct live topic and obtain SHA-bound Jovi review.
+
+### PHASE1-AUDIO-CONTRACT-20260927
+
+- [x] Add fail-closed TTS overflow and package duration evidence contracts.
+- [x] Add measured frame-aligned narration allocation and one-pass fact-preserving rewrite helpers.
+- [x] Run bounded Flash and FreeRTOS raw-TTS → optional rewrite → audio-only proof.
+- [x] Record complete segment/aligned hashes, SRT endpoints, budget result and listening-review status.
+- [x] Run affected tests, diff check and independent read-only review; do not render a new video yet.
+
+Review: `BOUNDED_AUDIO_ONLY_PROOF_PENDING_LISTENING`. Both fixtures fail the original measured budget, then pass after exactly one fact-preserving concise rewrite: current v7 proof Flash 48.466s, FreeRTOS 46.067s. All aligned segments are at least as long as raw TTS; no trim path remains. Actual fixed-fixture claim/contradiction regressions pass. Affected tests: 470 passed, four fixture-dependent modules not run due missing ignored demo artifacts. Complete WAVs and scene markers are in `E:/OpenClaw_VideoFactory_Runtime/phase1_audio_contract_20260927_v7/`; human audio-only listening is still pending. No new video job.
+
+### PHASE1-FLASH-GEOMETRY-20260927
+
+- [x] Replay old scene1/2/3/5 geometry through Chrome and record RED contracts.
+- [x] Relayout only those four SVGs with unchanged wording and fonts; require GREEN. Independent review found an omitted scene1 lower callout collision; added it to the RED/GREEN contract and repaired it before closure.
+- [x] Rasterize four PNGs, verify decode/dimensions and update only four registry hashes.
+- [x] Generate five real-subtitle production stills and review against failed preflight; scene1 final is v3, scene4 control pixels unchanged.
+- [x] Run affected tests, diff check and independent review; stop before outer Flash job.
+
+Review: `PASS_BOUNDED_STILL_ONLY`. Four selected SVG/PNG repairs retain wording/font sizes; Chrome old-source RED and current GREEN measurements are recorded. Five final real-cue stills are clear; scene4 is pixel-identical to preflight. Four registered PNG hashes match; 454 affected tests and independent read-only re-review PASS. See `reports/phase1/stage_20260927/flash_geometry_evidence.json`. No full Flash render or outer job yet.
+
+### PHASE1-FLASH-PREFLIGHT-20260927
+
+- [x] Freeze canonical Flash brief, five selected assets, registry version, render profile and 37.8s technical-cut timeline.
+- [x] Validate five image hashes, declared dimensions, Pillow full decode and bounded FFmpeg frame decode.
+- [x] Compile real SRT and inspect five production-profile short stills with exact scene cues; scenes 1/2/3/5 need source-layout repair.
+- [x] Prove four hard-cut boundaries and reconcile visual/audio/SRT timing before any full render.
+- [x] Independent read-only preflight review returned `CHANGES_REQUIRED` for the four scenes.
+
+Review: `CHANGES_REQUIRED_BEFORE_FULL_RENDER`. Assets and 37.8s timing/cut probes pass. Production stills expose scene1 label/arrow and clock-caption collisions, scene2 subtitle/callout collision, scene3 timing-marker/label collision, and scene5 subtitle/checklist collision. Independent review confirmed. See `reports/phase1/stage_20260927/flash_preflight_review.json`; no new outer Flash job and Owner main unchanged.
+
+### PHASE1-FREERTOS-SCENE45-GEOMETRY-20260927
+
+- [x] Reproduce Candidate004 scene 4/5 subtitle collisions as Chrome bbox RED tests using the production subtitle profile and replay old Git blobs with selector-only temporary IDs.
+- [x] Move/reflow only scene 4/5 SVG geometry; preserve wording, typography and other assets.
+- [x] Rasterize only scene 4/5 PNGs; verify decode, dimensions and registry SHA.
+- [x] Check production-style stills with real scene subtitles, affected suites, diff check and independent review.
+- [x] Stop before any Candidate005 full render.
+
+Review: `PASS_BOUNDED_STILL_ONLY`. Candidate004 remains frozen `CHANGES_REQUIRED`. Chrome RED replay measured scene 4/5 bottoms at 944.57/900.96 px against subtitle top 815.63 px. GREEN bottoms are 789.63/786.18 px, with >20 px clearance. Scene 4/5 production-style stills, decode/hash checks, 450 affected tests and independent read-only review pass. See `reports/phase1/stage_20260927/scene45_geometry_evidence.json`. No full Candidate005 render or human review.
+
+### PHASE1-FREERTOS-CANDIDATE004-20260927
+
+- [x] Bind commit, brief, asset hashes, technical_cut, 40s/1200-frame expectation and prior SRT/audio probes.
+- [x] Run the canonical local brief video entrypoint exactly once in this fresh worktree.
+- [x] Verify media streams, full decode, 40s audio/SRT tail, local package hashes and automated quality. Outer SQLite state was not produced by this entrypoint.
+- [x] Inspect all five scenes and frame pairs 239/240, 479/480, 719/720, 959/960; scene 4 subtitle covers the lower principle line and scene 5 subtitle touches the container border.
+- [x] Freeze the candidate with SHA and `CHANGES_REQUIRED`; no Jovi approval or prereview.
+
+Review: `CHANGES_REQUIRED`. Frozen MP4 SHA `238201bbeff201a155cbe4d682d1292f82cb28e8b3d3648fb12f7c573f47f20f`. Technical hard cuts, 40s/1200 frames, full decode and audio tail pass; visual semantics and outer SQLite gate do not. Independent read-only review confirmed scene 4/5 collisions. See `reports/phase1/stage_20260927/candidate004_review.json`. Prior Candidate000–003 outputs remain in their original locations.
+
+### PHASE1-TECHNICAL-CUT-20260927
+
+- [x] RED: test explicit local technical-cut timeline, 40-second cues and no xfade while retaining legacy behavior.
+- [x] GREEN: thread the explicit mode through local storyboard, compiled timeline, subtitle generation and renderer.
+- [x] Prove all four cut boundaries with bounded probes and verify audio/SRT tail.
+- [x] Run affected regressions, diff check and independent read-only review; stop before Candidate004.
+
+Review: `PASS_BOUNDED_TECHNICAL_CUT_ONLY`. Candidate003 remains frozen `CHANGES_REQUIRED`. Four real-asset one-second probes each have 30 frames, and eight boundary frames were visually clean. The regenerated SRT ends at 40.0s; a 1.6s tail mux retained H.264/AAC and audible tail. Affected tests: 448 passed; four fixture-dependent modules were excluded because their ignored `dist/story_demo` artifacts are absent in this worktree. Independent read-only review PASS for this bounded repair. No Candidate004 or Jovi review yet; see `reports/phase1/stage_20260927/technical_cut_contract_review.json`.
+- [ ] WP4: validate and bind the existing four lifecycle evidence files.
+- [ ] WP5: build boundary audit and `topic_only_v1` manifest.
+- [ ] WP6: independent read-only evidence audit.
+- [ ] WP7: formal Gate once, only after prerequisites.
+- [ ] WP8: separate phase promotion and stop, only after Gate PASS.
+
+Review: `IN_PROGRESS`. WP0 inventory is `reports/phase1/stage_20260927/inventory.json`: I2C machine media is hash-verified but human review pending; Flash's current MP4 and SQLite artifact disagree on SHA; FreeRTOS has its brief and five assets but no final render; no live topic selected. Lifecycle SQLite states and final encoder MP4 are corroborated, while the original NVENC/CPU exit logs are unavailable. WP1 final baseline: 24/92/13/47/361/5 passed per suite, one reference skip and four deprecation warnings; Remotion typecheck/contracts passed. The initial interpreter/ignored-fixture failures and regeneration are retained in `reports/phase1/stage_20260927/regression_baseline.json`. This is not Phase 1 promotion. The 2026-09-05 runbook remains a procedural reference; current Gate source and 2026-09-06 evidence control the scope. The website-promo voice/copy complaint is a separate backlog.
+
+## PHASE1-AUDIO-CLOSURE-20260928 — remote route audit continuation
+
+Remote GPT iteration 21 reviewed the `4136265` lineage and confirmed the current
+source-aligned TTS route. It rejected WhisperX/MFA/Piper/new TTS for Phase 1,
+narrowed the human gate to subjective quality, and authorized local WP-A/WP-B/WP-E
+while the exact v7 audio decisions remain pending.
+
+- [x] Receive and record the remote route audit and long-stage handoff.
+- [x] Create continuation branch `codex/phase1-audio-closure-20260928` from `4136265`.
+- [x] Synchronize canonical status/architecture/runbook documents and link the 2026-09-28 handoff.
+- [x] Add objective PCM raw-prefix/silence-tail/segment-order/endpoint contract and RED tests.
+- [x] Audit retained v7 Flash/FreeRTOS audio without regeneration; both pass objective integrity and retain human quality as pending.
+- [x] Run optional cached faster-whisper probe; record `NOT_RELIABLE_ENOUGH` as secondary warning only, with no download and no Gate authority.
+- [x] Add no-render outer-path integration regression and persist objective evidence in `run_report.narration_alignment`.
+- [x] Create `handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md`.
+- [x] Run bounded affected suites; initial independent read-only review found five blockers, which were fixed in `cf02b37` and `54cb42e`.
+- [x] Commit and push bounded WP-A/WP-B/WP-E evidence; do not render a new video in this package.
+- [x] Return commit, tests, evidence and handoff to remote GPT for independent review and next plan; iterations 22–28 recorded the resulting audit loop.
+
+Review: `REMOTE_ROUTE_ACCEPTED_AND_CONTINUED`. Objective v7 integrity audit is `PASS` for both
+topics; cached ASR is `NOT_RELIABLE_ENOUGH` and non-gating. Local bounded tests are
+focused 33, phase1_local 118, phase1_acceptance 24, and bounded video 286 passed.
+Human audio-quality decisions remain unresolved product gates. No full video render
+is authorized by this package.
+
+## PHASE1-CLOSURE-PARALLEL-20260928 — WP-G1 through WP-G5
+
+- [x] Seal evidence lineage: `code_contract_commit=cf02b37`, `evidence_commit=5e74b6a`, `lineage_seal_commit=825c924`.
+- [x] WP-G1 exact I2C candidate audit: identify `job-876a5f89973bbaf8deadbeef` / `attempt_006_9x16_subject` / SHA `cf1c022...`; classify `I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION` without rerender.
+- [x] WP-G2 revalidate all four 2026-09-06 lifecycle JSONs: `PASS`, SHA and schema match.
+- [x] WP-G3 boundary preflight: `PASS_PRELIGHT`; Formal Gate not run.
+- [x] WP-G4 live-topic preflight: CAN arbitration fixture is `LIVE_TOPIC_PREFLIGHT_READY` with 51.033s source-aligned audio and no MP4 render.
+- [x] WP-G5 provisional topic-only inventory: `PROVISIONAL_UNRESOLVED_NOT_GATE_READY`; unresolved human slots remain explicit.
+- [ ] Restore/revalidate I2C runtime package or obtain a separately authorized requalification path. **BLOCKED:** iteration-28 read-only exact-SHA discovery found no matching media/package/SQLite identity; no rerender is authorized.
+- [x] Select one distinct live topic and execute only its no-render preflight before any final candidate run; CAN Candidate001 subsequently completed under the separate remote WP-H2 authorization.
+
+Review: `PARALLEL_CLOSURE_AUDIT_COMPLETE_WITH_BLOCKERS`. Reports are in
+`reports/phase1/stage_20260928/`; no fresh video, Phase 1 Gate, Phase 2, Cron or
+publication action was performed.
+
+## PHASE1-LIVE-CAN-20260928 — WP-H0/H1 no-render preflight
+
+- [x] Select distinct topic by remote plan: `CAN 总线仲裁为什么不会破坏高优先级报文？`.
+- [x] Add verified factual brief with TI/NXP primary/vendor sources and four fact IDs.
+- [x] Add five source-specific deterministic CAN diagrams and registry hashes.
+- [x] Add CAN-specific source-bound script/fact-anchor validation and asset selection.
+- [x] Run real local TTS → measured technical-cut allocation → SRT → PCM integrity without MP4; final 51.033s, integrity `PASS`.
+- [x] Remote review of CAN preflight before outer candidate authorization; iteration 26 authorized exactly one candidate.
+
+Review: `LIVE_TOPIC_PREFLIGHT_ACCEPTED_FOR_ONE_OUTER_CANDIDATE`. Human review and
+candidate acceptance remain separate gates; the single outer run is recorded below.
+
+## PHASE1-CAN-EVIDENCE-HYGIENE-20260928 — remote iteration 25 follow-up
+
+- [x] Replace the I2C closure report's private absolute media path with a stable runtime locator and relative artifact path.
+- [x] Make the parallel closure audit preserve an already-ready CAN preflight instead of overwriting it with a stale blocked placeholder.
+- [x] Track the CAN visual preflight runner and compute source provenance, registry/file hashes, Pillow and FFmpeg decode, semantic mapping, subtitle stills, and technical-cut transition evidence.
+- [x] Regenerate the five real-subtitle stills and the no-render transition probe; keep outer render authorization `NOT_AUTHORIZED`.
+- [x] Push the hygiene and CAN evidence commit, request independent remote audit, and record the next remote plan.
+
+Review: `LOCAL_EVIDENCE_REFRESHED_AND_REMOTE_ACCEPTED`. No MP4 render occurred in
+this hygiene package; the later single outer candidate is tracked separately.
+
+## PHASE1-CAN-OUTER-CANDIDATE001-20260928 — remote WP-H2 authorization
+
+- [x] Create one new CAN topic control job with a unique idempotency key from reviewed `5ceeb8e` lineage: `job-eb356764914b0d9f5ccb94ff`.
+- [x] Run `phase1 run --job-id job-eb356764914b0d9f5ccb94ff` exactly once through the authentic local production path; no preflight WAV reuse, retry, resume, or second candidate.
+- [x] Verify genuine SQLite `PENDING_REVIEW`, attempt 0, nine-event history, final master/review package and artifact SHA/size bindings.
+- [x] Verify fresh source-aligned audio integrity, 25–60s duration, no rewrite, complete PCM prefix/silence-tail evidence, and audio/SRT/timeline endpoint agreement.
+- [x] Verify H.264/AAC decode, 1920×1080/30fps/1531 frames, four real hard-cut frame-pair boundaries, and five-scene semantic/geometry review.
+- [x] Write `reports/phase1/stage_20260928/can_candidate001_review.json` with `LIVE_CAN_MACHINE_REVIEW_READY` and update the current handoff with the exact result.
+- [x] Push the candidate evidence/handoff commit and return the exact candidate SHA to remote GPT for independent review; iteration 27 accepted Candidate001 and prohibited Candidate002.
+
+Review: `LIVE_CAN_MACHINE_REVIEW_READY_REMOTE_ACCEPTED_HUMAN_REVIEW_PENDING`. The
+one-candidate authorization is consumed; no Phase 1 Gate, Phase 2, Cron, Feishu or
+publication action was performed.
+
+## PHASE1-CAN-REMOTE-ACCEPTANCE-20260928 — iteration 27 continuation
+
+- [ ] Jovi exact-SHA human review of MP4 `e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af` remains pending; do not substitute machine evidence.
+- [ ] If Jovi explicitly approves, persist the structured exact-SHA human review and run only the existing read-only CAN prereview; never rerender Candidate001.
+- [x] Record remote machine acceptance in `reports/phase1/stage_20260928/can_candidate001_remote_review.json`.
+- [x] Update `topic_only_v1_provisional_inventory.json` to `LIVE_CAN_MACHINE_REVIEW_READY / HUMAN_REVIEW_PENDING` while keeping final manifest/Gate blocked.
+- [x] Perform read-only I2C exact-SHA restoration discovery; preserve `I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION` unless the exact media, package and SQLite identity are all found.
+- [ ] Continue independent Flash/FreeRTOS v7 audio gates without authorizing fresh video until each exact SHA receives `AUDIO_APPROVED`.
+
+Review: `REMOTE_MACHINE_REVIEW_ACCEPTED_HUMAN_REVIEW_PENDING`. Candidate001 is frozen; second CAN candidate and Formal Gate are not authorized.
+
+## PHASE1-HUMAN-GATE-READINESS-20260928 — remote WP-J1/J2/J3/J4/J5
+
+- [x] Verify the existing structured human-review/prereview binding fails closed for missing, malformed and unresolved review inputs without creating a human decision.
+- [x] Record `human_gate_binding_readiness.json` as `PASS_NO_HUMAN_DECISION_CREATED`.
+- [x] Record `can_prereview_contract_readiness.json` as `READY_PENDING_HUMAN_APPROVAL`; no prereview artifact was created or executed.
+- [x] Freeze `flash_next_candidate_readiness.json` and `freertos_next_candidate_readiness.json` as `READY_PENDING_EXACT_AUDIO_APPROVAL`; no create-topic or render was run.
+- [x] Record `i2c_requalification_dossier.json` as analysis-only; restoration search is exhausted in allowed scopes, old audio-contract compatibility is not provable, and no I2C job is authorized.
+- [x] Refresh the provisional closure graph with CAN/Flash/FreeRTOS/I2C dependencies and keep the final manifest/Formal Gate blocked.
+- [x] Harden the prereview binding evidence with ephemeral wrong-SHA and wrong-job negative fixtures; both reject with `human_review_not_approved` and are discarded without creating a decision.
+- [ ] Jovi exact-SHA human review and any subsequent read-only prereview remain pending.
+
+Review: `READINESS_CONTRACTS_PASS_HUMAN_DECISIONS_PENDING`. Remote iteration 29 requested concrete wrong-SHA/wrong-job rejection coverage. The hardened readiness script and report now prove those bindings fail closed using ephemeral fixtures; focused acceptance tests remain 13 passed. No human decision, prereview, new job or media artifact was created.
+
+## PHASE1-WP-K-CLOSURE-CONTRACT-FREEZE-20260928 — remote iteration 30
+
+- [x] K1: Create `topic_only_v1_manifest_contract_readiness.json` as a readiness contract, not the final manifest; enumerate four topic slots, lifecycle refs, boundary audit binding, and fail-closed blockers for pending human/prereview/I2C/preflight/historical candidates.
+- [x] K2: Create `final_regression_contract.json` with the exact post-settlement suites and known ignored-fixture exclusions; mark the regression plan frozen but not run.
+- [x] K3: Create `final_boundary_contract.json` with the exact final boundary requirements and source/report hash binding; keep it frozen but not run and do not reuse `PASS_PRELIGHT`.
+- [x] K4: Create `i2c_requalification_decision.json` distinguishing genuinely unsearched restoration scopes from the minimal fresh requalification package; do not authorize or run an I2C job.
+- [x] K5: Refresh the provisional inventory and handoff so event-driven human gates and the later remote I2C authorization decision are the next actions; do not repeat completed J-series work.
+- [x] Verify JSON/schema assertions, focused acceptance tests, compile checks, diff check, and an independent local read-only review; keep Candidate001 frozen and all human decisions pending.
+
+Review: `WP_K_CONTRACTS_FROZEN_NO_MEDIA`. Remote iteration 30 accepted WP-J6 and authorized only no-media WP-K1 through WP-K5. The four closure contracts, I2C decision dossier, provisional inventory and handoff are complete; verification passed. New media, human decisions, I2C rerender/requalification, and Formal Gate remain prohibited.
+
+## PHASE1-WP-L-I2C-REQUALIFICATION-20260928 — remote iteration 31
+
+- [x] L0: Freeze the canonical I2C research brief, corrected 9:16 source-bound visual lineage, fact refs, render profile, source-aligned audio contract and superseded historical candidate identity in a bounded change request.
+- [x] L1: Run exactly one fresh I2C `create-topic` followed by one `run` from the reviewed `ba3507e...` lineage; no retry, resume or second candidate. The single run failed closed at rendering setup with `phase1_local_brief_invalid/topic_digest_mismatch`; no retry is authorized.
+- [ ] L2: Verify authentic SQLite `PENDING_REVIEW`, attempt 0, normal events, package/artifact hashes, 1080x1920/30fps H.264/AAC, 25–60s full decode, objective PCM/audio endpoint contract, technical-cut frame pairs and whole-video I2C semantics.
+- [ ] L3: If all machine checks pass, freeze `I2C_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING`, update the provisional inventory and handoff, and leave prereview/Formal Gate untouched. If any check fails, freeze the single failure and return for remote remediation; do not create Candidate002.
+- [ ] Verify focused I2C/phase1_local, phase1_acceptance, relevant registry/video, compile and diff checks plus an independent local read-only audit.
+
+Review: `CHANGES_REQUIRED_WP_L_INPUT_DIGEST`. The one authorized I2C candidate reached `ASSETS`, entered `RENDERING`, then failed before media output because the frozen local brief's factual digest did not match the current execution contract. Candidate001 is frozen as failed; remote remediation is required before any further run. CAN remains frozen, Flash/FreeRTOS audio gates remain pending, and final regression/boundary/manifest/Formal Gate remain prohibited.
+
+## PHASE1-WP-LR1-DIGEST-PROVENANCE-20260928 — remote iteration 32
+
+- [x] LR1: Preserve `examples/phase1_subject_i2c/research_brief.json` and its original SHA; do not rewrite historical evidence.
+- [x] LR2: Add the smallest deterministic I2C materializer that computes executable `factual_brief.topic_digest` from `normalize_topic(topic)` using the current execution rule, while preserving facts, sources, 9:16 profile and I2C lineage.
+- [x] LR3: Generate a repaired executable brief as a new input path; keep the stale L0 brief unchanged for RED evidence.
+- [x] LR4: Add no-media RED/GREEN tests: stale `ceda09b...` brief is rejected with `topic_digest_mismatch`; repaired brief loads and `build_local_plan()` passes with the current digest, exact fact IDs/source bindings, technical-cut and 1080x1920/30fps profile.
+- [x] LR5: Write `i2c_digest_contract_repair.json` with failed job/runtime brief SHA, stale digest, recomputed digest, historical source hash, repaired brief hash, RED/GREEN results and `media_run=false`; push for independent remote review.
+
+Review: `I2C_DIGEST_CONTRACT_REPAIR_ACCEPTED_CANDIDATE002_AUTHORIZED`. Failed job `job-b4a2e8e851268bc14e5e4a15` remains terminal; same-job retry is forbidden. Remote iteration 33 authorized exactly one new unique Candidate002 create-topic -> run using the repaired immutable brief.
+
+## PHASE1-I2C-CANDIDATE002-20260928 — remote iteration 33
+
+- [x] Execute exactly one new I2C `create-topic` with idempotency key `phase1-i2c-requalification-candidate002-20260928` using the repaired brief SHA `f355b516...`; then exactly one `run`; no retry/resume/Candidate003. The job failed at rendering setup with `phase1_local_execution_failed:value_error`.
+- [x] Qualify authentic SQLite/package/media/source-aligned audio/technical-cut/whole-video I2C semantic evidence; stop fail-closed on any defect. Candidate002 selected generic registry assets and no I2C visual specs, so no machine-ready state was claimed.
+- [ ] If clean, freeze `I2C_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING`; do not infer human approval or run prereview.
+- [ ] Preserve Candidate001 terminal failure unchanged; keep CAN frozen, Flash/FreeRTOS audio gates pending, final contracts and Formal Gate prohibited.
+
+Review: `CHANGES_REQUIRED_I2C_CANDIDATE002_ROUTE`. Candidate002 is terminal failed with no media; the current executable local-brief route does not select the accepted I2C visual lineage. Remote remediation is required before any further run or Candidate003.
+
+## PHASE1-WP-LR2-I2C-SUBJECT-ROUTE-20260928 — remote iteration 34
+
+Remote iteration 34 accepted Candidate002's terminal failure and identified a
+route mismatch: the local-brief deterministic fallback selected generic
+Modbus/Flash registry assets and emitted no `i2c_bus_v1` visual specs. The
+canonical I2C route is the existing `create-subject -> attach-research ->
+run --plan-only` source-bound editorial path. Candidate001 and Candidate002
+remain immutable terminal failures; Candidate003, full media, prereview and
+Formal Gate are prohibited.
+
+- [x] Freeze a bounded WP-LR2 change request with the exact remote authorization,
+  terminal candidate exclusions and allowed file scope.
+- [x] Exercise the real subject CLI route in an isolated plan-only runtime using
+  the canonical historical I2C research; prove the exact subject, source facts,
+  editorial validation, `i2c_bus_v1` specs, fact-ref union, labels and 9:16
+  profile without invoking media.
+- [x] Add only the smallest subject-route adapter needed to use the existing
+  source-aligned measured narration / objective PCM helper; no second planner,
+  no I2C-specific rewrite and no generic local-brief I2C branch.
+- [x] Add RED regressions for missing/partial `i2c_bus_v1` specs and generic
+  Modbus/Flash asset lineage; add GREEN proof for source-aligned integration
+  without a full render.
+- [x] Produce bounded 9:16 TechnicalExplainer stills and a technical-cut
+  transition probe; keep full MP4/render, Candidate003, human decisions,
+  prereview, final contracts and Formal Gate disabled.
+- [x] Write `i2c_subject_route_preflight.json`, refresh inventory/handoff and
+  run focused subject/I2C/audio tests, acceptance tests, Remotion contracts,
+  compile checks, diff check and independent local review.
+- [x] Commit and push the bounded repair/evidence package, then return the
+  exact HEAD to remote GPT for independent audit and next-stage authorization.
+
+Review: `EXECUTED_NO_FULL_RENDER_READY_FOR_REMOTE_REVIEW`. The isolated
+subject route reached `ASSETS`, the source-bound I2C plan and bounded
+TechnicalExplainer stills passed, and the shared audio adapter is covered by
+no-render tests. Candidate001/002 remain terminal; Candidate003 is not
+authorized. The only remaining local action is commit/push, followed by
+independent remote audit.
+
+## PHASE1-WP-LR3-I2C-SUBJECT-AUDIO-WIRING-20260929 — remote iteration 35
+
+Remote iteration 35 accepted the LR2 visual/planning route and found one
+remaining production-wiring gap before Candidate003: subject delivery must
+resolve the exact SQLite-registered research artifact, verify SHA/topic
+identity, and pass it into the source-aligned audio adapter. Candidate001/002
+remain terminal; no media or Candidate003 is authorized.
+
+- [x] Add a bounded LR3 change request and preserve the exact remote boundary.
+- [x] Resolve the planning-bound research artifact from the job artifact table,
+  fail closed on missing/path/hash/topic mismatch, and pass it to
+  `SubjectMediaRequest`.
+- [x] Normalize subject sources `id -> source_id` in the shared factual adapter
+  and verify every fact source reference resolves.
+- [x] Add a real CLI orchestration regression proving the bound artifact reaches
+  the adapter before TTS/render/media, with an injected stop before media.
+- [x] Add RED/GREEN wiring evidence, rerun focused subject/audio/I2C,
+  acceptance, compile and diff checks, then commit/push for remote audit.
+
+Review: `EXECUTED_NO_MEDIA_READY_FOR_REMOTE_REVIEW`. The real CLI boundary now
+resolves and hashes the planning-bound research artifact, passes it into the
+source-aligned adapter, and fails closed on tampering. Candidate003 remains
+unauthorized.
+
+## PHASE1-WP-L3-I2C-CANDIDATE003-20260929 — remote iteration 36
+
+Remote iteration 36 accepted LR3 and authorized exactly one fresh I2C subject
+candidate from reviewed HEAD `3c6a14dc...`.
+
+- [x] Freeze Candidate003 change request with canonical research SHA, 9:16
+  profile, fact/label contract and Candidate001/002 exclusions.
+- [x] Execute exactly one `create-subject` with a new unique idempotency key,
+  attach canonical research, then exactly one `run`; no retry/resume/Candidate004.
+- [x] Qualify authentic SQLite/job artifacts, source-bound `i2c_bus_v1` plan,
+  Windows-SAPI source-aligned PCM integrity, package binding, 1080x1920 media,
+  hard-cut frame pairs and whole-video I2C semantics.
+- [x] Freeze the exact terminal planning failure and return; the machine-ready
+  state was not reached. Do not infer human approval or run prereview/Gate.
+- [x] Update Candidate003 report, inventory, handoff and verification evidence;
+  commit/push and return for independent remote audit.
+
+Review: `CHANGES_REQUIRED:PHASE1_SUBJECT_PLANNING_EXTERNAL_MPT_UNAVAILABLE`.
+The exactly-one run authorization was consumed by a terminal planning failure
+before director/scene artifacts or media; no retry or Candidate004 is allowed.
+
+## PHASE1-WP-M0-M3-DEPENDENCY-RESTORATION-20260929 — remote iteration 37
+
+Remote iteration 37 accepted Candidate003 as a terminal dependency failure and
+authorized dependency restoration/identity verification only. MoneyPrinterTurbo
+was restored from the existing local Owner cache at its approved revision;
+jianying-editor-skill has no local clone and the exact network fetch was blocked.
+
+- [x] Restore/verify pinned MoneyPrinterTurbo revision, CLI and venv.
+- [x] Attempt restore/verify pinned Jianying skill; record exact network/local
+  blocker without changing the pin.
+- [x] Write `i2c_subject_dependency_restoration.json`; stop before M2/M3 because
+  one required dependency remains blocked.
+- [x] Run the separately authorized non-candidate MPT plan-only probe after
+  remote iteration 38 accepted the exact MPT restoration; it failed at the
+  MPT CLI script boundary and created no media.
+- [ ] Run Jianying dry readiness only after exact pinned restoration; no media.
+
+Review: `I2C_SUBJECT_DEPENDENCY_BLOCKED:jianying-editor-skill`. Candidate003
+remains terminal; no retry or Candidate004 is authorized.
+
+## PHASE1-WP-M2-MPT-PLANNING-PROBE-20260929 — remote iteration 38
+
+Remote iteration 38 accepted the exact MPT restoration and authorized one
+fresh non-candidate diagnostic only. Jianying remains blocked at the exact
+approved revision; Candidate003 is permanently terminal and Candidate004,
+media, TTS, prereview and Formal Gate remain prohibited.
+
+- [x] Freeze the M2 change request with the reviewed baseline, diagnostic
+  idempotency key and isolated runtime/database boundary.
+- [x] Execute exactly one `create-subject` -> `attach-research` ->
+  `run --plan-only` diagnostic for the canonical I2C subject; do not retry,
+  resume or promote this job into Candidate004.
+- [x] Prove the restored MPT revision/venv/CLI actually ran; record the
+  exact CLI exit-1/no-script-JSON failure before selected/director/scene
+  artifacts and `ASSETS` could be reached.
+- [x] Prove no TTS/WAV/PCM/audio-integrity/MP4/Jianying output or invocation;
+  preserve the exact job/events/artifact hashes and MPT runtime evidence.
+- [x] Write the M2 report, refresh dependency/inventory/handoff evidence,
+  run bounded checks, commit/push and return the exact HEAD for remote audit.
+
+Verification: 42 focused subject/audio/Phase1 acceptance tests passed;
+compileall, Remotion typecheck, Remotion contracts and git diff --check passed.
+Evidence commit: `5e551f1`. Review: pending remote audit; Jianying restoration
+remains separately blocked.
+
+## PHASE1-WP-M4-MPT-PROVIDER-DIAGNOSTIC-20260929 — remote iteration 39
+
+Remote iteration 39 accepted the terminal M2 classification and authorized only
+read-only MPT provider/config diagnosis. Candidate003 and the M2 diagnostic are
+terminal; Candidate004, any Phase1 job, TTS, media, Jianying dry readiness and
+Formal Gate remain prohibited.
+
+- [x] Freeze the M4 change request and sanitizer/redaction boundary.
+- [x] Inventory the effective pinned MPT configuration structurally without
+  persisting raw config or credential values: provider, model, host, required
+  variable names/presence, config SHA, MPT revision and Python/CLI identity.
+- [x] Classify DNS/TCP/TLS reachability only for the configured endpoint; do
+  not probe alternate providers or change configuration.
+- [x] Execute the one authorized direct pinned MPT `--stop-at script`
+  diagnostic outside CandidateStore/Phase1. It stopped at CLI UUID validation
+  before provider execution; record that exact invocation defect and prove no
+  media or job state was created. A corrected direct call requires reauthorization.
+- [ ] If and only if the direct diagnostic is `MPT_PROVIDER_READY`, return for
+  remote authorization of one new isolated non-candidate M6 plan-only job;
+  otherwise freeze the exact dependency blocker and stop.
+- [x] Run the corrected valid-UUID direct diagnostic exactly once after remote
+  reauthorization; it reached the provider and returned sanitized HTTP 401
+  `Invalid API Key`. No M6 or media was authorized.
+- [ ] Return the AUTH evidence for independent remote audit and await an
+  explicit approved credential/config restoration plan; do not change secrets
+  or provider/model locally.
+
+Review: `MPT_PROVIDER_BLOCKED:AUTH`; provider execution reached the configured
+endpoint and returned HTTP 401. Endpoint reachability is `REACHABLE`, but no
+credential/provider change or M6 plan-only run is authorized.
+
+Verification: 45 focused subject/audio/diagnostic/Phase1 acceptance tests
+passed; diagnostic compile/redaction checks and git diff --check passed.
+Evidence commit: `d81ff87`; M6 remains NOT_AUTHORIZED.
+
+## PHASE1-WP-M5A-CREDENTIAL-PROVENANCE-20260929 — remote iteration 41
+
+Remote iteration 41 authorized read-only credential provenance discovery within
+approved Owner/workspace sources. Candidate003, M6, Candidate004, provider
+calls, TTS, media, Jianying and Gate remain prohibited.
+
+- [x] Freeze the M5A change request and source boundary.
+- [x] Compare the effective ignored MPT config credential and approved
+  environment inputs by SHA-256 only; never print or persist values.
+- [x] Record symbolic source locators, presence, fingerprints, provenance and
+  whether each fingerprint equals the rejected effective credential.
+- [x] Search only the workspace's approved config/history roots; do not scan
+  unrelated user directories or accounts.
+- [x] No distinct approved existing credential source exists; freeze
+  `I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE`; do not run M5B/provider.
+- [x] Run secret-leak assertions, commit/push evidence and return for remote
+  audit. M5B is conditional and must not run for an equal rejected value.
+
+Review: `I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE`; M5B, MPT AUTH
+retest, M6, Candidate004 and media remain blocked pending remote audit.
+
+Verification: 47 focused tests passed, including M5A secret-leak assertions;
+compile and diff checks passed. Evidence commit: `968b2a1`.

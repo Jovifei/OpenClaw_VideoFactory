@@ -1,0 +1,30 @@
+{
+  "source_commit": "e77761c",
+  "selector_only_temporary_changes": true,
+  "subtitle_top_px": 815.625,
+  "scene1": {
+    "cpu_label_right": 272.15966796875,
+    "cpu_box_right": 260,
+    "arrow_start": 275,
+    "error_label_right": 764.3671875,
+    "error_box_right": 760,
+    "clock_rim_bottom": 432,
+    "clock_caption_top": 417,
+    "callout_bottom_px": 931.9447396386822,
+    "callout_text_bottom_px": 892.9224229543039
+  },
+  "scene2": {
+    "callout_bottom_px": 866.5249734325185,
+    "lower_text_bottom_px": 845.86609989373
+  },
+  "scene3": {
+    "erase_marker_bottom": 555,
+    "erase_label_top": 495,
+    "timeout_marker_bottom": 555,
+    "timeout_label_top": 495
+  },
+  "scene5": {
+    "fourth_box_bottom_px": 843.5706695005314,
+    "slogan_bottom_px": 812.5823591923486
+  }
+}

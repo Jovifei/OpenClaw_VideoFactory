@@ -1,0 +1,163 @@
+{
+  "schema_version": "phase1_topic_only_v1_manifest_contract_readiness_v1",
+  "status": "MANIFEST_CONTRACT_READY_FINAL_EVIDENCE_PENDING",
+  "contract_kind": "readiness_contract_not_final_acceptance_manifest",
+  "source_commit": "4028236a61a4a329427eaf27edb846d89a44f751",
+  "acceptance_scope": "topic_only_v1",
+  "final_manifest_rule": "The eventual manifest may reference only selected final evidence with repository-relative paths and exact SHA-256 values; this report contains no acceptance-manifest placeholders.",
+  "topic_slots": [
+    {
+      "slot": "flash_watchdog",
+      "kind": "fixed_topic",
+      "current_state": "PENDING_AUDIO_APPROVAL",
+      "required_final_fields": [
+        "control_job_id",
+        "final_master_sha256",
+        "review_package_sha256",
+        "machine_review_evidence_ref_and_sha256",
+        "exact_sha_human_review_ref_and_sha256",
+        "prereview_ref_and_sha256",
+        "factual_source_bound_evidence"
+      ],
+      "readiness_evidence": "reports/phase1/stage_20260928/flash_next_candidate_readiness.json",
+      "required_human_audio_sha256": "d32e7332763c503ca4568bb55a4d3c61cb47d1b157a4d0a41f79209810a373df",
+      "blockers": [
+        "exact_audio_approval_pending",
+        "fresh_candidate_not_created",
+        "human_video_review_missing",
+        "prereview_missing"
+      ],
+      "historical_candidate_policy": "job-3643de66b508bacc03474cbd and any historical truncated Flash candidate are forbidden"
+    },
+    {
+      "slot": "freertos",
+      "kind": "fixed_topic",
+      "current_state": "PENDING_AUDIO_APPROVAL",
+      "required_final_fields": [
+        "control_job_id",
+        "final_master_sha256",
+        "review_package_sha256",
+        "machine_review_evidence_ref_and_sha256",
+        "exact_sha_human_review_ref_and_sha256",
+        "prereview_ref_and_sha256",
+        "factual_source_bound_evidence"
+      ],
+      "readiness_evidence": "reports/phase1/stage_20260928/freertos_next_candidate_readiness.json",
+      "required_human_audio_sha256": "313cad7ac3c4fa55678b819a57dc29d7cc8eea858c9204761b10670d2ae8fed0",
+      "blockers": [
+        "exact_audio_approval_pending",
+        "fresh_candidate_not_created",
+        "human_video_review_missing",
+        "prereview_missing"
+      ],
+      "historical_candidate_policy": "job-2da2a3ae112bac2ceaacb5d7 and any historical truncated FreeRTOS candidate are forbidden"
+    },
+    {
+      "slot": "i2c",
+      "kind": "fixed_topic",
+      "current_state": "I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION",
+      "required_final_fields": [
+        "control_job_id",
+        "final_master_sha256",
+        "review_package_sha256",
+        "machine_review_evidence_ref_and_sha256",
+        "exact_sha_human_review_ref_and_sha256",
+        "prereview_ref_and_sha256",
+        "factual_source_bound_evidence"
+      ],
+      "readiness_evidence": "reports/phase1/stage_20260928/i2c_requalification_decision.json",
+      "preserved_candidate": {
+        "control_job_id": "job-876a5f89973bbaf8deadbeef",
+        "attempt_id": "attempt_006_9x16_subject",
+        "expected_mp4_sha256": "cf1c0220853c7de06c5f821c48824a49e35fc770ad19ba4edaa5460cff652568"
+      },
+      "blockers": [
+        "exact_runtime_media_missing",
+        "review_package_missing",
+        "sqlite_snapshot_missing",
+        "old_audio_contract_compatibility_not_provable",
+        "fresh_requalification_not_authorized",
+        "human_video_review_missing",
+        "prereview_missing"
+      ],
+      "historical_candidate_policy": "The superseded horizontal I2C candidate cannot satisfy the topic slot"
+    },
+    {
+      "slot": "distinct_live_topic",
+      "kind": "live_topic",
+      "current_state": "LIVE_CAN_MACHINE_REVIEW_READY_HUMAN_REVIEW_PENDING",
+      "required_final_fields": [
+        "control_job_id",
+        "final_master_sha256",
+        "review_package_sha256",
+        "machine_review_evidence_ref_and_sha256",
+        "exact_sha_human_review_ref_and_sha256",
+        "prereview_ref_and_sha256",
+        "factual_source_bound_evidence"
+      ],
+      "candidate_binding": {
+        "control_job_id": "job-eb356764914b0d9f5ccb94ff",
+        "video_job_id": "phase1_91c2a7cd2b692884",
+        "final_master_sha256": "e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af",
+        "review_package_sha256": "cef8dc5ab243f468c7aee69b0b628f9aba25d3ca85bb7d7ba5222b1ebbd0248f",
+        "audio_integrity_sha256": "a4bbec0f4bef282d1e88f332457cb2a0b6a7ce83277da4c5abc03b277f877cb0",
+        "machine_review_evidence": "reports/phase1/stage_20260928/can_candidate001_review.json",
+        "remote_machine_review_evidence": "reports/phase1/stage_20260928/can_candidate001_remote_review.json"
+      },
+      "blockers": [
+        "exact_sha_human_video_review_pending",
+        "prereview_missing",
+        "formal_gate_not_authorized"
+      ],
+      "selection_policy": "Candidate001 remains selected and frozen; control job must differ from all fixed fixtures; Candidate002 substitution is forbidden"
+    }
+  ],
+  "lifecycle_contract": {
+    "status": "PASS_REVALIDATED",
+    "required_evidence": [
+      {
+        "evidence_type": "cancel",
+        "path": "reports/phase1/lifecycle/cancel.json",
+        "sha256": "4bdff1a6d3e2dd86fef6b13060390e995fc581f43f8e3146b46b5fa3a1da9706"
+      },
+      {
+        "evidence_type": "retry",
+        "path": "reports/phase1/lifecycle/retry.json",
+        "sha256": "45ce5cbf6159c15ee63e9a73b7e220e3402bcefebb4285f9ec28ad68acc0f698"
+      },
+      {
+        "evidence_type": "restart_recovery",
+        "path": "reports/phase1/lifecycle/restart_recovery.json",
+        "sha256": "ff8ffaf5bb216ae3b5efa956423b70845ee5902c460e0c3ff61a057c4bca7e55"
+      },
+      {
+        "evidence_type": "encoder_fallback",
+        "path": "reports/phase1/lifecycle/encoder_fallback.json",
+        "sha256": "d74be8eb55e9da74b40c3111da41ebaa42d78895a51dda67939a0f3a56ba10e1"
+      }
+    ],
+    "source_report": "reports/phase1/stage_20260928/lifecycle_revalidation.json"
+  },
+  "boundary_contract": {
+    "required_final_evidence": "reports/phase1/stage_20260928/final_boundary_contract.json",
+    "current_preflight_path": "reports/phase1/stage_20260928/boundary_audit_preflight.json",
+    "current_preflight_sha256": "7d691c8545fc0969f61b95c78670588e914f74feddcf439890a8759106d03737",
+    "current_preflight_status": "PASS_PRELIGHT",
+    "current_preflight_is_not_final": true,
+    "final_manifest_must_bind_boundary_report_path_and_sha256": true
+  },
+  "negative_readiness_assertions": {
+    "any_human_review_pending_blocks_manifest": true,
+    "any_prereview_missing_blocks_manifest": true,
+    "i2c_blocked_blocks_manifest": true,
+    "preflight_only_boundary_blocks_manifest": true,
+    "rejected_historical_candidate_blocks_manifest": true,
+    "unresolved_values_are_blockers_not_gate_placeholders": true
+  },
+  "historical_exclusions": [
+    "historical Flash truncated candidate",
+    "historical FreeRTOS truncated candidate",
+    "superseded horizontal I2C candidate"
+  ],
+  "final_gate": "NOT_READY_NOT_RUN"
+}

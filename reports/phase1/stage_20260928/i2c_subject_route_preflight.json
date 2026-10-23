@@ -1,0 +1,91 @@
+{
+  "schema_version": "phase1_i2c_subject_route_preflight_v1",
+  "status": "I2C_SUBJECT_ROUTE_PREFLIGHT_READY_FOR_REMOTE_REVIEW",
+  "runtime_locator_id": "i2c-subject-route-preflight-noedus5p",
+  "plan_only_job_id": "job-d0ad2349f3a61c8250603737",
+  "plan_only_job_is_non_candidate": true,
+  "job_state": "ASSETS",
+  "canonical_research": {
+    "path": "examples/phase1_subject_i2c/research_brief.json",
+    "sha256": "fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21",
+    "bytes_unchanged": true
+  },
+  "subject_control_path": [
+    "create-subject",
+    "attach-research",
+    "run --plan-only"
+  ],
+  "research_artifact_sha256": "e0fcac999617d485f6c99e3523124275d1d6589e38e8b02158e45d9a10b935e8",
+  "selected_script_sha256": "bae7c2526d36a7f8425182bb5d90af7c356a607f0a8ca0b1c2f3922cde9b6a1e",
+  "director_script_sha256": "8a7edc5d46fd7457ef7acaec82c066f223f7980c4b377fd4f2b349b4feb49f1d",
+  "scene_plan_sha256": "8c69ff9f4da9a76da762b27e5d1b1912dbcd06de23a45dc8e8126bab5cf09dd0",
+  "editorial_validation": "source_bound_candidate_selected_by_existing_phase1_topic_path",
+  "visual_route": {
+    "status": "passed",
+    "subject": "I2C总线为什么要上拉电阻",
+    "aspect_ratio": "9:16",
+    "fact_ids": [
+      "open_drain",
+      "rise_time",
+      "sink_current"
+    ],
+    "fact_ref_union": [
+      "open_drain",
+      "rise_time",
+      "sink_current"
+    ],
+    "labels": [
+      "SDA",
+      "SCL",
+      "START",
+      "ADDRESS",
+      "ACK/NACK",
+      "DATA",
+      "STOP"
+    ],
+    "visual_spec_count": 3,
+    "generic_registry_asset_lineage_selected": false
+  },
+  "generic_registry_asset_lineage": {
+    "selected_as_semantic_authority": false,
+    "proof": "phase1_scene_plan_contains_no_asset_id_or_registry_asset_path"
+  },
+  "source_aligned_audio_integration": {
+    "adapter": "src/factory/phase1_subject_audio.py",
+    "status": "ADAPTER_PRESENT_NO_PRODUCTION_MEDIA_RUN",
+    "production_media_run": false,
+    "objective_pcm_media_evidence": "NOT_RUN_NO_MEDIA_BOUNDARY",
+    "contract_tests": "tests/phase1_local/test_phase1_subject_audio.py"
+  },
+  "still_evidence": {
+    "status": "PASS_BOUNDED_STILL_ONLY",
+    "report": "E:\\Claude_allow\\Download\\i2c-subject-route-preflight-noedus5p\\i2c_subject_stills.json",
+    "timing_manifest": "E:\\Claude_allow\\Download\\i2c-subject-route-preflight-noedus5p\\stills_timing_manifest.json",
+    "still_count": 5,
+    "full_render": false
+  },
+  "transition_evidence": {
+    "mode": "technical_cut",
+    "status": "PASS_BOUNDED_TIMELINE_ONLY",
+    "scene_boundaries_contiguous": true,
+    "encoded_transition_frames": false,
+    "full_render": false
+  },
+  "candidate001_excluded": "job-b4a2e8e851268bc14e5e4a15",
+  "candidate002_excluded": "job-b1a186b7b265c2ed46b7c3cb",
+  "candidate003_authorized": false,
+  "full_render": false,
+  "human_review": "PENDING",
+  "prereview": "NOT_RUN",
+  "formal_gate": "NOT_AUTHORIZED",
+  "verification": {
+    "focused_subject_i2c_audio_video": "102 passed",
+    "phase1_acceptance": "24 passed",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "remotion_typecheck": "PASS",
+    "remotion_contracts": "PASS",
+    "bounded_stills": "PASS_BOUNDED_STILL_ONLY",
+    "known_fixture_boundary": "tests/video/test_schemas.py not counted: dist/story_demo/timeline.json is ignored and absent in isolated worktree; 93 passed and 7 fixture setup errors when included"
+  }
+}

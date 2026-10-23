@@ -1,0 +1,19 @@
+{
+  "schema_version": "phase1_i2c_restoration_discovery_v1",
+  "reviewed_head": "29b8031a2afda4bde746fa9864392262d847bc8a",
+  "control_job_id": "job-876a5f89973bbaf8deadbeef",
+  "attempt_id": "attempt_006_9x16_subject",
+  "expected_mp4_sha256": "cf1c0220853c7de06c5f821c48824a49e35fc770ad19ba4edaa5460cff652568",
+  "search_scopes": [
+    "runtime_root:OpenClaw_VideoFactory_Runtime",
+    "codex_worktrees",
+    "owner_workspace_artifacts"
+  ],
+  "exact_mp4_match_found": false,
+  "matching_review_package_found": false,
+  "matching_sqlite_snapshot_found": false,
+  "mutation_performed": false,
+  "fresh_render_performed": false,
+  "status": "I2C_BLOCKED:FINAL_RUNTIME_MEDIA_MISSING_FOR_REVALIDATION",
+  "result": "No exact MP4 SHA match was found in the allowed read-only search scopes; preserve the existing blocker and do not reconstruct or rerender."
+}

@@ -1,0 +1,166 @@
+{
+  "schema_version": "phase1_live_topic_preflight_v1",
+  "status": "LIVE_TOPIC_PREFLIGHT_READY",
+  "topic": "CAN 总线仲裁为什么不会破坏高优先级报文?",
+  "job_id": "phase1_91c2a7cd2b692884",
+  "topic_digest": "91c2a7cd2b692884df3a7389e62c6ff4f940ddfc722b9c2edded2ba1dba17b09",
+  "brief": "examples/phase1_local_can_arbitration/brief.json",
+  "facts": [
+    "can_dominant_recessive",
+    "can_bitwise_arbitration",
+    "can_identifier_priority",
+    "can_nondestructive_arbitration"
+  ],
+  "sources": [
+    "ti_can_intro",
+    "nxp_can_arbitration",
+    "nxp_can_blog"
+  ],
+  "assets": [
+    "pink_pig.can_arbitration_dominant_recessive.v1",
+    "pink_pig.can_arbitration_two_node_bits.v1",
+    "pink_pig.can_arbitration_id_compare.v1",
+    "pink_pig.can_arbitration_loser_stops.v1",
+    "pink_pig.can_arbitration_checklist.v1"
+  ],
+  "asset_hashes": [
+    "07ddfbe6047f01b2b5a52d5bcd9d5f1ba9faf2068047e2e818e6cb16d054c3c1",
+    "8a6b4cfa0941779ef1a2d67a58da95a5701f15f0b482db305a1c591e63157b9e",
+    "2cd7b0e184d7c124cd14746f860d6caa53379a040cc9380ee671b4ded69ad798",
+    "e60315f6f98fd5d60945139622d1cac59a72be842869a3fc9a466b72fb244bf3",
+    "ad730126a29bfc0a0bac4013522647b43fd93e3434bb5e57e952705e36ae42d7"
+  ],
+  "rewrite_count": 0,
+  "final_duration_seconds": 51.033,
+  "srt_endpoint_seconds": 51.033,
+  "objective_audio_integrity": {
+    "status": "passed",
+    "comparison": "decoded_pcm_prefix_and_silence_tail",
+    "sample_rate": 22050,
+    "channels": 1,
+    "segments_in_order": true,
+    "scene_offsets": [
+      {
+        "scene_id": "s01",
+        "start_seconds": 0.0,
+        "end_seconds": 7.067
+      },
+      {
+        "scene_id": "s02",
+        "start_seconds": 7.067,
+        "end_seconds": 15.7
+      },
+      {
+        "scene_id": "s03",
+        "start_seconds": 15.7,
+        "end_seconds": 25.5
+      },
+      {
+        "scene_id": "s04",
+        "start_seconds": 25.5,
+        "end_seconds": 36.933
+      },
+      {
+        "scene_id": "s05",
+        "start_seconds": 36.933,
+        "end_seconds": 51.033
+      }
+    ],
+    "expected_concatenated_pcm_sha256": "407cc7e2660b0bf9daba7e87e5eb8c177f3cb6a1d331d852540a69f59ea079ae",
+    "actual_concatenated_pcm_sha256": "407cc7e2660b0bf9daba7e87e5eb8c177f3cb6a1d331d852540a69f59ea079ae",
+    "expected_endpoint_seconds": 51.033,
+    "actual_endpoint_seconds": 51.033,
+    "endpoint_delta_seconds": 1.6e-05,
+    "endpoint_tolerance_seconds": 0.05
+  },
+  "runtime_locator_id": "phase1_can_arbitration_preflight_20260928",
+  "audio_relative_path": "audio.wav",
+  "audio_sha256": "fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b",
+  "visual_asset_decode": "PASS",
+  "visual_asset_content_safe_area": "PASS",
+  "visual_preflight_report": "reports/phase1/stage_20260928/can_visual_preflight.json",
+  "visual_preflight_status": "PASS_BOUNDED_STILL_ONLY",
+  "visual_asset_checks": [
+    {
+      "path": "assets/can_arbitration_illustrations/01-dominant-recessive.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "content_bbox": [
+        9,
+        0,
+        1360,
+        535
+      ],
+      "safe_area": true
+    },
+    {
+      "path": "assets/can_arbitration_illustrations/02-two-node-bits.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "content_bbox": [
+        9,
+        0,
+        1360,
+        549
+      ],
+      "safe_area": true
+    },
+    {
+      "path": "assets/can_arbitration_illustrations/03-id-compare.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "content_bbox": [
+        9,
+        0,
+        1108,
+        558
+      ],
+      "safe_area": true
+    },
+    {
+      "path": "assets/can_arbitration_illustrations/04-loser-stops.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "content_bbox": [
+        9,
+        0,
+        1360,
+        571
+      ],
+      "safe_area": true
+    },
+    {
+      "path": "assets/can_arbitration_illustrations/05-checklist.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "content_bbox": [
+        7,
+        0,
+        1176,
+        558
+      ],
+      "safe_area": true
+    }
+  ],
+  "transition_probe": "NOT_RUN_BEFORE_RENDER",
+  "render_performed": false,
+  "mp4_created": false,
+  "transition_mode": "technical_cut",
+  "human_review": "NOT_REQUESTED",
+  "next_step": "Remote review of CAN source-bound no-render preflight; authorize one outer CAN candidate only after preflight and later human gate."
+}

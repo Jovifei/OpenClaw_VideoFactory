@@ -1,0 +1,77 @@
+{
+  "id": "PHASE1-WP-K-CLOSURE-CONTRACT-FREEZE-20260928",
+  "date": "2026-09-28",
+  "baseline_commit": "4028236a61a4a329427eaf27edb846d89a44f751",
+  "authorization": "Remote GPT iteration 30 accepted WP-J6 and authorized no-media WP-K1 through WP-K5 only.",
+  "scope": "Freeze the eventual topic_only_v1 manifest contract, final regression command contract, final boundary-audit contract, and I2C restoration-versus-requalification decision evidence; refresh the provisional dependency inventory and Codex handoff.",
+  "allowed_paths": [
+    "reports/phase1/stage_20260928/topic_only_v1_manifest_contract_readiness.json",
+    "reports/phase1/stage_20260928/final_regression_contract.json",
+    "reports/phase1/stage_20260928/final_boundary_contract.json",
+    "reports/phase1/stage_20260928/i2c_requalification_decision.json",
+    "reports/phase1/stage_20260928/topic_only_v1_provisional_inventory.json",
+    "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
+    "tasks/todo.md",
+    "reports/change_requests/PHASE1-WP-K-CLOSURE-CONTRACT-FREEZE-20260928.json"
+  ],
+  "forbidden": [
+    "human decision creation",
+    "CAN prereview execution",
+    "create-topic",
+    "full render",
+    "I2C reconstruction",
+    "fresh I2C render or requalification",
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "model_download",
+    "publication",
+    "Formal Gate",
+    "final acceptance manifest",
+    "Candidate001 runtime media or SQLite mutation",
+    "historical evidence rewrite",
+    "Owner-main mutation"
+  ],
+  "stop_if": [
+    "a readiness contract treats an unresolved slot as complete",
+    "PASS_PRELIGHT is reused as final boundary evidence",
+    "an I2C decision report authorizes a job",
+    "a historical rejected candidate is selected",
+    "runtime artifact mutation",
+    "production media code requires a change"
+  ],
+  "remote_review": {
+    "iteration": 30,
+    "head_reviewed": "4028236a61a4a329427eaf27edb846d89a44f751",
+    "result": "WP_J6_ACCEPTED",
+    "new_media": "NOT_AUTHORIZED",
+    "human_decisions": "PENDING",
+    "i2c_rerender": "NOT_AUTHORIZED",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "status": "executed_no_media_contracts_frozen",
+  "evidence": [
+    "reports/phase1/stage_20260928/topic_only_v1_manifest_contract_readiness.json",
+    "reports/phase1/stage_20260928/final_regression_contract.json",
+    "reports/phase1/stage_20260928/final_boundary_contract.json",
+    "reports/phase1/stage_20260928/i2c_requalification_decision.json",
+    "reports/phase1/stage_20260928/topic_only_v1_provisional_inventory.json",
+    "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md"
+  ],
+  "verification": {
+    "json_validation": "PASS",
+    "wp_k_assertions": "PASS",
+    "focused_acceptance": "24 passed",
+    "compile": "PASS",
+    "diff_check": "PASS",
+    "independent_local_read_only_review": "PASS",
+    "media_or_human_action": false
+  },
+  "expected_statuses": {
+    "manifest_contract": "MANIFEST_CONTRACT_READY_FINAL_EVIDENCE_PENDING",
+    "regression_contract": "FINAL_REGRESSION_PLAN_FROZEN_NOT_RUN",
+    "boundary_contract": "FINAL_BOUNDARY_CONTRACT_FROZEN_NOT_RUN",
+    "i2c_decision": "I2C_RESTORATION_EXHAUSTED_FRESH_REQUALIFICATION_IS_ONLY_VERIFIABLE_PATH"
+  }
+}

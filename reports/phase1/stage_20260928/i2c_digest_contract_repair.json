@@ -1,0 +1,70 @@
+{
+  "schema_version": "phase1_i2c_digest_contract_repair_v1",
+  "status": "I2C_DIGEST_CONTRACT_REPAIR_READY_FOR_REMOTE_REVIEW",
+  "source_commit": "615471daea2ed63931ba50e8c67a1253a0de9963",
+  "failed_candidate": {
+    "control_job_id": "job-b4a2e8e851268bc14e5e4a15",
+    "status": "FAILED",
+    "attempt": 0,
+    "terminal_preserved": true,
+    "retry_authorized": false,
+    "runtime_brief_sha256": "b31fb7e7d0d602990116f7004658c99063d78d94701fc50576213987f6e7d5d9",
+    "stale_factual_digest": "ceda09b09634e435b4856c2d4fef1484262d638e3c616c6f92696bfeac81c7a4"
+  },
+  "historical_research": {
+    "path": "examples/phase1_subject_i2c/research_brief.json",
+    "sha256": "fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21",
+    "bytes_mutated": false
+  },
+  "digest_rule": {
+    "normalized_topic": "I2C总线为什么要上拉电阻",
+    "execution_digest": "dcc85f8913bc9bd6b1f3c049537745745f21b37a9fb4ff971bc91e1017948d00",
+    "algorithm": "sha256(normalize_topic(topic).encode('utf-8'))",
+    "shared_execution_source": "src/factory/director/context.py::normalize_topic + src/factory/phase1_local.py::build_local_plan"
+  },
+  "materializer": {
+    "path": "scripts/phase1_i2c_brief_materializer.py",
+    "sha256": "98e44d265d12070098d127a65a0908bbd5ad18915ccd2276e5f421cf791d340c",
+    "purpose": "Convert preserved research facts/sources into an executable brief without mutating historical bytes"
+  },
+  "stale_input": {
+    "path": "examples/phase1_subject_i2c/phase1_local_brief_9x16.json",
+    "sha256": "ee51c0f65a61dfccd400c8bfbf8519c5add400e838b686a59c0f4f563e75b504",
+    "embedded_digest": "ceda09b09634e435b4856c2d4fef1484262d638e3c616c6f92696bfeac81c7a4",
+    "red_result": "phase1_local_brief_invalid:factual_brief.topic_digest:topic_digest_mismatch"
+  },
+  "repaired_input": {
+    "path": "examples/phase1_subject_i2c/phase1_local_brief_9x16_repaired.json",
+    "sha256": "f355b5161be0783a89bde0ccf7c121ac7135491593b4d3b3270c90f3dba90926",
+    "embedded_digest": "dcc85f8913bc9bd6b1f3c049537745745f21b37a9fb4ff971bc91e1017948d00",
+    "green_load_local_brief": true,
+    "green_build_local_plan": true,
+    "topic": "I2C总线为什么要上拉电阻",
+    "fact_ids": ["open_drain", "rise_time", "sink_current"],
+    "source_ids": ["nxp_um10204", "ti_slva689"],
+    "render_profile": {
+      "aspect_ratio": "9:16",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30
+    }
+  },
+  "tests": {
+    "test_file": "tests/phase1_local/test_i2c_digest_provenance.py",
+    "red_stale_digest_rejected": true,
+    "green_repaired_plan_passes": true,
+    "focused_result": "2 passed",
+    "compileall": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "preserved_contract": {
+    "fact_refs": ["open_drain", "rise_time", "sink_current"],
+    "accepted_visual_lineage_source_report": "reports/phase1/i2c_visual_correction_014.json",
+    "accepted_visual_lineage_source_report_sha256": "5d9e3541c715b367cea92d243e8aadb1bcaf9477afa34e9c5979c034dd431ccc",
+    "generator": "remotion/src/TechnicalExplainer.tsx",
+    "generator_sha256": "987ef6ab0efc76670919f2dc9466332b515fa2228992df796ee8d19a342d3f74"
+  },
+  "media_run": false,
+  "candidate002_authorized": false,
+  "formal_gate": "NOT_RUN"
+}

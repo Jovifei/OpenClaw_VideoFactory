@@ -104,6 +104,34 @@ def test_subject_delivery_builds_strict_self_contained_preview_package(tmp_path:
     assert (package / "evidence" / "native_subtitles.srt").is_file()
 
 
+def test_subject_delivery_package_binds_optional_audio_integrity_artifact(tmp_path: Path) -> None:
+    media_root, _ = _media_root(tmp_path)
+    integrity = _write(media_root / "audio_integrity.json", {"schema_version": "phase1_audio_integrity_v1", "status": "passed"})
+    receipt_path = media_root / "subject_media_result.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["paths"]["audio_integrity"] = str(integrity)
+    receipt["hashes"]["audio_integrity"] = _sha(integrity)
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    result = build_subject_review_package(SubjectDeliveryRequest(_MOCK_CONTROL_JOB_ID, 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
+    package = Path(result["package_path"])
+    copied = package / "evidence" / "audio_integrity.json"
+    assert copied.is_file() and _sha(copied) == _sha(integrity)
+    review = json.loads((package / "review_package.json").read_text(encoding="utf-8"))
+    assert any(item["role"] == "audio_integrity" and item["path"] == "evidence/audio_integrity.json" for item in review["artifacts"])
+
+
+def test_subject_delivery_rejects_tampered_optional_audio_integrity(tmp_path: Path) -> None:
+    media_root, _ = _media_root(tmp_path)
+    integrity = _write(media_root / "audio_integrity.json", {"schema_version": "phase1_audio_integrity_v1", "status": "passed"})
+    receipt_path = media_root / "subject_media_result.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["paths"]["audio_integrity"] = str(integrity)
+    receipt["hashes"]["audio_integrity"] = "0" * 64
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    with pytest.raises(ValueError, match="subject_delivery_media_receipt_invalid"):
+        build_subject_review_package(SubjectDeliveryRequest(_MOCK_CONTROL_JOB_ID, 1, _inputs(tmp_path), media_root, tmp_path / "dist", 30, "16:9"), probe_media=_probe, decode_media=lambda _: True)
+
+
 @pytest.mark.parametrize("mutation", ["escape", "tamper"])
 def test_subject_delivery_rejects_receipt_escape_or_tamper(tmp_path: Path, mutation: str) -> None:
     media_root, paths = _media_root(tmp_path)

@@ -35,6 +35,10 @@ from video_factory.pipeline.mascot import load_mascot_contract
 ROOT = Path(__file__).resolve().parent
 
 
+def _file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def load_config(path: Path) -> dict[str, Any]:
     if not path.is_file():
         raise ValueError("config_missing")
@@ -746,12 +750,57 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
     # --- Stage E: Audio planning ---
     from video_factory.pipeline.audio_planner import plan_audio
     t3 = time.perf_counter()
-    audio_plan = plan_audio(
-        tl_doc,
-        work_dir=work_dir,
-        audio_config=audio_cfg,
-        repo_root=ROOT,
-    )
+    narration_alignment: dict[str, object] | None = None
+    if bool(audio_cfg.get("source_aligned_narration", False)):
+        from video_factory.pipeline.audio_planner import AudioPlan
+        from video_factory.pipeline.narration_timing import plan_source_aligned_narration
+
+        script_path = work_dir / "script.json"
+        factual_path = work_dir / "factual_brief.json"
+        if not script_path.is_file() or not factual_path.is_file():
+            raise FactoryContractError(
+                "narration_source_missing",
+                "Measured narration mode requires the current script and factual brief.",
+                {"field": "audio.source_aligned_narration"},
+            )
+        measured = plan_source_aligned_narration(
+            storyboard=sb_doc,
+            script=json.loads(script_path.read_text(encoding="utf-8")),
+            factual_brief=json.loads(factual_path.read_text(encoding="utf-8")),
+            registry=registry,
+            repo_root=ROOT,
+            work_dir=work_dir,
+            voice=str(audio_cfg.get("tts", {}).get("voice", "Microsoft Huihui Desktop")),
+            provider=str(audio_cfg.get("tts", {}).get("provider", "windows-sapi")),
+        )
+        tl_doc = measured["timeline"]
+        write_json(work_dir / "timeline.json", tl_doc)
+        write_json(work_dir / "storyboard.resolved.json", measured["storyboard"])
+        write_json(work_dir / "script.json", measured["script"])
+        audio_plan = AudioPlan(
+            mode="tts",
+            path=Path(str(measured["audio_path"])),
+            loop=False,
+            fallback_reason=None,
+            segments=tuple(measured["segments"]),
+        )
+        narration_alignment = {
+            "mode": "source_aligned_measured_tts",
+            "rewrite_count": int(measured["rewrite_count"]),
+            "passes": measured["passes"],
+            "objective_audio_integrity": measured["objective_audio_integrity"],
+            "original_script_sha256": measured["original_script_sha256"],
+            "final_script_sha256": measured["final_script_sha256"],
+            "final_timeline_sha256": measured["final_timeline_sha256"],
+            "final_srt_sha256": measured["final_srt_sha256"],
+        }
+    else:
+        audio_plan = plan_audio(
+            tl_doc,
+            work_dir=work_dir,
+            audio_config=audio_cfg,
+            repo_root=ROOT,
+        )
     if bool(audio_cfg.get("require_narration", False)):
         segments = tuple(audio_plan.segments)
         if audio_plan.mode != "tts" or len(segments) != len(tl_doc.get("scenes", [])) or any(
@@ -768,6 +817,32 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
     t4 = time.perf_counter()
     srt_path = work_dir / "subtitle.srt"
     captions = build_srt_from_timeline(tl_doc, srt_path, composition=composition)
+    if narration_alignment is not None:
+        artifact_hashes = {
+            "script_sha256": _file_sha256(work_dir / "script.json"),
+            "timeline_sha256": _file_sha256(work_dir / "timeline.json"),
+            "srt_sha256": _file_sha256(srt_path),
+            "audio_sha256": _file_sha256(Path(str(audio_plan.path))),
+        }
+        narration_alignment["artifact_hashes"] = artifact_hashes
+        audio_integrity_doc = {
+            "schema_version": "phase1_audio_integrity_v1",
+            "objective": narration_alignment["objective_audio_integrity"],
+            "artifact_hashes": artifact_hashes,
+            "segments": [
+                {
+                    "scene_id": segment.get("scene_id"),
+                    "raw_audio_sha256": segment.get("raw_audio_sha256"),
+                    "aligned_audio_sha256": segment.get("aligned_audio_sha256"),
+                    "audio_integrity": segment.get("audio_integrity"),
+                }
+                for segment in audio_plan.segments
+            ],
+        }
+        audio_integrity_path = work_dir / "audio_integrity.json"
+        write_json(audio_integrity_path, audio_integrity_doc)
+        narration_alignment["audio_integrity_ref"] = "audio_integrity.json"
+        narration_alignment["audio_integrity_sha256"] = _file_sha256(audio_integrity_path)
     t_sub = round(time.perf_counter() - t4, 3)
 
     # --- Stage G: Render ---
@@ -787,6 +862,7 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
         subtitle_path=srt_path,
         output_path=output_path,
         transition_seconds=transition_sec,
+        transition_mode=str(tl_doc.get("transition_mode", "xfade")),
         audio_path=audio_plan.path,
         audio_loop=audio_plan.loop,
         repo_root=ROOT,
@@ -869,9 +945,12 @@ def run_job(job_path: Path, *, emit: bool = True) -> dict[str, object]:
             "mode": audio_plan.mode,
             "loop": audio_plan.loop,
             "fallback_reason": audio_plan.fallback_reason,
+            "source_aligned_narration": bool(audio_cfg.get("source_aligned_narration", False)),
             "path": str(audio_plan.path) if audio_plan.path else None,
             "segments_count": len(audio_plan.segments),
+            "segments": [dict(segment) for segment in audio_plan.segments],
         },
+        "narration_alignment": narration_alignment,
         "mascot": mascot_contract,
         "ffprobe": ffprobe_meta,
         "render_report": "render_report.json",
@@ -918,6 +997,7 @@ _PHASE1_OWNED_FILES = {
     "run_report.json",
     "render_manifest.json",
     "audio_manifest.json",
+    "audio_integrity.json",
     "quality_report.json",
     "review_package.json",
     "review_checklist.md",
@@ -974,6 +1054,18 @@ def _prepare_phase1_work_dir(work_dir: Path) -> None:
                     {"reason": "reparse"},
                 )
             candidate.unlink()
+
+
+def _local_brief_subtitle_style(width: int, height: int) -> dict[str, object]:
+    """Use one subtitle style contract for local-brief renders and layout checks."""
+    return {
+        "layout": "bottom_safe_band",
+        "font_name": "Microsoft YaHei",
+        "font_size": 56,
+        "margin_left": 90,
+        "margin_right": 90,
+        "margin_vertical": 180 if width > height else 250,
+    }
 
 
 def run_local_brief(
@@ -1056,7 +1148,6 @@ def run_local_brief(
         render_height = int(render_profile.get("height", 1080))
         render_fps = int(render_profile.get("fps", 30))
         render_pad_color = str(render_profile.get("pad_color", "0xF4F6F8"))
-        subtitle_margin_vertical = 180 if render_width > render_height else 250
         render_job = {
             "schema_version": "1.0",
             "job_id": job_id,
@@ -1075,20 +1166,14 @@ def run_local_brief(
                 "strategy": "tts_with_offline_fallback",
                 "allow_network": False,
                 "require_narration": True,
+                "source_aligned_narration": True,
                 "tts": {"provider": "windows-sapi", "voice": "Microsoft Huihui Desktop"},
                 "fallback_bgm": "assets/pink_pig/demo_music.wav",
             },
             "subtitle": {
                 "enabled": True,
                 "source": "scene_caption",
-                "style": {
-                    "layout": "bottom_safe_band",
-                    "font_name": "Microsoft YaHei",
-                    "font_size": 56,
-                    "margin_left": 90,
-                    "margin_right": 90,
-                    "margin_vertical": subtitle_margin_vertical,
-                },
+                "style": _local_brief_subtitle_style(render_width, render_height),
             },
             "mascot": {"mode": "off" if str(plan.get("mascot_mode", "off")) == "off" else "required"},
             "outputs": {

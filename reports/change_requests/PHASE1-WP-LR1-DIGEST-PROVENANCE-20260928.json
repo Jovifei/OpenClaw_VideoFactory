@@ -1,0 +1,86 @@
+{
+  "id": "PHASE1-WP-LR1-DIGEST-PROVENANCE-20260928",
+  "date": "2026-09-28",
+  "baseline_commit": "615471daea2ed63931ba50e8c67a1253a0de9963",
+  "authorization": "Remote GPT iteration 32 accepted the I2C Candidate001 failure, required the failed job to remain terminal, and authorized no-media digest provenance repair only.",
+  "scope": "Preserve the historical I2C research evidence, materialize a current executable local brief with the shared normalized-topic digest rule, and prove stale rejection plus repaired planning without create-topic, run, TTS or media.",
+  "failed_candidate": {
+    "control_job_id": "job-b4a2e8e851268bc14e5e4a15",
+    "status": "FAILED",
+    "attempt": 0,
+    "runtime_brief_sha256": "b31fb7e7d0d602990116f7004658c99063d78d94701fc50576213987f6e7d5d9",
+    "stale_factual_digest": "ceda09b09634e435b4856c2d4fef1484262d638e3c616c6f92696bfeac81c7a4",
+    "terminal_preservation": true,
+    "retry_authorized": false
+  },
+  "historical_source": {
+    "path": "examples/phase1_subject_i2c/research_brief.json",
+    "sha256": "fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21",
+    "must_remain_byte_identical": true
+  },
+  "digest_contract": {
+    "rule": "sha256(normalize_topic(topic).encode('utf-8'))",
+    "normalized_topic": "I2C总线为什么要上拉电阻",
+    "recomputed_execution_digest": "dcc85f8913bc9bd6b1f3c049537745745f21b37a9fb4ff971bc91e1017948d00",
+    "stale_digest_is_authoritative": false
+  },
+  "allowed_paths": [
+    "scripts/phase1_i2c_brief_materializer.py",
+    "examples/phase1_subject_i2c/phase1_local_brief_9x16.json",
+    "examples/phase1_subject_i2c/phase1_local_brief_9x16_repaired.json",
+    "tests/phase1_local/test_i2c_digest_provenance.py",
+    "reports/phase1/stage_20260928/i2c_digest_contract_repair.json",
+    "reports/change_requests/PHASE1-WP-LR1-DIGEST-PROVENANCE-20260928.json",
+    "tasks/todo.md",
+    "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md"
+  ],
+  "forbidden": [
+    "historical research report mutation",
+    "failed-job retry",
+    "failed-job brief mutation",
+    "new create-topic",
+    "new run",
+    "TTS",
+    "render",
+    "media output",
+    "Candidate002 authorization",
+    "prereview",
+    "Formal Gate",
+    "CAN/Flash/FreeRTOS changes",
+    "Phase 2",
+    "Feishu",
+    "Gateway",
+    "OAuth",
+    "Cron",
+    "publication",
+    "unapproved downloads",
+    "atempo",
+    "generic narration rewrite"
+  ],
+  "stop_if": [
+    "the historical research brief bytes or SHA change",
+    "the repaired brief does not pass load_local_brief/build_local_plan",
+    "the stale brief no longer produces topic_digest_mismatch",
+    "facts or source bindings change during materialization",
+    "any media or job-state operation is attempted"
+  ],
+  "remote_review": {
+    "iteration": 32,
+    "head_reviewed": "615471daea2ed63931ba50e8c67a1253a0de9963",
+    "result": "I2C_CANDIDATE001_FAILURE_ACCEPTED_ROOT_CAUSE_IS_STALE_INPUT_DIGEST",
+    "failed_job": "TERMINAL_PRESERVE",
+    "same_job_retry": "NOT_AUTHORIZED",
+    "new_i2c_media": "NOT_YET_AUTHORIZED",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "status": "executed_repair_ready_for_remote_review",
+  "evidence": {
+    "report": "reports/phase1/stage_20260928/i2c_digest_contract_repair.json",
+    "materializer_sha256": "98e44d265d12070098d127a65a0908bbd5ad18915ccd2276e5f421cf791d340c",
+    "repaired_brief_sha256": "f355b5161be0783a89bde0ccf7c121ac7135491593b4d3b3270c90f3dba90926",
+    "tests": "2 passed",
+    "media_run": false,
+    "failed_job_mutated": false
+  },
+  "expected_status": "I2C_DIGEST_CONTRACT_REPAIR_READY_FOR_REMOTE_REVIEW"
+}

@@ -501,6 +501,19 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Fast/select seeking into some H.264 outputs can produce a false partial-frame image even when sequential playback is intact. Use sequential decoding for both all-frame QA and saved critical screenshots; use direct Remotion stills to separate composition defects from encoded-frame tooling artifacts.
 - When a parent narration segment expands into semantic subsegments, every downstream consumer must expand it too: Jianying VoiceOver, visual-cue timing, and the QA preview mixer. Parent-count assumptions silently drop late narration; assert `amix` inputs equal the expanded audio-entry count.
 
+# 2026-09-28 - Source-bound subject routes must be proven before candidate runs
+
+- A repaired executable digest does not prove that the selected production path
+  carries the topic's visual semantics. For I2C, the generic local-brief
+  fallback selected unrelated registry assets even though planning passed.
+- Requalification must use the existing `create-subject -> attach-research ->
+  run --plan-only` path and prove `i2c_bus_v1` fact bindings before any new
+  candidate. Keep failed jobs terminal and do not patch the generic fallback
+  just to make rendering start.
+- When a route predates objective PCM evidence, adapt it to the shared measured
+  narration/integrity contract and record the absence of production media
+  honestly; a no-render adapter test is not a production audio PASS.
+
 # 2026-08-30 - Orchestrator readiness requires closed evidence
 
 - A subprocess chain must not return a review-ready status merely because commands returned zero. Parse every expected report and media output, validate success states and cross-hashes, and validate the final strict result schema before emitting READY.
@@ -529,3 +542,11 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   actual signal geometry: I2C must show idle-high SDA/SCL, START/STOP conditions,
   address/data bit windows, and ACK/NACK behavior; otherwise stop as content
   failure even when codec and layout gates pass.
+
+# 2026-09-29 - Keep the remote planning and local execution loop live
+
+- A remote C2C review is a stage boundary, not the end of the project. After
+  each accepted review, execute the exact bounded next step, preserve terminal
+  exclusions and forbidden gates, push the evidence package, and return it for
+  independent audit. Pause only at an explicit external dependency or human
+  decision, while continuing any separately authorized diagnostic work.

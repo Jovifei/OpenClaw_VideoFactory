@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "input_mode": "topic",
+  "topic": "I2C总线为什么要上拉电阻",
+  "title": "I2C总线为什么要上拉电阻",
+  "mascot_mode": "off",
+  "aspect_ratio": "9:16",
+  "factual_brief": {
+    "schema_version": "1.0",
+    "topic_digest": "dcc85f8913bc9bd6b1f3c049537745745f21b37a9fb4ff971bc91e1017948d00",
+    "review_status": "verified",
+    "facts": [
+      {
+        "fact_id": "open_drain",
+        "claim": "I2C线路通常采用开漏结构；器件主动拉低，释放后由上拉电阻恢复高电平。",
+        "source_ids": [
+          "nxp_um10204",
+          "ti_slva689"
+        ]
+      },
+      {
+        "fact_id": "rise_time",
+        "claim": "上拉电阻与总线电容决定上升沿；电阻过大可能使线路来不及达到有效高电平。",
+        "source_ids": [
+          "ti_slva689"
+        ]
+      },
+      {
+        "fact_id": "sink_current",
+        "claim": "电阻过小则增加低电平灌电流，可能超出器件的拉低能力；阻值必须兼顾两端限制。",
+        "source_ids": [
+          "ti_slva689",
+          "nxp_um10204"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "nxp_um10204",
+        "title": "I2C-bus specification and user manual",
+        "publisher": "NXP Semiconductors",
+        "url": "https://www.nxp.com/docs/en/user-guide/UM10204.pdf",
+        "kind": "standard",
+        "published_date": null
+      },
+      {
+        "source_id": "ti_slva689",
+        "title": "I2C Bus Pull-Up Resistor Calculation",
+        "publisher": "Texas Instruments",
+        "url": "https://www.ti.com/lit/pdf/slva689",
+        "kind": "official_document",
+        "published_date": null
+      }
+    ]
+  }
+}

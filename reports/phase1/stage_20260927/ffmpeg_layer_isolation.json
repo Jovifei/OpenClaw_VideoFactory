@@ -1,0 +1,46 @@
+{
+  "schema_version": "phase1_ffmpeg_layer_isolation_v1",
+  "source_attempt": "reports/phase1/stage_20260927/freertos_attempt_001.json",
+  "input_sha256": {
+    "assets/freertos_mutex_plain_illustrations/01-mutex-ownership.png": "f8a3db5a9d6fe832180f1c19b0e62e8e1133d793b0cc5c44723ee3c816f69d1e",
+    "assets/freertos_mutex_plain_illustrations/02-isr-nonblocking-handoff.png": "e07b390c9eb68465b6c08c943261a1e48bcc6d9809a8207461dd29bdcc521c0c",
+    "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.png": "add5c1e512f366236da6cd0d76328aec4f05b63363decdbdd40101a5e92809c6",
+    "assets/freertos_mutex_plain_illustrations/04-short-isr-defer.png": "5533948aa150e65e21f04af5174fd06205e4a9c1f214116271d2ac855b8f9042",
+    "assets/freertos_mutex_plain_illustrations/05-checklist.png": "add958b9c1b7c6d3bfb29da8ffa01f8ba37b75fb11a6253a0f8d97aa9efc1605",
+    "dist/phase1_local/phase1_8958d25a694923c9/audio.wav": "253bc7b1633c0827f96f9e13ccb987588287146b3501d318498a8ba35f6f713e",
+    "dist/phase1_local/phase1_8958d25a694923c9/subtitle.srt": "a89190d42601cd984f01e54283491882e3e13a617e08abb25669c412a94755aa"
+  },
+  "output_mode": "null_only",
+  "probe_limit_seconds": 30,
+  "results": [
+    {
+      "name": "png:01-mutex-ownership.png",
+      "command": [
+        "ffmpeg",
+        "-nostdin",
+        "-v",
+        "error",
+        "-loop",
+        "1",
+        "-framerate",
+        "30",
+        "-t",
+        "0.5",
+        "-i",
+        "E:\\project\\worktrees\\OpenClaw_VideoFactory\\phase1-media-20260927\\assets\\freertos_mutex_plain_illustrations\\01-mutex-ownership.png",
+        "-frames:v",
+        "15",
+        "-f",
+        "null",
+        "-"
+      ],
+      "timeout_seconds": 30,
+      "elapsed_seconds": 30.072,
+      "status": "timeout",
+      "exit_code": null,
+      "stderr": "Failed to reallocate parser buffer to -2147482124\nFailed to reallocate parser buffer to -2147481718\n"
+    }
+  ],
+  "first_failing_layer": "png:01-mutex-ownership.png",
+  "status": "first_failure_found"
+}

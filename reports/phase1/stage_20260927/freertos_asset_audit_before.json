@@ -1,0 +1,124 @@
+{
+  "schema_version": "phase1_freertos_asset_audit_v1",
+  "registry_version": "1.4.0",
+  "assets": [
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_ownership.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/01-mutex-ownership.png",
+      "source_svg": "assets/freertos_mutex_plain_illustrations/01-mutex-ownership.svg",
+      "source_svg_exists": true,
+      "source_svg_sha256": "2e6f69b460ba8e88612e13ef5b2070656194c50351da79046a7bacd87486fb53",
+      "registry_sha256": "f8a3db5a9d6fe832180f1c19b0e62e8e1133d793b0cc5c44723ee3c816f69d1e",
+      "measured_sha256": "f8a3db5a9d6fe832180f1c19b0e62e8e1133d793b0cc5c44723ee3c816f69d1e",
+      "declared_dimensions": [
+        836,
+        471
+      ],
+      "bytes": 4502,
+      "pillow_header_dimensions": [
+        836,
+        471
+      ],
+      "pillow_mode": "1",
+      "pillow_full_decode": "failed",
+      "pillow_error": "OSError:unrecognized data stream contents when reading image file",
+      "ffmpeg_exit_code": 69,
+      "ffmpeg_error": " @ 0000019be925c2c0] [dec:png @ 0000019be925e0c0] Decoding error: Generic error in an external library\n[vist#0:0/png @ 0000019be925c2c0] [dec:png @ 0000019be925e0c0] Decode error rate 1 exceeds maximum 0.666667\n[vist#0:0/png @ 0000019be925c2c0] [dec:png @ 0000019be925e0c0] Task finished with error code: -1145393733 (Error number -1145393733 occurred)\n[vist#0:0/png @ 0000019be925c2c0] [dec:png @ 0000019be925e0c0] Terminating thread with return code -1145393733 (Error number -1145393733 occurred)\n",
+      "status": "invalid_decode"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_isr_handoff.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/02-isr-nonblocking-handoff.png",
+      "source_svg": "assets/freertos_mutex_plain_illustrations/02-isr-nonblocking-handoff.svg",
+      "source_svg_exists": true,
+      "source_svg_sha256": "3b04afb3e602a7ae6b015f24c3c13dad157d7076bcf5cd9ad5a3a1e25a67770e",
+      "registry_sha256": "e07b390c9eb68465b6c08c943261a1e48bcc6d9809a8207461dd29bdcc521c0c",
+      "measured_sha256": "e07b390c9eb68465b6c08c943261a1e48bcc6d9809a8207461dd29bdcc521c0c",
+      "declared_dimensions": [
+        836,
+        471
+      ],
+      "bytes": 4271,
+      "pillow_header_dimensions": [
+        836,
+        471
+      ],
+      "pillow_mode": "1",
+      "pillow_full_decode": "passed",
+      "ffmpeg_exit_code": 0,
+      "ffmpeg_error": "",
+      "status": "valid"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_priority_inheritance.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.png",
+      "source_svg": "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.svg",
+      "source_svg_exists": true,
+      "source_svg_sha256": "950fd6ea1008d71c08ce0b583a5351318cf0f6cedba3dd92dcf07b0ecd899ddf",
+      "registry_sha256": "add5c1e512f366236da6cd0d76328aec4f05b63363decdbdd40101a5e92809c6",
+      "measured_sha256": "add5c1e512f366236da6cd0d76328aec4f05b63363decdbdd40101a5e92809c6",
+      "declared_dimensions": [
+        836,
+        471
+      ],
+      "bytes": 4033,
+      "pillow_header_dimensions": [
+        836,
+        471
+      ],
+      "pillow_mode": "1",
+      "pillow_full_decode": "failed",
+      "pillow_error": "OSError:unrecognized data stream contents when reading image file",
+      "ffmpeg_exit_code": 69,
+      "ffmpeg_error": " @ 00000102c931e480] [dec:png @ 00000102c9320240] Decoding error: Generic error in an external library\n[vist#0:0/png @ 00000102c931e480] [dec:png @ 00000102c9320240] Decode error rate 1 exceeds maximum 0.666667\n[vist#0:0/png @ 00000102c931e480] [dec:png @ 00000102c9320240] Task finished with error code: -1145393733 (Error number -1145393733 occurred)\n[vist#0:0/png @ 00000102c931e480] [dec:png @ 00000102c9320240] Terminating thread with return code -1145393733 (Error number -1145393733 occurred)\n",
+      "status": "invalid_decode"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_deferred_work.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/04-short-isr-defer.png",
+      "source_svg": "assets/freertos_mutex_plain_illustrations/04-short-isr-defer.svg",
+      "source_svg_exists": true,
+      "source_svg_sha256": "97018ff6effacf2db1768f30654f9af91a8167e57a388f0d15e75627bb2f376a",
+      "registry_sha256": "5533948aa150e65e21f04af5174fd06205e4a9c1f214116271d2ac855b8f9042",
+      "measured_sha256": "5533948aa150e65e21f04af5174fd06205e4a9c1f214116271d2ac855b8f9042",
+      "declared_dimensions": [
+        836,
+        471
+      ],
+      "bytes": 36515,
+      "pillow_header_dimensions": [
+        836,
+        471
+      ],
+      "pillow_mode": "RGB",
+      "pillow_full_decode": "passed",
+      "ffmpeg_exit_code": 0,
+      "ffmpeg_error": "",
+      "status": "valid"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_checklist.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/05-checklist.png",
+      "source_svg": "assets/freertos_mutex_plain_illustrations/05-checklist.svg",
+      "source_svg_exists": true,
+      "source_svg_sha256": "bc63719ed63e5b5ff231b0eaf841cd9ff227ea46d271cd912b685fbdb28eb972",
+      "registry_sha256": "add958b9c1b7c6d3bfb29da8ffa01f8ba37b75fb11a6253a0f8d97aa9efc1605",
+      "measured_sha256": "add958b9c1b7c6d3bfb29da8ffa01f8ba37b75fb11a6253a0f8d97aa9efc1605",
+      "declared_dimensions": [
+        836,
+        471
+      ],
+      "bytes": 4556,
+      "pillow_header_dimensions": [
+        836,
+        471
+      ],
+      "pillow_mode": "1",
+      "pillow_full_decode": "failed",
+      "pillow_error": "OSError:unrecognized data stream contents when reading image file",
+      "ffmpeg_exit_code": 69,
+      "ffmpeg_error": "00001f1145a39c0] [dec:png @ 000001f114642480] Decoding error: Invalid data found when processing input\n[vist#0:0/png @ 000001f1145a39c0] [dec:png @ 000001f114642480] Decode error rate 1 exceeds maximum 0.666667\n[vist#0:0/png @ 000001f1145a39c0] [dec:png @ 000001f114642480] Task finished with error code: -1145393733 (Error number -1145393733 occurred)\n[vist#0:0/png @ 000001f1145a39c0] [dec:png @ 000001f114642480] Terminating thread with return code -1145393733 (Error number -1145393733 occurred)\n",
+      "status": "invalid_decode"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "schema_version": "phase1_final_regression_contract_v1",
+  "status": "FINAL_REGRESSION_PLAN_FROZEN_NOT_RUN",
+  "contract_kind": "post_topic_settlement_regression_plan",
+  "source_commit": "4028236a61a4a329427eaf27edb846d89a44f751",
+  "execution_timing": "Run immediately before final manifest generation, after all four topic slots and human/prereview evidence are settled.",
+  "not_run_in_this_package": true,
+  "commands": [
+    {
+      "name": "phase1_acceptance",
+      "command": "$env:PYTHONPATH='.'; python -m pytest -q tests/phase1_acceptance",
+      "purpose": "Acceptance manifest and Formal Gate contract tests"
+    },
+    {
+      "name": "phase1_local",
+      "command": "$env:PYTHONPATH='.'; python -m pytest -q tests/phase1_local",
+      "purpose": "Topic planning, narration, subject delivery and local state contracts"
+    },
+    {
+      "name": "video_bounded",
+      "command": "$env:PYTHONPATH='.'; python -m pytest -q tests/video --ignore=tests/video/test_schemas.py --ignore=tests/video/test_mp4_metadata.py --ignore=tests/video/test_quality_report.py --ignore=tests/video/test_error_contract.py",
+      "purpose": "Bounded video contracts without ignored demo/historical fixture modules"
+    },
+    {
+      "name": "director",
+      "command": "$env:PYTHONPATH='.'; python -m pytest -q tests/director",
+      "purpose": "Director and composition contract regression"
+    },
+    {
+      "name": "reference",
+      "command": "$env:PYTHONPATH='.'; python -m pytest -q tests/reference",
+      "purpose": "Reference analysis and rights-bound tooling regression"
+    },
+    {
+      "name": "video_factory",
+      "command": "$env:PYTHONPATH='.'; python -m pytest -q video_factory/tests",
+      "purpose": "Legacy video-factory contract regression"
+    },
+    {
+      "name": "remotion_typecheck",
+      "command": "Push-Location remotion; npm run typecheck; Pop-Location",
+      "purpose": "Pinned Remotion/TypeScript compile contract"
+    },
+    {
+      "name": "remotion_contracts",
+      "command": "Push-Location remotion; npm run test:contracts; Pop-Location",
+      "purpose": "Compiled Remotion and topic-evidence contract checks"
+    },
+    {
+      "name": "python_compile",
+      "command": "python -m compileall -q src scripts video_factory",
+      "purpose": "Python syntax/import compilation"
+    },
+    {
+      "name": "diff_check",
+      "command": "git diff --check",
+      "purpose": "Whitespace and conflict-marker check"
+    }
+  ],
+  "ignored_fixture_modules": [
+    {
+      "path": "tests/video/test_schemas.py",
+      "policy": "excluded_from_bounded_phase1_regression",
+      "reason": "Depends on ignored demo/historical fixture artifacts"
+    },
+    {
+      "path": "tests/video/test_mp4_metadata.py",
+      "policy": "excluded_from_bounded_phase1_regression",
+      "reason": "Depends on ignored demo MP4 artifacts"
+    },
+    {
+      "path": "tests/video/test_quality_report.py",
+      "policy": "excluded_from_bounded_phase1_regression",
+      "reason": "Depends on ignored historical quality/report fixtures"
+    },
+    {
+      "path": "tests/video/test_error_contract.py",
+      "policy": "excluded_from_bounded_phase1_regression",
+      "reason": "Depends on ignored historical error/report fixtures"
+    }
+  ],
+  "exclusion_boundary": {
+    "current_policy": "These four modules remain outside the bounded topic_only_v1 regression because their ignored fixtures are not selected acceptance evidence.",
+    "final_closure_rule": "If the final manifest or selected evidence depends on one of these modules, the module must be restored and run; otherwise it remains explicitly excluded. Any newly fixture-independent failure is a blocker, never silently aggregated away.",
+    "historical_counts_must_not_be_aggregated": true
+  },
+  "run_requirements": {
+    "run_from_final_tested_source_commit": true,
+    "capture_each_suite_exit_status_and_log": true,
+    "record_skips_and_warnings_separately": true,
+    "no_full_media_render_in_this_contract_freeze": true,
+    "no_formal_gate_in_this_contract_freeze": true
+  }
+}

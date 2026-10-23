@@ -1,0 +1,48 @@
+{
+  "schema_version": "phase1_i2c_requalification_decision_dossier_v1",
+  "status": "I2C_RESTORATION_EXHAUSTED_REQUALIFICATION_NOT_YET_JUSTIFIED:OLD_AUDIO_CONTRACT_COMPATIBILITY_NOT_PROVABLE",
+  "control_job_id": "job-876a5f89973bbaf8deadbeef",
+  "attempt_id": "attempt_006_9x16_subject",
+  "expected_mp4_sha256": "cf1c0220853c7de06c5f821c48824a49e35fc770ad19ba4edaa5460cff652568",
+  "preserved_source_bound_evidence": {
+    "source_report": "reports/phase1/i2c_visual_correction_014.json",
+    "source_report_sha256": "5d9e3541c715b367cea92d243e8aadb1bcaf9477afa34e9c5979c034dd431ccc",
+    "diagram_contract": {
+      "kind": "i2c_bus_v1",
+      "fact_refs": [
+        "open_drain",
+        "rise_time",
+        "sink_current"
+      ],
+      "visible_semantics": [
+        "SDA",
+        "SCL",
+        "idle-high",
+        "START",
+        "ADDRESS",
+        "ACK/NACK",
+        "DATA",
+        "STOP",
+        "rise-time-focus",
+        "sink-current-focus"
+      ]
+    },
+    "human_gate_status": "pending"
+  },
+  "runtime_evidence": {
+    "exact_media_found": false,
+    "review_package_found": false,
+    "sqlite_snapshot_found": false,
+    "old_audio_trimming_path_provable": false,
+    "objective_audio_contract_compatibility": "NOT_PROVABLE_FROM_MISSING_RUNTIME"
+  },
+  "minimal_fresh_requalification_scope_if_separately_authorized": [
+    "one new I2C control job",
+    "source-aligned narration objective integrity",
+    "accepted 9:16 source-bound visual repair lineage",
+    "full H.264/AAC decode and package/SQLite identity",
+    "exact-SHA human review and read-only prereview"
+  ],
+  "fresh_job_authorized": false,
+  "formal_gate": "NOT_RUN"
+}

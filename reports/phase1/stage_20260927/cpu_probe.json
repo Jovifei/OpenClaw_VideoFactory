@@ -1,0 +1,15 @@
+{
+  "schema_version": "phase1_cpu_render_probe_v1",
+  "source_failure": "reports/phase1/stage_20260927/freertos_attempt_001.json",
+  "probe_count": 1,
+  "only_change": "h264_nvenc replaced by libx264; new diagnostic output path",
+  "timeout_seconds": 300,
+  "elapsed_seconds": 300.054,
+  "timed_out": true,
+  "exit_code": null,
+  "output_exists": false,
+  "output_bytes": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "bc4462f6ddd2dd6f423e44512d40d4f02b53e66be130927e3ea80bde88532ae8",
+  "status": "diagnostic_only"
+}

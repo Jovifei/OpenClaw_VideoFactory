@@ -1,0 +1,248 @@
+{
+  "schema_version": "phase1_i2c_subject_mpt_planning_probe_v1",
+  "status": "FAILED:PHASE1_MPT_PLAN_ONLY_MPT_CLI_EXIT_1_NO_SCRIPT_JSON",
+  "authorization": "Remote GPT iteration 38 WP-M2 planning-only diagnostic",
+  "source_commit": "de1b32af2c4074a08862ce9b9e3945e7def2f4ea",
+  "diagnostic": {
+    "requested_idempotency_key": "phase1-i2c-mpt-plan-probe-20260929",
+    "job_id": "job-d0ad2349f3a61c8250603737",
+    "job_id_namespace": "isolated_non_candidate_runtime",
+    "runtime_locator_id": "i2c-mpt-plan-probe-20260929",
+    "database_locator": "runtime/state/phase1_jobs.sqlite3",
+    "candidate": false,
+    "promotable_to_candidate004": false,
+    "control_commands": [
+      {
+        "command": [
+          "create-subject",
+          "--subject",
+          "I2C总线为什么要上拉电阻",
+          "--duration",
+          "40",
+          "--aspect-ratio",
+          "9:16",
+          "--idempotency-key",
+          "phase1-i2c-mpt-plan-probe-20260929"
+        ],
+        "exit_code": 0,
+        "stdout_tail": [
+          "{\"job\": {\"attempt\": 0, \"created\": true, \"created_at\": \"2026-09-29T01:05:44.480991Z\", \"fixture_id\": \"local_subject\", \"idempotency_key\": \"phase1-subject:cd9f3c1f03368be87b140af494914b8ee4e3c7a4:eb8c23757e098a07bbcd93b3b50e252fc8d1869a:56d0cdf07311273de2603b24543c1a2e867f4dd9da74e610bd1e5b1d1f6a8ed9\", \"job_id\": \"job-d0ad2349f3a61c8250603737\", \"last_completed_state\": null, \"metadata\": {\"canonical_subject_key\": \"phase1-subject:cd9f3c1f03368be87b140af494914b8ee4e3c7a4:eb8c23757e098a07bbcd93b3b50e252fc8d1869a:56d0cdf07311273de2603b24543c1a2e867f4dd9da74e610bd1e5b1d1f6a8ed9\", \"input_mode\": \"local_subject\", \"pipeline_type\": \"phase1-local-topic\", \"requested_idempotency_key\": \"phase1-i2c-mpt-plan-probe-20260929\", \"subject_input_root\": \"state/inputs/subjects/job-d0ad2349f3a61c8250603737\", \"topic_digest\": \"ceda09b09634e435b4856c2d4fef1484262d638e3c616c6f92696bfeac81c7a4\", \"topic_request_path\": \"state/inputs/subjects/job-d0ad2349f3a61c8250603737/topic_request.json\"}, \"render_contract_version\": \"2.0\", \"requested_duration_seconds\": 40, \"resolved_duration_seconds\": null, \"state\": \"NEW\", \"template\": \"phase1_subject_plan\", \"topic\": \"I2C总线为什么要上拉电阻\", \"updated_at\": \"2026-09-29T01:05:44.492127Z\"}, \"status\": \"created\", \"topic_request_path\": \"state/inputs/subjects/job-d0ad2349f3a61c8250603737/topic_request.json\"}"
+        ]
+      },
+      {
+        "command": [
+          "attach-research",
+          "--job-id",
+          "job-d0ad2349f3a61c8250603737",
+          "--research",
+          "examples/phase1_subject_i2c/research_brief.json"
+        ],
+        "exit_code": 0,
+        "stdout_tail": [
+          "{\"job\": {\"attempt\": 0, \"created_at\": \"2026-09-29T01:05:44.480991Z\", \"fixture_id\": \"local_subject\", \"idempotency_key\": \"phase1-subject:cd9f3c1f03368be87b140af494914b8ee4e3c7a4:eb8c23757e098a07bbcd93b3b50e252fc8d1869a:56d0cdf07311273de2603b24543c1a2e867f4dd9da74e610bd1e5b1d1f6a8ed9\", \"job_id\": \"job-d0ad2349f3a61c8250603737\", \"last_completed_state\": null, \"metadata\": {\"canonical_subject_key\": \"phase1-subject:cd9f3c1f03368be87b140af494914b8ee4e3c7a4:eb8c23757e098a07bbcd93b3b50e252fc8d1869a:56d0cdf07311273de2603b24543c1a2e867f4dd9da74e610bd1e5b1d1f6a8ed9\", \"input_mode\": \"local_subject\", \"pipeline_type\": \"phase1-local-topic\", \"requested_idempotency_key\": \"phase1-i2c-mpt-plan-probe-20260929\", \"subject_input_root\": \"state/inputs/subjects/job-d0ad2349f3a61c8250603737\", \"topic_digest\": \"ceda09b09634e435b4856c2d4fef1484262d638e3c616c6f92696bfeac81c7a4\", \"topic_request_path\": \"state/inputs/subjects/job-d0ad2349f3a61c8250603737/topic_request.json\"}, \"render_contract_version\": \"2.0\", \"requested_duration_seconds\": 40, \"resolved_duration_seconds\": null, \"state\": \"NEW\", \"template\": \"phase1_subject_plan\", \"topic\": \"I2C总线为什么要上拉电阻\", \"updated_at\": \"2026-09-29T01:05:44.492127Z\"}, \"research_path\": \"state/inputs/subjects/job-d0ad2349f3a61c8250603737/research_brief.json\", \"status\": \"research_attached\"}"
+        ]
+      },
+      {
+        "command": [
+          "run",
+          "--job-id",
+          "job-d0ad2349f3a61c8250603737",
+          "--plan-only"
+        ],
+        "exit_code": 2,
+        "stdout_tail": [
+          "{\"error\": {\"code\": \"phase1_local_execution_failed\", \"context\": {}, \"message\": \"The local Phase 1 operation failed.\"}, \"status\": \"error\"}"
+        ]
+      }
+    ],
+    "final_state": "FAILED",
+    "last_completed_state": "RESEARCHING",
+    "attempt": 0,
+    "events": [
+      {
+        "event_type": "job_created",
+        "from_state": null,
+        "to_state": "NEW",
+        "reason": null
+      },
+      {
+        "event_type": "job_metadata_updated",
+        "from_state": null,
+        "to_state": null,
+        "reason": null
+      },
+      {
+        "event_type": "state_advanced",
+        "from_state": "NEW",
+        "to_state": "RESEARCHING",
+        "reason": "subject_research_validated"
+      },
+      {
+        "event_type": "state_advanced",
+        "from_state": "RESEARCHING",
+        "to_state": "SCRIPTING",
+        "reason": "subject_research_validated"
+      },
+      {
+        "event_type": "job_failed",
+        "from_state": "SCRIPTING",
+        "to_state": "FAILED",
+        "reason": "phase1_subject_planning_failed"
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_type": "research_brief",
+        "relative_path": "state/inputs/subjects/job-d0ad2349f3a61c8250603737/research_brief.json",
+        "sha256": "e0fcac999617d485f6c99e3523124275d1d6589e38e8b02158e45d9a10b935e8",
+        "exists_and_matches": true
+      }
+    ]
+  },
+  "canonical_research": {
+    "path": "examples/phase1_subject_i2c/research_brief.json",
+    "sha256": "fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21",
+    "bytes_unchanged": true,
+    "attached_artifact_sha256": "e0fcac999617d485f6c99e3523124275d1d6589e38e8b02158e45d9a10b935e8"
+  },
+  "planning_identity": {
+    "subject": "I2C总线为什么要上拉电阻",
+    "duration_seconds": 40,
+    "aspect_ratio": "9:16",
+    "research_topic": "I2C总线为什么要上拉电阻",
+    "research_topic_digest": "ceda09b09634e435b4856c2d4fef1484262d638e3c616c6f92696bfeac81c7a4",
+    "fact_ids": [
+      "open_drain",
+      "rise_time",
+      "sink_current"
+    ],
+    "fact_source_bindings": {
+      "open_drain": [
+        "nxp_um10204",
+        "ti_slva689"
+      ],
+      "rise_time": [
+        "ti_slva689"
+      ],
+      "sink_current": [
+        "nxp_um10204",
+        "ti_slva689"
+      ]
+    },
+    "mpt_invocations": [
+      {
+        "subject": "I2C总线为什么要上拉电阻",
+        "language": "zh-CN",
+        "paragraphs": 2,
+        "candidates": 3,
+        "timeout_seconds": 120.0,
+        "rewrite_guidance_present": false,
+        "research_guidance_present": true,
+        "mpt_root_locator": "worktree_external/MoneyPrinterTurbo",
+        "out_root_locator": "runtime/mpt_outputs",
+        "cli_process_count": 3,
+        "output_locator": "runtime/mpt_outputs/drafter_20260929_090544/candidates.json",
+        "output_sha256": "eb274f65043cc12bd3ee6c0e51b57243a1e361eab7bd2d9f37112964310c1dc2",
+        "successful_candidates": 0
+      }
+    ],
+    "mpt_planning_validation": {
+      "status": "NOT_RUN_MISSING_PLAN_ARTIFACTS"
+    },
+    "director_scene_count": 0,
+    "scene_fact_ref_union": [],
+    "scene_visual_kinds": [],
+    "required_i2c_labels": []
+  },
+  "mpt_runtime": {
+    "expected_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "actual_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "clean_checkout": true,
+    "version": "Python 3.12.10",
+    "cli_entrypoint": "worktree_external/MoneyPrinterTurbo/cli.py",
+    "python_executable": "worktree_external/MoneyPrinterTurbo/.venv/Scripts/python.exe",
+    "runner": "scripts/phase1_mpt_script_drafter.py",
+    "source_modified": false
+  },
+  "media_boundary": {
+    "run_exit_code": 2,
+    "tts_or_wav_created": false,
+    "mp4_created": false,
+    "media_files": [],
+    "subject_media_guard_calls": 0,
+    "jianying_invocation": "NOT_ENTERED_PLAN_ONLY_BOUNDARY",
+    "audio_integrity": "NOT_CREATED",
+    "full_render": false
+  },
+  "excluded_candidates": {
+    "candidate001": "job-b4a2e8e851268bc14e5e4a15",
+    "candidate002": "job-b1a186b7b265c2ed46b7c3cb",
+    "candidate003": "job-d0ad2349f3a61c8250603737",
+    "candidate004": "NOT_AUTHORIZED"
+  },
+  "human_review": "PENDING",
+  "prereview": "NOT_RUN",
+  "formal_gate": "NOT_AUTHORIZED",
+  "jianying_dependency": "BLOCKED_EXACT_PIN_F421C8A_NO_LOCAL_OR_OFFLINE_SOURCE",
+  "failure": {
+    "control_reason": "phase1_subject_planning_failed",
+    "observed_boundary": "MPT script planning before selected_script/director_script/scene_plan",
+    "mpt_cli_command": "pinned_venv_python cli.py --video-subject <subject+research-guidance> --video-language zh-CN --paragraph-number 2 --stop-at script",
+    "mpt_cli_exit_code": 1,
+    "mpt_candidates_requested": 3,
+    "mpt_candidates_succeeded": 0,
+    "mpt_error_class": "MPT_CLI_EXIT_1_NO_PARSEABLE_SCRIPT_JSON",
+    "mpt_error_tails": [
+      {
+        "candidate": 1,
+        "status": "failed",
+        "error_tail": "exit code 1: 2026-09-29 09:05:45.107 | INFO     | app.config.config:load_config:471 - load config from file: worktree_external/MoneyPrinterTurbo/config.toml | 2026-09-29 09:05:45.111 | INFO     | app.config.config:<module>:588 - MoneyPrinterTurbo v1.3.5"
+      },
+      {
+        "candidate": 2,
+        "status": "failed",
+        "error_tail": "exit code 1: 2026-09-29 09:05:49.165 | INFO     | app.config.config:load_config:471 - load config from file: worktree_external/MoneyPrinterTurbo/config.toml | 2026-09-29 09:05:49.168 | INFO     | app.config.config:<module>:588 - MoneyPrinterTurbo v1.3.5"
+      },
+      {
+        "candidate": 3,
+        "status": "failed",
+        "error_tail": "exit code 1: 2026-09-29 09:05:51.214 | INFO     | app.config.config:load_config:471 - load config from file: worktree_external/MoneyPrinterTurbo/config.toml | 2026-09-29 09:05:51.217 | INFO     | app.config.config:<module>:588 - MoneyPrinterTurbo v1.3.5"
+      }
+    ],
+    "adapter_contract": "phase1_script_drafts was written with all three candidate failures; run_drafts raised all_candidates_failed",
+    "root_exception_persisted": false,
+    "job_state": "FAILED",
+    "media_created": false,
+    "audio_integrity_created": false,
+    "review_package_created": false,
+    "human_decision_created": false,
+    "prereview": "NOT_RUN",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "mpt_draft_result": {
+    "runtime_locator": "runtime/mpt_outputs/drafter_20260929_090544/candidates.json",
+    "sha256": "eb274f65043cc12bd3ee6c0e51b57243a1e361eab7bd2d9f37112964310c1dc2",
+    "schema_version": "1.0",
+    "mpt_version": "1.3.5",
+    "mpt_commit": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "requested_candidates": 3,
+    "successful_candidates": 0,
+    "failures": [
+      {
+        "candidate": 1,
+        "status": "failed",
+        "error_tail": "exit code 1: 2026-09-29 09:05:45.107 | INFO     | app.config.config:load_config:471 - load config from file: worktree_external/MoneyPrinterTurbo/config.toml | 2026-09-29 09:05:45.111 | INFO     | app.config.config:<module>:588 - MoneyPrinterTurbo v1.3.5"
+      },
+      {
+        "candidate": 2,
+        "status": "failed",
+        "error_tail": "exit code 1: 2026-09-29 09:05:49.165 | INFO     | app.config.config:load_config:471 - load config from file: worktree_external/MoneyPrinterTurbo/config.toml | 2026-09-29 09:05:49.168 | INFO     | app.config.config:<module>:588 - MoneyPrinterTurbo v1.3.5"
+      },
+      {
+        "candidate": 3,
+        "status": "failed",
+        "error_tail": "exit code 1: 2026-09-29 09:05:51.214 | INFO     | app.config.config:load_config:471 - load config from file: worktree_external/MoneyPrinterTurbo/config.toml | 2026-09-29 09:05:51.217 | INFO     | app.config.config:<module>:588 - MoneyPrinterTurbo v1.3.5"
+      }
+    ]
+  }
+}

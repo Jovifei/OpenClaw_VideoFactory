@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+<rect width="1672" height="941" fill="#F4F6F8"/>
+<rect x="55" y="45" width="1562" height="851" rx="28" fill="none" stroke="#16324F" stroke-width="4"/>
+<text x="95" y="120" font-family="Arial" font-size="52" font-weight="700" fill="#16324F">NON-DESTRUCTIVE RESULT</text>
+<text x="98" y="175" font-family="Arial" font-size="28" fill="#5C677D">Loser stops; winner continues without a collision</text>
+
+<text x="130" y="285" font-family="Arial" font-size="28" fill="#5C677D">time →</text><line x1="350" y1="325" x2="1450" y2="325" stroke="#16324F" stroke-width="4"/>
+<text x="120" y="445" font-family="Arial" font-size="38" fill="#2D6CDF">Node A</text><line x1="350" y1="460" x2="850" y2="460" stroke="#2D6CDF" stroke-width="18"/><text x="600" y="385" font-family="Arial" font-size="28" fill="#2A9D8F">wins</text><line x1="850" y1="460" x2="1450" y2="460" stroke="#2A9D8F" stroke-width="18"/>
+<text x="120" y="610" font-family="Arial" font-size="38" fill="#D95D39">Node B</text><line x1="350" y1="625" x2="850" y2="625" stroke="#D95D39" stroke-width="18"/><text x="720" y="690" font-family="Arial" font-size="28" fill="#D95D39">loses arbitration</text><line x1="850" y1="625" x2="1450" y2="625" stroke="#BBBBBB" stroke-width="8"/>
+<line x1="850" y1="250" x2="850" y2="730" stroke="#F2C14E" stroke-width="5"/><text x="900" y="735" font-family="Arial" font-size="28" fill="#16324F">header decision point</text>
+</svg>

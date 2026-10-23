@@ -1,0 +1,121 @@
+{
+  "schema_version": "phase1_freertos_asset_audit_v1",
+  "registry_version": "1.4.0",
+  "assets": [
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_ownership.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/01-mutex-ownership.png",
+      "source_svg": "assets/freertos_mutex_plain_illustrations/01-mutex-ownership.svg",
+      "source_svg_exists": true,
+      "source_svg_sha256": "2e6f69b460ba8e88612e13ef5b2070656194c50351da79046a7bacd87486fb53",
+      "registry_sha256": "de1845711281c2841201bfb592299a67df2001ba57fbd29e2229b62141987775",
+      "measured_sha256": "de1845711281c2841201bfb592299a67df2001ba57fbd29e2229b62141987775",
+      "declared_dimensions": [
+        836,
+        471
+      ],
+      "bytes": 87975,
+      "pillow_header_dimensions": [
+        836,
+        471
+      ],
+      "pillow_mode": "RGB",
+      "pillow_full_decode": "passed",
+      "ffmpeg_exit_code": 0,
+      "ffmpeg_error": "",
+      "status": "valid"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_isr_handoff.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/02-isr-nonblocking-handoff.png",
+      "source_svg": "assets/freertos_mutex_plain_illustrations/02-isr-nonblocking-handoff.svg",
+      "source_svg_exists": true,
+      "source_svg_sha256": "3b04afb3e602a7ae6b015f24c3c13dad157d7076bcf5cd9ad5a3a1e25a67770e",
+      "registry_sha256": "e07b390c9eb68465b6c08c943261a1e48bcc6d9809a8207461dd29bdcc521c0c",
+      "measured_sha256": "e07b390c9eb68465b6c08c943261a1e48bcc6d9809a8207461dd29bdcc521c0c",
+      "declared_dimensions": [
+        836,
+        471
+      ],
+      "bytes": 4271,
+      "pillow_header_dimensions": [
+        836,
+        471
+      ],
+      "pillow_mode": "1",
+      "pillow_full_decode": "passed",
+      "ffmpeg_exit_code": 0,
+      "ffmpeg_error": "",
+      "status": "valid"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_priority_inheritance.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.png",
+      "source_svg": "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.svg",
+      "source_svg_exists": true,
+      "source_svg_sha256": "950fd6ea1008d71c08ce0b583a5351318cf0f6cedba3dd92dcf07b0ecd899ddf",
+      "registry_sha256": "6bf8bb75e5f7b04705e6c6f9346b37bafadf997578469e0de39425d88ce361da",
+      "measured_sha256": "6bf8bb75e5f7b04705e6c6f9346b37bafadf997578469e0de39425d88ce361da",
+      "declared_dimensions": [
+        836,
+        471
+      ],
+      "bytes": 84268,
+      "pillow_header_dimensions": [
+        836,
+        471
+      ],
+      "pillow_mode": "RGB",
+      "pillow_full_decode": "passed",
+      "ffmpeg_exit_code": 0,
+      "ffmpeg_error": "",
+      "status": "valid"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_deferred_work.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/04-short-isr-defer.png",
+      "source_svg": "assets/freertos_mutex_plain_illustrations/04-short-isr-defer.svg",
+      "source_svg_exists": true,
+      "source_svg_sha256": "97018ff6effacf2db1768f30654f9af91a8167e57a388f0d15e75627bb2f376a",
+      "registry_sha256": "5533948aa150e65e21f04af5174fd06205e4a9c1f214116271d2ac855b8f9042",
+      "measured_sha256": "5533948aa150e65e21f04af5174fd06205e4a9c1f214116271d2ac855b8f9042",
+      "declared_dimensions": [
+        836,
+        471
+      ],
+      "bytes": 36515,
+      "pillow_header_dimensions": [
+        836,
+        471
+      ],
+      "pillow_mode": "RGB",
+      "pillow_full_decode": "passed",
+      "ffmpeg_exit_code": 0,
+      "ffmpeg_error": "",
+      "status": "valid"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_checklist.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/05-checklist.png",
+      "source_svg": "assets/freertos_mutex_plain_illustrations/05-checklist.svg",
+      "source_svg_exists": true,
+      "source_svg_sha256": "bc63719ed63e5b5ff231b0eaf841cd9ff227ea46d271cd912b685fbdb28eb972",
+      "registry_sha256": "584d2e0114494093b5501a5bda7d66c406bc0b0c23235bc7e319b32dec0441bf",
+      "measured_sha256": "584d2e0114494093b5501a5bda7d66c406bc0b0c23235bc7e319b32dec0441bf",
+      "declared_dimensions": [
+        836,
+        471
+      ],
+      "bytes": 108688,
+      "pillow_header_dimensions": [
+        836,
+        471
+      ],
+      "pillow_mode": "RGB",
+      "pillow_full_decode": "passed",
+      "ffmpeg_exit_code": 0,
+      "ffmpeg_error": "",
+      "status": "valid"
+    }
+  ]
+}

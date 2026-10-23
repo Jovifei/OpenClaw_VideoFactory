@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+<rect width="1672" height="941" fill="#F4F6F8"/>
+<rect x="55" y="45" width="1562" height="851" rx="28" fill="none" stroke="#16324F" stroke-width="4"/>
+<text x="95" y="120" font-family="Arial" font-size="52" font-weight="700" fill="#16324F">IDENTIFIER COMPARISON</text>
+<text x="98" y="175" font-family="Arial" font-size="28" fill="#5C677D">Lower numeric ID reaches dominant first</text>
+
+<text x="150" y="270" font-family="Arial" font-size="38" fill="#16324F">bit</text>
+<text x="320" y="270" font-family="Arial" font-size="38" fill="#16324F">10</text><text x="520" y="270" font-family="Arial" font-size="38" fill="#16324F">9</text><text x="720" y="270" font-family="Arial" font-size="38" fill="#16324F">8</text><text x="920" y="270" font-family="Arial" font-size="38" fill="#16324F">7</text>
+<text x="150" y="400" font-family="Arial" font-size="38" fill="#2D6CDF">0x120</text><text x="150" y="550" font-family="Arial" font-size="38" fill="#D95D39">0x320</text>
+<rect x="300" y="330" width="110" height="90" rx="10" fill="#2D6CDF" stroke="#2D6CDF" stroke-width="4"/><text x="338" y="388" font-family="Arial" font-size="38" fill="#FFFFFF">0</text><rect x="500" y="330" width="110" height="90" rx="10" fill="#2D6CDF" stroke="#2D6CDF" stroke-width="4"/><text x="538" y="388" font-family="Arial" font-size="38" fill="#FFFFFF">0</text><rect x="700" y="330" width="110" height="90" rx="10" fill="#FFFFFF" stroke="#2D6CDF" stroke-width="4"/><text x="738" y="388" font-family="Arial" font-size="38" fill="#2D6CDF">1</text><rect x="900" y="330" width="110" height="90" rx="10" fill="#2D6CDF" stroke="#2D6CDF" stroke-width="4"/><text x="938" y="388" font-family="Arial" font-size="38" fill="#FFFFFF">0</text>
+<rect x="300" y="480" width="110" height="90" rx="10" fill="#D95D39" stroke="#D95D39" stroke-width="4"/><text x="338" y="538" font-family="Arial" font-size="38" fill="#FFFFFF">0</text><rect x="500" y="480" width="110" height="90" rx="10" fill="#FFFFFF" stroke="#D95D39" stroke-width="4"/><text x="538" y="538" font-family="Arial" font-size="38" fill="#D95D39">1</text><rect x="700" y="480" width="110" height="90" rx="10" fill="#FFFFFF" stroke="#D95D39" stroke-width="4"/><text x="738" y="538" font-family="Arial" font-size="38" fill="#D95D39">1</text><rect x="900" y="480" width="110" height="90" rx="10" fill="#D95D39" stroke="#D95D39" stroke-width="4"/><text x="938" y="538" font-family="Arial" font-size="38" fill="#FFFFFF">0</text>
+<text x="1080" y="400" font-family="Arial" font-size="28" fill="#2D6CDF">dominant</text><text x="1080" y="550" font-family="Arial" font-size="28" fill="#D95D39">recessive</text>
+<text x="180" y="720" font-family="Arial" font-size="38" fill="#16324F">At bit 9: 0 wins over 1 → 0x120 keeps transmitting</text>
+</svg>
