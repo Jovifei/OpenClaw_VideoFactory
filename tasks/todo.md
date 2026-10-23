@@ -2852,6 +2852,16 @@ Change Request: `reports/change_requests/PHASE1-STAGE-PLAN-20260927.json`; detai
 
 Review: `BOUNDED_AUDIO_ONLY_PROOF_PENDING_LISTENING`. Both fixtures fail the original measured budget, then pass after exactly one fact-preserving concise rewrite: current v7 proof Flash 48.466s, FreeRTOS 46.067s. All aligned segments are at least as long as raw TTS; no trim path remains. Actual fixed-fixture claim/contradiction regressions pass. Affected tests: 470 passed, four fixture-dependent modules not run due missing ignored demo artifacts. Complete WAVs and scene markers are in `E:/OpenClaw_VideoFactory_Runtime/phase1_audio_contract_20260927_v7/`; human audio-only listening is still pending. No new video job.
 
+### PHASE1-FLASH-CANDIDATE-20260927
+
+- [x] Bind a641482, fresh worktree, Flash brief, five asset hashes, 37.8s/1134-frame expectation and preflight audio/SRT.
+- [x] Call outer `phase1 create-topic` once, then `phase1 run` once for its returned ID.
+- [x] Verify real SQLite events, artifact/package hashes and media transport. Independent review found TTS completeness was not checked: all five source segments exceed their slots and were truncated.
+- [x] Sample all five scenes, four real cuts and final tail; independent visual review passes, audio completeness fails.
+- [x] Freeze exact candidate as `CHANGES_REQUIRED_AUDIO_TRUNCATION`; no Jovi approval/prereview.
+
+Review: `CHANGES_REQUIRED_AUDIO_TRUNCATION`, control job `job-3643de66b508bacc03474cbd`, MP4 SHA `bf7b37fc43209a0e3d2aa3c92e973358dbf3f0fd837f05fd85f01fd4ebf3a081`. SQLite, hashes, 37.8s/1134 frames and sampled visuals pass, but five raw TTS segments are cut to shorter scene slots by `_align_audio`; quality `passed` omitted this gate. Independent audit confirms. See `reports/phase1/stage_20260927/flash_candidate_review.json`. Prior historical Flash state and FreeRTOS files remain untouched.
+
 ### PHASE1-FLASH-GEOMETRY-20260927
 
 - [x] Replay old scene1/2/3/5 geometry through Chrome and record RED contracts.
