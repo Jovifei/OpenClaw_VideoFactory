@@ -589,3 +589,17 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
 - Motion should advance while the related phrase is audible, settle at its measured end, and never continue through a different line. The cover should use a current real product capture as its visual source, with animated title/focus treatment layered over it.
 - Review crop-source tiles before composing: a technically valid screenshot can still contain a black tile gap or stale/empty panel that ruins the hook. Match crop aspect to the display frame to avoid distortion, and focus on one legible region.
 - Add a visible focus marker tied to each measured phrase when small camera moves are not perceptible; check paired early/late frames for every voice cue. Keep subtitle breaks at semantic punctuation and inspect the burned-in final frame, not only the SRT text.
+
+# 2026-09-27 - Codex with ChatGPT loop ownership
+
+- The remote GPT is the plan, review and next-stage owner. After local execution, Codex must push the tested commit and hand the commit, evidence and prior-plan binding back to the remote reviewer before asking Jovi for a product decision.
+- Do not turn a remote review gate into a user checklist selection. Human listening or video approval is requested only when the remote plan explicitly reaches its SHA-bound human gate; otherwise the remote reviewer must audit the submitted evidence and issue the next bounded plan.
+
+# 2026-10-11 - Follow explicit install authorization
+
+- User correction: when Jovi explicitly authorizes official software installation and the E-drive destination is available, continue setup rather than treating a remote environment blocker as the end of local work. Use the exact pinned official source, isolate configuration, and stop only at an actual third-party personal-data form, binding terms prompt, or admin approval gate; never infer personal details or bypass those gates.
+
+
+# 2026-10-11 - Recover C2C through a new project chat
+
+- When a bound ChatGPT conversation repeatedly shows that it cannot load, stop retrying the old long-history chat. Open a new chat from the same Project collection, send the C2C boot prompt, verify the workspace name/root with workspace_info, save the new chat URL, then HANDOFF the same task ID and checkpoint. Do not create another Project or restart the engineering task.

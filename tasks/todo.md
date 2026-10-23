@@ -3358,3 +3358,34 @@ the required Remotion/FFmpeg route remains unchanged. No local Resolve install
 was detected in standard locations. The bounded compatibility and human
 comparison plan is recorded in `tasks/plans/2026-10-11-davinci-editor-feasibility-note.md`.
 No software/backend configuration or canonical product route changed.
+
+# C2C-CONNECTION-20260927 — EXISTING CHATGPT PROJECT BINDING
+
+- [x] Read current phase, supplied SOP, C2C skill, and local session state.
+- [x] Select dedicated `joviluma.com` address as Jovi requested.
+- [x] Verify local C2C doctor and confirm no existing connector for this workspace.
+- [x] Bind Jovi's exact existing ChatGPT Project and configure its instructions.
+- [x] Verify remote `workspace_info` identity in the selected chat and save mapping.
+
+Review: C2C doctor reports workspace/bridge/MCP/OAuth/tunnel healthy. ChatGPT connector shows a connected account. The new Project chat returned `OpenClaw_VideoFactory` and `READ_OK` for `START_HERE_CODEX.md`; local `c2c session` stores the exact Project, chat, and connector. No implementation task or product-phase promotion was sent.
+
+# PHASE1-DAVINCI-SAMPLE-VIDEO-PILOT-002 — REMOTE PLAN RECEIVED / PREFLIGHT
+
+Change Request: `reports/change_requests/PHASE1-DAVINCI-SAMPLE-VIDEO-PILOT-002.json`.
+
+- [x] Confirm Phase 1 remains in progress and preserve the Remotion/FFmpeg, SQLite, and Gate contracts.
+- [x] Confirm the named C2C connection is healthy and remote planning uses the existing OpenClaw_VideoFactory Project.
+- [x] Obtain the remote seven-step plan: compatibility/provenance, one generated input, isolated setup, one deterministic edit/export, media checks, evidence, and bounded rollback.
+- [x] Identify `dist/phase1_local/phase1_d939208f4995f8d2/final_master.mp4` as a candidate input; SHA-256 `a857f7d358b18c8629491d6a332c039d9c943bc4aec497351d2034690535f2ca`; ffprobe reads 36.2s, 1920×1080 30fps H.264/AAC. The newer I2C sample path in its report is absent locally, so do not use it.
+- [x] Verify Resolve edition/version prerequisites and pin the MCP release against official primary sources; stop before any license acceptance or admin-only action.
+- [x] Ask remote ChatGPT to revise the install path against the current host; iteration 1 blocked pending a supported build, and iteration 2 independently reviewed the MCP installation and continued within boundaries.
+- [x] Jovi authorized local installation from official sources and E-drive placement; no Studio purchase is authorized.
+- [x] Pin and install MCP v4.10.4 under `E:\AI_Tools\Other\DaVinciResolveMCP` with Python 3.12 and manual client-configuration mode; no global Codex MCP entry was written.
+- [ ] Complete Blackmagic's official download registration with Jovi-entered personal/contact/address fields; do not fill them from inference or memory.
+- [ ] Install and start official Resolve Free 21.0.x (upstream Windows bridge reports 21.0.3.7), subject to the vendor's license and any admin gate.
+- [ ] Execute the plan in one isolated Resolve project and output directory; retain the original render and review evidence.
+- [ ] Validate the exported file, timing/audio, decode, hashes, and timeline/project recoverability; record any human review still needed.
+- [ ] Send the exact local result and evidence summary to remote ChatGPT for independent plan-compliance review.
+- [ ] Record outcome and blocker; do not update PROJECT_STATUS or claim Phase 1 acceptance.
+
+Review: Remote PLAN received from ChatGPT Project task `c2c_8f4b`, iteration 0. Iteration 1 preflight was blocked pending a supported Resolve build. After Jovi authorized official installation and E-drive placement, iteration 2 independently reviewed the pinned MCP v4.10.4 install and returned `CONTINUE_WITH_BOUNDARY`. Python 3.12 venv imports the MCP SDK; no global Codex registration changed. The official Blackmagic Free 21.0.3 download dialog requires first/last name, email, phone, country and street/city/state/zip. Those details must be entered by Jovi. No Resolve app, project mutation, or media export yet. The project-generated candidate remains outside formal human acceptance.

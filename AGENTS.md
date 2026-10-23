@@ -1,5 +1,15 @@
 # OpenClaw VideoFactory Agent Rules
 
+<!-- BEGIN:codex-token-efficiency -->
+## Token-efficient navigation
+
+- Obey the mandatory reading order below, but do not preload any additional history or repository-wide content.
+- When `.codegraph/` exists, start code exploration with lightweight CodeGraph tools: file map, symbol search, callers/callees, impact, and single-node lookup. Use broad context/explore only if these are insufficient.
+- Use `rg` for exact identifiers, errors, config keys, and headings; read only matching ranges. Read a whole file only when its full behavior is necessary.
+- Search documentation names/headings first and open only task-relevant sections. Do not read archived reports, generated output, dependencies, media, databases, or logs by default.
+- Run focused checks first. Keep verbose output on disk and return only exit status, failing cases, and the relevant error region.
+<!-- END:codex-token-efficiency -->
+
 ## Two-message Feishu analysis intent (013)
 
 Feishu attachment uploads and captions are separate messages in the real client. The durable analysis protocol is therefore:
@@ -133,3 +143,18 @@ Codex负责环境配置、Python/TypeScript/Remotion开发、测试、修复和�
 14. 不调用 `exec`/`image`/`browser`/`web_fetch`/`cron`/`gateway` 等工具（tool policy 已 deny）。
 
 后置分析 Agent（`video-factory-image-analyzer` / `-audio-analyzer` / `-video-analyzer`）无飞书 Binding，只读 `stored_path` 隔离副本，输出 `jobs/<job_id>/analysis.json`，不直接回群。GPU 重任务（faster-whisper CUDA、VLM）必须先取得 `state/gpu_locks/gpu-media.lock`，单并发；ffprobe 与 CPU 抽帧不需 GPU 锁。
+
+
+<!-- BEGIN:codex-project-hub:openclaw-videofactory:v1 -->
+## Local project hub reporting (owner-authorized)
+- Hub project_id: `openclaw-videofactory`. Registered root: `E:\project\OpenClaw_VideoFactory`. These are hub identities; do not change the project's own binding, goals, roadmap or gates.
+- After a plan changes, a significant stage ends, tests finish, a blocker appears, and before stopping: report a short structured update. Do not report every chat message.
+- Use `E:\project\codex-project-hub\integration\bound_report.py` (deterministic wrapper around the existing report.py CLI). Pass `--project openclaw-videofactory --worktree "ACTUAL-WORKTREE-ROOT"`; use the registered root only when actually working there. Branch is read from that worktree; detached HEAD and non-Git UNVERSIONED are explicit. Never reuse another worktree's identity/revision.
+- Read the revision first: `python E:\project\codex-project-hub\integration\bound_report.py --project openclaw-videofactory --worktree "ACTUAL-WORKTREE-ROOT" revision`.
+- Generate a new event: same prefix plus `template --agent "ACTUAL-AGENT-ID" --run "ACTUAL-RUN-ID" --revision N`; save stdout as UTF-8 to `E:\project\codex-project-hub\reports\openclaw-videofactory-EVENT-ID.json`. Fill current/next/blockers, stage_id and version/test/artifact references using the returned definition; then call the same prefix plus `send "ABSOLUTE-REPORT-FILE"`.
+- Only claim tests you actually ran; label inherited/source-document claims and imports with source revision/date and importer role. Never claim another Agent called the CLI. Preserve pending planning (including PENDING_REMOTE_PLANNING); old connection warnings require current confirmation.
+- Status reporting cannot change final goals/routes or grant approval. No owner.py apply from ordinary Agent reporting; claimed completion is not verified acceptance. No HTML edits, credentials, private photos, account data, raw sensitive logs or chat transcripts in reports.
+- On failure keep the pending JSON, clearly report the error and path, and stop automatic retries. Retry an unchanged event_id/content after connectivity recovers; on 409 inspect latest revision and manually reconcile into a new event. Never silently overwrite or claim success without a successful CLI result.
+- Full contract/commands: `E:\project\codex-project-hub\reports\openclaw-videofactory-INTEGRATION.md`. Reporting does not expand the project's execution permissions or start/continue another Agent session.
+- This block applies after the Agent actually reads this file; old sessions are not assumed to reload it. Independent worktree copies must be checked separately.
+<!-- END:codex-project-hub:openclaw-videofactory:v1 -->
