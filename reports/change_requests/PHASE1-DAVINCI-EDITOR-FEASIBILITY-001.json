@@ -1,0 +1,65 @@
+{
+  "id": "PHASE1-DAVINCI-EDITOR-FEASIBILITY-001",
+  "date": "2026-10-11",
+  "phase": "phase1_local_reviewable_video",
+  "status": "FEASIBILITY_NOTE_CREATED_DAVINCI_DEFERRED_CANDIDATE",
+  "granted_by": "Jovi",
+  "objective": "Research whether a maintained DaVinci Resolve MCP/editor workflow can improve the optional manual editing branch, compare it with the current Jianying branch, and ask remote GPT to produce the next bounded feasibility plan.",
+  "current_architecture": {
+    "mandatory_renderer": ["Remotion", "FFmpeg"],
+    "mandatory_delivery": ["local H.264/AAC MP4", "quality report", "review package"],
+    "optional_editor": "pinned jianying-editor-skill for manual edit/review",
+    "phase1_gate": "not passed; remains governed by PROJECT_STATUS.yaml and existing evidence contracts"
+  },
+  "allowed_in_this_discovery": [
+    "read current project docs/source contracts",
+    "search public GitHub and official Codex documentation",
+    "read-only local Resolve installation detection",
+    "write this Change Request and a checkable task plan",
+    "send a concise request through the already configured C2C Project for remote planning"
+  ],
+  "not_authorized_in_this_discovery": [
+    "install or download DaVinci Resolve or any MCP project",
+    "change Codex MCP configuration",
+    "change provider/model/credentials",
+    "replace or unpin Jianying",
+    "change the Remotion/FFmpeg renderer or Phase 1 contracts",
+    "create/edit/render a Resolve project or candidate",
+    "run MPT, TTS, media, Candidate004, M6, Phase 2, Cron or publication",
+    "update PROJECT_STATUS.yaml or claim a Phase 1 gate pass"
+  ],
+  "research_candidates": [
+    {
+      "repository": "https://github.com/samuelgursky/davinci-resolve-mcp",
+      "license": "MIT",
+      "status": "primary maintained candidate; latest observed release v4.10.4"
+    },
+    {
+      "repository": "https://github.com/apvlv/davinci-resolve-mcp",
+      "license": "MIT",
+      "status": "smaller/basic MCP implementation; includes direct execute_python/execute_lua tools"
+    },
+    {
+      "repository": "https://github.com/Tooflex/davinci-resolve-mcp",
+      "license": "not declared in GitHub repository metadata",
+      "status": "smaller implementation with Windows/Python 3.10-3.11 requirements"
+    }
+  ],
+  "machine_detection": {
+    "standard_install_paths": "NOT_FOUND",
+    "running_resolve_process": "NOT_FOUND",
+    "uninstall_registry_entry": "NOT_FOUND",
+    "scope": "read-only standard Windows paths, process table and uninstall registry; custom paths not exhaustively scanned"
+  },
+  "remote_review": {
+    "iteration": 43,
+    "result": "DAVINCI_OPTIONAL_EDITOR_CANDIDATE_ONLY",
+    "reviewed_workspace_commit": "f1d94e980526ab7d0a06faadf9c78596b09db565",
+    "mandatory_renderer_changed": false,
+    "jianying_unpinned": false,
+    "resolve_mcp_install_authorized": false,
+    "formal_route_change_authorized": false
+  },
+  "feasibility_note": "tasks/plans/2026-10-11-davinci-editor-feasibility-note.md",
+  "next_step": "Keep DaVinci as a deferred optional-editor candidate. Finish Phase 1 Gate-critical evidence first; revisit compatibility only when Resolve is available locally and a separate plan/Change Request authorizes a disposable pilot."
+}
