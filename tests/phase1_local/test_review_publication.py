@@ -151,6 +151,30 @@ def test_explicit_key_conflict_does_not_change_input(local_store):
     assert persisted.read_bytes() == before
 
 
+def test_explicit_key_from_other_fixture_is_a_conflict(local_store):
+    root, store, _ = local_store
+    store.create_job('local_subject', 'mixed:key', 'phase1_subject_plan', 'test',
+                     requested_duration_seconds=30, metadata={'topic_request_path': 'subject.json'})
+    with pytest.raises(FactoryContractError, match='idempotency'):
+        _request(root, key='mixed:key')
+
+
+def test_legacy_key_conflict_does_not_read_outside_project(local_store, monkeypatch):
+    root, store, _ = local_store
+    foreign = root.parent / 'foreign-unit-input.json'
+    foreign.write_text('{}', encoding='utf-8')
+    store.create_job('local_topic', 'legacy:foreign', 'video_factory_local_brief', 'test',
+                     requested_duration_seconds=30, metadata={'brief_path': '../foreign-unit-input.json'})
+    read = Path.read_text
+    def contained_read(path, *args, **kwargs):
+        if path.resolve() == foreign.resolve():
+            raise AssertionError('Legacy collision must not read foreign input.')
+        return read(path, *args, **kwargs)
+    monkeypatch.setattr(Path, 'read_text', contained_read)
+    with pytest.raises(FactoryContractError, match='idempotency'):
+        _request(root, key='legacy:foreign')
+
+
 def test_database_publication_error_rolls_back_all_artifacts_and_state(local_store):
     root, store, job_id = local_store
     from src.factory.state import STAGES

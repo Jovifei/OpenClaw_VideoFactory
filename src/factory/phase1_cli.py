@@ -138,10 +138,16 @@ def _create_topic(args: argparse.Namespace) -> dict[str, Any]:
     )
     if not result['created']:
         existing = result['metadata'].get('request_digest')
-        if existing is None:
-            original = (PROJECT_ROOT / result['metadata']['brief_path']).resolve()
-            existing = _request_digest(json.loads(original.read_text(encoding='utf-8')))
-        if existing != request_digest:
+        same_kind = result['fixture_id'] == 'local_topic' and result['template'] == 'video_factory_local_brief'
+        original_ref = result['metadata'].get('brief_path')
+        if existing is None and same_kind and isinstance(original_ref, str):
+            original = (PROJECT_ROOT / original_ref).resolve()
+            if original.is_relative_to(PROJECT_ROOT.resolve()) and original.is_file():
+                try:
+                    existing = _request_digest(json.loads(original.read_text(encoding='utf-8')))
+                except (OSError, ValueError):
+                    existing = None
+        if not same_kind or existing != request_digest:
             raise FactoryContractError('phase1_idempotency_conflict',
                                        'This idempotency key belongs to another request.', {})
     return {"status": "created" if result["created"] else "existing", "job": result}
