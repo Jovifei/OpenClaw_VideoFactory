@@ -4,6 +4,8 @@ import argparse
 import hashlib
 import json
 import sqlite3
+import subprocess
+import sys
 import threading
 from pathlib import Path
 
@@ -209,3 +211,38 @@ def test_report_pruning_retention_dry_run_never_deletes_data(local_store):
     for plan in [before, after]:
         assert plan['destructive_actions'] is False and plan['deletion_performed'] is False
     assert media.read_bytes() == before_media and store.status(job_id) == before_job
+
+
+def test_killed_claim_owner_requires_explicit_cancel_retry(local_store):
+    root, store, job_id = local_store
+    code = """from pathlib import Path
+import sys
+from src.factory.db import CandidateStore
+s=CandidateStore(Path(sys.argv[1]));s.initialize()
+with s.execution_claim(sys.argv[2]):
+ print('CLAIM_READY',flush=True)
+ sys.stdin.read()
+"""
+    child = subprocess.Popen([sys.executable, '-c', code, str(store.path), job_id],
+                             cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        assert child.stdout.readline().strip() == b'CLAIM_READY'
+        child.terminate()
+        child.wait(timeout=5)
+        assert child.poll() is not None
+        controller = CandidateStore(store.path)
+        with pytest.raises(ValueError, match='job_execution_in_progress'):
+            with controller.execution_claim(job_id):
+                pytest.fail('A dead owner must not be silently taken over.')
+        controller.cancel(job_id, 'verified_test_owner_dead')
+        retried = controller.retry(job_id, 'explicit_recovery')
+        assert retried['attempt'] == 1
+        with controller.execution_claim(job_id):
+            assert controller.status(job_id)['state'] == 'NEW'
+    finally:
+        if child.poll() is None:
+            child.terminate()
+            child.wait(timeout=5)
+        for stream in [child.stdin, child.stdout, child.stderr]:
+            if stream is not None:
+                stream.close()

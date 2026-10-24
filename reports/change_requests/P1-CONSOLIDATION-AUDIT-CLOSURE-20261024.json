@@ -34,9 +34,12 @@
     "STATE-03: duplicate execution and returning stale attempt writes",
     "MEDIA-01: report/media/template identity not bound before QA exemption",
     "MEDIA-02: valid short voice cues crash interpolation",
-    "MEDIA-03: portrait-only hook geometry overflows landscape"
+    "MEDIA-03: portrait-only hook geometry overflows landscape",
+    "MEDIA-04: retained audio audit did not reject declared hash mismatch and trusted declared rather than measured duration"
   ],
   "remote_access": "LOCAL_BRIDGE_HEALTHY_PUBLIC_TUNNEL_TLS_EOF; no independent remote approval",
   "hub_status": "revision read failed with WinError 10061; no automatic retry",
-  "input_readiness": "Existing Flash/FreeRTOS reports require exact audio approval; no human decision fabricated"
+  "input_readiness": "Existing Flash/FreeRTOS reports require exact audio approval; no human decision fabricated",
+  "core_fix_sha": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44",
+  "crash_recovery": "Owned test subprocess terminated; no silent claim takeover; explicit cancel/retry verified"
 }

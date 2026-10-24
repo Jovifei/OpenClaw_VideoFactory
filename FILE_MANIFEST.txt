@@ -1364,6 +1364,7 @@ tests/phase1_acceptance/test_phase1_acceptance.py
 tests/phase1_acceptance/test_phase1_gate.py
 tests/phase1_local/__init__.py
 tests/phase1_local/test_audio_contract_integration.py
+tests/phase1_local/test_audio_integrity_identity.py
 tests/phase1_local/test_audio_overflow_contract.py
 tests/phase1_local/test_i2c_digest_provenance.py
 tests/phase1_local/test_local_audio_review.py
