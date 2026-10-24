@@ -2,44 +2,33 @@
 
 Updated: 2026-10-24
 
-## REPO-CONSOLIDATION-20261023
+## P1-CONSOLIDATION-AUDIT-CLOSURE-20261024
 
-Change Request: reports/change_requests/REPO-CONSOLIDATION-20261023.json。
+基线 8b5c142；最终执行源码 0528375；[PR #2](https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2)。普通修复保持 SQLite/Remotion/FFmpeg 和 Phase 1 in_progress。
 
-- [x] 确认继续视频工厂，内容涵盖 App/网页/原理图/硬件。
-- [x] Fetch 并核清初始 27 个本地、15 个远端功能分支。
-- [x] 合并五条末端线，覆盖 14 个独有分支头与 84 个独有提交。
-- [x] 保留原工作区文档增量，归档 archive/pre-cleanup-20261023。
-- [x] 归纳需求、架构、路线、交接、经验；按依赖筛选旧记录。
-- [x] 完成 273 份历史文件清理；Python 643 passed/1 skipped/2 deselected，原目录身份校验 2 passed，Node 70 passed，Remotion typecheck/contracts 通过。
-- [x] 当前文档链接、1,509 个 checksum、27 个本地/15 个远端功能分支祖先覆盖已核验。
-- [x] main 与 archive/pre-cleanup-20261023 已成功推送；完成 GitHub 回执核对，交给 Jovi 审核。
+- [x] 读取远端完整反馈，固定 Git 对象/祖先，保护原工作区三份 dirty 文件、原始字节与 patch。
+- [x] WP0 本地取证：123 份准确 SHA/blob/行范围源码快照；现有连接输出29—39可读、未截断。
+- [ ] WP0 远端访问与独立审核：TLS EOF，workspace_info -32603，仍 NOT_VERIFIED。
+- [x] WP1：R01—R10 原文映射、合并/清理依赖、retention dry-run、来源/许可证、测试范围复核。
+- [x] WP2：七项已复现问题修复；RED/GREEN、并发/旧 attempt/进程终止/回滚/migration 回归。
+- [x] Python 670 passed、1 skipped、2 deselected、4 subtests passed；旧绝对路径身份另验2 passed。
+- [x] Node81、类型/合同通过；冻结锁文件干净安装复验，JS/锁文件与最终源码相同。
+- [x] WP3：两条现有真实 v7 音频只读完整性和身份/实测时长重验。
+- [ ] WP3 人审：Jovi 选择稍后试听，先完成代码审查交付；不得代签或启动对应新候选。
+- [ ] WP4—WP5：批准输入/人审/资源齐全才生成新候选；资格链与 Formal Gate 继续按门禁。
+- [x] WP6 源码修复分支已推送、草稿 PR #2 已创建并附到本聊天。
+- [x] WP6 交付文档、机器证据与 checksum 完成本地验证；GitHub 实际交付以 PR #2 和推送回执为准。远端独立复核仍待通道恢复。
 
-Review: 本轮不代表 Phase 1 通过。原工作区三份未提交文件保留。Hub revision 读取 WinError 10061，未成功上报并停止自动重试。实际结果写入 docs/PROJECT_REVIEW.md。
+Review: 机器审计见 reports/phase1/consolidation_audit_20261024.json。无真实媒体/Job/DB 清理，无 provider 重试或新 TTS，无真实人审批准和阶段提升。Hub WinError10061，未上报并停止自动重试。
 
-## Phase 1 后续（原阶段门禁继续适用）
+## 保留的产品缺口
 
-## P1-CONSOLIDATION-AUDIT-CLOSURE-20261024 — IN PROGRESS
+- Flash/FreeRTOS 历史截断候选保持失败；源音频人审恢复后才生成新 lineage。
+- I2C 批准凭证/方案决定仍缺，Candidate003 不重试，M6/Candidate004 不自动启动。
+- CAN/live topic、最终媒体人审、统一 Prereview 与 lifecycle 绑定、Manifest/Boundary/独立审计未闭合。
+- DaVinci 属可选支线；官网安装、本机桥接/剪辑/导出尚未通过真实验证。
+- Phase 2 飞书/Cron、后续网页/App 界面按阶段授权。
 
-Audit base: `8b5c142f6c469503a3644e4eafd6d54d785c577a`。远端反馈是读取通道阻塞、未完成独立源码审核，尚无已证实代码缺陷。
+## 已交付的整合
 
-- [x] 读取用户提供的完整审核，固定基线，记录原工作区 staged/unstaged patch 与三份文件原始字节 SHA。
-- [ ] WP0：恢复既有连接，释放包含源码 SHA、blob ID、路径和行范围的原始审核证据。
-- [ ] WP1：补齐 R01—R10 映射，核查分支合并、逐项清理、动态引用、测试与许可证。
-- [ ] WP2：仅修复已复现缺陷，保存 RED/GREEN 和兼容回归；不据审核假设盲改。
-- [ ] WP3：只读核对已有批准素材、完整台词、源/对齐音频与 cue，登记可用项和真实阻塞。
-- [ ] WP4—WP5：输入与既有授权齐全才生成新候选；人工视听、Prereview 和 Gate 均按原门禁。
-- [ ] WP6：测试、原工作区保护复核、推送精确修复 SHA，释放执行证据并交回远端审核。
-
-Review: 独立审核未完成；连接修复与本地离线源码审查并行。I2C 凭证、Candidate004/M6、模型/资源、人审及阶段提升边界保持原样。
-
-## 待闭合产品项
-
-- [ ] Flash/FreeRTOS 源对齐音频质量人审，再各生成一个批准的新候选；旧截断候选保持失败。
-- [ ] I2C 等待有效批准凭证/方案决定，不重试 Candidate003，不自动创建 Candidate004。
-- [ ] I2C 与不同 live topic 的同合同媒体、人审和 Prereview。
-- [ ] 核对/绑定既有 lifecycle hash/Schema，准备 Manifest/Boundary/独立审计。
-- [ ] 前置齐全且获授权后 Formal Gate，真实通过后单独更新 PROJECT_STATUS。
-- [ ] 可选 DaVinci：官网下载/安装后，验证真实版本、桥接、隔离剪辑、导出；MCP 准备不是可用性证明。
-
-历史详情：git show archive/pre-cleanup-20261023:tasks/todo.md。后续只维护当前清单和权威结论。
+8b5c142 已将五条末端线、84 个独有提交整入 main；273 份旧过程文档归档精简。旧任务与经验从 archive/pre-cleanup-20261023 按需读取。
