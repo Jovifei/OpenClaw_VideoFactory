@@ -4,7 +4,7 @@
   "status": "LOCAL_FIXES_VERIFIED_REMOTE_REVIEW_BLOCKED",
   "audit_base": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
   "core_fix": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44",
-  "source_fix": "05283758767b693adc20d1071f93ce97109fbc8b",
+  "source_fix": "10679a1b2b1b23b3034d6b7864db2a061448930e",
   "pull_request": "https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2",
   "findings": [
     {
@@ -104,6 +104,43 @@
       "regressions": [
         "test_audio_audit_rejects_declared_identity_mismatch",
         "test_audio_audit_measures_duration_instead_of_trusting_matching_declarations"
+      ]
+    },
+    {
+      "id": "STATE-04",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Stale subject workers overwrote newer planning files before claim rejection",
+      "files": [
+        "src/factory/phase1_cli.py"
+      ],
+      "regressions": [
+        "test_returning_subject_worker_cannot_change_new_attempt_plan"
+      ]
+    },
+    {
+      "id": "STATE-05",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Topic/reference QUALITY_CHECK retry advanced to review without artifact publication",
+      "files": [
+        "src/factory/phase1_cli.py"
+      ],
+      "regressions": [
+        "test_quality_checkpoint_retry_never_becomes_ready_before_publication",
+        "test_quality_checkpoint_retry_missing_media_fails_without_review"
+      ]
+    },
+    {
+      "id": "STATE-06",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Subject VOICE/CAPTIONS checkpoint retries advanced past planning instead of resuming",
+      "files": [
+        "src/factory/phase1_cli.py"
+      ],
+      "regressions": [
+        "test_subject_completed_plan_recovers_from_planning_checkpoint"
       ]
     }
   ],
@@ -211,7 +248,11 @@
       "tests": [
         "tests/phase1_local/test_review_publication.py::test_same_job_has_one_executing_worker",
         "tests/phase1_local/test_review_publication.py::test_cancel_retry_fences_returning_worker",
-        "tests/phase1_local/test_review_publication.py::test_killed_claim_owner_requires_explicit_cancel_retry"
+        "tests/phase1_local/test_review_publication.py::test_killed_claim_owner_requires_explicit_cancel_retry",
+        "tests/phase1_local/test_phase1_subject_cli.py::test_returning_subject_worker_cannot_change_new_attempt_plan",
+        "tests/phase1_local/test_review_publication.py::test_quality_checkpoint_retry_never_becomes_ready_before_publication",
+        "tests/phase1_local/test_review_publication.py::test_quality_checkpoint_retry_missing_media_fails_without_review",
+        "tests/phase1_local/test_phase1_subject_cli.py::test_subject_completed_plan_recovers_from_planning_checkpoint"
       ],
       "status": "REPAIRED_CODE_REGRESSION",
       "gap": "Crash recovery uses explicit cancel/retry; no takeover by timeout. Final lifecycle evidence still needs version/hash revalidation.",
@@ -276,8 +317,8 @@
   },
   "validation": {
     "python": {
-      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
-      "passed": 670,
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "passed": 684,
       "skipped": 1,
       "deselected": 2,
       "subtests_passed": 4,
@@ -331,8 +372,52 @@
         "source_sha": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44",
         "log": "reports/audit_20261024/committed-contracts.log",
         "sha256": "cb3fbedfbe48d09b9cdae8fa24ffc706a808e193c85ee3a7b7a931b3a171da57"
+      },
+      {
+        "name": "python",
+        "exit_code": 0,
+        "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+        "log": "reports/audit_20261024/committed-10679a1-python.log",
+        "sha256": "80f4ddf63846a5912b8bae25d9c93cf4c9232f5aaea8323f93f7d07ddd855293"
       }
-    ]
+    ],
+    "previous_python": {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "passed": 670,
+      "skipped": 1,
+      "deselected": 2,
+      "subtests_passed": 4,
+      "skip_reason": "Windows symlink creation unavailable",
+      "excluded_case": "legacy original absolute-path artifact identity",
+      "excluded_case_result": "2 passed separately at original artifact location; test definition blob matches fixed source"
+    },
+    "attempt_recovery": {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "focused_passed": 41,
+      "new_regression_cases": 14,
+      "red_evidence": [
+        {
+          "log": "reports/audit_20261024/attempt-recovery-red.log",
+          "failed": 3,
+          "production_base": "ba0a4c30ae76bc3828442a8a1fd3ae67d0ea9de3",
+          "sha256": "0e05f2385cf1cc4f3fddfd89263516509383b217d9ee7ffb7893e1c3a2c67c8c"
+        },
+        {
+          "log": "reports/audit_20261024/subject-checkpoint-red.log",
+          "failed": 2,
+          "production_base": "uncommitted first attempt-isolation patch",
+          "sha256": "bfebbeea164306c49f453b785cdc54b417bf8b0fc15cda6e4a9af2ec1ecdd4b9"
+        },
+        {
+          "log": "reports/audit_20261024/plan-request-binding-red.log",
+          "failed": 2,
+          "production_base": "uncommitted checkpoint patch before request binding",
+          "sha256": "4c3ca9b6a0fd86bc23e92f9f2eaab45f927555e68bad8446d8ada86e4aa56964"
+        }
+      ],
+      "evidence_level": "Temporary SQLite, synthetic provider/media boundaries; not new production media",
+      "source_review": "Independent local read-only code advice; no further concrete blocker found; not remote approval"
+    }
   },
   "retained_audio": {
     "evidence_level": "read-only revalidation of retained v7 artifacts, not new TTS/media production",
@@ -375,17 +460,28 @@
       36,
       37,
       38,
-      39
+      39,
+      40,
+      41,
+      42,
+      43,
+      44
     ],
     "remote_output_ids_verified": false,
     "read_policy": "list by task_id first, then read returned IDs; host IDs are local receipts",
     "outputs_allowed_and_untruncated": true,
-    "source_snapshots": 123,
+    "source_snapshots": 189,
     "cache_index": "handoff/codex/review-evidence-20261024/index.json",
     "workspace_note": "Registered original checkout remains protected; audit source is identified by exact SHA/blob metadata.",
-    "message_sent": false,
+    "message_sent": true,
     "sanitized_read_file_mirror": "handoff/codex/review-evidence-20261024/execution/",
-    "local_workspace_file_policy_verified": true
+    "local_workspace_file_policy_verified": true,
+    "bounded_repair": "Original signed client preserved; fixed-destination relay and official side-by-side client probes failed; owned probes stopped; no account/domain/global network change",
+    "current_review_chat_observed": "6adc134e: exact source10679a1 request visible, ChatGPT responding",
+    "checkpoint_iteration": 2,
+    "message_channel": "existing Project chat; GitHub-only source review fallback",
+    "c2c_executed_sent": false,
+    "github_review_status": "PENDING_REMOTE_REVIEW"
   },
   "owner_protection": {
     "original_dirty_files": 3,
@@ -404,5 +500,8 @@
     "retain deferred audio review",
     "only then execute authorized new candidates; keep I2C/M6/Candidate004 and Phase2 gates"
   ],
-  "idempotency_boundary_guard_sha": "05283758767b693adc20d1071f93ce97109fbc8b"
+  "idempotency_boundary_guard_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+  "previous_source_fixes": [
+    "05283758767b693adc20d1071f93ce97109fbc8b"
+  ]
 }

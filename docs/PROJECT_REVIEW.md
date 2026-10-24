@@ -2,21 +2,24 @@
 
 ## 本轮远端反馈的本地复核与修复（2026-10-24）
 
-远端原结论是 CHANGES_REQUIRED / REVIEW_BLOCKED / NOT_VERIFIED：读取通道失败，并未证实代码缺陷。本地随后从准确 8b5c142 基线复现并修复七项问题，见 [PR #2](https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2)。**远端独立审核仍未完成，Phase 1 仍为 in_progress。**
+远端原结论是 CHANGES_REQUIRED / REVIEW_BLOCKED / NOT_VERIFIED：读取通道失败，并未证实代码缺陷。本地随后从准确 8b5c142 基线复现并修复十项问题，见 [PR #2](https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2)。**远端独立审核仍未完成，Phase 1 仍为 in_progress。**
 
-最终执行源码：05283758767b693adc20d1071f93ce97109fbc8b；核心修复 3f2d26e，保留音频审计修复 d3f07b8。后续交付文档提交不反向改写测试或音频来源。
+最终执行源码：10679a1b2b1b23b3034d6b7864db2a061448930e；前一执行版 0528375，核心修复 3f2d26e，保留音频审计修复 d3f07b8。后续交付文档提交不反向改写测试或音频来源。
 
 | ID | 修复 |
 |---|---|
 | STATE-01 | 产物身份与待审状态原子发布；重用前重新校验文件/hash，失配显式失败 |
 | STATE-02 | 完整请求摘要、不可变输入、显式键冲突拒绝、受管 Job/attempt 输出隔离 |
 | STATE-03 | SQLite claim 与旧 attempt fencing；重复执行、回滚、兼容 migration、真实子进程终止后显式恢复 |
+| STATE-04 | subject 六份规划文件使用 attempt 独立目录与完整 hash，旧 worker 无法覆盖新规划；媒体和审阅读取同一绑定快照 |
+| STATE-05 | topic/reference 在 QUALITY_CHECK 中断后显式重试，重新核验产物再原子发布，不能提前待审 |
+| STATE-06 | subject 在 VOICE/CAPTIONS 恢复时复用已完成规划；缺失、修改、路径错绑或请求变化均拒绝，明确重试才重新规划 |
 | MEDIA-01 | 报告/实际媒体/派生来源与模板身份绑定，产品例外范围受控 |
 | MEDIA-02 | 短实测 cue 动画不再使用逆序插值区间 |
 | MEDIA-03 | 横屏封面改用适合横屏的布局，地图/署名/页脚不越字幕区 |
 | MEDIA-04 | 保留音频审计拒绝声明身份错误，从真实解码 PCM 计算时长 |
 
-验证：Python **670 passed、1 skipped、2 deselected、4 subtests passed**；两项旧样片绝对路径身份检查在原位置另行通过，测试定义与修复版一致。跳过项是 Windows symlink 权限限制。Node **81 passed**，类型与合同通过；精确源码快照进行了冻结锁文件的干净 npm ci、相同 81 项 Node、类型与合同检查，JS/锁文件与最终源码相同。
+验证：Python **684 passed、1 skipped、2 deselected、4 subtests passed**，在干净的 10679a1 提交上执行。新增 14 项生命周期回归；修复前保留 3+2+2 项准确失败日志，focused 41 passed。两项旧样片绝对路径身份检查在原位置另行通过，测试定义与修复版一致。跳过项是 Windows symlink 权限限制。Node **81 passed**，类型与合同通过；精确源码快照进行了冻结锁文件的干净 npm ci、相同 81 项 Node、类型与合同检查，JS/锁文件与最终源码相同，故本次未重复运行未变化的前端检查。
 
 两条真实保留 v7 音频只读重验通过，源 PCM、静音尾部、拼接、身份、实测时长一致。Jovi 已选择稍后试听，继续代码交付；没有创建真实人审批准、新 TTS、生产候选或 Formal Gate。
 
@@ -43,11 +46,13 @@
 
 ### 远端复核入口与剩余阻塞
 
-现有连接的本机服务正常，但对外连接 TLS EOF；最新 workspace_info 返回 -32603，未取得工作区正文。不得标为独立审核通过。已在原注册工作区准备 123 份准确 SHA/blob/行范围的只读源码快照，并从正在运行的连接上下文释放 task c2c_a024 的 execution_output **29—39**，均可读且未截断；此处“可读”指本地发布策略，不代表远端网络已恢复。
+现有连接的本机服务正常，但对外连接未恢复；最新已取得的 workspace_info 错误为 -32603，未取得工作区正文。固定目标转发和官方新版独立客户端的有界测试均未建立连接；测试进程已停止，原客户端及其他工作区不变。不得标为独立审核通过。已在原注册工作区准备 189 份准确 SHA/blob/行范围的只读源码快照，保留 8b5c142、0528375、10679a1 的版本区别，并释放 task c2c_a024 的 execution_output **29—44**，均本地可读且未截断；此处“可读”指本地发布策略，不代表远端网络已恢复。
 
-原工作区仍在旧分支，三份 dirty 文件和 patch 原始字节未变；新增的是本地临时取证缓存。远端恢复后先核对身份，再读 handoff/codex/review-evidence-20261024/index.json；按 task_id 先 list 再读取返回的实际 ID，29—39 只是本机索引回执。也可读取缓存内由 SDK 允许且脱敏的相同正文，不能把旧 HEAD 当审核基线。源码缓存属于已有工作区范围，未创建第二个连接器或上传另一份仓库。
+原工作区仍在旧分支，三份 dirty 文件和 patch 原始字节未变；新增的是本地临时取证缓存。远端恢复后先核对身份，再读 handoff/codex/review-evidence-20261024/index.json；按 task_id 先 list 再读取返回的实际 ID，29—44 只是本机索引回执。也可读取缓存内由 SDK 允许且脱敏的相同正文，不能把旧 HEAD 当审核基线。源码缓存属于已有工作区范围，未创建第二个连接器或上传另一份仓库。
 
 Hub 仍为 WinError 10061，未成功上报。I2C 凭证、M6/Candidate004、音频人审及后续阶段门禁保持。下一步是独立复核 PR #2；用户恢复音频人审后才推进相应新候选。
+
+现有项目审核聊天 6adc134e 已收到一次 GitHub 源码复审请求，要求读取 PR #2 与固定源码 10679a1，再制定详细下一阶段方案。页面显示已发送并正在回应；远端是否能通过 GitHub 取得源码仍待实际回复，状态为 PENDING_REMOTE_REVIEW，不能写成 C2C 恢复或独立审核通过。
 
 ---
 

@@ -59,6 +59,8 @@ technical_cut 按约定帧数拼接，与原有转场路径并存。技术图焦
 
 每个 Job/attempt 使用 SQLite 执行 claim；取消并明确重试后，旧所有者的数据库写入被 token/attempt fencing 拒绝。锁不按超时自动抢占；中断后使用明确的 cancel/retry 恢复。必须的产物先检查路径、文件和哈希，再与 PENDING_REVIEW 状态在一个事务内发布；待审任务重用前重新核对实际产物，失配转 FAILED，要求明确重试。
 
+subject 规划使用 plans/attempt_N 独立快照；主题请求、研究、候选、选定脚本、导演脚本、场景计划六份文件均绑定 hash 与任务身份。媒体、审阅和离线预检读取同一已完成快照；旧任务没有此 metadata 时保留既有路径。已完成规划在 VOICE/CAPTIONS 中断后只恢复到 ASSETS；不完整时明确失败，显式重试才重建。topic/reference 在 QUALITY_CHECK 中断后重试会在新的 attempt 输出目录重新核验，再原子发布待审。
+
 后渲染检查将实际媒体 SHA 与报告及存在的派生记录绑定，并核对 composition/content_kind/layout 的一致性。仅合法产品模板保留深色边缘例外；旧 RC/Flash 生产者状态按显式兼容表接受，仍须提供真实媒体身份。
 
 本地 CLI 调用生产链，SQLite 保存持久状态。常规状态包括 NEW、RESEARCHING、SCRIPTING、VOICE、CAPTIONS、ASSETS、RENDERING、QUALITY_CHECK、PENDING_REVIEW；异常保留 FAILED/CANCELLED。READY 必须解析预期产物、strict Schema、跨文件身份和真实质量字段，不能只看退出码。
