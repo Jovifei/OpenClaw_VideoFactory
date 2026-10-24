@@ -49,6 +49,12 @@ Updated: 2026-10-24 · Phase 1 remains in_progress
 
 当前文档链接、canonical 路径、包清单与 1,509 项 checksum 已通过；初始 27 个本地和 15 个远端功能分支头全部为整合提交的祖先。清理前受跟踪文件 1,776 个，清理后 1,510 个，删除 273 份历史文件并新增 7 份当前文档/范围记录。Git 版本对应本交付文件的提交；最终远端精确 SHA 记录在实际推送回执中。日志保存在本工作区 ignored reports/consolidation-*。没有运行产品 Formal Gate、新 provider 请求或新的候选媒体生产。
 
+## 发布与本地工作区
+
+main 与 archive/pre-cleanup-20261023 已成功推送到 GitHub。该归档保存清理前全部历史；main 保留当前精简文档和完整实现。原工作区 dirty patch 已逐字节验证未变。整合工作区切换至 main 供审核，最终 SHA 以 GitHub main 和本文件对应提交为准。
+
+GitHub 直连曾超时；使用本机已运行的网络通道完成本次 Git 请求，没有写入全局 Git 或系统网络配置。
+
 ## Jovi 审核顺序
 
 1. [需求](PRODUCT_REQUIREMENTS.md)：视频工厂与工程内容范围。

@@ -13,7 +13,7 @@ Change Request: reports/change_requests/REPO-CONSOLIDATION-20261023.json。
 - [x] 归纳需求、架构、路线、交接、经验；按依赖筛选旧记录。
 - [x] 完成 273 份历史文件清理；Python 643 passed/1 skipped/2 deselected，原目录身份校验 2 passed，Node 70 passed，Remotion typecheck/contracts 通过。
 - [x] 当前文档链接、1,509 个 checksum、27 个本地/15 个远端功能分支祖先覆盖已核验。
-- [ ] 推送 main 与归档标签，核对 GitHub SHA，交给 Jovi 审核。
+- [x] main 与 archive/pre-cleanup-20261023 已成功推送；完成 GitHub 回执核对，交给 Jovi 审核。
 
 Review: 本轮不代表 Phase 1 通过。原工作区三份未提交文件保留。Hub revision 读取 WinError 10061，未成功上报并停止自动重试。实际结果写入 docs/PROJECT_REVIEW.md。
 

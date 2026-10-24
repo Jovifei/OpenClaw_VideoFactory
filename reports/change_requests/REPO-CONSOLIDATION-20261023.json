@@ -1,6 +1,6 @@
 {
   "id": "REPO-CONSOLIDATION-20261023",
-  "status": "VERIFIED_READY_TO_PUBLISH",
+  "status": "DELIVERED",
   "authorized_by": "Jovi",
   "date": "2026-10-23",
   "scope": "Merge outstanding feature work into main; consolidate product requirements, technical route and roadmap; remove obsolete process documents after reference checks and a Git archive tag.",
@@ -25,5 +25,8 @@
     "all_initial_feature_heads_covered": true
   },
   "hub_status": "Revision read failed with WinError 10061; automatic retries stopped; retain local execution records.",
-  "deleted_historical_documents": 273
+  "deleted_historical_documents": 273,
+  "archive_tag_pushed": true,
+  "initial_main_publish": "c953cd0",
+  "owner_dirty_patch_unchanged": true
 }
