@@ -1,0 +1,8 @@
+{
+  "id": "REPO-CONSOLIDATION-REGRESSION-20261024",
+  "authorized_by": "Jovi repository consolidation and regression verification request",
+  "scope": "Repair stale product-demo test inputs to current mandatory voice-cue/capture contracts; replace obsolete source-string assertions with behavioral layout/distortion checks; no runtime contract weakening.",
+  "root_cause": "Website branch commit 45dbd29 introduced mandatory voice cues, motion cues and 580px desktop portrait presentation without updating all test fixtures. Isolated checkout also lacks ignored historical MP4 examples and one already-pinned npm package.",
+  "preserve": ["runtime code and production rejection rules", "owner worktree and dependency contents", "failed first-run logs", "inherited media qualification labels"],
+  "environment": "Use existing installed dependencies read-only and an isolated layout-utils 4.0.500 package; download only under E:/Claude_allow/Download. Copy historical local test artifacts with hash receipts, explicitly not a fresh render."
+}

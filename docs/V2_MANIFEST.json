@@ -1,6 +1,6 @@
 {
   "version": "3.0",
-  "updated": "2026-09-05",
+  "updated": "2026-10-24",
   "current_product_phase": "PHASE_1_LOCAL_VIDEO_FACTORY",
   "current_status": "in_progress",
   "canonical_docs": [
@@ -9,8 +9,9 @@
     "docs/README.md",
     "docs/CURRENT_ARCHITECTURE.md",
     "docs/PRODUCT_PHASES.md",
-    "handoff/codex/PROJECT_HANDOFF_20260905.md",
-    "handoff/codex/CURRENT_BACKLOG.yaml",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "docs/PROJECT_REVIEW.md",
+    "handoff/codex/CURRENT_HANDOFF.md",
     "runbook/11_PHASE1_COMPLETION.md"
   ],
   "phase1_core": {

@@ -1,353 +1,63 @@
-# 11 — Phase 1 本地视频工厂正式收口 Runbook
+# Phase 1 收口步骤
 
-Updated: 2026-09-28
+Updated: 2026-10-24
 
-## 目的
+本 Runbook 适用于当前本地视频工厂。只执行已有授权与依赖满足的工作包；本轮主线合并/文档清理不授权运行 Formal Gate。
 
-把已经存在的 Topic、Reference、SQLite Lifecycle、Director、Remotion/FFmpeg、Review Package、Acceptance/Gate 和近期参考重构成果统一为一次正式 Phase 1 验收。
+## 1. 确认状态
 
-当前状态是 `in_progress`，不是 `not_started`，也不是 `passed`。
-
-本 Runbook 不授权飞书、OpenClaw Daily Runtime、Cron、自动发布或模型下载。
-
-`topic_only_v1` 是当前的补充验收范围：Flash/watchdog、FreeRTOS、I2C 和一条
-不重复的 live topic。它不删除 `legacy_topic_reference_v1`；未在 topic-only
-manifest 中提供 reference job 时可省略，但任何实际提供的 reference job 仍须
-完整验证。所有最终 Jianying 审阅、导出和抖音发布仅由 Jovi 人工完成。
-
-当前闭环交接见 `handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md`。
-本 Runbook 的历史候选描述必须服从该交接、当前代码和真实 evidence；历史
-Flash/FreeRTOS 截断候选不得重新进入验收。
-
----
-
-## 1. 基线确认
-
-开始前：
+先读 START_HERE_CODEX、PROJECT_STATUS、当前需求/架构/路线与 CURRENT_HANDOFF。核对当前工作区、Git SHA、dirty 文件和 Change Request，不能据历史任务编号或测试数推断产品通过。
 
 ```powershell
-Set-Location E:\project\OpenClaw_VideoFactory
-git fetch
+git fetch origin
 git status --short --untracked-files=all
 git rev-parse HEAD
 git rev-parse origin/main
-git diff --check
+python scripts/factory.py phase1 --help
 ```
 
-要求：
+当前 Phase 1 为 in_progress；主链 SQLite + Remotion/FFmpeg，不依赖生产飞书/Cron。
 
-- 固定当前集成分支或已验证的 `main`；
-- 不 reset/clean/自动 stash/rebase/force push；
-- 若远端前进，先读新提交，禁止回退；
-- Runtime/参考原件/SQLite/私人审阅文件不进入 Git。
+## 2. 音频、事实与主题候选
 
-先读：
+核对事实来源/素材权利、source/aligned PCM、完整台词、实际 cue 和技术图。历史 Flash/FreeRTOS 截断候选保持失败，新候选须先满足音频质量审核与执行授权。不得通过裁尾、改状态或复用过期人审来满足时长。
 
-- `PROJECT_STATUS.yaml`；
-- `docs/README.md`；
-- `docs/CURRENT_ARCHITECTURE.md`；
-- `docs/PRODUCT_PHASES.md`；
-- `handoff/codex/PROJECT_HANDOFF_20260905.md`。
+topic_only_v1 要求 Flash/watchdog、FreeRTOS、I2C、不同 live topic；每条最终 MP4、质量包、结构化人审与 Prereview 绑定精确 SHA。
 
----
+最近 I2C 为 I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE。没有新的批准凭证/方案决定，不重试 provider，不复活 Candidate003，不创建 Candidate004/M6。
 
-## 2. 不要重复实现已经存在的模块
+参考模式保留 rights receipt、入库 SHA、analysis、original brief、difference report 和真实人工原创性审核。普通技术视频默认不启用个人角色；opt-in 时须原始资产 receipt。
 
-不要重写：
+## 3. 生命周期与 bounded regression
 
-- `src/factory/db.py`；
-- `src/factory/phase1_cli.py`；
-- `src/factory/phase1_local.py`；
-- `src/factory/reference_video.py`；
-- `src/factory/director/`；
-- `video_factory/pipeline/`；
-- `generate_video.py`；
-- `src/factory/phase1_acceptance.py`；
-- `src/factory/phase1_gate.py`。
+先 revalidate 已有 cancel/failed-retry/restart/fallback 的 hash、Schema、版本和实际语义；只有具体不兼容才补测。报告成功不代表最终媒体合格。
 
-只修当前证据暴露出来的兼容问题。
+明确列出本轮测试套件、解释器和 Node 环境，保留失败日志。tests/video 中部分旧媒体测试要求 dist/story_demo* 和示例 MP4；应生成真实测试产物，或以 hash receipt 提供既有测试样片并标注 inherited，缺失时不能伪造通过。既有样片测试不等于本轮重新渲染。
 
----
+当前代码回归、Node 产品合同、Remotion typecheck/contract、文档引用/包 checksum 分别记录。不要运行不相干的全仓 P0/vendor 环境测试并拿其计数替代 Phase 1 验收。
 
-## 3. 先建立当前统一测试基线
+## 4. 单任务 Prereview
 
-历史测试数字来自不同阶段，不能混成一个假的“总通过数”。本轮先记录明确的 bounded suites：
+审核目标必须是实际最终媒体，不能用旧图、无声预览或另一个候选替换。用对应真实文件调用：
 
 ```powershell
-$py = 'C:\Users\Admin\.workbuddy\binaries\python\envs\default\Scripts\python.exe'
-
-& $py -m pytest tests/phase1_acceptance -q
-& $py -m pytest tests/phase1_local -q
-& $py -m pytest tests/reference -q
-& $py -m pytest tests/director -q
-& $py -m pytest tests/video -q
-& $py -m pytest video_factory/tests -q
+python scripts/phase1_acceptance.py --database PATH_TO_DATABASE --job-id JOB_ID --review PATH_TO_REVIEW --output PATH_TO_PREREVIEW
 ```
 
-再运行与当前 reference/remotion/jianying Change Request 相关的 focused tests。
+先通过 --help 确认当前参数；上述大写项是待替换的真实路径/ID。必须解析输出的 ready 及质量/身份字段，不只看命令退出码。
 
-根目录 `pytest` 如果仍被 vendor research dependency 或历史 Feishu/P0 环境套件阻塞，必须：
+## 5. 整阶段资格与 Formal Gate
 
-- 记录哪些 suite 非 Phase 1；
-- 不把这些失败隐瞒；
-- 也不允许它们阻止 bounded Phase 1 Gate；
-- Gate manifest 明确列出真正参与资格判断的 suite。
+前置：所需主题的人审明确 approved、Prereview ready、Lifecycle 齐全，Acceptance Manifest、Boundary Audit、fresh bounded regression 和独立只读审核都成立。任何 BLOCKED/NOT_RUN/CHANGES_REQUIRED 不得被写成 PASS。
 
----
-
-## 4. 固定主题集合
-
-### Modbus RTU
-
-已有 baseline，不为了“看起来有新工作”重写。只需重新对齐当前 Schema、Review Package、Human Review 和 Prereview。
-
-### Flash / Watchdog
-
-当前已有：
-
-- `examples/phase1_local_flash_watchdog/brief.json`；
-- deterministic technical illustrations；
-- mascot-free 修正版；
-- 本地 MP4；
-- 多轮 timing/Jianying 证据。
-
-本轮要做的是选出**唯一最终候选**，不要把所有历史 v1/v2/v4 都送进 Gate。
-
-### FreeRTOS
-
-已有：
-
-- `examples/phase1_local_freertos/brief.json`。
-
-已有 brief、技术资产修复、历史外层候选和源对齐音频 v7 证据。历史候选因
-共享 TTS 截断合同被永久标记 `CHANGES_REQUIRED_AUDIO_TRUNCATION`，不能复用。
-当前缺口是：该主题的 v7 音频质量人审通过后，重新执行**一个**源对齐外层
-`create-topic → run`，完成机器审查、Jovi 最终 MP4 SHA 人审和 Prereview。
-
----
-
-## 5.1 Source-aligned audio contract
-
-旁白完整性必须由机器证明：原始 TTS PCM 是对齐段的完整前缀，对齐段尾部只能
-是静音填充，段序和最终端点必须与 timeline/SRT 一致。TTS overflow 直接失败，
-不能依赖 `-t`、`atempo` 或 BGM fallback。Jovi 的音频门只审主观质量，不代替
-机器完整性证据；因此机器工作可以与听审并行。
-
----
-
-## 5. Render Profile 对齐
-
-不要假设所有 Job 都必须同一个分辨率。
-
-Gate/Review 必须从当前 Job 的 profile 判断：
-
-- `9:16` → 1080×1920；
-- `16:9` → 1920×1080；
-- 30 FPS；
-- H.264/AAC；
-- complete decode；
-- profile-specific safe area / subtitle rule。
-
-如果现有 acceptance Schema 仍硬编码单一 1080×1920，需要先在最小范围内修成 profile-aware contract，再重新跑相关测试。不要为了兼容横屏 reference/Jianying 实验而破坏竖屏 Douyin profile。
-
----
-
-## 6. Lifecycle Evidence
-
-2026-09-06 的四类 lifecycle evidence 已完成并已通过 schema/hash 校验。当前
-只在最终闭环中做 revalidation 和 manifest 绑定；除非发现损坏或不兼容，不要
-重新执行一套“fresh lifecycle”任务：
-
-1. `cancel`；
-2. `retry`（先真实失败，再 retry，证明从正确 last completed state 恢复）；
-3. `restart_recovery`（进程终止/新进程继续读 SQLite 和 Artifact 状态）；
-4. `encoder_fallback`（NVENC → CPU 或明确的 CPU-only fallback contract）。
-
-每份记录仍必须包含：
-
-- schema/version；
-- job_id；
-- started_at/completed_at；
-- actual assertions；
-- source artifact hashes；
-- status；
-- 无绝对私有媒体路径。
-
-不要用 Markdown 自述替代机器 evidence。
-
----
-
-## 7. Reference Candidate 收口（topic_only_v1 可选）
-
-### 已有成果
-
-当前分支已经有：
-
-- safe reference analysis；
-- RC high-pass 9:16 reconstruction；
-- corrected geometry；
-- local narration；
-- timing manifest；
-- measured speech cues；
-- speech-cue-bound knowledge-card animation；
-- post-render checks；
-- Jianying visible/manual-review branch。
-
-### 只有 manifest 明确包含 reference job 时才执行
-
-1. 确定最新唯一候选（不要混用 v5/v6/v8 报告）；
-2. 将它映射到当前 standard Review Package / Human Review contract；
-3. Jovi 实际看画面、听音频并判断 originality；
-4. 形成 `phase1_human_review`；
-5. 生成 Prereview；
-6. 若它属于公开 reference research 而最终 Gate manifest 明确要求 `local_reference` fixture，则另用一条 Jovi 授权本地 MP4 + rights 跑一遍标准路径；
-7. synthetic reference 只能做测试，不能替代人工原创性证据。
-
----
-
-## 8. Jianying
-
-Jianying 草稿链已经有实现证据，但 Phase 1 Gate 的强制产品结果仍是：
-
-`local MP4 + quality report + review package`
-
-所以：
-
-- 草稿可作为额外人工 review 方式；
-- Jovi 可以在剪映中试听、检查、导出；
-- 自动导出保持关闭；
-- 草稿失败只阻塞 editable-delivery branch，不应推翻已经合格的本地 MP4；
-- 不把剪映变成唯一 renderer。
-
----
-
-## 9. Human Review
-
-每个进入最终 Gate 的候选必须有结构化人工审阅。
-
-最少检查：
-
-- video playable；
-- audio clear；
-- subtitles readable / timing acceptable；
-- technical content acceptable；
-- visual composition acceptable；
-- originality acceptable；
-- Pink Pig consistency（只有 mascot-enabled brief 才要求；mascot-off 不应被此字段错误阻塞）。
-
-人工审核必须绑定最终 MP4 SHA-256。
-
-Jovi 未看过/未听过的候选不得写 `approved`。
-
----
-
-## 10. 单 Job Prereview
+只在前置齐全且获授权后，使用真实 manifest 执行一次：
 
 ```powershell
-& $py scripts/phase1_acceptance.py `
-  --database state/phase1_local/phase1_jobs.sqlite3 `
-  --job-id <control_job_id> `
-  --review <human_review.json> `
-  --output reports/phase1/prereview/<name>.json
+python scripts/phase1_gate.py --manifest PATH_TO_ACCEPTANCE_MANIFEST --output-dir PATH_TO_GATE_OUTPUT
 ```
 
-退出码 0 且 `status=ready` 才能进入 Acceptance Manifest。
+真实生成 PHASE1_READY 后才单独更新 PROJECT_STATUS。失败保留证据，不猜测修改后连续运行 Gate。Phase 2 必须另外取得启动授权。
 
-如果现有 Prereview 工具与新 profile/mascot-off contract 不兼容，先写最小失败测试再修。
+## 6. 交接
 
----
-
-## 11. Boundary Audit
-
-必须确认：
-
-- `no_feishu = true`；
-- `no_openclaw_runtime = true`；
-- `no_cron = true`；
-- `no_automatic_publish = true`；
-- private runtime stays ignored；
-- no credentials / raw reference media in Git；
-- no second all-in-one video backend；
-- no unapproved model/node download。
-
----
-
-## 12. Acceptance Manifest
-
-Manifest 只引用**最终选择的证据**，不把整个 `reports/` 历史目录全塞进去。
-
-至少包含：
-
-- Modbus Prereview；
-- Flash/Watchdog Prereview；
-- FreeRTOS Prereview；
-- Reference Prereview（仅当 topic_only_v1 manifest 明确提供 reference job 时）；
-- cancel evidence；
-- retry evidence；
-- restart recovery evidence；
-- encoder fallback evidence；
-- boundary audit；
-- bounded regression summary；
-- human-review hashes。
-
-所有文件都带 SHA-256。
-
----
-
-## 13. Independent Read-only Audit
-
-正式 Gate 前再开一个独立 Agent，只读审核：
-
-- current branch / HEAD；
-- manifest file hashes；
-- selected candidate uniqueness；
-- human review binding；
-- no stale v5/v6/v8 mixing；
-- no Phase 2 side effects；
-- no false test aggregation；
-- no absolute/private path leakage。
-
-发现问题先修证据，再重新生成 manifest；不要直接改 Gate 让它通过。
-
----
-
-## 14. Formal Gate
-
-确认所有人工审核和独立 review 完成后，正式 Gate **只运行一次**：
-
-```powershell
-& $py scripts/phase1_gate.py `
-  --manifest reports/phase1/phase1_acceptance_manifest.json `
-  --output-dir reports/gates
-```
-
-成功：
-
-- exit 0；
-- `reports/gates/PHASE1_READY.json`；
-- 所有来源 SHA 匹配。
-- 当前 acceptance scope 所需主题 fixture、live topic（仅 `topic_only_v1`）、
-  实际提供的 reference job、lifecycle 与 boundary audit 全部通过。
-
-失败：
-
-- 保留 `PHASE1_FAILED.json`；
-- 停止；
-- 不伪造/覆盖失败证据；
-- 创建新的 remediation task。
-
----
-
-## 15. Phase Promotion
-
-只有 Gate 通过后，才单独更新：
-
-```yaml
-product_phases:
-  PHASE_1_LOCAL_VIDEO_FACTORY:
-    status: passed
-```
-
-然后停止当前任务。
-
-**不要在同一任务直接开始飞书 Phase 2。**
+推送经过验证的精确 Git SHA，把当前目标、完成、阻塞、关键文件和下一步交给远端 GPT/Jovi 审核。远端讨论技术分歧并制定下一阶段计划；本地在已授权范围执行。历史逐轮记录从 archive/pre-cleanup-20261023 查回。

@@ -289,3 +289,11 @@ schemas/p0_evidence_v2/
 !docs/MONEYPRINTER_TURBO_SETUP.md
 !reports/phase1/mpt_configure_evidence_20260829.json
 !reports/change_requests/PHASE1-MPT-CONFIG-FINALIZE-003.json
+
+# Canonical documentation and scope records after repository consolidation.
+!docs/PRODUCT_REQUIREMENTS.md
+!docs/MAINTENANCE.md
+!docs/PROJECT_REVIEW.md
+!reports/README.md
+!reports/change_requests/REPO-CONSOLIDATION-20261023.json
+!reports/change_requests/REPO-CONSOLIDATION-REGRESSION-20261024.json

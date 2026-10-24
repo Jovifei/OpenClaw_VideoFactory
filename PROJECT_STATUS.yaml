@@ -1,7 +1,7 @@
 version: 2.5
 project_root: E:\project\OpenClaw_VideoFactory
 status: phase_1_local_video_factory_in_progress
-last_updated: 2026-09-28
+last_updated: 2026-10-24
 current_phase: PHASE_1_LOCAL_VIDEO_FACTORY
 phase_model: user_aligned_2026_09_05
 product_phases:
@@ -33,8 +33,9 @@ product_phases:
       - docs/README.md
       - docs/CURRENT_ARCHITECTURE.md
       - docs/PRODUCT_PHASES.md
-      - handoff/codex/PROJECT_HANDOFF_20260905.md
-      - handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md
+      - docs/PRODUCT_REQUIREMENTS.md
+      - docs/PROJECT_REVIEW.md
+      - handoff/codex/CURRENT_HANDOFF.md
   PHASE_2_FEISHU_AUTOMATION:
     status: blocked_by_PHASE_1_LOCAL_VIDEO_FACTORY
     goal: Feishu safety, topic cards, user selection, qualified 12:00 fallback, controlled delivery, and Cron after non-scheduled proof

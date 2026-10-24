@@ -1,0 +1,29 @@
+{
+  "id": "REPO-CONSOLIDATION-20261023",
+  "status": "VERIFIED_READY_TO_PUBLISH",
+  "authorized_by": "Jovi",
+  "date": "2026-10-23",
+  "scope": "Merge outstanding feature work into main; consolidate product requirements, technical route and roadmap; remove obsolete process documents after reference checks and a Git archive tag.",
+  "product_decision": "Keep the video factory; make engineering tutorials and demonstrations about apps, websites, schematics and hardware. Web/App operation interfaces are later extensions.",
+  "baseline_main": "f1d94e980526ab7d0a06faadf9c78596b09db565",
+  "owner_tree": "E:/project/OpenClaw_VideoFactory",
+  "integration_tree": "E:/project/worktrees/OpenClaw_VideoFactory/main-consolidation-20261023",
+  "preserve": [
+    "dirty owner files",
+    "runtime and tests",
+    "operational fixtures and licenses",
+    "rights and machine evidence dependencies",
+    "Phase 1 in_progress status"
+  ],
+  "verification": {
+    "python": "643 passed, 1 skipped, 2 deselected, 4 subtests passed",
+    "original_path_media_identity": "2 passed",
+    "node": "70 passed",
+    "typescript": "passed",
+    "remotion_contracts": "passed",
+    "checksums": 1509,
+    "all_initial_feature_heads_covered": true
+  },
+  "hub_status": "Revision read failed with WinError 10061; automatic retries stopped; retain local execution records.",
+  "deleted_historical_documents": 273
+}

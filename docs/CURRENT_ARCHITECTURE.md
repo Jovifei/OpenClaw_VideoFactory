@@ -1,400 +1,62 @@
-# OpenClaw VideoFactory — Current Architecture
+# 当前技术架构
 
-Updated: 2026-09-28
+Updated: 2026-10-24 · Phase 1 in_progress
 
-本文件是当前 Phase 1 技术架构的权威说明。它吸收了 2026-08 至今的 Pink Pig、AI Director、Composition、reference-video、Remotion、Jianying 和 acceptance/gate 迭代，但不把任何单次实验当成全局默认。
+## 主链
 
-## 1. 产品边界
-
-### Phase 1 当前必须解决的问题
-
-Phase 1 的目标不是“写出一个能把图片拼成 MP4 的 Demo”，而是把本地视频生产变成可反复执行、可追踪、可取消、可恢复、可审核的产品链。
-
-核心输入只有三类：
-
-1. `topic` — Jovi 给主题和事实边界；
-2. `local_reference` — Jovi 给一条拥有处理权的本地 MP4 + rights；
-3. `authorized_public_research` — Jovi 明确授权使用公开资料研究主题，必须保存来源和日期。
-
-核心输出：
-
-- 原创脚本；
-- Storyboard；
-- Asset Selection / Manifest；
-- Timeline；
-- source-bound 本地 TTS evidence（测量、overflow fail-closed、完整对齐段）；
-- subtitle / timing evidence；
-- Render Report；
-- H.264/AAC MP4；
-- Cover；
-- Quality Report；
-- Review Package；
-- SQLite Job/Event/Artifact evidence；
-- Jovi Human Review；
-- Phase 1 Prereview / Acceptance / Gate evidence。
-
-Phase 1 **不依赖**飞书、OpenClaw Daily Runtime、Cron、自动选题或自动发布。
-
-## 2. 当前主链
-
-```text
-                   ┌─────────────────────────────┐
-                   │         Phase 1 Input       │
-                   │ topic / local_reference /   │
-                   │ authorized_public_research  │
-                   └──────────────┬──────────────┘
-                                  │
-                                  v
-                    factual / rights / digest
-                                  │
-                 ┌────────────────┴────────────────┐
-                 │                                 │
-                 v                                 v
-        Topic planning path               Reference analysis path
-   src/factory/phase1_local.py          src/factory/reference_video.py
-                 │                     ffprobe / PySceneDetect /
-                 │                     optional cached ASR
-                 │                                 │
-                 └──────────────┬──────────────────┘
-                                v
-                   Script / Storyboard / Assets
-                    src/factory/director/*
-                    PinkPig/technical Registry
-                                │
-                                v
-                       Storyboard compiler
-                                │
-                                v
-                            Timeline
-                                │
-                ┌───────────────┼────────────────┐
-                │               │                │
-                v               v                v
-              TTS          Subtitle/timing   Visual planning
-                │               │                │
-                └───────────────┼────────────────┘
-                                v
-                   Remotion / deterministic visual
-                                │
-                                v
-                         existing FFmpeg path
-                                │
-                                v
-                       final local MP4
-                                │
-                                v
-                Quality Report / Review Package
-                                │
-                                v
-                     SQLite PENDING_REVIEW
-                                │
-                                v
-                       Jovi Human Review
-                                │
-                                v
-                         Phase 1 Prereview
-                                │
-                                v
-                     Acceptance Manifest / Gate
+```mermaid
+flowchart TB
+    A[主题 / 授权参考 / 工程素材] --> B[事实 / 来源 / 权利 / 入库]
+    B --> C[结构化脚本 / Storyboard / 受控素材]
+    C --> D[TTS / 完整旁白 / 字幕 / 实测 cue]
+    C --> E[Remotion 技术画面 / 网页演示]
+    D --> F[FFmpeg 编码与音画合成]
+    E --> F
+    F --> G[MP4 / 质量报告 / 审阅包]
+    G --> H[Jovi 精确 SHA 人工审核]
+    H --> I[Prereview / Acceptance / Formal Gate]
+    S[SQLite Job / Event / Stage / Artifact] --- B
+    S --- F
+    S --- G
 ```
 
-### 2.1 Source-aligned narration contract
+| 层 | 当前实现 | 职责 |
+|---|---|---|
+| 入口 | scripts/factory.py、src/factory/phase1_cli.py | 创建/执行/状态/取消/重试 |
+| 控制平面 | src/factory/db.py、state.py | SQLite、幂等、生命周期、产物身份 |
+| 主题规划 | phase1_local.py、director/ | 来源约束、结构化规划、Registry 选择 |
+| 参考模式 | reference_video.py | 只读入库、digest、ffprobe、场景/节奏、可选 cached ASR、原创差异 |
+| 音频 | phase1_subject_audio.py、pipeline/narration_timing.py、音频脚本 | TTS、source-aligned 旁白、完整性与片段时间 |
+| 视觉 | remotion/、素材/Schema | 技术图、字幕安全区、WebsiteProductDemo、语音焦点 |
+| 合成 | generate_video.py、video_factory/pipeline/renderer.py | FFmpeg、转场/精确时长、render report |
+| 资格 | phase1_post_render_check.py、phase1_acceptance.py、phase1_gate.py | 质量、hash、单 Job 与整阶段 Gate |
 
-源对齐旁白是当前 Phase 1 的唯一旁白主线：
+## 音画与内容合同
 
-```text
-source-bound script
-→ local TTS raw segments + SHA/duration
-→ overflow fail-closed
-→ at most one deterministic fact-preserving fixture rewrite
-→ measured frame-aligned scene allocation
-→ complete raw segment + silence padding only
-→ SRT and renderer inputs from the same allocation
-```
+先建立 source/aligned PCM/台词完整性，再绑定 Storyboard 与实测片段。有效语音不能通过裁尾、丢句或缩短输出满足目标时长；超出合同须显式失败或按授权重规划。
 
-`align_complete_segments()` 必须用统一 PCM 表示证明每个对齐段以完整原始
-波形为前缀，后续只有静音填充；还必须证明段序、拼接端点和 review-package
-证据一致。机器合同负责波形完整性，Jovi 的音频质量门只负责发音、可懂度、
-节奏、停顿、工程含义和 TTS 瑕疵。WhisperX、MFA、Piper 及新的模型下载不属于
-当前 Phase 1 修复路线。
+technical_cut 按约定帧数拼接，与原有转场路径并存。技术图焦点、字幕和动作绑定实际语音 cue。最终时长、声轨、完整 decode 和 review 媒体身份同时验证。
 
-## 3. 状态与生命周期
+协议、代码、公式、原理图优先 SVG/HTML/Remotion 确定性图形。App/网页使用授权真实截图/录屏；现有 WebsiteProductDemo 仅服务受控产品模板。website_product_demo_v1 的深色边缘例外不能放宽其他技术视频。图上标签正确不等于工程关系正确，仍须技术语义审核。
 
-`src/factory/db.py` 是当前本地控制平面的核心，而不是未来待实现项。数据库已经覆盖：
+## 组件与采用边界
 
-- jobs；
-- job_events；
-- artifacts；
-- topic_history；
-- source_records；
-- stage_attempts；
-- locks；
-- 历史 delivery 表（Phase 1 不做真实发送）。
+| 组件 | 实际采用 | 边界 |
+|---|---|---|
+| Remotion + FFmpeg/ffprobe | 现有主视觉/媒体引擎 | Phase 1 保留 |
+| OpenMontage | 已选取适配的 AGPL-3.0-only 源码 | 见 third_party/openmontage/PROVENANCE.json、LICENSE、THIRD_PARTY_NOTICES；不能记成仅方法参考 |
+| MoneyPrinterTurbo | 已有规划/文案草稿 adapter | 不接管状态/最终渲染；最近 I2C 受凭证阻塞 |
+| PySceneDetect / faster-whisper | 参考分析 / 可选缓存 ASR | 缺失标注，不自动下载模型 |
+| 剪映 | 可选编辑交付 | 不作为本地 MP4 合格的硬前置 |
+| DaVinci MCP | 可选编辑器试验 | 最近记录只准备 MCP 环境；本机连接、剪辑、导出未证明 |
+| ComfyUI / WhisperX | 后续增强 | 批准 workflow、模型预算、GPU 单并发 |
 
-本地阶段：
+## 状态与未来入口
 
-```text
-NEW
-→ RESEARCHING
-→ SCRIPTING
-→ VOICE
-→ CAPTIONS
-→ ASSETS
-→ RENDERING
-→ QUALITY_CHECK
-→ PENDING_REVIEW
-```
+本地 CLI 调用生产链，SQLite 保存持久状态。常规状态包括 NEW、RESEARCHING、SCRIPTING、VOICE、CAPTIONS、ASSETS、RENDERING、QUALITY_CHECK、PENDING_REVIEW；异常保留 FAILED/CANCELLED。READY 必须解析预期产物、strict Schema、跨文件身份和真实质量字段，不能只看退出码。
 
-异常状态：
+Phase 2 用 OpenClaw 承担飞书入口、调度、恢复与通知，调用既有本地链。后续网页/App 只增加任务创建、素材管理、预览和审核界面；接口/平台待相应阶段确定，不预先引入另一套数据库或视频编排。
 
-```text
-FAILED
-CANCELLED
-```
+## 当前缺口
 
-当前必须补齐的不是数据库表，而是：
-
-- cancel 的真实执行证据；
-- failed→retry 的真实执行证据；
-- 进程中断/重启后的 controlled recovery 证据；
-- encoder fallback 的统一 evidence JSON；
-- 这些证据进入正式 Phase 1 acceptance manifest。
-
-## 4. Topic 模式
-
-Topic 模式当前可以通过 `phase1_local_brief` 与 verified factual brief 进入确定性规划。
-
-关键原则：
-
-- 用户输入不能直接指定 `asset_id`、文件路径、render 参数或 Provider Prompt；
-- 事实必须通过 factual brief 的 source/fact contract；
-- Script/Storyboard 必须由系统控制 ID、顺序和渲染字段；
-- AssetSelector 只能选择 Registry 中允许的素材；
-- 技术图优先 deterministic SVG/HTML/Remotion，不用 text-to-image 重画协议帧、寄存器、电路、代码和公式。
-
-当前固定内容 Fixture：
-
-- Modbus RTU — 已形成稳定本地 baseline；
-- Flash/看门狗 — 已有 factual brief、两套技术卡片、无 mascot 修正版、本地成片/剪映实验；
-- FreeRTOS — brief、技术资产修复和历史候选已保留；历史全量候选因共享 TTS
-  截断合同被永久标记 `CHANGES_REQUIRED_AUDIO_TRUNCATION`，必须在该主题的
-  音频质量批准后重新执行一个源对齐外层候选。
-
-## 5. Reference 模式
-
-### 5.1 基础 Phase 1 分析
-
-`src/factory/reference_video.py` 已实现：
-
-- 仅接受本地 MP4；
-- reparse/symlink 安全检查；
-- SHA-256；
-- ffprobe 元数据；
-- 复制到 ignored/private reference store；
-- 只读处理；
-- PySceneDetect scene boundary；
-- 可选已缓存 faster-whisper small ASR；
-- `reference_receipt.json`；
-- `reference_rights.json`；
-- `reference_report.json`；
-- `original_brief.json`；
-- `difference_report.json`。
-
-### 5.2 原创边界
-
-Phase 1 允许学习：
-
-- 主题；
-- 粗粒度结构；
-- 节奏；
-- 场景密度；
-- 通用表达方式。
-
-不得复制：
-
-- 原音；
-- 水印；
-- 连续原镜头；
-- 完整原文案；
-- 可识别包装或镜头顺序；
-- 把参考视频本体/路径暴露进 review package。
-
-### 5.3 最新 RC 高通参考重构
-
-当前分支已经比早期 `REFERENCE_VIDEO_ANALYSIS.md` 描述更进一步：
-
-- 新增 9:16 RC high-pass Remotion visual；
-- 修复几何关系；
-- 通过本地 TTS/SAMI 分段测量语音时间；
-- 将 summary knowledge cards 的动画触发绑定到 measured speech cues，而不是自由循环动画；
-- 增加 cutoff、transfer function、phase/time、设计验证等可见知识密度；
-- 生成可供剪映打开的实验草稿和 post-render 质量证据。
-
-这些成果说明 reference→original reconstruction 方向可行，但**仍属于 Phase 1 候选证据/人工 review-ready**，不能替代总 Gate。
-
-## 6. Director 与 Provider
-
-`src/factory/director/` 已存在 Provider-neutral Director、ScriptPlanner、StoryboardAssembler、AssetSelector 和 factual context。
-
-历史上真实 Codex CLI Provider 曾因为本地 models cache / `base_instructions` 问题失败。这个故障已经证明：
-
-- Provider 接口需要 fail closed；
-- Provider 环境问题不能污染 renderer；
-- 本地确定性 Phase 1 不应被 Provider cache 卡死。
-
-所以当前 Phase 1 Gate 允许在 verified factual brief 基础上走确定性本地规划。真实 Provider 恢复是独立增强，不再是 Phase 1 的唯一 blocker。
-
-## 7. Visual / Composition / Render
-
-### 7.1 技术画面
-
-优先级：
-
-```text
-确定性 SVG / HTML / Remotion
-→ 已审核本地素材库
-→ licensed stock（未来）
-→ ComfyUI 创意素材（Phase 3）
-→ deterministic fallback
-```
-
-技术事实画面（协议帧、寄存器、电路、公式、代码、时序）禁止用不受控 text-to-image 当事实图。
-
-### 7.2 Aspect Ratio Profiles
-
-历史文档存在两个冲突默认值：1080×1920 和 1920×1080。当前统一规则：
-
-- Aspect ratio 是 **Job/brief contract**，不是全局常量；
-- Douyin/vertical knowledge profile：1080×1920 / 9:16；
-- reference/Jianying landscape profile：1920×1080 / 16:9；
-- Profile 决定安全区、字幕、Composition 和 Gate 断言；
-- 不能再用一个固定分辨率验收所有任务。
-
-### 7.3 Remotion
-
-Remotion 已从“候选模板”升级为实际使用的 deterministic visual engine：
-
-- 参考高通动画；
-- Flash visual；
-- 技术卡；
-- 语音 cue 驱动画面；
-- Composition 可编程布局。
-
-继续坚持：Remotion 是视觉/时序实现，不拥有 Job State、事实审核或用户权限。
-
-### 7.4 FFmpeg
-
-FFmpeg/ffprobe 继续是最终媒体基础设施：
-
-- H.264/AAC；
-- visual/audio mux；
-- decode 验证；
-- metadata；
-- volume/stream checks；
-- CPU/NVENC encoder fallback。
-
-## 8. Audio / Subtitle / AV Sync
-
-早期字幕问题推动了安全区和 Composition Contract；后续参考重构又推动了真正的音画同步。
-
-当前原则：
-
-- narration 是单一事实文本来源；
-- 音频实际时长必须反馈到 scene/timing；
-- TTS overflow 必须 fail closed；不得用 `-t` 或 `atempo` 静默缩短旁白；
-- raw/aligned PCM 前缀、静音尾、段序和最终端点必须有机器证据；
-- 机器完整性证据与 Jovi 的主观音频质量听审分开；
-- 动画重点应优先绑定真实 speech cue，而非固定百分比或 modulo 动画；
-- subtitle/caption 不得遮挡 content；
-- Jianying 路线只有一个 native subtitle track 和一个可听 VoiceOver track；
-- 本地 MP4 可以是 burned subtitle 版本用于确定性验收；
-- visual-only Jianying input 必须无音频、无烧录字幕，避免“双字幕/双音轨权威”。
-
-## 9. Pink Pig / Personal IP
-
-### 历史教训
-
-早期仓库使用过自制 Pink Pig PNG/SVG，视觉上不等同于 Jovi 确定的原始 IP。这导致“技术链正确但品牌角色错误”。
-
-### 当前政策
-
-- `Jovifei/ian-fenzhu-illustrations` = style DNA / persona / composition rule 来源；
-- 它不是完整最终角色图包；
-- mascot 默认 off；
-- Jovi 明确 opt-in 时，只能用 Jovi 原始资产 pack + receipt；
-- 缺资产时：mascot-required brief fail closed；普通视频可无 mascot 继续；
-- local self-made / AI temporary / upstream sample 均不能冒充用户原始 IP。
-
-详见 `docs/PINK_PIG_CURRENT_POLICY.md` 与 `config/mascot_usage.yaml`。
-
-## 10. Jianying 的正确位置
-
-最新分支已经证明 Jianying 草稿链可做：
-
-- visual-only MP4；
-- VoiceOver；
-- native Subtitles；
-- E-drive runtime；
-- visible junction；
-- 手工打开/试听/导出。
-
-但**Jianying 不是 Phase 1 Core Gate 的必要 renderer**。
-
-正确架构：
-
-```text
-                 ┌─ mandatory: final local MP4 + quality/review package
-Renderer output ─┤
-                 └─ optional: Jianying editable draft → Jovi manual edit/export
-```
-
-原因：
-
-- 项目最终要自动生成视频，不能把 Phase 1 成功定义成“还必须人工剪完才能有 MP4”；
-- 剪映是编辑/交付增强；
-- 草稿失败不应使一个已通过媒体 Gate 的本地 MP4 失效；
-- 用户仍可在 Phase 1 候选上人工试听/审美复核。
-
-## 11. Open Source Design Adoption
-
-### 直接依赖或实际使用
-
-- FFmpeg / ffprobe；
-- Remotion；
-- PySceneDetect；
-- faster-whisper（reference optional ASR）；
-- JSON Schema / PyYAML 等基础组件；
-- jianying-editor-skill（可选编辑后端，需 pinned revision）。
-
-### 方法借鉴
-
-- VideoClaw：阶段化 Artifact、用户可介入、可修改中间产物、Pipeline runner/storage/events 思想；
-- video-podcast-maker：研究→脚本→TTS/timing→Remotion；
-- OpenMontage：审批门、Backlot/可视化、自检方法；
-- Code2MP4/OpenReels 等：数据合同/Director score/短视频 archetype 思想。
-
-### 明确不引入
-
-- VideoClaw 第二套 backend/frontend/state DB；
-- n8n/LangGraph/Temporal 作为第二编排层；
-- OpenMontage AGPL 源码直接复制；
-- 多个剪映/CapCut 后端并行控制同一 Job；
-- 未审查的 ComfyUI 节点/模型自动下载。
-
-## 12. Phase 1 当前 Gate 缺口
-
-必须补齐：
-
-1. canonical 文档与当前 source-aligned audio contract 同步；
-2. raw-to-aligned PCM integrity RED/GREEN evidence；
-3. 外层 `create-topic → run` 的无渲染 audio-contract integration evidence；
-4. Flash、FreeRTOS 各自的 v7 音频质量人审和一个新的机器候选；
-5. I2C 与 distinct live topic 的同合同 evidence；
-6. 已完成 lifecycle evidence 的最终 hash/schema revalidation；
-7. Acceptance Manifest；
-8. Boundary Audit；
-9. bounded full Phase 1 regression；
-10. independent read-only audit；
-11. one-shot Phase 1 Gate。
-
-只有这些完成，才允许将 Phase 1 标记为 `passed` 并进入飞书 Phase 2。
+Phase 1 尚未正式通过。历史 Flash/FreeRTOS 截断候选保持失败；I2C 最近凭证阻塞；各主题最终媒体人审、统一 Prereview、Lifecycle 绑定和 Manifest/Boundary/Gate 尚需闭合。详见 [审核说明](PROJECT_REVIEW.md)与[当前交接](../handoff/codex/CURRENT_HANDOFF.md)。
