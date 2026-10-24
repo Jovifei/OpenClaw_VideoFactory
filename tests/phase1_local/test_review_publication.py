@@ -45,6 +45,52 @@ def _fake_outputs(root):
     return {'output': str(output), 'review_package': str(review)}
 
 
+@pytest.mark.parametrize('reference', [False, True], ids=['topic', 'reference'])
+def test_quality_checkpoint_retry_never_becomes_ready_before_publication(local_store, monkeypatch, reference):
+    root, store, job_id = local_store
+    if reference:
+        job_id = store.create_job('local_reference', 'test:reference-recovery', 'video_factory_local_reference',
+                                  'reference', requested_duration_seconds=30,
+                                  metadata={'brief_path': 'input.json', 'input_mode': 'local_reference',
+                                            'runtime_root': 'runtime', 'source_sha256': 'a' * 64})['job_id']
+        monkeypatch.setattr(phase1_cli, 'load_reference_bundle', lambda *a, **k: {})
+    phase1_cli._advance_to_rendering(store, job_id)
+    store.advance(job_id, 'QUALITY_CHECK', 'checkpoint_before_worker_exit')
+    store.cancel(job_id, 'recover_interrupted_worker')
+    assert store.retry(job_id, 'explicit_retry')['state'] == 'QUALITY_CHECK'
+    seen = []
+
+    def render(*args, **kwargs):
+        seen.append(kwargs['render_identity'])
+        assert store.status(job_id)['state'] != 'PENDING_REVIEW'
+        assert store.artifacts(job_id) == []
+        return _fake_outputs(root)
+
+    monkeypatch.setattr(generate_video, 'run_local_brief', render)
+    result = _run(job_id)
+    assert result['status'] == 'pending_review'
+    assert seen == [f'{job_id}:attempt:1']
+    assert {row['artifact_type'] for row in store.artifacts(job_id)} == {'final_master', 'review_package'}
+    pending = [event for event in store.events(job_id) if event['to_state'] == 'PENDING_REVIEW']
+    assert len(pending) == 1 and len(pending[0]['payload']['artifacts']) == 2
+
+
+def test_quality_checkpoint_retry_missing_media_fails_without_review(local_store, monkeypatch):
+    root, store, job_id = local_store
+    phase1_cli._advance_to_rendering(store, job_id)
+    store.advance(job_id, 'QUALITY_CHECK', 'interrupted_publication')
+    store.cancel(job_id, 'recover_worker')
+    store.retry(job_id, 'explicit_retry')
+    result = _fake_outputs(root)
+    Path(result['output']).unlink()
+    monkeypatch.setattr(generate_video, 'run_local_brief', lambda *a, **k: result)
+    with pytest.raises(FactoryContractError, match='phase1_review_artifact_invalid'):
+        _run(job_id)
+    assert store.status(job_id)['state'] == 'FAILED' and store.artifacts(job_id) == []
+    assert store.retry(job_id, 'repair_input')['state'] == 'RENDERING'
+    assert not [event for event in store.events(job_id) if event['to_state'] == 'PENDING_REVIEW']
+
+
 @pytest.mark.parametrize('missing', ['output', 'review_package'])
 def test_missing_artifact_never_publishes_terminal_or_partial_rows(local_store, monkeypatch, missing):
     root, store, job_id = local_store

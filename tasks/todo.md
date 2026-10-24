@@ -9,6 +9,7 @@ Updated: 2026-10-24
 - [x] 读取远端完整反馈，固定 Git 对象/祖先，保护原工作区三份 dirty 文件、原始字节与 patch。
 - [x] WP0 本地取证：123 份准确 SHA/blob/行范围源码快照；现有连接输出29—39可读、未截断。
 - [ ] WP0 远端访问与独立审核：TLS EOF，workspace_info -32603，仍 NOT_VERIFIED。
+  - 固定目标转发及官方新版独立客户端的有界测试均未建立对外连接；测试进程已停止，既有连接/账号/域名未改，远端复审仍阻塞。
 - [x] WP1：R01—R10 原文映射、合并/清理依赖、retention dry-run、来源/许可证、测试范围复核。
 - [x] WP2：七项已复现问题修复；RED/GREEN、并发/旧 attempt/进程终止/回滚/migration 回归。
 - [x] Python 670 passed、1 skipped、2 deselected、4 subtests passed；旧绝对路径身份另验2 passed。
@@ -20,6 +21,15 @@ Updated: 2026-10-24
 - [x] WP6 交付文档、机器证据与 checksum 完成本地验证；GitHub 实际交付以 PR #2 和推送回执为准。远端独立复核仍待通道恢复。
 
 Review: 机器审计见 reports/phase1/consolidation_audit_20261024.json。无真实媒体/Job/DB 清理，无 provider 重试或新 TTS，无真实人审批准和阶段提升。Hub WinError10061，未上报并停止自动重试。
+
+## P1-ATTEMPT-RECOVERY-20261024
+
+- [x] 临时夹具复现：旧 subject worker 覆盖新规划、QUALITY_CHECK 重试伪待审；延伸复现 VOICE/CAPTIONS 同类恢复缺陷。
+- [x] 修复每次规划的六份输入/输出快照隔离、绑定交付消费者；保留旧任务兼容。
+- [x] 修复本地 topic/reference 质量检查中断及 subject 已完成规划检查点恢复，不提前待审；损坏规划明确失败并允许显式重建。
+- [ ] focused / bounded regression、原工作区保护、清单、提交和 PR #2 更新。
+
+本包只修复生命周期；不运行 provider、TTS、生产候选或 Gate。Review: RED 3+2+2 项准确失败；focused 41 passed；六份规划文件绑定 hash 与 Job 身份，增量代码审阅无新增阻塞；完整回归待固定源码提交后运行。
 
 ## 保留的产品缺口
 

@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import json
 import hashlib
+import argparse
+import threading
+import pytest
 from pathlib import Path
 
 from src.factory import phase1_cli
@@ -273,6 +276,111 @@ def _drafts(tmp_path: Path) -> Path:
     output = tmp_path / "mpt-default.json"
     output.write_text(json.dumps({"schema_version":"1.0","kind":"phase1_script_drafts","subject":"看门狗","language":"zh-CN","requested_candidates":3,"successful_candidates":3,"mpt_version":"1.3.5","mpt_commit":MPT_COMMIT,"candidates":[{"candidate":i,"script":"看门狗发生故障：看门狗检测失去响应，超时需验证。再解释原理、配置和恢复边界。","duration_seconds":1} for i in range(1,4)],"failures":[]}, ensure_ascii=False), encoding="utf-8")
     return output
+
+
+def test_returning_subject_worker_cannot_change_new_attempt_plan(tmp_path, monkeypatch, capsys):
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(['create-subject', '--subject', '看门狗']) == 0
+    job_id = _output(capsys)['job']['job_id']
+    research = tmp_path / 'research.json'
+    research.write_text(json.dumps(_research(), ensure_ascii=False), encoding='utf-8')
+    assert phase1_cli.main(['attach-research', '--job-id', job_id, '--research', str(research)]) == 0
+    _output(capsys)
+    entered, release = threading.Event(), threading.Event()
+    failures = []
+    old_dir, new_dir = tmp_path / 'old-provider-fixture', tmp_path / 'new-provider-fixture'
+    old_dir.mkdir(); new_dir.mkdir()
+
+    def drafts(**kwargs):
+        old = threading.current_thread().name == 'old-subject-worker'
+        if old:
+            entered.set()
+            assert release.wait(10)
+        path = _drafts(old_dir if old else new_dir)
+        value = json.loads(path.read_text(encoding='utf-8'))
+        for candidate in value['candidates']:
+            candidate['script'] += '采用旧配置。' if old else '采用新配置。'
+        path.write_text(json.dumps(value, ensure_ascii=False), encoding='utf-8')
+        return path
+
+    monkeypatch.setattr(phase1_cli, 'MPT_RUN_DRAFTS', drafts)
+    args = argparse.Namespace(job_id=job_id, plan_only=True)
+
+    def old_worker():
+        try:
+            phase1_cli._run_job(args)
+        except Exception as exc:
+            failures.append(exc)
+
+    worker = threading.Thread(target=old_worker, name='old-subject-worker')
+    worker.start()
+    try:
+        assert entered.wait(5)
+        controller = CandidateStore(phase1_cli.DATABASE_PATH)
+        controller.cancel(job_id, 'replace_old_worker')
+        controller.retry(job_id, 'new_attempt')
+        result = phase1_cli._run_job(args)
+        assert result['job']['state'] == 'ASSETS' and result['job']['attempt'] == 1
+        rows = controller.artifacts(job_id)
+        before = {row['relative_path']: (tmp_path / row['relative_path']).read_bytes() for row in rows}
+    finally:
+        release.set()
+        worker.join(10)
+    assert not worker.is_alive()
+    assert len(failures) == 1 and str(failures[0]) == 'job_execution_claim_stale'
+    for row in rows:
+        actual = (tmp_path / row['relative_path']).read_bytes()
+        assert actual == before[row['relative_path']], row['artifact_type']
+        assert hashlib.sha256(actual).hexdigest() == row['sha256']
+    assert controller.status(job_id)['state'] == 'ASSETS'
+
+
+@pytest.mark.parametrize('resume', ['VOICE', 'CAPTIONS'])
+@pytest.mark.parametrize('damage', [None, 'missing', 'changed', 'wrong_path', 'request_changed'])
+def test_subject_completed_plan_recovers_from_planning_checkpoint(tmp_path, monkeypatch, capsys, resume, damage):
+    _configure(tmp_path, monkeypatch)
+    assert phase1_cli.main(['create-subject', '--subject', '看门狗']) == 0
+    job_id = _output(capsys)['job']['job_id']
+    research = tmp_path / 'research.json'
+    research.write_text(json.dumps(_research(), ensure_ascii=False), encoding='utf-8')
+    assert phase1_cli.main(['attach-research', '--job-id', job_id, '--research', str(research)]) == 0
+    _output(capsys)
+    monkeypatch.setattr(phase1_cli, 'MPT_RUN_DRAFTS', lambda **_: _drafts(tmp_path))
+    assert phase1_cli.main(['run', '--job-id', job_id, '--plan-only']) == 0
+    planned = _output(capsys)
+    store = CandidateStore(phase1_cli.DATABASE_PATH)
+    # The plan files/metadata are complete before the final bookkeeping transitions.
+    # Recreate a process exit at that checkpoint in this temporary SQLite fixture.
+    with store._transaction() as connection:
+        connection.execute('UPDATE jobs SET state=?,last_completed_state=? WHERE job_id=?',
+                           ('CANCELLED', 'SCRIPTING' if resume == 'VOICE' else 'VOICE', job_id))
+    assert store.retry(job_id, 'explicit_checkpoint_retry')['state'] == resume
+    if damage:
+        record = next(row for row in store.artifacts(job_id) if row['artifact_type'] == 'director_script')
+        path = tmp_path / record['relative_path']
+        if damage == 'missing':
+            path.unlink()
+        elif damage == 'changed':
+            path.write_text('{}', encoding='utf-8')
+        elif damage == 'wrong_path':
+            store.record_artifact(job_id, 'director_script', 'another-job/director_script.json', record['sha256'])
+        else:
+            request_path = path.parent / 'topic_request.json'
+            value = json.loads(request_path.read_text(encoding='utf-8'))
+            value['duration'] += 1
+            request_path.write_text(json.dumps(value, ensure_ascii=False), encoding='utf-8')
+    monkeypatch.setattr(phase1_cli, 'MPT_RUN_DRAFTS', lambda **_: pytest.fail('complete plan must not call provider again'))
+    code = phase1_cli.main(['run', '--job-id', job_id, '--plan-only'])
+    result = _output(capsys)
+    if damage:
+        assert code == 2 and result['error']['code'] == 'phase1_subject_plan_artifact_invalid'
+        assert store.status(job_id)['state'] == 'FAILED'
+        assert store.retry(job_id, 'rebuild_changed_plan')['state'] == 'SCRIPTING'
+    else:
+        assert code == 0 and result['job']['state'] == 'ASSETS'
+        assert result['job']['metadata']['subject_plan_root'] == planned['job']['metadata']['subject_plan_root']
+        assert store.artifacts(job_id) == planned['artifacts']
+    assert not [event for event in store.events(job_id) if event['to_state'] == 'PENDING_REVIEW']
 
 
 def _i2c_drafts(tmp_path: Path) -> Path:

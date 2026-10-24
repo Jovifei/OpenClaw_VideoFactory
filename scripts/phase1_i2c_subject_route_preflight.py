@@ -163,7 +163,7 @@ def run_preflight() -> dict[str, Any]:
     job_id = str(created["job"]["job_id"])
     attached = _call(["attach-research", "--job-id", job_id, "--research", str(RESEARCH_PATH)])
     planned = _call(["run", "--job-id", job_id, "--plan-only"])
-    root = runtime / Path(str(attached["research_path"])).parent
+    root = phase1_cli._subject_plan_root(planned["job"])
     request = json.loads((root / "topic_request.json").read_text(encoding="utf-8"))
     research = json.loads((root / "research_brief.json").read_text(encoding="utf-8"))
     director = json.loads((root / "director_script.json").read_text(encoding="utf-8"))
