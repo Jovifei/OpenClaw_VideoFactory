@@ -63,6 +63,21 @@ def test_local_entrypoint_completes_with_declared_timeline_ref(
     assert state["output_ref"] == "final_master.mp4"
 
 
+def test_controlled_execution_lineage_preserves_other_job_and_attempt_outputs(monkeypatch, tmp_path):
+    brief_path = _wire_local_entrypoint(monkeypatch, tmp_path)
+    monkeypatch.setattr(generate_video, 'run_job', lambda _path, emit=False: {'audio_mode': 'tts'})
+    identities = ['job-' + 'a' * 24 + ':attempt:0', 'job-' + 'b' * 24 + ':attempt:0',
+                  'job-' + 'a' * 24 + ':attempt:1']
+    roots = []
+    for identity in identities:
+        result = generate_video.run_local_brief(brief_path, emit=False, render_identity=identity)
+        roots.append(Path(result['output']).parent)
+        (roots[-1] / 'final_master.mp4').write_bytes(identity.encode())
+    assert len(set(roots)) == 3
+    for root, identity in zip(roots, identities):
+        assert (root / 'final_master.mp4').read_bytes() == identity.encode()
+
+
 def test_local_entrypoint_declares_measured_narration_for_outer_job(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

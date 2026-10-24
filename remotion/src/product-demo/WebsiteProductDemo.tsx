@@ -18,13 +18,15 @@ const cameraFor = (scene: ProductInput['scenes'][number], frame: number) => {
   const base = {panX: 0, panY: 0, zoom: scene.focus?.zoom ?? 1, targetX: 0.5, targetY: 0.5};
   const from = previous ?? base;
   const to = target ?? base;
-  const markerOpacity = current ? interpolate(frame,
-    [current.startFrame, current.startFrame + 5, current.endFrame - 6, current.endFrame - 1], [0, 1, 1, 0],
-    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) : 0;
+  // Sample frame centres so even a one-frame measured phrase has a visible cue.
+  const span = current ? current.endFrame - current.startFrame : 1;
+  const elapsed = current ? frame - current.startFrame + 0.5 : 0;
+  const markerOpacity = current ? Math.max(0, Math.min(1,
+    elapsed / Math.min(5, span / 2), (span - elapsed) / Math.min(6, span / 2))) : 0;
   return {
     transform: `translate(${interpolate(progress, [0, 1], [from.panX, to.panX])}px, ${interpolate(progress, [0, 1], [from.panY, to.panY])}px) scale(${interpolate(progress, [0, 1], [from.zoom, to.zoom])})`,
     label: current?.label ?? '',
-    labelOpacity: current ? interpolate(frame, [current.startFrame, Math.min(current.startFrame + 5, current.endFrame)], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) : 0,
+    labelOpacity: current ? Math.max(0, Math.min(1, elapsed / Math.min(5, span / 2))) : 0,
     markerX: interpolate(progress, [0, 1], [from.targetX, to.targetX]),
     markerY: interpolate(progress, [0, 1], [from.targetY, to.targetY]),
     markerOpacity,
@@ -47,17 +49,22 @@ const FocusReticle: React.FC<{x: number; y: number; opacity: number; scale: numb
   borderRadius: '50%', border: `3px solid ${colors.accent}`, boxShadow: '0 0 0 10px rgba(165,221,244,.14), 0 0 28px rgba(165,221,244,.75)',
   transform: `translate(-50%,-50%) scale(${scale})`, opacity, pointerEvents: 'none'}}><div style={{position: 'absolute', width: 10, height: 10, borderRadius: '50%', background: colors.warm, left: 26, top: 26}}/></div>;
 
-const HookCover: React.FC<{scene: ProductInput['scenes'][number]; local: number; left: number; contentWidth: number; camera: ReturnType<typeof cameraFor>; preview: boolean}> = ({scene, local, left, contentWidth, camera, preview}) => {
+const HookCover: React.FC<{aspect: ProductInput['aspect']; scene: ProductInput['scenes'][number]; local: number; left: number; contentWidth: number; camera: ReturnType<typeof cameraFor>; preview: boolean}> = ({aspect, scene, local, left, contentWidth, camera, preview}) => {
   const reveal = interpolate(local, [0, 8], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const portrait = aspect === '9:16';
+  const mapWidth = portrait ? contentWidth : 800;
+  const mapLeft = portrait ? left : left + contentWidth - mapWidth;
+  const textWidth = portrait ? contentWidth : contentWidth - mapWidth - 64;
+  const titleSize = portrait ? Math.min(80, Math.floor(textWidth / Math.max(1, [...scene.headline].length))) : 62;
   return <>
-    <div data-layout-box="product-brand" style={{position: 'absolute', left, top: 105, display: 'flex', alignItems: 'baseline', gap: 18, opacity: reveal}}>
+    <div data-layout-box="product-brand" style={{position: 'absolute', left, top: portrait ? 105 : 72, display: 'flex', alignItems: 'baseline', gap: 18, opacity: reveal}}>
       <b style={{fontSize: 46, letterSpacing: 6}}>逐星</b><span style={{fontSize: 22, color: colors.secondary}}>摄影出发前的地图工作台</span>
     </div>
-    <div data-layout-box="product-hook-kicker" style={{position: 'absolute', left, top: 265, color: colors.accent, fontSize: 24, fontWeight: 750, letterSpacing: 3, opacity: reveal}}>拍摄出发前 · 先把条件看清</div>
-    <div data-layout-box="product-headline" style={{position: 'absolute', left, top: 325, width: contentWidth, fontSize: 80, lineHeight: 1.2, fontWeight: 900, letterSpacing: 1, whiteSpace: 'nowrap', opacity: reveal}}>{scene.headline}</div>
-    <div data-layout-box="product-hook-detail" style={{position: 'absolute', left, top: 435, width: contentWidth, fontSize: 31, color: colors.secondary, opacity: reveal}}>{scene.detail}</div>
-    <div data-layout-box="product-hook-badge" style={{position: 'absolute', left, top: 480, color: colors.accent, fontSize: 20, fontWeight: 700, opacity: reveal}}>{scene.badge}</div>
-    <div data-layout-box="product-hook-map" style={{position: 'absolute', left, top: 525, width: contentWidth, height: 580, overflow: 'hidden', border: `1px solid ${colors.accent}`, borderRadius: 24, background: colors.panel, boxShadow: '0 18px 70px rgba(0,0,0,.42)'}}>
+    <div data-layout-box="product-hook-kicker" style={{position: 'absolute', left, top: portrait ? 265 : 185, color: colors.accent, fontSize: 24, fontWeight: 750, letterSpacing: 3, opacity: reveal}}>拍摄出发前 · 先把条件看清</div>
+    <div data-layout-box="product-headline" style={{position: 'absolute', left, top: portrait ? 325 : 250, width: textWidth, fontSize: titleSize, lineHeight: 1.2, fontWeight: 900, letterSpacing: portrait ? 0 : 1, whiteSpace: portrait ? 'nowrap' : 'pre-wrap', opacity: reveal}}>{scene.headline}</div>
+    <div data-layout-box="product-hook-detail" style={{position: 'absolute', left, top: 435, width: textWidth, fontSize: portrait ? 31 : 26, color: colors.secondary, opacity: reveal}}>{scene.detail}</div>
+    <div data-layout-box="product-hook-badge" style={{position: 'absolute', left, top: portrait ? 480 : 575, color: colors.accent, fontSize: 20, fontWeight: 700, opacity: reveal}}>{scene.badge}</div>
+    <div data-layout-box="product-hook-map" style={{position: 'absolute', left: mapLeft, top: portrait ? 525 : 220, width: mapWidth, height: portrait ? 580 : 500, overflow: 'hidden', border: `1px solid ${colors.accent}`, borderRadius: 24, background: colors.panel, boxShadow: '0 18px 70px rgba(0,0,0,.42)'}}>
       <div style={{position: 'absolute', inset: 0, transform: camera.transform, transformOrigin: 'center center'}}>
         {scene.asset ? <Img src={staticFile(scene.asset)} style={focusImageStyle(scene)}/> : <div style={{width: '100%', height: '100%', background: 'radial-gradient(circle at 62% 42%, #1e4255 0, #102435 32%, #0c1626 70%)'}}/>}
       </div>
@@ -65,8 +72,8 @@ const HookCover: React.FC<{scene: ProductInput['scenes'][number]; local: number;
       {!preview && <FocusReticle x={camera.markerX} y={camera.markerY} opacity={camera.markerOpacity} scale={camera.markerScale}/>}
       {!preview && <MotionLabel label={camera.label} opacity={camera.labelOpacity}/>}
     </div>
-    {!preview && <div data-layout-box="product-attribution" style={{position: 'absolute', left, top: 1117, width: contentWidth, color: colors.secondary, fontSize: 16}}>{scene.attribution}</div>}
-    <div data-layout-box="product-hook-footer" style={{position: 'absolute', left, top: 1180, width: contentWidth, fontSize: 28, color: colors.secondary}}>地点 · 夜空 · 云海条件，一屏展开</div>
+    {!preview && <div data-layout-box="product-attribution" style={{position: 'absolute', left: mapLeft, top: portrait ? 1117 : 736, width: mapWidth, color: colors.secondary, fontSize: 16}}>{scene.attribution}</div>}
+    <div data-layout-box="product-hook-footer" style={{position: 'absolute', left, top: portrait ? 1180 : 820, width: contentWidth, fontSize: 28, color: colors.secondary}}>地点 · 夜空 · 云海条件，一屏展开</div>
   </>;
 };
 
@@ -81,7 +88,7 @@ export const WebsiteProductDemo: React.FC<ProductInput> = (raw) => {
   const camera = cameraFor(scene, frame);
   const focus = scene.focus;
   return <AbsoluteFill style={{background: colors.bg, color: colors.ink, fontFamily: font}}>
-    {isHook ? <HookCover scene={scene} local={local} left={left} contentWidth={contentWidth} camera={camera} preview={preview}/> : <>
+    {isHook ? <HookCover aspect={input.aspect} scene={scene} local={local} left={left} contentWidth={contentWidth} camera={camera} preview={preview}/> : <>
       <div data-layout-box="product-brand" style={{position: 'absolute', left, top: portrait ? 120 : 72, display: 'flex', alignItems: 'baseline', gap: 18}}>
         <b style={{fontSize: portrait ? 42 : 38, letterSpacing: 6}}>逐星</b>
         <span style={{fontSize: 22, color: colors.secondary}}>摄影出发前的地图工作台</span>

@@ -720,6 +720,7 @@ reports/change_requests/P0-ZHONGSHU-FINAL-MAINTENANCE-EXECUTION-READY-037.json
 reports/change_requests/P0-ZHONGSHU-MAINTENANCE-READINESS-031.json
 reports/change_requests/P0-ZHONGSHU-MIGRATION-QUALIFICATION-029.json
 reports/change_requests/P0-ZHONGSHU-RPC-PREFLIGHT-038.json
+reports/change_requests/P1-CONSOLIDATION-AUDIT-CLOSURE-20261024.json
 reports/change_requests/PHASE1-AUDIO-CONTRACT-20260927.json
 reports/change_requests/PHASE1-AV-SYNC-TIMELINE-006.json
 reports/change_requests/PHASE1-CAN-OUTER-CANDIDATE001-20260928.json
@@ -1379,7 +1380,9 @@ tests/phase1_local/test_phase1_subject_audio.py
 tests/phase1_local/test_phase1_subject_cli.py
 tests/phase1_local/test_phase1_subject_delivery.py
 tests/phase1_local/test_phase1_topic.py
+tests/phase1_local/test_review_publication.py
 tests/product-demo/product_demo.test.mjs
+tests/product-demo/product_demo_presentation.test.mjs
 tests/product-demo/test_assemble_product_preview.py
 tests/product_demo_integration.test.mjs
 tests/reference/__init__.py

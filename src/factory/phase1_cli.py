@@ -14,7 +14,7 @@ from video_factory.pipeline.export import write_json
 
 from .config import PROJECT_ROOT
 from .db import CandidateStore
-from .phase1_local import load_local_brief
+from .phase1_local import load_local_brief, render_id_for_execution
 from .openmontage_projection import project_job_read_only
 from .phase1_subject_delivery import SubjectDeliveryRequest, build_subject_review_package, validate_subject_media_receipt
 from .phase1_subject_media import SubjectMediaRequest, run_subject_media
@@ -95,7 +95,7 @@ def _store() -> CandidateStore:
 
 
 def _persist_brief(brief: dict[str, Any]) -> Path:
-    digest = str(brief["factual_brief"]["topic_digest"])
+    digest = _request_digest(brief)
     target = INPUT_ROOT / f"{digest}.json"
     if target.exists() and target.is_symlink():
         raise FactoryContractError(
@@ -103,15 +103,25 @@ def _persist_brief(brief: dict[str, Any]) -> Path:
             "Phase 1 input storage cannot be a link.",
             {"reason": "reparse"},
         )
-    write_json(target, brief)
+    if target.exists():
+        if _request_digest(json.loads(target.read_text(encoding='utf-8'))) != digest:
+            raise FactoryContractError('phase1_input_digest_conflict', 'Persisted input identity changed.', {})
+    else:
+        write_json(target, brief)
     return target
+
+
+def _request_digest(brief: dict[str, Any]) -> str:
+    return hashlib.sha256(json.dumps(brief, ensure_ascii=False, sort_keys=True,
+                                     separators=(',', ':')).encode('utf-8')).hexdigest()
 
 
 def _create_topic(args: argparse.Namespace) -> dict[str, Any]:
     brief = load_local_brief(args.brief)
     persisted = _persist_brief(brief)
     digest = str(brief["factual_brief"]["topic_digest"])
-    key = args.idempotency_key or f"phase1-topic:{digest}"
+    request_digest = _request_digest(brief)
+    key = args.idempotency_key or f"phase1-topic:{request_digest}"
     store = _store()
     result = store.create_job(
         "local_topic",
@@ -122,9 +132,18 @@ def _create_topic(args: argparse.Namespace) -> dict[str, Any]:
         metadata={
             "brief_path": persisted.relative_to(PROJECT_ROOT).as_posix(),
             "topic_digest": digest,
+            "request_digest": request_digest,
             "input_mode": str(brief["input_mode"]),
         },
     )
+    if not result['created']:
+        existing = result['metadata'].get('request_digest')
+        if existing is None:
+            original = (PROJECT_ROOT / result['metadata']['brief_path']).resolve()
+            existing = _request_digest(json.loads(original.read_text(encoding='utf-8')))
+        if existing != request_digest:
+            raise FactoryContractError('phase1_idempotency_conflict',
+                                       'This idempotency key belongs to another request.', {})
     return {"status": "created" if result["created"] else "existing", "job": result}
 
 
@@ -491,19 +510,55 @@ def _run_subject_delivery(store: CandidateStore, job: dict[str, Any]) -> dict[st
     if _subject_cancelled(store, job_id):
         _withdraw_subject_ready_manifest(result)
         return _subject_cancelled_result(store, job_id)
-    for artifact_type, value in {"final_master": result["preview"], "review_package": result["review_package"], "media_receipt": result["media_receipt"]}.items():
-        path = Path(str(value)).resolve()
-        store.record_artifact(job_id, artifact_type, _subject_metadata_path(path), hashlib.sha256(path.read_bytes()).hexdigest())
-    _subject_project(store, job_id)
-    final_job = store.advance(job_id, "PENDING_REVIEW", reason="subject_review_package_ready")
+    try:
+        final_job = store.publish_review_artifacts(job_id, _publication_artifacts({
+            'final_master': result['preview'], 'review_package': result['review_package'],
+            'media_receipt': result['media_receipt'],
+        }), reason='subject_review_package_ready')
+    except Exception:
+        _withdraw_subject_ready_manifest(result)
+        if _subject_cancelled(store, job_id):
+            return _subject_cancelled_result(store, job_id)
+        raise
     _project_if_subject(store, final_job)
     return {"status": "pending_review", "job": final_job, "artifacts": store.artifacts(job_id), "result": result}
+
+
+def _publication_artifacts(paths: dict[str, Any]) -> list[dict[str, str]]:
+    records = []
+    root = PROJECT_ROOT.resolve()
+    for kind, value in paths.items():
+        path = Path(str(value)).resolve()
+        if not path.is_relative_to(root) or not path.is_file():
+            raise FactoryContractError('phase1_review_artifact_invalid',
+                                       'A required review artifact is unavailable.', {'artifact_type': kind})
+        records.append({'artifact_type': kind, 'relative_path': path.relative_to(root).as_posix(),
+                        'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+    return records
+
+
+def _verify_pending_artifacts(store: CandidateStore, job: dict[str, Any]) -> None:
+    rows = {row['artifact_type']: row for row in store.artifacts(job['job_id'])}
+    required = {'final_master', 'review_package'}
+    if job['fixture_id'] == 'local_subject':
+        required.add('media_receipt')
+    try:
+        if not required <= rows.keys():
+            raise ValueError('missing_review_artifact')
+        for record in _publication_artifacts({kind: PROJECT_ROOT / rows[kind]['relative_path'] for kind in required}):
+            if record['sha256'] != rows[record['artifact_type']]['sha256']:
+                raise ValueError('review_artifact_hash_mismatch')
+    except (OSError, ValueError, FactoryContractError) as exc:
+        store.invalidate_review(job['job_id'], 'review_artifact_integrity_changed')
+        raise FactoryContractError('phase1_review_artifact_invalid',
+                                   'Review artifacts changed; explicit retry is required.', {}) from exc
 
 
 def _run_job(args: argparse.Namespace) -> dict[str, Any]:
     store = _store()
     job = store.status(args.job_id)
     if job["state"] == "PENDING_REVIEW":
+        _verify_pending_artifacts(store, job)
         return {
             "status": "pending_review",
             "job": job,
@@ -516,6 +571,11 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
             "A failed or cancelled Phase 1 job must be retried explicitly.",
             {"state": str(job["state"])},
         )
+    with store.execution_claim(args.job_id):
+        return _run_claimed_job(args, store, store.status(args.job_id))
+
+
+def _run_claimed_job(args: argparse.Namespace, store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
     if job["fixture_id"] == "local_subject":
         if job["state"] in {"NEW", "RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS"}:
             try:
@@ -534,6 +594,10 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
         return _run_subject_delivery(store, job)
     from generate_video import run_local_brief
     metadata = dict(job["metadata"])
+    render_identity = f"{job['job_id']}:attempt:{job['attempt']}"
+    metadata['render_job_id'] = render_id_for_execution(
+        render_identity, reference=metadata.get('input_mode') == 'local_reference')
+    store.update_metadata(args.job_id, metadata)
     brief_ref = str(metadata.get("brief_path", ""))
     brief_path = (PROJECT_ROOT / brief_ref).resolve()
     if PROJECT_ROOT.resolve() not in brief_path.parents or not brief_path.is_file():
@@ -561,20 +625,12 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
             emit=False,
             reference_context=reference_context,
             reference_bundle=reference_bundle,
+            render_identity=render_identity,
         )
         store.advance(args.job_id, "QUALITY_CHECK", reason="local_render_completed")
-        final_job = store.advance(args.job_id, "PENDING_REVIEW", reason="local_quality_passed")
-        for artifact_type, value in {
-            "final_master": result["output"],
-            "review_package": result["review_package"],
-        }.items():
-            path = Path(str(value)).resolve()
-            store.record_artifact(
-                args.job_id,
-                artifact_type,
-                path.relative_to(PROJECT_ROOT).as_posix(),
-                hashlib.sha256(path.read_bytes()).hexdigest(),
-            )
+        final_job = store.publish_review_artifacts(args.job_id, _publication_artifacts({
+            'final_master': result['output'], 'review_package': result['review_package'],
+        }), reason='local_quality_passed')
         return {
             "status": "pending_review",
             "job": final_job,
@@ -584,7 +640,7 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
     except Exception:
         current = store.status(args.job_id)
         if current["state"] not in {"FAILED", "CANCELLED", "PENDING_REVIEW"}:
-            store.fail(args.job_id, "phase1_local_execution_failed")
+            store.fail(args.job_id, "phase1_local_execution_failed", retry_from='RENDERING')
         raise
 
 

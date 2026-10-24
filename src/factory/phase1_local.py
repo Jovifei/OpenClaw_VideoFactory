@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -348,4 +349,12 @@ def build_local_plan(
     return {"job_id":job_id,"topic":topic,"topic_digest":topic_digest,"script":script,"storyboard":selected_storyboard,"asset_selection":asset_selection,"factual_brief":factual_brief.document,"input_mode":mode,"mascot_mode":mascot_mode,"reference_digest":brief_digest(brief) if mode == "local_reference" else None,"render_profile":render_profile}
 
 
-__all__ = ["build_local_plan", "load_local_brief"]
+def render_id_for_execution(identity: str, *, reference: bool = False) -> str:
+    """Derive an output namespace from a trusted SQLite job/attempt, never a path."""
+    if not isinstance(identity, str) or re.fullmatch(r'job-[a-f0-9]{24}:attempt:[0-9]+', identity) is None:
+        raise FactoryContractError('phase1_execution_identity_invalid', 'Invalid execution identity.', {})
+    digest = hashlib.sha256(identity.encode('utf-8')).hexdigest()[:24]
+    return f'phase1_ref_{digest}' if reference else f'phase1_{digest}'
+
+
+__all__ = ["build_local_plan", "load_local_brief", "render_id_for_execution"]

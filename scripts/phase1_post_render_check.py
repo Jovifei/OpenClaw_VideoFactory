@@ -1,6 +1,6 @@
 """Fail-closed post-render gate for the local reference-style video chain.
 
-The gate runs after Remotion and before Jianying. It verifies the declared
+The gate runs after Remotion and before human review or optional editing. It verifies the declared
 layout contract, media metadata, representative frame health, full decode,
 subtitle authority, and optional assembled-preview audio.
 """
@@ -353,6 +353,31 @@ def _has_audio(path: Path) -> bool:
     return any(stream.get("codec_type") == "audio" for stream in metadata.get("streams", []) if isinstance(stream, dict))
 
 
+def _validate_render_identity(report: dict[str, Any], visual_sha: str) -> bool:
+    states = {
+        'TechnicalExplainer': {'passed'},
+        'WebsiteProductDemo': {'passed'},
+        'RcHighPass1080x1920': {'remotion_visual_ready_for_post_render_gate'},
+        'FlashWatchdog16x9': {'remotion_visual_ready_for_jianying'},
+    }
+    composition = report.get('composition')
+    layout_is_product = report.get('layout_contract', {}).get('version') == 'website_product_demo_v1'
+    composition_is_product = composition == 'WebsiteProductDemo'
+    kind_is_product = report.get('content_kind') == 'website_product_promo'
+    if (composition not in states or report.get('renderer') != 'remotion'
+            or report.get('status') not in states[composition]
+            or (any((layout_is_product, composition_is_product, kind_is_product))
+                and not all((layout_is_product, composition_is_product, kind_is_product)))):
+        raise ValueError('post_render_template_identity_invalid')
+    declared = report.get('visual', {}).get('sha256')
+    derived = report.get('review_derivation')
+    if (not isinstance(declared, str) or declared.lower() != visual_sha
+            or (derived is not None and (not isinstance(derived, dict)
+                or derived.get('source_visual_sha256') != visual_sha))):
+        raise ValueError('post_render_visual_identity_mismatch')
+    return layout_is_product
+
+
 def run_gate(visual: Path, render_report: Path, output_report: Path, *, preview: Path | None = None, reference_sha256: str | None = None) -> dict[str, Any]:
     for target, field in ((visual, "visual"), (render_report, "render_report"), (output_report, "output_report")):
         if target.resolve().drive.upper() == "C:":
@@ -362,6 +387,8 @@ def run_gate(visual: Path, render_report: Path, output_report: Path, *, preview:
     if not visual.is_file() or not render_report.is_file():
         raise ValueError("post_render_input_missing")
     report = json.loads(render_report.read_text(encoding="utf-8"))
+    visual_sha = _sha256(visual)
+    allow_dark_edges = _validate_render_identity(report, visual_sha)
     visual_probe = _ffprobe(visual)
     streams = [item for item in visual_probe.get("streams", []) if isinstance(item, dict)]
     video = next((item for item in streams if item.get("codec_type") == "video"), None)
@@ -386,10 +413,8 @@ def run_gate(visual: Path, render_report: Path, output_report: Path, *, preview:
     if not _decode_check(visual):
         raise ValueError("post_render_decode_failed")
     samples = _sample_frames(visual, duration, len(report.get("visual", {}).get("scene_timing", [])) or 5)
-    allow_dark_edges = report.get("layout_contract", {}).get("version") == "website_product_demo_v1"
     all_frames = scan_all_frames(visual, allow_dark_edges=allow_dark_edges)
     source_distinct = True
-    visual_sha = _sha256(visual)
     if reference_sha256:
         source_distinct = visual_sha.lower() != reference_sha256.lower()
         if not source_distinct:
@@ -419,7 +444,7 @@ def run_gate(visual: Path, render_report: Path, output_report: Path, *, preview:
         },
         "visual": {"path": str(visual), "sha256": visual_sha, "duration_seconds": round(duration, 6)},
         "preview": preview_result,
-        "human_gate": {"status": "required", "action": "Jovi visually inspects and listens in the new Jianying draft, then exports manually if accepted."},
+        "human_gate": {"status": "required", "action": "Jovi watches and listens to the final audible MP4 bound to its SHA-256, records the review, and publishes manually if accepted."},
     }
     output_report.parent.mkdir(parents=True, exist_ok=True)
     output_report.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
