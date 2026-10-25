@@ -297,3 +297,7 @@ schemas/p0_evidence_v2/
 !reports/README.md
 !reports/change_requests/REPO-CONSOLIDATION-20261023.json
 !reports/change_requests/REPO-CONSOLIDATION-REGRESSION-20261024.json
+!reports/change_requests/P1-CONSOLIDATION-AUDIT-CLOSURE-20261024.json
+!reports/change_requests/P1-ATTEMPT-RECOVERY-20261024.json
+!reports/phase1/
+!reports/phase1/consolidation_audit_20261024.json

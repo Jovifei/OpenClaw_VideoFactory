@@ -1,29 +1,16 @@
-# 当前任务与下一步
+# 本轮整理与停止点
 
-Updated: 2026-10-24
+Updated: 2026-10-25 · 范围：只整理项目和流程，交付后停止。
 
-## REPO-CONSOLIDATION-20261023
+- [x] 保留 main 8b5c142 的分支整合、273 份旧文档精简与归档恢复入口。
+- [x] 需求、架构、路线、审核、维护和当前交接集中到唯一文档入口。
+- [x] 整理远端审核 → 授权内执行 → 测试 → 推送 → 交接的职责、版本与终止条件；本轮不启动该开发循环。
+- [x] 登记远端 PR #2 的六项静态发现，保留草稿和未批准状态；未来是否修复由 Jovi 另行启动。
+- [x] 撤销远端自动修复/下一阶段/视频生产请求；不新增业务代码、测试或媒体。
+- [x] 整理交付文档已形成；链接/清单/hash 与源码不变检查完成，提交推送和 Hub 回执以最终交付版本为准。本轮到此结束，不续做产品任务。
 
-Change Request: reports/change_requests/REPO-CONSOLIDATION-20261023.json。
+此前源码 10679a1 的本机回归为 684 passed、1 skipped、2 deselected、4 subtests passed；它属于已有证据，本次仅核对引用和身份。Phase 1 仍 in_progress；后续媒体、人审、I2C、Gate、飞书/Cron不属于本轮执行范围。
 
-- [x] 确认继续视频工厂，内容涵盖 App/网页/原理图/硬件。
-- [x] Fetch 并核清初始 27 个本地、15 个远端功能分支。
-- [x] 合并五条末端线，覆盖 14 个独有分支头与 84 个独有提交。
-- [x] 保留原工作区文档增量，归档 archive/pre-cleanup-20261023。
-- [x] 归纳需求、架构、路线、交接、经验；按依赖筛选旧记录。
-- [x] 完成 273 份历史文件清理；Python 643 passed/1 skipped/2 deselected，原目录身份校验 2 passed，Node 70 passed，Remotion typecheck/contracts 通过。
-- [x] 当前文档链接、1,509 个 checksum、27 个本地/15 个远端功能分支祖先覆盖已核验。
-- [x] main 与 archive/pre-cleanup-20261023 已成功推送；完成 GitHub 回执核对，交给 Jovi 审核。
+交接：[CURRENT_HANDOFF](../handoff/codex/CURRENT_HANDOFF.md)。流程：[MAINTENANCE](../docs/MAINTENANCE.md#协作与收尾流程)。审核：[PROJECT_REVIEW](../docs/PROJECT_REVIEW.md)。
 
-Review: 本轮不代表 Phase 1 通过。原工作区三份未提交文件保留。Hub revision 读取 WinError 10061，未成功上报并停止自动重试。实际结果写入 docs/PROJECT_REVIEW.md。
-
-## Phase 1 后续（原阶段门禁继续适用）
-
-- [ ] Flash/FreeRTOS 源对齐音频质量人审，再各生成一个批准的新候选；旧截断候选保持失败。
-- [ ] I2C 等待有效批准凭证/方案决定，不重试 Candidate003，不自动创建 Candidate004。
-- [ ] I2C 与不同 live topic 的同合同媒体、人审和 Prereview。
-- [ ] 核对/绑定既有 lifecycle hash/Schema，准备 Manifest/Boundary/独立审计。
-- [ ] 前置齐全且获授权后 Formal Gate，真实通过后单独更新 PROJECT_STATUS。
-- [ ] 可选 DaVinci：官网下载/安装后，验证真实版本、桥接、隔离剪辑、导出；MCP 准备不是可用性证明。
-
-历史详情：git show archive/pre-cleanup-20261023:tasks/todo.md。后续只维护当前清单和权威结论。
+Review: 文档与机器索引需分别表达“整理交付完成”“PR 待处理”和“产品阶段未通过”。完成最后一项后停止，不因遗留项或远端回复自动续做。

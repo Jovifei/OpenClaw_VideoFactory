@@ -14,7 +14,7 @@ from video_factory.pipeline.export import write_json
 
 from .config import PROJECT_ROOT
 from .db import CandidateStore
-from .phase1_local import load_local_brief
+from .phase1_local import load_local_brief, render_id_for_execution
 from .openmontage_projection import project_job_read_only
 from .phase1_subject_delivery import SubjectDeliveryRequest, build_subject_review_package, validate_subject_media_receipt
 from .phase1_subject_media import SubjectMediaRequest, run_subject_media
@@ -95,7 +95,7 @@ def _store() -> CandidateStore:
 
 
 def _persist_brief(brief: dict[str, Any]) -> Path:
-    digest = str(brief["factual_brief"]["topic_digest"])
+    digest = _request_digest(brief)
     target = INPUT_ROOT / f"{digest}.json"
     if target.exists() and target.is_symlink():
         raise FactoryContractError(
@@ -103,15 +103,25 @@ def _persist_brief(brief: dict[str, Any]) -> Path:
             "Phase 1 input storage cannot be a link.",
             {"reason": "reparse"},
         )
-    write_json(target, brief)
+    if target.exists():
+        if _request_digest(json.loads(target.read_text(encoding='utf-8'))) != digest:
+            raise FactoryContractError('phase1_input_digest_conflict', 'Persisted input identity changed.', {})
+    else:
+        write_json(target, brief)
     return target
+
+
+def _request_digest(brief: dict[str, Any]) -> str:
+    return hashlib.sha256(json.dumps(brief, ensure_ascii=False, sort_keys=True,
+                                     separators=(',', ':')).encode('utf-8')).hexdigest()
 
 
 def _create_topic(args: argparse.Namespace) -> dict[str, Any]:
     brief = load_local_brief(args.brief)
     persisted = _persist_brief(brief)
     digest = str(brief["factual_brief"]["topic_digest"])
-    key = args.idempotency_key or f"phase1-topic:{digest}"
+    request_digest = _request_digest(brief)
+    key = args.idempotency_key or f"phase1-topic:{request_digest}"
     store = _store()
     result = store.create_job(
         "local_topic",
@@ -122,9 +132,24 @@ def _create_topic(args: argparse.Namespace) -> dict[str, Any]:
         metadata={
             "brief_path": persisted.relative_to(PROJECT_ROOT).as_posix(),
             "topic_digest": digest,
+            "request_digest": request_digest,
             "input_mode": str(brief["input_mode"]),
         },
     )
+    if not result['created']:
+        existing = result['metadata'].get('request_digest')
+        same_kind = result['fixture_id'] == 'local_topic' and result['template'] == 'video_factory_local_brief'
+        original_ref = result['metadata'].get('brief_path')
+        if existing is None and same_kind and isinstance(original_ref, str):
+            original = (PROJECT_ROOT / original_ref).resolve()
+            if original.is_relative_to(PROJECT_ROOT.resolve()) and original.is_file():
+                try:
+                    existing = _request_digest(json.loads(original.read_text(encoding='utf-8')))
+                except (OSError, ValueError):
+                    existing = None
+        if not same_kind or existing != request_digest:
+            raise FactoryContractError('phase1_idempotency_conflict',
+                                       'This idempotency key belongs to another request.', {})
     return {"status": "created" if result["created"] else "existing", "job": result}
 
 
@@ -195,6 +220,25 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
     job_id = str(job["job_id"])
     if job["state"] == "ASSETS":
         return {"status": "subject_plan_ready", "job": job, "artifacts": store.artifacts(job_id), "idempotent": True}
+    if job["state"] in {"VOICE", "CAPTIONS"}:
+        # A completed plan is published before these bookkeeping transitions.
+        # Recover that checkpoint without advancing through rendering or recalling MPT.
+        root = _subject_plan_root(job)
+        _subject_research_artifact(store, job)
+        records = {row['artifact_type']: row for row in store.artifacts(job_id)}
+        for kind in ('script_candidates', 'selected_script', 'director_script', 'scene_plan'):
+            path = root / f'{kind}.json'
+            row = records.get(kind)
+            if (row is None or row['relative_path'] != path.relative_to(PROJECT_ROOT.resolve()).as_posix()
+                    or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != row['sha256']):
+                raise FactoryContractError('phase1_subject_plan_artifact_invalid',
+                                           'The interrupted subject plan is incomplete or changed.', {})
+        while job['state'] != 'ASSETS':
+            job = store.advance(job_id, next_state(job['state']), reason='subject_plan_checkpoint_recovered')
+            _project_if_subject(store, job)
+        return {'status': 'subject_plan_ready', 'job': job, 'artifacts': store.artifacts(job_id), 'idempotent': True}
+    if job['state'] not in {'NEW', 'RESEARCHING', 'SCRIPTING'}:
+        raise FactoryContractError('phase1_job_state_invalid', 'Subject job cannot enter planning.', {})
     root = _subject_root(job_id)
     request_path, research_path = root / "topic_request.json", root / "research_brief.json"
     if not request_path.is_file() or not research_path.is_file():
@@ -204,6 +248,12 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
     research = build_research_brief(topic=raw["topic"], sources=raw["sources"], facts=raw["facts"], comparables=raw.get("comparables", []), editorial_contract=raw.get("editorial_contract"))
     if research["topic"] != request["subject"] or research["topic_digest"] != str(job["metadata"].get("topic_digest", "")):
         raise FactoryContractError("phase1_research_topic_mismatch", "Persisted research is not bound to this subject job.", {"job_id": job_id})
+    # A cancelled provider call may return after a newer attempt has completed.
+    # Its filesystem writes must be isolated even before SQLite rejects its claim.
+    root = root / "plans" / f"attempt_{job['attempt']}"
+    root.mkdir(parents=True, exist_ok=False)
+    write_json(root / "topic_request.json", request)
+    _record_json_artifact(store, job_id, "research_brief", root / "research_brief.json", research)
     while job["state"] != "SCRIPTING":
         target = next_state(job["state"])
         if target is None:
@@ -233,6 +283,13 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
     scene_plan = build_scene_plan(director, research)
     for kind, value in (("script_candidates", candidates), ("selected_script", selected), ("director_script", director), ("scene_plan", scene_plan)):
         _record_json_artifact(store, job_id, kind, root / f"{kind}.json", value)
+    metadata = dict(store.status(job_id)["metadata"])
+    metadata["subject_plan_root"] = root.relative_to(PROJECT_ROOT).as_posix()
+    metadata["subject_plan_hashes"] = {
+        kind: hashlib.sha256((root / f'{kind}.json').read_bytes()).hexdigest()
+        for kind in ('topic_request', 'research_brief', 'script_candidates', 'selected_script', 'director_script', 'scene_plan')
+    }
+    job = store.update_metadata(job_id, metadata)
     while job["state"] != "ASSETS":
         target = next_state(job["state"])
         if target is None:
@@ -296,7 +353,7 @@ def _create_reference(args: argparse.Namespace) -> dict[str, Any]:
 
 def _advance_to_rendering(store: CandidateStore, job_id: str) -> dict[str, Any]:
     job = store.status(job_id)
-    while job["state"] != "RENDERING":
+    while job["state"] not in {"RENDERING", "QUALITY_CHECK"}:
         target = next_state(str(job["state"]))
         if target is None:
             raise FactoryContractError(
@@ -334,11 +391,35 @@ def _subject_media_root(job: dict[str, Any]) -> Path | None:
     return candidate
 
 
+def _subject_plan_root(job: dict[str, Any]) -> Path:
+    """Resolve the completed planning snapshot; legacy jobs retain their old root."""
+    ingress = _subject_root(str(job["job_id"])).resolve()
+    raw = job.get("metadata", {}).get("subject_plan_root")
+    if raw is None:
+        return ingress
+    candidate = (PROJECT_ROOT / str(raw)).resolve()
+    if (candidate.parent != ingress / "plans" or not candidate.name.startswith("attempt_")
+            or not candidate.name.removeprefix("attempt_").isdigit() or not candidate.is_dir()):
+        raise FactoryContractError("phase1_subject_plan_artifact_invalid",
+                                   "The subject planning snapshot is unavailable or outside this job.", {})
+    hashes = job['metadata'].get('subject_plan_hashes', {})
+    for kind in ('topic_request', 'research_brief', 'script_candidates', 'selected_script', 'director_script', 'scene_plan'):
+        path = candidate / f'{kind}.json'
+        if (not path.is_file() or path.is_symlink() or not isinstance(hashes, dict)
+                or hashlib.sha256(path.read_bytes()).hexdigest() != hashes.get(kind)):
+            raise FactoryContractError('phase1_subject_plan_artifact_invalid',
+                                       'The completed subject planning snapshot changed.', {'artifact_type': kind})
+    if stable_subject_key(_read_json_object(candidate / 'topic_request.json')) != job['metadata'].get('canonical_subject_key'):
+        raise FactoryContractError('phase1_subject_plan_artifact_invalid',
+                                   'The planning request does not match this job.', {})
+    return candidate
+
+
 def _subject_research_artifact(store: CandidateStore, job: dict[str, Any]) -> Path:
     """Resolve and revalidate the exact research artifact bound during planning."""
 
     job_id = str(job["job_id"])
-    root = _subject_root(job_id).resolve()
+    root = _subject_plan_root(job)
     records = [item for item in store.artifacts(job_id) if item.get("artifact_type") == "research_brief"]
     if len(records) != 1:
         raise FactoryContractError(
@@ -422,9 +503,9 @@ def _run_subject_delivery(store: CandidateStore, job: dict[str, Any]) -> dict[st
     job_id = str(job["job_id"])
     if _subject_cancelled(store, job_id):
         return {"status": "cancelled", "job": store.status(job_id), "artifacts": store.artifacts(job_id)}
-    root = _subject_root(job_id)
-    request_path = root / "topic_request.json"
     try:
+        root = _subject_plan_root(job)
+        request_path = root / "topic_request.json"
         research_path = _subject_research_artifact(store, job)
     except FactoryContractError as exc:
         return _subject_blocked(store, job_id, exc.code)
@@ -491,19 +572,55 @@ def _run_subject_delivery(store: CandidateStore, job: dict[str, Any]) -> dict[st
     if _subject_cancelled(store, job_id):
         _withdraw_subject_ready_manifest(result)
         return _subject_cancelled_result(store, job_id)
-    for artifact_type, value in {"final_master": result["preview"], "review_package": result["review_package"], "media_receipt": result["media_receipt"]}.items():
-        path = Path(str(value)).resolve()
-        store.record_artifact(job_id, artifact_type, _subject_metadata_path(path), hashlib.sha256(path.read_bytes()).hexdigest())
-    _subject_project(store, job_id)
-    final_job = store.advance(job_id, "PENDING_REVIEW", reason="subject_review_package_ready")
+    try:
+        final_job = store.publish_review_artifacts(job_id, _publication_artifacts({
+            'final_master': result['preview'], 'review_package': result['review_package'],
+            'media_receipt': result['media_receipt'],
+        }), reason='subject_review_package_ready')
+    except Exception:
+        _withdraw_subject_ready_manifest(result)
+        if _subject_cancelled(store, job_id):
+            return _subject_cancelled_result(store, job_id)
+        raise
     _project_if_subject(store, final_job)
     return {"status": "pending_review", "job": final_job, "artifacts": store.artifacts(job_id), "result": result}
+
+
+def _publication_artifacts(paths: dict[str, Any]) -> list[dict[str, str]]:
+    records = []
+    root = PROJECT_ROOT.resolve()
+    for kind, value in paths.items():
+        path = Path(str(value)).resolve()
+        if not path.is_relative_to(root) or not path.is_file():
+            raise FactoryContractError('phase1_review_artifact_invalid',
+                                       'A required review artifact is unavailable.', {'artifact_type': kind})
+        records.append({'artifact_type': kind, 'relative_path': path.relative_to(root).as_posix(),
+                        'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+    return records
+
+
+def _verify_pending_artifacts(store: CandidateStore, job: dict[str, Any]) -> None:
+    rows = {row['artifact_type']: row for row in store.artifacts(job['job_id'])}
+    required = {'final_master', 'review_package'}
+    if job['fixture_id'] == 'local_subject':
+        required.add('media_receipt')
+    try:
+        if not required <= rows.keys():
+            raise ValueError('missing_review_artifact')
+        for record in _publication_artifacts({kind: PROJECT_ROOT / rows[kind]['relative_path'] for kind in required}):
+            if record['sha256'] != rows[record['artifact_type']]['sha256']:
+                raise ValueError('review_artifact_hash_mismatch')
+    except (OSError, ValueError, FactoryContractError) as exc:
+        store.invalidate_review(job['job_id'], 'review_artifact_integrity_changed')
+        raise FactoryContractError('phase1_review_artifact_invalid',
+                                   'Review artifacts changed; explicit retry is required.', {}) from exc
 
 
 def _run_job(args: argparse.Namespace) -> dict[str, Any]:
     store = _store()
     job = store.status(args.job_id)
     if job["state"] == "PENDING_REVIEW":
+        _verify_pending_artifacts(store, job)
         return {
             "status": "pending_review",
             "job": job,
@@ -516,6 +633,11 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
             "A failed or cancelled Phase 1 job must be retried explicitly.",
             {"state": str(job["state"])},
         )
+    with store.execution_claim(args.job_id):
+        return _run_claimed_job(args, store, store.status(args.job_id))
+
+
+def _run_claimed_job(args: argparse.Namespace, store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
     if job["fixture_id"] == "local_subject":
         if job["state"] in {"NEW", "RESEARCHING", "SCRIPTING", "VOICE", "CAPTIONS"}:
             try:
@@ -523,7 +645,7 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
             except Exception:
                 current = store.status(args.job_id)
                 if current["state"] not in {"FAILED", "CANCELLED", "PENDING_REVIEW"}:
-                    current = store.fail(args.job_id, "phase1_subject_planning_failed")
+                    current = store.fail(args.job_id, "phase1_subject_planning_failed", retry_from='SCRIPTING')
                     _project_if_subject(store, current)
                 raise
             if args.plan_only:
@@ -534,6 +656,10 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
         return _run_subject_delivery(store, job)
     from generate_video import run_local_brief
     metadata = dict(job["metadata"])
+    render_identity = f"{job['job_id']}:attempt:{job['attempt']}"
+    metadata['render_job_id'] = render_id_for_execution(
+        render_identity, reference=metadata.get('input_mode') == 'local_reference')
+    store.update_metadata(args.job_id, metadata)
     brief_ref = str(metadata.get("brief_path", ""))
     brief_path = (PROJECT_ROOT / brief_ref).resolve()
     if PROJECT_ROOT.resolve() not in brief_path.parents or not brief_path.is_file():
@@ -561,20 +687,13 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
             emit=False,
             reference_context=reference_context,
             reference_bundle=reference_bundle,
+            render_identity=render_identity,
         )
-        store.advance(args.job_id, "QUALITY_CHECK", reason="local_render_completed")
-        final_job = store.advance(args.job_id, "PENDING_REVIEW", reason="local_quality_passed")
-        for artifact_type, value in {
-            "final_master": result["output"],
-            "review_package": result["review_package"],
-        }.items():
-            path = Path(str(value)).resolve()
-            store.record_artifact(
-                args.job_id,
-                artifact_type,
-                path.relative_to(PROJECT_ROOT).as_posix(),
-                hashlib.sha256(path.read_bytes()).hexdigest(),
-            )
+        if store.status(args.job_id)['state'] == 'RENDERING':
+            store.advance(args.job_id, "QUALITY_CHECK", reason="local_render_completed")
+        final_job = store.publish_review_artifacts(args.job_id, _publication_artifacts({
+            'final_master': result['output'], 'review_package': result['review_package'],
+        }), reason='local_quality_passed')
         return {
             "status": "pending_review",
             "job": final_job,
@@ -584,7 +703,7 @@ def _run_job(args: argparse.Namespace) -> dict[str, Any]:
     except Exception:
         current = store.status(args.job_id)
         if current["state"] not in {"FAILED", "CANCELLED", "PENDING_REVIEW"}:
-            store.fail(args.job_id, "phase1_local_execution_failed")
+            store.fail(args.job_id, "phase1_local_execution_failed", retry_from='RENDERING')
         raise
 
 

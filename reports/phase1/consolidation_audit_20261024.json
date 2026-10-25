@@ -1,0 +1,552 @@
+{
+  "schema_version": "local_consolidation_audit_v1",
+  "stage_id": "P1-CONSOLIDATION-AUDIT-CLOSURE-20261024",
+  "status": "LOCAL_EVIDENCE_RECORDED_REMOTE_STATIC_CHANGES_REQUIRED",
+  "audit_base": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+  "core_fix": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44",
+  "source_fix": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+  "pull_request": "https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2",
+  "findings": [
+    {
+      "id": "STATE-01",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Review state published before artifacts; terminal reuse trusted stale files",
+      "files": [
+        "src/factory/phase1_cli.py",
+        "src/factory/db.py"
+      ],
+      "regressions": [
+        "test_missing_artifact_never_publishes_terminal_or_partial_rows",
+        "test_pending_review_reuse_rejects_changed_bytes",
+        "test_database_publication_error_rolls_back_all_artifacts_and_state"
+      ]
+    },
+    {
+      "id": "STATE-02",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Topic-only request identity could replace queued input and share output lineage",
+      "files": [
+        "src/factory/phase1_cli.py",
+        "src/factory/phase1_local.py",
+        "generate_video.py"
+      ],
+      "regressions": [
+        "test_aspect_variants_do_not_replace_queued_input",
+        "test_explicit_key_conflict_does_not_change_input",
+        "test_controlled_execution_lineage_preserves_other_job_and_attempt_outputs",
+        "test_explicit_key_from_other_fixture_is_a_conflict",
+        "test_legacy_key_conflict_does_not_read_outside_project"
+      ]
+    },
+    {
+      "id": "STATE-03",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Duplicate execution and returning stale workers were not fenced",
+      "files": [
+        "src/factory/db.py",
+        "src/factory/phase1_cli.py"
+      ],
+      "regressions": [
+        "test_same_job_has_one_executing_worker",
+        "test_cancel_retry_fences_returning_worker",
+        "test_killed_claim_owner_requires_explicit_cancel_retry"
+      ]
+    },
+    {
+      "id": "MEDIA-01",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Media/report identity and product layout exemption were not bound",
+      "files": [
+        "scripts/phase1_post_render_check.py"
+      ],
+      "regressions": [
+        "test_gate_rejects_report_hash_mismatching_real_bytes",
+        "test_product_exemption_requires_consistent_template_identity",
+        "test_consistent_product_identity_keeps_scoped_dark_edge_exception"
+      ]
+    },
+    {
+      "id": "MEDIA-02",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Valid short measured voice cues produced non-monotonic interpolation ranges",
+      "files": [
+        "remotion/src/product-demo/WebsiteProductDemo.tsx"
+      ],
+      "regressions": [
+        "tests/product-demo/product_demo_presentation.test.mjs: 1..12 frame cue regressions"
+      ]
+    },
+    {
+      "id": "MEDIA-03",
+      "severity": "P2",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Hook cover used portrait geometry on the landscape canvas",
+      "files": [
+        "remotion/src/product-demo/WebsiteProductDemo.tsx"
+      ],
+      "regressions": [
+        "tests/product-demo/product_demo_presentation.test.mjs: 16:9 hook subtitle/canvas bounds"
+      ]
+    },
+    {
+      "id": "MEDIA-04",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Retained-audio audit could pass wrong declared hashes or matching false durations",
+      "files": [
+        "scripts/phase1_audio_integrity.py"
+      ],
+      "regressions": [
+        "test_audio_audit_rejects_declared_identity_mismatch",
+        "test_audio_audit_measures_duration_instead_of_trusting_matching_declarations"
+      ]
+    },
+    {
+      "id": "STATE-04",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Stale subject workers overwrote newer planning files before claim rejection",
+      "files": [
+        "src/factory/phase1_cli.py"
+      ],
+      "regressions": [
+        "test_returning_subject_worker_cannot_change_new_attempt_plan"
+      ]
+    },
+    {
+      "id": "STATE-05",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Topic/reference QUALITY_CHECK retry advanced to review without artifact publication",
+      "files": [
+        "src/factory/phase1_cli.py"
+      ],
+      "regressions": [
+        "test_quality_checkpoint_retry_never_becomes_ready_before_publication",
+        "test_quality_checkpoint_retry_missing_media_fails_without_review"
+      ]
+    },
+    {
+      "id": "STATE-06",
+      "severity": "P1",
+      "status": "LOCAL_REPRODUCED_FIXED",
+      "problem": "Subject VOICE/CAPTIONS checkpoint retries advanced past planning instead of resuming",
+      "files": [
+        "src/factory/phase1_cli.py"
+      ],
+      "regressions": [
+        "test_subject_completed_plan_recovers_from_planning_checkpoint"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R01",
+      "implementation": [
+        "src/factory/phase1_cli.py",
+        "src/factory/phase1_local.py"
+      ],
+      "tests": [
+        "tests/phase1_local/test_local_brief.py::test_topic_brief_builds_deterministic_existing_director_artifacts"
+      ],
+      "status": "PARTIAL_MACHINE_IMPLEMENTED",
+      "gap": "Real final topic set and human approvals remain incomplete.",
+      "requirement_text": "主题到脚本、分镜和视频",
+      "acceptance_text": "事实与来源绑定，输出原创 MP4、质量报告、审阅包",
+      "stage_scope": "current Phase 1 with separately stated human/resource gaps"
+    },
+    {
+      "id": "R02",
+      "implementation": [
+        "src/factory/reference_video.py"
+      ],
+      "tests": [
+        "tests/reference/test_ingest.py::test_ingest_copies_hash_bound_read_only_reference",
+        "tests/reference/test_ingest.py::test_ingest_rejects_source_sha_mismatch"
+      ],
+      "status": "PARTIAL_MACHINE_IMPLEMENTED",
+      "gap": "Real authorized-reference originality acceptance is separate; symlink test skipped on this Windows environment.",
+      "requirement_text": "参考视频原创重构",
+      "acceptance_text": "rights receipt、SHA、抽象分析、difference report、人工原创性审核",
+      "stage_scope": "current Phase 1 with separately stated human/resource gaps"
+    },
+    {
+      "id": "R03",
+      "implementation": [
+        "remotion/",
+        "assets/"
+      ],
+      "tests": [
+        "tests/video/test_flash_plain_geometry.py::test_flash_window_cpu_arrow_and_clock_caption"
+      ],
+      "status": "PARTIAL_GEOMETRY_CHECKED",
+      "gap": "Correct SVG geometry does not prove technical explanation or human semantic acceptance.",
+      "requirement_text": "工程画面与旁白一致",
+      "acceptance_text": "波形、原理图、代码、公式真实可见且技术正确，不能用无关卡片代替",
+      "stage_scope": "current Phase 1 with separately stated human/resource gaps"
+    },
+    {
+      "id": "R04",
+      "implementation": [
+        "remotion/src/product-demo/WebsiteProductDemo.tsx",
+        "scripts/product-demo/"
+      ],
+      "tests": [
+        "tests/product-demo/product_demo.test.mjs: desktop focus crop preserves source aspect and rejects distortion",
+        "tests/product-demo/product_demo_presentation.test.mjs: 16:9 hook map, attribution and footer stay above the subtitle region"
+      ],
+      "status": "PARTIAL_TEMPLATE_IMPLEMENTED",
+      "gap": "Synthetic layout tests are not a new real-product capture/render or human approval.",
+      "requirement_text": "App/网页产品演示",
+      "acceptance_text": "授权真实产品截图/录屏，焦点动作绑定旁白；产品模板只服务其适用内容",
+      "stage_scope": "current Phase 1 with separately stated human/resource gaps"
+    },
+    {
+      "id": "R05",
+      "implementation": [
+        "src/factory/phase1_subject_audio.py",
+        "video_factory/pipeline/narration_timing.py",
+        "scripts/phase1_audio_integrity.py"
+      ],
+      "tests": [
+        "tests/phase1_local/test_audio_overflow_contract.py::test_objective_audio_integrity_rejects_truncation_or_non_silent_tail",
+        "tests/phase1_local/test_audio_integrity_identity.py::test_audio_audit_measures_duration_instead_of_trusting_matching_declarations"
+      ],
+      "status": "PARTIAL_CONTRACT_CHECKED",
+      "gap": "Existing Flash/FreeRTOS readiness requires exact audio approval; no new provider/TTS call made.",
+      "requirement_text": "完整旁白与同步字幕",
+      "acceptance_text": "source/aligned PCM/台词绑定，无裁掉有效尾音，字幕和动作按实测 cue",
+      "stage_scope": "current Phase 1 with separately stated human/resource gaps"
+    },
+    {
+      "id": "R06",
+      "implementation": [
+        "src/factory/phase1_local.py",
+        "video_factory/pipeline/renderer.py"
+      ],
+      "tests": [
+        "tests/phase1_local/test_local_brief.py::test_explicit_portrait_profile_remains_supported",
+        "tests/phase1_local/test_review_publication.py::test_aspect_variants_do_not_replace_queued_input"
+      ],
+      "status": "PARTIAL_PROFILE_CHECKED",
+      "gap": "Final media must still be probed against its real Job profile.",
+      "requirement_text": "按 Job 选择画布",
+      "acceptance_text": "9:16/1080×1920 或 brief 指定 16:9/1920×1080，默认 30fps、H.264/AAC",
+      "stage_scope": "current Phase 1 with separately stated human/resource gaps"
+    },
+    {
+      "id": "R07",
+      "implementation": [
+        "src/factory/db.py",
+        "src/factory/phase1_cli.py"
+      ],
+      "tests": [
+        "tests/phase1_local/test_review_publication.py::test_same_job_has_one_executing_worker",
+        "tests/phase1_local/test_review_publication.py::test_cancel_retry_fences_returning_worker",
+        "tests/phase1_local/test_review_publication.py::test_killed_claim_owner_requires_explicit_cancel_retry",
+        "tests/phase1_local/test_phase1_subject_cli.py::test_returning_subject_worker_cannot_change_new_attempt_plan",
+        "tests/phase1_local/test_review_publication.py::test_quality_checkpoint_retry_never_becomes_ready_before_publication",
+        "tests/phase1_local/test_review_publication.py::test_quality_checkpoint_retry_missing_media_fails_without_review",
+        "tests/phase1_local/test_phase1_subject_cli.py::test_subject_completed_plan_recovers_from_planning_checkpoint"
+      ],
+      "status": "REPAIRED_CODE_REGRESSION",
+      "gap": "Crash recovery uses explicit cancel/retry; no takeover by timeout. Final lifecycle evidence still needs version/hash revalidation.",
+      "requirement_text": "可追踪、取消、重试、恢复",
+      "acceptance_text": "SQLite Job/Event/Artifact/Stage Attempt、幂等键和 lifecycle 证据",
+      "stage_scope": "current Phase 1 with separately stated human/resource gaps"
+    },
+    {
+      "id": "R08",
+      "implementation": [
+        "scripts/phase1_post_render_check.py",
+        "src/factory/phase1_acceptance.py",
+        "src/factory/phase1_gate.py"
+      ],
+      "tests": [
+        "tests/phase1_acceptance/test_phase1_acceptance.py::test_registered_hash_mismatch_blocks_prereview",
+        "tests/phase1_local/test_review_publication.py::test_pending_review_reuse_rejects_changed_bytes"
+      ],
+      "status": "PARTIAL_IDENTITY_CONTRACT_CHECKED",
+      "gap": "Unit-test approved reviews are mocks; no real review/manifest/Gate created.",
+      "requirement_text": "可审核交付",
+      "acceptance_text": "最终媒体 SHA、来源、版本、质量结论、人工决定一致；失败如实返回",
+      "stage_scope": "current Phase 1 with separately stated human/resource gaps"
+    },
+    {
+      "id": "R09",
+      "implementation": [],
+      "tests": [],
+      "status": "PLANNED_LATER_PHASE",
+      "gap": "No user-facing web/App task console delivered; reuse the existing production chain in a later authorized phase.",
+      "requirement_text": "多入口复用生产链",
+      "acceptance_text": "后续飞书、网页/App 复用任务接口与 SQLite，避免第二渲染/状态系统",
+      "stage_scope": "later interface phase"
+    },
+    {
+      "id": "R10",
+      "implementation": [
+        "scripts/factory.py",
+        "src/factory/phase1_cli.py",
+        "docs/PINK_PIG_CURRENT_POLICY.md",
+        "third_party/openmontage/PROVENANCE.json"
+      ],
+      "tests": [
+        "tests/phase1_local/test_phase1_cli.py::test_phase1_doctor_is_local_only"
+      ],
+      "status": "PARTIAL_BOUNDARY_CHECKED",
+      "gap": "11 vendored hashes match; no commercial legal approval, new model/resource approval, daily orchestration or publishing acceptance implied.",
+      "requirement_text": "资源、品牌、发布受控",
+      "acceptance_text": "GPU 重任务串行；模型下载须授权；角色 opt-in + 原始资产 receipt；人工发布",
+      "stage_scope": "current Phase 1 with separately stated human/resource gaps"
+    }
+  ],
+  "baseline_and_cleanup": {
+    "tip_ancestry": "PASS",
+    "unique_tip_commits": 84,
+    "deleted_documents": 273,
+    "operational_literal_references": 0,
+    "retention_dry_run": "PASS_NON_DESTRUCTIVE",
+    "deleted_blob_index": "local evidence cache; original blobs remain in archive/pre-cleanup-20261023",
+    "assessment_limit": "Static dependencies and retention dry-run pass; not a claim of reading all historical narrative lines.",
+    "vendored_hashes_verified": 11
+  },
+  "validation": {
+    "python": {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "passed": 684,
+      "skipped": 1,
+      "deselected": 2,
+      "subtests_passed": 4,
+      "skip_reason": "Windows symlink creation unavailable",
+      "excluded_case": "legacy original absolute-path artifact identity",
+      "excluded_case_result": "2 passed separately at original artifact location; test definition blob matches fixed source"
+    },
+    "node": {
+      "source_sha": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44",
+      "passed": 81,
+      "javascript_tree_equal_to_final_source": true,
+      "typecheck": "PASS",
+      "contracts": "PASS"
+    },
+    "clean_install": {
+      "frozen_lock_npm_ci": "PASS",
+      "reuse_node_modules": false,
+      "node_tests_passed": 81,
+      "typecheck": "PASS",
+      "contracts": "PASS",
+      "scripts_disabled": true,
+      "lockfile_changed": false,
+      "initial_network_failure": "ECONNRESET; retained log",
+      "cache_repair": "Fetched one exact lock-resolved official @xtuc/long tarball; clean offline ci then passed"
+    },
+    "logs": [
+      {
+        "name": "python",
+        "exit_code": 0,
+        "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+        "log": "reports/audit_20261024/committed-0528375-python.log",
+        "sha256": "578ec1aa09a55532bd3ed4246238f5d24ab6c11b5c722c432ea1abe6f78911d6"
+      },
+      {
+        "name": "node",
+        "exit_code": 0,
+        "source_sha": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44",
+        "log": "reports/audit_20261024/committed-node.log",
+        "sha256": "612408c712cdf7b8a895fc791d1777d1c02590dff43527671e62b61170cf7e88"
+      },
+      {
+        "name": "typecheck",
+        "exit_code": 0,
+        "source_sha": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44",
+        "log": "reports/audit_20261024/committed-typecheck.log",
+        "sha256": "d577537d87f3f36702bf558211ebdf97f0f620f230eb8a67f95387f6b522fbd4"
+      },
+      {
+        "name": "contracts",
+        "exit_code": 0,
+        "source_sha": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44",
+        "log": "reports/audit_20261024/committed-contracts.log",
+        "sha256": "cb3fbedfbe48d09b9cdae8fa24ffc706a808e193c85ee3a7b7a931b3a171da57"
+      },
+      {
+        "name": "python",
+        "exit_code": 0,
+        "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+        "log": "reports/audit_20261024/committed-10679a1-python.log",
+        "sha256": "80f4ddf63846a5912b8bae25d9c93cf4c9232f5aaea8323f93f7d07ddd855293"
+      }
+    ],
+    "previous_python": {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "passed": 670,
+      "skipped": 1,
+      "deselected": 2,
+      "subtests_passed": 4,
+      "skip_reason": "Windows symlink creation unavailable",
+      "excluded_case": "legacy original absolute-path artifact identity",
+      "excluded_case_result": "2 passed separately at original artifact location; test definition blob matches fixed source"
+    },
+    "attempt_recovery": {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "focused_passed": 41,
+      "new_regression_cases": 14,
+      "red_evidence": [
+        {
+          "log": "reports/audit_20261024/attempt-recovery-red.log",
+          "failed": 3,
+          "production_base": "ba0a4c30ae76bc3828442a8a1fd3ae67d0ea9de3",
+          "sha256": "0e05f2385cf1cc4f3fddfd89263516509383b217d9ee7ffb7893e1c3a2c67c8c"
+        },
+        {
+          "log": "reports/audit_20261024/subject-checkpoint-red.log",
+          "failed": 2,
+          "production_base": "uncommitted first attempt-isolation patch",
+          "sha256": "bfebbeea164306c49f453b785cdc54b417bf8b0fc15cda6e4a9af2ec1ecdd4b9"
+        },
+        {
+          "log": "reports/audit_20261024/plan-request-binding-red.log",
+          "failed": 2,
+          "production_base": "uncommitted checkpoint patch before request binding",
+          "sha256": "4c3ca9b6a0fd86bc23e92f9f2eaab45f927555e68bad8446d8ada86e4aa56964"
+        }
+      ],
+      "evidence_level": "Temporary SQLite, synthetic provider/media boundaries; not new production media",
+      "source_review": "Independent local read-only code advice; no further concrete blocker found; not remote approval"
+    }
+  },
+  "retained_audio": {
+    "evidence_level": "read-only revalidation of retained v7 artifacts, not new TTS/media production",
+    "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+    "status": "OBJECTIVE_AUDIO_INTEGRITY_PASS",
+    "source_report_sha256": "4e9c1425bec0495fe9c26fad661e8ad5d151b3909625dcf5403f62390e28fbde",
+    "fixtures": [
+      {
+        "topic": "Flash 擦除时,如何安排微控制器的看门狗服务窗口",
+        "audio_sha256": "d32e7332763c503ca4568bb55a4d3c61cb47d1b157a4d0a41f79209810a373df",
+        "actual_endpoint_seconds": 48.466031746031746,
+        "segments": 5,
+        "identity_matches": true,
+        "pcm_concatenation_matches": true
+      },
+      {
+        "topic": "FreeRTOS 互斥锁与中断通知边界",
+        "audio_sha256": "313cad7ac3c4fa55678b819a57dc29d7cc8eea858c9204761b10670d2ae8fed0",
+        "actual_endpoint_seconds": 46.066984126984124,
+        "segments": 5,
+        "identity_matches": true,
+        "pcm_concatenation_matches": true
+      }
+    ],
+    "human_review": "PENDING; Jovi explicitly deferred listening and requested code-review delivery first"
+  },
+  "review_transport": {
+    "remote_review": "STATIC_GITHUB_CHANGES_REQUIRED; LOCAL_RUNTIME_NOT_VERIFIED",
+    "public_tunnel": "TLS_EOF",
+    "latest_workspace_info": "MCP_INTERNAL_ERROR_-32603; no workspace response received",
+    "task_id": "c2c_a024",
+    "host_output_ids": [
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44
+    ],
+    "remote_output_ids_verified": false,
+    "read_policy": "list by task_id first, then read returned IDs; host IDs are local receipts",
+    "outputs_allowed_and_untruncated": true,
+    "source_snapshots": 189,
+    "cache_index": "handoff/codex/review-evidence-20261024/index.json",
+    "workspace_note": "Registered original checkout remains protected; audit source is identified by exact SHA/blob metadata.",
+    "message_sent": true,
+    "sanitized_read_file_mirror": "handoff/codex/review-evidence-20261024/execution/",
+    "local_workspace_file_policy_verified": true,
+    "bounded_repair": "Original signed client preserved; fixed-destination relay and official side-by-side client probes failed; owned probes stopped; no account/domain/global network change",
+    "current_review_chat_observed": "2026-10-25 scope cancellation sent to existing Project chat; no further automatic work",
+    "checkpoint_iteration": 2,
+    "message_channel": "existing Project chat; GitHub-only source review fallback",
+    "c2c_executed_sent": false,
+    "github_review_status": "CHANGES_REQUIRED_IN_COMMENTED_REVIEW",
+    "github_review_graphql_id": "PRR_kwDOTVx9_M8AAAABT_5Txg",
+    "github_review_commit": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+    "github_review_submitted_at": "2026-10-24T05:38:49Z",
+    "automatic_followup": false,
+    "scope_cancellation_confirmed_by_remote": true
+  },
+  "owner_protection": {
+    "original_dirty_files": 3,
+    "raw_file_hashes_and_staged_unstaged_patches": "PASS",
+    "local_source_cache_added": true,
+    "user_media_jobs_databases_modified": false
+  },
+  "phase1": "in_progress",
+  "new_production_candidate": "NOT_RUN",
+  "provider_retest": "NOT_RUN",
+  "formal_gate": "NOT_RUN",
+  "human_decision_created": false,
+  "hub_reporting": "BLOCKED_WINERROR_10061",
+  "next": [
+    "Finish documentation delivery and stop",
+    "Any development or media work requires a new explicit Jovi instruction"
+  ],
+  "idempotency_boundary_guard_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+  "previous_source_fixes": [
+    "05283758767b693adc20d1071f93ce97109fbc8b"
+  ],
+  "remote_static_findings": [
+    {
+      "id": "F01",
+      "finding": "Final-head evidence binding",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE",
+      "note": "Committed-source10679a1 regression evidence already added in later documentation; independent re-review approval still absent."
+    },
+    {
+      "id": "F02",
+      "finding": "Managed input identity before execution",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE"
+    },
+    {
+      "id": "F03",
+      "finding": "ASSETS plan-only snapshot verification",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE"
+    },
+    {
+      "id": "F04",
+      "finding": "Late research attachment provenance mutation",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE"
+    },
+    {
+      "id": "F05",
+      "finding": "Dangling symlink guard",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE"
+    },
+    {
+      "id": "F06",
+      "finding": "Timestamp-only MPT output directory collision",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE"
+    }
+  ],
+  "current_task": {
+    "date": "2026-10-25",
+    "scope": "Project/document/workflow organization only",
+    "stop_after_delivery": true,
+    "new_code_or_media_authorized": false,
+    "product_phase_unchanged": "in_progress",
+    "status": "DOCUMENTATION_CLOSED_USER_STOP"
+  }
+}
