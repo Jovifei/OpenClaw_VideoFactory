@@ -1,6 +1,14 @@
 # START HERE — OpenClaw VideoFactory
 
-Updated: 2026-10-24
+本次仅将整理文档纳入 main：运行代码仍为 8b5c142 基线；10679a1 的代码修复与测试仍在草稿 PR #2，未随文档合并。文档中的修复和回归记录均指向该准确待审 SHA，不表示 main 已修复。合并后停止。
+
+Updated: 2026-10-25
+
+## 本次范围与停止点
+
+Jovi 于 2026-10-25 明确：本次只整理项目与流程，交付后停止。不得依据旧任务、远端方案或“下一步”自动继续开发、修复、制作视频或推进阶段。后续执行须由 Jovi 重新明确启动。
+
+整理交接见 [CURRENT_HANDOFF](handoff/codex/CURRENT_HANDOFF.md)，协作与收尾流程见 [MAINTENANCE](docs/MAINTENANCE.md#协作与收尾流程)。产品 Phase 1 仍为 in_progress；本轮整理完成不代表产品验收通过。
 
 ## 必读顺序
 

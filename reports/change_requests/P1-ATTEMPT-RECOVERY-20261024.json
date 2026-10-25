@@ -1,0 +1,35 @@
+{
+  "id": "P1-ATTEMPT-RECOVERY-20261024",
+  "category": "Phase 1 execution lifecycle correctness",
+  "status": "LOCAL_FIXES_VERIFIED_REMOTE_REVIEW_BLOCKED",
+  "base_sha": "ba0a4c30ae76bc3828442a8a1fd3ae67d0ea9de3",
+  "authorization": "Continue ordinary confirmed review fixes and code delivery; user deferred audio listening",
+  "findings": [
+    "Returning stale subject worker can overwrite shared planning files before database claim rejection",
+    "Local topic/reference retry from QUALITY_CHECK advances to PENDING_REVIEW without published artifacts",
+    "Subject retry from VOICE/CAPTIONS advances past planning instead of reusing the completed plan"
+  ],
+  "plan": [
+    "Reproduce both failures using temporary SQLite and fake provider/media boundaries",
+    "Use attempt-isolated complete subject planning snapshots and bound consumers",
+    "Handle local QUALITY_CHECK recovery without premature readiness",
+    "Run focused and declared bounded regressions, verify owner protection and publish updated PR2"
+  ],
+  "preserve": [
+    "SQLite and Remotion/FFmpeg architecture",
+    "Phase 1 in_progress",
+    "all real media/jobs/data",
+    "audio approval and I2C gates",
+    "original dirty owner tree"
+  ],
+  "verification": {
+    "red_initial": "3 failed at the expected claim/quality recovery defects",
+    "red_planning_checkpoint": "2 failed on the same premature state advance",
+    "red_request_binding": "2 failed because a changed request was incorrectly accepted",
+    "focused": "41 passed; synthetic provider/media boundaries only",
+    "review": "Read-only increment review found no further concrete blocker; not remote approval",
+    "bounded": "684 passed,1 skipped,2 deselected,4 subtests passed at clean committed source10679a1",
+    "source_push": "PR2 source10679a1 pushed; remote approval NOT_VERIFIED"
+  },
+  "source_fix": "10679a1b2b1b23b3034d6b7864db2a061448930e"
+}

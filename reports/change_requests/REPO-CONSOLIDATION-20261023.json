@@ -28,5 +28,38 @@
   "deleted_historical_documents": 273,
   "archive_tag_pushed": true,
   "initial_main_publish": "c953cd0",
-  "owner_dirty_patch_unchanged": true
+  "owner_dirty_patch_unchanged": true,
+  "closeout_20261025": {
+    "authorized_by": "Jovi",
+    "scope": "Documentation, project organization and collaboration workflow only; finish delivery and stop",
+    "status": "DOCUMENTATION_CLOSED",
+    "no_new_code_or_media": true,
+    "no_auto_next_stage": true,
+    "prior_draft_fixes_preserved": true,
+    "remote_static_review": "CHANGES_REQUIRED; six findings retained for future authorization",
+    "verification": "Current links,tracked targets,manifest/checksums and source-unchanged checks required at delivery; actual push recorded by PR HEAD",
+    "remote_execution": "Existing Project confirmed cancellation of automatic repair,new stage and video production"
+  },
+  "docs_only_main_merge_20261025": {
+    "authorized_by": "Jovi",
+    "scope": "Merge organized documents into main only; no code fixes or media production; stop after push",
+    "base": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+    "document_source": "852ce3416c9ee70848e1dd86ae007cc5634c3cb5",
+    "excluded": [
+      "src",
+      "scripts",
+      "tests",
+      "remotion",
+      "video_factory",
+      "generate_video.py",
+      "PROJECT_STATUS.yaml",
+      ".gitignore"
+    ],
+    "allowed": [
+      "Markdown documentation",
+      "linked review/change-request JSON documentation",
+      "FILE_MANIFEST.txt",
+      "SHA256SUMS.txt"
+    ]
+  }
 }

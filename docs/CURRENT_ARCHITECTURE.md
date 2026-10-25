@@ -1,6 +1,10 @@
 # 当前技术架构
 
-Updated: 2026-10-24 · Phase 1 in_progress
+Updated: 2026-10-25 · Phase 1 in_progress
+
+## main 与待审代码的区别
+
+本次 main 只合并整理文档，运行代码仍为 8b5c142 基线。PR #2 的 10679a1 修复源码未合入 main；claim/fencing 加固、attempt 规划快照、检查点恢复、媒体身份及音频审计修复等只属于该待审分支。下文沿用主分支架构，不能把待审修复或其测试写成 main 已具备的增强。待处理发现见 [当前交接](../handoff/codex/CURRENT_HANDOFF.md)。
 
 ## 主链
 
