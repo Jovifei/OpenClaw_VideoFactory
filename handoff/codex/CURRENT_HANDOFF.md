@@ -1,65 +1,49 @@
-# 当前接力信息
+# 当前交接：整理交付后停止
 
-Updated: 2026-10-24
+Updated: 2026-10-25 · Owner: Jovi
 
-## 当前目标与版本
+## 本次范围与结束条件
 
-继续工程视频工厂：App、网页、嵌入式、原理图、硬件教程/演示。先完成本地生产和审阅，再飞书与后续网页/App 入口。
+本次只整理项目、需求、技术路线、文档与协作流程，提交整理成果后停止。不继续修复代码、生成视频、恢复外部依赖、合并待审 PR 或启动下一阶段。未来执行须由 Jovi 重新明确启动；旧聊天和远端方案不能自动续派任务。
 
-审核基线：8b5c142f6c469503a3644e4eafd6d54d785c577a。
-最终执行源码：10679a1b2b1b23b3034d6b7864db2a061448930e；前一执行版 0528375。
-修复分支：codex/p1-consolidation-review-20261024。
-[PR #2](https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2) 为草稿，等待独立复核；main 保留审核基线。
+## 已整理的内容
 
-远端最初因访问失败未读到源码，没有证实代码缺陷。本地随后复现并修复十项问题，详见 [审核说明](../../docs/PROJECT_REVIEW.md) 和 [机器索引](../../reports/phase1/consolidation_audit_20261024.json)。
+- 产品仍是工程视频工厂，覆盖 App、网页、嵌入式、原理图和硬件内容；后续网页/App 是操作入口。
+- 需求、架构、路线、审核、维护各保留唯一文档，入口见 [文档索引](../../docs/README.md)。[协作与收尾流程](../../docs/MAINTENANCE.md#协作与收尾流程)已明确负责人、版本、测试、交接和停止点。
+- 先前五条末端线、84 个独有提交已整入 main；273 份旧过程文档已归纳精简。清理前快照为 archive/pre-cleanup-20261023（56e9165580332542046e65be64e05fc3b59fe9aa）。源码、测试、权利、许可证和必要机器证据保留。
+- 原 E:/project/OpenClaw_VideoFactory 的三份既存 dirty 文档和补丁保留；整理交付工作区为 E:/project/worktrees/OpenClaw_VideoFactory/main-consolidation-20261023。
 
-## 已完成
+## 版本与验证边界
 
-- 待审与产物身份同事务发布、重用前验证；完整请求幂等与输入/Job/attempt 输出隔离。
-- SQLite 独占 claim、旧 worker fencing、事务回滚和兼容 migration；真实测试子进程终止后明确 cancel/retry 恢复。
-- subject 六份规划文件按 attempt 隔离、hash 与请求身份绑定；媒体/审阅跟随绑定快照，旧 worker 返回不会覆盖新规划。
-- topic/reference QUALITY_CHECK 与 subject VOICE/CAPTIONS 检查点恢复，不再进入无产物的待审；损坏规划明确失败并支持显式重建。
-- 报告—媒体—派生来源—模板身份绑定、短 cue 动画和横屏封面修复。
-- 保留音频审核拒绝错误身份，按真实 PCM 样本测量时长。
-- 固定源码 10679a1 上 Python 684 passed、1 skipped、2 deselected、4 subtests passed；新增 14 项恢复回归，focused 41 passed，保留准确 RED。两项旧样片身份在原目录另验通过。跳过原因是 Windows symlink 创建限制。
-- Node 81 passed，类型/合同通过；精确源码快照冻结锁文件干净安装也通过。JS/锁文件与最终源码相同。
-- 五条末端、84 提交、273 删除项的结构依赖及非破坏性 retention 已重验；11 个 vendored hash 匹配。
-- 原工作区三份 dirty 文件和 staged/unstaged patch 保护；未修改真实媒体/Job/数据库。
+| 对象 | 当前记录 |
+|---|---|
+| 已合并 main / 审核基线 | 8b5c142f6c469503a3644e4eafd6d54d785c577a |
+| 已有修复源码 / 完整回归版本 | 10679a1b2b1b23b3034d6b7864db2a061448930e |
+| 现有待审分支 | codex/p1-consolidation-review-20261024；[草稿 PR #2](https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2) |
+| 已有本机证据 | 684 passed、1 skipped、2 deselected、4 subtests passed；两项旧绝对路径身份另验；Node81、类型/合同及冻结锁文件安装证据见机器索引 |
+| 本次收尾检查 | 文档链接、受跟踪目标、包清单/checksum、源码未变和原工作区保护；不重新运行开发或生产流程 |
 
-## 远端读取与状态
+详细证据在 [PROJECT_REVIEW](../../docs/PROJECT_REVIEW.md) 与 [机器索引](../../reports/phase1/consolidation_audit_20261024.json)。既有测试不能当成新视频、人审、远端本机运行或 Formal Gate。
 
-注册连接仍绑定 E:\project\OpenClaw_VideoFactory，原树旧 HEAD 被有意保留。代码工作区是 E:\project\worktrees\OpenClaw_VideoFactory\main-consolidation-20261023。不要把连接根目录当前 HEAD 当成审核版本，也不要据当前工作目录创建第二连接器。
+## 已收到但本次不实施的审核意见
 
-原树有本地只读源码缓存：handoff/codex/review-evidence-20261024/index.json。189 份快照包含准确源码 SHA、Git blob ID、原路径与行范围，正文为 git show 原始字节；文件第一行是元数据。8b5c142、0528375 与 10679a1 的快照分别保留，不能混用。新增缓存不属于生产代码，独立审核完成后可以清理。
+远端对 10679a1 完成 GitHub 静态审核，结论 CHANGES_REQUIRED；[审核评论](https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2#pullrequestreview-5637034950)已核实存在，平台状态为 COMMENTED。它未独立运行本机测试，也未批准 PR 或阶段。
 
-已在现有运行连接中释放 task c2c_a024、iteration 1/2 的 execution_output 29—44，均本地可读且未截断，并将同一 SDK 准许脱敏正文镜像到缓存 execution/，已用连接自身的 Workspace 文件规则验证可读。对外连接仍 TLS EOF，workspace_info 最新 -32603；未获得远端批准，也没有发送 EXECUTED。恢复后先验证用户当前审查聊天的工作区，再按 task_id=c2c_a024 调用 execution_output list，读取返回的实际 ID；29—44 只是本机索引回执。确认身份后才绑定聊天并发送一次交接。既有 DaVinci pilot 检查点不得误当成本轮审核。
+| 编号 | 远端静态发现 | 收尾处理 |
+|---|---|---|
+| F01 | PR 交付证据落后于受审源码 | 10679a1 的真实回归记录已在后续文档整理中绑定；尚未获得再审批准 |
+| F02 | 执行前未重新核对输入身份 | 登记待处理，本轮不复现或修改实现 |
+| F03 | ASSETS 的 plan-only 路径跳过快照校验 | 登记待处理，本轮不修改实现 |
+| F04 | attach-research 可在规划后修改来源 | 登记待处理，本轮不修改实现 |
+| F05 | dangling symlink 输入判断不足 | 登记待处理，本轮不修改实现 |
+| F06 | MPT 秒级输出目录名可能冲突 | 登记待处理，本轮不修改实现 |
 
-## 实际输入与停止边界
+PR 保留草稿，main 不自动合并这些修复。已向同 Project 审核聊天同步 Jovi 的最新范围，远端已明确确认撤销自动开发、自动修复和视频生产循环；本地续接检查点也结束，不等待新方案后自动执行。
 
-已在现有项目审核聊天 6adc134e 发送一次不依赖本地连接的 GitHub 源码复审请求，要求读取 PR #2 / 固定源码 10679a1，明确本地证据通道仍阻塞，并要求详细下一阶段方案。页面已显示该请求和“ChatGPT 正在回应”；这是 GitHub 取证尝试，不是 C2C EXECUTED 或独立审核通过。结果仍为 PENDING_REMOTE_REVIEW，取得真实回复后再更新。
+## 产品仍未完成的部分
 
-Flash / FreeRTOS 的现有 v7 音频在本机存在，SHA 与冻结记录一致；本轮只读重验 PCM 前缀、静音尾部、拼接、文件身份和实测时长通过。Jovi 已明确稍后试听，当前先交付代码；不创建批准或启动相应新候选。
+Phase 1 保持 in_progress；音频/最终视频人审、I2C 凭证与原有门禁、Prereview/Lifecycle/Manifest/Boundary/Gate 等均不因整理交付而通过。历史失败候选保留，本次不制作新视频，不新增 TTS/provider 请求，不启用飞书/Cron或自动发布。
 
-- Flash SHA：d32e7332763c503ca4568bb55a4d3c61cb47d1b157a4d0a41f79209810a373df
-- FreeRTOS SHA：313cad7ac3c4fa55678b819a57dc29d7cc8eea858c9204761b10670d2ae8fed0
-- 音频路径分别在 E:\OpenClaw_VideoFactory_Runtime\phase1_audio_contract_20260927_v7\phase1_d939208f4995f8d2\narration_pass_1\audio.wav 和 phase1_8958d25a694923c9\narration_pass_1\audio.wav。
+只读临时取证缓存仍在原注册目录的 handoff/codex/review-evidence-20261024/index.json；按准确 SHA 区分源码。它是已有审核材料，不是要求继续修复连接或恢复开发的指令。
 
-I2C 仍冻结 I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE；Candidate003 已终止，未授权 provider 重试、M6/Candidate004。Phase 1 in_progress；无新生产视频、无 Formal Gate、无 Phase 2 提升或自动发布。Hub 上报仍 WinError 10061。
-
-## 下一步
-
-1. 远端恢复读取后审核 PR #2 的十项修复，先 list/read 输出29—44，再按准确 SHA 读取源码缓存；不能仅采信本地 PASS 摘要。
-2. 对实际确认的问题继续普通修复；路线分歧先讨论证据，大方向由 Jovi 决定。
-3. Jovi 恢复真实音频人审后，才按已批准输入、明确 Job/attempt 和固定源码生成新候选；历史截断候选保持失败。
-4. 之后闭合媒体人审、Prereview、Lifecycle、Manifest/Boundary 和独立审核，最后才按原门禁 Formal Gate。
-
-## 本轮远端复审控制请求
-
-已向现有审核聊天 6adc134e 发送等价的 GitHub 复审请求，不重复发送。C2C 恢复仍须先验证工作区，不使用保存的 DaVinci 旧聊天。以下控制请求只包含版本与入口，源码与日志由远端从既有连接读取。
-
-```text
-Review PR2 https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2.
-Base:8b5c142f6c469503a3644e4eafd6d54d785c577a
-Tested source:10679a1b2b1b23b3034d6b7864db2a061448930e
-Pull exact GitHub files using the existing connection. Read START_HERE_CODEX.md, PROJECT_STATUS.yaml, docs/{PRODUCT_REQUIREMENTS,CURRENT_ARCHITECTURE,PRODUCT_PHASES,PROJECT_REVIEW}.md, handoff/codex/CURRENT_HANDOFF.md and reports/phase1/consolidation_audit_20261024.json. Independently audit code/diff/tests, ten fixes and cleanup. C2C is blocked: do not invent access or approval. When restored, verify workspace then list/read task c2c_a024; use the exact-SHA cache index in CURRENT_HANDOFF. Report findings with evidence; fix/commit if tools allow, otherwise return precise changes. Then give a detailed next-stage implementation/test/handoff plan toward the video-factory goal. Preserve SQLite+Remotion/FFmpeg, Phase1 gates and deferred audio approval; ask Jovi only for major route changes.
-```
+本轮下一动作：完成整理成果推送并结束。后续由 Jovi 另行决定。

@@ -1,7 +1,7 @@
 {
   "schema_version": "local_consolidation_audit_v1",
   "stage_id": "P1-CONSOLIDATION-AUDIT-CLOSURE-20261024",
-  "status": "LOCAL_FIXES_VERIFIED_REMOTE_REVIEW_BLOCKED",
+  "status": "LOCAL_EVIDENCE_RECORDED_REMOTE_STATIC_CHANGES_REQUIRED",
   "audit_base": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
   "core_fix": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44",
   "source_fix": "10679a1b2b1b23b3034d6b7864db2a061448930e",
@@ -445,7 +445,7 @@
     "human_review": "PENDING; Jovi explicitly deferred listening and requested code-review delivery first"
   },
   "review_transport": {
-    "remote_review": "NOT_VERIFIED",
+    "remote_review": "STATIC_GITHUB_CHANGES_REQUIRED; LOCAL_RUNTIME_NOT_VERIFIED",
     "public_tunnel": "TLS_EOF",
     "latest_workspace_info": "MCP_INTERNAL_ERROR_-32603; no workspace response received",
     "task_id": "c2c_a024",
@@ -477,11 +477,16 @@
     "sanitized_read_file_mirror": "handoff/codex/review-evidence-20261024/execution/",
     "local_workspace_file_policy_verified": true,
     "bounded_repair": "Original signed client preserved; fixed-destination relay and official side-by-side client probes failed; owned probes stopped; no account/domain/global network change",
-    "current_review_chat_observed": "6adc134e: exact source10679a1 request visible, ChatGPT responding",
+    "current_review_chat_observed": "2026-10-25 scope cancellation sent to existing Project chat; no further automatic work",
     "checkpoint_iteration": 2,
     "message_channel": "existing Project chat; GitHub-only source review fallback",
     "c2c_executed_sent": false,
-    "github_review_status": "PENDING_REMOTE_REVIEW"
+    "github_review_status": "CHANGES_REQUIRED_IN_COMMENTED_REVIEW",
+    "github_review_graphql_id": "PRR_kwDOTVx9_M8AAAABT_5Txg",
+    "github_review_commit": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+    "github_review_submitted_at": "2026-10-24T05:38:49Z",
+    "automatic_followup": false,
+    "scope_cancellation_confirmed_by_remote": true
   },
   "owner_protection": {
     "original_dirty_files": 3,
@@ -496,12 +501,52 @@
   "human_decision_created": false,
   "hub_reporting": "BLOCKED_WINERROR_10061",
   "next": [
-    "independent review of PR2 after read access recovers",
-    "retain deferred audio review",
-    "only then execute authorized new candidates; keep I2C/M6/Candidate004 and Phase2 gates"
+    "Finish documentation delivery and stop",
+    "Any development or media work requires a new explicit Jovi instruction"
   ],
   "idempotency_boundary_guard_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
   "previous_source_fixes": [
     "05283758767b693adc20d1071f93ce97109fbc8b"
-  ]
+  ],
+  "remote_static_findings": [
+    {
+      "id": "F01",
+      "finding": "Final-head evidence binding",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE",
+      "note": "Committed-source10679a1 regression evidence already added in later documentation; independent re-review approval still absent."
+    },
+    {
+      "id": "F02",
+      "finding": "Managed input identity before execution",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE"
+    },
+    {
+      "id": "F03",
+      "finding": "ASSETS plan-only snapshot verification",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE"
+    },
+    {
+      "id": "F04",
+      "finding": "Late research attachment provenance mutation",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE"
+    },
+    {
+      "id": "F05",
+      "finding": "Dangling symlink guard",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE"
+    },
+    {
+      "id": "F06",
+      "finding": "Timestamp-only MPT output directory collision",
+      "status": "RECORDED_DEFERRED_BY_JOVI_SCOPE"
+    }
+  ],
+  "current_task": {
+    "date": "2026-10-25",
+    "scope": "Project/document/workflow organization only",
+    "stop_after_delivery": true,
+    "new_code_or_media_authorized": false,
+    "product_phase_unchanged": "in_progress",
+    "status": "DOCUMENTATION_CLOSED_USER_STOP"
+  }
 }

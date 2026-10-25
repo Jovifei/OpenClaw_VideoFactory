@@ -1,8 +1,16 @@
 # 主线审核与交付说明
 
+## 2026-10-25 整理收尾与停止
+
+Jovi 明确本轮只整理项目与流程，交付后停止。本轮不继续开发、修复、制作视频、处理 provider 或推进阶段。需求/路线与协作流程已经集中维护，当前交接及后续待处理项见 [CURRENT_HANDOFF](../handoff/codex/CURRENT_HANDOFF.md)，工作方法见 [MAINTENANCE](MAINTENANCE.md#协作与收尾流程)。
+
+远端已完成对 PR #2 / 10679a1 的 GitHub 静态审核，并发布 [COMMENTED 审核](https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2#pullrequestreview-5637034950)，内容结论为 CHANGES_REQUIRED。六项发现逐条登记在当前交接；本轮不实施，也不自动合并。远端没有本机测试、人审或 Gate 的独立通过证明。后续 10679a1 本机回归记录已补充到文档交付，仍不能代替再审批准。
+
+下文是已完成工作的证据与历史整合记录，不是继续执行队列。Phase 1 仍 in_progress。
+
 ## 本轮远端反馈的本地复核与修复（2026-10-24）
 
-远端原结论是 CHANGES_REQUIRED / REVIEW_BLOCKED / NOT_VERIFIED：读取通道失败，并未证实代码缺陷。本地随后从准确 8b5c142 基线复现并修复十项问题，见 [PR #2](https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2)。**远端独立审核仍未完成，Phase 1 仍为 in_progress。**
+远端原结论是 CHANGES_REQUIRED / REVIEW_BLOCKED / NOT_VERIFIED：读取通道失败，并未证实代码缺陷。本地随后从准确 8b5c142 基线复现并修复十项问题，见 [PR #2](https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2)。**远端静态审查已返回 CHANGES_REQUIRED，本机证据独立复核及批准仍未完成，Phase 1 仍为 in_progress。**
 
 最终执行源码：10679a1b2b1b23b3034d6b7864db2a061448930e；前一执行版 0528375，核心修复 3f2d26e，保留音频审计修复 d3f07b8。后续交付文档提交不反向改写测试或音频来源。
 
@@ -50,9 +58,9 @@
 
 原工作区仍在旧分支，三份 dirty 文件和 patch 原始字节未变；新增的是本地临时取证缓存。远端恢复后先核对身份，再读 handoff/codex/review-evidence-20261024/index.json；按 task_id 先 list 再读取返回的实际 ID，29—44 只是本机索引回执。也可读取缓存内由 SDK 允许且脱敏的相同正文，不能把旧 HEAD 当审核基线。源码缓存属于已有工作区范围，未创建第二个连接器或上传另一份仓库。
 
-Hub 仍为 WinError 10061，未成功上报。I2C 凭证、M6/Candidate004、音频人审及后续阶段门禁保持。下一步是独立复核 PR #2；用户恢复音频人审后才推进相应新候选。
+Hub 仍为 WinError 10061，未成功上报。I2C 凭证、M6/Candidate004、音频人审及后续阶段门禁保持。这些未完成项仅登记；当前不继续修复、复审循环或生成候选，后续须由 Jovi 重新启动。
 
-现有项目审核聊天 6adc134e 已收到一次 GitHub 源码复审请求，要求读取 PR #2 与固定源码 10679a1，再制定详细下一阶段方案。页面显示已发送并正在回应；远端是否能通过 GitHub 取得源码仍待实际回复，状态为 PENDING_REMOTE_REVIEW，不能写成 C2C 恢复或独立审核通过。
+现有项目审核聊天 6adc134e 已收到一次 GitHub 源码复审请求，要求读取 PR #2 与固定源码 10679a1，再制定详细下一阶段方案。此请求现已有 GitHub 静态审核回复，结论见本页首节；它不证明本地读取连接恢复，也不代表独立运行批准。原请求中的自动执行与下一阶段要求已依 Jovi 新指令撤销。
 
 ---
 
