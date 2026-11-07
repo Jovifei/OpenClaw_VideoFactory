@@ -164,9 +164,6 @@ docs/*
 !reports/change_requests/PINK-PIG-FACTORY-PHASE1-5-COMPOSITION-ENGINE.json
 !reports/AI_DIRECTOR_PHASE2_IMPLEMENTATION.md
 !reports/change_requests/AI-DIRECTOR-VIDEO-FACTORY-PHASE2-001.json
-!docs/superpowers/
-!docs/superpowers/plans/
-!docs/superpowers/plans/2026-08-09-ai-director-phase2-final-qualification-003.md
 
 # Local session memory, prepared handoff bundles, and one-off probes are not
 # part of the cloneable Video Factory baseline.
@@ -215,7 +212,6 @@ schemas/p0_evidence_v2/
 !reports/CODEX_PROVIDER_RECOVERY_PLAN_003.md
 !reports/PHASE2_FINAL_QUALIFICATION_003.md
 !reports/change_requests/AI-DIRECTOR-PHASE2-FINAL-QUALIFICATION-003.json
-!docs/superpowers/plans/2026-08-10-ai-director-phase2-remediation-004.md
 !reports/AI_DIRECTOR_PHASE2_REMEDIATION_004.md
 !reports/change_requests/AI-DIRECTOR-PHASE2-IMPLEMENTATION-REMEDIATION-004.json
 !tasks/plans/2026-08-10-ai-director-phase2-provider-recovery-005.md
@@ -289,3 +285,7 @@ schemas/p0_evidence_v2/
 !docs/MONEYPRINTER_TURBO_SETUP.md
 !reports/phase1/mpt_configure_evidence_20260829.json
 !reports/change_requests/PHASE1-MPT-CONFIG-FINALIZE-003.json
+
+# Docs reorg 004 (2026-11-07)
+!MUST_RUN.md
+!reports/change_requests/PHASE1-DOCS-REORG-004.json

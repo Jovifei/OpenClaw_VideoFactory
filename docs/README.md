@@ -1,6 +1,6 @@
 # Documentation Index — current truth first
 
-本目录同时保存**当前产品文档**与**历史设计快照**。新 Agent 不得按文件修改时间或旧 P0/P1/P2 标签自行推断当前路线。
+本目录保存**当前产品文档**（按功能分组）与**历史归档**（`archive/`）。新 Agent 不得按文件修改时间或旧 P0/P1/P2 标签自行推断当前路线。
 
 ## 1. 当前事实优先级
 
@@ -12,41 +12,63 @@
 4. `handoff/codex/PROJECT_HANDOFF_20260905.md` — 当前分支深度交接、经验和下一步；
 5. `runbook/11_PHASE1_COMPLETION.md` — Phase 1 收口执行步骤；
 6. 当前源码、Schema、测试与真实运行证据；
-7. 历史设计/报告仅用于解释“为什么走到这里”，不得覆盖上述事实。
+7. 历史归档（`docs/archive/`）仅用于解释"为什么走到这里"，不得覆盖上述事实。
 
-根目录 `START_HERE_CODEX.md` 是新 Codex/Agent 的第一入口。
+根目录 `START_HERE_CODEX.md` 是新 Codex/Agent 的第一入口；`MUST_RUN.md` 是每次提交前必须执行的检查清单与错误台账。
 
-## 2. 当前必读文档
+## 2. 活跃文档（按功能分组）
 
-| 文件 | 用途 | 当前性 |
-|---|---|---|
-| `CURRENT_ARCHITECTURE.md` | Topic/Reference → Script/Storyboard → Visual/Audio → MP4 → Review 的当前架构 | Canonical |
-| `PRODUCT_PHASES.md` | Phase 1 本地工厂 → Phase 2 飞书 → 后续增强 | Canonical |
-| `OPEN_SOURCE_SKILL_MATRIX.md` | 已借鉴/采用/拒绝的开源项目与许可证边界 | Canonical |
-| `REFERENCE_VIDEO_ANALYSIS.md` | Phase 1 参考视频基础分析与 Phase 4 高级分析边界 | Canonical |
-| `REFERENCE_TOOL_MATRIX.md` | 参考视频工具的采用状态 | Canonical |
-| `PINK_PIG_CURRENT_POLICY.md` | 小粉飞猪当前资产与启用规则 | Canonical |
+### 产品与阶段
 
-## 3. 历史快照，不作为当前执行入口
+| 文件 | 用途 |
+|---|---|
+| `PRODUCT_PHASES.md` | Phase 1 本地工厂 → Phase 2 飞书 → 后续增强（Canonical） |
+| `PINK_PIG_CURRENT_POLICY.md` | 小粉飞猪当前资产与启用规则（Canonical） |
 
-### `PINK_PIG_PHASE1_ARCHITECTURE.md`
+### 架构
 
-这是 2026-08-09 起形成的长篇 Phase 1/1.5/Director 历史设计记录。它包含大量当时正确、现在已经被后续决策覆盖的细节，例如：
+| 文件 | 用途 |
+|---|---|
+| `CURRENT_ARCHITECTURE.md` | Topic/Reference → Script/Storyboard → Visual/Audio → MP4 → Review 的当前架构（Canonical） |
 
-- 全局固定 1080×1920；
-- 早期把仓库内自制 Pink Pig PNG/SVG 当作可直接生产使用的角色资产；
-- `jsonschema` / PyYAML 环境快照；
-- 当时的分支名、测试计数、Renderer 最小修改方案。
+### 参考视频链
 
-**保留它是为了审计历史，不应从中复制当前默认分辨率、IP 资产政策或阶段状态。** 当前对应内容以 `CURRENT_ARCHITECTURE.md`、`PROJECT_STATUS.yaml` 和 `PINK_PIG_CURRENT_POLICY.md` 为准。
+| 文件 | 用途 |
+|---|---|
+| `REFERENCE_VIDEO_ANALYSIS.md` | Phase 1 参考视频基础分析与 Phase 4 高级分析边界（Canonical） |
+| `REFERENCE_TOOL_MATRIX.md` | 参考视频工具的采用状态（Canonical） |
 
-### `docs/superpowers/plans/*` / `specs/*`
+### 安全
 
-这些是单次 Change Request 的实施计划。计划完成后仍保留，但只说明该任务当时的目标，不能证明整个产品阶段通过。
+| 文件 | 用途 |
+|---|---|
+| `SECURITY.md` | 安全基线 |
+| `SECURE_INSTALL_GUIDE.md` | 第三方 Skill 安装安全规则 |
 
-### 历史 P0/Feishu 文档
+### 外部集成
 
-仓库里的 P0/P1/P2 历史报告、Gateway/Binding/OAuth/Feishu 调试记录属于未来 Phase 2 的安全证据库。当前 Phase 1 不应重新执行它们，也不能因为它们未闭环而阻塞本地视频工厂。
+| 文件 | 用途 |
+|---|---|
+| `MONEYPRINTER_TURBO_SETUP.md` | 关键词 → 候选文案草稿器（MiMo v2.5）设置与密钥轮换 |
+| `FEISHU_LARK_CLI_INTEGRATION.md` | 飞书 / lark-cli 集成（**Phase 2 专属**，Phase 1 不执行） |
+| `OPEN_SOURCE_SKILL_MATRIX.md` | 已借鉴/采用/拒绝的开源项目与许可证边界（Canonical） |
+
+## 3. 历史归档 `archive/`
+
+以下文档是已完成时期的设计快照与决策记录，**只作审计追溯，不作为当前执行入口**；与第 1 节的当前文档冲突时，以当前文档为准：
+
+| 文件 | 历史内容 |
+|---|---|
+| `ARCHITECTURE.md` | 2026-07 旧架构（被 `CURRENT_ARCHITECTURE.md` 取代） |
+| `IMPLEMENTATION_PHASES.md` | 旧实施阶段定义（被 `PRODUCT_PHASES.md` 取代） |
+| `INSTALL_ORDER.md` | 旧推荐安装顺序 |
+| `SKILL_INTEGRATION_ARCHITECTURE.md` | Skill 集成架构 V2 |
+| `HISTORY_AND_DECISIONS.md` | 2026-09 前的历史与决策日志 |
+| `PINK_PIG_PHASE1_ARCHITECTURE.md` | Phase 1/1.5/Director 长篇历史设计（含旧分辨率与旧 IP 资产假设） |
+| `PINK_PIG_MVP_PLAN.md` / `PINK_PIG_VIDEO_FACTORY_DESIGN.md` | 小粉飞猪早期 MVP 计划与设计 |
+| `PHASE1_REMOTE_AUDIT_20260906.md` | 2026-09-06 远端审核与开源吸收记录 |
+
+单次 Change Request 的历史实施计划（原 `docs/superpowers/`）已于 2026-11-07 清理删除；如需追溯，从 Git 历史查找（提交前的最后跟踪版本在 `0f3b5b9` 及更早）。
 
 ## 4. 当前产品的几个易混点
 
@@ -70,7 +92,7 @@ Provider-neutral Director 代码存在，历史真实 Codex CLI Provider 曾受�
 
 ## 5. 当前完成定义
 
-“实现了一个子链”与“Phase 1 完成”是两件事。
+"实现了一个子链"与"Phase 1 完成"是两件事。
 
 Phase 1 只有在以下全部成立时才完成：
 
@@ -82,3 +104,10 @@ Phase 1 只有在以下全部成立时才完成：
 - 独立只读审核通过；
 - `phase1_gate.py` 正式运行并产生 `PHASE1_READY.json`；
 - Gate 通过后才能把 `PROJECT_STATUS.yaml` 更新为 passed，并启动 Phase 2。
+
+## 6. 文档维护规则（2026-11-07 起）
+
+- 新增文档必须进入本索引的功能分组，并在文首标注更新日期；
+- 文档被后续决策取代时，移入 `archive/` 并在本索引登记，不直接删除（Git 历史保留更完整的版本链）；
+- 纯残留物（测试文件、旧交付压缩包、过期清单）直接删除，不归档；
+- 归档文档的失效链接允许修复路径，但不得改写其历史结论。

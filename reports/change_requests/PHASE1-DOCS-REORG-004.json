@@ -1,0 +1,27 @@
+{
+  "id": "PHASE1-DOCS-REORG-004",
+  "date": "2026-11-07",
+  "granted_by": "user",
+  "category": "docs_and_workspace_cleanup",
+  "summary": "Reorganize docs/ by function vs history, remove confirmed residue, clean worktrees and downloaded research dirs, add mandatory MUST_RUN.md",
+  "user_decisions": [
+    "residue deleted: docs/p0-file-test.txt, docs/OpenClaw_VideoFactory_Codex_Handoff_Prepared.zip, docs/V2_MANIFEST.json (tracked, git rm), class-diagram.mermaid, sequence-diagram.mermaid, external/mpt_smoke_tts.mp3",
+    "9 historical docs archived to docs/archive/; 6 superpowers plans/specs deleted (git rm, recoverable from history)",
+    "vendor_research/ (347M) and experiments/ (189M) deleted (untracked, gitignored)",
+    "all 15 worktree registrations pruned, 7 clean worktree dirs removed (branches kept; codex/p1-consolidation-review-20261024 kept unmerged), E:/project/worktrees removed"
+  ],
+  "structural_changes": [
+    "docs/ now holds 11 active docs only; docs/README.md rewritten as function-grouped index with archive registry and maintenance rules",
+    "references updated in START_HERE_CODEX.md, handoff/codex/NEXT_AGENT_PROMPT_20260905.md, handoff/codex/PROJECT_HANDOFF_20260905.md, handoff/codex/PHASE1_REMOTE_HANDOFF_20260906.md, docs/PINK_PIG_CURRENT_POLICY.md, docs/archive internal links",
+    "stale superpowers allowlist rules removed from .gitignore",
+    "MUST_RUN.md added at repo root: per-commit checklist + recurring-error ledger (E1-E11)"
+  ],
+  "evidence_integrity": [
+    "historical evidence files (reports/, FILE_MANIFEST.txt, SHA256SUMS.txt) were NOT rewritten; stale path mentions inside them describe historical state and stay untouched",
+    "tests/fixtures/feishu_delivery/p0-file-test.txt (a different, in-use fixture) untouched"
+  ],
+  "excludes": [
+    "no code/render-chain changes; no Phase 1 status change",
+    "pre-existing dirty files from the DaVinci stage (AGENTS.md, tasks/lessons.md, tasks/todo.md, handoff/codex/review-evidence-20261024/) left unstaged"
+  ]
+}

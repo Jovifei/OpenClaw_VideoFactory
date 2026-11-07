@@ -353,7 +353,7 @@ Storyboard    ──►  StoryboardCompiler  ──►  Timeline   ──►  FF
 
 ### 3.5 类图
 
-见 `docs/class-diagram.mermaid`，内容同下：
+见 （原 docs/class-diagram.mermaid 已随 2026-11-07 文档清理移除，内容以本节内嵌代码为准）：
 
 ```mermaid
 classDiagram
@@ -772,7 +772,7 @@ timeline (已定稿)  ──►  AudioPlanner  ──►  AudioPlan
 
 ## 5. 程序调用流程
 
-见 `docs/sequence-diagram.mermaid`，内容同下：
+见 （原 docs/sequence-diagram.mermaid 已随 2026-11-07 文档清理移除，内容以本节内嵌代码为准）：
 
 ```mermaid
 sequenceDiagram

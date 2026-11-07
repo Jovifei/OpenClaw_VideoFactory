@@ -52,7 +52,7 @@ git diff --check
 13. `tasks/todo.md` 最新 Phase 1 内容
 14. 当前任务涉及的源码、Schema、测试、Change Requests
 
-`docs/PINK_PIG_PHASE1_ARCHITECTURE.md`、旧 P0/P1/P2 报告和历史 Prompt 只作历史参考；与上面当前文档冲突时，不得采用旧结论。
+`docs/archive/PINK_PIG_PHASE1_ARCHITECTURE.md`、旧 P0/P1/P2 报告和历史 Prompt 只作历史参考；与上面当前文档冲突时，不得采用旧结论。
 
 ## 3. 最终目标
 

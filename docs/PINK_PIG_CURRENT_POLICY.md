@@ -58,4 +58,4 @@ This prevents a technically valid render from shipping the wrong brand character
 - `config/mascot_usage.yaml` — machine-readable activation and asset policy;
 - `runbook/03_SKILLS_AND_EXTERNAL_REPOS.md` — external repository handling;
 - `src/factory/assets/pink_pig/` — historical/technical registry implementation; not proof of ownership of final personal-IP assets;
-- `docs/PINK_PIG_PHASE1_ARCHITECTURE.md` — historical architecture snapshot, not the current asset-policy source of truth.
+- `docs/archive/PINK_PIG_PHASE1_ARCHITECTURE.md` — historical architecture snapshot, not the current asset-policy source of truth.

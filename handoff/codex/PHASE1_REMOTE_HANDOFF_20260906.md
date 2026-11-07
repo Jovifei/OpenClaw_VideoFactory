@@ -6,7 +6,7 @@
 
 交付分支：`codex/phase1-render-once-review-012`。基线为 main `4eb3d37e1464d6f55f0a6bbff5abad98dcc664be`；最终交付提交由分支实时解析并在用户收到的收据中记录。不要退回 c815/1961 等旧分支。远端通过 GitHub Git Data API 原子提交，终端 clone/fetch 因 DNS 未成功；不要将本轮称为 fresh clone 验证。
 
-必读：`docs/PHASE1_REMOTE_AUDIT_20260906.md`、本文件、`reports/phase1/render_once_review_012_tests.json`，再读当前 START_HERE、PROJECT_STATUS、PRODUCT_PHASES、runbook/11 和相关源码/schema。旧 NEXT_AGENT_PROMPT_20260905 的固定旧分支以及“OpenMontage未vendor”不再是当前事实。
+必读：`docs/archive/PHASE1_REMOTE_AUDIT_20260906.md`、本文件、`reports/phase1/render_once_review_012_tests.json`，再读当前 START_HERE、PROJECT_STATUS、PRODUCT_PHASES、runbook/11 和相关源码/schema。旧 NEXT_AGENT_PROMPT_20260905 的固定旧分支以及“OpenMontage未vendor”不再是当前事实。
 
 ## 交付文件与行为变化
 

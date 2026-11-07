@@ -550,7 +550,7 @@ Read:
 - `docs/PINK_PIG_CURRENT_POLICY.md`
 - `config/mascot_usage.yaml`
 
-Do not use the historical long `docs/PINK_PIG_PHASE1_ARCHITECTURE.md` as the current asset-policy source.
+Do not use the historical long `docs/archive/PINK_PIG_PHASE1_ARCHITECTURE.md` as the current asset-policy source.
 
 ---
 

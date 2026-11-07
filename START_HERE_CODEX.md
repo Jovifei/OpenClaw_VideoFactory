@@ -61,7 +61,7 @@ git diff --check
 9. 当前任务对应 Change Request
 10. 相关源码和测试
 
-如果这些文件与 `docs/PINK_PIG_PHASE1_ARCHITECTURE.md`、旧 P0/P1/P2 报告、旧 Agent Prompt 冲突，以以上当前文档 + 当前源码/Schema/真实证据为准。
+如果这些文件与 `docs/archive/PINK_PIG_PHASE1_ARCHITECTURE.md`、旧 P0/P1/P2 报告、旧 Agent Prompt 冲突，以以上当前文档 + 当前源码/Schema/真实证据为准。
 
 ## 3. 最终目标
 
