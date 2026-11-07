@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import sys
 from pathlib import Path
 from typing import Any
@@ -56,28 +57,41 @@ def _audit_fixture(fixture: dict[str, Any]) -> dict[str, Any]:
             layout = current_layout
         elif layout != current_layout:
             raise ValueError("pcm_layout_changed")
+        raw_hash = hashlib.sha256(raw_path.read_bytes()).hexdigest()
+        aligned_hash = hashlib.sha256(aligned_path.read_bytes()).hexdigest()
+        declared_raw = segment.get('raw_audio_sha256') or segment.get('audio_sha256')
+        declared_aligned = segment.get('aligned_audio_sha256')
+        if ((declared_raw is not None and declared_raw != raw_hash)
+                or (declared_aligned is not None and declared_aligned != aligned_hash)):
+            raise ValueError('audio_identity_mismatch:segment')
         segment_evidence.append({
             "scene_id": segment["scene_id"],
             "raw_path": str(raw_path),
             "aligned_path": str(aligned_path),
-            "raw_audio_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
-            "declared_raw_audio_sha256": segment.get("raw_audio_sha256") or segment.get("audio_sha256"),
-            "aligned_audio_sha256": hashlib.sha256(aligned_path.read_bytes()).hexdigest(),
-            "declared_aligned_audio_sha256": segment.get("aligned_audio_sha256"),
+            "raw_audio_sha256": raw_hash,
+            "declared_raw_audio_sha256": declared_raw,
+            "aligned_audio_sha256": aligned_hash,
+            "declared_aligned_audio_sha256": declared_aligned,
             "evidence": evidence,
         })
         pcm_parts.append(aligned_pcm)
-    assert layout is not None
+    if layout is None:
+        raise ValueError('aligned_segments_missing')
     expected_pcm = b"".join(pcm_parts)
     actual_pcm = _decode_pcm_for_integrity(audio_path, sample_rate=layout[0], channels=layout[1])
     if actual_pcm != expected_pcm:
         raise ValueError("concatenated_segments_not_preserved")
     actual_hash = hashlib.sha256(audio_path.read_bytes()).hexdigest()
     declared_hash = aligned_audio.get("sha256")
+    if actual_hash != declared_hash:
+        raise ValueError('audio_identity_mismatch:combined')
     expected_endpoint = float(final_pass["allocation"]["duration_seconds"])
-    actual_endpoint = float(aligned_audio["duration_seconds"])
+    declared_endpoint = float(aligned_audio["duration_seconds"])
+    actual_endpoint = len(actual_pcm) / (layout[0] * layout[1] * 2)
     endpoint_delta = round(actual_endpoint - expected_endpoint, 6)
-    if abs(endpoint_delta) > 0.05:
+    if (not math.isfinite(expected_endpoint) or not math.isfinite(declared_endpoint)
+            or expected_endpoint <= 0 or actual_endpoint <= 0
+            or abs(endpoint_delta) > 0.05 or abs(actual_endpoint - declared_endpoint) > 0.05):
         raise ValueError("audio_endpoint_mismatch")
     return {
         "topic": fixture.get("topic"),

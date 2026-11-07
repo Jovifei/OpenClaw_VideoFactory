@@ -548,13 +548,5 @@
     "new_code_or_media_authorized": false,
     "product_phase_unchanged": "in_progress",
     "status": "DOCUMENTATION_CLOSED_USER_STOP"
-  },
-  "main_documentation_delivery": {
-    "scope": "documentation_only",
-    "runtime_base": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
-    "draft_fix_source_not_merged": "10679a1b2b1b23b3034d6b7864db2a061448930e",
-    "test_evidence_scope": "draft source SHA only; not main execution evidence",
-    "new_code_or_media": false,
-    "stop_after_push": true
   }
 }

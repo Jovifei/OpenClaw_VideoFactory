@@ -1075,10 +1075,11 @@ def run_local_brief(
     reference_context: dict[str, object] | None = None,
     reference_bundle: dict[str, object] | None = None,
     mascot_context: dict[str, object] | None = None,
+    render_identity: str | None = None,
 ) -> dict[str, object]:
     """Build one fully local review package through the existing pipeline."""
 
-    from src.factory.phase1_local import build_local_plan, load_local_brief
+    from src.factory.phase1_local import build_local_plan, load_local_brief, render_id_for_execution
     from video_factory.pipeline.job_state import VideoJobStateMachine
     from video_factory.pipeline.review_package import build_review_package
     from src.factory.reference_video import build_difference_report, materialize_review_evidence
@@ -1099,6 +1100,12 @@ def run_local_brief(
             reference_context=reference_context,
             mascot_context=mascot_context,
         )
+    if render_identity is not None:
+        execution_id = render_id_for_execution(render_identity, reference=brief.get('input_mode') == 'local_reference')
+        plan = {**plan, 'job_id': execution_id,
+                'asset_selection': {**plan['asset_selection'], 'job_id': execution_id}}
+        if reference_bundle is not None:
+            reference_bundle = {**reference_bundle, 'job_id': execution_id}
     job_id = str(plan["job_id"])
     work_dir = ROOT / "dist" / "phase1_local" / job_id
     _prepare_phase1_work_dir(work_dir)

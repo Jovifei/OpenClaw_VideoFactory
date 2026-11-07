@@ -1,6 +1,8 @@
 # 本轮整理与停止点
 
-Updated: 2026-10-25 · 范围：只将整理文档合入 main，不合并代码修复或制作视频；推送后停止。
+> 2026-11-07：Jovi 批准 PR #2（F01–F06 修复与证据）经本地合并落入 main；此前“代码修复仍在草稿 PR #2”的表述已过时。
+
+Updated: 2026-10-25 · 范围：只整理项目和流程，交付后停止。
 
 - [x] 保留 main 8b5c142 的分支整合、273 份旧文档精简与归档恢复入口。
 - [x] 需求、架构、路线、审核、维护和当前交接集中到唯一文档入口。
@@ -14,5 +16,3 @@ Updated: 2026-10-25 · 范围：只将整理文档合入 main，不合并代码�
 交接：[CURRENT_HANDOFF](../handoff/codex/CURRENT_HANDOFF.md)。流程：[MAINTENANCE](../docs/MAINTENANCE.md#协作与收尾流程)。审核：[PROJECT_REVIEW](../docs/PROJECT_REVIEW.md)。
 
 Review: 文档与机器索引需分别表达“整理交付完成”“PR 待处理”和“产品阶段未通过”。完成最后一项后停止，不因遗留项或远端回复自动续做。
-
-main 文档合并：来源 852ce34，运行代码保持 8b5c142；只提取 Markdown、其依赖的审核 JSON 和派生清单。实际完成版本以 GitHub main 推送回执为准。

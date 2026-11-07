@@ -1366,6 +1366,7 @@ tests/phase1_acceptance/test_phase1_acceptance.py
 tests/phase1_acceptance/test_phase1_gate.py
 tests/phase1_local/__init__.py
 tests/phase1_local/test_audio_contract_integration.py
+tests/phase1_local/test_audio_integrity_identity.py
 tests/phase1_local/test_audio_overflow_contract.py
 tests/phase1_local/test_i2c_digest_provenance.py
 tests/phase1_local/test_local_audio_review.py
@@ -1382,7 +1383,9 @@ tests/phase1_local/test_phase1_subject_audio.py
 tests/phase1_local/test_phase1_subject_cli.py
 tests/phase1_local/test_phase1_subject_delivery.py
 tests/phase1_local/test_phase1_topic.py
+tests/phase1_local/test_review_publication.py
 tests/product-demo/product_demo.test.mjs
+tests/product-demo/product_demo_presentation.test.mjs
 tests/product-demo/test_assemble_product_preview.py
 tests/product_demo_integration.test.mjs
 tests/reference/__init__.py

@@ -1,6 +1,6 @@
 # 当前交接：整理交付后停止
 
-本次仅将整理文档纳入 main：运行代码仍为 8b5c142 基线；10679a1 的代码修复与测试仍在草稿 PR #2，未随文档合并。文档中的修复和回归记录均指向该准确待审 SHA，不表示 main 已修复。合并后停止。
+> 2026-11-07：Jovi 批准 PR #2（F01–F06 修复与证据）经本地合并落入 main；此前“代码修复仍在草稿 PR #2”的表述已过时。
 
 Updated: 2026-10-25 · Owner: Jovi
 
@@ -19,7 +19,7 @@ Updated: 2026-10-25 · Owner: Jovi
 
 | 对象 | 当前记录 |
 |---|---|
-| main 的运行代码基线 / 原审核基线 | 8b5c142f6c469503a3644e4eafd6d54d785c577a |
+| 已合并 main / 审核基线 | 8b5c142f6c469503a3644e4eafd6d54d785c577a |
 | 已有修复源码 / 完整回归版本 | 10679a1b2b1b23b3034d6b7864db2a061448930e |
 | 现有待审分支 | codex/p1-consolidation-review-20261024；[草稿 PR #2](https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2) |
 | 已有本机证据 | 684 passed、1 skipped、2 deselected、4 subtests passed；两项旧绝对路径身份另验；Node81、类型/合同及冻结锁文件安装证据见机器索引 |
@@ -48,4 +48,4 @@ Phase 1 保持 in_progress；音频/最终视频人审、I2C 凭证与原有门�
 
 只读临时取证缓存仍在原注册目录的 handoff/codex/review-evidence-20261024/index.json；按准确 SHA 区分源码。它是已有审核材料，不是要求继续修复连接或恢复开发的指令。
 
-本轮仅将文档提交推送到 main 后停止；代码修复保留在草稿 PR #2。后续由 Jovi 另行决定。
+2026-11-07 更新：PR #2 修复（38b9b7e/9dc36f4）已按 Jovi 批准合入 main。后续由 Jovi 另行决定。

@@ -18,6 +18,7 @@ import sys
 import time
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 SCHEMA_VERSION = "1.0"
 DEFAULT_MPT_ROOT = Path(__file__).resolve().parent.parent / "external" / "MoneyPrinterTurbo"
@@ -123,9 +124,18 @@ def run_drafts(
     if candidates < 1 or candidates > 10:
         raise ValueError("candidates must be between 1 and 10")
 
-    stamp = time.strftime("%Y%m%d_%H%M%S")
-    out_dir = out_root / f"drafter_{stamp}"
-    out_dir.mkdir(parents=True, exist_ok=False)
+    # Two jobs started in the same second must never share an output
+    # directory: append microsecond precision plus a random suffix and rely
+    # on the exclusive mkdir as the atomic claim, retrying on the rare
+    # collision until a unique name is reserved.
+    while True:
+        stamp = time.strftime("%Y%m%d_%H%M%S")
+        out_dir = out_root / f"drafter_{stamp}_{uuid4().hex[:12]}"
+        try:
+            out_dir.mkdir(parents=True, exist_ok=False)
+            break
+        except FileExistsError:
+            continue
 
     prompt_subject = subject
     if research_guidance:
