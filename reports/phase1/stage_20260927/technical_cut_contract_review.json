@@ -1,0 +1,25 @@
+{
+  "status": "PASS_BOUNDED_TECHNICAL_CUT_ONLY",
+  "date": "2026-09-27",
+  "source_candidate": "job-0a58d7692fb3dd4008d3a6ed",
+  "source_candidate_status": "CHANGES_REQUIRED",
+  "source_audio_sha256": "253bc7b1633c0827f96f9e13ccb987588287146b3501d318498a8ba35f6f713e",
+  "runtime_report": "E:/OpenClaw_VideoFactory_Runtime/phase1_technical_cut_20260927/technical_cut_probe_report.json",
+  "compiled_duration_seconds": 40.0,
+  "planned_frames_at_30fps": 1200,
+  "subtitle_boundaries_seconds": [0, 8, 16, 24, 32, 40],
+  "regenerated_srt_sha256": "ab81b3571fe7ff2cb3f57894f10d83353006dadcfc3d92b52281f80a596f3bc1",
+  "boundary_probes": "Four distinct real-asset one-second MP4s each decoded as 30 frames. Frames 14 and 15 from each probe were visually inspected: single outgoing diagram then single incoming diagram, no blend or blank frame, readable caption.",
+  "tail_mux": {
+    "sha256": "e0d7f282792be937823feca6325f7a222c17ef8c0bc85b7818db18e5cab99b7d",
+    "video_duration_seconds": 1.6,
+    "audio_duration_seconds": 1.6,
+    "video_frames": 48,
+    "mean_volume_db": -26.6,
+    "max_volume_db": -9.0,
+    "shortest_flag": false
+  },
+  "tests": "448 passed in affected suites excluding four fixture-dependent modules; those modules require ignored dist/story_demo artifacts absent in this fresh worktree. Focused technical-cut contract and legacy xfade tests passed; git diff --check passed.",
+  "independent_review": "PASS for code, four bounded cuts, 40-second subtitle plan and 1.6-second tail probe; full Candidate004 and actual review package were not rendered or approved.",
+  "next_gate": "Remote C2C review must authorize at most one fresh Candidate004. Then verify actual 1200 frames, 40-second video/audio, tail audibility, all real cut frames, SQLite/package hashes and full-scene semantic quality. No human review or prereview until candidate is machine review ready."
+}

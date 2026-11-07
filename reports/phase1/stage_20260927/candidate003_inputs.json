@@ -1,0 +1,33 @@
+{
+  "schema_version": "phase1_candidate_input_binding_v1",
+  "source_commit": "d5c13a74217ed489e7c132639e5375da662f5099",
+  "brief_path": "examples/phase1_local_freertos/brief.json",
+  "brief_sha256": "78f41b26a7f71a74ccb251c6bb80848cc530f6c42ee382967410ccd1a46a971b",
+  "assets": [
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_ownership.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/01-mutex-ownership.png",
+      "sha256": "de1845711281c2841201bfb592299a67df2001ba57fbd29e2229b62141987775"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_isr_handoff.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/02-isr-nonblocking-handoff.png",
+      "sha256": "64c2e4d519463898b9800f5fbeeaea3c19f950956e4cb24b872089ae874cba1b"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_priority_inheritance.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.png",
+      "sha256": "e4879ee6d21003ab4573b66223fe5406a9be7cf10452e0fdad0a88acc04c1d84"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_deferred_work.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/04-short-isr-defer.png",
+      "sha256": "5533948aa150e65e21f04af5174fd06205e4a9c1f214116271d2ac855b8f9042"
+    },
+    {
+      "asset_id": "pink_pig.freertos_mutex_plain_checklist.v1",
+      "path": "assets/freertos_mutex_plain_illustrations/05-checklist.png",
+      "sha256": "584d2e0114494093b5501a5bda7d66c406bc0b0c23235bc7e319b32dec0441bf"
+    }
+  ]
+}

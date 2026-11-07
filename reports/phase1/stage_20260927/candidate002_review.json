@@ -1,0 +1,31 @@
+{
+  "schema_version": "phase1_freertos_candidate_review_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FREERTOS-CANDIDATE002-20260927",
+  "input_binding": "reports/phase1/stage_20260927/candidate002_inputs.json",
+  "source_commit": "f6b6c0e1f865ee675967053827fb2f14b32f8653",
+  "job_id": "job-4f834506b1f5283002dc3093",
+  "historical_jobs_preserved": ["job-adfcf733dcba1d081bb8feaf", "job-51fae0c8b47180bd49f2000e"],
+  "media": {"path": "dist/phase1_local/phase1_8958d25a694923c9/final_master.mp4", "sha256": "177f9cfe493e0b041e06e0a57d60aa59deb869addcd88c3fecb1233bdec8765f", "codec": "H.264/AAC", "profile": "1920x1080/30fps", "duration_seconds": 38.4, "full_decode_exit_code": 0},
+  "review_package": {"path": "dist/phase1_local/phase1_8958d25a694923c9/review_package.json", "sha256": "07d8480dc05197d4db3c2fd3048aab40e07a611fa89edd30ad2852d1bea1b5f7", "final_media_sha_matches": true},
+  "sqlite": {"state": "PENDING_REVIEW", "final_master_artifact_sha_matches": true, "review_package_artifact_sha_matches": true},
+  "automated_quality_report": "passed",
+  "preserved_runtime_snapshot": "E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate002_20260927/candidate002_changes_required/",
+  "semantic_visual_review": {
+    "status": "CHANGES_REQUIRED",
+    "frame_numbers": [60, 300, 480, 510, 540, 600, 675, 780, 1020],
+    "frame_archive": "reports/phase1/stage_20260927/candidate002_frame_review.zip",
+    "frame_archive_sha256": "4f8159b75c9d18af7692a26b2c65607bd3fb8aa38360304edb892bee3f3945de",
+    "scene3_subtitle_interval": "PASS: five samples across the active cue show the subtitle below the full technical callout with readable Chinese and no collision",
+    "scene3_sample_frame": "reports/phase1/stage_20260927/candidate002_frame_05.png",
+    "scene3_sample_frame_sha256": "b63e796f060ccf1acad169d5094dd353b85198184d296d31e5b5dd8d12dea7a3",
+    "remaining_defect": "Scene 2's xTaskNotifyFromISR / QueueFromISR label extends beyond its middle box and touches the outgoing arrow, reducing technical readability.",
+    "failing_frame": "reports/phase1/stage_20260927/candidate002_frame_02.png",
+    "failing_frame_sha256": "811ec46f47d9f15df1419c2a3f4cddc2d7e238caf5ceec680c814fb7ab8ba9bf"
+  },
+  "human_review": "NOT_REQUESTED",
+  "prereview": "NOT_RUN",
+  "phase_promotion": false,
+  "status": "MACHINE_MEDIA_VALID_SEMANTIC_VISUAL_CHANGES_REQUIRED",
+  "next_step": "Preserve Candidate002; obtain a scoped scene-2 label/arrow geometry remediation plan before any new full candidate."
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "phase1_freertos_scene2_geometry_evidence_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FREERTOS-SCENE2-GEOMETRY-20260927",
+  "rejected_candidate": {"job_id": "job-4f834506b1f5283002dc3093", "mp4_sha256": "177f9cfe493e0b041e06e0a57d60aa59deb869addcd88c3fecb1233bdec8765f", "finding": "API label touches outgoing arrow", "preserved": true},
+  "source_repair": {
+    "svg": "assets/freertos_mutex_plain_illustrations/02-isr-nonblocking-handoff.svg",
+    "new_svg_sha256": "93d4cb4f829b38563a84ed3b40693da6e27a07fe67a2e54dab877f4912bfd400",
+    "wording_unchanged": "xTaskNotifyFromISR / QueueFromISR",
+    "font_size_unchanged": 25,
+    "layout_change": "One line split into two tspans inside the existing middle box; box and arrow geometry unchanged."
+  },
+  "chrome_getbbox_regression": {
+    "test": "tests/video/test_freertos_handoff_geometry.py::test_freertos_handoff_api_label_is_inside_box_and_clear_of_arrow",
+    "padding_svg_units": 16,
+    "red": {"box": [520, 235, 450, 190], "label": [575, 327, 443.15966796875, 33], "arrow": [970, 307, 129, 46], "label_right": 1018.15966796875, "status": "failed"},
+    "green": {"box": [520, 235, 450, 190], "label": [575, 324, 263.046875, 68], "arrow": [970, 307, 129, 46], "label_right": 838.046875, "status": "passed"},
+    "subtitle_safe_region": "passed"
+  },
+  "raster": {"old_png_sha256": "e07b390c9eb68465b6c08c943261a1e48bcc6d9809a8207461dd29bdcc521c0c", "new_png_sha256": "64c2e4d519463898b9800f5fbeeaea3c19f950956e4cb24b872089ae874cba1b", "dimensions": [836, 471], "pillow_full_decode": "passed", "ffmpeg_one_frame_decode": "passed", "visual": "Both API lines are readable inside the middle box with clear arrow separation."},
+  "production_style_still": {"probe": "reports/phase1/stage_20260927/scene2_still_probe.json", "probe_sha256": "24999e9419755a171de52d01b818ab7d7da8270975676f185ced79ca656de753", "image": "reports/phase1/stage_20260927/scene2_still_after.png", "image_sha256": "3ed00d371fd5a66d60693c27f9f0212d3b4f79ff0a5b2211a3b7e5c8361a7a6c", "visual_result": "Two API names remain within the box, away from outgoing arrow and subtitle, with readable Chinese/Latin text."},
+  "verification": [{"command": "D:/Python/Python3.14/python.exe -m pytest tests/video/test_freertos_handoff_geometry.py tests/video/test_freertos_subtitle_geometry.py tests/video/test_registry.py tests/video/test_mascot_and_subtitle.py tests/phase1_local -q", "result": "150 passed"}, {"command": "git diff --check", "result": "passed"}],
+  "raw_log_archive": "reports/phase1/stage_20260927/scene2_geometry_logs.zip",
+  "raw_log_archive_sha256": "c776aa1165b4d83234724bb006f068b3bad1da871ac1f03bf2aaa1e4eb0829ed",
+  "status": "STILL_LEVEL_REPAIR_VERIFIED",
+  "full_video_rerender": "NOT_RUN",
+  "human_review": "NOT_REQUESTED",
+  "phase_promotion": false
+}

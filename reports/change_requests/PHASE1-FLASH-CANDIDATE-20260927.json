@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-FLASH-CANDIDATE-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested execution of the C2C Phase 1 stage. Remote ChatGPT accepted a641482 Flash still repair and authorized exactly one fresh outer Flash create-topic then run in an isolated worktree.",
+  "category": "single Flash/watchdog outer Phase 1 candidate",
+  "scope": "Use the canonical Flash brief once through scripts/factory.py phase1 create-topic then run for the returned new job, and qualify real SQLite, hashes, complete 37.8-second media and five-scene semantics.",
+  "allowed_paths": ["state/phase1_local/", "dist/phase1_local/", "reports/change_requests/PHASE1-FLASH-CANDIDATE-20260927.json", "reports/phase1/stage_20260927/", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_flash_candidate_20260927/"],
+  "forbidden": ["source/asset edits", "Owner main historical Flash SQLite/media/package mutation", "FreeRTOS Candidate005 edits", "second create-topic/run or retry", "synthetic state or hash backfill", "human approval inference", "prereview", "Gate", "Phase 2 side effects"],
+  "acceptance": ["new genuine control job reaches SQLite PENDING_REVIEW attempt0 with events and matching registered artifacts", "37.8s 1134-frame H264/AAC 1920x1080 30fps full decode", "SRT/audio tail complete and four hard cuts clean", "all five scenes pass full semantic visual sampling and independent review", "freeze exact final MP4 SHA for Jovi human review only"],
+  "status": "changes_required_audio_truncation"
+}

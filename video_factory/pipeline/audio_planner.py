@@ -11,12 +11,44 @@ Every level records ``fallback_reason`` in the returned :class:`AudioPlan`.
 from __future__ import annotations
 
 import json
+import hashlib
+import math
 import subprocess
-import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from .voice_generator import generate_voice
+
+
+class AudioNarrationOverflowError(RuntimeError):
+    """A TTS segment is longer than its allocated visual scene.
+
+    TTS is source material.  It may be padded, but never shortened silently.
+    """
+
+    code = "audio_narration_overflow"
+
+    def __init__(self, segments: list[dict[str, object]]) -> None:
+        self.segments = tuple(segments)
+        ids = ",".join(str(item.get("scene_id", "?")) for item in segments)
+        super().__init__(f"{self.code}:{ids}")
+
+
+class AudioNarrationIntegrityError(RuntimeError):
+    """The aligned narration is not the complete raw waveform plus padding."""
+
+    code = "audio_narration_integrity_mismatch"
+
+    def __init__(self, scene_id: str, reason: str) -> None:
+        self.scene_id = scene_id
+        self.reason = reason
+        super().__init__(f"{self.code}:{scene_id}:{reason}")
+
+
+class NarrationDurationBudgetError(RuntimeError):
+    """Measured narration cannot fit the Phase 1 duration contract."""
+
+    code = "narration_duration_budget_exceeded"
 
 
 @dataclass(frozen=True)
@@ -76,6 +108,10 @@ def plan_audio(
     if strategy == "tts_with_offline_fallback" and (allow_network or local_tts):
         try:
             return _plan_tts(timeline_doc, work_dir, voice, provider)
+        except AudioNarrationOverflowError:
+            # Overflow is a product contract failure, not a reason to replace
+            # narration with BGM and call the render successful.
+            raise
         except Exception as exc:
             # Fall through to BGM
             reason = f"tts_failed:{_safe_error(exc)}"
@@ -117,7 +153,7 @@ def _plan_tts(
 
         # Measure actual duration
         seg_dur = _get_audio_duration(seg_path)
-        overflow = seg_dur > duration
+        overflow = seg_dur > duration + 0.01
 
         segments.append({
             "scene_id": scene.get("scene_id", f"s{idx+1:02d}"),
@@ -128,6 +164,10 @@ def _plan_tts(
             "overflow": overflow,
         })
         segment_paths.append(seg_path)
+
+    overflow_segments = [segment for segment in segments if bool(segment.get("overflow"))]
+    if overflow_segments:
+        raise AudioNarrationOverflowError(overflow_segments)
 
     # Concat all segments into a single audio.wav aligned to total video duration
     total_video_dur = float(timeline_doc.get("total_duration_seconds", sum(s["duration"] for s in scenes)))
@@ -153,6 +193,192 @@ def _plan_tts(
         fallback_reason=None,
         segments=tuple(segments),
     )
+
+
+def synthesize_tts_segments(
+    timeline_doc: dict,
+    *,
+    work_dir: Path,
+    voice: str,
+    provider: str,
+) -> tuple[dict, ...]:
+    """Synthesize and measure raw narration without aligning or trimming it."""
+
+    work_dir = Path(work_dir)
+    work_dir.mkdir(parents=True, exist_ok=True)
+    measured: list[dict] = []
+    for idx, scene in enumerate(timeline_doc.get("scenes", [])):
+        narration = str(scene.get("narration", ""))
+        suffix = ".wav" if provider == "windows-sapi" else ".mp3"
+        path = work_dir / f"seg_{idx:03d}{suffix}"
+        try:
+            generate_voice(narration, path, voice=voice, provider=provider)
+        except Exception as exc:
+            raise RuntimeError(f"tts_scene_{idx}_failed:{exc}") from exc
+        measured.append({
+            "scene_id": scene.get("scene_id", f"s{idx + 1:02d}"),
+            "narration": narration,
+            "audio_file": path.name,
+            "audio_path": str(path),
+            "actual_duration": round(_get_audio_duration(path), 3),
+            "scene_duration": round(float(scene["duration"]), 3),
+            "raw_audio_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        })
+    if not measured:
+        raise ValueError("tts_scenes_missing")
+    return tuple(measured)
+
+
+def allocate_scene_durations(
+    timeline_doc: dict,
+    segments: tuple[dict, ...] | list[dict],
+    *,
+    tail_margin_seconds: float = 0.2,
+    fps: int | None = None,
+    min_total_seconds: float = 25.0,
+    max_total_seconds: float = 60.0,
+) -> dict:
+    """Allocate complete scene windows from measured narration durations.
+
+    Durations are frame aligned and include an explicit speech tail margin.
+    The function never shortens a source segment and returns a new timeline
+    document suitable for SRT generation and audio-only qualification.
+    """
+
+    if tail_margin_seconds < 0:
+        raise ValueError("narration_tail_margin_invalid")
+    scenes = timeline_doc.get("scenes")
+    if not isinstance(scenes, list) or len(scenes) != len(segments):
+        raise ValueError("narration_scene_count_mismatch")
+    frame_rate = int(fps or timeline_doc.get("fps", 30))
+    if frame_rate <= 0:
+        raise ValueError("narration_fps_invalid")
+    allocated: list[dict] = []
+    for scene, segment in zip(scenes, segments):
+        actual = float(segment.get("actual_duration", 0.0))
+        if actual <= 0:
+            raise ValueError("narration_segment_duration_invalid")
+        duration = math.ceil((actual + tail_margin_seconds) * frame_rate - 1e-9) / frame_rate
+        allocated.append({**scene, "duration": round(duration, 3)})
+    result = {**timeline_doc, "scenes": allocated}
+    mode = str(result.get("transition_mode", "xfade"))
+    transition = float(result.get("transition_seconds", 0.0))
+    if mode == "technical_cut":
+        total = sum(float(scene["duration"]) for scene in allocated)
+    else:
+        total = sum(float(scene["duration"]) for scene in allocated) - transition * max(0, len(allocated) - 1)
+    total = round(total, 3)
+    if not min_total_seconds <= total <= max_total_seconds:
+        raise NarrationDurationBudgetError(
+            f"{NarrationDurationBudgetError.code}:{total:.3f}s"
+        )
+    result["total_duration_seconds"] = total
+    return result
+
+
+def align_complete_segments(
+    segments: tuple[dict, ...] | list[dict],
+    timeline_doc: dict,
+    *,
+    output_dir: Path,
+    output_path: Path,
+) -> dict:
+    """Pad complete raw segments to allocated windows and concatenate them."""
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if len(segments) != len(timeline_doc.get("scenes", [])):
+        raise ValueError("narration_scene_count_mismatch")
+    if str(timeline_doc.get("transition_mode", "")) != "technical_cut":
+        raise AudioNarrationIntegrityError("timeline", "transition_mode_not_supported")
+    expected_scene_ids = [str(scene.get("scene_id", "")) for scene in timeline_doc.get("scenes", [])]
+    actual_scene_ids = [str(segment.get("scene_id", "")) for segment in segments]
+    if (
+        any(not scene_id for scene_id in expected_scene_ids + actual_scene_ids)
+        or len(set(expected_scene_ids)) != len(expected_scene_ids)
+        or len(set(actual_scene_ids)) != len(actual_scene_ids)
+        or actual_scene_ids != expected_scene_ids
+    ):
+        raise AudioNarrationIntegrityError("segments", "scene_identity_mismatch")
+    aligned: list[dict] = []
+    paths: list[Path] = []
+    aligned_pcm_parts: list[bytes] = []
+    integrity_layout: tuple[int, int] | None = None
+    scene_offsets: list[dict[str, object]] = []
+    offset_seconds = 0.0
+    for index, (segment, scene) in enumerate(zip(segments, timeline_doc["scenes"])):
+        raw = Path(str(segment["audio_path"]))
+        target = output_dir / f"aligned_{index:03d}.wav"
+        _align_audio(raw, target, target_duration=float(scene["duration"]))
+        aligned_duration = _get_audio_duration(target)
+        if aligned_duration + 0.01 < float(segment["actual_duration"]):
+            raise AudioNarrationOverflowError([dict(segment, aligned_duration=aligned_duration)])
+        integrity, raw_layout, aligned_pcm = _verify_complete_aligned_segment(
+            raw,
+            target,
+            scene_id=str(segment.get("scene_id", f"s{index + 1:02d}")),
+        )
+        if integrity_layout is None:
+            integrity_layout = raw_layout
+        elif integrity_layout != raw_layout:
+            raise AudioNarrationIntegrityError(
+                str(segment.get("scene_id", f"s{index + 1:02d}")),
+                "pcm_layout_changed",
+            )
+        scene_id = str(segment.get("scene_id", f"s{index + 1:02d}"))
+        aligned.append(dict(
+            segment,
+            raw_audio_sha256=str(segment.get("raw_audio_sha256") or hashlib.sha256(raw.read_bytes()).hexdigest()),
+            allocated_scene_duration=round(float(scene["duration"]), 3),
+            overflow=False,
+            aligned_audio_file=target.name,
+            aligned_duration=round(aligned_duration, 3),
+            aligned_audio_sha256=hashlib.sha256(target.read_bytes()).hexdigest(),
+            audio_integrity=integrity,
+        ))
+        paths.append(target)
+        aligned_pcm_parts.append(aligned_pcm)
+        scene_offsets.append({
+            "scene_id": scene_id,
+            "start_seconds": round(offset_seconds, 3),
+            "end_seconds": round(offset_seconds + float(scene["duration"]), 3),
+        })
+        offset_seconds += float(scene["duration"])
+    _concat_audio(paths, output_path)
+    if integrity_layout is None:
+        raise ValueError("no_audio_to_concat")
+    sample_rate, channels = integrity_layout
+    expected_pcm = b"".join(aligned_pcm_parts)
+    actual_pcm = _decode_pcm_for_integrity(output_path, sample_rate=sample_rate, channels=channels)
+    if actual_pcm != expected_pcm:
+        raise AudioNarrationIntegrityError("concat", "segments_not_preserved_in_order")
+    duration_seconds = _get_audio_duration(output_path)
+    endpoint_delta = round(duration_seconds - offset_seconds, 6)
+    endpoint_tolerance = max(0.05, 1.0 / sample_rate)
+    if abs(endpoint_delta) > endpoint_tolerance:
+        raise AudioNarrationIntegrityError("concat", "endpoint_mismatch")
+    integrity = {
+        "status": "passed",
+        "comparison": "decoded_pcm_prefix_and_silence_tail",
+        "sample_rate": sample_rate,
+        "channels": channels,
+        "segments_in_order": True,
+        "scene_offsets": scene_offsets,
+        "expected_concatenated_pcm_sha256": hashlib.sha256(expected_pcm).hexdigest(),
+        "actual_concatenated_pcm_sha256": hashlib.sha256(actual_pcm).hexdigest(),
+        "expected_endpoint_seconds": round(offset_seconds, 3),
+        "actual_endpoint_seconds": round(duration_seconds, 3),
+        "endpoint_delta_seconds": endpoint_delta,
+        "endpoint_tolerance_seconds": endpoint_tolerance,
+    }
+    return {
+        "path": str(output_path),
+        "segments": aligned,
+        "duration_seconds": duration_seconds,
+        "integrity": integrity,
+    }
 
 
 def _plan_bgm(
@@ -215,8 +441,91 @@ def _get_audio_duration(audio_path: Path) -> float:
     return float(json.loads(result.stdout)["format"]["duration"])
 
 
+def _probe_pcm_layout(audio_path: Path) -> tuple[int, int]:
+    """Return the source audio sample rate and channel count for lossless comparison."""
+
+    result = subprocess.run(
+        [
+            "ffprobe", "-v", "error", "-select_streams", "a:0",
+            "-show_entries", "stream=sample_rate,channels", "-of", "json", str(audio_path),
+        ],
+        capture_output=True,
+        text=True,
+        timeout=15,
+        check=True,
+    )
+    streams = json.loads(result.stdout).get("streams", [])
+    if not streams:
+        raise ValueError("audio_stream_missing")
+    stream = streams[0]
+    sample_rate = int(stream.get("sample_rate", 0))
+    channels = int(stream.get("channels", 0))
+    if sample_rate <= 0 or channels <= 0:
+        raise ValueError("audio_pcm_layout_invalid")
+    return sample_rate, channels
+
+
+def _decode_pcm_for_integrity(audio_path: Path, *, sample_rate: int, channels: int) -> bytes:
+    """Decode to a stable PCM representation for source-preservation checks."""
+
+    result = subprocess.run(
+        [
+            "ffmpeg", "-y", "-nostdin", "-v", "error", "-i", str(audio_path),
+            "-vn", "-ac", str(channels), "-ar", str(sample_rate),
+            "-f", "s16le", "-acodec", "pcm_s16le", "pipe:1",
+        ],
+        capture_output=True,
+        timeout=60,
+        check=True,
+    )
+    if not result.stdout:
+        raise ValueError("audio_pcm_empty")
+    return bytes(result.stdout)
+
+
+def _verify_complete_aligned_segment(
+    raw_path: Path,
+    aligned_path: Path,
+    *,
+    scene_id: str,
+) -> tuple[dict[str, object], tuple[int, int], bytes]:
+    """Prove aligned audio is the raw PCM prefix followed only by silence."""
+
+    try:
+        layout = _probe_pcm_layout(raw_path)
+        raw_pcm = _decode_pcm_for_integrity(raw_path, sample_rate=layout[0], channels=layout[1])
+        aligned_pcm = _decode_pcm_for_integrity(aligned_path, sample_rate=layout[0], channels=layout[1])
+    except Exception as exc:
+        raise AudioNarrationIntegrityError(scene_id, "pcm_decode_failed") from exc
+    if len(aligned_pcm) < len(raw_pcm):
+        raise AudioNarrationIntegrityError(scene_id, "aligned_pcm_shorter_than_raw")
+    if not aligned_pcm.startswith(raw_pcm):
+        raise AudioNarrationIntegrityError(scene_id, "aligned_pcm_prefix_mismatch")
+    padding = aligned_pcm[len(raw_pcm):]
+    if any(padding):
+        raise AudioNarrationIntegrityError(scene_id, "aligned_tail_not_silence")
+    sample_width = 2
+    frame_width = sample_width * layout[1]
+    evidence = {
+        "status": "passed",
+        "comparison": "decoded_pcm_prefix_and_silence_tail",
+        "sample_rate": layout[0],
+        "channels": layout[1],
+        "raw_pcm_sha256": hashlib.sha256(raw_pcm).hexdigest(),
+        "aligned_pcm_sha256": hashlib.sha256(aligned_pcm).hexdigest(),
+        "raw_pcm_bytes": len(raw_pcm),
+        "aligned_pcm_bytes": len(aligned_pcm),
+        "padding_pcm_bytes": len(padding),
+        "raw_pcm_frames": len(raw_pcm) // frame_width,
+        "aligned_pcm_frames": len(aligned_pcm) // frame_width,
+        "prefix_match": True,
+        "tail_is_silence": True,
+    }
+    return evidence, layout, aligned_pcm
+
+
 def _align_audio(input_path: Path, output_path: Path, *, target_duration: float) -> None:
-    """Pad (apad) or trim (atrim) *input_path* to exactly *target_duration*."""
+    """Pad *input_path* to exactly *target_duration*; never trim narration."""
     actual = _get_audio_duration(input_path)
     if actual < target_duration:
         # Pad silence at end
@@ -229,14 +538,13 @@ def _align_audio(input_path: Path, output_path: Path, *, target_duration: float)
             str(output_path),
         ]
     elif actual > target_duration:
-        # Trim to target (overflow case — we truncate)
-        cmd = [
-            "ffmpeg", "-y", "-nostdin", "-loglevel", "error",
-            "-i", str(input_path),
-            "-t", str(target_duration),
-            "-acodec", "pcm_s16le",
-            str(output_path),
-        ]
+        raise AudioNarrationOverflowError([{
+            "scene_id": input_path.stem,
+            "audio_file": input_path.name,
+            "actual_duration": round(actual, 3),
+            "scene_duration": round(target_duration, 3),
+            "overflow": True,
+        }])
     else:
         # Exact match — just copy
         import shutil

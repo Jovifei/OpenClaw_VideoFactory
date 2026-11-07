@@ -1,0 +1,44 @@
+{
+  "schema_version": "phase1_freertos_scene45_geometry_evidence_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FREERTOS-SCENE45-GEOMETRY-20260927",
+  "rejected_candidate": {
+    "id": "Candidate004",
+    "mp4_sha256": "238201bbeff201a155cbe4d682d1292f82cb28e8b3d3648fb12f7c573f47f20f",
+    "status": "CHANGES_REQUIRED",
+    "preserved": true
+  },
+  "subtitle_top_px": 815.625,
+  "clearance_requirement_px": 20,
+  "red_replay": {
+    "source_commit": "7585840",
+    "method": "Read original Git SVG blobs, insert only measurement IDs in temporary copies, use installed Chrome getBBox and production 1920x1080 subtitle transform",
+    "report": "reports/phase1/stage_20260927/scene45_red_replay.json",
+    "scene4_principle_bottom_px": 944.57,
+    "scene5_box_bottom_px": 900.96,
+    "status": "RED_BOTH"
+  },
+  "green": {
+    "scene4_principle_bottom_px": 789.63,
+    "scene5_box_bottom_px": 786.18,
+    "scene4_clearance_px": 25.99,
+    "scene5_clearance_px": 29.44,
+    "status": "GREEN_BOTH"
+  },
+  "assets": [
+    {"scene": 4, "png_sha256": "d404b98ee04a41db743221268708def77b2ccb5e8dbb84fc878de0bcb5238b30", "dimensions": [836, 471], "pillow_full_decode": "passed", "ffmpeg_frame_decode": "passed"},
+    {"scene": 5, "png_sha256": "955aac4f6fdd87755322b963c067542d2f292f868e4243a7923b9b8290bfd76a", "dimensions": [836, 471], "pillow_full_decode": "passed", "ffmpeg_frame_decode": "passed"}
+  ],
+  "asset_scope": "Only 04/05 SVG geometry, PNG and corresponding registry hashes changed; technical wording and font sizes unchanged; scenes 01/02/03 assets unchanged.",
+  "production_stills": {
+    "runtime_report": "E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_scene45_20260927/scene45_still_probe_report.json",
+    "scene4_still_sha256": "73290ce160628ecad9cf3f7ccffb5480ec8ebdc975ebc0a9d9ab6ff547126826",
+    "scene5_still_sha256": "adddaa3651513e40149a2cb60991a440b95ae0bb197162aae7120d7308b07eb0",
+    "profile": "Candidate004 1920x1080 30fps, same subtitle style and exact scene cue text",
+    "visual_review": "Both technical diagrams and subtitles readable with visible clearance, no arrow or internal checklist collision."
+  },
+  "tests": "450 passed in affected suites; four fixture-dependent modules not run because ignored dist/story_demo artifacts are absent in this worktree; git diff --check passed.",
+  "independent_read_only_review": "PASS for scoped source/raster/still repair. Initial RED replay provenance concern resolved by recorded source-commit Chrome bbox replay.",
+  "full_render": "NOT_RUN",
+  "next_step": "Use one fresh isolated outer phase1_cli create-topic then run Candidate005 only after remote C2C review. Do not mutate Candidate004."
+}

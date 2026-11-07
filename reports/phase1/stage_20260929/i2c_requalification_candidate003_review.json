@@ -1,0 +1,45 @@
+{
+  "schema_version": "phase1_i2c_requalification_candidate003_review_v1",
+  "status": "FAILED:PHASE1_SUBJECT_PLANNING_EXTERNAL_MPT_UNAVAILABLE",
+  "remote_authorization_iteration": 36,
+  "source_commit": "ac1fca01f392e52c1974ab2702140ab4562e91bf",
+  "production_lineage_commit": "3c6a14dc26557ce805699162939a23a8f6d0775e",
+  "subject": "I2C总线为什么要上拉电阻",
+  "aspect_ratio": "9:16",
+  "research_path": "examples/phase1_subject_i2c/research_brief.json",
+  "research_sha256": "fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21",
+  "control_job": {
+    "job_id": "job-d0ad2349f3a61c8250603737",
+    "idempotency_key": "phase1-i2c-requalification-candidate003-20260929",
+    "attempt": 0,
+    "state": "FAILED",
+    "last_completed_state": "RESEARCHING",
+    "events": [
+      "NEW",
+      "RESEARCHING",
+      "SCRIPTING",
+      "FAILED"
+    ],
+    "create_subject": "EXACTLY_ONCE",
+    "attach_research": "EXACTLY_ONCE",
+    "run": "EXACTLY_ONCE",
+    "retry_or_resume": false
+  },
+  "failure": {
+    "control_reason": "phase1_subject_planning_failed",
+    "observed_boundary": "MPT script planning before director_script/scene_plan artifacts",
+    "confirmed_environment": "external/MoneyPrinterTurbo is absent in the isolated worktree; its pinned venv/cli.py cannot be resolved",
+    "media_created": false,
+    "audio_integrity_created": false,
+    "review_package_created": false,
+    "human_decision_created": false,
+    "prereview": "NOT_RUN",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "excluded_candidates": {
+    "candidate001": "job-b4a2e8e851268bc14e5e4a15",
+    "candidate002": "job-b1a186b7b265c2ed46b7c3cb",
+    "candidate004": "NOT_AUTHORIZED"
+  },
+  "next_remote_action": "Independently audit Candidate003 terminal planning failure and decide whether a separately authorized dependency restoration/new candidate is allowed. Do not retry this job."
+}

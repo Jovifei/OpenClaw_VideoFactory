@@ -1,0 +1,22 @@
+{
+  "id": "PHASE1-FREERTOS-MEDIA-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested execution of the current Phase 1 local-video stage after Codex with ChatGPT planning.",
+  "category": "FreeRTOS fixed-topic machine candidate",
+  "scope": "Run the existing verified FreeRTOS brief through the current local-only CLI, inspect selected technical assets and actual media, and prepare one immutable candidate for human review if machine gates pass.",
+  "allowed_paths": [
+    "state/phase1_local/",
+    "dist/phase1_local/",
+    "reports/phase1/stage_20260927/",
+    "reports/change_requests/PHASE1-FREERTOS-MEDIA-20260927.json",
+    "tasks/todo.md"
+  ],
+  "forbidden": ["source edits without a new Change Request", "AGENTS.md", "PROJECT_STATUS.yaml", "Feishu", "Cron", "automatic publication", "new model/node download", "human-review approval", "formal Gate"],
+  "acceptance": [
+    "Only FreeRTOS-specific registered technical assets are selected and factual claims remain source-bound.",
+    "A fresh local MP4 is H.264/AAC, fully decodes, and has exact job/profile/quality/review hashes.",
+    "SQLite state reaches PENDING_REVIEW without any inferred human approval.",
+    "A candidate receipt names one immutable final file and SHA-256."
+  ],
+  "status": "failed_render_timeout_preserved"
+}

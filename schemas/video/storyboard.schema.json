@@ -35,6 +35,7 @@
         "default_scene_seconds": {"type": "number", "minimum": 0.01},
         "default_transition": {"type": "string", "enum": ["fade", "zoom", "slide"]},
         "transition_seconds": {"type": "number", "minimum": 0.001},
+        "transition_mode": {"type": "string", "enum": ["xfade", "technical_cut"]},
         "narration_cps": {"type": "number", "minimum": 0.1},
         "min_scene_seconds": {"type": "number", "minimum": 0.25},
         "max_scene_seconds": {"type": "number", "maximum": 30}

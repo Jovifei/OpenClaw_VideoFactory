@@ -89,6 +89,11 @@ def _validate_receipt(media_root: Path) -> tuple[dict[str, Any], dict[str, Path]
             paths[key] = _contained(root, raw, error="subject_delivery_media_receipt_invalid")
         if any(_sha(paths[key]) != receipt["hashes"][key] for key in _RECEIPT_KEYS):
             raise ValueError
+        if "audio_integrity" in receipt.get("paths", {}):
+            raw = Path(str(receipt["paths"]["audio_integrity"]))
+            paths["audio_integrity"] = _contained(root, raw, error="subject_delivery_media_receipt_invalid")
+            if _sha(paths["audio_integrity"]) != receipt["hashes"].get("audio_integrity"):
+                raise ValueError
     except (KeyError, TypeError, ValueError) as exc:
         raise ValueError("subject_delivery_media_receipt_invalid") from exc
     paths["media_receipt"] = receipt_path
@@ -204,6 +209,8 @@ def build_subject_review_package(request: SubjectDeliveryRequest, *, probe_media
         for key, role in (("media_receipt", "media_receipt"), ("timing_manifest", "timing"), ("render_report", "render"), ("visual_review", "visual_review"), ("preview", "preview"), ("preview_report", "preview_report"), ("jianying_report", "jianying")):
             destination = "evidence/subject_media_result.json" if key == "media_receipt" else ("evidence/audible_preview.mp4" if key == "preview" else f"evidence/{receipt_paths[key].name}")
             _copy(package, receipt_paths[key], destination, role, artifacts)
+        if "audio_integrity" in receipt_paths:
+            _copy(package, receipt_paths["audio_integrity"], "evidence/audio_integrity.json", "audio_integrity", artifacts)
         media_root = request.media_root.resolve(strict=True)
         timing = _load(receipt_paths["timing_manifest"])
         render = _load(receipt_paths["render_report"])

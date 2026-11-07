@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-FREERTOS-SCENE2-GEOMETRY-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested Phase 1 execution; Candidate002 visual review found the scene-2 API label touching the outgoing arrow, and Codex with ChatGPT refined a bounded geometry repair plan.",
+  "category": "FreeRTOS scene-2 internal diagram geometry",
+  "scope": "Use installed Chrome getBBox on unchanged scene-2 wording/font to produce a RED label/box/arrow containment test; wrap the label into two lines within the same box; regenerate only scene-2 PNG through the qualified Chrome path; prove one production-style still and focused tests.",
+  "allowed_paths": ["assets/freertos_mutex_plain_illustrations/02-isr-nonblocking-handoff.svg", "assets/freertos_mutex_plain_illustrations/02-isr-nonblocking-handoff.png", "src/factory/assets/pink_pig/registry.json", "tests/video/", "reports/change_requests/PHASE1-FREERTOS-SCENE2-GEOMETRY-20260927.json", "reports/phase1/stage_20260927/", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_scene2_20260927/"],
+  "forbidden": ["technical wording changes", "font-size reduction", "other asset edits", "renderer/Gate/quality threshold changes", "Candidate002 overwrite", "full Candidate003 render", "human review", "Phase 2 side effects"],
+  "acceptance": ["Chrome-measured current label/box/arrow regression RED with fixed 16-unit padding", "The same measurement GREEN after two-line relayout", "Scene-2 PNG full decodes at 836x471 and registry hash matches", "One production-style still shows both API labels in the box, clear of arrow and subtitle", "Focused/affected tests and independent review pass"],
+  "status": "verified_still_only"
+}

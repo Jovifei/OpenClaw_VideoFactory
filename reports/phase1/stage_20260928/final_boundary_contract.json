@@ -1,0 +1,88 @@
+{
+  "schema_version": "phase1_final_boundary_contract_v1",
+  "status": "FINAL_BOUNDARY_CONTRACT_FROZEN_NOT_RUN",
+  "contract_kind": "final_manifest_bound_boundary_audit_contract",
+  "source_commit": "4028236a61a4a329427eaf27edb846d89a44f751",
+  "current_preflight": {
+    "path": "reports/phase1/stage_20260928/boundary_audit_preflight.json",
+    "sha256": "7d691c8545fc0969f61b95c78670588e914f74feddcf439890a8759106d03737",
+    "status": "PASS_PRELIGHT",
+    "is_final_evidence": false,
+    "cannot_satisfy_final_boundary": true
+  },
+  "final_audit_requirements": [
+    {
+      "key": "no_feishu_production_dependency",
+      "expected": true,
+      "meaning": "Final selected local evidence does not require Feishu production runtime"
+    },
+    {
+      "key": "no_openclaw_runtime_dependency",
+      "expected": true,
+      "meaning": "Final selected local evidence does not require OpenClaw runtime"
+    },
+    {
+      "key": "no_cron",
+      "expected": true,
+      "meaning": "Phase 2 scheduling is untouched"
+    },
+    {
+      "key": "no_automatic_topic_scheduling_or_publication",
+      "expected": true,
+      "meaning": "Human publication remains manual"
+    },
+    {
+      "key": "no_second_state_backend_or_job_db",
+      "expected": true,
+      "meaning": "SQLite/job state remains the only state lineage"
+    },
+    {
+      "key": "no_unapproved_models_nodes_or_downloads",
+      "expected": true,
+      "meaning": "No unapproved provider/model/node download enters the selected evidence"
+    },
+    {
+      "key": "no_committed_private_raw_reference_media",
+      "expected": true,
+      "meaning": "Private runtime and raw reference material remain outside Git"
+    },
+    {
+      "key": "no_credentials_or_secrets",
+      "expected": true,
+      "meaning": "No secret material is committed or included in final evidence"
+    },
+    {
+      "key": "cached_asr_secondary_only",
+      "expected": true,
+      "meaning": "Cached faster-whisper evidence cannot become a Phase 1 authority"
+    },
+    {
+      "key": "phase2_untouched",
+      "expected": true,
+      "meaning": "No Phase 2/Cron/publishing behavior is promoted"
+    }
+  ],
+  "manifest_binding": {
+    "required_fields": [
+      "source_commit",
+      "boundary_audit.path",
+      "boundary_audit.sha256"
+    ],
+    "source_commit_must_equal_final_tested_commit": true,
+    "boundary_report_sha256_must_equal_file_bytes": true,
+    "boundary_report_must_be_final_not_preflight": true
+  },
+  "negative_readiness_assertions": [
+    "PASS_PRELIGHT cannot be used as final boundary evidence",
+    "a boundary report with unresolved human/prereview slots cannot be final",
+    "a boundary report cannot authorize Formal Gate by itself",
+    "a boundary report cannot authorize I2C requalification",
+    "a boundary report cannot hide excluded fixture failures or aggregate historical counts"
+  ],
+  "execution_boundary": {
+    "run_now": false,
+    "run_only_after_all_topic_evidence_settled": true,
+    "formal_gate": "NOT_RUN",
+    "publication": "NOT_AUTOMATIC"
+  }
+}

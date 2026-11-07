@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-FREERTOS-CANDIDATE004-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested local execution of the C2C Phase 1 plan. Remote ChatGPT accepted the bounded technical_cut proof from 456c60e and authorized exactly one fresh Candidate004.",
+  "category": "single fresh FreeRTOS Phase 1 candidate",
+  "scope": "Run the canonical local FreeRTOS brief once in this isolated worktree, then verify 40-second H.264/AAC, 1200 frames, audio/SRT tail, four real cuts, package and SQLite identity, and whole-video semantics.",
+  "allowed_paths": ["dist/phase1_local/", "reports/change_requests/PHASE1-FREERTOS-CANDIDATE004-20260927.json", "reports/phase1/stage_20260927/", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate004_20260927/"],
+  "forbidden": ["editing source or registered assets", "Candidate003 mutation", "rerunning the same job", "Candidate005", "human approval inference", "prereview", "Formal Gate", "Phase 2 side effects"],
+  "acceptance": ["new job reaches PENDING_REVIEW", "H.264/AAC 1920x1080 30fps 40.0s 1200 fully decoded frames", "audio and final subtitle cue reach 40s", "four real cut boundaries contain only one technical scene", "all scenes pass semantic visual review", "SQLite and review package hashes match"],
+  "status": "changes_required_frozen"
+}

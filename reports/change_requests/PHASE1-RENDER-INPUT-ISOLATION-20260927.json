@@ -1,0 +1,11 @@
+{
+  "id": "PHASE1-RENDER-INPUT-ISOLATION-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested autonomous Phase 1 execution; two encoder variants timed out, and Codex with ChatGPT supplied a bounded isolation plan.",
+  "category": "Short null-output FFmpeg isolation",
+  "scope": "Inspect the five existing FreeRTOS PNGs, WAV and SRT, then run one ordered short null-output probe per input and successive filter layer. Stop at the first failing layer or when none reproduces.",
+  "allowed_paths": ["reports/change_requests/PHASE1-RENDER-INPUT-ISOLATION-20260927.json", "reports/phase1/stage_20260927/", "tasks/todo.md"],
+  "forbidden": ["production source edits", "new full render", "MP4 output", "retry of failed job", "timeout increase", "Gate/schema changes", "additional permutations after first failing layer"],
+  "acceptance": ["Each probe has a 30-second hard timeout and null output", "Command, elapsed, exit status and stderr are recorded", "First failing layer and adjacent passing control are named or diagnosis stops inconclusive", "No media candidate is promoted"],
+  "status": "first_input_decode_failure_found"
+}

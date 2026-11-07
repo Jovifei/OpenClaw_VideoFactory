@@ -1,0 +1,41 @@
+{
+  "schema_version": "phase1_flash_geometry_evidence_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FLASH-GEOMETRY-20260927",
+  "source_preflight_commit": "e77761c",
+  "preflight_status": "CHANGES_REQUIRED_BEFORE_FULL_RENDER",
+  "red_replay": "reports/phase1/stage_20260927/flash_red_replay.json",
+  "green_measure": "reports/phase1/stage_20260927/flash_green_measure.json",
+  "measurement_method": "Installed Chrome getBBox on pre-repair Git SVGs with temporary selector IDs, then the same Chrome path on current source; production 1920x1080 subtitle top 815.625px.",
+  "red_green": {
+    "scene1_cpu_label_right_vs_box_right": [272.16, 260, 272.16, 295],
+    "scene1_error_label_right_vs_box_right": [764.37, 760, 764.37, 775],
+    "scene1_clock_rim_bottom_vs_caption_top_svg": [432, 417, 414, 426],
+    "scene1_callout_bottom_px": [931.94, 786.18],
+    "scene2_callout_bottom_px": [866.52, 768.97],
+    "scene3_marker_bottom_vs_label_top_svg": [555, 495, 445, 495],
+    "scene5_fourth_box_bottom_px": [843.57, 774.71],
+    "scene5_slogan_bottom_px": [812.58, 743.72]
+  },
+  "changed_asset_sha256": {
+    "01-flash-window.png": "c3cbd11171a6711c2dfe9ee70786561bfdf8a8136a78924573d717452daae44f",
+    "02-erase-sequence.png": "172363dd623668e3937132055ef6894074bd70b5b29598bc8f1d1dba6f623752",
+    "03-watchdog-budget.png": "b4c0bcd29d7593fdba8d417342d1069ec0cf94134c7956f94a0179190c567870",
+    "05-checklist.png": "22af4ae20529728d65ffb658523be2aca56c8a0418a5709ba1a49befdeaf07eb"
+  },
+  "raster_qualification": "All four changed PNGs 1672x941, Pillow full decode, bounded FFmpeg one-frame decode, readable Chinese, registry SHA match. Scene4 PNG/SVG/registry SHA unchanged.",
+  "production_stills": {
+    "runtime_root": "E:/OpenClaw_VideoFactory_Runtime/phase1_flash_geometry_20260927/",
+    "scene1_final_v3_sha256": "9363ecd9cc242b602082a676eacc2a0fb6e8371a5924bb28533a2e0229153d65",
+    "scene2_sha256": "0e0c40144f2b82328aac871f9df13779988ba56639b1566708a4a26571ae76ab",
+    "scene3_sha256": "6476eaa07108e982ca01be9dec82cf5a3fc82532d9d274176b36e5ab8cdb7645",
+    "scene4_unchanged_control_sha256": "9de985ad2fbd5f8c728dd8da3690780327e526101f8f42ce5eb5d3d3fe444ef9",
+    "scene5_sha256": "64c0f6dfb040958cee0c3d4459d5e33018e216c6295c4cb8f09a5969627505f1",
+    "source": "flash_repaired_stills_report.json plus scene1_final_v3_still_report.json in runtime root",
+    "visual_result": "Five final real-cue stills clear; scene1 bottom callout now 29.44px above conservative subtitle top, ERROR? inside its box; scene4 control pixels unchanged."
+  },
+  "timing_and_cuts": "Unchanged preflight contract: technical_cut, 37.8s/1134 planned frames, five SRT cues and TTS WAV to 37.8s, four bounded cut probes PASS. No full Flash video or outer SQLite job run.",
+  "tests": "454 passed in affected suites; four fixture-dependent modules NOT_RUN because ignored dist/story_demo assets are absent in this fresh worktree; git diff --check passed.",
+  "independent_read_only_review": "Initial CHANGES_REQUIRED for omitted scene1 bottom callout. After RED/GREEN test and scene1 v3 still, re-review PASS_BOUNDED_STILL_ONLY. No full render or human review implied.",
+  "status": "PASS_BOUNDED_STILL_ONLY"
+}

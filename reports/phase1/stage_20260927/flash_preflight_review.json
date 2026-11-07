@@ -1,0 +1,36 @@
+{
+  "schema_version": "phase1_flash_preflight_review_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FLASH-PREFLIGHT-20260927",
+  "source_commit": "84e5665acbbbef74071cf0444b9f69c6b838d2b8",
+  "brief_sha256": "42e23ecb2a4e0af19d1f04446cf1e239dcc9040e327d1067352222ba63dc8918",
+  "runtime_report": "E:/OpenClaw_VideoFactory_Runtime/phase1_flash_preflight_20260927/flash_preflight_report.json",
+  "asset_qualification": "PASS: five selected plain Flash PNG registry hashes, declared 1672x941 dimensions, Pillow full decode and bounded FFmpeg frame decode; source SVG hashes recorded where present.",
+  "timing": {
+    "transition_mode": "technical_cut",
+    "visual_duration_seconds": 37.8,
+    "planned_frames_at_30fps": 1134,
+    "boundary_frames": [198, 438, 678, 918],
+    "srt_boundaries_seconds": [0, 6.6, 14.6, 22.6, 30.6, 37.8],
+    "tts_audio_duration_seconds": 37.8,
+    "tts_audio_sha256": "c5a01da740ec1e881145c53a10f338340ed62480b0c58a2312fd90be383b6106",
+    "final_1_6s_mean_volume_db": -25.9,
+    "final_1_6s_max_volume_db": -7.0,
+    "full_render_command": "constructed but not executed; technical concat, no xfade, no -shortest, 1134 frames",
+    "short_cut_probes": "PASS: four one-second real-asset probes each decode to 30 frames; frames 14/15 show direct outgoing/incoming scenes without blend or blank."
+  },
+  "semantic_stills": {
+    "status": "CHANGES_REQUIRED",
+    "scene1": "CPU / 总线 label is crossed by the outgoing arrow; 倒计时 sits on the clock rim.",
+    "scene2": "Subtitle 发起、等待、检查、确认 overlays the lower explanatory text in the pink callout.",
+    "scene3": "Orange/red dashed timing markers cross 最长擦除时间 and 超时 / 复位 labels.",
+    "scene4": "PASS at sampled production still; recovery arrows and branch labels remain readable.",
+    "scene5": "Subtitle 按手册，留窗口，有恢复 touches the fourth checklist box and adjacent slogan.",
+    "no_mascot_or_authoring_metadata": true
+  },
+  "independent_read_only_review": "CHANGES_REQUIRED; confirmed scenes 1/2/3/5 defects and scene 4 pass. Audio file is present in runtime audio subdirectory and its 37.8s duration/last 1.6s signal were separately verified after the audit.",
+  "historical_owner_flash": "READ_ONLY: current mutable package/media self-consistent, but SQLite job-f1c8a9a21805e29aed29ebbb stores different historical hashes.",
+  "full_flash_job": "NOT_RUN",
+  "status": "CHANGES_REQUIRED_BEFORE_FULL_RENDER",
+  "next_step": "Request remote C2C bounded source-geometry/subtitle-safe repair plan for scenes 1/2/3/5; preserve valid scene 4 and all historical jobs."
+}

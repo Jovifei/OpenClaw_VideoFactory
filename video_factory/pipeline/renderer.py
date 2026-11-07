@@ -118,6 +118,7 @@ def build_render_command(
     output_path: Path,
     transition_seconds: float,
     audio_path: Path | None,
+    transition_mode: str = "xfade",
     audio_loop: bool = True,          # NEW: default=True preserves today's behavior
     repo_root: Path | None = None,    # NEW: used to resolve image_path when present
     subtitle_style: dict[str, object] | None = None,
@@ -135,7 +136,7 @@ def build_render_command(
 ) -> tuple[list[str], float]:
     if not subtitle_path.is_file():
         raise ValueError("subtitle_missing")
-    duration = rendered_duration_seconds(timeline, transition_seconds)
+    duration = rendered_duration_seconds(timeline, transition_seconds, mode=transition_mode)
     if not isinstance(audio_gain, (int, float)) or not 0.1 <= float(audio_gain) <= 8.0:
         raise ValueError("audio_gain_invalid")
     if audio_sample_rate is not None and not 8_000 <= int(audio_sample_rate) <= 192_000:
@@ -222,14 +223,19 @@ def build_render_command(
                 f"[bg{index}][body{index}]overlay={cx}:{cy}:shortest=1,format=yuv420p[v{index}]"
             )
     current = "v0"
-    cursor = float(timeline[0]["duration"])
-    for index in range(1, len(timeline)):
-        transition = ffmpeg_transition(str(timeline[index - 1]["transition"]))
-        offset = round(cursor - transition_seconds, 3)
-        output = f"x{index}"
-        filters.append(f"[{current}][v{index}]xfade=transition={transition}:duration={transition_seconds}:offset={offset}[{output}]")
-        current = output
-        cursor += float(timeline[index]["duration"]) - transition_seconds
+    if transition_mode == "technical_cut" and len(timeline) > 1:
+        inputs = "".join(f"[v{index}]" for index in range(len(timeline)))
+        filters.append(f"{inputs}concat=n={len(timeline)}:v=1:a=0[cut_video]")
+        current = "cut_video"
+    elif transition_mode == "xfade":
+        cursor = float(timeline[0]["duration"])
+        for index in range(1, len(timeline)):
+            transition = ffmpeg_transition(str(timeline[index - 1]["transition"]))
+            offset = round(cursor - transition_seconds, 3)
+            output = f"x{index}"
+            filters.append(f"[{current}][v{index}]xfade=transition={transition}:duration={transition_seconds}:offset={offset}[{output}]")
+            current = output
+            cursor += float(timeline[index]["duration"]) - transition_seconds
     subtitle_input = current
     if signature_input_index is not None:
         signature_region = regions.get("signature_area", {}) if isinstance(regions, dict) else {}
@@ -260,7 +266,10 @@ def build_render_command(
     if audio is None:
         command.extend(["-an"])
     else:
-        command.extend(["-map", f"{audio_input_index}:a:0", "-shortest", "-c:a", "aac", "-b:a", "128k"])
+        command.extend(["-map", f"{audio_input_index}:a:0"])
+        if transition_mode == "xfade":
+            command.append("-shortest")
+        command.extend(["-c:a", "aac", "-b:a", "128k"])
         audio_filters: list[str] = []
         if audio_normalize:
             # Single-pass EBU-R128 normalization prevents a valid but
@@ -274,6 +283,13 @@ def build_render_command(
             command.extend(["-af", ",".join(audio_filters)])
     video_encoder = "h264_nvenc" if encoder in {"auto", "nvenc"} else "libx264"
     command.extend(["-c:v", video_encoder, "-pix_fmt", "yuv420p", "-r", str(frame_rate), "-movflags", "+faststart", str(output_path)])
+    if transition_mode == "technical_cut":
+        # Bound video frames independently of AAC packet rounding.  The
+        # technical timeline is frame exact and audio is 40s scene aligned.
+        frames = round(duration * frame_rate)
+        if abs(frames / frame_rate - duration) > 0.0005:
+            raise ValueError("technical_cut_frame_alignment_invalid")
+        command[-1:-1] = ["-frames:v", str(frames), "-t", str(duration)]
     return command, duration
 
 

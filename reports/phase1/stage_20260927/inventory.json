@@ -1,0 +1,65 @@
+{
+  "schema_version": "phase1_stage_inventory_v1",
+  "date": "2026-09-27",
+  "base_commit": "f1d94e980526ab7d0a06faadf9c78596b09db565",
+  "acceptance_scope": "topic_only_v1",
+  "gate_contract": {
+    "fixed_fixtures": ["flash_watchdog", "freertos", "i2c"],
+    "distinct_live_topic_required": true,
+    "reference_jobs_allowed_empty": true,
+    "source": "src/factory/phase1_gate.py and schemas/video/phase1_acceptance_manifest.schema.json"
+  },
+  "fixed_topics": {
+    "i2c": {
+      "selection": "PHASE1-I2C-VISUAL-CORRECTION-014",
+      "control_job_id": "job-876a5f89973bbaf8deadbeef",
+      "attempt_id": "attempt_006_9x16_subject",
+      "final_media": "E:/OpenClaw_VideoFactory_Runtime/phase1_i2c_semantic_013/attempt_006_9x16_subject/audible_preview.mp4",
+      "final_media_sha256": "cf1c0220853c7de06c5f821c48824a49e35fc770ad19ba4edaa5460cff652568",
+      "hash_verified_live": true,
+      "machine_status": "ready_for_jovi_human_review",
+      "human_review": "PENDING",
+      "prereview": "NOT_RUN",
+      "source_report": "reports/phase1/i2c_visual_correction_014.json",
+      "excludes": "reports/phase1/i2c_semantic_013_candidate.json is superseded horizontal output"
+    },
+    "flash_watchdog": {
+      "selection": null,
+      "current_mutable_path_sha256": "a857f7d358b18c8629491d6a332c039d9c943bc4aec497351d2034690535f2ca",
+      "sqlite_final_master_sha256": "5450cd86734219e945efb904f46245baed9d78da3aa783a8d698dfb45a41fc35",
+      "machine_status": "CURRENT_FILE_AND_SQLITE_ARTIFACT_IDENTITY_MISMATCH",
+      "human_review": "PENDING",
+      "prereview": "NOT_RUN",
+      "note": "The old 9:16 SHA recorded in tasks/todo.md no longer matches the later 16:9 file at the same path. The SQLite artifact records a third SHA. Freeze one immutable candidate with matching package/quality/SQLite identity before human review."
+    },
+    "freertos": {
+      "selection": null,
+      "brief": "examples/phase1_local_freertos/brief.json",
+      "machine_status": "BRIEF_AND_FIVE_REGISTERED_ASSETS_PRESENT_NO_FINAL_RENDER_CONFIRMED",
+      "human_review": "PENDING",
+      "prereview": "NOT_RUN"
+    }
+  },
+  "live_topic": {
+    "selection": null,
+    "machine_status": "NO_QUALIFIED_DISTINCT_JOB_SELECTED",
+    "human_review": "PENDING",
+    "prereview": "NOT_RUN"
+  },
+  "lifecycle": {
+    "schema_validation": "PASS",
+    "runtime_corroboration": "PARTIAL: SQLite cancel/retry/restart and encoder output verified; original NVENC failure and CPU command exit logs unavailable",
+    "items": [
+      {"path": "reports/phase1/lifecycle/cancel.json", "sha256": "4bdff1a6d3e2dd86fef6b13060390e995fc581f43f8e3146b46b5fa3a1da9706"},
+      {"path": "reports/phase1/lifecycle/retry.json", "sha256": "45ce5cbf6159c15ee63e9a73b7e220e3402bcefebb4285f9ec28ad68acc0f698"},
+      {"path": "reports/phase1/lifecycle/restart_recovery.json", "sha256": "ff8ffaf5bb216ae3b5efa956423b70845ee5902c460e0c3ff61a057c4bca7e55"},
+      {"path": "reports/phase1/lifecycle/encoder_fallback.json", "sha256": "d74be8eb55e9da74b40c3111da41ebaa42d78895a51dda67939a0f3a56ba10e1"}
+    ]
+  },
+  "bounded_regression": "reports/phase1/stage_20260927/regression_baseline.json",
+  "boundary_audit": "PENDING",
+  "acceptance_manifest": "PENDING",
+  "independent_audit": "PENDING",
+  "formal_gate": "NOT_RUN",
+  "phase_status": "in_progress"
+}

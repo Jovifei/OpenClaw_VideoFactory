@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from .phase1_topic_visual import render_and_review
+from .phase1_subject_audio import build_subject_source_aligned_audio
 from video_factory.pipeline import validation
 
 MIN_SUBJECT_VOICE_COVERAGE = 0.75
@@ -21,6 +22,7 @@ class SubjectMediaRequest:
     scene_plan: Path
     topic_request: Path
     workdir: Path
+    research_brief: Path | None = None
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -88,6 +90,14 @@ def validate_ready_reports(reports: dict[str, dict[str, Any]], *, scene_count: i
         require(voice["rendered_audio_segment_count"] == expanded_audio_count, "timing.expanded_audio_count")
         require(voice["voice_end_microseconds"] <= visual_duration_us, "timing.voice_end")
         require(validate_timing_coverage(timing, visual_duration_us=visual_duration_us) >= MIN_SUBJECT_VOICE_COVERAGE, "timing.voice_coverage")
+        if timing.get("source_aligned_narration") is True:
+            source_audio = timing.get("source_aligned_audio")
+            require(isinstance(source_audio, dict), "timing.source_aligned_audio")
+            objective = source_audio.get("objective_audio_integrity") if isinstance(source_audio, dict) else None
+            require(isinstance(objective, dict) and objective.get("status") == "passed", "timing.objective_audio_integrity")
+            require(source_audio.get("audio_integrity_ref") == "audio_integrity.json", "timing.audio_integrity_ref")
+            require(bool(source_audio.get("audio_integrity_sha256")), "timing.audio_integrity_sha256")
+            require(all(isinstance(segment.get("audio_integrity"), dict) and segment["audio_integrity"].get("status") == "passed" for segment in timing["segments"]), "timing.segment_audio_integrity")
         visual = render["visual"]
         require(render["status"] == "passed", "render.status")
         require(visual["audio_present"] is False, "render.audio_present")
@@ -141,8 +151,8 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
     validation.validate(script, "director_script"); validation.validate(plan, "phase1_scene_plan"); validation.validate(topic, "phase1_topic_request")
     if script.get("script_id") != plan.get("script_id") or len(script.get("beats", [])) != len(plan.get("scenes", [])):
         raise ValueError("subject_media_plan_mismatch")
-    duration = float(topic["duration"])
-    if not 25 <= duration <= 60: raise ValueError("subject_media_duration_invalid")
+    requested_duration = float(topic["duration"])
+    if not 25 <= requested_duration <= 60: raise ValueError("subject_media_duration_invalid")
     workdir = request.workdir.resolve()
     if workdir.drive.upper() != "E:": raise ValueError("subject_media_workdir_must_use_e_drive")
     workdir.mkdir(parents=True, exist_ok=False)
@@ -150,6 +160,7 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
     timing_root = workdir / "timing"; timing_root.mkdir()
     manifest = workdir / "timing_manifest.json"
     probe_name = f"subject_{script['script_id']}_{workdir.name}_timing"
+    duration = requested_duration
     timing_cmd = [str(python_path), str(Path(__file__).resolve().parents[2] / "scripts/phase1_jianying_timing_probe.py"), "--script", str(request.director_script.resolve()), "--scene-plan", str(request.scene_plan.resolve()), "--drafts-root", str(timing_root), "--name", probe_name, "--manifest", str(manifest), "--skill-root", str(skill), "--visual-duration-seconds", str(duration), "--width", str(width), "--height", str(height)]
     output, render_report = workdir / "visual_master.mp4", workdir / "render_report.json"
     clips, stills = workdir / "clips", workdir / "stills"
@@ -158,11 +169,37 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
     draft_report = workdir / "jianying_manifest.json"; draft_name = f"Subject_{script['script_id']}_{workdir.name}"
     result_receipt = workdir / "subject_media_result.json"
     stage = "timing"
+    source_audio_result: dict[str, Any] | None = None
     try:
-        runner(timing_cmd, check=True, shell=False, timeout=900)
-        timing = _require_report(manifest, {"timing_manifest_ready"})
+        if request.research_brief is not None:
+            research_path = request.research_brief.resolve()
+            if not research_path.is_file() or research_path.is_symlink():
+                raise ValueError("subject_media_research_missing")
+            source_audio_result = build_subject_source_aligned_audio(
+                script_path=request.director_script.resolve(),
+                scene_plan_path=request.scene_plan.resolve(),
+                topic=topic,
+                research=_load(research_path),
+                repo_root=Path(__file__).resolve().parents[2],
+                work_dir=workdir / "source_aligned",
+                timing_root=timing_root,
+            )
+            duration = float(source_audio_result["visual_duration_seconds"])
+            from scripts.phase1_jianying_timing import load_manifest
+
+            timing = load_manifest(manifest, drafts_root=timing_root)
+        else:
+            runner(timing_cmd, check=True, shell=False, timeout=900)
+            timing = _require_report(manifest, {"timing_manifest_ready"})
         if timing.get("script", {}).get("sha256") != _sha(request.director_script) or timing.get("scene_plan", {}).get("sha256") != _sha(request.scene_plan): raise ValueError("timing_input_hash_mismatch")
         validate_timing_coverage(timing, visual_duration_us=round(duration * 1_000_000))
+        if source_audio_result is not None:
+            source_audio = timing.get("source_aligned_audio")
+            if not isinstance(source_audio, dict) or source_audio.get("audio_integrity_ref") != "audio_integrity.json":
+                raise ValueError("subject_media_source_audio_integrity_reference_invalid")
+            integrity_path = workdir / "audio_integrity.json"
+            if not integrity_path.is_file() or source_audio.get("audio_integrity_sha256") != _sha(integrity_path):
+                raise ValueError("subject_media_source_audio_integrity_hash_invalid")
         stage = "render"
         render_runner(script=request.director_script, scene_plan=request.scene_plan, timing_manifest=manifest, output=output, report=render_report,
                       stills_dir=stills, clips_dir=clips, review_report=visual_review, contact_sheet=workdir / "contact_sheet.png", aspect=str(topic["aspect"]))
@@ -173,7 +210,10 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
         preview_value = _require_report(preview_report, {"audio_preview_ready_for_manual_listening"})
         if not preview.is_file() or preview_value.get("visual", {}).get("sha256") != _sha(output) or preview_value.get("render_report", {}).get("sha256") != _sha(render_report) or preview_value.get("output", {}).get("sha256") != _sha(preview): raise ValueError("preview_output_hash_mismatch")
         stage = "jianying"
-        runner([str(python_path), str(Path(__file__).resolve().parents[2] / "scripts/phase1_jianying_tts_draft.py"), "--visual", str(output), "--visual-report", str(render_report), "--clips-root", str(clips), "--script", str(request.director_script.resolve()), "--timing-manifest", str(manifest), "--timing-root", str(timing_root), "--name", draft_name, "--report", str(draft_report), "--skill-root", str(skill), "--width", str(width), "--height", str(height)], check=True, shell=False, timeout=900)
+        draft_command = [str(python_path), str(Path(__file__).resolve().parents[2] / "scripts/phase1_jianying_tts_draft.py"), "--visual", str(output), "--visual-report", str(render_report), "--clips-root", str(clips), "--script", str(request.director_script.resolve()), "--timing-manifest", str(manifest), "--timing-root", str(timing_root), "--name", draft_name, "--report", str(draft_report), "--skill-root", str(skill), "--width", str(width), "--height", str(height)]
+        if source_audio_result is not None:
+            draft_command.extend(["--speaker", str(timing["voice"]["speaker"]), "--backend", str(timing["voice"]["requested_backend"])])
+        runner(draft_command, check=True, shell=False, timeout=900)
         draft = _require_report(draft_report, {"draft_ready_for_manual_jianying_review"})
         inputs = draft.get("inputs", {})
         if inputs.get("script_sha256") != _sha(request.director_script) or inputs.get("timing_manifest_sha256") != _sha(manifest) or inputs.get("render_report_sha256") != _sha(render_report) or draft.get("export", {}).get("automatic_export") != "disabled": raise ValueError("jianying_output_hash_mismatch")
@@ -181,6 +221,8 @@ def run_subject_media(request: SubjectMediaRequest, *, skill_root: Path | None =
         validate_ready_reports({"timing":timing,"render":render,"visual_review":review,"preview":preview_value,"jianying":draft},
                                scene_count=len(plan["scenes"]), expanded_audio_count=expanded_count, visual_duration_us=round(duration * 1_000_000))
         paths = {"timing_manifest":manifest,"render_report":render_report,"visual_review":visual_review,"preview":preview,"preview_report":preview_report,"jianying_report":draft_report}
+        if source_audio_result is not None:
+            paths["audio_integrity"] = workdir / "audio_integrity.json"
         result = {"schema_version":"1.0", "status":"PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW",
                   "candidate_status":"PHASE1_TOPIC_DRAFT_READY_FOR_JOVI_REVIEW", "ready_status":"READY",
                   "automatic_export":False, "paths":{k:str(v) for k,v in paths.items()},

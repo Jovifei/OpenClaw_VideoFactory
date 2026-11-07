@@ -100,6 +100,7 @@ def compile_storyboard(
     """
     globals_cfg = doc.get("globals", {})
     transition_seconds = float(globals_cfg.get("transition_seconds", 0.4))
+    transition_mode = str(globals_cfg.get("transition_mode", "xfade"))
     fps = int(globals_cfg.get("fps", 30))
 
     # Pre-compile checks
@@ -163,7 +164,7 @@ def compile_storyboard(
         compiled_scenes.append(compiled_scene)
 
     # R7 — Total duration (reuse existing function)
-    total = rendered_duration_seconds(compiled_scenes, transition_seconds)
+    total = rendered_duration_seconds(compiled_scenes, transition_seconds, mode=transition_mode)
 
     result = {
         "schema_version": "1.0",
@@ -173,6 +174,7 @@ def compile_storyboard(
         "height": int(globals_cfg.get("height", 1920)),
         "fps": fps,
         "transition_seconds": round(transition_seconds, 3),
+        **({"transition_mode": transition_mode} if transition_mode != "xfade" else {}),
         "total_duration_seconds": round(total, 3),
         "scenes": compiled_scenes,
     }

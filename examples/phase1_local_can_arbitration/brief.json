@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "input_mode": "topic",
+  "topic": "CAN 总线仲裁为什么不会破坏高优先级报文？",
+  "mascot_mode": "off",
+  "factual_brief": {
+    "schema_version": "1.0",
+    "topic_digest": "91c2a7cd2b692884df3a7389e62c6ff4f940ddfc722b9c2edded2ba1dba17b09",
+    "review_status": "verified",
+    "facts": [
+      {
+        "fact_id": "can_dominant_recessive",
+        "claim": "CAN 总线用 dominant 和 recessive 两种逻辑状态表示总线状态；dominant 位会覆盖同时出现的 recessive 位。",
+        "source_ids": ["ti_can_intro", "nxp_can_arbitration"]
+      },
+      {
+        "fact_id": "can_bitwise_arbitration",
+        "claim": "多个节点同时发送时，节点逐位发送并回读总线；发送 recessive 却读到 dominant 的节点判定仲裁失败并停止发送。",
+        "source_ids": ["ti_can_intro", "nxp_can_arbitration"]
+      },
+      {
+        "fact_id": "can_identifier_priority",
+        "claim": "标准 CAN 仲裁字段按标识符逐位比较；数值更低的标识符先出现 dominant 位，因此获得更高仲裁优先级。",
+        "source_ids": ["nxp_can_blog", "nxp_can_arbitration"]
+      },
+      {
+        "fact_id": "can_nondestructive_arbitration",
+        "claim": "仲裁在报文头部完成，失败节点退出而获胜节点继续发送，获胜报文不会被同时发送的低优先级报文破坏。",
+        "source_ids": ["ti_can_intro", "nxp_can_arbitration"]
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "ti_can_intro",
+        "title": "Introduction to the Controller Area Network (CAN)",
+        "publisher": "Texas Instruments",
+        "url": "https://www.ti.com/lit/an/sloa101b/sloa101b.pdf",
+        "kind": "vendor_document",
+        "published_date": "2016-05"
+      },
+      {
+        "source_id": "nxp_can_arbitration",
+        "title": "CAN Monitoring and Arbitration",
+        "publisher": "NXP Semiconductors",
+        "url": "https://www.nxp.com/docs/en/application-note/AN1776.pdf",
+        "kind": "vendor_document",
+        "published_date": "1998-01"
+      },
+      {
+        "source_id": "nxp_can_blog",
+        "title": "101: Controller Area Network (CAN) standard",
+        "publisher": "NXP Semiconductors",
+        "url": "https://community.nxp.com/t5/NXP-Tech-Blog/101-Controller-Area-Network-CAN-standard/ba-p/1217054",
+        "kind": "official_document",
+        "published_date": "2021-02-04"
+      }
+    ]
+  }
+}

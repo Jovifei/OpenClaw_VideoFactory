@@ -27,7 +27,7 @@
       "required": ["name", "path", "sha256", "bytes"],
       "additionalProperties": false,
       "properties": {
-        "name": {"type": "string", "enum": ["final_master.mp4", "cover.png", "subtitle.srt", "quality_report.json", "review_checklist.md", "publish_info.md", "reference_receipt.json", "reference_rights.json", "reference_report.json", "original_brief.json", "difference_report.json"]},
+        "name": {"type": "string", "enum": ["final_master.mp4", "cover.png", "subtitle.srt", "quality_report.json", "review_checklist.md", "publish_info.md", "audio_integrity.json", "reference_receipt.json", "reference_rights.json", "reference_report.json", "original_brief.json", "difference_report.json"]},
         "path": {"type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!\\\\).+"},
         "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
         "bytes": {"type": "integer", "minimum": 1}

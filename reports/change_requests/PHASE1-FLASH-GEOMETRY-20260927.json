@@ -1,0 +1,12 @@
+{
+  "id": "PHASE1-FLASH-GEOMETRY-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested Phase 1 execution. Flash preflight found source-layout defects in scenes 1/2/3/5, independently confirmed; Codex with ChatGPT prescribed a bounded RED/GREEN geometry and still-only repair.",
+  "category": "Flash/watchdog technical diagram geometry",
+  "scope": "Measure existing scene1/2/3/5 SVG protected bounds with installed Chrome and the production subtitle profile; minimally relayout only those four source SVGs, rasterize their PNGs, update corresponding registry hashes, and qualify five real-cue stills.",
+  "allowed_paths": ["assets/flash_watchdog_plain_illustrations/01-flash-window.svg", "assets/flash_watchdog_plain_illustrations/01-flash-window.png", "assets/flash_watchdog_plain_illustrations/02-erase-sequence.svg", "assets/flash_watchdog_plain_illustrations/02-erase-sequence.png", "assets/flash_watchdog_plain_illustrations/03-watchdog-budget.svg", "assets/flash_watchdog_plain_illustrations/03-watchdog-budget.png", "assets/flash_watchdog_plain_illustrations/05-checklist.svg", "assets/flash_watchdog_plain_illustrations/05-checklist.png", "src/factory/assets/pink_pig/registry.json", "tests/video/", "reports/change_requests/PHASE1-FLASH-GEOMETRY-20260927.json", "reports/phase1/stage_20260927/", "tasks/todo.md"],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_flash_geometry_20260927/"],
+  "forbidden": ["technical wording or font changes", "scene4 asset edits", "subtitle/global layout/timing/transition code changes", "Owner main or historical Flash job mutation", "full Flash render or new outer job in this iteration", "Gate", "Phase 2 side effects"],
+  "acceptance": ["Chrome-measured old Git SVGs RED on scene1/2/3/5 contracts", "Same contracts GREEN after minimal relayout", "only four changed PNGs decode and registry hashes match", "five production-style real-cue stills semantic PASS including unchanged scene4 control", "affected tests and independent read-only review PASS"],
+  "status": "verified_still_only"
+}

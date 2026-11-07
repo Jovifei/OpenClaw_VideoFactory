@@ -1,0 +1,26 @@
+{
+  "schema_version": "phase1_candidate_input_binding_v1",
+  "source_commit": "a6414820e4c24ca7afca8d1f4264f7ee4acb9dd1",
+  "worktree": "C:/Users/Admin/.codex/worktrees/phase1-flash-candidate/OpenClaw_VideoFactory",
+  "branch": "codex/phase1-flash-candidate-20260927",
+  "brief_path": "examples/phase1_local_flash_watchdog/brief.json",
+  "brief_sha256": "42e23ecb2a4e0af19d1f04446cf1e239dcc9040e327d1067352222ba63dc8918",
+  "registry_version": "1.4.0",
+  "transition_mode": "technical_cut",
+  "expected_duration_seconds": 37.8,
+  "expected_frames_at_30fps": 1134,
+  "cut_frames": [198, 438, 678, 918],
+  "preflight_srt_sha256": "f3b4390d0130281f3686a28e56017ac04ae1a80806c210e45d99652fc6a32538",
+  "preflight_tts_audio_sha256": "c5a01da740ec1e881145c53a10f338340ed62480b0c58a2312fd90be383b6106",
+  "candidate_audio_sha256": "PENDING_PIPELINE_OUTPUT",
+  "note": "The full product path synthesizes its own TTS; candidate-specific audio hash is bound after the one run. Preflight audio hash is a timing/content reference, not an identity assertion.",
+  "preflight_state_db_exists": false,
+  "preflight_dist_candidate_exists": false,
+  "assets": [
+    {"asset_id": "pink_pig.flash_watchdog_plain_window.v1", "sha256": "c3cbd11171a6711c2dfe9ee70786561bfdf8a8136a78924573d717452daae44f"},
+    {"asset_id": "pink_pig.flash_watchdog_plain_erase_sequence.v1", "sha256": "172363dd623668e3937132055ef6894074bd70b5b29598bc8f1d1dba6f623752"},
+    {"asset_id": "pink_pig.flash_watchdog_plain_budget.v1", "sha256": "b4c0bcd29d7593fdba8d417342d1069ec0cf94134c7956f94a0179190c567870"},
+    {"asset_id": "pink_pig.flash_watchdog_plain_recovery.v1", "sha256": "ac9c9211b9ac1317ba38e67865e667c07fbe6630e46078f30817b7b5a503e3fa"},
+    {"asset_id": "pink_pig.flash_watchdog_plain_checklist.v1", "sha256": "22af4ae20529728d65ffb658523be2aca56c8a0418a5709ba1a49befdeaf07eb"}
+  ]
+}

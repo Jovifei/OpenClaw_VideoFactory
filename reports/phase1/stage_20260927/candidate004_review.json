@@ -1,0 +1,47 @@
+{
+  "schema_version": "phase1_freertos_candidate_review_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FREERTOS-CANDIDATE004-20260927",
+  "input_binding": "reports/phase1/stage_20260927/candidate004_inputs.json",
+  "source_commit": "456c60ee8f97b408997cbc80a6afd0de76f70fb4",
+  "execution_count": 1,
+  "execution_entrypoint": "generate_video.py --local-brief examples/phase1_local_freertos/brief.json",
+  "local_pipeline_job_id": "phase1_8958d25a694923c9",
+  "outer_sqlite": "NOT_CREATED_BY_THIS_ENTRYPOINT",
+  "media": {
+    "path": "dist/phase1_local/phase1_8958d25a694923c9/final_master.mp4",
+    "sha256": "238201bbeff201a155cbe4d682d1292f82cb28e8b3d3648fb12f7c573f47f20f",
+    "codec": "H.264/AAC",
+    "profile": "1920x1080/30fps",
+    "duration_seconds": 40.0,
+    "video_frames": 1200,
+    "full_decode_exit_code": 0,
+    "last_subtitle_end_seconds": 40.0,
+    "last_1_6s_audio_mean_db": -26.6,
+    "last_1_6s_audio_max_db": -9.1
+  },
+  "local_review_package": {
+    "status_field": "ready_for_human_review",
+    "sha256": "5f9285414f07d8101f3348ff1597c4cc8cd0c71d13f5f3cb047f561a59a31daa",
+    "artifact_count": 6,
+    "all_artifact_hashes_and_sizes_match": true,
+    "automated_quality_report": "passed",
+    "qualification_override": "CHANGES_REQUIRED_BY_SEMANTIC_REVIEW"
+  },
+  "semantic_visual_review": {
+    "status": "CHANGES_REQUIRED",
+    "scope": "Scene midpoints, all four adjacent hard-cut frame pairs, scene 5 last 1.6 seconds",
+    "hard_cuts": "PASS: frames 239/240, 479/480, 719/720, 959/960 each show exactly one scene with no blank or blended frame",
+    "scene2_repair": "PASS: FromISR label stays inside box and clear of arrow",
+    "scene3_repair": "PASS: priority-inheritance callout clears subtitle",
+    "scene4_defect": "Frames 720 and 840: subtitle overlays the lower technical principle line about ISR versus task responsibility.",
+    "scene5_defect": "Frames 960, 1080 and 1199: subtitle overlays the checklist container lower border; numbered technical items remain readable.",
+    "frame_root": "E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate004_20260927/frames"
+  },
+  "frozen_snapshot": "E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_candidate004_20260927/candidate004_single_render",
+  "independent_read_only_review": "CHANGES_REQUIRED: scene 4 text collision and scene 5 border collision independently confirmed; no outer SQLite PENDING_REVIEW record.",
+  "human_review": "NOT_REQUESTED",
+  "prereview": "NOT_RUN",
+  "phase_promotion": false,
+  "next_step": "Ask remote C2C for a scoped source-diagram geometry repair and a state-binding plan. Do not rerender Candidate004 or fabricate SQLite evidence."
+}

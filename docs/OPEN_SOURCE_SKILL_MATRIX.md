@@ -1,8 +1,8 @@
 # 开源 Skill / 工具 / 项目采用矩阵
 
-Updated: 2026-09-06；审核基线 main `4eb3d37e1464d6f55f0a6bbff5abad98dcc664be`。
+Updated: 2026-10-24；采用依据来自当前源码、provenance 和已保留的既有证据。
 
-**先纠正旧记录：OpenMontage 已有选取并适配的源码，MoneyPrinterTurbo 已有文案草稿 adapter。** 旧“OpenMontage仅方法参考、不vendoring”的描述不适用于当前主分支。详见 [本轮审核](PHASE1_REMOTE_AUDIT_20260906.md)、根 LICENSE、THIRD_PARTY_NOTICES 和 third_party/openmontage/PROVENANCE.json。本页不改变已有许可证或第三方义务。
+**OpenMontage 已有选取并适配的源码，MoneyPrinterTurbo 已有文案草稿 adapter。** 旧“仅方法参考”的记录不适用于当前代码。详见 [当前审核](PROJECT_REVIEW.md)、根 LICENSE、THIRD_PARTY_NOTICES 和 third_party/openmontage/PROVENANCE.json。本页不改变已有许可证或第三方义务。
 
 ## 1. 已采用的组件：保留，不重建
 
@@ -46,3 +46,7 @@ Topic/verified research → script-storyboard-director → media-asset-curator �
 授权Reference → reference-video-analyzer → 去内容化抽象/original brief → 同一生产链 → difference evidence + Jovi原创性审阅。
 
 Aspect是Job合同，支持1080×1920和1920×1080；mascot默认off，opt-in必须Jovi原始资产+receipt；无角色不应阻断正常技术视频。音频实测timing是时间权威。Phase 1验收profile按当前schemas，不能用历史文档偷换。
+
+## 可选 DaVinci 试验
+
+最近安装记录（2026-10-11）：samuelgursky/davinci-resolve-mcp v4.10.4，commit 8911bd24aee76894238924317a461005dd013d94，E:/AI_Tools/Other/DaVinciResolveMCP 的 Python 环境已准备。Resolve 本体、实际桥接、剪辑、导出未验证；本次未重查该服务/安装状态，不代表编辑器可用。原试验计划从 archive/pre-cleanup-20261023 查回。

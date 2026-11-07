@@ -1,8 +1,7 @@
 """T05 test package for the Pink Pig Video Factory Phase 1 productization.
 
-Covers the five test targets of ``handoff_prepared/03_CODEX_EXECUTION_PROMPT.txt``
-stage four (asset loading / storyboard / timeline / render / MP4 metadata) and the
-six requirements of ``docs/PINK_PIG_PHASE1_ARCHITECTURE.md`` §6 T05.
+Covers asset loading, storyboard, timeline, rendering and MP4 metadata.
+Current requirements are documented in ``docs/PRODUCT_REQUIREMENTS.md``.
 
 Run with::
 

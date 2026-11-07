@@ -1,0 +1,25 @@
+{
+  "id": "PHASE1-STAGE-PLAN-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested a Codex with ChatGPT long-stage plan and local execution for the current project.",
+  "category": "Phase 1 planning and read-only baseline evidence",
+  "scope": "Reconcile current topic_only_v1 evidence and plans, write an executable Phase 1 closure plan, run bounded baseline checks, and inventory existing artifacts without promoting the phase.",
+  "allowed_paths": [
+    "tasks/plans/2026-09-27-phase1-topic-only-closure.md",
+    "tasks/todo.md",
+    "reports/change_requests/PHASE1-STAGE-PLAN-20260927.json",
+    "reports/phase1/stage_20260927/",
+    "dist/story_demo/",
+    "dist/story_demo_offline/",
+    "dist/pink_pig_story_demo.mp4",
+    "dist/pink_pig_story_demo_offline.mp4"
+  ],
+  "forbidden": ["AGENTS.md", "PROJECT_STATUS.yaml", "Phase 2 Feishu/Cron", "automatic publication", "model or node downloads", "formal Phase 1 Gate", "human review substitution"],
+  "acceptance": [
+    "The plan names current topic_only_v1 contracts and excludes stale I2C/lifecycle reruns.",
+    "Current evidence inventory binds file paths and SHA-256 or marks gaps truthfully.",
+    "Bounded baseline lists exact commands and results per suite, without historical aggregation.",
+    "No source or product-phase status changes occur under this Change Request."
+  ],
+  "status": "in_progress"
+}

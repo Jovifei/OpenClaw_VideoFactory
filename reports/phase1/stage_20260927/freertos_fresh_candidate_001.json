@@ -1,0 +1,38 @@
+{
+  "schema_version": "phase1_freertos_candidate_review_v1",
+  "date": "2026-09-27",
+  "change_request": "PHASE1-FREERTOS-FRESH-20260927",
+  "source_commit": "a7ff382d3a737d02ac81bdf4bd8bbfabcfcf1d1e",
+  "worktree_branch": "codex/phase1-freertos-fresh-20260927",
+  "job_id": "job-51fae0c8b47180bd49f2000e",
+  "previous_failed_job_preserved": "job-adfcf733dcba1d081bb8feaf in a different worktree",
+  "render_job_id": "phase1_8958d25a694923c9",
+  "input_brief": "examples/phase1_local_freertos/brief.json",
+  "media": {
+    "path": "dist/phase1_local/phase1_8958d25a694923c9/final_master.mp4",
+    "sha256": "f37c6b4f1d4c8c977a5de12dc64c85fd7610b3be50fbc72eb99263c2d5f1d7ee",
+    "codec": "H.264/AAC",
+    "profile": "1920x1080 16:9 at 30 FPS",
+    "duration_seconds": 38.4,
+    "full_decode_exit_code": 0
+  },
+  "review_package": {"path": "dist/phase1_local/phase1_8958d25a694923c9/review_package.json", "sha256": "238c2b2304a5f6ce6a77398ffa7e950313fe04a7a54087ce40b53f3f1494bcae", "declared_status": "ready_for_human_review", "final_media_sha_matches": true},
+  "preserved_runtime_snapshot": "E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_stage_20260927/candidate001_semantic_changes_required/",
+  "sqlite": {"state": "PENDING_REVIEW", "final_master_artifact_sha_matches": true, "review_package_artifact_sha_matches": true},
+  "automated_quality_report": "passed",
+  "semantic_visual_review": {
+    "status": "CHANGES_REQUIRED",
+    "sampled_frames": [60, 300, 540, 780, 1020],
+    "frame_archive": "reports/phase1/stage_20260927/freertos_frame_review.zip",
+    "frame_archive_sha256": "ecf7e9878d88472bab0032598e0c1fd3b0ff65136fe4c45584e4976e3cb404ab",
+    "failing_frame": "reports/phase1/stage_20260927/freertos_frame_03.png",
+    "failing_frame_sha256": "865fc7ab76ee788a8c186d086b74570547ea7f7a54f5b511184461720d1e9734",
+    "finding": "Scene 3 subtitle overlays the bottom line of the priority-inheritance technical callout. The content is readable in the source PNG but obscured in the final composited frame.",
+    "quality_gap": "Current subtitle_safe_region passed because it checks canvas placement, not overlap with meaningful diagram content."
+  },
+  "human_review": "NOT_REQUESTED",
+  "prereview": "NOT_RUN",
+  "phase_promotion": false,
+  "status": "MACHINE_MEDIA_VALID_SEMANTIC_LAYOUT_CHANGES_REQUIRED",
+  "next_step": "Preserve this immutable candidate; make a scoped subtitle/content collision fix before any replacement render."
+}

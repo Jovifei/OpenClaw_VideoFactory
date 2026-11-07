@@ -1,0 +1,40 @@
+{
+  "schema_version": "phase1_stage_regression_v1",
+  "date": "2026-09-27",
+  "base_commit": "f1d94e980526ab7d0a06faadf9c78596b09db565",
+  "branch": "codex/phase1-stage-closure-20260927",
+  "python_executable": "D:/Python/Python3.14/python.exe",
+  "status": "bounded_suites_passed",
+  "raw_log_archive": {"path": "reports/phase1/stage_20260927/test_logs.zip", "sha256": "de5c690c3f2dac4a0159f68b48e77086e1b205a21486d059915ad014dc198091"},
+  "setup": {
+    "initial_attempt": "The Workbuddy Python 3.13 environment lacked scenedetect, and a fresh worktree lacked ignored legacy demo media; those failures are retained in pytest_reference.log and pytest_video.log.",
+    "recovery": "Used the existing Python 3.14 interpreter with PySceneDetect and regenerated both pinned demo jobs in this isolated checkout. The copied pre-existing demo artifacts were moved to copied_fixture_backup before regeneration.",
+    "main_demo": {
+      "command": "D:/Python/Python3.14/python.exe generate_video.py --job examples/pink_pig_story_demo/job.yaml",
+      "exit_code": 0,
+      "audio_mode": "tts",
+      "mp4_sha256": "853e017d431f5f09216e8eac3cf7b198c63d02283443cd111a2e51508f7c9703",
+      "log": "reports/phase1/stage_20260927/generate_main_demo.log"
+    },
+    "offline_demo": {
+      "command": "D:/Python/Python3.14/python.exe generate_video.py --job tests/video/fixtures/job_offline.yaml",
+      "exit_code": 0,
+      "audio_mode": "bgm",
+      "mp4_sha256": "1f23e49cf00ede0314de57b45a49616e3e2a7942efe6aee967363b96e94c718b",
+      "log": "reports/phase1/stage_20260927/generate_offline_demo.log"
+    }
+  },
+  "python_suites": [
+    {"path": "tests/phase1_acceptance", "command": "D:/Python/Python3.14/python.exe -m pytest tests/phase1_acceptance -q", "passed": 24, "skipped": 0, "exit_code": 0, "log": "reports/phase1/stage_20260927/pytest_final_phase1_acceptance.log"},
+    {"path": "tests/phase1_local", "command": "D:/Python/Python3.14/python.exe -m pytest tests/phase1_local -q", "passed": 92, "skipped": 0, "exit_code": 0, "log": "reports/phase1/stage_20260927/pytest_final_phase1_local.log"},
+    {"path": "tests/reference", "command": "D:/Python/Python3.14/python.exe -m pytest tests/reference -q", "passed": 13, "skipped": 1, "warnings": 4, "exit_code": 0, "log": "reports/phase1/stage_20260927/pytest_final_reference.log"},
+    {"path": "tests/director", "command": "D:/Python/Python3.14/python.exe -m pytest tests/director -q", "passed": 47, "skipped": 0, "exit_code": 0, "log": "reports/phase1/stage_20260927/pytest_final_director.log"},
+    {"path": "tests/video", "command": "D:/Python/Python3.14/python.exe -m pytest tests/video -q", "passed": 361, "skipped": 0, "exit_code": 0, "log": "reports/phase1/stage_20260927/pytest_final_video.log"},
+    {"path": "video_factory/tests", "command": "D:/Python/Python3.14/python.exe -m pytest video_factory/tests -q", "passed": 5, "skipped": 0, "exit_code": 0, "log": "reports/phase1/stage_20260927/pytest_final_video_factory.log"}
+  ],
+  "remotion": [
+    {"command": "npm run typecheck", "cwd": "remotion", "exit_code": 0},
+    {"command": "npm run test:contracts", "cwd": "remotion", "exit_code": 0, "result": "contracts_validated; topic_evidence_builder_verified; topic_evidence_remotion_verified"}
+  ],
+  "limits": ["This is a bounded regression baseline, not a formal Phase 1 Gate.", "The generated demo media are test fixtures, not user-reviewed product candidates."]
+}

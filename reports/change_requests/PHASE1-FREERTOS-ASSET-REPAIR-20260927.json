@@ -1,0 +1,19 @@
+{
+  "id": "PHASE1-FREERTOS-ASSET-REPAIR-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested Phase 1 local execution; a bounded FFmpeg and Pillow audit exposed a registered FreeRTOS PNG whose pixels do not decode.",
+  "category": "FreeRTOS raster asset integrity",
+  "scope": "Audit the five registered FreeRTOS PNGs, regenerate only decoder-invalid files from their existing unchanged SVG sources with the existing converter, update only resulting registry hashes, and add full-pixel decode regression.",
+  "allowed_paths": [
+    "assets/freertos_mutex_plain_illustrations/*.png",
+    "src/factory/assets/pink_pig/registry.json",
+    "tests/video/",
+    "tests/phase1_local/",
+    "reports/change_requests/PHASE1-FREERTOS-ASSET-REPAIR-20260927.json",
+    "reports/phase1/stage_20260927/",
+    "tasks/todo.md"
+  ],
+  "forbidden": ["SVG content edits", "valid PNG rewrites", "new converter/dependency", "renderer or timeout changes", "full FreeRTOS render in this iteration", "failed-job mutation", "Gate/schema changes", "Phase 2 work"],
+  "acceptance": ["All five PNGs pass Pillow full load and bounded FFmpeg decode", "Dimensions and semantic SVG identity stay unchanged", "Registry SHA values match actual bytes", "A decode regression fails on the old corrupt asset and passes on repaired files", "Focused and affected bounded suites pass"],
+  "status": "blocked_cairosvg_missing_chinese_glyphs"
+}

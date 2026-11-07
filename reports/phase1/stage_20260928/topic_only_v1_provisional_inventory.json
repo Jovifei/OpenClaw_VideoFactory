@@ -1,0 +1,252 @@
+{
+  "schema_version": "topic_only_v1_provisional_inventory_v1",
+  "status": "PROVISIONAL_UNRESOLVED_NOT_GATE_READY",
+  "slots": {
+    "flash_watchdog": "PENDING_AUDIO_APPROVAL",
+    "freertos_mutex": "PENDING_AUDIO_APPROVAL",
+    "i2c": "I2C_CANDIDATE003_TERMINAL_MPT_PLAN_ONLY_FAILED_JIANYING_BLOCKED",
+    "distinct_live_topic": "LIVE_CAN_MACHINE_REVIEW_READY/HUMAN_REVIEW_PENDING",
+    "lifecycle": "PASS_REVALIDATED",
+    "boundary": "PASS_PRELIGHT",
+    "final_regression": "NOT_RUN",
+    "manifest": "NOT_READY"
+  },
+  "rejected_evidence": [
+    "historical Flash truncated candidate",
+    "historical FreeRTOS truncated candidate",
+    "superseded horizontal I2C candidate"
+  ],
+  "formal_gate": "NOT_RUN",
+  "i2c_requalification_attempt": {
+    "control_job_id": "job-b4a2e8e851268bc14e5e4a15",
+    "status": "CHANGES_REQUIRED:PHASE1_LOCAL_BRIEF_TOPIC_DIGEST_MISMATCH",
+    "attempt": 0,
+    "last_completed_state": "ASSETS",
+    "media_output_created": false,
+    "retry_or_resume_used": false,
+    "candidate_review": "reports/phase1/stage_20260928/i2c_requalification_candidate001_review.json"
+  },
+  "i2c_requalification_candidate002": {
+    "control_job_id": "job-b1a186b7b265c2ed46b7c3cb",
+    "status": "FAILED:PHASE1_LOCAL_RENDER_VALUE_ERROR_AND_I2C_LINEAGE_NOT_SELECTED",
+    "attempt": 0,
+    "last_completed_state": "ASSETS",
+    "media_output_created": false,
+    "retry_or_resume_used": false,
+    "candidate_review": "reports/phase1/stage_20260928/i2c_requalification_candidate002_review.json",
+    "semantic_precondition": "I2C_LINEAGE_NOT_SELECTED_GENERIC_REGISTRY_ASSETS_USED"
+  },
+  "live_topic": {
+    "topic": "CAN 总线仲裁为什么不会破坏高优先级报文?",
+    "control_job_id": "job-eb356764914b0d9f5ccb94ff",
+    "video_job_id": "phase1_91c2a7cd2b692884",
+    "status": "LIVE_CAN_MACHINE_REVIEW_READY",
+    "audio_sha256": "fa4bce94a4d52d01dd30a261c1e4aac02a3dcbf54922c3345870c36ce9bced4b",
+    "mp4_sha256": "e50308e53a60f557085b07b58d02827dd7fc52583abe9b3041c0b86415c320af",
+    "review_package_sha256": "cef8dc5ab243f468c7aee69b0b628f9aba25d3ca85bb7d7ba5222b1ebbd0248f",
+    "duration_seconds": 51.033008,
+    "render_performed": true,
+    "human_review": "PENDING_EXACT_SHA",
+    "prereview": "NOT_RUN",
+    "remote_machine_review": "PASS"
+  },
+  "remote_review": {
+    "iteration": 38,
+    "head_reviewed": "de1b32af2c4074a08862ce9b9e3945e7def2f4ea",
+    "result": "MPT_RESTORATION_ACCEPTED_JIANYING_DEPENDENCY_BLOCKED",
+    "candidate003": "TERMINAL_PRESERVE",
+    "candidate004": "NOT_AUTHORIZED",
+    "formal_gate": "NOT_AUTHORIZED"
+  },
+  "remote_review_history": [
+    {
+      "iteration": 27,
+      "head_reviewed": "29b8031a2afda4bde746fa9864392262d847bc8a",
+      "result": "LIVE_CAN_MACHINE_REVIEW_READY_CONFIRMED"
+    },
+    {
+      "iteration": 30,
+      "head_reviewed": "4028236a61a4a329427eaf27edb846d89a44f751",
+      "result": "WP_J6_ACCEPTED"
+    },
+    {
+      "iteration": 34,
+      "head_reviewed": "e51b45b0050b2e20b23fb874cb70ef82aa1e3e9a",
+      "result": "CANDIDATE002_FAILURE_ACCEPTED_ROUTE_MISMATCH_CONFIRMED"
+    },
+    {
+      "iteration": 36,
+      "head_reviewed": "3c6a14dc26557ce805699162939a23a8f6d0775e",
+      "result": "WP_LR3_ACCEPTED_CANDIDATE003_AUTHORIZED"
+    },
+    {
+      "iteration": 37,
+      "head_reviewed": "4c2043cf6d24d005cf38f06dbce4c0aa18326df8",
+      "result": "CANDIDATE003_TERMINAL_DEPENDENCY_FAILURE_ACCEPTED"
+    },
+    {
+      "iteration": 38,
+      "head_reviewed": "de1b32af2c4074a08862ce9b9e3945e7def2f4ea",
+      "result": "MPT_RESTORATION_ACCEPTED_JIANYING_DEPENDENCY_BLOCKED"
+    }
+  ],
+  "closure_graph": {
+    "CAN": {
+      "machine": "READY",
+      "human_video": "PENDING_EXACT_SHA",
+      "prereview": "BLOCKED_BY_HUMAN"
+    },
+    "Flash": {
+      "audio_machine": "PASS",
+      "human_audio": "PENDING_EXACT_SHA",
+      "fresh_video": "BLOCKED_BY_HUMAN_AUDIO"
+    },
+    "FreeRTOS": {
+      "audio_machine": "PASS",
+      "human_audio": "PENDING_EXACT_SHA",
+      "fresh_video": "BLOCKED_BY_HUMAN_AUDIO"
+    },
+    "I2C": {
+      "restoration": "EXHAUSTED",
+      "qualification": "M2_DIAGNOSTIC_MPT_PLAN_ONLY_FAILED",
+      "candidate003": "TERMINAL_DEPENDENCY_FAILURE",
+      "candidate004": "BLOCKED_PENDING_REMOTE_REVIEW",
+      "dependency_restoration": "BLOCKED_JIANYING_SKILL"
+    },
+    "lifecycle": "PASS_REVALIDATED",
+    "boundary": "PASS_PRELIGHT",
+    "formal_gate": "NOT_RUN"
+  },
+  "closure_contracts": {
+    "manifest_contract": {
+      "path": "reports/phase1/stage_20260928/topic_only_v1_manifest_contract_readiness.json",
+      "status": "MANIFEST_CONTRACT_READY_FINAL_EVIDENCE_PENDING"
+    },
+    "final_regression_contract": {
+      "path": "reports/phase1/stage_20260928/final_regression_contract.json",
+      "status": "FINAL_REGRESSION_PLAN_FROZEN_NOT_RUN"
+    },
+    "final_boundary_contract": {
+      "path": "reports/phase1/stage_20260928/final_boundary_contract.json",
+      "status": "FINAL_BOUNDARY_CONTRACT_FROZEN_NOT_RUN"
+    },
+    "i2c_requalification_decision": {
+      "path": "reports/phase1/stage_20260928/i2c_requalification_decision.json",
+      "status": "I2C_RESTORATION_EXHAUSTED_FRESH_REQUALIFICATION_IS_ONLY_VERIFIABLE_PATH",
+      "fresh_job_authorized": false
+    }
+  },
+  "next_actions": {
+    "human_events": [
+      "CAN exact-SHA APPROVED or CHANGES_REQUIRED for Candidate001",
+      "Flash exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED",
+      "FreeRTOS exact v7 audio AUDIO_APPROVED or CHANGES_REQUIRED"
+    ],
+    "i2c": "M5A found no distinct approved credential source: effective app.openai_api_key and MIMO_API_KEY fingerprints are equal and both represent the rejected 401 value; MPT_LLM_API_KEY is missing. Freeze I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE; do not run M5B/provider retest/M6/Candidate004.",
+    "after_human_approval": "Run only the topic-specific read-only prereview or exactly one newly authorized topic candidate; do not cross-unlock topics.",
+    "formal_gate": "Remain NOT_RUN until all four topic slots have final machine evidence, exact-SHA human review and prereview."
+  },
+  "readiness_reports": {
+    "human_gate_binding": "reports/phase1/stage_20260928/human_gate_binding_readiness.json",
+    "can_prereview_contract": "reports/phase1/stage_20260928/can_prereview_contract_readiness.json",
+    "flash_next_candidate": "reports/phase1/stage_20260928/flash_next_candidate_readiness.json",
+    "freertos_next_candidate": "reports/phase1/stage_20260928/freertos_next_candidate_readiness.json",
+    "i2c_dossier": "reports/phase1/stage_20260928/i2c_requalification_dossier.json",
+    "manifest_contract": "reports/phase1/stage_20260928/topic_only_v1_manifest_contract_readiness.json",
+    "final_regression_contract": "reports/phase1/stage_20260928/final_regression_contract.json",
+    "final_boundary_contract": "reports/phase1/stage_20260928/final_boundary_contract.json",
+    "i2c_decision": "reports/phase1/stage_20260928/i2c_requalification_decision.json"
+  },
+  "i2c_subject_route_preflight": {
+    "status": "I2C_SUBJECT_ROUTE_PREFLIGHT_READY_FOR_REMOTE_REVIEW",
+    "report": "reports/phase1/stage_20260928/i2c_subject_route_preflight.json",
+    "plan_only_job_id": "job-d0ad2349f3a61c8250603737",
+    "plan_only_job_is_non_candidate": true,
+    "scene_plan_visual_spec": "i2c_bus_v1",
+    "fact_ids": [
+      "open_drain",
+      "rise_time",
+      "sink_current"
+    ],
+    "aspect_ratio": "9:16",
+    "still_evidence": "PASS_BOUNDED_STILL_ONLY",
+    "full_render": false,
+    "candidate003_authorized": false,
+    "source_aligned_audio_adapter": "PRESENT_NO_PRODUCTION_MEDIA_RUN"
+  },
+  "i2c_subject_audio_wiring": {
+    "status": "I2C_SUBJECT_AUDIO_WIRING_READY_FOR_REMOTE_REVIEW",
+    "report": "reports/phase1/stage_20260928/i2c_subject_audio_wiring_repair.json",
+    "media_run": false,
+    "candidate003_authorized": false,
+    "research_artifact_binding": "SHA_AND_TOPIC_FAIL_CLOSED",
+    "source_id_normalization": "PASS"
+  },
+  "i2c_requalification_candidate003": {
+    "control_job_id": "job-d0ad2349f3a61c8250603737",
+    "status": "FAILED:PHASE1_SUBJECT_PLANNING_EXTERNAL_MPT_UNAVAILABLE",
+    "attempt": 0,
+    "last_completed_state": "RESEARCHING",
+    "media_output_created": false,
+    "retry_or_resume_used": false,
+    "candidate_review": "reports/phase1/stage_20260929/i2c_requalification_candidate003_review.json",
+    "candidate004_authorized": false
+  },
+  "i2c_subject_dependency_restoration": {
+    "status": "I2C_SUBJECT_DEPENDENCY_BLOCKED:jianying-editor-skill:network_unavailable_and_no_local_clone",
+    "report": "reports/phase1/stage_20260929/i2c_subject_dependency_restoration.json",
+    "moneyprinterturbo": "RESTORED_PINNED_LOCAL_CACHE",
+    "jianying_editor_skill": "BLOCKED_NO_LOCAL_CLONE_NETWORK_UNAVAILABLE",
+    "candidate_run": false,
+    "candidate003_retry": false,
+    "candidate004_authorized": false,
+    "m2_planning_probe": "FAILED_MPT_CLI_EXIT_1_NO_SCRIPT_JSON",
+    "m2_report": "reports/phase1/stage_20260929/i2c_subject_mpt_planning_probe.json"
+  },
+  "i2c_subject_mpt_planning_probe": {
+    "status": "FAILED:PHASE1_MPT_PLAN_ONLY_MPT_CLI_EXIT_1_NO_SCRIPT_JSON",
+    "report": "reports/phase1/stage_20260929/i2c_subject_mpt_planning_probe.json",
+    "runtime_locator_id": "i2c-mpt-plan-probe-20260929",
+    "job_id": "job-d0ad2349f3a61c8250603737",
+    "candidate": false,
+    "promotable_to_candidate004": false,
+    "mpt_revision": "eb8c23757e098a07bbcd93b3b50e252fc8d1869a",
+    "mpt_venv": "PRESENT_AND_USED",
+    "mpt_successful_candidates": 0,
+    "media_output_created": false,
+    "jianying_invocation": false,
+    "evidence_commit": "5e551f1"
+  },
+  "i2c_subject_mpt_provider_diagnostic": {
+    "status": "MPT_PROVIDER_BLOCKED:AUTH",
+    "report": "reports/phase1/stage_20260929/mpt_provider_diagnostic.json",
+    "corrected_direct_call": "EXECUTED_EXACTLY_ONCE",
+    "valid_task_uuid": "d7b3d8c2-35bd-4bd7-9bf9-0b00b2d1a4b6",
+    "provider_request_reached": true,
+    "safe_http_status": 401,
+    "safe_error": "Invalid API Key",
+    "configured_provider": "openai",
+    "configured_model": "mimo-v2.5",
+    "configured_endpoint_hostname": "token-plan-cn.xiaomimimo.com",
+    "endpoint_reachability": "REACHABLE",
+    "media_output_created": false,
+    "candidate_store_touched": false,
+    "m6_authorized": false,
+    "candidate004_authorized": false,
+    "evidence_commit": "d81ff87",
+    "verification": "45 focused tests; diagnostic compile/redaction/diff checks PASS"
+  },
+  "i2c_mpt_credential_provenance": {
+    "status": "NO_APPROVED_EXISTING_CREDENTIAL_SOURCE_FOUND",
+    "report": "reports/phase1/stage_20260929/mpt_credential_provenance.json",
+    "effective_config_equals_mimo_env": true,
+    "mpt_llm_api_key": "MISSING",
+    "workspace_env_template_only": true,
+    "m5b": "NOT_RUN_SAME_REJECTED_FINGERPRINT",
+    "provider_called": false,
+    "config_changed": false,
+    "blocker": "I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE",
+    "evidence_commit": "968b2a1",
+    "verification": "47 focused tests; secret-leak assertions; compile/diff checks PASS"
+  }
+}

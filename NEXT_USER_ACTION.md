@@ -1,20 +1,5 @@
-# Next User Action
+# Jovi 当前审核入口
 
-## Current — P0-PROJECT-GATEWAY-DEVICE-PAIRING-REQUEST-047
+先看 docs/PROJECT_REVIEW.md，再看 docs/PRODUCT_REQUIREMENTS.md、docs/CURRENT_ARCHITECTURE.md 和 docs/PRODUCT_PHASES.md。
 
-Authorize a **Project-identity-provisioning-only** task. It will create a fresh Project-owned official Ed25519 identity in `C:\Users\Admin\.openclaw-video-factory\device`, verify the public-key/device-id consistency without displaying key material, and stop. It will not connect to the Gateway or request pairing.
-
-## Current — P0-PROJECT-GATEWAY-OFFICIAL-DEVICE-AUTH-046
-
-Authorize exactly one fresh **Project pairing-request-only** connection after the ACL repair. It will create a Project-owned Ed25519 identity, submit at most one request for `operator.read`, record only a redacted request reference, and stop for approval.
-
-It will not restart OpenClaw, use or change the shared Gateway token, start the Project Gateway, change Core Feishu, send Feishu traffic, or perform a migration.
-
-Current result: `WINDOWS_SERVICE_AUTH_REPAIR_BLOCKED:METADATA_OK_BUT_RUNTIME_TOKEN_DIFFERS`.
-
-Authorize one narrow credential-source maintenance task: reconcile the
-OpenClaw CLI control credential with the running Gateway authentication source
-using a secure host mechanism, then perform one health-only Adapter handshake
-and one read-only structured `channels.status` check. Do not provide a token in
-chat and do not retry installation, restart, Core lifecycle, Project Gateway,
-or zhongshu migration first.
+本轮为主线合并与文档精简，Phase 1 未正式通过。后续候选人审绑定真实最终媒体 SHA。I2C 凭证和 DaVinci 官方安装包是独立依赖，不因本轮清理解除。当前验证与发布以审核说明为准，旧 P0 待办不定义今天的产品方向。

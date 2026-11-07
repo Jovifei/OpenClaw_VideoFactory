@@ -1,0 +1,15 @@
+{
+  "id": "PHASE1-RENDER-TIMEOUT-DIAGNOSTIC-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested execution and autonomous repair of the Phase 1 stage; the first FreeRTOS render timed out.",
+  "category": "Single bounded renderer diagnostic",
+  "scope": "Run exactly one CPU-only FFmpeg reproduction with the failed FreeRTOS job's same five PNGs, audio, subtitle, filter graph, dimensions, FPS, duration, and 300-second timeout. Use a new output path outside the failed job and preserve raw observations.",
+  "allowed_paths": [
+    "reports/change_requests/PHASE1-RENDER-TIMEOUT-DIAGNOSTIC-20260927.json",
+    "reports/phase1/stage_20260927/",
+    "E:/OpenClaw_VideoFactory_Runtime/phase1_render_timeout_diag_20260927/"
+  ],
+  "forbidden": ["source edits", "retry of failed FreeRTOS job", "timeout increase", "original output overwrite", "Gate/schema changes", "Phase 2 side effects"],
+  "acceptance": ["One probe only", "Elapsed time and exit/timeout recorded", "Successful output must pass ffprobe and full decode", "Failed output remains diagnostic and cannot count as Phase 1 qualification"],
+  "status": "blocked_cpu_probe_timed_out"
+}

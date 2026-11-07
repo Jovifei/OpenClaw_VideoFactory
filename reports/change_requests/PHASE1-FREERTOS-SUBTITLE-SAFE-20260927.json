@@ -1,0 +1,21 @@
+{
+  "id": "PHASE1-FREERTOS-SUBTITLE-SAFE-20260927",
+  "date": "2026-09-27",
+  "authorization": "Jovi requested Phase 1 execution; semantic review of the one fresh FreeRTOS MP4 found scene-3 subtitle obscuring a technical callout, and Codex with ChatGPT supplied a bounded repair plan.",
+  "category": "FreeRTOS scene-3 semantic safe-area contract",
+  "scope": "Add a deterministic geometry regression for the source SVG callout versus the existing landscape subtitle band, minimally move the callout without changing words or font size, regenerate only its PNG through the qualified Chrome path, and prove separation in one production-style still.",
+  "allowed_paths": [
+    "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.svg",
+    "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.png",
+    "src/factory/assets/pink_pig/registry.json",
+    "generate_video.py",
+    "tests/video/",
+    "reports/change_requests/PHASE1-FREERTOS-SUBTITLE-SAFE-20260927.json",
+    "reports/phase1/stage_20260927/",
+    "tasks/todo.md"
+  ],
+  "allowed_runtime_roots": ["E:/OpenClaw_VideoFactory_Runtime/phase1_freertos_subtitle_safe_20260927/"],
+  "forbidden": ["other asset edits", "wording/font-size reduction", "global subtitle relocation", "renderer/quality/Gate loosening", "full video render", "candidate001 overwrite", "human approval", "Phase 2 work"],
+  "acceptance": ["RED test demonstrates current source callout intersects the production subtitle occupancy band", "GREEN test derives the same band from current local brief subtitle style", "Only scene-3 SVG geometry and resulting PNG/registry hash change", "Single production-style still shows visible separation", "Pillow/FFmpeg decode and focused affected suites pass"],
+  "status": "verified_still_only"
+}

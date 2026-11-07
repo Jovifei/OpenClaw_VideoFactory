@@ -11,6 +11,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -71,6 +72,12 @@ def build_review_package(
     subtitle_path = work_dir / "subtitle.srt"
     if not subtitle_path.is_file() or not subtitle_path.read_text(encoding="utf-8").strip():
         raise _fail("phase1_review_subtitle_invalid", "Subtitle evidence is missing.", "subtitle")
+    source_aligned = bool((run_report.get("audio_plan") or {}).get("source_aligned_narration")) or isinstance(run_report.get("narration_alignment"), dict)
+    audio_integrity = None
+    if source_aligned:
+        audio_integrity_path = work_dir / "audio_integrity.json"
+        audio_integrity = _read_object(audio_integrity_path, "audio_integrity")
+        _validate_source_aligned_artifacts(work_dir, run_report, audio_integrity)
 
     _validate_evidence_documents(
         run_report=run_report,
@@ -78,6 +85,7 @@ def build_review_package(
         timeline=timeline,
         job_id=job_id,
         scene_count=scene_count,
+        audio_integrity=audio_integrity,
     )
     media = _probe_media(output_path)
     _validate_media(media)
@@ -118,6 +126,9 @@ def build_review_package(
         "publish_info": publish_info_path,
     }
     required_artifacts = list(_BASE_PACKAGE_ARTIFACTS)
+    if source_aligned:
+        artifact_paths["audio_integrity"] = work_dir / "audio_integrity.json"
+        required_artifacts.append(("audio_integrity.json", "audio_integrity"))
     reference_evidence: dict[str, str] | None = None
     if input_mode == "local_reference":
         reference_evidence = {}
@@ -186,6 +197,7 @@ def _validate_evidence_documents(
     timeline: dict[str, Any],
     job_id: str,
     scene_count: int,
+    audio_integrity: dict[str, Any] | None = None,
 ) -> None:
     if run_report.get("job_id") != job_id or run_report.get("status") != "success":
         raise _fail("phase1_review_evidence_invalid", "Run report does not describe a successful current job.", "run_report")
@@ -195,6 +207,41 @@ def _validate_evidence_documents(
     audio = run_report.get("audio_plan")
     if not isinstance(audio, dict) or audio.get("mode") != "tts" or audio.get("segments_count") != scene_count:
         raise _fail("phase1_review_narration_incomplete", "Narration evidence is incomplete for the scene count.", "run_report.audio_plan")
+    segments = audio.get("segments")
+    if not isinstance(segments, list) or len(segments) != scene_count:
+        raise _fail("phase1_review_narration_incomplete", "Narration segment duration evidence is missing.", "run_report.audio_plan.segments")
+    for index, segment in enumerate(segments, start=1):
+        if not isinstance(segment, dict):
+            raise _fail("phase1_review_narration_incomplete", "Narration segment evidence is invalid.", f"run_report.audio_plan.segments.{index}")
+        try:
+            actual = float(segment["actual_duration"])
+            allocated = float(segment.get("allocated_scene_duration", segment["scene_duration"]))
+        except (KeyError, TypeError, ValueError) as exc:
+            raise _fail("phase1_review_narration_incomplete", "Narration segment duration evidence is invalid.", f"run_report.audio_plan.segments.{index}") from exc
+        if bool(segment.get("overflow")) or actual > allocated + 0.01:
+            raise _fail("phase1_review_narration_incomplete", "Narration segment was longer than its allocated scene and cannot be accepted.", f"run_report.audio_plan.segments.{index}")
+    alignment = run_report.get("narration_alignment")
+    source_aligned = bool(audio.get("source_aligned_narration")) or isinstance(alignment, dict)
+    if source_aligned:
+        if not isinstance(alignment, dict) or alignment.get("mode") != "source_aligned_measured_tts":
+            raise _fail("phase1_review_narration_incomplete", "Source-aligned narration metadata is missing.", "run_report.narration_alignment")
+        objective = alignment.get("objective_audio_integrity")
+        if not _objective_audio_integrity_is_complete(objective):
+            raise _fail(
+                "phase1_review_narration_incomplete",
+                "Source-aligned narration is missing objective audio-integrity evidence.",
+                "run_report.narration_alignment.objective_audio_integrity",
+            )
+        for index, segment in enumerate(segments, start=1):
+            integrity = segment.get("audio_integrity")
+            if not _segment_audio_integrity_is_complete(integrity):
+                raise _fail(
+                    "phase1_review_narration_incomplete",
+                    "A source-aligned narration segment is missing objective audio-integrity evidence.",
+                    f"run_report.audio_plan.segments.{index}.audio_integrity",
+                )
+        if not isinstance(audio_integrity, dict) or audio_integrity.get("objective") != objective:
+            raise _fail("phase1_review_narration_incomplete", "Persisted audio-integrity evidence does not match the run report.", "audio_integrity.objective")
     subtitle = render_report.get("subtitle")
     if not isinstance(subtitle, dict) or subtitle.get("present") is not True or subtitle.get("mode") != "burned_in":
         raise _fail("phase1_review_subtitle_invalid", "Render report does not confirm burned-in subtitles.", "render_report.subtitle")
@@ -213,6 +260,100 @@ def _validate_evidence_documents(
         return
     if not isinstance(region, dict) or not _valid_subtitle_region(region):
         raise _fail("phase1_review_style_invalid", "Render report subtitle region is outside the safe band.", "render_report.subtitle_region")
+
+
+def _validate_source_aligned_artifacts(
+    work_dir: Path,
+    run_report: dict[str, Any],
+    audio_integrity: dict[str, Any],
+) -> None:
+    alignment = run_report.get("narration_alignment")
+    if not isinstance(alignment, dict):
+        raise _fail("phase1_review_narration_incomplete", "Source-aligned narration metadata is missing.", "run_report.narration_alignment")
+    hashes = alignment.get("artifact_hashes")
+    persisted_hashes = audio_integrity.get("artifact_hashes")
+    if not isinstance(hashes, dict) or not isinstance(persisted_hashes, dict) or hashes != persisted_hashes:
+        raise _fail("phase1_review_narration_incomplete", "Source-aligned artifact hashes are missing or inconsistent.", "audio_integrity.artifact_hashes")
+    for field in ("original_script_sha256", "final_script_sha256", "final_timeline_sha256", "final_srt_sha256"):
+        value = alignment.get(field)
+        if not isinstance(value, str) or not re.fullmatch(r"[a-f0-9]{64}", value):
+            raise _fail("phase1_review_narration_incomplete", "Source-aligned script/timeline hash evidence is missing.", f"run_report.narration_alignment.{field}")
+    expected = {
+        "script_sha256": work_dir / "script.json",
+        "timeline_sha256": work_dir / "timeline.json",
+        "srt_sha256": work_dir / "subtitle.srt",
+    }
+    audio_path = Path(str((run_report.get("audio_plan") or {}).get("path", "")))
+    expected["audio_sha256"] = audio_path
+    for field, path in expected.items():
+        if not path.is_file() or _sha256(path) != hashes.get(field):
+            raise _fail("phase1_review_narration_incomplete", "Source-aligned artifact hash does not match its file.", f"audio_integrity.artifact_hashes.{field}")
+    if alignment.get("audio_integrity_ref") != "audio_integrity.json":
+        raise _fail("phase1_review_narration_incomplete", "Source-aligned integrity evidence reference is invalid.", "run_report.narration_alignment.audio_integrity_ref")
+    integrity_path = work_dir / "audio_integrity.json"
+    if alignment.get("audio_integrity_sha256") != _sha256(integrity_path):
+        raise _fail("phase1_review_narration_incomplete", "Source-aligned integrity evidence hash does not match its file.", "run_report.narration_alignment.audio_integrity_sha256")
+    objective = audio_integrity.get("objective")
+    if not _objective_audio_integrity_is_complete(objective):
+        raise _fail("phase1_review_narration_incomplete", "Persisted objective audio-integrity evidence is incomplete.", "audio_integrity.objective")
+    run_segments = ((run_report.get("audio_plan") or {}).get("segments"))
+    persisted_segments = audio_integrity.get("segments")
+    if not isinstance(run_segments, list) or not isinstance(persisted_segments, list) or len(run_segments) != len(persisted_segments):
+        raise _fail("phase1_review_narration_incomplete", "Persisted segment integrity evidence is incomplete.", "audio_integrity.segments")
+    for index, (run_segment, persisted_segment) in enumerate(zip(run_segments, persisted_segments), start=1):
+        if not isinstance(run_segment, dict) or not isinstance(persisted_segment, dict):
+            raise _fail("phase1_review_narration_incomplete", "Persisted segment integrity evidence is invalid.", f"audio_integrity.segments.{index}")
+        if (
+            persisted_segment.get("scene_id") != run_segment.get("scene_id")
+            or persisted_segment.get("raw_audio_sha256") != run_segment.get("raw_audio_sha256")
+            or persisted_segment.get("aligned_audio_sha256") != run_segment.get("aligned_audio_sha256")
+            or persisted_segment.get("audio_integrity") != run_segment.get("audio_integrity")
+        ):
+            raise _fail("phase1_review_narration_incomplete", "Persisted segment integrity evidence does not match the run report.", f"audio_integrity.segments.{index}")
+    try:
+        timeline = json.loads((work_dir / "timeline.json").read_text(encoding="utf-8"))
+        expected_endpoint = float(timeline["total_duration_seconds"])
+        actual_endpoint = float(objective["actual_endpoint_seconds"])
+        srt_text = (work_dir / "subtitle.srt").read_text(encoding="utf-8")
+        ends = re.findall(r"-->\s*(\d+):(\d{2}):(\d{2})[,.](\d{3})", srt_text)
+        if not ends:
+            raise ValueError("srt_endpoint_missing")
+        hours, minutes, seconds, millis = (int(item) for item in ends[-1])
+        srt_endpoint = hours * 3600 + minutes * 60 + seconds + millis / 1000.0
+    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise _fail("phase1_review_narration_incomplete", "Source-aligned endpoint evidence is invalid.", "audio_integrity.objective") from exc
+    if abs(actual_endpoint - expected_endpoint) > 0.05 or abs(actual_endpoint - srt_endpoint) > 0.05:
+        raise _fail("phase1_review_narration_incomplete", "Source-aligned audio, timeline and SRT endpoints disagree.", "audio_integrity.objective.endpoint")
+
+
+def _segment_audio_integrity_is_complete(value: object) -> bool:
+    if not isinstance(value, dict) or value.get("status") != "passed":
+        return False
+    required = ("prefix_match", "tail_is_silence", "raw_pcm_sha256", "aligned_pcm_sha256", "raw_pcm_bytes", "aligned_pcm_bytes")
+    return (
+        value.get("prefix_match") is True
+        and value.get("tail_is_silence") is True
+        and all(isinstance(value.get(field), (str, int)) for field in required)
+        and int(value["aligned_pcm_bytes"]) >= int(value["raw_pcm_bytes"])
+    )
+
+
+def _objective_audio_integrity_is_complete(value: object) -> bool:
+    if not isinstance(value, dict) or value.get("status") != "passed":
+        return False
+    expected_hash = value.get("expected_concatenated_pcm_sha256")
+    actual_hash = value.get("actual_concatenated_pcm_sha256")
+    try:
+        delta = abs(float(value["endpoint_delta_seconds"]))
+        tolerance = float(value["endpoint_tolerance_seconds"])
+    except (KeyError, TypeError, ValueError):
+        return False
+    return (
+        value.get("segments_in_order") is True
+        and isinstance(expected_hash, str)
+        and expected_hash == actual_hash
+        and delta <= tolerance
+    )
 
 
 def _probe_media(output_path: Path) -> dict[str, Any]:
@@ -340,16 +481,37 @@ def _build_quality(
         region = render_report["subtitle_region"]
         style = render_report["style_profile"]
         layout_mode = render_report["layout_mode"]
+    segments = audio_plan.get("segments") if isinstance(audio_plan, dict) else None
+    source_aligned = bool(audio_plan.get("source_aligned_narration")) if isinstance(audio_plan, dict) else False
+    alignment = run_report.get("narration_alignment")
+    if isinstance(alignment, dict):
+        source_aligned = True
+    tts_alignment_ok = (
+        isinstance(segments, list)
+        and len(segments) == scene_count
+        and all(
+            isinstance(segment, dict)
+            and not bool(segment.get("overflow"))
+            and float(segment.get("actual_duration", 0.0)) <= float(segment.get("allocated_scene_duration", segment.get("scene_duration", 0.0))) + 0.01
+            for segment in segments
+        )
+    )
+    if source_aligned:
+        objective = alignment.get("objective_audio_integrity") if isinstance(alignment, dict) else None
+        tts_alignment_ok = tts_alignment_ok and isinstance(objective, dict) and objective.get("status") == "passed" and all(
+            isinstance(segment.get("audio_integrity"), dict)
+            and segment["audio_integrity"].get("status") == "passed"
+            for segment in (segments or [])
+        )
     check_names = (
         "mp4_exists", "landscape_1920x1080" if layout_mode == "plain_landscape" else "portrait_1080x1920", "fps_30", "h264_video", "aac_audio",
         "duration_25_to_60", "full_decode", "tts_scene_alignment", "subtitle_burned_in",
         "mascot_policy" if mascot_mode == "off" else "pink_pig_style",
         "subtitle_safe_region", "render_report_alignment",
     )
-    checks = [
-        {"name": name, "status": "passed"}
-        for name in check_names
-    ]
+    checks = [{"name": name, "status": "passed"} for name in check_names]
+    if not tts_alignment_ok:
+        raise _fail("phase1_review_narration_incomplete", "TTS alignment evidence is incomplete or overflowed.", "quality_report.tts_scene_alignment")
     return {
         "schema_version": "1.0",
         "job_id": job_id,

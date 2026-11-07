@@ -188,7 +188,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--name", required=True)
     parser.add_argument("--report", required=True, type=Path)
     parser.add_argument("--speaker", default="zh_male_huoli")
-    parser.add_argument("--backend", choices=("sami", "edge"), default="sami")
+    parser.add_argument("--backend", choices=("sami", "edge", "windows-sapi"), default="sami")
     parser.add_argument("--skill-root", required=True, type=Path)
     parser.add_argument("--width", type=int, default=1920)
     parser.add_argument("--height", type=int, default=1080)

@@ -1,0 +1,11 @@
+{
+  "schema_version": "phase1_chrome_raster_qualification_v1",
+  "date": "2026-09-27",
+  "renderer": "installed Google Chrome headless on unchanged local SVGs with installed system fonts, followed by existing FFmpeg Lanczos scaling to 836x471",
+  "candidates": [
+    {"source_svg": "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.svg", "candidate": "E:/OpenClaw_VideoFactory_Runtime/phase1_chrome_raster_20260927/03-priority-inheritance-candidate.png", "sha256": "6bf8bb75e5f7b04705e6c6f9346b37bafadf997578469e0de39425d88ce361da", "dimensions": [836, 471], "pillow_full_decode": "passed", "ffmpeg_one_frame_decode": "passed", "visual_review": "Chinese real glyphs and task timeline geometry readable; no clipping"},
+    {"source_svg": "assets/freertos_mutex_plain_illustrations/05-checklist.svg", "candidate": "E:/OpenClaw_VideoFactory_Runtime/phase1_chrome_raster_20260927/05-checklist-candidate.png", "sha256": "584d2e0114494093b5501a5bda7d66c406bc0b0c23235bc7e319b32dec0441bf", "dimensions": [836, 471], "pillow_full_decode": "passed", "ffmpeg_one_frame_decode": "passed", "visual_review": "Five Chinese checklist lines and labels readable; no clipping"}
+  ],
+  "status": "candidates_qualified_for_replacement",
+  "limits": ["Not final video approval", "Registered asset paths were unchanged at the time of this candidate check"]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": "phase1_render_timeout_review_v1",
+  "date": "2026-09-27",
+  "source_attempt": "reports/phase1/stage_20260927/freertos_attempt_001.json",
+  "single_cpu_probe": "reports/phase1/stage_20260927/cpu_probe.json",
+  "cpu_probe_logs_archive": "reports/phase1/stage_20260927/cpu_probe_logs.zip",
+  "cpu_probe_logs_archive_sha256": "6f49dc42a42ee68999b27d412b4e57ec9fa088aff8bbced288e4149d4ea230c3",
+  "finding": "BLOCKED_FILTER_OR_RENDER_PATH",
+  "observations": [
+    "The original h264_nvenc render timed out after 300 seconds with no final MP4.",
+    "The one CPU-only probe preserved all other inputs and filter settings, timed out after 300.054 seconds, and produced no MP4.",
+    "The CPU probe stderr recorded negative-size parser-buffer reallocation failures."
+  ],
+  "interpretation": "An encoder-specific timeout fallback is insufficient. The current multi-image FFmpeg filter/input path needs bounded investigation before a new full render.",
+  "not_proven": ["The exact parser/filter root cause", "A successful CPU or NVENC output", "A qualified FreeRTOS media candidate"],
+  "actions_not_taken": ["No failed-job retry", "No timeout increase", "No source or Gate change", "No second diagnostic permutation"],
+  "next_step": "Wait for the revised C2C plan, then open a separate scoped remediation Change Request."
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "phase1_freertos_asset_repair_result_v1",
+  "date": "2026-09-27",
+  "pre_repair_audit": "reports/phase1/stage_20260927/freertos_asset_audit_before.json",
+  "registered_asset_count": 5,
+  "valid_unchanged": [
+    "pink_pig.freertos_mutex_plain_isr_handoff.v1",
+    "pink_pig.freertos_mutex_plain_deferred_work.v1"
+  ],
+  "invalid_decode": [
+    "pink_pig.freertos_mutex_plain_ownership.v1",
+    "pink_pig.freertos_mutex_plain_priority_inheritance.v1",
+    "pink_pig.freertos_mutex_plain_checklist.v1"
+  ],
+  "red_regression": "tests/video/test_registry.py::TestAssetFiles::test_every_render_ready_png_fully_decodes failed on the three invalid assets before repair",
+  "existing_converter_checked": "D:/Python/Python3.14/Scripts/cairosvg.exe 2.9.0",
+  "candidate_rasters": [
+    {"source_svg": "assets/freertos_mutex_plain_illustrations/01-mutex-ownership.svg", "candidate_sha256": "0da81a39fc73d15d34f2e2acb021f0da63f12817328da6faee90ae1d4b66a558"},
+    {"source_svg": "assets/freertos_mutex_plain_illustrations/03-priority-inheritance.svg", "candidate_sha256": "97832e59d014504e9e8df8694e2384ba275771c7f8612f2e9c7d6cc5689e2a8a"},
+    {"source_svg": "assets/freertos_mutex_plain_illustrations/05-checklist.svg", "candidate_sha256": "408f5eb3ddec4500974e9af3eda47ba1acfddedf71115a1c6ade1375280d5827"}
+  ],
+  "candidate_machine_checks": "All three candidates decode in Pillow and FFmpeg and have the declared 836x471 dimensions.",
+  "candidate_visual_check": "FAILED: Chinese glyphs render as empty square boxes, unlike the two valid existing PNGs. Technical text is unreadable.",
+  "rejected_candidate_archive": "reports/phase1/stage_20260927/cairosvg_rejected_candidates.zip",
+  "rejected_candidate_archive_sha256": "5d6b9f32738b5b43d1ee26562231e586486b48d28f4148a2f292d3fbb96b21ac",
+  "status": "BLOCKED_NO_SEMANTICALLY_VALID_RASTER",
+  "actions_not_taken": ["No source SVG changed", "No registered PNG replaced", "No registry SHA updated", "No full render attempted", "No failed job mutated"],
+  "next_step": "Select and qualify an already installed rasterization path that preserves Chinese text under a separate Change Request."
+}

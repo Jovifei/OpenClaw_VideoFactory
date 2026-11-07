@@ -1,0 +1,64 @@
+{
+  "schema_version": "phase1_i2c_requalification_candidate_review_v2",
+  "status": "FAILED:PHASE1_LOCAL_RENDER_VALUE_ERROR_AND_I2C_LINEAGE_NOT_SELECTED",
+  "source_commit": "c1363faf3444a5254f2a5af17e830758cd69c057",
+  "authorization": "remote_iteration_33_one_new_unique_i2c_candidate",
+  "control_job_id": "job-b1a186b7b265c2ed46b7c3cb",
+  "idempotency_key": "phase1-i2c-requalification-candidate002-20260928",
+  "attempt": 0,
+  "control_plane": {
+    "final_state": "FAILED",
+    "last_completed_state": "ASSETS",
+    "event_count": 8,
+    "event_states": [
+      "NEW",
+      "RESEARCHING",
+      "SCRIPTING",
+      "VOICE",
+      "CAPTIONS",
+      "ASSETS",
+      "RENDERING",
+      "FAILED"
+    ],
+    "failure_reason": "phase1_local_execution_failed:value_error",
+    "retry_or_resume_used": false,
+    "candidate003_created": false
+  },
+  "input_binding": {
+    "brief_path": "examples/phase1_subject_i2c/phase1_local_brief_9x16_repaired.json",
+    "brief_sha256": "f355b5161be0783a89bde0ccf7c121ac7135491593b4d3b3270c90f3dba90926",
+    "topic_digest": "dcc85f8913bc9bd6b1f3c049537745745f21b37a9fb4ff971bc91e1017948d00",
+    "failed_candidate001_control_job": "job-b4a2e8e851268bc14e5e4a15",
+    "historical_candidate001_reused": false
+  },
+  "planning_evidence": {
+    "render_job_id": "phase1_dcc85f8913bc9bd6",
+    "storyboard_path": "dist/phase1_local/phase1_dcc85f8913bc9bd6/storyboard.json",
+    "asset_selection_path": "dist/phase1_local/phase1_dcc85f8913bc9bd6/asset_selection_report.json",
+    "selected_asset_ids": [
+      "pink_pig.knowledge_master_slave.v1",
+      "pink_pig.knowledge_frame_layout.v1",
+      "pink_pig.knowledge_watchdog_budget.v1",
+      "pink_pig.knowledge_troubleshooting.v1",
+      "pink_pig.knowledge_summary.v1"
+    ],
+    "selected_asset_paths": [
+      "assets/modbus_rtu_illustrations/01-master-slave.png",
+      "assets/modbus_rtu_illustrations/02-frame-layout.png",
+      "assets/flash_watchdog_illustrations/03-watchdog-budget.png",
+      "assets/modbus_rtu_illustrations/04-troubleshooting.png",
+      "assets/modbus_rtu_illustrations/05-summary.png"
+    ],
+    "visual_spec_present_for_all_scenes": false,
+    "semantic_precondition": "FAIL_I2C_BUS_VISUAL_LINEAGE_NOT_SELECTED"
+  },
+  "artifacts": [],
+  "media_output_created": false,
+  "review_package_created": false,
+  "audio_integrity_created": false,
+  "human_video_review": "NOT_CREATED",
+  "prereview": "NOT_RUN",
+  "formal_gate": "NOT_RUN",
+  "candidate001_preserved": true,
+  "next_action": "Return for remote route-remediation plan. Do not retry Candidate002 or create Candidate003 without new authorization."
+}

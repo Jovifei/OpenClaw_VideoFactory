@@ -13,6 +13,7 @@ from src.factory.phase1_topic import (
     select_candidate,
     build_research_brief,
 )
+from scripts.phase1_i2c_subject_route_preflight import validate_i2c_subject_plan
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -89,3 +90,29 @@ def test_i2c_source_bound_candidate_can_reach_the_existing_threshold(i2c_researc
 def test_research_brief_round_trip_preserves_editorial_contract(i2c_research: dict) -> None:
     rebuilt = build_research_brief(topic=i2c_research["topic"], sources=i2c_research["sources"], facts=i2c_research["facts"], comparables=i2c_research["comparables"], editorial_contract=i2c_research["editorial_contract"])
     assert rebuilt["editorial_contract"] == i2c_research["editorial_contract"]
+
+
+def test_i2c_subject_route_preflight_rejects_missing_visual_spec(i2c_research: dict) -> None:
+    request = build_topic_request(subject=i2c_research["topic"], duration=40, aspect="9:16")
+    script = build_director_script(
+        request,
+        i2c_research,
+        {"script": "为什么I2C总线要上拉？I2C线路通常采用开漏结构；器件主动拉低，释放后由上拉电阻恢复高电平。上拉电阻与总线电容决定上升沿；电阻过大可能使线路来不及达到有效高电平。电阻过小则增加低电平灌电流，可能超出器件的拉低能力；阻值必须兼顾两端限制。"},
+    )
+    plan = build_scene_plan(script, i2c_research)
+    plan["scenes"][1].pop("visual_spec")
+    with pytest.raises(ValueError, match="i2c_bus_visual_spec_missing"):
+        validate_i2c_subject_plan(topic_request=request, research=i2c_research, director_script=script, scene_plan=plan)
+
+
+def test_i2c_subject_route_preflight_rejects_generic_registry_lineage(i2c_research: dict) -> None:
+    request = build_topic_request(subject=i2c_research["topic"], duration=40, aspect="9:16")
+    script = build_director_script(
+        request,
+        i2c_research,
+        {"script": "为什么I2C总线要上拉？I2C线路通常采用开漏结构；器件主动拉低，释放后由上拉电阻恢复高电平。上拉电阻与总线电容决定上升沿；电阻过大可能使线路来不及达到有效高电平。电阻过小则增加低电平灌电流，可能超出器件的拉低能力；阻值必须兼顾两端限制。"},
+    )
+    plan = build_scene_plan(script, i2c_research)
+    plan["scenes"][1]["shot_intent"] = "generic Modbus registry asset"
+    with pytest.raises(ValueError, match="generic_registry_asset_lineage_selected"):
+        validate_i2c_subject_plan(topic_request=request, research=i2c_research, director_script=script, scene_plan=plan)

@@ -1,0 +1,38 @@
+[
+  {
+    "suite": "phase1_acceptance",
+    "path": "tests/phase1_acceptance",
+    "exit_code": 0,
+    "log": "reports\\phase1\\stage_20260927\\pytest_final_phase1_acceptance.log"
+  },
+  {
+    "suite": "phase1_local",
+    "path": "tests/phase1_local",
+    "exit_code": 0,
+    "log": "reports\\phase1\\stage_20260927\\pytest_final_phase1_local.log"
+  },
+  {
+    "suite": "reference",
+    "path": "tests/reference",
+    "exit_code": 0,
+    "log": "reports\\phase1\\stage_20260927\\pytest_final_reference.log"
+  },
+  {
+    "suite": "director",
+    "path": "tests/director",
+    "exit_code": 0,
+    "log": "reports\\phase1\\stage_20260927\\pytest_final_director.log"
+  },
+  {
+    "suite": "video",
+    "path": "tests/video",
+    "exit_code": 0,
+    "log": "reports\\phase1\\stage_20260927\\pytest_final_video.log"
+  },
+  {
+    "suite": "video_factory",
+    "path": "video_factory/tests",
+    "exit_code": 0,
+    "log": "reports\\phase1\\stage_20260927\\pytest_final_video_factory.log"
+  }
+]
