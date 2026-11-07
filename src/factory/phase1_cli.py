@@ -97,7 +97,9 @@ def _store() -> CandidateStore:
 def _persist_brief(brief: dict[str, Any]) -> Path:
     digest = _request_digest(brief)
     target = INPUT_ROOT / f"{digest}.json"
-    if target.exists() and target.is_symlink():
+    # A dangling symlink fails exists() but still redirects the later write,
+    # so the link check must run on its own before any content comparison.
+    if target.is_symlink():
         raise FactoryContractError(
             "phase1_input_path_invalid",
             "Phase 1 input storage cannot be a link.",
@@ -195,6 +197,15 @@ def _attach_research(args: argparse.Namespace) -> dict[str, Any]:
     job = store.status(args.job_id)
     if job["fixture_id"] != "local_subject":
         raise FactoryContractError("phase1_topic_contract_invalid", "Research can only be attached to a local subject job.", {})
+    # Late research replacement must stay impossible: once planning consumed a
+    # research brief, this command has no valid claim left and must not touch
+    # the database or the job's input root at all.
+    if job["state"] not in {"NEW", "RESEARCHING"}:
+        raise FactoryContractError(
+            "phase1_research_attach_closed",
+            "Research can only be attached before planning has started.",
+            {"job_id": args.job_id, "state": str(job["state"])},
+        )
     source = args.research.resolve()
     if not source.is_file() or source.is_symlink():
         raise FactoryContractError("phase1_input_path_invalid", "Research input must be a regular JSON file.", {})
@@ -243,7 +254,14 @@ def _run_subject(store: CandidateStore, job: dict[str, Any]) -> dict[str, Any]:
     request_path, research_path = root / "topic_request.json", root / "research_brief.json"
     if not request_path.is_file() or not research_path.is_file():
         raise FactoryContractError("phase1_research_required", "Validated research must be attached before running a subject job.", {})
-    request = build_topic_request(**{ "subject": _read_json_object(request_path)["subject"], "duration": _read_json_object(request_path)["duration"], "aspect": _read_json_object(request_path)["aspect"], "language": _read_json_object(request_path)["language"], "mascot": _read_json_object(request_path)["mascot"]})
+    raw_request = _read_json_object(request_path)
+    if stable_subject_key(raw_request) != str(job["metadata"].get("canonical_subject_key", "")):
+        raise FactoryContractError(
+            "phase1_subject_plan_artifact_invalid",
+            "The planning request does not match this job.",
+            {"job_id": job_id},
+        )
+    request = build_topic_request(**{"subject": raw_request["subject"], "duration": raw_request["duration"], "aspect": raw_request["aspect"], "language": raw_request["language"], "mascot": raw_request["mascot"]})
     raw = _read_json_object(research_path)
     research = build_research_brief(topic=raw["topic"], sources=raw["sources"], facts=raw["facts"], comparables=raw.get("comparables", []), editorial_contract=raw.get("editorial_contract"))
     if research["topic"] != request["subject"] or research["topic_digest"] != str(job["metadata"].get("topic_digest", "")):
@@ -652,6 +670,10 @@ def _run_claimed_job(args: argparse.Namespace, store: CandidateStore, job: dict[
                 return planned
             job = store.status(args.job_id)
         if args.plan_only:
+            # ASSETS arrived without re-entering planning; the plan-only exit
+            # must still prove the published snapshot is intact before
+            # reporting it as ready.
+            _subject_plan_root(job)
             return {"status": "subject_plan_ready", "job": job, "artifacts": store.artifacts(args.job_id), "idempotent": True}
         return _run_subject_delivery(store, job)
     from generate_video import run_local_brief
@@ -667,6 +689,28 @@ def _run_claimed_job(args: argparse.Namespace, store: CandidateStore, job: dict[
             "phase1_input_path_invalid",
             "The persisted Phase 1 brief is unavailable.",
             {"reason": "missing"},
+        )
+    if brief_path.is_symlink():
+        raise FactoryContractError(
+            "phase1_input_path_invalid",
+            "The persisted Phase 1 brief cannot be a link.",
+            {"reason": "reparse"},
+        )
+    # Rendering must never inherit a job identity after the stored brief was
+    # edited: re-digest the file that is actually on disk and compare it with
+    # the identity recorded at creation time.
+    brief_on_disk = _read_json_object(brief_path)
+    if str(metadata.get("input_mode", "")) == "local_reference":
+        persisted_identity = str(metadata.get("brief_digest", ""))
+        on_disk_identity = brief_digest(brief_on_disk)
+    else:
+        persisted_identity = str(metadata.get("request_digest", ""))
+        on_disk_identity = _request_digest(brief_on_disk)
+    if not persisted_identity or on_disk_identity != persisted_identity:
+        raise FactoryContractError(
+            "phase1_input_digest_conflict",
+            "Persisted input identity changed after job creation.",
+            {"job_id": args.job_id},
         )
     _advance_to_rendering(store, args.job_id)
     try:

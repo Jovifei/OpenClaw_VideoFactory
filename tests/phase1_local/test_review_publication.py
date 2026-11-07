@@ -28,8 +28,13 @@ def local_store(tmp_path, monkeypatch):
     store = phase1_cli._store()
     brief = tmp_path / 'input.json'
     brief.write_text('{}', encoding='utf-8')
+    # Real create-topic/create-reference always bind the input identity; the
+    # control-plane fixture must carry the same digests so run-side
+    # re-verification (review finding F02) sees a genuine job.
+    empty_digest = hashlib.sha256(b'{}').hexdigest()
     job = store.create_job('local_topic', 'test:review', 'video_factory_local_brief', 'test',
-                           requested_duration_seconds=30, metadata={'brief_path': 'input.json'})
+                           requested_duration_seconds=30,
+                           metadata={'brief_path': 'input.json', 'request_digest': empty_digest})
     return tmp_path, store, job['job_id']
 
 
@@ -49,10 +54,12 @@ def _fake_outputs(root):
 def test_quality_checkpoint_retry_never_becomes_ready_before_publication(local_store, monkeypatch, reference):
     root, store, job_id = local_store
     if reference:
+        empty_digest = hashlib.sha256(b'{}').hexdigest()
         job_id = store.create_job('local_reference', 'test:reference-recovery', 'video_factory_local_reference',
                                   'reference', requested_duration_seconds=30,
                                   metadata={'brief_path': 'input.json', 'input_mode': 'local_reference',
-                                            'runtime_root': 'runtime', 'source_sha256': 'a' * 64})['job_id']
+                                            'runtime_root': 'runtime', 'source_sha256': 'a' * 64,
+                                            'brief_digest': empty_digest})['job_id']
         monkeypatch.setattr(phase1_cli, 'load_reference_bundle', lambda *a, **k: {})
     phase1_cli._advance_to_rendering(store, job_id)
     store.advance(job_id, 'QUALITY_CHECK', 'checkpoint_before_worker_exit')
