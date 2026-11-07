@@ -1,0 +1,30 @@
+{
+  "schema_version": "i2c_candidate004_unlock_v1",
+  "date": "2026-11-07",
+  "change_request": "user verbal approval: (1) land PR #2 fixes into main, (2) resume I2C via the existing MPT/MiMo credential",
+  "candidate004": {
+    "job_id": "job-d0ad2349f3a61c8250603737",
+    "subject": "I2C总线为什么要上拉电阻",
+    "state": "NEW",
+    "research_attached": "examples/phase1_subject_i2c/research_brief.json (sha256 fd6abe8ff5a5af821d8291f483f2dd22006dea251f34b5152077df9f4f5cbd21)",
+    "artifacts": ["research_brief"],
+    "note": "deterministic idempotency key reproduces the historical plan-only job id; prior stale record had been cleared, current row is a fresh NEW job"
+  },
+  "pr2_merge": {
+    "merge_commit": "0b17bfb (main)",
+    "verified": "GitHub main API confirms 0b17bfb 'merge: land PR #2 review fixes (F01-F06) approved by Jovi'; post-merge tests/phase1_local = 172 passed"
+  },
+  "credential_findings": {
+    "approved_key_retest": "HTTP 401 Invalid API Key from token-plan-cn.xiaomimimo.com for MIMO_API_KEY",
+    "config_env_fingerprint_match": true,
+    "timeline": "200 on 2026-08-29 and 2026-11-07 morning, 401 again at 18:19-18:22 — the single approved key is intermittently invalid, matching the 2026-09-29 AUTH failure that created I2C_BLOCKED:MPT_APPROVED_CREDENTIAL_UNAVAILABLE",
+    "mpt_env_repair": "MPT venv was missing colorama/annotated_types and an incomplete dependency set; full requirements reinstall + pip check passed; MPT CLI then reached the provider and surfaced the 401 cleanly"
+  },
+  "blocker": "I2C_BLOCKED:CREDENTIAL_401_CONFIRMED_NEED_VALID_KEY — approval to retry exists (user, 2026-11-07) but the only approved credential currently fails authentication; per WP-M4/M5A rules no credential invention/rotation is permitted",
+  "next_step_once_valid_key_arrives": [
+    "configure the new key via scripts/phase1_mpt_configure.py --stdin --verify",
+    "run --plan-only --job-id job-d0ad2349f3a61c8250603737 (real MPT candidate generation inside planning)",
+    "continue Candidate004 delivery under the standing phase gates"
+  ],
+  "boundaries": ["no credential values recorded", "no provider retry loop", "no PROJECT_STATUS/phase change"]
+}

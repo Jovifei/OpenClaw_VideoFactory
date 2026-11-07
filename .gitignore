@@ -304,3 +304,4 @@ schemas/p0_evidence_v2/
 
 # Review findings fix evidence (2026-11-07)
 !reports/phase1/review_findings_fix_evidence_20261107.json
+!reports/phase1/i2c_candidate004_unlock_20261107.json
