@@ -1,0 +1,62 @@
+{
+  "schema_version": "review_findings_fix_evidence_v1",
+  "stage_id": "P1-CONSOLIDATION-REVIEW-FIX-20261107",
+  "date": "2026-11-07",
+  "base_under_review": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+  "final_fix_commit": "38b9b7e46b3b0ba7e583e8e3cf98e099f5a625e2",
+  "branch": "codex/p1-consolidation-review-20261024",
+  "pull_request": "https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2",
+  "findings_closed": [
+    {"id": "F02", "change": "run re-digests persisted brief vs request_digest/brief_digest; subject planning verifies stable_subject_key pre-planning", "files": ["src/factory/phase1_cli.py"]},
+    {"id": "F03", "change": "attach-research fail-closed outside NEW/RESEARCHING, zero DB/file side effects", "files": ["src/factory/phase1_cli.py"]},
+    {"id": "F04", "change": "ASSETS --plan-only validates published snapshot through _subject_plan_root", "files": ["src/factory/phase1_cli.py"]},
+    {"id": "F05", "change": "dangling symlink rejected in _persist_brief (link check before exists) and write_json", "files": ["src/factory/phase1_cli.py", "video_factory/pipeline/export.py"]},
+    {"id": "F06", "change": "drafter dirs get second+microsecond+uuid12 with exclusive mkdir retry", "files": ["scripts/phase1_mpt_script_drafter.py"]}
+  ],
+  "f01_evidence": {
+    "note": "Full regression re-run on the FINAL fix SHA as demanded by finding F01; numbers below are live runs, not inherited.",
+    "runs": [
+      {
+        "command": "python -m pytest tests/phase1_local -q",
+        "final_sha": "38b9b7e46b3b0ba7e583e8e3cf98e099f5a625e2",
+        "result": "172 passed",
+        "exit_code": 0
+      },
+      {
+        "command": "python -m pytest tests -q --ignore=tests/test_feishu_gateway_migration.py --ignore=tests/test_feishu_gateway_runtime_022.py --ignore=tests/test_gateway_qualification_026.py",
+        "final_sha": "38b9b7e46b3b0ba7e583e8e3cf98e099f5a625e2",
+        "result": "1063 passed, 27 failed, 2 skipped, 78 subtests passed",
+        "exit_code": 1
+      }
+    ],
+    "preexisting_failures_discrimination": {
+      "count": 27,
+      "groups": {
+        "tests/test_core_feishu_control_contract_032.py": 14,
+        "tests/test_core_feishu_plugin_lifecycle_033.py": 3,
+        "tests/test_ingest_attachment_core.py": 1,
+        "tests/video/test_phase1_post_render_check.py": 9
+      },
+      "verification": "git stash roundtrip on the same branch without the fix reproduces the same 27 failures; none of the failed cases touch files changed by this fix. Feishu group = documented pre-existing local environment failures; post_render group = E-drive-only rule vs pytest C-drive tmp_path (scripts/phase1_post_render_check.py:384).",
+      "one_transient_28th": "A single earlier run showed 28 failed (one flaky case not in the deterministic list); the recorded lists from both runs are the 27 above."
+    },
+    "new_regressions": [
+      "tests/phase1_local/test_review_findings_f02_f06.py::test_persist_brief_rejects_dangling_symlink",
+      "tests/phase1_local/test_review_findings_f02_f06.py::test_write_json_rejects_symlink_path",
+      "tests/phase1_local/test_review_findings_f02_f06.py::test_attach_research_is_closed_after_planning",
+      "tests/phase1_local/test_review_findings_f02_f06.py::test_assets_plan_only_rejects_damaged_snapshot",
+      "tests/phase1_local/test_review_findings_f02_f06.py::test_topic_run_rejects_edited_brief",
+      "tests/phase1_local/test_review_findings_f02_f06.py::test_drafter_output_dirs_are_unique_within_one_second",
+      "tests/phase1_local/test_review_findings_f02_f06.py::test_drafter_retries_colliding_directory"
+    ],
+    "environment_notes": [
+      "Windows denies unprivileged file-symlink creation (WinError 1314), so F05 regressions drive the is_symlink seam per the existing lessons entry; behavior on real symlinks is the same code path.",
+      "The 3 feishu gateway modules fail at collection and were excluded exactly as in prior evidence runs."
+    ]
+  },
+  "boundaries": [
+    "F01 audit JSON (consolidation_audit_20261024.json) is intentionally not rewritten; this file supersedes its SHA bindings and will be referenced by the re-review",
+    "no Phase 1 gate or PROJECT_STATUS change; PR #2 stays draft until remote re-review approves",
+    "no provider calls, no media generation, no Feishu/Cron"
+  ]
+}
