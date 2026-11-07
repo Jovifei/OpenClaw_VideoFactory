@@ -1,0 +1,97 @@
+{"source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e", "original_path": "PROJECT_STATUS.yaml", "git_blob_sha1": "38b7cb049ef04d575dad3d040a73d8953bdb755d", "git_blob_sha256": "c123edff508740d2776d17beca1d36457a4f9527e2bbf25b1ff76c0d3e591181", "start_line": 1, "end_line": 96, "header_lines": 1}
+version: 2.5
+project_root: E:\project\OpenClaw_VideoFactory
+status: phase_1_local_video_factory_in_progress
+last_updated: 2026-10-24
+current_phase: PHASE_1_LOCAL_VIDEO_FACTORY
+phase_model: user_aligned_2026_09_05
+product_phases:
+  PHASE_1_LOCAL_VIDEO_FACTORY:
+    status: in_progress
+    goal: local video creation from a user topic, a user-provided authorized local reference video, or explicitly authorized public-topic research; output an auditable MP4 and human review package
+    completed_capabilities:
+      - topic brief to deterministic script/storyboard/asset selection
+      - local reference MP4 safe ingest and abstract scene/pace analysis
+      - optional offline ASR from an already-cached faster-whisper model
+      - Remotion deterministic technical visuals and FFmpeg rendering
+      - local TTS, subtitle/timing contracts, render/quality reports
+      - SQLite job/event/artifact/stage-attempt control plane
+      - cancel and retry command surfaces
+      - review package, prereview schemas and formal Phase 1 gate implementation
+      - Modbus topic baseline
+      - Flash/watchdog topic brief, technical assets and rendered review candidates
+      - topic-only qualification contracts and source-bound I2C research fixture
+      - reference reconstruction experiments including RC high-pass speech-cue-bound visuals
+      - optional Jianying draft path for manual editing/review
+    excludes:
+      - Feishu production orchestration
+      - OpenClaw daily runtime as a Phase 1 dependency
+      - production Cron
+      - automatic topic scheduling
+      - automatic Douyin publication
+    canonical_documents:
+      - README.md
+      - docs/README.md
+      - docs/CURRENT_ARCHITECTURE.md
+      - docs/PRODUCT_PHASES.md
+      - docs/PRODUCT_REQUIREMENTS.md
+      - docs/PROJECT_REVIEW.md
+      - handoff/codex/CURRENT_HANDOFF.md
+  PHASE_2_FEISHU_AUTOMATION:
+    status: blocked_by_PHASE_1_LOCAL_VIDEO_FACTORY
+    goal: Feishu safety, topic cards, user selection, qualified 12:00 fallback, controlled delivery, and Cron after non-scheduled proof
+    prerequisite: PHASE_1_LOCAL_VIDEO_FACTORY
+# Historical P0-P5 labels below are retained only for evidence/tool compatibility.
+# They do not define current product-stage order and P0 does not block local Phase 1.
+phases:
+  PACKAGE:
+    status: passed
+    evidence:
+      - reports/package_release_validation.json
+  P0: {status: historical_not_promoted, evidence: []}
+  P1: {status: historical_compatibility_track, evidence: []}
+  P2: {status: historical_compatibility_track, evidence: []}
+  P3: {status: historical_compatibility_track, evidence: []}
+  P4: {status: historical_compatibility_track, evidence: []}
+  P5: {status: historical_compatibility_track, evidence: []}
+exceptions:
+  - id: PINK_PIG_VIDEO_FACTORY_PRODUCTIZATION_001
+    scope: PHASE_1_LOCAL_VIDEO_FACTORY
+    granted_by: user
+    summary: Registry + Schema + Storyboard compiler + multi-scene video baseline
+    note: historical productization increment; does not itself prove Phase 1 pass
+    does_not_imply_phase_pass: true
+  - id: PHASE1-LOCAL-FACTORY-COMPLETION-002
+    scope: PHASE_1_LOCAL_VIDEO_FACTORY
+    granted_by: user
+    summary: Phase 1 human review, evidence reconciliation and formal Gate closure
+    note: current closure track; no Feishu/Cron promotion in the same task
+    does_not_imply_phase_pass: true
+known_implementation_gaps:
+  - Phase 1 final acceptance manifest, boundary audit and one-shot formal Gate have not passed
+  - topic_only_v1 still requires qualified Flash/watchdog, FreeRTOS, I2C and one distinct live-topic prereview with explicit Jovi-approved reviews
+  - source-aligned TTS now fails closed on overflow; objective raw-to-aligned PCM integrity evidence and the no-render outer-path audit are the active audio-contract work
+  - the real I2C MPT candidate run stopped after its allowed rewrite budget at 78/85; a source-bound editorial review replacement is not yet implemented
+  - topic visuals need subject-specific diagrams; the current seven-scene smoke passed media checks but its generic cards did not pass semantic visual review
+  - historical Flash/FreeRTOS full candidates are permanently CHANGES_REQUIRED_AUDIO_TRUNCATION; each topic needs one fresh source-aligned candidate after its own audio-quality approval
+  - Modbus, Flash/watchdog and FreeRTOS need one unified prereview evidence format against the current schemas
+  - the 2026-09-06 lifecycle evidence is complete and must be revalidated/bound, not rerun without a concrete incompatibility
+  - the latest reference-reconstruction candidates still require Jovi human visual/audio/originality review before they can count as final Phase 1 evidence
+  - if the final Gate requires a private local-reference fixture, it must use a Jovi-authorized local MP4 plus rights receipt; synthetic references cannot substitute human originality review
+  - Pink Pig personal-IP mode requires a Jovi-owned original asset pack and receipt; without it the production path must keep mascot off or fail closed for mascot-required briefs
+  - root-level full pytest is not the Phase 1 truth source while unrelated vendor/P0 environment suites remain non-hermetic; the Phase 1 gate must enumerate its bounded suites explicitly
+  - Phase 2 Feishu credentials/target IDs and production Cron remain intentionally deferred
+non_blocking_deferred_items:
+  - historical Codex CLI provider cache/base_instructions recovery
+  - ComfyUI and new model downloads
+  - WhisperX and advanced perceptual-similarity tooling
+  - automatic Jianying export
+  - Feishu/OpenClaw/Cron production automation
+rules:
+  - never mark Phase 1 passed without machine evidence plus Jovi human review
+  - never use a successful subproject or one demo MP4 as proof that the whole phase passed
+  - never register production cron before Phase 2 passes
+  - never download models or ComfyUI nodes without approval and budget check
+  - never publish to Douyin automatically
+  - Phase 1 must remain operable without Feishu/OpenClaw runtime dependencies
+  - preserve one renderer/data-contract lineage; do not introduce a second all-in-one video backend

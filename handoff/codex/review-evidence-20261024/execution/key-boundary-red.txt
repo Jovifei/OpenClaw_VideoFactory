@@ -1,0 +1,28 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_____________ test_explicit_key_from_other_fixture_is_a_conflict ______________
+tests\phase1_local\test_review_publication.py:159: in test_explicit_key_from_other_fixture_is_a_conflict
+    _request(root, key='mixed:key')
+tests\phase1_local\test_review_publication.py:130: in _request
+    return phase1_cli._create_topic(argparse.Namespace(brief=path, idempotency_key=key))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\factory\phase1_cli.py:142: in _create_topic
+    original = (PROJECT_ROOT / result['metadata']['brief_path']).resolve()
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'brief_path'
+___________ test_legacy_key_conflict_does_not_read_outside_project ____________
+tests\phase1_local\test_review_publication.py:175: in test_legacy_key_conflict_does_not_read_outside_project
+    _request(root, key='legacy:foreign')
+tests\phase1_local\test_review_publication.py:130: in _request
+    return phase1_cli._create_topic(argparse.Namespace(brief=path, idempotency_key=key))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\factory\phase1_cli.py:143: in _create_topic
+    existing = _request_digest(json.loads(original.read_text(encoding='utf-8')))
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\phase1_local\test_review_publication.py:171: in contained_read
+    raise AssertionError('Legacy collision must not read foreign input.')
+E   AssertionError: Legacy collision must not read foreign input.
+=========================== short test summary info ===========================
+FAILED tests/phase1_local/test_review_publication.py::test_explicit_key_from_other_fixture_is_a_conflict
+FAILED tests/phase1_local/test_review_publication.py::test_legacy_key_conflict_does_not_read_outside_project
+2 failed in 0.55s

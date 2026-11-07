@@ -1,0 +1,31 @@
+{"source_sha": "05283758767b693adc20d1071f93ce97109fbc8b", "original_path": "src/factory/state.py", "git_blob_sha1": "540d937fdc9f8dcf3338f05d240f6e7603387ac4", "git_blob_sha256": "c5f8e4a674633cea665d8c790d148225e4bc0b40ad660fb1ffa2f9aba0056233", "start_line": 1, "end_line": 30, "header_lines": 1}
+"""Strict state transitions for an offline candidate job."""
+
+from __future__ import annotations
+
+
+STAGES = (
+    "NEW",
+    "RESEARCHING",
+    "SCRIPTING",
+    "VOICE",
+    "CAPTIONS",
+    "ASSETS",
+    "RENDERING",
+    "QUALITY_CHECK",
+    "PENDING_REVIEW",
+)
+TERMINAL_STATES = {"PENDING_REVIEW", "FAILED", "CANCELLED"}
+
+
+def next_state(state: str) -> str | None:
+    if state not in STAGES:
+        return None
+    index = STAGES.index(state)
+    return STAGES[index + 1] if index + 1 < len(STAGES) else None
+
+
+def validate_transition(current: str, target: str) -> None:
+    expected = next_state(current)
+    if expected != target:
+        raise ValueError(f"invalid_transition:{current}->{target};expected:{expected}")

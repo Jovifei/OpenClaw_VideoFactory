@@ -1,0 +1,14 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_subject_completed_plan_recovers_from_planning_checkpoint[request_changed-VOICE] _
+tests\phase1_local\test_phase1_subject_cli.py:376: in test_subject_completed_plan_recovers_from_planning_checkpoint
+    assert code == 2 and result['error']['code'] == 'phase1_subject_plan_artifact_invalid'
+E   assert (0 == 2)
+_ test_subject_completed_plan_recovers_from_planning_checkpoint[request_changed-CAPTIONS] _
+tests\phase1_local\test_phase1_subject_cli.py:376: in test_subject_completed_plan_recovers_from_planning_checkpoint
+    assert code == 2 and result['error']['code'] == 'phase1_subject_plan_artifact_invalid'
+E   assert (0 == 2)
+=========================== short test summary info ===========================
+FAILED tests/phase1_local/test_phase1_subject_cli.py::test_subject_completed_plan_recovers_from_planning_checkpoint[request_changed-VOICE]
+FAILED tests/phase1_local/test_phase1_subject_cli.py::test_subject_completed_plan_recovers_from_planning_checkpoint[request_changed-CAPTIONS]
+2 failed, 23 deselected in 1.16s

@@ -1,0 +1,27 @@
+{"source_sha": "05283758767b693adc20d1071f93ce97109fbc8b", "original_path": "schemas/video/phase1_boundary_audit.schema.json", "git_blob_sha1": "78b2a5d9700674ad09104db6712e4283f92b94b6", "git_blob_sha256": "2ec66244cd81c59610f5438eec1c9851f0c23d7090f6d97bcc0b7c6857f49317", "start_line": 1, "end_line": 26, "header_lines": 1}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_boundary_audit.schema.json",
+  "title": "Phase1BoundaryAudit",
+  "type": "object",
+  "required": ["schema_version", "phase", "status", "checks", "observed_at"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "phase": {"type": "string", "const": "PHASE_1_LOCAL_VIDEO_FACTORY"},
+    "status": {"type": "string", "const": "passed"},
+    "checks": {
+      "type": "object",
+      "required": ["no_feishu", "no_openclaw_runtime", "no_cron", "no_automatic_publish", "runtime_paths_private"],
+      "additionalProperties": false,
+      "properties": {
+        "no_feishu": {"type": "boolean", "const": true},
+        "no_openclaw_runtime": {"type": "boolean", "const": true},
+        "no_cron": {"type": "boolean", "const": true},
+        "no_automatic_publish": {"type": "boolean", "const": true},
+        "runtime_paths_private": {"type": "boolean", "const": true}
+      }
+    },
+    "observed_at": {"type": "string", "format": "date-time"}
+  }
+}

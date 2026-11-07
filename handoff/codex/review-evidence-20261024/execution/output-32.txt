@@ -1,0 +1,28 @@
+..........FFFF.                                                          [100%]
+================================== FAILURES ===================================
+________ test_gate_rejects_report_hash_mismatching_real_bytes[visual] _________
+tests\video\test_phase1_post_render_check.py:127: in test_gate_rejects_report_hash_mismatching_real_bytes
+    with pytest.raises(ValueError, match='post_render_visual_identity'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'ValueError'>
+___ test_gate_rejects_report_hash_mismatching_real_bytes[review_derivation] ___
+tests\video\test_phase1_post_render_check.py:127: in test_gate_rejects_report_hash_mismatching_real_bytes
+    with pytest.raises(ValueError, match='post_render_visual_identity'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'ValueError'>
+_ test_product_exemption_requires_consistent_template_identity[TechnicalExplainer] _
+tests\video\test_phase1_post_render_check.py:141: in test_product_exemption_requires_consistent_template_identity
+    with pytest.raises(ValueError, match='post_render_template_identity'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'ValueError'>
+_ test_product_exemption_requires_consistent_template_identity[UnknownTemplate] _
+tests\video\test_phase1_post_render_check.py:141: in test_product_exemption_requires_consistent_template_identity
+    with pytest.raises(ValueError, match='post_render_template_identity'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'ValueError'>
+=========================== short test summary info ===========================
+FAILED tests/video/test_phase1_post_render_check.py::test_gate_rejects_report_hash_mismatching_real_bytes[visual]
+FAILED tests/video/test_phase1_post_render_check.py::test_gate_rejects_report_hash_mismatching_real_bytes[review_derivation]
+FAILED tests/video/test_phase1_post_render_check.py::test_product_exemption_requires_consistent_template_identity[TechnicalExplainer]
+FAILED tests/video/test_phase1_post_render_check.py::test_product_exemption_requires_consistent_template_identity[UnknownTemplate]
+4 failed, 11 passed in 0.16s

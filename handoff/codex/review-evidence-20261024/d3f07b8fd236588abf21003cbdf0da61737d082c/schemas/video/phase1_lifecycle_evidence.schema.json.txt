@@ -1,0 +1,22 @@
+{"source_sha": "d3f07b8fd236588abf21003cbdf0da61737d082c", "original_path": "schemas/video/phase1_lifecycle_evidence.schema.json", "git_blob_sha1": "9c85ecab9f365f15b41d577bd5793fca2d87ff08", "git_blob_sha256": "35b705cbb88c4577ebe05767e0276b049056a2072a0fac9e3a544e823a9d9cf1", "start_line": 1, "end_line": 21, "header_lines": 1}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_lifecycle_evidence.schema.json",
+  "title": "Phase1LifecycleEvidence",
+  "type": "object",
+  "required": ["schema_version", "phase", "evidence_type", "status", "job_id", "assertions", "observed_at"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "phase": {"type": "string", "const": "PHASE_1_LOCAL_VIDEO_FACTORY"},
+    "evidence_type": {"type": "string", "enum": ["cancel", "retry", "restart_recovery", "encoder_fallback"]},
+    "status": {"type": "string", "const": "passed"},
+    "job_id": {"type": "string", "pattern": "^job-[a-f0-9]{24}$"},
+    "assertions": {
+      "type": "object",
+      "minProperties": 2,
+      "additionalProperties": {"type": ["boolean", "string", "number", "null"]}
+    },
+    "observed_at": {"type": "string", "format": "date-time"}
+  }
+}

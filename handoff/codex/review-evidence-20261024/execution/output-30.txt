@@ -1,0 +1,7 @@
+8b5c142f6c469503a3644e4eafd6d54d785c577a
+d3f07b8fd236588abf21003cbdf0da61737d082c
+56e9165580332542046e65be64e05fc3b59fe9aa
+{"audit_base": "8b5c142f6c469503a3644e4eafd6d54d785c577a", "source_fix": "d3f07b8fd236588abf21003cbdf0da61737d082c", "task_id": "c2c_a024", "cache_index": "handoff/codex/review-evidence-20261024/index.json", "source_snapshots": 123, "remote_review": "NOT_VERIFIED", "workspace_head_warning": "Registered owner checkout is deliberately preserved; source SHA in each snapshot is authoritative."}
+{"actual_command": ["git", "rev-parse", "8b5c142f6c469503a3644e4eafd6d54d785c577a"]}
+{"actual_command": ["git", "rev-parse", "d3f07b8fd236588abf21003cbdf0da61737d082c"]}
+{"actual_command": ["git", "rev-parse", "archive/pre-cleanup-20261023^{commit}"]}

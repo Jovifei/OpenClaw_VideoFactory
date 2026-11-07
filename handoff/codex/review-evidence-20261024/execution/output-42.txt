@@ -1,0 +1,22 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+____ test_subject_completed_plan_recovers_from_planning_checkpoint[VOICE] _____
+tests\phase1_local\test_phase1_subject_cli.py:358: in test_subject_completed_plan_recovers_from_planning_checkpoint
+    assert phase1_cli.main(['run', '--job-id', job_id, '--plan-only']) == 0
+E   AssertionError: assert 2 == 0
+E    +  where 2 = <function main at 0x00000246081DE560>(['run', '--job-id', 'job-977518aa860fdd88569b57df', '--plan-only'])
+E    +    where <function main at 0x00000246081DE560> = phase1_cli.main
+---------------------------- Captured stdout call -----------------------------
+{"error": {"code": "[REDACTED]", "context": {"state": "PENDING_REVIEW"}, "message": "Subject job cannot advance to scripting."}, "status": "error"}
+___ test_subject_completed_plan_recovers_from_planning_checkpoint[CAPTIONS] ___
+tests\phase1_local\test_phase1_subject_cli.py:358: in test_subject_completed_plan_recovers_from_planning_checkpoint
+    assert phase1_cli.main(['run', '--job-id', job_id, '--plan-only']) == 0
+E   AssertionError: assert 2 == 0
+E    +  where 2 = <function main at 0x00000246081DE560>(['run', '--job-id', 'job-977518aa860fdd88569b57df', '--plan-only'])
+E    +    where <function main at 0x00000246081DE560> = phase1_cli.main
+---------------------------- Captured stdout call -----------------------------
+{"error": {"code": "[REDACTED]", "context": {"state": "PENDING_REVIEW"}, "message": "Subject job cannot advance to scripting."}, "status": "error"}
+=========================== short test summary info ===========================
+FAILED tests/phase1_local/test_phase1_subject_cli.py::test_subject_completed_plan_recovers_from_planning_checkpoint[VOICE]
+FAILED tests/phase1_local/test_phase1_subject_cli.py::test_subject_completed_plan_recovers_from_planning_checkpoint[CAPTIONS]
+2 failed in 1.49s

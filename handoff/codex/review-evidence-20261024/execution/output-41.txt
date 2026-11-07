@@ -1,0 +1,45 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_ test_quality_checkpoint_retry_never_becomes_ready_before_publication[topic] _
+tests\phase1_local\test_review_publication.py:70: in test_quality_checkpoint_retry_never_becomes_ready_before_publication
+    result = _run(job_id)
+             ^^^^^^^^^^^^
+tests\phase1_local\test_review_publication.py:37: in _run
+    return phase1_cli._run_job(argparse.Namespace(job_id=job_id, plan_only=False))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\factory\phase1_cli.py:581: in _run_job
+    return _run_claimed_job(args, store, store.status(args.job_id))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\factory\phase1_cli.py:615: in _run_claimed_job
+    _advance_to_rendering(store, args.job_id)
+src\factory\phase1_cli.py:327: in _advance_to_rendering
+    raise FactoryContractError(
+E   video_factory.pipeline.errors.FactoryContractError: phase1_job_state_invalid
+_ test_quality_checkpoint_retry_never_becomes_ready_before_publication[reference] _
+tests\phase1_local\test_review_publication.py:70: in test_quality_checkpoint_retry_never_becomes_ready_before_publication
+    result = _run(job_id)
+             ^^^^^^^^^^^^
+tests\phase1_local\test_review_publication.py:37: in _run
+    return phase1_cli._run_job(argparse.Namespace(job_id=job_id, plan_only=False))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\factory\phase1_cli.py:581: in _run_job
+    return _run_claimed_job(args, store, store.status(args.job_id))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\factory\phase1_cli.py:615: in _run_claimed_job
+    _advance_to_rendering(store, args.job_id)
+src\factory\phase1_cli.py:327: in _advance_to_rendering
+    raise FactoryContractError(
+E   video_factory.pipeline.errors.FactoryContractError: phase1_job_state_invalid
+________ test_returning_subject_worker_cannot_change_new_attempt_plan _________
+tests\phase1_local\test_phase1_subject_cli.py:332: in test_returning_subject_worker_cannot_change_new_attempt_plan
+    assert actual == before[row['relative_path']], row['artifact_type']
+E   AssertionError: script_candidates
+E   assert b'{\r\n  "sch...n  ]\r\n}\r\n' == b'{\r\n  "sch...n  ]\r\n}\r\n'
+E     
+E     At index 306 diff: b'\x97' != b'\x96'
+E     Use -v to get more diff
+=========================== short test summary info ===========================
+FAILED tests/phase1_local/test_review_publication.py::test_quality_checkpoint_retry_never_becomes_ready_before_publication[topic]
+FAILED tests/phase1_local/test_review_publication.py::test_quality_checkpoint_retry_never_becomes_ready_before_publication[reference]
+FAILED tests/phase1_local/test_phase1_subject_cli.py::test_returning_subject_worker_cannot_change_new_attempt_plan
+3 failed in 1.32s

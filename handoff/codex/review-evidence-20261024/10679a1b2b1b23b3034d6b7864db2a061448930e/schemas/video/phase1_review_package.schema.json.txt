@@ -1,0 +1,64 @@
+{"source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e", "original_path": "schemas/video/phase1_review_package.schema.json", "git_blob_sha1": "0222d847122c517a3daa1b429afe5bc0efddae9f", "git_blob_sha256": "0a76fad8a70eaf5a59402f493137dd0a4a3b4a12fb19ed900fdbb86aa81e0ec6", "start_line": 1, "end_line": 63, "header_lines": 1}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_review_package.schema.json",
+  "title": "Phase1LocalReviewPackage",
+  "type": "object",
+  "required": ["schema_version", "job_id", "status", "input_mode", "title", "scene_count", "quality_report", "asset_selection", "artifacts"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "job_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "status": {"type": "string", "const": "ready_for_human_review"},
+    "input_mode": {"type": "string", "enum": ["topic", "local_reference", "authorized_public_research"]},
+    "title": {"type": "string", "minLength": 1, "maxLength": 160},
+    "scene_count": {"type": "integer", "minimum": 1},
+    "quality_report": {"type": "string", "const": "quality_report.json"},
+    "asset_selection": {"type": "object"},
+    "reference_evidence": {"type": "object"},
+    "artifacts": {
+      "type": "array",
+      "minItems": 5,
+      "items": {"$ref": "#/$defs/artifact"}
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "required": ["name", "path", "sha256", "bytes"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "enum": ["final_master.mp4", "cover.png", "subtitle.srt", "quality_report.json", "review_checklist.md", "publish_info.md", "audio_integrity.json", "reference_receipt.json", "reference_rights.json", "reference_report.json", "original_brief.json", "difference_report.json"]},
+        "path": {"type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!\\\\).+"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "bytes": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+  ,
+  "allOf": [
+    {
+      "if": {"properties": {"input_mode": {"const": "local_reference"}}},
+      "then": {
+        "required": ["reference_evidence"],
+        "properties": {
+          "reference_evidence": {
+            "type": "object", "additionalProperties": false,
+            "required": ["reference_receipt", "reference_rights", "reference_report", "original_brief", "difference_report"],
+            "properties": {
+              "reference_receipt": {"type": "string", "const": "reference_receipt.json"},
+              "reference_rights": {"type": "string", "const": "reference_rights.json"},
+              "reference_report": {"type": "string", "const": "reference_report.json"},
+              "original_brief": {"type": "string", "const": "original_brief.json"},
+              "difference_report": {"type": "string", "const": "difference_report.json"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"input_mode": {"const": "topic"}}},
+      "then": {"not": {"required": ["reference_evidence"]}}
+    }
+  ]
+}

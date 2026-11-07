@@ -1,0 +1,1367 @@
+[
+  {
+    "path": "docs/PHASE1_REMOTE_AUDIT_20260906.md",
+    "archive_blob": "eae0c90872086bbda3a9c9d16a90f949ff1fa542",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "docs/PINK_PIG_PHASE1_ARCHITECTURE.md",
+    "archive_blob": "b72d58449997c753d18319ae7eb9f507968a1f36",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "docs/superpowers/plans/2026-08-09-ai-director-phase2-final-qualification-003.md",
+    "archive_blob": "472e72eb9eea6420c39cf7d2191349947d7291c8",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "docs/superpowers/plans/2026-08-10-ai-director-phase2-remediation-004.md",
+    "archive_blob": "a895e0844f19a5acab28edbca6d8f2536f8ca850",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "docs/superpowers/plans/2026-08-23-rc-highpass-geometry-draft-recovery.md",
+    "archive_blob": "ab8545e543c8f7b6f8f94e018080447d3b0f9e41",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "docs/superpowers/plans/2026-08-23-rc-highpass-reference-reconstruction.md",
+    "archive_blob": "0be8450075db63fdea5c6fb06283c8d22233a1e6",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "docs/superpowers/plans/2026-08-24-rc-highpass-speech-cues.md",
+    "archive_blob": "cb36f6b5397a5517d30cb6d69592a68ae3bcf37c",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "docs/superpowers/specs/2026-08-23-rc-highpass-reference-reconstruction-design.md",
+    "archive_blob": "a94004b12bd6232920917735f5e0f22951eb8ef2",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "docs/superpowers/specs/2026-09-13-website-product-promo-revision-design.md",
+    "archive_blob": "488ba7b9926993251a42186bf17238b04d1af720",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "docs/superpowers/specs/2026-09-15-website-product-promo-hook-focus-design.md",
+    "archive_blob": "c0cdc9d51153100107208a0b26140e50aafb4cca",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/ACCEPTANCE_MATRIX.md",
+    "archive_blob": "6a7cd7ea17b7e620131b2c04ca12d30638a8606b",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/CODEX_MASTER_PROMPT.md",
+    "archive_blob": "e4a65c1b3ed59147e54b83f16f819bc73a6cd226",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/CONFIRMED_BASELINE.md",
+    "archive_blob": "b7638ecf858e62c2c7835fddb775531513879adc",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/CURRENT_BACKLOG.yaml",
+    "archive_blob": "550bf1bccf2d43b7640838f8c574f2b159a986b7",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/DECISIONS_REQUIRED.yaml",
+    "archive_blob": "49ce0336e93a87b3c033d9ba472801e5905a0f58",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/IMPLEMENTATION_BACKLOG.yaml",
+    "archive_blob": "a200893323263e5c8821909c1b18bd54c337a016",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/NEXT_AGENT_PROMPT_20260905.md",
+    "archive_blob": "cc911eaadfeb08b4c920014a611b389a6aaa3da5",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/NEXT_AGENT_PROMPT_20260906.txt",
+    "archive_blob": "4b2e62970cc231ef1f45ad8233c5cea8ddb445ac",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/PHASE1_AUDIO_AND_CLOSURE_HANDOFF_20260928.md",
+    "archive_blob": "2af875c1bfb5a54505d8450ef0144a9537414e97",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/PHASE1_COMPLETION_PROMPT.md",
+    "archive_blob": "3312dee471fe56767ce4c0323e97de90491a5a27",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/PHASE1_REMOTE_HANDOFF_20260906.md",
+    "archive_blob": "23304b89f5d2ca0f490d2083de1266cb94c3ef8f",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "handoff/codex/PROJECT_HANDOFF_20260905.md",
+    "archive_blob": "f6fdaf358ae95eb17ed84608b1e91ac7293f5ada",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "reports/AI_DIRECTOR_PHASE2_PROVIDER_QUALIFICATION_005V.md",
+    "archive_blob": "add1fb801e81393a5473baea7597e5216b9f35df",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_009_FULL_REGRESSION.md",
+    "archive_blob": "5af04c767dc81ec31321d497c0fb2c397c297b5a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_009_HAIKU_REVIEW_SUMMARY.md",
+    "archive_blob": "1328794589932d81db9092f07a242d442e6873ec",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_009_PRODUCTION_SMOKE.md",
+    "archive_blob": "7f938fad0337dda5ad25e20475aa2ce7123c5fb7",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_009_RECOVERY_AND_CLOSURE.md",
+    "archive_blob": "5ba42d97cdf796a7014dfb2de9958396be2f4617",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_009_RECOVERY_BASELINE_BEFORE.md",
+    "archive_blob": "63c4eb4ecd9e51d39799fbb5b20686d2fe0dcc11",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_ANALYZER_MCP_TOOLS.md",
+    "archive_blob": "5560ae3ee0c872e06d6a0cce81b3f4483dcbf7f8",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_ANALYZER_RUNTIME_TESTS.md",
+    "archive_blob": "b6d0393e6f774e37e3c471619fe146918930a4ee",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_BINDING_BASELINE_BEFORE.md",
+    "archive_blob": "888a7d7710f21fe3bba97ab403df6726a119b7a8",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_BOUNDED_TRUST_MEDIA_COMPLETION_053.md",
+    "archive_blob": "71214ee6491fa0c62c17c85f7c631f93e847088e",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_BOUNDED_TRUST_RISK_ACCEPTANCE_053.md",
+    "archive_blob": "6173da77235c3d48357cac1c30970ef55693adae",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CARD_ACTION_BASELINE_BEFORE.md",
+    "archive_blob": "79c3f8245bf8564ea8365005feaa770125b490ae",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CARD_ACTION_PROBE.md",
+    "archive_blob": "2b951ccc832d782f7a42d9a311a22a98e7afa031",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CARD_ACTION_QUALIFICATION.md",
+    "archive_blob": "7773522ea5eebcafb676a8348d9eb8333bb43e5e",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CHANNEL_REPLACEMENT_DECISION.md",
+    "archive_blob": "38d793e84296f7980694291eaecc6e132a176de9",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CHANNEL_REPLACEMENT_MIGRATION_PLAN.md",
+    "archive_blob": "f9db0a46de3f11e311c39208bfb404972db52ec5",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CHANNEL_REPLACEMENT_SINGLE_CONSUMER_PROOF.md",
+    "archive_blob": "d5f26ac5b0d6993edc4e231c245594c7fd473876",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CHILD_CLAUDE_BINDING_REVIEW_SUMMARY.md",
+    "archive_blob": "ce6357eda9ca03b809348d3aaa2fde991fa94974",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CHILD_CLAUDE_REVIEW_SUMMARY.md",
+    "archive_blob": "ebc6e9429c98effd146cea2aad32ce6e85c64bd6",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CORE_FEISHU_CONTROL_TESTS_033.md",
+    "archive_blob": "a41d4b7e4cef31004b11c8ab4be15d65a5633ac3",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS.md",
+    "archive_blob": "91c9279205e9b2a1b56af5cb96588497213f1d69",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V13.md",
+    "archive_blob": "79e8e4afeaa7c378aa1794e923a59764c635a362",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V14.md",
+    "archive_blob": "4d3f6b6c39f49de331e7e48ccfa5359c45a99fa8",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V15.md",
+    "archive_blob": "41e0c31388f30f48f05409fc14741974c7b7f039",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V16.md",
+    "archive_blob": "46da05fb969d3d2baa94ccbbc991e50a328facc6",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V17.md",
+    "archive_blob": "c6a9be89053262c490980956b7189b1f17756476",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V2.md",
+    "archive_blob": "3aa3c49ecfa1fcda89c5d93828b0565eaafeada1",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V24.md",
+    "archive_blob": "48555b31840301db90cbfffda3ec8790d3e29184",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V25.md",
+    "archive_blob": "9bd4b245979dcbcc14c5fbe8453d364d3ef642fc",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V26.md",
+    "archive_blob": "3ab1dbd546c19494b3c7686bb04a8b5a7c74485a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V27.md",
+    "archive_blob": "cdc45c0ef12449d01da7f7b45258084e7937c27d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V28.md",
+    "archive_blob": "a37d6616c7fb79eb802f0a3ada687572d9e426aa",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V29.md",
+    "archive_blob": "d37d8838030bfe806e4ee0178a3a2e4a1954f387",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V3.md",
+    "archive_blob": "2c7f6ca006156f53a9e8c1ef5bbb3bfe8de2f3c8",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V30.md",
+    "archive_blob": "67b173e784ddd3968946878aad7f769e9f071f13",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V31.md",
+    "archive_blob": "1e9f107573a4d3f8a7382f4b40e7eda6333761d7",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V36.md",
+    "archive_blob": "e4670d8949f6e2aa4520a1353178f53dcd71ba6b",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V38.md",
+    "archive_blob": "9fae628d19d7e3cf96691d6182f20bbdf7e9e37d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V40.md",
+    "archive_blob": "02db54105e2abc80f7414ffbfa35ff362810d4bd",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V42.md",
+    "archive_blob": "bdc9ee461027759523effe169c5503bed8cabacc",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V43.md",
+    "archive_blob": "dca0bc3feb129433e1ac1d981fb744c2e504a2cf",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V44.md",
+    "archive_blob": "69ca42ac597180b538f5e1e3148aa2eef42117f4",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V7.md",
+    "archive_blob": "b9bad47907ac11c51a397c0acfb45209be3bfeec",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V8.md",
+    "archive_blob": "9b8c44b1e4ec9a047944d2e27624dc81d9c0695c",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_CURRENT_STATUS_V9.md",
+    "archive_blob": "a45fb4f37eb052e4e6039103fd5be2ac63a1f810",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX.md",
+    "archive_blob": "8a9461791dec12a0c4cbe9a1edf59a748bc50afa",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V10.md",
+    "archive_blob": "117b472abd6d8a51bbb917f9cf4940d062c8ef8c",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V13.md",
+    "archive_blob": "12539669fac2bc485a83517a9b66c7f647ce49c4",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V15.md",
+    "archive_blob": "ecde26e9d6d6a9b06306dc0ee352d5684fd18713",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V2.md",
+    "archive_blob": "f7c060408a9b872f033bbd2050294915756fa0dc",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V24.md",
+    "archive_blob": "5990439a9d0db0a5d1137ddcace83919333a8ee1",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V25.md",
+    "archive_blob": "2335663d34b2aeb5cf5ef377d3da085749ae0789",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V26.md",
+    "archive_blob": "96497cfd03dff471cf120ea237fcd00148c1c5af",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V27.md",
+    "archive_blob": "4b877bd80c5f7413fb9181e392904810f2a9688d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V28.md",
+    "archive_blob": "09bf59d1e05c05fc3a274c0cab4ba35b50d24d7e",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V29.md",
+    "archive_blob": "a0f460f37b63034bd4d2cea40062c451ad80ffa4",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V3.md",
+    "archive_blob": "24737454e8349a0ab610fb12081eec6510e4e64e",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V30.md",
+    "archive_blob": "46bd476ab91ae935a0b0c8610dcc9c521ab6ea95",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V31.md",
+    "archive_blob": "ea166f97f713e75ef9012541a27329716247ce0f",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V36.md",
+    "archive_blob": "19973d33422ee5a022d3e9e4151e8586c075349f",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V38.md",
+    "archive_blob": "897c574876c3d025586f925e987846f4f41d6f9e",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V40.md",
+    "archive_blob": "864436bedb093d0d7d0eeece845c0a3a2f92ab17",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V42.md",
+    "archive_blob": "504911c7dc4118eb64a6fd41af4fa9c1ba4fbcd8",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V7.md",
+    "archive_blob": "66d167fdcd383c99fd57e33e8d33847d2479e94c",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V8.md",
+    "archive_blob": "3edbffe393db535f65d0dcccf238474c0426fae6",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_EVIDENCE_INDEX_V9.md",
+    "archive_blob": "2841101d5c5e7b20f0dcb3de158d9b86c4be732f",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_FEISHU_CARD_ANALYSIS_IMPLEMENTATION.md",
+    "archive_blob": "02dfb9af25ed6d08b331dfd5031e534b21cce643",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_FEISHU_CARD_ANALYSIS_TESTS.md",
+    "archive_blob": "456752275dd40e988e303fb936c3844a0a527dcf",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_FEISHU_CARD_HAIKU_REVIEW.md",
+    "archive_blob": "949f00932f6c52edce8bdb970ea8d3a6dde79239",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_FEISHU_CARD_PRODUCTION_SMOKE.md",
+    "archive_blob": "6e7abfcda1abc7143626d66b48ed228ff42417a6",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_FEISHU_GATEWAY_NIGHTLY_FINAL.md",
+    "archive_blob": "8e86b2694a72537847fe9a62789e8a65d9c3bc42",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_FEISHU_SDK_COMPATIBILITY.md",
+    "archive_blob": "b13c107df577d210d474aee764049d6a09ffcb18",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_FIXTURE_PREPARATION.md",
+    "archive_blob": "57d232175fafad8637c7db23b803e6a709b1f364",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_BOUNDARY_REMEDIATION.md",
+    "archive_blob": "80c15799cd09d0b918fb3074e33f4aa0682ef9b6",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_LIFECYCLE_OWNER_044.md",
+    "archive_blob": "d8c944d4e11f9a91b2ea8271a301539febbd15fe",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_NIGHTLY_BASELINE.md",
+    "archive_blob": "8a2d52bda488486e595d126d7685a2d957fe2dc3",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_NIGHTLY_TEST_RESULT.md",
+    "archive_blob": "b05e070f9f2a80b8cee7a4b8615fedf26f10fa3f",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_PERMISSION_MODEL.md",
+    "archive_blob": "2d8ac6188c6be2c2bd23c744c182473798ab1b7a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_QUALIFICATION_FINAL_026.md",
+    "archive_blob": "5e9192748dfa41c0a664f4af010c18a5ef90fd0d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_QUALIFICATION_PLAN_026.md",
+    "archive_blob": "1c9d0d199cf0c0c0b69fc2f26953c9bb807f3dcf",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_RESTART_VALIDATION_V2.md",
+    "archive_blob": "d587bcdbbf1e8678dc9ed4ab2107ede3d27e6cad",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_RUNTIME_BASELINE_022.md",
+    "archive_blob": "a45312677b9826054886f4f9c80306f2ae4f957e",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_RUNTIME_ENV_AUDIT_042.md",
+    "archive_blob": "d02676a97075801f7319f55a093a4eaa8d7d9d22",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GATEWAY_RUNTIME_TEST_022.md",
+    "archive_blob": "9f98744335c63d9b1bd95658616b1e0563dd74d5",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_GIT_READINESS_026.md",
+    "archive_blob": "726394eeba810198fa3b8b58e45e59c2f2a02a58",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_INBOUND_CLAIM_CARD_ACTION_IMPLEMENTATION.md",
+    "archive_blob": "a8f61ac981b77da65d178c8818787e69740d15db",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_INBOUND_CLAIM_CARD_ACTION_TESTS.md",
+    "archive_blob": "3b145b0b8717aadd5c40d1f0b129785825c237be",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_INTERNAL_MEDIA_AGENTS.md",
+    "archive_blob": "3bd2c71a1e4fd291818de5b5f32e4310e65bdb8a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_LARK_DRY_RUN_EVIDENCE_V3.md",
+    "archive_blob": "640e2f369e8cc858320af8185bf34f2b15310342",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_LARK_EGRESS_DRY_RUN_EVIDENCE_V2.md",
+    "archive_blob": "0df0991f3d73003b0b0900e1e78924ebf47ab2c9",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_LIVE_EVENT_TRACE_R0_R5.md",
+    "archive_blob": "36425987d84eab18e9d710f492afd557abd796a9",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_LIVE_MEDIA_BASELINE_BEFORE.md",
+    "archive_blob": "52a7f646876a96d956c6ee69c2837603f10c1476",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_LIVE_SEQUENCE_BASELINE_BEFORE.md",
+    "archive_blob": "10f46bc3e1b3ad86d0c21749750fd1a1c63c277c",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_LIVE_SEQUENCE_NEGATIVE_TESTS.md",
+    "archive_blob": "efc26ca5891462ef0ff9408a77c43b65d9dd96c0",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_LIVE_SEQUENCE_QUALIFICATION.md",
+    "archive_blob": "a6d292b514cc3f79fe6b1a1af925b6b9eafdb190",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_LOCAL_4070S_MEDIA_ANALYSIS_PLAN.md",
+    "archive_blob": "c7e05e377c4e2e4bc7590e6e5c04e1616f2053d4",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MAINTENANCE_READINESS_031.md",
+    "archive_blob": "84048acdfac68b839d683414860631a7c25cef53",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MANAGED_RESTART_EXECUTION_044.md",
+    "archive_blob": "ef316db370cb4901d24a530cf56eaac9dea1ccaf",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MANAGED_RESTART_PREFLIGHT_044.md",
+    "archive_blob": "2afbd1511a032de8d36a53e2f4718a3ce29853d1",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MANAGED_RESTART_RESULT_045.md",
+    "archive_blob": "86dafc78fa193304dc525d4a1a3235be83479800",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MEDIA_ANALYSIS_064_TEST_RESULTS.md",
+    "archive_blob": "7de91daa13b3a9116f2095e30d50d667878cce90",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MEDIA_ANALYSIS_065_TEST_RESULTS.md",
+    "archive_blob": "c7c1f09ee1af1e2c4d79456110a317e9c04c9aff",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MEDIA_ANALYSIS_066_TEST_RESULTS.md",
+    "archive_blob": "07d938d93f3789712cca6906866eb4c6ede44a6a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MEDIA_LOCAL_REGRESSION_OVERNIGHT.md",
+    "archive_blob": "bd9aabf5019957e4318831f5f6131908a603fe40",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MEDIA_TICKET_BOUNDED_REVIEW_053.md",
+    "archive_blob": "8d3752b46e864623bee1021ab5bfa7babda487fe",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MEDIA_TICKET_FINAL_IMPLEMENTATION_053.md",
+    "archive_blob": "a9577cabf0e44fd31291fbdf65d072afe5cc1ed7",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MEDIA_TICKET_FINAL_TESTS_053.md",
+    "archive_blob": "590690c6756b2c760cf5784a768492f7ae3f4604",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MIGRATION_GAP_ANALYSIS_021.md",
+    "archive_blob": "beb25fea7d11c691a2e63a97f2fea3affed91b4a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MULTIMODAL_MODEL_ROUTING_PLAN.md",
+    "archive_blob": "4bcbc7339f972dac62a7b9f2eb05322907425139",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_MULTIMODAL_ROUTING_PLAN_V3.md",
+    "archive_blob": "e2eb69e3678517ffd8b718a2cc2216bb21bc17a5",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_OFFICIAL_GATEWAY_CLIENT_AVAILABILITY_046.md",
+    "archive_blob": "6391e62e27bcac6a49b2fbe7c0272a88113aca23",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_OFFICIAL_GATEWAY_CLIENT_IMPLEMENTATION_046.md",
+    "archive_blob": "4ac2b7150d030a6c6fb9bba90f159eefdec8a66b",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_OFFICIAL_LARK_PLUGIN_AUDIT.md",
+    "archive_blob": "de3d1d302952131bcfa02079c4db537ce99a1829",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_OFFICIAL_LARK_PLUGIN_POC.md",
+    "archive_blob": "c113c30e4abc6ec80aeed774cf543bad449764ec",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_ONE_SHOT_ANALYSIS_INTENT_HAIKU_REVIEW.md",
+    "archive_blob": "216c158ce3c78fbef20ccb66628575581234ff4b",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_ONE_SHOT_ANALYSIS_INTENT_IMPLEMENTATION.md",
+    "archive_blob": "af5eb886095f33bccaca4659ac7301e94124aac5",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_ONE_SHOT_ANALYSIS_INTENT_SMOKE.md",
+    "archive_blob": "7309fee58fce6f52b637be7bb1f6402333d53f9d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_ONE_SHOT_ANALYSIS_INTENT_TESTS.md",
+    "archive_blob": "7d3cf076f5d20eda61ab1a3e6b3dfcffa3be5d49",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_OPENCLAW_UPGRADE_COMPATIBILITY_RISKS.md",
+    "archive_blob": "39de8fa0d1129094a001202610934b147e4e6ac0",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_OPEN_SOURCE_PATTERN_COMPARISON.md",
+    "archive_blob": "7d78e9c080e83ad56e0d062d8bfcfc2e5dc1c20d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_OPEN_SOURCE_REFERENCE_AUDIT.md",
+    "archive_blob": "ec37b0ec0ae1d0fd54adb16c67a60e398df28b10",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_PLUGIN_BINDING_RUNTIME_TESTS.md",
+    "archive_blob": "27487aba8c2655cfe91307648e0455674c81dd61",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_PLUGIN_BINDING_UPGRADE_COMPATIBILITY.md",
+    "archive_blob": "c2d4274d17c93219ebd3d47686ab2561408377fb",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_POST_MIGRATION_AUDIT.md",
+    "archive_blob": "3b04583ac6de892bbd70270634b22787c591c233",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_PREINGEST_MODEL_BARRIER_GLOBAL_FIX_V2.md",
+    "archive_blob": "0530ae5a0d6578b281279f1ed4447bc022d21b04",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_PREINGEST_MODEL_BARRIER_RUNTIME_TESTS.md",
+    "archive_blob": "61c278167e62d1b390f1723cced122a4e46c997d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_PRE_MIGRATION_AUDIT_021.md",
+    "archive_blob": "f41efc00686a9d8a29f1215cc98b05c3db49decb",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_PROJECT_DEVICE_IDENTITY_INITIALIZATION_048.md",
+    "archive_blob": "332f85b3c85601a4ec7ce910bd030e333c748a9d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_PROJECT_FEISHU_GATEWAY_POC.md",
+    "archive_blob": "8f2ae937da33f36abcd94de7dcb0c15ce3e15b39",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_PROJECT_GATEWAY_PAIRING_REQUEST_046.md",
+    "archive_blob": "23fbe9d2545e0f6fad3c2be7b2079ff6558c6aec",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_PROJECT_GATEWAY_PAIRING_REQUEST_047.md",
+    "archive_blob": "0ea96aecb5fe44ef225f006ed2fc2a79494e5ae9",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_PROJECT_GATEWAY_PAIRING_REQUEST_047_RETRY.md",
+    "archive_blob": "a185f286c500c5598400aec43a20eacfd2155f30",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_QUALIFICATION_ACCESS_REQUIREMENTS.md",
+    "archive_blob": "cddd6f8bd5f88ee654721932b078a5dff91297d7",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R0_EVENT_TRACE_20260718.md",
+    "archive_blob": "fa58ea475842a861ae8110ffb8998c3bfd62de0a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R1_EVENT_TRACE_20260718.md",
+    "archive_blob": "701a708c2f02155ab8e939d4b4bbaeb1e3037394",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R1_SIZE_FIELD_TRACE.md",
+    "archive_blob": "8537e2c6e6c2655f0314dabbb89b020cab0183a8",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R1_SIZE_HAIKU_REVIEW.md",
+    "archive_blob": "168504c383a5e018875aabfbb1854face3b16fe5",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R1_SIZE_PRODUCTION_SMOKE.md",
+    "archive_blob": "a7013640be7d859c0745de1ec16913495b4cc760",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R2_ANALYSIS_INTENT_GATE_FIX.md",
+    "archive_blob": "76e543f4b352d9d8d12447e69c28d228939799db",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R2_R3_HAIKU_REVIEW.md",
+    "archive_blob": "829dbd5ed1e1517a00e4a98d3d950888913ba4a3",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R2_R3_PRODUCTION_SMOKE.md",
+    "archive_blob": "06c1e84b43a0576d04bd53769d3a03fb7630f671",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R2_UNEXPECTED_ANALYZER_TRACE.md",
+    "archive_blob": "94b443f96b9aa4257d904aefe7a6190318b6d795",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R3_RETEST_PREFLIGHT_061.md",
+    "archive_blob": "cbddcbbbf1c5c39fc57ac660e6a0d949b51a3e0c",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R3_STORED_HASH_FIX.md",
+    "archive_blob": "f60ed159ce0e67129c6400ee7915fff7e3c6d6ea",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R4_063_READONLY_DIAGNOSIS.md",
+    "archive_blob": "506203ff044c7b67afd8c793b14de3265584f771",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R4_AUDIO_PREFLIGHT_062.md",
+    "archive_blob": "50dc86d344d413c7dcff767a8aaad7a2a7121fae",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R4_AUDIO_PREFLIGHT_063.md",
+    "archive_blob": "7966de3eb8b09afdf0ff57e3d2e2b183192c8cf3",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R4_AUDIO_PREFLIGHT_067.md",
+    "archive_blob": "f2ca4513c5b95277aed7412da260fa23b1de3ce0",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R4_AUDIO_RESULT_REMEDIATION_068_TEST_RESULTS.md",
+    "archive_blob": "530d9a667dba414849bcca1bb852d2b74266f280",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_R5_VIDEO_QUALIFICATION_072.md",
+    "archive_blob": "b7b8693916a12c1e720edbbf118049363706bf56",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_ACCESS_CHECKLIST.md",
+    "archive_blob": "ad1bd0d15873f7ccf30d5c422ddbbaa2eb32268b",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_AUDIO_EVENT_TRACE_062.md",
+    "archive_blob": "ce53c80de5f807ca150cfe9b2f62181bb1b52ed6",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_CHANNEL_EVENT_TRACE.md",
+    "archive_blob": "964058c3b2f7980fd136c8b288cc256a42cf47a6",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_CHANNEL_QUALIFICATION.md",
+    "archive_blob": "7b0d52aa5bd3035dd1dd0dd6900094ea036769f5",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_GIT_READINESS_027.md",
+    "archive_blob": "2872bbd1c3307d12ac02b209dd2ccdd1ff45ac54",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_QUALIFICATION_BLOCKERS_027.md",
+    "archive_blob": "2e145bde6df203d9bc39a9557fe2ad2850b99409",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_QUALIFICATION_ENV_DESIGN.md",
+    "archive_blob": "bcbdf492cce94285aba7780ddb496ec1cca96bf2",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_QUALIFICATION_MATRIX.md",
+    "archive_blob": "a7550087a2d47f44aa234526a9271f4ec59b6856",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_QUALIFICATION_STATUS_027.md",
+    "archive_blob": "33c5bb473f870e1651414e46546dd83322687d05",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_R3_IMAGE_VERIFICATION_054A.md",
+    "archive_blob": "76946a3201fa0e86afd156b83975f747013b52a3",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_R3_REPLY_QUALITY_REVIEW_054A.md",
+    "archive_blob": "a7a07638c7a824a85dc3b9331b74b07e9f010241",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_R4_AUDIO_QUALIFICATION_062.md",
+    "archive_blob": "636369011cd1365cc79868b70bcfc5af4c567546",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_R4_AUDIO_QUALIFICATION_063.md",
+    "archive_blob": "346b9010ebbd21f51a52b7b275369e556536f581",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_R4_REPLY_QUALITY_062.md",
+    "archive_blob": "dea3ec60ea355baa10a051ed98e1820800fcc978",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REAL_STATE_BASELINE_021.md",
+    "archive_blob": "1b711e51b172fa3734e5225b6f86851783902175",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS.md",
+    "archive_blob": "bbfcae21614756a25c006efb90a9d4a8109e46e3",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V10.md",
+    "archive_blob": "677c64d373327cca97fd7a8e5347f0f4e113fe35",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V13.md",
+    "archive_blob": "68518c32ed2c43ad85218420ec5967065483e995",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V15.md",
+    "archive_blob": "a7ea3c40b3572f99a0055968cb566563686e899d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V2.md",
+    "archive_blob": "9e686ce54e41880d238ae7a08d0ad71c2030c237",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V24.md",
+    "archive_blob": "0855c6093a8f1e499d72a7086735cce436b0f3fc",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V25.md",
+    "archive_blob": "7f31d8f526cd85e5dd39435e881365ebf4e5c046",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V26.md",
+    "archive_blob": "904163612bc2496d7afd03f96f40a7a12732c03f",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V27.md",
+    "archive_blob": "5d674b7512f48099ee9897c946ce4d71a780abee",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V28.md",
+    "archive_blob": "6d6c6c9b44b5ad29d7c3abd8e2e3b9ba1c307b21",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V29.md",
+    "archive_blob": "a032afd663ae61f2e1c3c93a25928eaacfe7fb0e",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V3.md",
+    "archive_blob": "c5d220cc03664b48f3e84508f246be6dd1edd3d5",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V30.md",
+    "archive_blob": "712df0f4b62d6fe0f2fad00d22fac9d157a26b6d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V31.md",
+    "archive_blob": "ff9297b93f3fde38415154afca95bbd1fb6f90fd",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V36.md",
+    "archive_blob": "cc1c6c1a651e5a7b655c842a419d91e65935ab38",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V38.md",
+    "archive_blob": "e4e428589187b48f6c7205665bb293eec818bed2",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V40.md",
+    "archive_blob": "605c3ab1f91a9b51a18580f112d2384a42603177",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V42.md",
+    "archive_blob": "17db3d166610e72e27004307d94f6611a24c64d1",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V43.md",
+    "archive_blob": "854ef593315484a13482c4c68b184c20884812dc",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V44.md",
+    "archive_blob": "851d48d0e5533389f33e2dcb78faa5fcd868538f",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V7.md",
+    "archive_blob": "bafa0bde0b899e3d2caceee2b54147cb1741a993",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V8.md",
+    "archive_blob": "8f5618265375c9e918ee5acd8b33ab2d45393ff8",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_REMAINING_ACTIONS_V9.md",
+    "archive_blob": "4fbd6827a1adf2f057726e7ab54583a6e1439577",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_RPC_END_TO_END_QUALIFICATION.md",
+    "archive_blob": "0418f9ee1564b70b19623904a9b9d62ad5380d94",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SAFE_RESTART_FAILURE_ROOT_CAUSE_044.md",
+    "archive_blob": "8e09c13f1b8e637a3022c1ee296ac8ceadeb6e0f",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SAFE_RESTART_ROOT_CAUSE_FINAL_045.md",
+    "archive_blob": "b8eb2ef1516d0dd380a33d36607a8ada135a3d6c",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SESSION_ISOLATION_V2.md",
+    "archive_blob": "712d59c8b9fc09b68235d4e97c9a791367294196",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SINGLE_CONSUMER_QUALIFICATION.md",
+    "archive_blob": "1f6b24de1208b0a1a3fe2d1c989d61f2b8e59ee9",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SINGLE_CONSUMER_RUNTIME_PROOF_022.md",
+    "archive_blob": "26a85378919aef3a183138fd5ac74a5a8987a10a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SINGLE_CONSUMER_RUNTIME_PROOF_V2.md",
+    "archive_blob": "32dc891ce6efb5c027eba7170bb5edef1e65cd1d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SINGLE_GROUP_MEDIA_ROUTER_CONFIG_PLAN.md",
+    "archive_blob": "12fc07da14a510ce6d756d85f08a8e40c866e379",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SINGLE_GROUP_MEDIA_ROUTER_TEST_PLAN.md",
+    "archive_blob": "b3aeda32ab37e8959c40d403f5dd50cada26445a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SINGLE_GROUP_ROUTER_BASELINE_BEFORE.md",
+    "archive_blob": "4f05d0385984dc8ed95d71c5268ef8bfa7b2a3be",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SINGLE_GROUP_ROUTER_CONFIG_DIFF.md",
+    "archive_blob": "e18fd5bab0178dce1ddcda02fa1492a465b82b68",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SINGLE_GROUP_ROUTER_IMPLEMENTATION.md",
+    "archive_blob": "5d943ec99582b648ab26c5eb194a561b1496addd",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_SINGLE_GROUP_ROUTER_TESTS.md",
+    "archive_blob": "f8e8083bd17bfca68c01f824183ecd15efaf5853",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_STATIC_AUDIT_V3.md",
+    "archive_blob": "2acb4e08d22d94774ef4da1a730c35714147df9c",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_TRUSTED_MEDIA_ROOTS.md",
+    "archive_blob": "54af7503173b749f72a3f8a1ec8aaefe6a1c705a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_TWO_MESSAGE_ANALYSIS_IMPLEMENTATION.md",
+    "archive_blob": "936568b852f254705de237922d07cd534af5210e",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_TWO_MESSAGE_ANALYSIS_SMOKE.md",
+    "archive_blob": "134c93dc6691397b0d82dfbda1a91eaeb6f3484b",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_TWO_MESSAGE_ANALYSIS_TESTS.md",
+    "archive_blob": "2752231102e7d314c3d3f322395599dbcdfbfe17",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_WINDOWS_GATEWAY_SERVICE_AUDIT_045.md",
+    "archive_blob": "cd9978e2d574d2997386a50f72628d3ac2b9ba39",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_WINDOWS_GATEWAY_SERVICE_BACKUP_045.md",
+    "archive_blob": "76439b32ed63ee2650477ab4604d83dfb1ff6961",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_WINDOWS_GATEWAY_SERVICE_REPAIR_045.md",
+    "archive_blob": "960f52fe50fee9c102b68aa902b3ddefbe0f9f58",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_ZHONGSHU_CARD_ACTION_FINAL_034.md",
+    "archive_blob": "6975f8538a1f10dbf52511c7d3aea7b83d5851d4",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_ZHONGSHU_RPC_RUNTIME_FINAL_034.md",
+    "archive_blob": "6564d296b630c040222404e9b4a0690ac189db0d",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/P0_ZHONGSHU_SINGLE_CONSUMER_FINAL_034.md",
+    "archive_blob": "01b378eb9e8261c607e2865e0e71f000d14b3549",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "reports/PHASE1_REMOTE_AUDIT_20260822.md",
+    "archive_blob": "587b9c7028d8f9f629fbde494dbe78373e1fd73a",
+    "classification": "historical narrative"
+  },
+  {
+    "path": "tasks/plans/2026-07-29-p1-059e-regression-remediation.md",
+    "archive_blob": "a1e811462c4637a9278c5de24a5dd8a3c2d9ca51",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-07-29-p1-059f-audit-hardening.md",
+    "archive_blob": "4d5077256476e6550fe106db8248d69e0476ea31",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-07-29-p1-060-independent-audit-remediation.md",
+    "archive_blob": "bdf85b3f52b0cef4b2b2d31bba0d821d71297698",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-07-29-p1-offline-candidate.md",
+    "archive_blob": "026447c368c7044f0136b8061d11589c6ed8fb65",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-07-29-p1-offline-final-audit-059.md",
+    "archive_blob": "dd5f82d3015043d85b3ade966c347028dd61b114",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-07-29-p1-polish-058.md",
+    "archive_blob": "4a83cf86977d162da8568daed9b0dad10544fd33",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-07-30-p0-r3-real-retest-061.md",
+    "archive_blob": "b94494bb5d0638ec8af9d2be70b54cacda5e42b7",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-07-30-p0-r4-audio-result-remediation-and-qualification-062.md",
+    "archive_blob": "ed7bcd2d8a67958e3f57cd78aeae0df0f4186593",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-10-ai-director-phase2-detached-provider-qualification-005r.md",
+    "archive_blob": "4b541785e0d674ddd7a7e96743f35da1fafe88b6",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-10-ai-director-phase2-provider-recovery-005.md",
+    "archive_blob": "470f83719ed3039567998b1eefe3f4e35af0a45d",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-11-ai-director-phase2-provider-qualification-005t.md",
+    "archive_blob": "23b2d09c1f61ae75088bf4fbf53ef6c1c81e8a12",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-11-ai-director-phase2-resumable-provider-qualification-005s.md",
+    "archive_blob": "2bca595d91a2f5b4f5c19a4c310bc305db8bee33",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-12-ai-director-phase2-worker-state-contract-remediation-005u.md",
+    "archive_blob": "c0e14f2066d5d93e3a74cc3e6e9c6db5662b791d",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-13-ai-director-phase2-legacy-chrome-host-baseline-005w.md",
+    "archive_blob": "da225cd0da0c7f46729cfd057234275d21ca1747",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-13-ai-director-phase2-provider-local-gate-remediation-005v1.md",
+    "archive_blob": "de2048c27cb441d9fd0ed763fc0764d333eac219",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-13-ai-director-phase2-real-provider-qualification-005v-reentry-001.md",
+    "archive_blob": "120a0caf05a159e7c9bab9a5b182b813b081580f",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-13-ai-director-phase2-real-provider-qualification-005v.md",
+    "archive_blob": "d4663001346b876b8e2ae42fc03564f4610158fa",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-13-ai-director-phase2-worker-marker-integration-remediation-005u1.md",
+    "archive_blob": "5f802ae73b2e066e714ef8afe951585d9a311489",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-14-ai-director-phase2-provider-preflight-005v2.md",
+    "archive_blob": "52bca9369af44cb92903403bc3ae6e0f345319a5",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-14-ai-director-phase2-provider-preflight-observability-remediation-005v3.md",
+    "archive_blob": "e881478d2ab5e861ebc61054aaafd7d05608c014",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-15-phase1-local-video-minimum-slice-001.md",
+    "archive_blob": "16a15e3a8f8152da78938220cb6a731287a0bd35",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-21-phase1-reference-video-analysis-001.md",
+    "archive_blob": "f233d6485e77b49bd871d769721dc306b6dd361c",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-23-phase1-audio-visual-sync.md",
+    "archive_blob": "c9d756ef5fabed4f9572fe94aef86f258069ebba",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-23-phase1-douyin-reference-structure.md",
+    "archive_blob": "447dc9d2eb482e3fb939ccbe8b3cb99533ba9f8a",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-23-phase1-jianying-audio-remotion-redo.md",
+    "archive_blob": "45ddfb180ef774e1e3f8bc0d895b6f1f0bcddefc",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-23-phase1-jianying-visual-audio-remediation.md",
+    "archive_blob": "5d993d68d08b6e535c31d0e892e947796d1f1af6",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-23-video-production-skill-chain.md",
+    "archive_blob": "f84dd8213db23ba57e4c7ba4926bdf6819c057e2",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-08-30-phase1-topic-to-jianying-openmontage.md",
+    "archive_blob": "195c9ca83a3f1e9ee2036942cb0cfda61615538a",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-09-06-phase1-i2c-semantic-editorial-013.md",
+    "archive_blob": "ed74d12c6c6fac170f88a5add0ad78d46e2b6288",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-09-06-phase1-lifecycle-evidence-015.md",
+    "archive_blob": "eed572b8c1391a06c5a89b9866ae36f7257ce892",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-09-06-phase1-render-once-review-012.md",
+    "archive_blob": "64e762f493aac3876e49ed0582e16829f6100ad8",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-09-06-remote-branch-consolidation.md",
+    "archive_blob": "39b1d4c04b6f53dde797fa77a76a70b45690900c",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-09-13-website-product-promo-revision.md",
+    "archive_blob": "c0cf2ae14b02f26f44c1e189ccb1adaaf5de4dd3",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-09-13-website-product-promo.md",
+    "archive_blob": "77e9a08e76bccbb7b4b19a919a4106b2aa590444",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-09-15-website-product-promo-hook-focus.md",
+    "archive_blob": "8f1d9cea711fca680b67ad8b6a4e482891b6695c",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-09-23-website-promo-voice-motion-sync.md",
+    "archive_blob": "79fe2e9da225a5e2a94968053f65e16cd84195cb",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-09-27-phase1-topic-only-closure.md",
+    "archive_blob": "392e54aa359faca71d1f0add38108a59aaee74ea",
+    "classification": "superseded process document"
+  },
+  {
+    "path": "tasks/plans/2026-10-11-davinci-editor-feasibility-note.md",
+    "archive_blob": "136c37fa7af5ceaab0911e9451ed05c7b2d10f2c",
+    "classification": "superseded process document"
+  }
+]

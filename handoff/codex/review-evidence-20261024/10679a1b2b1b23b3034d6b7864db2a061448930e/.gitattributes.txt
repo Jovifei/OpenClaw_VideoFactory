@@ -1,0 +1,4 @@
+{"source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e", "original_path": ".gitattributes", "git_blob_sha1": "a66ea506a71884f59c978a49efebc46457b24514", "git_blob_sha256": "c8bb21bc92b5a225455cf84fa5adc8a8b074988b0160f680477bac75d75e510f", "start_line": 1, "end_line": 3, "header_lines": 1}
+# Provenance hashes bind actual checkout bytes, including on Windows.
+third_party/openmontage/** text eol=lf
+LICENSE text eol=lf

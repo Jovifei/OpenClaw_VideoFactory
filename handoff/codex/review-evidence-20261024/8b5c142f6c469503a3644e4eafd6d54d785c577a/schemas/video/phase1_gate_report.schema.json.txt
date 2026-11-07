@@ -1,0 +1,29 @@
+{"source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a", "original_path": "schemas/video/phase1_gate_report.schema.json", "git_blob_sha1": "8f67bb6c1ba7e283b2add29289013215db5e257a", "git_blob_sha256": "98ffd63a57341b2fbb1b9d39fdf28bdfde49ce03ab4497f71fb6efc0584de7d0", "start_line": 1, "end_line": 28, "header_lines": 1}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_gate_report.schema.json",
+  "title": "Phase1GateReport",
+  "type": "object",
+  "required": ["schema_version", "phase", "status", "checks", "blockers", "verified_at"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "phase": {"type": "string", "const": "PHASE_1_LOCAL_VIDEO_FACTORY"},
+    "status": {"type": "string", "enum": ["ready", "blocked"]},
+    "checks": {
+      "type": "object",
+      "required": ["source_hashes_match", "topic_fixtures_ready", "live_topic_ready", "reference_mode_ready", "lifecycle_ready", "boundary_ready"],
+      "additionalProperties": false,
+      "properties": {
+        "source_hashes_match": {"type": "boolean"},
+        "topic_fixtures_ready": {"type": "boolean"},
+        "live_topic_ready": {"type": "boolean"},
+        "reference_mode_ready": {"type": "boolean"},
+        "lifecycle_ready": {"type": "boolean"},
+        "boundary_ready": {"type": "boolean"}
+      }
+    },
+    "blockers": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9_]+$"}},
+    "verified_at": {"type": "string", "format": "date-time"}
+  }
+}

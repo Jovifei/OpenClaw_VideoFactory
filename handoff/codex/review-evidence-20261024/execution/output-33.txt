@@ -1,0 +1,14 @@
+{"source_sha": "d3f07b8fd236588abf21003cbdf0da61737d082c", "dirty": false, "cwd": "E:\\project\\worktrees\\OpenClaw_VideoFactory\\main-consolidation-20261023", "command": ["D:\\Python\\Python3.14\\python.exe", "-m", "pytest", "tests/phase1_local", "tests/phase1_acceptance", "tests/video", "tests/reference", "tests/director", "tests/openmontage", "tests/product-demo", "tests/test_p0_gate_prereview.py", "tests/test_core_feishu_control_contract_032.py::CoreFeishuControl032Tests::test_30_final_reports_exist", "-q", "-ra", "--disable-warnings", "--tb=short", "--deselect=tests/video/test_mp4_metadata.py::TestMp4Metadata::test_separate_evidence_files_are_not_cross_contaminated", "--basetemp=reports/audit_20261024/committed-regression-tmp", "--junitxml=reports/audit_20261024/committed-regression.xml"], "started_at": "2026-10-24T03:42:26.172893+00:00", "evidence_level": "code regression; inherited media fixtures are not a fresh render"}
+........................................................................ [ 10%]
+........................................................................ [ 21%]
+........................................................................ [ 32%]
+........................................................................ [ 43%]
+........................................................................ [ 53%]
+........................................................................ [ 64%]
+........................................................................ [ 75%]
+.....................................................................s.. [ 86%]
+........................................................................ [ 96%]
+.....................                                                [100%]
+=========================== short test summary info ===========================
+SKIPPED [1] tests\reference\test_ingest.py:109: symlink creation is unavailable in this Windows test environment
+668 passed, 1 skipped, 2 deselected, 5 warnings, 4 subtests passed in 41.61s

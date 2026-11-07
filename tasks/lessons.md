@@ -529,3 +529,17 @@ Feishu cannot reliably send an attachment and its analysis caption as one messag
   actual signal geometry: I2C must show idle-high SDA/SCL, START/STOP conditions,
   address/data bit windows, and ACK/NACK behavior; otherwise stop as content
   failure even when codec and layout gates pass.
+
+# 2026-09-27 - Codex with ChatGPT loop ownership
+
+- The remote GPT is the plan, review and next-stage owner. After local execution, Codex must push the tested commit and hand the commit, evidence and prior-plan binding back to the remote reviewer before asking Jovi for a product decision.
+- Do not turn a remote review gate into a user checklist selection. Human listening or video approval is requested only when the remote plan explicitly reaches its SHA-bound human gate; otherwise the remote reviewer must audit the submitted evidence and issue the next bounded plan.
+
+# 2026-10-11 - Follow explicit install authorization
+
+- User correction: when Jovi explicitly authorizes official software installation and the E-drive destination is available, continue setup rather than treating a remote environment blocker as the end of local work. Use the exact pinned official source, isolate configuration, and stop only at an actual third-party personal-data form, binding terms prompt, or admin approval gate; never infer personal details or bypass those gates.
+
+
+# 2026-10-11 - Recover C2C through a new project chat
+
+- When a bound ChatGPT conversation repeatedly shows that it cannot load, stop retrying the old long-history chat. Open a new chat from the same Project collection, send the C2C boot prompt, verify the workspace name/root with workspace_info, save the new chat URL, then HANDOFF the same task ID and checkpoint. Do not create another Project or restart the engineering task.

@@ -1,0 +1,61 @@
+{"source_sha": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44", "original_path": "schemas/video/phase1_job_prereview.schema.json", "git_blob_sha1": "4cd74779cc3140ca10ce7696d11860547d273495", "git_blob_sha256": "e57334c374097211b5937e7ffb8aece8a9bf70e503403f56e7efb8ad7c6c5aca", "start_line": 1, "end_line": 60, "header_lines": 1}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclaw.local/schemas/video/phase1_job_prereview.schema.json",
+  "title": "Phase1JobPrereview",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "phase",
+    "control_job_id",
+    "render_job_id",
+    "input_mode",
+    "status",
+    "checks",
+    "blockers",
+    "final_master_sha256",
+    "verified_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "phase": {"type": "string", "const": "PHASE_1_LOCAL_VIDEO_FACTORY"},
+    "control_job_id": {"type": "string", "pattern": "^job-[a-f0-9]{24}$"},
+    "render_job_id": {"type": ["string", "null"], "pattern": "^[a-z0-9_]+$"},
+    "input_mode": {"type": "string", "enum": ["topic", "local_reference", "authorized_public_research", "unknown"]},
+    "status": {"type": "string", "enum": ["ready", "blocked"]},
+    "checks": {
+      "type": "object",
+      "required": [
+        "job_pending_review",
+        "required_artifacts_registered",
+        "registered_artifact_hashes_match",
+        "review_package_valid",
+        "review_package_artifacts_match",
+        "quality_report_passed",
+        "human_review_approved",
+        "reference_difference_ready",
+        "forbidden_integrations_absent"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "job_pending_review": {"type": "boolean"},
+        "required_artifacts_registered": {"type": "boolean"},
+        "registered_artifact_hashes_match": {"type": "boolean"},
+        "review_package_valid": {"type": "boolean"},
+        "review_package_artifacts_match": {"type": "boolean"},
+        "quality_report_passed": {"type": "boolean"},
+        "human_review_approved": {"type": "boolean"},
+        "reference_difference_ready": {"type": "boolean"},
+        "forbidden_integrations_absent": {"type": "boolean"}
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z0-9_]+$"}
+    },
+    "final_master_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "verified_at": {"type": "string", "format": "date-time"}
+  }
+}

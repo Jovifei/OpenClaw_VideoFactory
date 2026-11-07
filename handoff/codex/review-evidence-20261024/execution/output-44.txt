@@ -1,0 +1,1 @@
+{"source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e", "source_snapshots": 189, "new_snapshots": 66, "cache_index": "handoff/codex/review-evidence-20261024/index.json", "remote_review": "NOT_VERIFIED"}

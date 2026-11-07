@@ -1,0 +1,2127 @@
+{
+  "stage_id": "P1-CONSOLIDATION-AUDIT-CLOSURE-20261024",
+  "audit_base": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+  "source_fix": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+  "workspace_head_is_not_audit_base": true,
+  "payload_rule": "First line is identity metadata; subsequent lines are exact git-show bytes. Git blob hashes differ legitimately from Windows checkout hashes.",
+  "remote_review_status": "NOT_VERIFIED",
+  "files": [
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "START_HERE_CODEX.md",
+      "git_blob_sha1": "a0ce0579e00fd35a1b29373edc428bb585f30c30",
+      "git_blob_sha256": "548aa14b9e0e660d3e2f44d5fc4e0898d8fa5c6563572f4f47427b7bc1c222b1",
+      "start_line": 1,
+      "end_line": 51,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/START_HERE_CODEX.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "PROJECT_STATUS.yaml",
+      "git_blob_sha1": "38b7cb049ef04d575dad3d040a73d8953bdb755d",
+      "git_blob_sha256": "c123edff508740d2776d17beca1d36457a4f9527e2bbf25b1ff76c0d3e591181",
+      "start_line": 1,
+      "end_line": 96,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/PROJECT_STATUS.yaml.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "docs/PRODUCT_REQUIREMENTS.md",
+      "git_blob_sha1": "e570cc93fce2bf3cec937bedebc7bbdbf9e46940",
+      "git_blob_sha256": "602ff43824ae21a2a18e761f3e0c9fd3b52576956f3d23f67f2f9b067b3c716f",
+      "start_line": 1,
+      "end_line": 43,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/docs/PRODUCT_REQUIREMENTS.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "docs/CURRENT_ARCHITECTURE.md",
+      "git_blob_sha1": "ef87fa538406bdd0a6da3e4563eb3ec8b804061e",
+      "git_blob_sha256": "47377dd61d9f14dc00658a054a732426fce9d647254a7b55d2803eced4faf8b4",
+      "start_line": 1,
+      "end_line": 62,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/docs/CURRENT_ARCHITECTURE.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "docs/PRODUCT_PHASES.md",
+      "git_blob_sha1": "892f460c8b5895d10d73b05280bd7165739eeeee",
+      "git_blob_sha256": "d4723d9c6cfc48d62edcc62935fb9d783e6d595d0bbeebf74863d7524aaa0e88",
+      "start_line": 1,
+      "end_line": 43,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/docs/PRODUCT_PHASES.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "docs/PROJECT_REVIEW.md",
+      "git_blob_sha1": "8c6c2bd893511ae1e59dcaab32f5dda9099a8f8e",
+      "git_blob_sha256": "859b9a56ce4d4f70a40cd942d6454f3ab2ab4b336d43140169d1578538d2b297",
+      "start_line": 1,
+      "end_line": 65,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/docs/PROJECT_REVIEW.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "docs/OPEN_SOURCE_SKILL_MATRIX.md",
+      "git_blob_sha1": "cb61a455069c1dc658f990273dac8df20e26d971",
+      "git_blob_sha256": "ff58df785099c82d7a5d93a334d8008f90ab55d5cfe31fff5379be4bc946b857",
+      "start_line": 1,
+      "end_line": 52,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/docs/OPEN_SOURCE_SKILL_MATRIX.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "docs/MAINTENANCE.md",
+      "git_blob_sha1": "0c5b05457618892634752cca0676211a6d7870c1",
+      "git_blob_sha256": "a1a64619f9399d6a581f2fb06ff0803cb9efd20a3ec23b4c8a4e4fbd21ad3946",
+      "start_line": 1,
+      "end_line": 27,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/docs/MAINTENANCE.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "handoff/codex/CURRENT_HANDOFF.md",
+      "git_blob_sha1": "0c70a476df3efea798fb1d65fb5315b4fd84af41",
+      "git_blob_sha256": "3d6023fb8450f2bd4184c8e8d4b232c83e7820385e6a11f508e6fb34703b0492",
+      "start_line": 1,
+      "end_line": 28,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/handoff/codex/CURRENT_HANDOFF.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "runbook/11_PHASE1_COMPLETION.md",
+      "git_blob_sha1": "0b17779d5e6228dcdca06d6384a1c09db3c6f2b6",
+      "git_blob_sha256": "edb3301b1f4cfd341443da5c8d045b0966bffbb475c8f72d225266e5e8ffb45d",
+      "start_line": 1,
+      "end_line": 63,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/runbook/11_PHASE1_COMPLETION.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "LICENSE",
+      "git_blob_sha1": "be3f7b28e564e7dd05eaf59d64adba1a4065ac0e",
+      "git_blob_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+      "start_line": 1,
+      "end_line": 661,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/LICENSE.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "THIRD_PARTY_NOTICES.md",
+      "git_blob_sha1": "8b1b5b2eb5aabc8985c483aaa153f7607c0a3031",
+      "git_blob_sha256": "0abb067574995087d6bae1095e6866d2c1b36e00a18b096d902a70e554d62686",
+      "start_line": 1,
+      "end_line": 9,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/THIRD_PARTY_NOTICES.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "third_party/openmontage/PROVENANCE.json",
+      "git_blob_sha1": "3888de926982019fdff369f9ade67ef01c5d0308",
+      "git_blob_sha256": "26fac8c2497d18f2109eee741277f8a6789d1a7ef2d7845fe019658fd2b882b7",
+      "start_line": 1,
+      "end_line": 19,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/third_party/openmontage/PROVENANCE.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "src/factory/db.py",
+      "git_blob_sha1": "49d247db94a5ef449d63b88df8ba738e847605ad",
+      "git_blob_sha256": "8071fbeedbbda2d0af08ca8cd1b38e8d1e43994b7d3798440afadf23e537c125",
+      "start_line": 1,
+      "end_line": 540,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/src/factory/db.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "src/factory/state.py",
+      "git_blob_sha1": "540d937fdc9f8dcf3338f05d240f6e7603387ac4",
+      "git_blob_sha256": "c5f8e4a674633cea665d8c790d148225e4bc0b40ad660fb1ffa2f9aba0056233",
+      "start_line": 1,
+      "end_line": 30,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/src/factory/state.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "src/factory/phase1_cli.py",
+      "git_blob_sha1": "424bee06b437e48d50911870eee2eba4afdafe3a",
+      "git_blob_sha256": "0ad3814e49e9116e6b0e9ab6bdc7504e6172eee5072e17a119df4b694f8be8bc",
+      "start_line": 1,
+      "end_line": 668,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/src/factory/phase1_cli.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "src/factory/phase1_local.py",
+      "git_blob_sha1": "3748219a2f1efd7519622d5d3591bc0d4176760b",
+      "git_blob_sha256": "0b4d9cc1adda863d52898aa0b79093271f39ee5623a3e63026190cc330b39679",
+      "start_line": 1,
+      "end_line": 351,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/src/factory/phase1_local.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "src/factory/reference_video.py",
+      "git_blob_sha1": "d45be45c480220795067052e36453ee039959be8",
+      "git_blob_sha256": "51b85a837df9f902f1fc8dd0dbd19d61530f12ef0d3c997ceaf34f5803ab683e",
+      "start_line": 1,
+      "end_line": 670,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/src/factory/reference_video.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "src/factory/phase1_subject_audio.py",
+      "git_blob_sha1": "ef078364865caf96de5859c90e33934556c662a6",
+      "git_blob_sha256": "9a1e20d9cea3aa6a81824595239e16f1c387549fd41616347caa95fe907a543a",
+      "start_line": 1,
+      "end_line": 308,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/src/factory/phase1_subject_audio.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "video_factory/pipeline/narration_timing.py",
+      "git_blob_sha1": "ac52a4f2c6bbb6fcde590f75511d391587d033f3",
+      "git_blob_sha256": "51e8643bd687809e2e6deb523e8de5469b565bfed704d0a9dbf704d4675bfc6f",
+      "start_line": 1,
+      "end_line": 269,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/video_factory/pipeline/narration_timing.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "video_factory/pipeline/renderer.py",
+      "git_blob_sha1": "c8450130982479b0c171354d7cb96c3a45683904",
+      "git_blob_sha256": "4dc7ef7f7ddec1dd82fd5f4066ab2eaf382006461cb4e11e88a972490f4ebc58",
+      "start_line": 1,
+      "end_line": 329,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/video_factory/pipeline/renderer.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "generate_video.py",
+      "git_blob_sha1": "50e85eddf7878af07db60d8be2a0fdc91047c868",
+      "git_blob_sha256": "92a522ff27c8c97f8a496ce54ba7e430064c4c8390af17b737bf15eb052f1af6",
+      "start_line": 1,
+      "end_line": 1303,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/generate_video.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "scripts/phase1_post_render_check.py",
+      "git_blob_sha1": "8df2fb32899791fe9d92161f3d5dd7b08c2d1522",
+      "git_blob_sha256": "10347de04c5995d47afae365851f31f937f4dccb212dd9c88e0c34fbe62ad843",
+      "start_line": 1,
+      "end_line": 447,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/scripts/phase1_post_render_check.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "src/factory/phase1_acceptance.py",
+      "git_blob_sha1": "8dbc23ee297da3ceabb132a524437aad6d60e725",
+      "git_blob_sha256": "cab6d609b3b9ab020c203f8bad3afc74fedb304c70b7ef8ab06dded2e29f2803",
+      "start_line": 1,
+      "end_line": 447,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/src/factory/phase1_acceptance.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "src/factory/phase1_gate.py",
+      "git_blob_sha1": "315f898a85870244a05a3c1a6b38bd7ff69be644",
+      "git_blob_sha256": "53e0664e9af4c74c1a98d9dbbb4ce0bc288d59e7038f92909c1020a4d07fff69",
+      "start_line": 1,
+      "end_line": 294,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/src/factory/phase1_gate.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "src/factory/inventory.py",
+      "git_blob_sha1": "42c9fd7e8c940694fe96bbe9a25169574fdfd1c5",
+      "git_blob_sha256": "3b33640423d038fcca2a6c0c46ad2cf880e668178fad987ca8c1c5b3a8ca1cbe",
+      "start_line": 1,
+      "end_line": 93,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/src/factory/inventory.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "remotion/src/product-demo/WebsiteProductDemo.tsx",
+      "git_blob_sha1": "89c54b3960d93d03366487e0a8b79d59f71be381",
+      "git_blob_sha256": "1f3b93e88859c270b9f464c9a7ddc1fd6886b56a8a8dc7c33157b9f5e371fd78",
+      "start_line": 1,
+      "end_line": 132,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/remotion/src/product-demo/WebsiteProductDemo.tsx.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "remotion/src/product-demo/website-product-contract.mjs",
+      "git_blob_sha1": "ec26804c5c508dafe5e7d50d295964f2cc988cae",
+      "git_blob_sha256": "318ed4d91d5028061a2fd54e9e8ef176dc0245c1720c17f8a9c0f33ad1cd220b",
+      "start_line": 1,
+      "end_line": 98,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/remotion/src/product-demo/website-product-contract.mjs.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "tests/product-demo/product_demo.test.mjs",
+      "git_blob_sha1": "61ef6c586b4fc24f1c24243d934a2555c940d3ab",
+      "git_blob_sha256": "a937611b86939a55bb9e863b8fef7ee270702122c93da9d04a7d8565393023d8",
+      "start_line": 1,
+      "end_line": 110,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/tests/product-demo/product_demo.test.mjs.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "tests/product_demo_integration.test.mjs",
+      "git_blob_sha1": "c128b11bb9935e27e9a5be3970cdb9a605480190",
+      "git_blob_sha256": "8ac196c8e912af4adeac5a467a09595550fd91c09cedf5ba22df98cdd3816b41",
+      "start_line": 1,
+      "end_line": 45,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/tests/product_demo_integration.test.mjs.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "tests/video/test_phase1_post_render_check.py",
+      "git_blob_sha1": "faacf982d1c43fbff3b6597b6678c854345f2ea5",
+      "git_blob_sha256": "1dbc3c34dfcf1d4ea95933a23ff2965a3d0cbef9845efc94855dd1aac1c9572d",
+      "start_line": 1,
+      "end_line": 94,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/tests/video/test_phase1_post_render_check.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "AGENTS.md",
+      "git_blob_sha1": "bdb320c29d52022315e97a1cd87940d17461b2ac",
+      "git_blob_sha256": "910d31f0d7d34d14a9054796b890c1a94aa25d7ebc8f7a79faad0222f44d2acb",
+      "start_line": 1,
+      "end_line": 160,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/AGENTS.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "tasks/todo.md",
+      "git_blob_sha1": "0deacf73632cfc0af21def2bbd1e3268774cc91d",
+      "git_blob_sha256": "565280e147a7b1e7c85faeee1ca53fcf3466b8fb095beb94ad147a68f66fc476",
+      "start_line": 1,
+      "end_line": 29,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/tasks/todo.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "tasks/lessons.md",
+      "git_blob_sha1": "7207505a08910ea9def6ed17b446cdfa0b7fff49",
+      "git_blob_sha256": "81f6d3ae84b1a1837c45b970c62624da6ff94906d7ecf9ae4ead37258010b536",
+      "start_line": 1,
+      "end_line": 35,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/tasks/lessons.md.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": ".gitattributes",
+      "git_blob_sha1": "a66ea506a71884f59c978a49efebc46457b24514",
+      "git_blob_sha256": "c8bb21bc92b5a225455cf84fa5adc8a8b074988b0160f680477bac75d75e510f",
+      "start_line": 1,
+      "end_line": 3,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/.gitattributes.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "remotion/package.json",
+      "git_blob_sha1": "b76adf127c7aaaa1933dc23df5d4947d601b51e1",
+      "git_blob_sha256": "326c8d68cb5346e6cf750aed0198e125dc47cba55e898c5fc7034b101bbdac55",
+      "start_line": 1,
+      "end_line": 30,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/remotion/package.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "remotion/package-lock.json",
+      "git_blob_sha1": "92a6d3c433ff2af043be20eb09a181505fcd300e",
+      "git_blob_sha256": "1e99897567c8f8f0f1a9a5725ea83c4fde3dc501c2b4f2050c657462d4ee3c69",
+      "start_line": 1,
+      "end_line": 4214,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/remotion/package-lock.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "tests/phase1_local/test_local_entrypoint.py",
+      "git_blob_sha1": "b7c949f6e612370b322c0e1cffbe54423770ba54",
+      "git_blob_sha256": "fcad7a59966afde60ebbc48d6b874cbe0f3792dcdb068c7fb54cb9d50bfa7dc1",
+      "start_line": 1,
+      "end_line": 103,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/tests/phase1_local/test_local_entrypoint.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "tests/phase1_local/test_audio_overflow_contract.py",
+      "git_blob_sha1": "3bf0fec881859720391f280de00dbd2e4585a9fd",
+      "git_blob_sha256": "99743531bfc3bb6ddea20c5e684b7050aae04257e6e81b06d6d0e3b47ef4d8f6",
+      "start_line": 1,
+      "end_line": 243,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/tests/phase1_local/test_audio_overflow_contract.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "tests/phase1_acceptance/test_phase1_acceptance.py",
+      "git_blob_sha1": "535c9da29186bf59fcc20a1526cd206dc7f0edc3",
+      "git_blob_sha256": "17752b01f43123da18cb9a41d33468ecd2ac56641a3b2eccb7efe343f438e0f7",
+      "start_line": 1,
+      "end_line": 503,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/tests/phase1_acceptance/test_phase1_acceptance.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "tests/phase1_acceptance/test_phase1_gate.py",
+      "git_blob_sha1": "a7a0f2365b7653e7f1dae5d0c6add0065a88845b",
+      "git_blob_sha256": "c3b36591833f0089f8242ba98baf55fc4d813ce12cd68885aa0141606b2c8678",
+      "start_line": 1,
+      "end_line": 300,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/tests/phase1_acceptance/test_phase1_gate.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "tests/reference/test_ingest.py",
+      "git_blob_sha1": "f412f6050b045b9131dc1d6fcb25f2e32db3fb5d",
+      "git_blob_sha256": "07cf16577c6eb7cca7a81b13b67f03dcd58191b0f09e0eafffbe627472521c50",
+      "start_line": 1,
+      "end_line": 112,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/tests/reference/test_ingest.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "scripts/phase1_audio_integrity.py",
+      "git_blob_sha1": "836ecdec3370fdb0617eaa863527c62960d76428",
+      "git_blob_sha256": "158097f5576619b9bb3f1d5f5f497d79d30ab55aad0a0f816f1973fa298cbe06",
+      "start_line": 1,
+      "end_line": 133,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/scripts/phase1_audio_integrity.py.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_acceptance_manifest.schema.json",
+      "git_blob_sha1": "29c2d207536fc0584bf75c7e9eb020afce2ea343",
+      "git_blob_sha256": "f625593f512374ce382759190df7b526064eeea866640160ee30cf0d780749dc",
+      "start_line": 1,
+      "end_line": 27,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_acceptance_manifest.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_boundary_audit.schema.json",
+      "git_blob_sha1": "78b2a5d9700674ad09104db6712e4283f92b94b6",
+      "git_blob_sha256": "2ec66244cd81c59610f5438eec1c9851f0c23d7090f6d97bcc0b7c6857f49317",
+      "start_line": 1,
+      "end_line": 26,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_boundary_audit.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_gate_report.schema.json",
+      "git_blob_sha1": "8f67bb6c1ba7e283b2add29289013215db5e257a",
+      "git_blob_sha256": "98ffd63a57341b2fbb1b9d39fdf28bdfde49ce03ab4497f71fb6efc0584de7d0",
+      "start_line": 1,
+      "end_line": 28,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_gate_report.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_human_review.schema.json",
+      "git_blob_sha1": "3e375f0ecacc88e5269d91b2e19d1c09d599b1db",
+      "git_blob_sha256": "0953cdf8c1c5c6243bae5cf7186209fdabd68fc719b206797c652d5e1a196c20",
+      "start_line": 1,
+      "end_line": 48,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_human_review.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_job_prereview.schema.json",
+      "git_blob_sha1": "4cd74779cc3140ca10ce7696d11860547d273495",
+      "git_blob_sha256": "e57334c374097211b5937e7ffb8aece8a9bf70e503403f56e7efb8ad7c6c5aca",
+      "start_line": 1,
+      "end_line": 60,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_job_prereview.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_lifecycle_evidence.schema.json",
+      "git_blob_sha1": "9c85ecab9f365f15b41d577bd5793fca2d87ff08",
+      "git_blob_sha256": "35b705cbb88c4577ebe05767e0276b049056a2072a0fac9e3a544e823a9d9cf1",
+      "start_line": 1,
+      "end_line": 21,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_lifecycle_evidence.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_local_brief.schema.json",
+      "git_blob_sha1": "c60c7c72fa571f2a80fd623f1c2cb084ce5b552e",
+      "git_blob_sha256": "98cca670435a297ce3f7696ed80fff46d895b187299d658618f368b938d8a157",
+      "start_line": 1,
+      "end_line": 63,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_local_brief.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_quality_report.schema.json",
+      "git_blob_sha1": "52c46962f0619ff72fa6b25897cc45698147a639",
+      "git_blob_sha256": "1c891d13470b5715d14ab8014afc626e49aea03d4365a5b6c874a4b8564843dd",
+      "start_line": 1,
+      "end_line": 91,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_quality_report.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_research_brief.schema.json",
+      "git_blob_sha1": "a1f8de77af0495dd72ff3a0c5a75952fb8522fd8",
+      "git_blob_sha256": "ec38142a02f5ba5efee5c46fe2a78615928142f92b48013f2f392f7c65ea8489",
+      "start_line": 1,
+      "end_line": 16,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_research_brief.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_review_package.schema.json",
+      "git_blob_sha1": "0222d847122c517a3daa1b429afe5bc0efddae9f",
+      "git_blob_sha256": "0a76fad8a70eaf5a59402f493137dd0a4a3b4a12fb19ed900fdbb86aa81e0ec6",
+      "start_line": 1,
+      "end_line": 63,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_review_package.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_scene_plan.schema.json",
+      "git_blob_sha1": "aa8a3f4ddf0491eceb5739e08c25fffaf65dd754",
+      "git_blob_sha256": "047466518b8b2d2ba5f5b43fc40db0ca59a1ab7c085e1d344d2a01e190426758",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_scene_plan.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_script_candidates.schema.json",
+      "git_blob_sha1": "fe0671dd252a0d9d4b2ff21201d8248bad0e534f",
+      "git_blob_sha256": "d6aef71576810d63c63af211a460e934b9686a9ceceb82fa66505ade6b60f2b9",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_script_candidates.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_selected_script.schema.json",
+      "git_blob_sha1": "7a236c94a988a5641e2e8a93eb46b980d71d2674",
+      "git_blob_sha256": "18363154f46ea7c077d3637dacf4d348cefc3860c68abba02de20e38f314d58d",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_selected_script.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_subject_media_result.schema.json",
+      "git_blob_sha1": "b5010ede59b0b2c66b260a5b3fc29f587e2caea5",
+      "git_blob_sha256": "55cd15015bb4c39ccb1dbe770c667ccbfe79e2ae194ae3d50334ce8c4e056343",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_subject_media_result.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_subject_quality_report.schema.json",
+      "git_blob_sha1": "34efa8d5ad286164cb9405bd69d252ea764aa6c9",
+      "git_blob_sha256": "1973dded9baf58da4d8111835884e14d1db0dcebd3d1d1645027a7e2c2f54246",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_subject_quality_report.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_subject_review_package.schema.json",
+      "git_blob_sha1": "c68cf40e5779f885d81261da7c2809bfdfa77604",
+      "git_blob_sha256": "1c425f00e50ca1cf6f796668fb55b35c860737deea6f78b86c11a2431cec2cf3",
+      "start_line": 1,
+      "end_line": 15,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_subject_review_package.schema.json.txt"
+    },
+    {
+      "source_sha": "8b5c142f6c469503a3644e4eafd6d54d785c577a",
+      "original_path": "schemas/video/phase1_topic_request.schema.json",
+      "git_blob_sha1": "6e3a562b2d28446940541abe7da59fa1de308256",
+      "git_blob_sha256": "058f8ebb251e3654d98077d39861c0f803734ec8cca4208997b661a4fec3d706",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/8b5c142f6c469503a3644e4eafd6d54d785c577a/schemas/video/phase1_topic_request.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "START_HERE_CODEX.md",
+      "git_blob_sha1": "a0ce0579e00fd35a1b29373edc428bb585f30c30",
+      "git_blob_sha256": "548aa14b9e0e660d3e2f44d5fc4e0898d8fa5c6563572f4f47427b7bc1c222b1",
+      "start_line": 1,
+      "end_line": 51,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/START_HERE_CODEX.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "PROJECT_STATUS.yaml",
+      "git_blob_sha1": "38b7cb049ef04d575dad3d040a73d8953bdb755d",
+      "git_blob_sha256": "c123edff508740d2776d17beca1d36457a4f9527e2bbf25b1ff76c0d3e591181",
+      "start_line": 1,
+      "end_line": 96,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/PROJECT_STATUS.yaml.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "docs/PRODUCT_REQUIREMENTS.md",
+      "git_blob_sha1": "e570cc93fce2bf3cec937bedebc7bbdbf9e46940",
+      "git_blob_sha256": "602ff43824ae21a2a18e761f3e0c9fd3b52576956f3d23f67f2f9b067b3c716f",
+      "start_line": 1,
+      "end_line": 43,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/docs/PRODUCT_REQUIREMENTS.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "docs/CURRENT_ARCHITECTURE.md",
+      "git_blob_sha1": "b996c39336d36237db50a42735f87808e2044de2",
+      "git_blob_sha256": "5c2a294752bb31dd7a1b100239e1211744bb8d31166306d254e30983feb3043a",
+      "start_line": 1,
+      "end_line": 70,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/docs/CURRENT_ARCHITECTURE.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "docs/PRODUCT_PHASES.md",
+      "git_blob_sha1": "892f460c8b5895d10d73b05280bd7165739eeeee",
+      "git_blob_sha256": "d4723d9c6cfc48d62edcc62935fb9d783e6d595d0bbeebf74863d7524aaa0e88",
+      "start_line": 1,
+      "end_line": 43,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/docs/PRODUCT_PHASES.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "docs/PROJECT_REVIEW.md",
+      "git_blob_sha1": "8c6c2bd893511ae1e59dcaab32f5dda9099a8f8e",
+      "git_blob_sha256": "859b9a56ce4d4f70a40cd942d6454f3ab2ab4b336d43140169d1578538d2b297",
+      "start_line": 1,
+      "end_line": 65,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/docs/PROJECT_REVIEW.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "docs/OPEN_SOURCE_SKILL_MATRIX.md",
+      "git_blob_sha1": "cb61a455069c1dc658f990273dac8df20e26d971",
+      "git_blob_sha256": "ff58df785099c82d7a5d93a334d8008f90ab55d5cfe31fff5379be4bc946b857",
+      "start_line": 1,
+      "end_line": 52,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/docs/OPEN_SOURCE_SKILL_MATRIX.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "docs/MAINTENANCE.md",
+      "git_blob_sha1": "0c5b05457618892634752cca0676211a6d7870c1",
+      "git_blob_sha256": "a1a64619f9399d6a581f2fb06ff0803cb9efd20a3ec23b4c8a4e4fbd21ad3946",
+      "start_line": 1,
+      "end_line": 27,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/docs/MAINTENANCE.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "handoff/codex/CURRENT_HANDOFF.md",
+      "git_blob_sha1": "0c70a476df3efea798fb1d65fb5315b4fd84af41",
+      "git_blob_sha256": "3d6023fb8450f2bd4184c8e8d4b232c83e7820385e6a11f508e6fb34703b0492",
+      "start_line": 1,
+      "end_line": 28,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/handoff/codex/CURRENT_HANDOFF.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "runbook/11_PHASE1_COMPLETION.md",
+      "git_blob_sha1": "0b17779d5e6228dcdca06d6384a1c09db3c6f2b6",
+      "git_blob_sha256": "edb3301b1f4cfd341443da5c8d045b0966bffbb475c8f72d225266e5e8ffb45d",
+      "start_line": 1,
+      "end_line": 63,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/runbook/11_PHASE1_COMPLETION.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "LICENSE",
+      "git_blob_sha1": "be3f7b28e564e7dd05eaf59d64adba1a4065ac0e",
+      "git_blob_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+      "start_line": 1,
+      "end_line": 661,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/LICENSE.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "THIRD_PARTY_NOTICES.md",
+      "git_blob_sha1": "8b1b5b2eb5aabc8985c483aaa153f7607c0a3031",
+      "git_blob_sha256": "0abb067574995087d6bae1095e6866d2c1b36e00a18b096d902a70e554d62686",
+      "start_line": 1,
+      "end_line": 9,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/THIRD_PARTY_NOTICES.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "third_party/openmontage/PROVENANCE.json",
+      "git_blob_sha1": "3888de926982019fdff369f9ade67ef01c5d0308",
+      "git_blob_sha256": "26fac8c2497d18f2109eee741277f8a6789d1a7ef2d7845fe019658fd2b882b7",
+      "start_line": 1,
+      "end_line": 19,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/third_party/openmontage/PROVENANCE.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "src/factory/db.py",
+      "git_blob_sha1": "01470b96f3ef1db5d8ef89e7f12593928ed174eb",
+      "git_blob_sha256": "a4dc71ebd16d1274fbdc16e22af3b0452a5b7932af2f85b625a0e3b50cc525d8",
+      "start_line": 1,
+      "end_line": 626,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/src/factory/db.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "src/factory/state.py",
+      "git_blob_sha1": "540d937fdc9f8dcf3338f05d240f6e7603387ac4",
+      "git_blob_sha256": "c5f8e4a674633cea665d8c790d148225e4bc0b40ad660fb1ffa2f9aba0056233",
+      "start_line": 1,
+      "end_line": 30,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/src/factory/state.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "src/factory/phase1_cli.py",
+      "git_blob_sha1": "5a48c9927e26268d98d448048e38dfe81bdc3beb",
+      "git_blob_sha256": "47c6af7f9709a0c38fdfd00473d259049cc1eaede722104547f6e3ae36937cbd",
+      "start_line": 1,
+      "end_line": 730,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/src/factory/phase1_cli.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "src/factory/phase1_local.py",
+      "git_blob_sha1": "5f338e122eec2b49c0b4dac2bc65acda44d40cf1",
+      "git_blob_sha256": "9806e175a1d4e7ebffc2cb1274589cb19834eda4ed37a83a478655c1129fec29",
+      "start_line": 1,
+      "end_line": 360,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/src/factory/phase1_local.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "src/factory/reference_video.py",
+      "git_blob_sha1": "d45be45c480220795067052e36453ee039959be8",
+      "git_blob_sha256": "51b85a837df9f902f1fc8dd0dbd19d61530f12ef0d3c997ceaf34f5803ab683e",
+      "start_line": 1,
+      "end_line": 670,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/src/factory/reference_video.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "src/factory/phase1_subject_audio.py",
+      "git_blob_sha1": "ef078364865caf96de5859c90e33934556c662a6",
+      "git_blob_sha256": "9a1e20d9cea3aa6a81824595239e16f1c387549fd41616347caa95fe907a543a",
+      "start_line": 1,
+      "end_line": 308,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/src/factory/phase1_subject_audio.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "video_factory/pipeline/narration_timing.py",
+      "git_blob_sha1": "ac52a4f2c6bbb6fcde590f75511d391587d033f3",
+      "git_blob_sha256": "51e8643bd687809e2e6deb523e8de5469b565bfed704d0a9dbf704d4675bfc6f",
+      "start_line": 1,
+      "end_line": 269,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/video_factory/pipeline/narration_timing.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "video_factory/pipeline/renderer.py",
+      "git_blob_sha1": "c8450130982479b0c171354d7cb96c3a45683904",
+      "git_blob_sha256": "4dc7ef7f7ddec1dd82fd5f4066ab2eaf382006461cb4e11e88a972490f4ebc58",
+      "start_line": 1,
+      "end_line": 329,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/video_factory/pipeline/renderer.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "generate_video.py",
+      "git_blob_sha1": "f0648065c2bf1305c6fe7583d504c34a9f62b907",
+      "git_blob_sha256": "eeb9c2b23f33d084cb9671a3cdceaa75eb43fb6df4f21a3d80ed14165c2eaa09",
+      "start_line": 1,
+      "end_line": 1310,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/generate_video.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "scripts/phase1_post_render_check.py",
+      "git_blob_sha1": "f3d565a7e7094a229063584937ca93e71358124a",
+      "git_blob_sha256": "e17d6d3bf771466b8482c46afe3015083fe4b1b34b546c145c1f314db10f6976",
+      "start_line": 1,
+      "end_line": 472,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/scripts/phase1_post_render_check.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "src/factory/phase1_acceptance.py",
+      "git_blob_sha1": "8dbc23ee297da3ceabb132a524437aad6d60e725",
+      "git_blob_sha256": "cab6d609b3b9ab020c203f8bad3afc74fedb304c70b7ef8ab06dded2e29f2803",
+      "start_line": 1,
+      "end_line": 447,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/src/factory/phase1_acceptance.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "src/factory/phase1_gate.py",
+      "git_blob_sha1": "315f898a85870244a05a3c1a6b38bd7ff69be644",
+      "git_blob_sha256": "53e0664e9af4c74c1a98d9dbbb4ce0bc288d59e7038f92909c1020a4d07fff69",
+      "start_line": 1,
+      "end_line": 294,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/src/factory/phase1_gate.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "src/factory/inventory.py",
+      "git_blob_sha1": "42c9fd7e8c940694fe96bbe9a25169574fdfd1c5",
+      "git_blob_sha256": "3b33640423d038fcca2a6c0c46ad2cf880e668178fad987ca8c1c5b3a8ca1cbe",
+      "start_line": 1,
+      "end_line": 93,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/src/factory/inventory.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "remotion/src/product-demo/WebsiteProductDemo.tsx",
+      "git_blob_sha1": "caa965d5ca98a8127ce614f9d0525bdcac30c34b",
+      "git_blob_sha256": "7d005e4f510e9cee4b54c6fb2d1a02cb7f35cb6a23d309ddc3cf77c962c57242",
+      "start_line": 1,
+      "end_line": 139,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/remotion/src/product-demo/WebsiteProductDemo.tsx.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "remotion/src/product-demo/website-product-contract.mjs",
+      "git_blob_sha1": "ec26804c5c508dafe5e7d50d295964f2cc988cae",
+      "git_blob_sha256": "318ed4d91d5028061a2fd54e9e8ef176dc0245c1720c17f8a9c0f33ad1cd220b",
+      "start_line": 1,
+      "end_line": 98,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/remotion/src/product-demo/website-product-contract.mjs.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/product-demo/product_demo.test.mjs",
+      "git_blob_sha1": "61ef6c586b4fc24f1c24243d934a2555c940d3ab",
+      "git_blob_sha256": "a937611b86939a55bb9e863b8fef7ee270702122c93da9d04a7d8565393023d8",
+      "start_line": 1,
+      "end_line": 110,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/product-demo/product_demo.test.mjs.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/product_demo_integration.test.mjs",
+      "git_blob_sha1": "c128b11bb9935e27e9a5be3970cdb9a605480190",
+      "git_blob_sha256": "8ac196c8e912af4adeac5a467a09595550fd91c09cedf5ba22df98cdd3816b41",
+      "start_line": 1,
+      "end_line": 45,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/product_demo_integration.test.mjs.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/video/test_phase1_post_render_check.py",
+      "git_blob_sha1": "58151b759f87a184832e36e43d9aecc5ef8e8fb8",
+      "git_blob_sha256": "4c08e3d498c0af98f50ec8ad095d46d06e509ee59fdc4ce690e6d82645e9fde9",
+      "start_line": 1,
+      "end_line": 176,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/video/test_phase1_post_render_check.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/phase1_local/test_review_publication.py",
+      "git_blob_sha1": "9df5f3f669eb0be9de43219617e6d58e342ef618",
+      "git_blob_sha256": "7c64470a158c61767a06413afe44f85cf30cb0b6ebed6409f6d453db37c6c3fb",
+      "start_line": 1,
+      "end_line": 272,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/phase1_local/test_review_publication.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/product-demo/product_demo_presentation.test.mjs",
+      "git_blob_sha1": "6d3c63bf62c88133c4986abaf1bf62d29d83a963",
+      "git_blob_sha256": "ac35179f6a09f2de0f8b896607f51d8990942f1e2a0f224fa7bb19b44ff296f4",
+      "start_line": 1,
+      "end_line": 80,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/product-demo/product_demo_presentation.test.mjs.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "AGENTS.md",
+      "git_blob_sha1": "bdb320c29d52022315e97a1cd87940d17461b2ac",
+      "git_blob_sha256": "910d31f0d7d34d14a9054796b890c1a94aa25d7ebc8f7a79faad0222f44d2acb",
+      "start_line": 1,
+      "end_line": 160,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/AGENTS.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tasks/todo.md",
+      "git_blob_sha1": "415c95e6d291ed74db494c3d7ee7989f4eaff105",
+      "git_blob_sha256": "fc58ebbbef95fbcbf7b34bdb0b200616800e73aaef30a00559567a9f69bed6fd",
+      "start_line": 1,
+      "end_line": 45,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tasks/todo.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tasks/lessons.md",
+      "git_blob_sha1": "7207505a08910ea9def6ed17b446cdfa0b7fff49",
+      "git_blob_sha256": "81f6d3ae84b1a1837c45b970c62624da6ff94906d7ecf9ae4ead37258010b536",
+      "start_line": 1,
+      "end_line": 35,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tasks/lessons.md.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": ".gitattributes",
+      "git_blob_sha1": "a66ea506a71884f59c978a49efebc46457b24514",
+      "git_blob_sha256": "c8bb21bc92b5a225455cf84fa5adc8a8b074988b0160f680477bac75d75e510f",
+      "start_line": 1,
+      "end_line": 3,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/.gitattributes.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "remotion/package.json",
+      "git_blob_sha1": "b76adf127c7aaaa1933dc23df5d4947d601b51e1",
+      "git_blob_sha256": "326c8d68cb5346e6cf750aed0198e125dc47cba55e898c5fc7034b101bbdac55",
+      "start_line": 1,
+      "end_line": 30,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/remotion/package.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "remotion/package-lock.json",
+      "git_blob_sha1": "92a6d3c433ff2af043be20eb09a181505fcd300e",
+      "git_blob_sha256": "1e99897567c8f8f0f1a9a5725ea83c4fde3dc501c2b4f2050c657462d4ee3c69",
+      "start_line": 1,
+      "end_line": 4214,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/remotion/package-lock.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/phase1_local/test_local_entrypoint.py",
+      "git_blob_sha1": "a3f98e1e3f20eb7281656b07346ada386ac8fe7c",
+      "git_blob_sha256": "682775d4b349654e8601997eea7e6500f04e32602678d5e58150f6998d65c685",
+      "start_line": 1,
+      "end_line": 118,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/phase1_local/test_local_entrypoint.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/phase1_local/test_audio_overflow_contract.py",
+      "git_blob_sha1": "3bf0fec881859720391f280de00dbd2e4585a9fd",
+      "git_blob_sha256": "99743531bfc3bb6ddea20c5e684b7050aae04257e6e81b06d6d0e3b47ef4d8f6",
+      "start_line": 1,
+      "end_line": 243,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/phase1_local/test_audio_overflow_contract.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/phase1_acceptance/test_phase1_acceptance.py",
+      "git_blob_sha1": "535c9da29186bf59fcc20a1526cd206dc7f0edc3",
+      "git_blob_sha256": "17752b01f43123da18cb9a41d33468ecd2ac56641a3b2eccb7efe343f438e0f7",
+      "start_line": 1,
+      "end_line": 503,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/phase1_acceptance/test_phase1_acceptance.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/phase1_acceptance/test_phase1_gate.py",
+      "git_blob_sha1": "a7a0f2365b7653e7f1dae5d0c6add0065a88845b",
+      "git_blob_sha256": "c3b36591833f0089f8242ba98baf55fc4d813ce12cd68885aa0141606b2c8678",
+      "start_line": 1,
+      "end_line": 300,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/phase1_acceptance/test_phase1_gate.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/reference/test_ingest.py",
+      "git_blob_sha1": "f412f6050b045b9131dc1d6fcb25f2e32db3fb5d",
+      "git_blob_sha256": "07cf16577c6eb7cca7a81b13b67f03dcd58191b0f09e0eafffbe627472521c50",
+      "start_line": 1,
+      "end_line": 112,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/reference/test_ingest.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "scripts/phase1_audio_integrity.py",
+      "git_blob_sha1": "746bf0da2fbd7aa0cf7919bbd0cd066d5a852e76",
+      "git_blob_sha256": "f0585a49f176ee9ef99b55267770a4d90f7a7cf4e222af23bbfa5abfa6cbd2bb",
+      "start_line": 1,
+      "end_line": 147,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/scripts/phase1_audio_integrity.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "tests/phase1_local/test_audio_integrity_identity.py",
+      "git_blob_sha1": "e7d50645cf7ca43d1ad92b0fda1cd9ef9d928860",
+      "git_blob_sha256": "487533add72cc3649ec0eec0d6327beb7051c73e173345f552b2020a718a66bf",
+      "start_line": 1,
+      "end_line": 56,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/tests/phase1_local/test_audio_integrity_identity.py.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_acceptance_manifest.schema.json",
+      "git_blob_sha1": "29c2d207536fc0584bf75c7e9eb020afce2ea343",
+      "git_blob_sha256": "f625593f512374ce382759190df7b526064eeea866640160ee30cf0d780749dc",
+      "start_line": 1,
+      "end_line": 27,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_acceptance_manifest.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_boundary_audit.schema.json",
+      "git_blob_sha1": "78b2a5d9700674ad09104db6712e4283f92b94b6",
+      "git_blob_sha256": "2ec66244cd81c59610f5438eec1c9851f0c23d7090f6d97bcc0b7c6857f49317",
+      "start_line": 1,
+      "end_line": 26,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_boundary_audit.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_gate_report.schema.json",
+      "git_blob_sha1": "8f67bb6c1ba7e283b2add29289013215db5e257a",
+      "git_blob_sha256": "98ffd63a57341b2fbb1b9d39fdf28bdfde49ce03ab4497f71fb6efc0584de7d0",
+      "start_line": 1,
+      "end_line": 28,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_gate_report.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_human_review.schema.json",
+      "git_blob_sha1": "3e375f0ecacc88e5269d91b2e19d1c09d599b1db",
+      "git_blob_sha256": "0953cdf8c1c5c6243bae5cf7186209fdabd68fc719b206797c652d5e1a196c20",
+      "start_line": 1,
+      "end_line": 48,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_human_review.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_job_prereview.schema.json",
+      "git_blob_sha1": "4cd74779cc3140ca10ce7696d11860547d273495",
+      "git_blob_sha256": "e57334c374097211b5937e7ffb8aece8a9bf70e503403f56e7efb8ad7c6c5aca",
+      "start_line": 1,
+      "end_line": 60,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_job_prereview.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_lifecycle_evidence.schema.json",
+      "git_blob_sha1": "9c85ecab9f365f15b41d577bd5793fca2d87ff08",
+      "git_blob_sha256": "35b705cbb88c4577ebe05767e0276b049056a2072a0fac9e3a544e823a9d9cf1",
+      "start_line": 1,
+      "end_line": 21,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_lifecycle_evidence.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_local_brief.schema.json",
+      "git_blob_sha1": "c60c7c72fa571f2a80fd623f1c2cb084ce5b552e",
+      "git_blob_sha256": "98cca670435a297ce3f7696ed80fff46d895b187299d658618f368b938d8a157",
+      "start_line": 1,
+      "end_line": 63,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_local_brief.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_quality_report.schema.json",
+      "git_blob_sha1": "52c46962f0619ff72fa6b25897cc45698147a639",
+      "git_blob_sha256": "1c891d13470b5715d14ab8014afc626e49aea03d4365a5b6c874a4b8564843dd",
+      "start_line": 1,
+      "end_line": 91,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_quality_report.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_research_brief.schema.json",
+      "git_blob_sha1": "a1f8de77af0495dd72ff3a0c5a75952fb8522fd8",
+      "git_blob_sha256": "ec38142a02f5ba5efee5c46fe2a78615928142f92b48013f2f392f7c65ea8489",
+      "start_line": 1,
+      "end_line": 16,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_research_brief.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_review_package.schema.json",
+      "git_blob_sha1": "0222d847122c517a3daa1b429afe5bc0efddae9f",
+      "git_blob_sha256": "0a76fad8a70eaf5a59402f493137dd0a4a3b4a12fb19ed900fdbb86aa81e0ec6",
+      "start_line": 1,
+      "end_line": 63,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_review_package.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_scene_plan.schema.json",
+      "git_blob_sha1": "aa8a3f4ddf0491eceb5739e08c25fffaf65dd754",
+      "git_blob_sha256": "047466518b8b2d2ba5f5b43fc40db0ca59a1ab7c085e1d344d2a01e190426758",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_scene_plan.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_script_candidates.schema.json",
+      "git_blob_sha1": "fe0671dd252a0d9d4b2ff21201d8248bad0e534f",
+      "git_blob_sha256": "d6aef71576810d63c63af211a460e934b9686a9ceceb82fa66505ade6b60f2b9",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_script_candidates.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_selected_script.schema.json",
+      "git_blob_sha1": "7a236c94a988a5641e2e8a93eb46b980d71d2674",
+      "git_blob_sha256": "18363154f46ea7c077d3637dacf4d348cefc3860c68abba02de20e38f314d58d",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_selected_script.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_subject_media_result.schema.json",
+      "git_blob_sha1": "b5010ede59b0b2c66b260a5b3fc29f587e2caea5",
+      "git_blob_sha256": "55cd15015bb4c39ccb1dbe770c667ccbfe79e2ae194ae3d50334ce8c4e056343",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_subject_media_result.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_subject_quality_report.schema.json",
+      "git_blob_sha1": "34efa8d5ad286164cb9405bd69d252ea764aa6c9",
+      "git_blob_sha256": "1973dded9baf58da4d8111835884e14d1db0dcebd3d1d1645027a7e2c2f54246",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_subject_quality_report.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_subject_review_package.schema.json",
+      "git_blob_sha1": "c68cf40e5779f885d81261da7c2809bfdfa77604",
+      "git_blob_sha256": "1c425f00e50ca1cf6f796668fb55b35c860737deea6f78b86c11a2431cec2cf3",
+      "start_line": 1,
+      "end_line": 15,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_subject_review_package.schema.json.txt"
+    },
+    {
+      "source_sha": "05283758767b693adc20d1071f93ce97109fbc8b",
+      "original_path": "schemas/video/phase1_topic_request.schema.json",
+      "git_blob_sha1": "6e3a562b2d28446940541abe7da59fa1de308256",
+      "git_blob_sha256": "058f8ebb251e3654d98077d39861c0f803734ec8cca4208997b661a4fec3d706",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/05283758767b693adc20d1071f93ce97109fbc8b/schemas/video/phase1_topic_request.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": ".gitattributes",
+      "git_blob_sha1": "a66ea506a71884f59c978a49efebc46457b24514",
+      "git_blob_sha256": "c8bb21bc92b5a225455cf84fa5adc8a8b074988b0160f680477bac75d75e510f",
+      "start_line": 1,
+      "end_line": 3,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/.gitattributes.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "AGENTS.md",
+      "git_blob_sha1": "bdb320c29d52022315e97a1cd87940d17461b2ac",
+      "git_blob_sha256": "910d31f0d7d34d14a9054796b890c1a94aa25d7ebc8f7a79faad0222f44d2acb",
+      "start_line": 1,
+      "end_line": 160,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/AGENTS.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "LICENSE",
+      "git_blob_sha1": "be3f7b28e564e7dd05eaf59d64adba1a4065ac0e",
+      "git_blob_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+      "start_line": 1,
+      "end_line": 661,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/LICENSE.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "PROJECT_STATUS.yaml",
+      "git_blob_sha1": "38b7cb049ef04d575dad3d040a73d8953bdb755d",
+      "git_blob_sha256": "c123edff508740d2776d17beca1d36457a4f9527e2bbf25b1ff76c0d3e591181",
+      "start_line": 1,
+      "end_line": 96,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/PROJECT_STATUS.yaml.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "START_HERE_CODEX.md",
+      "git_blob_sha1": "a0ce0579e00fd35a1b29373edc428bb585f30c30",
+      "git_blob_sha256": "548aa14b9e0e660d3e2f44d5fc4e0898d8fa5c6563572f4f47427b7bc1c222b1",
+      "start_line": 1,
+      "end_line": 51,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/START_HERE_CODEX.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "THIRD_PARTY_NOTICES.md",
+      "git_blob_sha1": "8b1b5b2eb5aabc8985c483aaa153f7607c0a3031",
+      "git_blob_sha256": "0abb067574995087d6bae1095e6866d2c1b36e00a18b096d902a70e554d62686",
+      "start_line": 1,
+      "end_line": 9,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/THIRD_PARTY_NOTICES.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "docs/CURRENT_ARCHITECTURE.md",
+      "git_blob_sha1": "b996c39336d36237db50a42735f87808e2044de2",
+      "git_blob_sha256": "5c2a294752bb31dd7a1b100239e1211744bb8d31166306d254e30983feb3043a",
+      "start_line": 1,
+      "end_line": 70,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/docs/CURRENT_ARCHITECTURE.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "docs/MAINTENANCE.md",
+      "git_blob_sha1": "0c5b05457618892634752cca0676211a6d7870c1",
+      "git_blob_sha256": "a1a64619f9399d6a581f2fb06ff0803cb9efd20a3ec23b4c8a4e4fbd21ad3946",
+      "start_line": 1,
+      "end_line": 27,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/docs/MAINTENANCE.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "docs/OPEN_SOURCE_SKILL_MATRIX.md",
+      "git_blob_sha1": "cb61a455069c1dc658f990273dac8df20e26d971",
+      "git_blob_sha256": "ff58df785099c82d7a5d93a334d8008f90ab55d5cfe31fff5379be4bc946b857",
+      "start_line": 1,
+      "end_line": 52,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/docs/OPEN_SOURCE_SKILL_MATRIX.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "docs/PRODUCT_PHASES.md",
+      "git_blob_sha1": "892f460c8b5895d10d73b05280bd7165739eeeee",
+      "git_blob_sha256": "d4723d9c6cfc48d62edcc62935fb9d783e6d595d0bbeebf74863d7524aaa0e88",
+      "start_line": 1,
+      "end_line": 43,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/docs/PRODUCT_PHASES.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "docs/PRODUCT_REQUIREMENTS.md",
+      "git_blob_sha1": "e570cc93fce2bf3cec937bedebc7bbdbf9e46940",
+      "git_blob_sha256": "602ff43824ae21a2a18e761f3e0c9fd3b52576956f3d23f67f2f9b067b3c716f",
+      "start_line": 1,
+      "end_line": 43,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/docs/PRODUCT_REQUIREMENTS.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "docs/PROJECT_REVIEW.md",
+      "git_blob_sha1": "e260471170e0fc30b876074c006b37dc9f0dcb0b",
+      "git_blob_sha256": "bdce27bedddf5cad6aec71bb58b0982cf7225e73ac0ca60d39af43703b6c2fb8",
+      "start_line": 1,
+      "end_line": 116,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/docs/PROJECT_REVIEW.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "generate_video.py",
+      "git_blob_sha1": "f0648065c2bf1305c6fe7583d504c34a9f62b907",
+      "git_blob_sha256": "eeb9c2b23f33d084cb9671a3cdceaa75eb43fb6df4f21a3d80ed14165c2eaa09",
+      "start_line": 1,
+      "end_line": 1310,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/generate_video.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "handoff/codex/CURRENT_HANDOFF.md",
+      "git_blob_sha1": "66506ae48f855758b20fa4479f490823ea40c6cd",
+      "git_blob_sha256": "5b7d68f004a95e4a3b248c4374ff5dfc0f210ea797c033ec95887097160618ca",
+      "start_line": 1,
+      "end_line": 50,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/handoff/codex/CURRENT_HANDOFF.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "remotion/package-lock.json",
+      "git_blob_sha1": "92a6d3c433ff2af043be20eb09a181505fcd300e",
+      "git_blob_sha256": "1e99897567c8f8f0f1a9a5725ea83c4fde3dc501c2b4f2050c657462d4ee3c69",
+      "start_line": 1,
+      "end_line": 4214,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/remotion/package-lock.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "remotion/package.json",
+      "git_blob_sha1": "b76adf127c7aaaa1933dc23df5d4947d601b51e1",
+      "git_blob_sha256": "326c8d68cb5346e6cf750aed0198e125dc47cba55e898c5fc7034b101bbdac55",
+      "start_line": 1,
+      "end_line": 30,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/remotion/package.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "remotion/src/product-demo/WebsiteProductDemo.tsx",
+      "git_blob_sha1": "caa965d5ca98a8127ce614f9d0525bdcac30c34b",
+      "git_blob_sha256": "7d005e4f510e9cee4b54c6fb2d1a02cb7f35cb6a23d309ddc3cf77c962c57242",
+      "start_line": 1,
+      "end_line": 139,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/remotion/src/product-demo/WebsiteProductDemo.tsx.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "remotion/src/product-demo/website-product-contract.mjs",
+      "git_blob_sha1": "ec26804c5c508dafe5e7d50d295964f2cc988cae",
+      "git_blob_sha256": "318ed4d91d5028061a2fd54e9e8ef176dc0245c1720c17f8a9c0f33ad1cd220b",
+      "start_line": 1,
+      "end_line": 98,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/remotion/src/product-demo/website-product-contract.mjs.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "reports/change_requests/P1-ATTEMPT-RECOVERY-20261024.json",
+      "git_blob_sha1": "cd2564debab7f6553b80645c3a02fd86a204f3ef",
+      "git_blob_sha256": "38676bb1df8e90f9dab384d909c65db90da27148f5d845d144e7310045f19cdb",
+      "start_line": 1,
+      "end_line": 20,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/reports/change_requests/P1-ATTEMPT-RECOVERY-20261024.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "runbook/11_PHASE1_COMPLETION.md",
+      "git_blob_sha1": "0b17779d5e6228dcdca06d6384a1c09db3c6f2b6",
+      "git_blob_sha256": "edb3301b1f4cfd341443da5c8d045b0966bffbb475c8f72d225266e5e8ffb45d",
+      "start_line": 1,
+      "end_line": 63,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/runbook/11_PHASE1_COMPLETION.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_acceptance_manifest.schema.json",
+      "git_blob_sha1": "29c2d207536fc0584bf75c7e9eb020afce2ea343",
+      "git_blob_sha256": "f625593f512374ce382759190df7b526064eeea866640160ee30cf0d780749dc",
+      "start_line": 1,
+      "end_line": 27,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_acceptance_manifest.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_boundary_audit.schema.json",
+      "git_blob_sha1": "78b2a5d9700674ad09104db6712e4283f92b94b6",
+      "git_blob_sha256": "2ec66244cd81c59610f5438eec1c9851f0c23d7090f6d97bcc0b7c6857f49317",
+      "start_line": 1,
+      "end_line": 26,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_boundary_audit.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_gate_report.schema.json",
+      "git_blob_sha1": "8f67bb6c1ba7e283b2add29289013215db5e257a",
+      "git_blob_sha256": "98ffd63a57341b2fbb1b9d39fdf28bdfde49ce03ab4497f71fb6efc0584de7d0",
+      "start_line": 1,
+      "end_line": 28,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_gate_report.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_human_review.schema.json",
+      "git_blob_sha1": "3e375f0ecacc88e5269d91b2e19d1c09d599b1db",
+      "git_blob_sha256": "0953cdf8c1c5c6243bae5cf7186209fdabd68fc719b206797c652d5e1a196c20",
+      "start_line": 1,
+      "end_line": 48,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_human_review.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_job_prereview.schema.json",
+      "git_blob_sha1": "4cd74779cc3140ca10ce7696d11860547d273495",
+      "git_blob_sha256": "e57334c374097211b5937e7ffb8aece8a9bf70e503403f56e7efb8ad7c6c5aca",
+      "start_line": 1,
+      "end_line": 60,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_job_prereview.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_lifecycle_evidence.schema.json",
+      "git_blob_sha1": "9c85ecab9f365f15b41d577bd5793fca2d87ff08",
+      "git_blob_sha256": "35b705cbb88c4577ebe05767e0276b049056a2072a0fac9e3a544e823a9d9cf1",
+      "start_line": 1,
+      "end_line": 21,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_lifecycle_evidence.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_local_brief.schema.json",
+      "git_blob_sha1": "c60c7c72fa571f2a80fd623f1c2cb084ce5b552e",
+      "git_blob_sha256": "98cca670435a297ce3f7696ed80fff46d895b187299d658618f368b938d8a157",
+      "start_line": 1,
+      "end_line": 63,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_local_brief.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_quality_report.schema.json",
+      "git_blob_sha1": "52c46962f0619ff72fa6b25897cc45698147a639",
+      "git_blob_sha256": "1c891d13470b5715d14ab8014afc626e49aea03d4365a5b6c874a4b8564843dd",
+      "start_line": 1,
+      "end_line": 91,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_quality_report.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_research_brief.schema.json",
+      "git_blob_sha1": "a1f8de77af0495dd72ff3a0c5a75952fb8522fd8",
+      "git_blob_sha256": "ec38142a02f5ba5efee5c46fe2a78615928142f92b48013f2f392f7c65ea8489",
+      "start_line": 1,
+      "end_line": 16,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_research_brief.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_review_package.schema.json",
+      "git_blob_sha1": "0222d847122c517a3daa1b429afe5bc0efddae9f",
+      "git_blob_sha256": "0a76fad8a70eaf5a59402f493137dd0a4a3b4a12fb19ed900fdbb86aa81e0ec6",
+      "start_line": 1,
+      "end_line": 63,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_review_package.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_scene_plan.schema.json",
+      "git_blob_sha1": "aa8a3f4ddf0491eceb5739e08c25fffaf65dd754",
+      "git_blob_sha256": "047466518b8b2d2ba5f5b43fc40db0ca59a1ab7c085e1d344d2a01e190426758",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_scene_plan.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_script_candidates.schema.json",
+      "git_blob_sha1": "fe0671dd252a0d9d4b2ff21201d8248bad0e534f",
+      "git_blob_sha256": "d6aef71576810d63c63af211a460e934b9686a9ceceb82fa66505ade6b60f2b9",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_script_candidates.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_selected_script.schema.json",
+      "git_blob_sha1": "7a236c94a988a5641e2e8a93eb46b980d71d2674",
+      "git_blob_sha256": "18363154f46ea7c077d3637dacf4d348cefc3860c68abba02de20e38f314d58d",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_selected_script.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_subject_media_result.schema.json",
+      "git_blob_sha1": "b5010ede59b0b2c66b260a5b3fc29f587e2caea5",
+      "git_blob_sha256": "55cd15015bb4c39ccb1dbe770c667ccbfe79e2ae194ae3d50334ce8c4e056343",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_subject_media_result.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_subject_quality_report.schema.json",
+      "git_blob_sha1": "34efa8d5ad286164cb9405bd69d252ea764aa6c9",
+      "git_blob_sha256": "1973dded9baf58da4d8111835884e14d1db0dcebd3d1d1645027a7e2c2f54246",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_subject_quality_report.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_subject_review_package.schema.json",
+      "git_blob_sha1": "c68cf40e5779f885d81261da7c2809bfdfa77604",
+      "git_blob_sha256": "1c425f00e50ca1cf6f796668fb55b35c860737deea6f78b86c11a2431cec2cf3",
+      "start_line": 1,
+      "end_line": 15,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_subject_review_package.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "schemas/video/phase1_topic_request.schema.json",
+      "git_blob_sha1": "6e3a562b2d28446940541abe7da59fa1de308256",
+      "git_blob_sha256": "058f8ebb251e3654d98077d39861c0f803734ec8cca4208997b661a4fec3d706",
+      "start_line": 1,
+      "end_line": 1,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/schemas/video/phase1_topic_request.schema.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "scripts/phase1_audio_integrity.py",
+      "git_blob_sha1": "746bf0da2fbd7aa0cf7919bbd0cd066d5a852e76",
+      "git_blob_sha256": "f0585a49f176ee9ef99b55267770a4d90f7a7cf4e222af23bbfa5abfa6cbd2bb",
+      "start_line": 1,
+      "end_line": 147,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/scripts/phase1_audio_integrity.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "scripts/phase1_i2c_subject_route_preflight.py",
+      "git_blob_sha1": "0f26b91a6ec08d8c498124669062ac6725d36d88",
+      "git_blob_sha256": "c13865d2bd44fcd51849a22ae7ac41bc0c544d55f55700819c165288a68e7aeb",
+      "start_line": 1,
+      "end_line": 233,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/scripts/phase1_i2c_subject_route_preflight.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "scripts/phase1_post_render_check.py",
+      "git_blob_sha1": "f3d565a7e7094a229063584937ca93e71358124a",
+      "git_blob_sha256": "e17d6d3bf771466b8482c46afe3015083fe4b1b34b546c145c1f314db10f6976",
+      "start_line": 1,
+      "end_line": 472,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/scripts/phase1_post_render_check.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "src/factory/db.py",
+      "git_blob_sha1": "01470b96f3ef1db5d8ef89e7f12593928ed174eb",
+      "git_blob_sha256": "a4dc71ebd16d1274fbdc16e22af3b0452a5b7932af2f85b625a0e3b50cc525d8",
+      "start_line": 1,
+      "end_line": 626,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/src/factory/db.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "src/factory/inventory.py",
+      "git_blob_sha1": "42c9fd7e8c940694fe96bbe9a25169574fdfd1c5",
+      "git_blob_sha256": "3b33640423d038fcca2a6c0c46ad2cf880e668178fad987ca8c1c5b3a8ca1cbe",
+      "start_line": 1,
+      "end_line": 93,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/src/factory/inventory.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "src/factory/phase1_acceptance.py",
+      "git_blob_sha1": "8dbc23ee297da3ceabb132a524437aad6d60e725",
+      "git_blob_sha256": "cab6d609b3b9ab020c203f8bad3afc74fedb304c70b7ef8ab06dded2e29f2803",
+      "start_line": 1,
+      "end_line": 447,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/src/factory/phase1_acceptance.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "src/factory/phase1_cli.py",
+      "git_blob_sha1": "b2a1baf45a0b669cfcdcecbbb3c89a7b93bf5647",
+      "git_blob_sha256": "78497d1f96b3c683b44391fea2f928e6bba44386802232abffa00988d4c07b51",
+      "start_line": 1,
+      "end_line": 787,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/src/factory/phase1_cli.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "src/factory/phase1_gate.py",
+      "git_blob_sha1": "315f898a85870244a05a3c1a6b38bd7ff69be644",
+      "git_blob_sha256": "53e0664e9af4c74c1a98d9dbbb4ce0bc288d59e7038f92909c1020a4d07fff69",
+      "start_line": 1,
+      "end_line": 294,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/src/factory/phase1_gate.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "src/factory/phase1_local.py",
+      "git_blob_sha1": "5f338e122eec2b49c0b4dac2bc65acda44d40cf1",
+      "git_blob_sha256": "9806e175a1d4e7ebffc2cb1274589cb19834eda4ed37a83a478655c1129fec29",
+      "start_line": 1,
+      "end_line": 360,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/src/factory/phase1_local.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "src/factory/phase1_subject_audio.py",
+      "git_blob_sha1": "ef078364865caf96de5859c90e33934556c662a6",
+      "git_blob_sha256": "9a1e20d9cea3aa6a81824595239e16f1c387549fd41616347caa95fe907a543a",
+      "start_line": 1,
+      "end_line": 308,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/src/factory/phase1_subject_audio.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "src/factory/reference_video.py",
+      "git_blob_sha1": "d45be45c480220795067052e36453ee039959be8",
+      "git_blob_sha256": "51b85a837df9f902f1fc8dd0dbd19d61530f12ef0d3c997ceaf34f5803ab683e",
+      "start_line": 1,
+      "end_line": 670,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/src/factory/reference_video.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "src/factory/state.py",
+      "git_blob_sha1": "540d937fdc9f8dcf3338f05d240f6e7603387ac4",
+      "git_blob_sha256": "c5f8e4a674633cea665d8c790d148225e4bc0b40ad660fb1ffa2f9aba0056233",
+      "start_line": 1,
+      "end_line": 30,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/src/factory/state.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tasks/lessons.md",
+      "git_blob_sha1": "7207505a08910ea9def6ed17b446cdfa0b7fff49",
+      "git_blob_sha256": "81f6d3ae84b1a1837c45b970c62624da6ff94906d7ecf9ae4ead37258010b536",
+      "start_line": 1,
+      "end_line": 35,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tasks/lessons.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tasks/todo.md",
+      "git_blob_sha1": "de1273d61d737fab70f936d09a28a8781ca3d6a5",
+      "git_blob_sha256": "b47edcd18ac34612e5342595ba3a36c41775aa61dd0982f582f08da7197fcf30",
+      "start_line": 1,
+      "end_line": 44,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tasks/todo.md.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/phase1_acceptance/test_phase1_acceptance.py",
+      "git_blob_sha1": "535c9da29186bf59fcc20a1526cd206dc7f0edc3",
+      "git_blob_sha256": "17752b01f43123da18cb9a41d33468ecd2ac56641a3b2eccb7efe343f438e0f7",
+      "start_line": 1,
+      "end_line": 503,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/phase1_acceptance/test_phase1_acceptance.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/phase1_acceptance/test_phase1_gate.py",
+      "git_blob_sha1": "a7a0f2365b7653e7f1dae5d0c6add0065a88845b",
+      "git_blob_sha256": "c3b36591833f0089f8242ba98baf55fc4d813ce12cd68885aa0141606b2c8678",
+      "start_line": 1,
+      "end_line": 300,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/phase1_acceptance/test_phase1_gate.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/phase1_local/test_audio_integrity_identity.py",
+      "git_blob_sha1": "e7d50645cf7ca43d1ad92b0fda1cd9ef9d928860",
+      "git_blob_sha256": "487533add72cc3649ec0eec0d6327beb7051c73e173345f552b2020a718a66bf",
+      "start_line": 1,
+      "end_line": 56,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/phase1_local/test_audio_integrity_identity.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/phase1_local/test_audio_overflow_contract.py",
+      "git_blob_sha1": "3bf0fec881859720391f280de00dbd2e4585a9fd",
+      "git_blob_sha256": "99743531bfc3bb6ddea20c5e684b7050aae04257e6e81b06d6d0e3b47ef4d8f6",
+      "start_line": 1,
+      "end_line": 243,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/phase1_local/test_audio_overflow_contract.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/phase1_local/test_local_entrypoint.py",
+      "git_blob_sha1": "a3f98e1e3f20eb7281656b07346ada386ac8fe7c",
+      "git_blob_sha256": "682775d4b349654e8601997eea7e6500f04e32602678d5e58150f6998d65c685",
+      "start_line": 1,
+      "end_line": 118,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/phase1_local/test_local_entrypoint.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/phase1_local/test_phase1_subject_cli.py",
+      "git_blob_sha1": "224dae0c6283325418d6352095a1a1a1c37eda00",
+      "git_blob_sha256": "78a2d76b8d7620ba496cd59716fa898121b238a781405b79dad910c37b7fbc67",
+      "start_line": 1,
+      "end_line": 437,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/phase1_local/test_phase1_subject_cli.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/phase1_local/test_review_publication.py",
+      "git_blob_sha1": "1c98053ec6f7ca7084927f83dccfbe310f0c1135",
+      "git_blob_sha256": "49b0951b4954f0b5b237b0573a014aed9829d5f24bb44ec3bff5d2a570d0d4ba",
+      "start_line": 1,
+      "end_line": 318,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/phase1_local/test_review_publication.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/product-demo/product_demo.test.mjs",
+      "git_blob_sha1": "61ef6c586b4fc24f1c24243d934a2555c940d3ab",
+      "git_blob_sha256": "a937611b86939a55bb9e863b8fef7ee270702122c93da9d04a7d8565393023d8",
+      "start_line": 1,
+      "end_line": 110,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/product-demo/product_demo.test.mjs.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/product-demo/product_demo_presentation.test.mjs",
+      "git_blob_sha1": "6d3c63bf62c88133c4986abaf1bf62d29d83a963",
+      "git_blob_sha256": "ac35179f6a09f2de0f8b896607f51d8990942f1e2a0f224fa7bb19b44ff296f4",
+      "start_line": 1,
+      "end_line": 80,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/product-demo/product_demo_presentation.test.mjs.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/product_demo_integration.test.mjs",
+      "git_blob_sha1": "c128b11bb9935e27e9a5be3970cdb9a605480190",
+      "git_blob_sha256": "8ac196c8e912af4adeac5a467a09595550fd91c09cedf5ba22df98cdd3816b41",
+      "start_line": 1,
+      "end_line": 45,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/product_demo_integration.test.mjs.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/reference/test_ingest.py",
+      "git_blob_sha1": "f412f6050b045b9131dc1d6fcb25f2e32db3fb5d",
+      "git_blob_sha256": "07cf16577c6eb7cca7a81b13b67f03dcd58191b0f09e0eafffbe627472521c50",
+      "start_line": 1,
+      "end_line": 112,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/reference/test_ingest.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "tests/video/test_phase1_post_render_check.py",
+      "git_blob_sha1": "58151b759f87a184832e36e43d9aecc5ef8e8fb8",
+      "git_blob_sha256": "4c08e3d498c0af98f50ec8ad095d46d06e509ee59fdc4ce690e6d82645e9fde9",
+      "start_line": 1,
+      "end_line": 176,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/tests/video/test_phase1_post_render_check.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "third_party/openmontage/PROVENANCE.json",
+      "git_blob_sha1": "3888de926982019fdff369f9ade67ef01c5d0308",
+      "git_blob_sha256": "26fac8c2497d18f2109eee741277f8a6789d1a7ef2d7845fe019658fd2b882b7",
+      "start_line": 1,
+      "end_line": 19,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/third_party/openmontage/PROVENANCE.json.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "video_factory/pipeline/narration_timing.py",
+      "git_blob_sha1": "ac52a4f2c6bbb6fcde590f75511d391587d033f3",
+      "git_blob_sha256": "51e8643bd687809e2e6deb523e8de5469b565bfed704d0a9dbf704d4675bfc6f",
+      "start_line": 1,
+      "end_line": 269,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/video_factory/pipeline/narration_timing.py.txt"
+    },
+    {
+      "source_sha": "10679a1b2b1b23b3034d6b7864db2a061448930e",
+      "original_path": "video_factory/pipeline/renderer.py",
+      "git_blob_sha1": "c8450130982479b0c171354d7cb96c3a45683904",
+      "git_blob_sha256": "4dc7ef7f7ddec1dd82fd5f4066ab2eaf382006461cb4e11e88a972490f4ebc58",
+      "start_line": 1,
+      "end_line": 329,
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/10679a1b2b1b23b3034d6b7864db2a061448930e/video_factory/pipeline/renderer.py.txt"
+    }
+  ],
+  "runtime_diff": {
+    "from": "f1d94e980526ab7d0a06faadf9c78596b09db565",
+    "to": "56e9165580332542046e65be64e05fc3b59fe9aa",
+    "sha256": "63913ab78128461338ce20f22d56ad1caef3b9179ab5f05866d734336a4350ea",
+    "path": "handoff/codex/review-evidence-20261024/pre-merge-to-integrated-runtime.diff.txt"
+  },
+  "cleanup_deleted_blobs": "handoff/codex/review-evidence-20261024/deleted-documents.json",
+  "execution_files": [
+    {
+      "id": 29,
+      "task_id": "c2c_a024",
+      "iteration": 1,
+      "command": "node c2c.js doctor --no-fix --json",
+      "exit_code": 1,
+      "notes": "External access remains blocked; no remote source review obtained. SOURCE_FIX=d3f07b8fd236588abf21003cbdf0da61737d082c",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-29.txt",
+      "sanitized": true,
+      "sha256": "b1e399a8a1cbe8683d4a666301994b555a9f772d4133fdfdd0b2f4526c872525"
+    },
+    {
+      "id": 30,
+      "task_id": "c2c_a024",
+      "iteration": 1,
+      "command": "immutable git source object extraction and byte validation",
+      "exit_code": 0,
+      "notes": "Exact-SHA source snapshots are readable by paginated read_file when external access recovers. SOURCE_FIX=d3f07b8fd236588abf21003cbdf0da61737d082c",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-30.txt",
+      "sanitized": true,
+      "sha256": "f1f9598ac38751a4c18f266af64dd9244fcc16ea90e2524e5bee9425cbe51cfc"
+    },
+    {
+      "id": 31,
+      "task_id": "c2c_a024",
+      "iteration": 1,
+      "command": "pytest new control-plane regressions against baseline source",
+      "exit_code": 1,
+      "notes": "Expected RED, baseline8b source with new regression harness; not a current failure. SOURCE_FIX=d3f07b8fd236588abf21003cbdf0da61737d082c",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-31.txt",
+      "sanitized": true,
+      "sha256": "77d71f763bc2b7bfc0b6a0a2bf4a340f6e93086ae733c79a82a14dad48a9b6ce"
+    },
+    {
+      "id": 32,
+      "task_id": "c2c_a024",
+      "iteration": 1,
+      "command": "pytest report/media identity regressions against baseline source",
+      "exit_code": 1,
+      "notes": "Expected RED; original report/media/template mismatch accepted. SOURCE_FIX=d3f07b8fd236588abf21003cbdf0da61737d082c",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-32.txt",
+      "sanitized": true,
+      "sha256": "fa81957c809d35569c3a25932ef5caa77707f076ae54a4f7df79726a4eba5134"
+    },
+    {
+      "id": 33,
+      "task_id": "c2c_a024",
+      "iteration": 1,
+      "command": "pytest bounded Phase1 regression at committed source d3f07b8fd236588abf21003cbdf0da61737d082c",
+      "exit_code": 0,
+      "notes": "668 passed,1 skipped,2 deselected,4 subtests passed; skip and inherited artifact exclusions are documented. SOURCE_FIX=d3f07b8fd236588abf21003cbdf0da61737d082c",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-33.txt",
+      "sanitized": true,
+      "sha256": "fe3ecdbd72317018c5d06ffbd29c9fc2436cb09086da6bd05a7f05956f8aa1d3"
+    },
+    {
+      "id": 34,
+      "task_id": "c2c_a024",
+      "iteration": 1,
+      "command": "node --test product and review contracts at core source3f2d26e",
+      "exit_code": 0,
+      "notes": "81 passed; JavaScript and lockfile tree is byte-equivalent at final source. SOURCE_FIX=d3f07b8fd236588abf21003cbdf0da61737d082c",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-34.txt",
+      "sanitized": true,
+      "sha256": "678c8bd17af433d32b60f2468dfe02ac375035a8cb38fee6117de02317b12e3e"
+    },
+    {
+      "id": 35,
+      "task_id": "c2c_a024",
+      "iteration": 1,
+      "command": "npm ci --offline exact lock; fresh snapshot typecheck and contracts",
+      "exit_code": 0,
+      "notes": "Fresh installation; no reused node_modules. Official cache fill and first failures are retained separately. SOURCE_FIX=d3f07b8fd236588abf21003cbdf0da61737d082c",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-35.txt",
+      "sanitized": true,
+      "sha256": "0983e8450647b03fd610f4aaf5cc42fc020e92f8ac25cc115191e17a7a0744c5"
+    },
+    {
+      "id": 36,
+      "task_id": "c2c_a024",
+      "iteration": 1,
+      "command": "python scripts/phase1_audio_integrity.py --report retained-v7 --output isolated-audit",
+      "exit_code": 0,
+      "notes": "Two retained real audio fixtures revalidated; no TTS generation and no human approval created. SOURCE_FIX=d3f07b8fd236588abf21003cbdf0da61737d082c",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-36.txt",
+      "sanitized": true,
+      "sha256": "85e9280614818f2f88c7600a270e8a985a522cd5fefb2c1641b3986f4e5ac81e"
+    },
+    {
+      "id": 37,
+      "task_id": "c2c_a024",
+      "iteration": 2,
+      "command": "immutable final source object extraction",
+      "exit_code": 0,
+      "notes": "Final source 05283758767b693adc20d1071f93ce97109fbc8b; supersedes earlier source receipts; remote review remains NOT_VERIFIED; audio deferred by Jovi",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-37.txt",
+      "sanitized": true,
+      "sha256": "6f9c7f6a6adb46340f2876dcd5ec7ac57bb38f3cf858d612fa402f8d5682edd1"
+    },
+    {
+      "id": 38,
+      "task_id": "c2c_a024",
+      "iteration": 2,
+      "command": "pytest bounded Phase1 at 05283758767b693adc20d1071f93ce97109fbc8b",
+      "exit_code": 0,
+      "notes": "Final source 05283758767b693adc20d1071f93ce97109fbc8b; supersedes earlier source receipts; remote review remains NOT_VERIFIED; audio deferred by Jovi",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-38.txt",
+      "sanitized": true,
+      "sha256": "578ec1aa09a55532bd3ed4246238f5d24ab6c11b5c722c432ea1abe6f78911d6"
+    },
+    {
+      "id": 39,
+      "task_id": "c2c_a024",
+      "iteration": 2,
+      "command": "retained audio objective integrity audit at final source",
+      "exit_code": 0,
+      "notes": "Final source 05283758767b693adc20d1071f93ce97109fbc8b; supersedes earlier source receipts; remote review remains NOT_VERIFIED; audio deferred by Jovi",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-39.txt",
+      "sanitized": true,
+      "sha256": "d61672d9239044efa2ebd5fb4ad8c3818bb11946b966ca230303a1af3106afa9"
+    },
+    {
+      "id": 40,
+      "task_id": "c2c_a024",
+      "iteration": 2,
+      "command": "pytest bounded Phase1 regression at committed source10679a1",
+      "exit_code": 0,
+      "notes": "Fixed committed source10679a1b2b1b23b3034d6b7864db2a061448930e; inherited media fixtures, no production candidate or human approval; remote review NOT_VERIFIED",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-40.txt",
+      "sanitized": true,
+      "sha256": "80f4ddf63846a5912b8bae25d9c93cf4c9232f5aaea8323f93f7d07ddd855293"
+    },
+    {
+      "id": 41,
+      "task_id": "c2c_a024",
+      "iteration": 2,
+      "command": "pytest RED stale subject worker and topic/reference QUALITY_CHECK retry",
+      "exit_code": 1,
+      "notes": "Expected3fail at ba0a4c3 production with new tests; not current failure",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-41.txt",
+      "sanitized": true,
+      "sha256": "0e05f2385cf1cc4f3fddfd89263516509383b217d9ee7ffb7893e1c3a2c67c8c"
+    },
+    {
+      "id": 42,
+      "task_id": "c2c_a024",
+      "iteration": 2,
+      "command": "pytest RED subject VOICE/CAPTIONS checkpoint recovery",
+      "exit_code": 1,
+      "notes": "Expected2fail on first uncommitted attempt-isolation patch before checkpoint recovery fix",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-42.txt",
+      "sanitized": true,
+      "sha256": "5e64b8a7d9f133ca3cc19a1c92c0892aada43882c23a47a604190ebc9b51a2ac"
+    },
+    {
+      "id": 43,
+      "task_id": "c2c_a024",
+      "iteration": 2,
+      "command": "pytest RED changed planning request binding",
+      "exit_code": 1,
+      "notes": "Expected2fail on uncommitted checkpoint patch before six-file hash binding",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-43.txt",
+      "sanitized": true,
+      "sha256": "4c3ca9b6a0fd86bc23e92f9f2eaab45f927555e68bad8446d8ada86e4aa56964"
+    },
+    {
+      "id": 44,
+      "task_id": "c2c_a024",
+      "iteration": 2,
+      "command": "git show exact10679a1 source snapshot index",
+      "exit_code": 0,
+      "notes": "Immutable local snapshots; original path policy must pass; remote access NOT_VERIFIED",
+      "read_file_path": "handoff/codex/review-evidence-20261024/execution/output-44.txt",
+      "sanitized": true,
+      "sha256": "13ed1973bd5b44eba29b8db484f54208e107d008531d458c6866d7e27f93850c"
+    }
+  ],
+  "local_file_policy_verified": true,
+  "output_read_policy": "List by task ID first; if the remote runtime uses another output index, read these same recorder-sanitized files by workspace.read.",
+  "supplementary_regression": {
+    "source_sha": "d3f07b8fd236588abf21003cbdf0da61737d082c",
+    "description": "Expected RED for new idempotency fixture/legacy-containment regressions before the final guard",
+    "exit_code": 1,
+    "expected_red": true,
+    "sanitized": true,
+    "read_file_path": "handoff/codex/review-evidence-20261024/execution/key-boundary-red.txt",
+    "sha256": "29df37e082494ee542e4ee38031ac04e2b4a3956ff47c5f2771681ed6708d411"
+  },
+  "delivery_commit": "ba0a4c30ae76bc3828442a8a1fd3ae67d0ea9de3",
+  "pull_request": "https://github.com/Jovifei/OpenClaw_VideoFactory/pull/2",
+  "delivery_files": [
+    {
+      "source_sha": "ba0a4c30ae76bc3828442a8a1fd3ae67d0ea9de3",
+      "original_path": "docs/PROJECT_REVIEW.md",
+      "git_blob_sha1": "e260471170e0fc30b876074c006b37dc9f0dcb0b",
+      "git_blob_sha256": "bdce27bedddf5cad6aec71bb58b0982cf7225e73ac0ca60d39af43703b6c2fb8",
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/delivery/docs/PROJECT_REVIEW.md.txt"
+    },
+    {
+      "source_sha": "ba0a4c30ae76bc3828442a8a1fd3ae67d0ea9de3",
+      "original_path": "handoff/codex/CURRENT_HANDOFF.md",
+      "git_blob_sha1": "66506ae48f855758b20fa4479f490823ea40c6cd",
+      "git_blob_sha256": "5b7d68f004a95e4a3b248c4374ff5dfc0f210ea797c033ec95887097160618ca",
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/delivery/handoff/codex/CURRENT_HANDOFF.md.txt"
+    },
+    {
+      "source_sha": "ba0a4c30ae76bc3828442a8a1fd3ae67d0ea9de3",
+      "original_path": "reports/phase1/consolidation_audit_20261024.json",
+      "git_blob_sha1": "9ec07d0ce47be7ae8c16d4ab0804e489d652bc5e",
+      "git_blob_sha256": "f838fe667ff59900431c024a4fcc9123bcfd4ea74467a10d0b298dd9f415ec91",
+      "header_lines": 1,
+      "read_file_path": "handoff/codex/review-evidence-20261024/delivery/reports/phase1/consolidation_audit_20261024.json.txt"
+    }
+  ],
+  "previous_source_fixes": [
+    "05283758767b693adc20d1071f93ce97109fbc8b"
+  ]
+}

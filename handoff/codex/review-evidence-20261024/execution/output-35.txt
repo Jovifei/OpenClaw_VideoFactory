@@ -1,0 +1,21 @@
+{"name": "clean-ci-offline-1", "exit_code": 0, "log": "reports/audit_20261024/clean-ci-offline-1.log", "sha256": "93cb2f5d774a8918ed7e5d545b5204508165c527eddbc5804c6f641c4147feff"}
+{"source_sha": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44", "cwd": "E:\\AI_Tools\\Other\\VideoFactoryVerification\\clean-node-3f2d26e\\remotion", "command": ["npm.cmd", "ci", "--offline", "--ignore-scripts", "--no-audit", "--no-fund", "--cache", "E:/Claude_allow/Download/npm-cache-videofactory", "--fetch-retries=0", "--maxsockets=1"], "source": "fresh git archive, npm ci from exact lock; no reused node_modules"}
+npm warn deprecated source-map@0.8.0-beta.0: The work that was done in this beta branch won't be included in future versions
+
+added 258 packages in 7s
+{"name": "clean-node", "exit_code": 0, "log": "reports/audit_20261024/clean-node.log", "sha256": "0f4cef3400818c658a87b9bf6c13830ff04d2b2701de6249f0b2476857c0b749"}
+{"name": "clean-typecheck", "exit_code": 0, "log": "reports/audit_20261024/clean-typecheck.log", "sha256": "6f5f878fccf0efbf18fceec46e044370df4f8a8559ca2613813ed2b2c5d64f4b"}
+{"source_sha": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44", "cwd": "E:\\AI_Tools\\Other\\VideoFactoryVerification\\clean-node-3f2d26e\\remotion", "command": ["npm.cmd", "run", "typecheck"], "source": "fresh git archive, npm ci from exact lock; no reused node_modules"}
+
+> openclaw-video-factory-p1-candidate@0.0.0-offline-candidate typecheck
+> tsc --noEmit
+
+{"name": "clean-contracts", "exit_code": 0, "log": "reports/audit_20261024/clean-contracts.log", "sha256": "0762b8bcefad24699e139553733b269a45376b541dbc6fae55cc25556d47f2bc"}
+{"source_sha": "3f2d26ec185b0f7d6d9fe69e0051f9783a0f8c44", "cwd": "E:\\AI_Tools\\Other\\VideoFactoryVerification\\clean-node-3f2d26e\\remotion", "command": ["npm.cmd", "run", "test:contracts"], "source": "fresh git archive, npm ci from exact lock; no reused node_modules"}
+
+> openclaw-video-factory-p1-candidate@0.0.0-offline-candidate test:contracts
+> tsc --noEmit false --outDir .contract-build && node scripts/verify-contracts.mjs && node scripts/verify-topic-evidence.mjs
+
+{"status":"contracts_validated","templates":4,"versions":["1.0","2.0"]}
+topic_evidence_builder_verified
+topic_evidence_remotion_verified

@@ -1,0 +1,49 @@
+FFFFFFF                                                                  [100%]
+================================== FAILURES ===================================
+___ test_missing_artifact_never_publishes_terminal_or_partial_rows[output] ____
+tests\phase1_local\test_review_publication.py:53: in test_missing_artifact_never_publishes_terminal_or_partial_rows
+    assert store.status(job_id)['state'] == 'FAILED'
+E   AssertionError: assert 'PENDING_REVIEW' == 'FAILED'
+E     
+E     - FAILED
+E     + PENDING_REVIEW
+_ test_missing_artifact_never_publishes_terminal_or_partial_rows[review_package] _
+tests\phase1_local\test_review_publication.py:53: in test_missing_artifact_never_publishes_terminal_or_partial_rows
+    assert store.status(job_id)['state'] == 'FAILED'
+E   AssertionError: assert 'PENDING_REVIEW' == 'FAILED'
+E     
+E     - FAILED
+E     + PENDING_REVIEW
+_______________ test_pending_review_reuse_rejects_changed_bytes _______________
+tests\phase1_local\test_review_publication.py:64: in test_pending_review_reuse_rejects_changed_bytes
+    with pytest.raises((OSError, ValueError, FactoryContractError)):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE any of (<class 'OSError'>, <class 'ValueError'>, <class 'video_factory.pipeline.errors.FactoryContractError'>)
+__________________ test_cancel_retry_fences_returning_worker __________________
+tests\phase1_local\test_review_publication.py:78: in test_cancel_retry_fences_returning_worker
+    with pytest.raises((OSError, ValueError, FactoryContractError)):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE any of (<class 'OSError'>, <class 'ValueError'>, <class 'video_factory.pipeline.errors.FactoryContractError'>)
+___________________ test_same_job_has_one_executing_worker ____________________
+tests\phase1_local\test_review_publication.py:109: in test_same_job_has_one_executing_worker
+    assert len(calls) == 1
+E   assert 2 == 1
+E    +  where 2 = len([1, 1])
+______________ test_aspect_variants_do_not_replace_queued_input _______________
+tests\phase1_local\test_review_publication.py:133: in test_aspect_variants_do_not_replace_queued_input
+    assert first['job']['job_id'] != second['job']['job_id']
+E   AssertionError: assert 'job-e8a5b31e9d835da1bc9110e0' != 'job-e8a5b31e9d835da1bc9110e0'
+______________ test_explicit_key_conflict_does_not_change_input _______________
+tests\phase1_local\test_review_publication.py:143: in test_explicit_key_conflict_does_not_change_input
+    with pytest.raises(FactoryContractError, match='idempotency'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'video_factory.pipeline.errors.FactoryContractError'>
+=========================== short test summary info ===========================
+FAILED tests/phase1_local/test_review_publication.py::test_missing_artifact_never_publishes_terminal_or_partial_rows[output]
+FAILED tests/phase1_local/test_review_publication.py::test_missing_artifact_never_publishes_terminal_or_partial_rows[review_package]
+FAILED tests/phase1_local/test_review_publication.py::test_pending_review_reuse_rejects_changed_bytes
+FAILED tests/phase1_local/test_review_publication.py::test_cancel_retry_fences_returning_worker
+FAILED tests/phase1_local/test_review_publication.py::test_same_job_has_one_executing_worker
+FAILED tests/phase1_local/test_review_publication.py::test_aspect_variants_do_not_replace_queued_input
+FAILED tests/phase1_local/test_review_publication.py::test_explicit_key_conflict_does_not_change_input
+7 failed in 1.54s

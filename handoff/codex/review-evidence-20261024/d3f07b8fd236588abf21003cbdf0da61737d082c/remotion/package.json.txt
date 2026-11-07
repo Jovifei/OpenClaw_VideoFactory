@@ -1,0 +1,31 @@
+{"source_sha": "d3f07b8fd236588abf21003cbdf0da61737d082c", "original_path": "remotion/package.json", "git_blob_sha1": "b76adf127c7aaaa1933dc23df5d4947d601b51e1", "git_blob_sha256": "326c8d68cb5346e6cf750aed0198e125dc47cba55e898c5fc7034b101bbdac55", "start_line": 1, "end_line": 30, "header_lines": 1}
+{
+  "name": "openclaw-video-factory-p1-candidate",
+  "private": true,
+  "version": "0.0.0-offline-candidate",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test:contracts": "tsc --noEmit false --outDir .contract-build && node scripts/verify-contracts.mjs && node scripts/verify-topic-evidence.mjs",
+    "render:candidate": "node scripts/render-candidate.mjs"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.500",
+    "@remotion/cli": "4.0.500",
+    "@remotion/layout-utils": "4.0.500",
+    "@remotion/media-utils": "4.0.500",
+    "@remotion/renderer": "4.0.500",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.500"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.2",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "pixelmatch": "7.2.0",
+    "pngjs": "7.0.0",
+    "typescript": "7.0.2",
+    "typescript-remotion": "npm:typescript@5.9.3"
+  }
+}
